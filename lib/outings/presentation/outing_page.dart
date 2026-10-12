@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/beer_glass.dart';
 import '../../core/widgets/common.dart';
@@ -39,6 +40,7 @@ class _OutingView extends StatefulWidget {
 
 class _OutingViewState extends State<_OutingView> {
   StreamSubscription<OutingNotice>? _sub;
+  bool _finishing = false;
 
   @override
   void initState() {
@@ -70,18 +72,27 @@ class _OutingViewState extends State<_OutingView> {
 
   Future<void> _addDrink() async {
     final id = context.read<OutingCubit>().outingId;
-    await Navigator.of(context).push<bool>(
+    final saved = await Navigator.of(context).push<bool>(
       MaterialPageRoute(builder: (_) => AddDrinkPage(outingId: id)),
     );
+    if (saved == true && mounted) showToast(context, 'Bebida registrada');
   }
 
   Future<void> _edit(DrinkEntry entry) async {
-    await Navigator.of(context).push<bool>(
+    final outcome = await Navigator.of(context).push<EntryOutcome>(
       MaterialPageRoute(builder: (_) => DrinkEntryPage.edit(entry: entry)),
+    );
+    if (!mounted || outcome == null) return;
+    showToast(
+      context,
+      outcome == EntryOutcome.deleted
+          ? 'Registro excluído'
+          : 'Registro atualizado',
     );
   }
 
   Future<void> _finish() async {
+    if (_finishing) return;
     final cubit = context.read<OutingCubit>();
     final outing = cubit.state.outing;
     if (outing == null) return;
@@ -94,13 +105,14 @@ class _OutingViewState extends State<_OutingView> {
       ),
     );
     if (endedAt == null) return;
+    setState(() => _finishing = true);
     try {
       await cubit.finish(endedAt);
       if (mounted) Navigator.of(context).pop(outing.id);
     } on ArgumentError catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('${e.message}')));
+      setState(() => _finishing = false);
+      showToast(context, '${e.message}');
     }
   }
 
@@ -124,152 +136,166 @@ class _OutingViewState extends State<_OutingView> {
         final entries = state.entries.reversed.toList();
         return Scaffold(
           appBar: AppBar(
+            titleSpacing: 0,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(outing.displayName,
-                    style: const TextStyle(fontWeight: FontWeight.w800)),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppText.title),
                 Text(
-                  outing.type.label,
-                  style: const TextStyle(
-                      fontSize: 13, color: AppColors.textMuted),
+                  '${outing.type.label} · desde ${formatTime(outing.startedAt)}',
+                  style: AppText.caption,
                 ),
               ],
             ),
-            actions: const [SyncBadge()],
+            actions: [
+              const SyncBadge(),
+              PopupMenuButton<String>(
+                tooltip: 'Mais opções',
+                onSelected: (v) {
+                  if (v == 'finish') _finish();
+                },
+                itemBuilder: (_) => const [
+                  PopupMenuItem(value: 'finish', child: Text('Encerrar rolê')),
+                ],
+              ),
+            ],
           ),
-          body: SafeArea(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
-              children: [
-                SurfaceCard(
-                  highlight: true,
-                  child: Column(children: [
-                    Row(children: [
-                      BeerGlass(
-                        size: 92,
-                        fill: summary.alcoholicCount == 0
-                            ? 0.15
-                            : (0.25 + summary.alcoholicCount * 0.12),
-                      ),
-                      const SizedBox(width: 18),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Rolando há',
-                                style: TextStyle(
-                                    color: AppColors.textMuted, fontSize: 13)),
-                            ElapsedText(
-                              since: outing.startedAt,
-                              style: const TextStyle(
-                                  fontSize: 32, fontWeight: FontWeight.w800),
+          body: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(
+                      AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                  children: [
+                    SurfaceCard(
+                      child: Column(children: [
+                        Row(children: [
+                          BeerGlass(
+                            size: 64,
+                            fill: summary.alcoholicCount == 0
+                                ? 0.15
+                                : (0.25 + summary.alcoholicCount * 0.12),
+                          ),
+                          const SizedBox(width: AppSpace.lg),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Rolando há', style: AppText.caption),
+                                ElapsedText(
+                                  since: outing.startedAt,
+                                  style: AppText.headline,
+                                ),
+                              ],
                             ),
-                            Text(
-                              'desde ${formatTime(outing.startedAt)}',
-                              style: const TextStyle(
-                                  color: AppColors.textMuted, fontSize: 13),
+                          ),
+                        ]),
+                        const SizedBox(height: AppSpace.lg),
+                        Row(children: [
+                          Expanded(
+                            child: StatTile(
+                              label: 'Bebidas',
+                              value: '${summary.entryCount}',
                             ),
-                          ],
+                          ),
+                          Expanded(
+                            child: StatTile(
+                              label: 'Seu volume',
+                              value: formatMl(summary.personalMl),
+                            ),
+                          ),
+                          Expanded(
+                            child: StatTile(
+                              label: 'Gasto informado',
+                              value: formatCents(summary.informedCents),
+                            ),
+                          ),
+                        ]),
+                        if (summary.unpricedCount > 0) ...[
+                          const SizedBox(height: AppSpace.md),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: InfoPill(
+                              '${summary.unpricedCount} sem preço',
+                              icon: Icons.sell_outlined,
+                              warning: true,
+                            ),
+                          ),
+                        ],
+                      ]),
+                    ),
+                    SectionTitle('Registros (${entries.length})'),
+                    if (entries.isEmpty)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: AppSpace.xl),
+                        child: EmptyView(
+                          icon: Icons.sports_bar_outlined,
+                          title: 'Nenhuma bebida ainda',
+                          message: 'Registre a primeira e o botão '
+                              '"Mais uma" aparece aqui embaixo.',
                         ),
+                      )
+                    else
+                      for (final e in entries)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                          child: EntryTile(
+                            entry: e,
+                            onTap: () => _edit(e),
+                            onDelete: () => cubit.deleteEntry(e),
+                          ),
+                        ),
+                    const SizedBox(height: AppSpace.lg),
+                    Center(
+                      child: TextButton.icon(
+                        onPressed: _finishing ? null : _finish,
+                        icon: const Icon(Icons.flag_outlined),
+                        label: const Text('Encerrar rolê'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              BottomActionBar(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (last != null) ...[
+                      _RepeatButton(entry: last, onPressed: cubit.repeatLast),
+                      const SizedBox(height: AppSpace.sm),
+                    ],
+                    Row(children: [
+                      Expanded(
+                        child: last == null
+                            ? FilledButton.icon(
+                                onPressed: _addDrink,
+                                icon: const Icon(Icons.add_rounded),
+                                label: const Text('Adicionar bebida'),
+                              )
+                            : OutlinedButton.icon(
+                                onPressed: _addDrink,
+                                icon: const Icon(Icons.add_rounded),
+                                label: const Text('Adicionar bebida'),
+                              ),
+                      ),
+                      const SizedBox(width: AppSpace.sm),
+                      OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size(0, 52),
+                        ),
+                        onPressed: cubit.addWater,
+                        icon: const Icon(Icons.water_drop_outlined,
+                            color: Color(0xFF6EC1E4)),
+                        label: const Text('Água'),
                       ),
                     ]),
-                    const SizedBox(height: 16),
-                    Row(children: [
-                      Expanded(
-                        child: StatTile(
-                          label: 'Registros',
-                          value: '${summary.entryCount}',
-                          icon: Icons.local_bar_rounded,
-                        ),
-                      ),
-                      Expanded(
-                        child: StatTile(
-                          label: 'Seu volume',
-                          value: formatMl(summary.personalMl),
-                          icon: Icons.opacity_rounded,
-                        ),
-                      ),
-                      Expanded(
-                        child: StatTile(
-                          label: 'Gasto informado',
-                          value: formatCents(summary.informedCents),
-                          icon: Icons.payments_rounded,
-                        ),
-                      ),
-                    ]),
-                    const SizedBox(height: 12),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        summary.financeLine,
-                        style: const TextStyle(
-                            color: AppColors.textMuted, fontSize: 13),
-                      ),
-                    ),
-                  ]),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                if (last != null)
-                  _RepeatButton(entry: last, onPressed: cubit.repeatLast),
-                if (last != null) const SizedBox(height: 12),
-                Row(children: [
-                  Expanded(
-                    flex: 3,
-                    child: FilledButton.icon(
-                      style: last == null
-                          ? null
-                          : FilledButton.styleFrom(
-                              backgroundColor: AppColors.surfaceHigh,
-                              foregroundColor: AppColors.text,
-                            ),
-                      onPressed: _addDrink,
-                      icon: const Icon(Icons.add_rounded),
-                      label: const Text('Adicionar bebida'),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 2,
-                    child: OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(56)),
-                      onPressed: cubit.addWater,
-                      icon: const Icon(Icons.water_drop_rounded,
-                          color: Color(0xFF6EC1E4)),
-                      label: const Text('Água'),
-                    ),
-                  ),
-                ]),
-                const SectionTitle('REGISTROS'),
-                if (entries.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 24),
-                    child: EmptyView(
-                      icon: Icons.sports_bar_outlined,
-                      title: 'Nenhuma bebida ainda',
-                      message:
-                          'Registre a primeira e o botão "Mais uma" aparece aqui.',
-                    ),
-                  )
-                else
-                  for (final e in entries)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: EntryTile(
-                        entry: e,
-                        onTap: () => _edit(e),
-                        onDelete: () => cubit.deleteEntry(e),
-                      ),
-                    ),
-                const SizedBox(height: 24),
-                OutlinedButton.icon(
-                  onPressed: _finish,
-                  icon: const Icon(Icons.flag_rounded),
-                  label: const Text('Encerrar rolê'),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
@@ -283,48 +309,64 @@ class _RepeatButton extends StatelessWidget {
   final DrinkEntry entry;
   final VoidCallback onPressed;
 
+  String get _what {
+    final size = formatMl(entry.containerMl);
+    return entry.isShared
+        ? '${entry.name} $size · sua parte ${formatMl(entry.personalMl)}'
+        : '${entry.name} $size';
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.amber,
-      borderRadius: BorderRadius.circular(20),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Row(children: [
-            const Icon(Icons.replay_rounded,
-                color: Color(0xFF241800), size: 30),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Mais uma',
-                    style: TextStyle(
-                      color: Color(0xFF241800),
-                      fontSize: 22,
-                      fontWeight: FontWeight.w900,
-                    ),
+    return Semantics(
+      button: true,
+      label: 'Mais uma: $_what',
+      child: Material(
+        color: AppColors.amber,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          onTap: onPressed,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 60),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpace.lg, vertical: AppSpace.sm),
+              child: Row(children: [
+                const Icon(Icons.replay_rounded,
+                    color: Color(0xFF241800), size: 26),
+                const SizedBox(width: AppSpace.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'Mais uma',
+                        style: TextStyle(
+                          color: Color(0xFF241800),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      Text(
+                        [
+                          _what,
+                          if (entry.priceKind == PriceKind.informed &&
+                              entry.paidCents != null)
+                            formatCents(entry.paidCents!),
+                        ].join(' · '),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            color: Color(0xCC241800), fontSize: 13),
+                      ),
+                    ],
                   ),
-                  Text(
-                    [
-                      entry.name,
-                      formatMl(entry.personalMl),
-                      if (entry.priceKind == PriceKind.informed &&
-                          entry.paidCents != null)
-                        formatCents(entry.paidCents!),
-                    ].join(' · '),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Color(0xCC241800)),
-                  ),
-                ],
-              ),
+                ),
+              ]),
             ),
-          ]),
+          ),
         ),
       ),
     );
@@ -354,34 +396,34 @@ class EntryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final meta = <String>[
       formatTime(entry.consumedAt),
+      if (entry.presentation != null && !entry.isShared) entry.presentation!,
       if (entry.isShared)
-        '${formatMl(entry.personalMl)} de ${formatMl(entry.containerMl)} '
-            '(÷${entry.peopleCount})'
-      else
+        'sua parte ${formatMl(entry.personalMl)} de '
+            '${formatMl(entry.containerMl)} (${entry.peopleCount} pessoas)'
+      else if (entry.presentation == null)
         formatMl(entry.personalMl),
-      if (entry.abvPercent != null && entry.category.canBeAlcoholic)
-        formatAbv(entry.abvPercent!),
     ];
-    final tile = SurfaceCard(
+    return SurfaceCard(
       onTap: onTap,
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      padding: const EdgeInsets.fromLTRB(
+          AppSpace.md, AppSpace.sm, AppSpace.xs, AppSpace.sm),
       child: Row(children: [
         Icon(entry.category.icon, color: AppColors.amber),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppSpace.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(entry.name,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w700)),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.subtitle),
               const SizedBox(height: 2),
-              Text(meta.join(' · '),
-                  style: const TextStyle(
-                      color: AppColors.textMuted, fontSize: 13)),
+              Text(meta.join(' · '), style: AppText.caption),
             ],
           ),
         ),
+        const SizedBox(width: AppSpace.sm),
         Text(
           _priceText,
           style: TextStyle(
@@ -389,23 +431,21 @@ class EntryTile extends StatelessWidget {
             color: entry.hasPrice ? AppColors.text : AppColors.textMuted,
           ),
         ),
-      ]),
-    );
-    if (onDelete == null) return tile;
-    return Dismissible(
-      key: ValueKey('entry-${entry.id}'),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 20),
-        decoration: BoxDecoration(
-          color: AppColors.danger.withValues(alpha: 0.85),
-          borderRadius: BorderRadius.circular(20),
+        PopupMenuButton<String>(
+          tooltip: 'Opções do registro',
+          icon: const Icon(Icons.more_vert_rounded,
+              color: AppColors.textMuted),
+          onSelected: (v) {
+            if (v == 'edit') onTap();
+            if (v == 'delete') onDelete?.call();
+          },
+          itemBuilder: (_) => [
+            const PopupMenuItem(value: 'edit', child: Text('Corrigir')),
+            if (onDelete != null)
+              const PopupMenuItem(value: 'delete', child: Text('Excluir')),
+          ],
         ),
-        child: const Icon(Icons.delete_rounded, color: Colors.white),
-      ),
-      onDismissed: (_) => onDelete!(),
-      child: tile,
+      ]),
     );
   }
 }
@@ -427,57 +467,59 @@ class _FinishSheetState extends State<_FinishSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-          20, 0, 20, 20 + MediaQuery.of(context).viewInsets.bottom),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Encerrar rolê?',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
-          const SizedBox(height: 4),
-          Text(
-            '${widget.entryCount} registro(s). Você ainda poderá corrigir '
-            'registros depois, pelo histórico.',
-            style: const TextStyle(color: AppColors.textMuted),
-          ),
-          const SizedBox(height: 16),
-          SurfaceCard(
-            onTap: () async {
-              final picked = await pickDateTime(context, _endedAt);
-              if (picked != null) setState(() => _endedAt = picked);
-            },
-            child: Row(children: [
-              const Icon(Icons.flag_rounded, color: AppColors.amber),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  'Fim: ${formatDateTime(_endedAt)}',
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-              ),
-              const Text('Ajustar', style: TextStyle(color: AppColors.amber)),
-            ]),
-          ),
-          if (!_valid)
-            const Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Text('O fim não pode ser antes do início.',
-                  style: TextStyle(color: AppColors.danger)),
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(AppSpace.xl, 0, AppSpace.xl,
+            AppSpace.lg + MediaQuery.of(context).viewInsets.bottom),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Encerrar rolê?', style: AppText.title),
+            const SizedBox(height: AppSpace.xs),
+            Text(
+              '${widget.entryCount} registro(s). Você ainda poderá corrigir '
+              'registros depois, pelo histórico.',
+              style: AppText.caption,
             ),
-          const SizedBox(height: 20),
-          FilledButton(
-            onPressed: _valid ? () => Navigator.pop(context, _endedAt) : null,
-            child: const Text('Encerrar e ver resumo'),
-          ),
-          const SizedBox(height: 8),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Continuar o rolê'),
-          ),
-        ],
+            const SizedBox(height: AppSpace.lg),
+            SurfaceCard(
+              onTap: () async {
+                final picked = await pickDateTime(context, _endedAt);
+                if (picked != null) setState(() => _endedAt = picked);
+              },
+              child: Row(children: [
+                const Icon(Icons.flag_rounded, color: AppColors.amber),
+                const SizedBox(width: AppSpace.md),
+                Expanded(
+                  child: Text('Fim: ${formatDateTime(_endedAt)}',
+                      style: AppText.subtitle),
+                ),
+                const Text('Ajustar',
+                    style: TextStyle(color: AppColors.amber)),
+              ]),
+            ),
+            if (!_valid)
+              const Padding(
+                padding: EdgeInsets.only(top: AppSpace.sm),
+                child: Text('O fim não pode ser antes do início.',
+                    style: TextStyle(color: AppColors.danger)),
+              ),
+            const SizedBox(height: AppSpace.xl),
+            FilledButton(
+              onPressed:
+                  _valid ? () => Navigator.pop(context, _endedAt) : null,
+              child: const Text('Encerrar e ver resumo'),
+            ),
+            const SizedBox(height: AppSpace.xs),
+            Center(
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Continuar o rolê'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

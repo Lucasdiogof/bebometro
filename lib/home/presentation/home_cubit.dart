@@ -12,11 +12,13 @@ class HomeState {
     this.loading = true,
     this.active,
     this.activeSummary,
-    this.pastOutings = 0,
-    this.pastDrinks = 0,
-    this.pastPersonalMl = 0,
-    this.pastInformedCents = 0,
-    this.pastUnpriced = 0,
+    this.lastOuting,
+    this.lastSummary,
+    this.totalOutings = 0,
+    this.monthOutings = 0,
+    this.monthDrinks = 0,
+    this.monthInformedCents = 0,
+    this.monthUnpriced = 0,
     this.feedbackOuting,
   });
 
@@ -24,17 +26,37 @@ class HomeState {
   final Outing? active;
   final OutingSummary? activeSummary;
 
-  // Totals over finished outings, computed from real records only.
-  final int pastOutings;
-  final int pastDrinks;
-  final int pastPersonalMl;
-  final int pastInformedCents;
-  final int pastUnpriced;
+  /// Most recent finished outing.
+  final Outing? lastOuting;
+  final OutingSummary? lastSummary;
+
+  /// Number of finished outings ever (drives the empty state).
+  final int totalOutings;
+
+  // Current calendar month, from real records only.
+  final int monthOutings;
+  final int monthDrinks;
+  final int monthInformedCents;
+  final int monthUnpriced;
 
   /// Set only by [HomeCubit.checkFeedback] when the sheet should be shown.
   final Outing? feedbackOuting;
 
-  bool get hasHistory => pastOutings > 0;
+  bool get hasHistory => totalOutings > 0;
+
+  HomeState withFeedback(Outing outing) => HomeState(
+        loading: false,
+        active: active,
+        activeSummary: activeSummary,
+        lastOuting: lastOuting,
+        lastSummary: lastSummary,
+        totalOutings: totalOutings,
+        monthOutings: monthOutings,
+        monthDrinks: monthDrinks,
+        monthInformedCents: monthInformedCents,
+        monthUnpriced: monthUnpriced,
+        feedbackOuting: outing,
+      );
 }
 
 class HomeCubit extends Cubit<HomeState> {
@@ -56,50 +78,60 @@ class HomeCubit extends Cubit<HomeState> {
   void load() {
     final active = _outings.active;
     final ended = _outings.ended();
-    var drinks = 0;
-    var ml = 0;
-    var cents = 0;
-    var unpriced = 0;
+    final now = DateTime.now();
+
+    var monthOutings = 0;
+    var monthDrinks = 0;
+    var monthCents = 0;
+    var monthUnpriced = 0;
+    Outing? last;
+    OutingSummary? lastSummary;
+
     for (final outing in ended) {
+      final inMonth = outing.startedAt.year == now.year &&
+          outing.startedAt.month == now.month;
+      final needsSummary = inMonth || last == null;
+      if (!needsSummary) {
+        continue;
+      }
       final s = OutingSummary.of(_drinks.entriesFor(outing.id));
-      drinks += s.entryCount;
-      ml += s.personalMl;
-      cents += s.informedCents;
-      unpriced += s.unpricedCount;
+      if (last == null) {
+        last = outing;
+        lastSummary = s;
+      }
+      if (inMonth) {
+        monthOutings++;
+        monthDrinks += s.entryCount;
+        monthCents += s.informedCents;
+        monthUnpriced += s.unpricedCount;
+      }
     }
+
     emit(HomeState(
       loading: false,
       active: active,
       activeSummary: active == null
           ? null
           : OutingSummary.of(_drinks.entriesFor(active.id)),
-      pastOutings: ended.length,
-      pastDrinks: drinks,
-      pastPersonalMl: ml,
-      pastInformedCents: cents,
-      pastUnpriced: unpriced,
+      lastOuting: last,
+      lastSummary: lastSummary,
+      totalOutings: ended.length,
+      monthOutings: monthOutings,
+      monthDrinks: monthDrinks,
+      monthInformedCents: monthCents,
+      monthUnpriced: monthUnpriced,
     ));
   }
 
-  /// Called when the home screen becomes visible. Offers the post-outing
-  /// feedback at most once per outing per app session; the answer, snooze
-  /// or dismissal is persisted.
+  /// Called once when the home screen opens. Offers the post-outing feedback
+  /// at most once per outing per app session; the answer, snooze or dismissal
+  /// is persisted.
   void checkFeedback() {
     if (_outings.active != null) return;
     final pending = _outings.pendingFeedback(DateTime.now());
     if (pending == null || _promptedOutings.contains(pending.id)) return;
     _promptedOutings.add(pending.id);
-    emit(HomeState(
-      loading: false,
-      active: state.active,
-      activeSummary: state.activeSummary,
-      pastOutings: state.pastOutings,
-      pastDrinks: state.pastDrinks,
-      pastPersonalMl: state.pastPersonalMl,
-      pastInformedCents: state.pastInformedCents,
-      pastUnpriced: state.pastUnpriced,
-      feedbackOuting: pending,
-    ));
+    emit(state.withFeedback(pending));
   }
 
   Future<void> answerFeedback(String outingId, FeedbackMood mood) =>

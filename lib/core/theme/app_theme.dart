@@ -84,6 +84,23 @@ class AppTheme {
           textStyle: const TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          minimumSize: const WidgetStatePropertyAll(Size(0, 48)),
+          side: const WidgetStatePropertyAll(
+              BorderSide(color: AppColors.outline)),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.selected)
+                ? AppColors.amber
+                : AppColors.surfaceHigh,
+          ),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.selected)
+                ? const Color(0xFF241800)
+                : AppColors.text,
+          ),
+        ),
+      ),
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.surfaceHigh,
         selectedColor: AppColors.amber,

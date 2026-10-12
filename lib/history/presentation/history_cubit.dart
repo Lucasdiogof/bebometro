@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/utils/formatters.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/domain/outing.dart';
@@ -14,11 +15,39 @@ class HistoryItem {
   final OutingSummary summary;
 }
 
+enum HistoryPeriod {
+  all('Tudo'),
+  thisMonth('Este mês'),
+  last90Days('90 dias');
+
+  const HistoryPeriod(this.label);
+
+  final String label;
+}
+
 class HistoryState {
-  const HistoryState({this.loading = true, this.items = const []});
+  const HistoryState({
+    this.loading = true,
+    this.total = 0,
+    this.items = const [],
+    this.query = '',
+    this.period = HistoryPeriod.all,
+    this.type,
+  });
 
   final bool loading;
+
+  /// Finished outings before filters.
+  final int total;
+
+  /// After search and filters, newest first.
   final List<HistoryItem> items;
+  final String query;
+  final HistoryPeriod period;
+  final OutingType? type;
+
+  bool get hasFilters =>
+      query.trim().isNotEmpty || period != HistoryPeriod.all || type != null;
 }
 
 class HistoryCubit extends Cubit<HistoryState> {
@@ -34,13 +63,68 @@ class HistoryCubit extends Cubit<HistoryState> {
   final DrinkRepository _drinks;
   late final List<StreamSubscription<void>> _subs;
 
+  String _query = '';
+  HistoryPeriod _period = HistoryPeriod.all;
+  OutingType? _type;
+
+  void setQuery(String q) {
+    _query = q;
+    load();
+  }
+
+  void setPeriod(HistoryPeriod p) {
+    _period = p;
+    load();
+  }
+
+  void setType(OutingType? t) {
+    _type = t;
+    load();
+  }
+
+  void clearFilters() {
+    _query = '';
+    _period = HistoryPeriod.all;
+    _type = null;
+    load();
+  }
+
   void load() {
+    final ended = _outings.ended();
+    final now = DateTime.now();
+    final q = normalizeText(_query);
+
+    bool inPeriod(Outing o) {
+      switch (_period) {
+        case HistoryPeriod.all:
+          return true;
+        case HistoryPeriod.thisMonth:
+          return o.startedAt.year == now.year && o.startedAt.month == now.month;
+        case HistoryPeriod.last90Days:
+          return o.startedAt.isAfter(now.subtract(const Duration(days: 90)));
+      }
+    }
+
+    final filtered = ended.where((o) {
+      if (!inPeriod(o)) return false;
+      if (_type != null && o.type != _type) return false;
+      if (q.isNotEmpty) {
+        final name = normalizeText('${o.nickname ?? ''} ${o.address ?? ''}');
+        if (!q.split(' ').every(name.contains)) return false;
+      }
+      return true;
+    });
+
     emit(HistoryState(
       loading: false,
+      total: ended.length,
       items: [
-        for (final o in _outings.ended())
+        for (final o in filtered)
           HistoryItem(o, OutingSummary.of(_drinks.entriesFor(o.id))),
       ],
+      query: _query,
+      period: _period,
+      type: _type,
     ));
   }
 

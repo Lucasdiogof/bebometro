@@ -8,7 +8,10 @@ import '../domain/drink_category.dart';
 
 /// Creates a reusable personal drink. Pops with the new [CatalogItem].
 class CustomDrinkPage extends StatefulWidget {
-  const CustomDrinkPage({super.key});
+  const CustomDrinkPage({super.key, this.initialName = ''});
+
+  /// Pre-fills the name, e.g. with what the user was searching for.
+  final String initialName;
 
   @override
   State<CustomDrinkPage> createState() => _CustomDrinkPageState();
@@ -16,7 +19,7 @@ class CustomDrinkPage extends StatefulWidget {
 
 class _CustomDrinkPageState extends State<CustomDrinkPage> {
   final _form = GlobalKey<FormState>();
-  final _name = TextEditingController();
+  late final _name = TextEditingController(text: widget.initialName);
   final _brand = TextEditingController();
   final _style = TextEditingController();
   final _volume = TextEditingController();
@@ -51,7 +54,7 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Bebida própria')),
+      appBar: AppBar(title: const Text('Cadastrar bebida')),
       body: SafeArea(
         child: Form(
           key: _form,

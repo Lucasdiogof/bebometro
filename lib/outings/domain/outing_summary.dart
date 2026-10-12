@@ -27,6 +27,7 @@ class OutingSummary {
     required this.alcoholicCount,
     required this.pureAlcoholGrams,
     required this.alcoholIncomplete,
+    required this.unknownAbvCount,
   });
 
   /// Summary of the given (non-deleted) entries.
@@ -37,6 +38,7 @@ class OutingSummary {
     var unpriced = 0;
     var alcoholic = 0;
     var incomplete = false;
+    var unknownAbv = 0;
     var pureMl = 0.0;
     final groups = <String, _GroupAcc>{};
 
@@ -53,6 +55,7 @@ class OutingSummary {
         final pure = e.pureAlcoholMl;
         if (pure == null) {
           incomplete = true;
+          unknownAbv++;
         } else {
           pureMl += pure;
         }
@@ -74,6 +77,7 @@ class OutingSummary {
       // Ethanol density is about 0.789 g/ml.
       pureAlcoholGrams: pureMl * 0.789,
       alcoholIncomplete: incomplete,
+      unknownAbvCount: unknownAbv,
     );
   }
 
@@ -86,6 +90,9 @@ class OutingSummary {
   final int alcoholicCount;
   final double pureAlcoholGrams;
   final bool alcoholIncomplete;
+
+  /// Alcoholic records whose ABV was not informed (unknown, not zero).
+  final int unknownAbvCount;
 
   /// E.g. "R$ 90,00 informados · 2 bebidas sem preço".
   String get financeLine {

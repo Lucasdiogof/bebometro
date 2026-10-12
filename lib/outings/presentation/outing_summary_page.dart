@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
@@ -48,6 +49,7 @@ class _SummaryViewState extends State<_SummaryView> {
       final m = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
       m.showSnackBar(SnackBar(
         content: Text(n.text),
+        duration: const Duration(seconds: 5),
         action: n.undo == null
             ? null
             : SnackBarAction(
@@ -62,9 +64,18 @@ class _SummaryViewState extends State<_SummaryView> {
     super.dispose();
   }
 
-  Future<void> _edit(DrinkEntry entry) => Navigator.of(context).push<bool>(
-        MaterialPageRoute(builder: (_) => DrinkEntryPage.edit(entry: entry)),
-      );
+  Future<void> _edit(DrinkEntry entry) async {
+    final outcome = await Navigator.of(context).push<EntryOutcome>(
+      MaterialPageRoute(builder: (_) => DrinkEntryPage.edit(entry: entry)),
+    );
+    if (!mounted || outcome == null) return;
+    showToast(
+      context,
+      outcome == EntryOutcome.deleted
+          ? 'Registro excluído'
+          : 'Registro atualizado, resumo recalculado',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,141 +97,168 @@ class _SummaryViewState extends State<_SummaryView> {
             title: const Text('Resumo do rolê'),
             actions: const [SyncBadge()],
           ),
-          body: SafeArea(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
-              children: [
-                SurfaceCard(
-                  highlight: true,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(children: [
-                        Icon(outing.type.icon, color: AppColors.amber),
-                        const SizedBox(width: 8),
-                        Text(outing.type.label,
-                            style:
-                                const TextStyle(color: AppColors.textMuted)),
-                      ]),
-                      const SizedBox(height: 6),
-                      Text(outing.displayName,
-                          style: const TextStyle(
-                              fontSize: 26, fontWeight: FontWeight.w800)),
-                      if (outing.subtitleAddress != null)
-                        Text(outing.subtitleAddress!,
-                            style:
-                                const TextStyle(color: AppColors.textMuted)),
-                      const SizedBox(height: 14),
-                      Row(children: [
-                        Expanded(
-                          child: StatTile(
-                            label: 'Início',
-                            value: formatDateTime(outing.startedAt),
-                          ),
-                        ),
-                        Expanded(
-                          child: StatTile(
-                            label: 'Fim',
-                            value: formatDateTime(endedAt),
-                          ),
-                        ),
-                      ]),
-                      const SizedBox(height: 12),
-                      StatTile(
-                        label: 'Duração',
-                        value: formatDuration(outing.durationAt(endedAt)),
-                        icon: Icons.timer_outlined,
-                      ),
-                    ],
-                  ),
-                ),
-                const SectionTitle('CONSUMO'),
-                SurfaceCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(children: [
-                        Expanded(
-                          child: StatTile(
-                              label: 'Registros',
-                              value: '${s.entryCount}',
-                              icon: Icons.local_bar_rounded),
-                        ),
-                        Expanded(
-                          child: StatTile(
-                              label: 'Seu volume',
-                              value: formatMl(s.personalMl),
-                              icon: Icons.opacity_rounded),
-                        ),
-                      ]),
-                      if (s.groups.isNotEmpty) ...[
-                        const Divider(height: 28),
-                        for (final g in s.groups) _GroupRow(group: g),
-                      ],
-                      if (s.alcoholicCount > 0) ...[
-                        const Divider(height: 28),
-                        _AlcoholInfo(summary: s),
-                      ],
-                    ],
-                  ),
-                ),
-                const SectionTitle('GASTOS'),
-                SurfaceCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      StatTile(
-                        label: 'Gasto informado',
-                        value: formatCents(s.informedCents),
-                        icon: Icons.payments_rounded,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        s.financeLine,
-                        style: const TextStyle(color: AppColors.textMuted),
-                      ),
-                    ],
-                  ),
-                ),
-                if (outing.feedbackMood != null) ...[
-                  const SectionTitle('COMO FOI'),
-                  SurfaceCard(
-                    child: Row(children: [
-                      Text(outing.feedbackMood!.emoji,
-                          style: const TextStyle(fontSize: 28)),
-                      const SizedBox(width: 12),
-                      Text(outing.feedbackMood!.label,
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w700)),
-                      const Spacer(),
-                      const Text('seu relato',
-                          style: TextStyle(color: AppColors.textMuted)),
-                    ]),
-                  ),
-                ],
-                const SectionTitle('REGISTROS · TOQUE PARA CORRIGIR'),
-                if (state.entries.isEmpty)
-                  const EmptyView(
-                    icon: Icons.sports_bar_outlined,
-                    title: 'Nenhum registro neste rolê',
-                  )
-                else
-                  for (final e in state.entries)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: EntryTile(
-                        entry: e,
-                        onTap: () => _edit(e),
-                        onDelete: () => cubit.deleteEntry(e),
+          body: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(
+                      AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                  children: [
+                    SurfaceCard(
+                      highlight: true,
+                      padding: const EdgeInsets.all(AppSpace.xl),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(children: [
+                            Icon(outing.type.icon,
+                                color: AppColors.amber, size: 20),
+                            const SizedBox(width: AppSpace.sm),
+                            Text(outing.type.label, style: AppText.caption),
+                          ]),
+                          const SizedBox(height: AppSpace.sm),
+                          Text(outing.displayName, style: AppText.headline),
+                          const SizedBox(height: AppSpace.xs),
+                          Text(formatWeekdayDate(outing.startedAt),
+                              style: AppText.subtitle
+                                  .copyWith(color: AppColors.amber)),
+                          if (outing.subtitleAddress != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: AppSpace.xs),
+                              child: Text(outing.subtitleAddress!,
+                                  style: AppText.caption),
+                            ),
+                          const SizedBox(height: AppSpace.lg),
+                          Row(children: [
+                            Expanded(
+                              child: StatTile(
+                                label: 'Início',
+                                value: formatTime(outing.startedAt),
+                              ),
+                            ),
+                            Expanded(
+                              child: StatTile(
+                                label: 'Fim',
+                                value: formatTime(endedAt),
+                              ),
+                            ),
+                            Expanded(
+                              child: StatTile(
+                                label: 'Duração',
+                                value: formatDuration(
+                                    outing.durationAt(endedAt)),
+                              ),
+                            ),
+                          ]),
+                        ],
                       ),
                     ),
-                const SizedBox(height: 16),
-                FilledButton(
+                    const SectionTitle('Consumo'),
+                    SurfaceCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(children: [
+                            Expanded(
+                              child: StatTile(
+                                label: 'Bebidas',
+                                value: '${s.entryCount}',
+                                icon: Icons.local_bar_rounded,
+                              ),
+                            ),
+                            Expanded(
+                              child: StatTile(
+                                label: 'Seu volume',
+                                value: formatMl(s.personalMl),
+                                icon: Icons.opacity_rounded,
+                              ),
+                            ),
+                          ]),
+                          if (s.groups.isNotEmpty) ...[
+                            const Divider(height: 28),
+                            for (final g in s.groups) _GroupRow(group: g),
+                          ],
+                          if (s.alcoholicCount > 0) ...[
+                            const Divider(height: 28),
+                            _AlcoholInfo(summary: s),
+                          ],
+                        ],
+                      ),
+                    ),
+                    const SectionTitle('Gastos'),
+                    SurfaceCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          StatTile(
+                            label: 'Gasto informado',
+                            value: formatCents(s.informedCents),
+                            icon: Icons.payments_outlined,
+                          ),
+                          const SizedBox(height: AppSpace.sm),
+                          Text(s.financeLine, style: AppText.caption),
+                          if (s.unpricedCount > 0) ...[
+                            const SizedBox(height: AppSpace.md),
+                            InfoPill(
+                              '${s.unpricedCount} '
+                              '${s.unpricedCount == 1 ? 'bebida' : 'bebidas'} '
+                              'sem preço: o total pode estar maior',
+                              icon: Icons.sell_outlined,
+                              warning: true,
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    if (outing.feedbackMood != null) ...[
+                      const SectionTitle('Como foi'),
+                      SurfaceCard(
+                        child: Row(children: [
+                          Icon(outing.feedbackMood!.icon,
+                              color: AppColors.amber, size: 28),
+                          const SizedBox(width: AppSpace.md),
+                          Text(outing.feedbackMood!.label,
+                              style: AppText.title),
+                          const Spacer(),
+                          const Text('seu relato', style: AppText.caption),
+                        ]),
+                      ),
+                    ],
+                    SectionTitle('Registros (${state.entries.length})'),
+                    if (state.entries.isEmpty)
+                      const EmptyView(
+                        icon: Icons.sports_bar_outlined,
+                        title: 'Nenhum registro neste rolê',
+                      )
+                    else ...[
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: AppSpace.sm),
+                        child: Text(
+                          'Toque em um registro para corrigir; o resumo '
+                          'se recalcula.',
+                          style: AppText.caption,
+                        ),
+                      ),
+                      for (final e in state.entries)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                          child: EntryTile(
+                            entry: e,
+                            onTap: () => _edit(e),
+                            onDelete: () => cubit.deleteEntry(e),
+                          ),
+                        ),
+                    ],
+                  ],
+                ),
+              ),
+              BottomActionBar(
+                child: FilledButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Concluir'),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
@@ -239,7 +277,7 @@ class _GroupRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(children: [
         SizedBox(
-          width: 40,
+          width: 44,
           child: Text('${group.count}×',
               style: const TextStyle(
                   color: AppColors.amber,
@@ -251,15 +289,16 @@ class _GroupRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(group.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontWeight: FontWeight.w600)),
               Text(group.detail,
-                  style: const TextStyle(
-                      color: AppColors.textMuted, fontSize: 12)),
+                  style: AppText.caption.copyWith(fontSize: 12)),
             ],
           ),
         ),
-        Text(formatMl(group.personalMl),
-            style: const TextStyle(color: AppColors.textMuted)),
+        const SizedBox(width: AppSpace.sm),
+        Text(formatMl(group.personalMl), style: AppText.caption),
       ]),
     );
   }
@@ -277,22 +316,25 @@ class _AlcoholInfo extends StatelessWidget {
       children: [
         StatTile(
           label: 'Álcool puro declarado',
-          value: (summary.alcoholIncomplete ? '≥ ' : '') +
+          value: (summary.alcoholIncomplete ? 'pelo menos ' : '') +
               formatGrams(summary.pureAlcoholGrams),
           icon: Icons.science_outlined,
         ),
-        const SizedBox(height: 6),
-        Text(
-          summary.alcoholIncomplete
-              ? 'Incompleto: há bebida alcoólica sem teor informado, que não '
-                  'entrou na conta.'
-              : 'Volume × teor declarado de cada registro.',
-          style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
-        ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpace.sm),
+        if (summary.unknownAbvCount > 0) ...[
+          InfoPill(
+            '${summary.unknownAbvCount} '
+            '${summary.unknownAbvCount == 1 ? 'registro' : 'registros'} '
+            'sem teor informado ficaram fora da conta',
+            icon: Icons.help_outline_rounded,
+            warning: true,
+          ),
+          const SizedBox(height: AppSpace.sm),
+        ],
         const Text(
-          'Não é concentração de álcool no sangue nem indica se você está apto a dirigir.',
-          style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+          'Volume × teor declarado de cada registro. Não é a concentração de '
+          'álcool no sangue e não indica se você pode dirigir.',
+          style: AppText.caption,
         ),
       ],
     );

@@ -20,16 +20,16 @@ enum OutingType {
 }
 
 enum FeedbackMood {
-  smooth('smooth', 'Suave', '🙂'),
-  cheerful('cheerful', 'Alegre', '😄'),
-  drunk('drunk', 'Bêbado', '🥴'),
-  wasted('wasted', 'Bebaço', '🤪');
+  smooth('smooth', 'Suave', Icons.sentiment_satisfied_rounded),
+  cheerful('cheerful', 'Alegre', Icons.sentiment_very_satisfied_rounded),
+  drunk('drunk', 'Bêbado', Icons.sentiment_neutral_rounded),
+  wasted('wasted', 'Bebaço', Icons.sentiment_very_dissatisfied_rounded);
 
-  const FeedbackMood(this.code, this.label, this.emoji);
+  const FeedbackMood(this.code, this.label, this.icon);
 
   final String code;
   final String label;
-  final String emoji;
+  final IconData icon;
 
   static FeedbackMood? fromCode(String? code) {
     for (final m in FeedbackMood.values) {

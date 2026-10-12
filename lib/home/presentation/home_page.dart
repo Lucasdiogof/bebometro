@@ -3,16 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/beer_glass.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../history/presentation/history_page.dart';
-import '../../outings/domain/outing.dart';
 import '../../outings/presentation/outing_page.dart';
 import '../../outings/presentation/outing_summary_page.dart';
 import '../../outings/presentation/start_outing_page.dart';
 import '../../settings/presentation/settings_page.dart';
+import 'feedback_sheet.dart';
 import 'home_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -61,20 +62,22 @@ class _HomeViewState extends State<_HomeView> {
     if (id != null && mounted) await _openOuting(id);
   }
 
-  Future<void> _showFeedback(Outing outing) async {
+  Future<void> _showFeedback(HomeState state) async {
+    final outing = state.feedbackOuting!;
     final cubit = context.read<HomeCubit>();
-    final result = await showModalBottomSheet<_FeedbackResult>(
+    final result = await showModalBottomSheet<FeedbackResult>(
       context: context,
-      builder: (_) => _FeedbackSheet(outing: outing),
+      isScrollControlled: true,
+      builder: (_) => FeedbackSheet(outing: outing),
     );
     switch (result) {
-      case _Answered(:final mood):
+      case FeedbackAnswered(:final mood):
         await cubit.answerFeedback(outing.id, mood);
-      case _Dismissed():
+      case FeedbackDismissed():
         await cubit.dismissFeedback(outing.id);
-      case _Snoozed():
+      case FeedbackSnoozed():
       case null:
-        // Swiping the sheet away counts as "later" so it is not shown again
+        // Swiping the sheet away counts as "later", so it is not shown again
         // on every visit to the home screen.
         await cubit.snoozeFeedback(outing.id);
     }
@@ -84,29 +87,21 @@ class _HomeViewState extends State<_HomeView> {
   Widget build(BuildContext context) {
     return BlocListener<HomeCubit, HomeState>(
       listenWhen: (p, c) => c.feedbackOuting != null,
-      listener: (context, state) => _showFeedback(state.feedbackOuting!),
+      listener: (context, state) => _showFeedback(state),
       child: Scaffold(
         body: SafeArea(
           child: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               if (state.loading) return const LoadingView();
               return ListView(
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+                padding: const EdgeInsets.fromLTRB(
+                    AppSpace.gutter, AppSpace.sm, AppSpace.gutter, AppSpace.xxl),
                 children: [
-                  Row(children: [
-                    const BeerGlass(size: 44, fill: 0.85),
-                    const SizedBox(width: 10),
-                    const Text('Bebômetro',
-                        style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: -0.3)),
-                    const Spacer(),
-                    SyncBadge(
-                      onTap: () => _push<void>(const SettingsPage()),
-                    ),
-                  ]),
-                  const SizedBox(height: 24),
+                  _Header(
+                    onHistory: () => _push<void>(const HistoryPage()),
+                    onSettings: () => _push<void>(const SettingsPage()),
+                  ),
+                  const SizedBox(height: AppSpace.lg),
                   if (state.active != null)
                     _ActiveCard(
                       state: state,
@@ -114,14 +109,17 @@ class _HomeViewState extends State<_HomeView> {
                     )
                   else
                     _IdleCard(onStart: _startOuting),
-                  const SizedBox(height: 12),
-                  OutlinedButton.icon(
-                    onPressed: () => _push<void>(const HistoryPage()),
-                    icon: const Icon(Icons.history_rounded),
-                    label: const Text('Histórico de rolês'),
-                  ),
-                  const SectionTitle('SEUS REGISTROS'),
-                  _TotalsCard(state: state),
+                  if (state.lastOuting != null && state.active == null) ...[
+                    const SectionTitle('Último rolê'),
+                    _LastOutingCard(
+                      state: state,
+                      onTap: () => _push<void>(
+                        OutingSummaryPage(outingId: state.lastOuting!.id),
+                      ),
+                    ),
+                  ],
+                  const SectionTitle('Este mês'),
+                  _MonthCard(state: state),
                 ],
               );
             },
@@ -129,6 +127,35 @@ class _HomeViewState extends State<_HomeView> {
         ),
       ),
     );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({required this.onHistory, required this.onSettings});
+
+  final VoidCallback onHistory;
+  final VoidCallback onSettings;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      const BeerGlass(size: 40, fill: 0.85),
+      const SizedBox(width: AppSpace.sm),
+      const Expanded(
+        child: Text('Bebômetro', style: AppText.title),
+      ),
+      IconButton(
+        tooltip: 'Histórico',
+        onPressed: onHistory,
+        icon: const Icon(Icons.history_rounded),
+      ),
+      IconButton(
+        tooltip: 'Configurações',
+        onPressed: onSettings,
+        icon: const Icon(Icons.settings_outlined),
+      ),
+      SyncBadge(onTap: onSettings),
+    ]);
   }
 }
 
@@ -141,28 +168,22 @@ class _IdleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SurfaceCard(
       highlight: true,
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(AppSpace.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            formatWeekdayDate(DateTime.now()),
-            style: const TextStyle(color: AppColors.textMuted),
-          ),
-          const SizedBox(height: 6),
+          Text(formatWeekdayDate(DateTime.now()), style: AppText.caption),
+          const SizedBox(height: AppSpace.sm),
+          const Text('Bora de rolê?', style: AppText.headline),
+          const SizedBox(height: AppSpace.sm),
           const Text(
-            'Bora para o rolê?',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+            'Anote o que bebeu e quanto gastou, sem complicação.',
+            style: AppText.caption,
           ),
-          const SizedBox(height: 6),
-          const Text(
-            'Registre o que você bebeu e quanto gastou, sem complicação.',
-            style: TextStyle(color: AppColors.textMuted, height: 1.4),
-          ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppSpace.xl),
           FilledButton.icon(
             onPressed: onStart,
-            icon: const Icon(Icons.play_arrow_rounded, size: 28),
+            icon: const Icon(Icons.play_arrow_rounded, size: 26),
             label: const Text('Iniciar rolê'),
           ),
         ],
@@ -183,7 +204,7 @@ class _ActiveCard extends StatelessWidget {
     final s = state.activeSummary!;
     return SurfaceCard(
       highlight: true,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppSpace.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -194,52 +215,53 @@ class _ActiveCard extends StatelessWidget {
               decoration: const BoxDecoration(
                   color: AppColors.success, shape: BoxShape.circle),
             ),
-            const SizedBox(width: 8),
-            const Text('Rolê em andamento',
-                style: TextStyle(color: AppColors.textMuted)),
+            const SizedBox(width: AppSpace.sm),
+            const Text('Rolê em andamento', style: AppText.caption),
           ]),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpace.sm),
           Row(children: [
             Icon(outing.type.icon, color: AppColors.amber),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpace.sm),
             Expanded(
-              child: Text(outing.displayName,
-                  style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.w900)),
+              child: Text(
+                outing.displayName,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: AppText.headline.copyWith(fontSize: 26),
+              ),
             ),
           ]),
-          const SizedBox(height: 14),
+          const SizedBox(height: AppSpace.lg),
           Row(children: [
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Tempo',
-                      style:
-                          TextStyle(color: AppColors.textMuted, fontSize: 13)),
-                  const SizedBox(height: 4),
-                  ElapsedText(
-                    since: outing.startedAt,
-                    style: const TextStyle(
-                        fontSize: 21, fontWeight: FontWeight.w800),
-                  ),
+                  const Text('Tempo', style: AppText.caption),
+                  const SizedBox(height: AppSpace.xs),
+                  ElapsedText(since: outing.startedAt, style: AppText.value),
                 ],
               ),
             ),
             Expanded(
-              child: StatTile(label: 'Registros', value: '${s.entryCount}'),
+              child: StatTile(label: 'Bebidas', value: '${s.entryCount}'),
             ),
             Expanded(
               child: StatTile(
-                  label: 'Seu volume', value: formatMl(s.personalMl)),
+                label: 'Gasto',
+                value: formatCents(s.informedCents),
+              ),
             ),
           ]),
-          const SizedBox(height: 10),
-          Text(
-            s.financeLine,
-            style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
-          ),
-          const SizedBox(height: 18),
+          if (s.unpricedCount > 0) ...[
+            const SizedBox(height: AppSpace.md),
+            InfoPill(
+              '${s.unpricedCount} sem preço',
+              icon: Icons.sell_outlined,
+              warning: true,
+            ),
+          ],
+          const SizedBox(height: AppSpace.xl),
           FilledButton.icon(
             onPressed: onContinue,
             icon: const Icon(Icons.sports_bar_rounded),
@@ -251,8 +273,55 @@ class _ActiveCard extends StatelessWidget {
   }
 }
 
-class _TotalsCard extends StatelessWidget {
-  const _TotalsCard({required this.state});
+class _LastOutingCard extends StatelessWidget {
+  const _LastOutingCard({required this.state, required this.onTap});
+
+  final HomeState state;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final o = state.lastOuting!;
+    final s = state.lastSummary!;
+    return SurfaceCard(
+      onTap: onTap,
+      child: Row(children: [
+        Container(
+          width: 46,
+          height: 46,
+          decoration: BoxDecoration(
+            color: AppColors.surfaceHigh,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+          ),
+          child: Icon(o.type.icon, color: AppColors.amber),
+        ),
+        const SizedBox(width: AppSpace.md),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(o.displayName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.subtitle),
+              const SizedBox(height: 2),
+              Text(
+                '${formatDate(o.startedAt)} · '
+                '${s.entryCount} ${s.entryCount == 1 ? 'bebida' : 'bebidas'}'
+                '${s.pricedCount > 0 ? ' · ${formatCents(s.informedCents)}' : ''}',
+                style: AppText.caption,
+              ),
+            ],
+          ),
+        ),
+        const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
+      ]),
+    );
+  }
+}
+
+class _MonthCard extends StatelessWidget {
+  const _MonthCard({required this.state});
 
   final HomeState state;
 
@@ -262,119 +331,47 @@ class _TotalsCard extends StatelessWidget {
       return const SurfaceCard(
         child: EmptyView(
           icon: Icons.sports_bar_outlined,
-          title: 'Nada por aqui ainda',
-          message: 'Seus rolês encerrados e gastos aparecem aqui. '
-              'Nada é preenchido por você, só o que você registrar.',
+          title: 'Seu primeiro rolê começa aqui',
+          message: 'Quando você encerrar um rolê, o resumo do mês aparece '
+              'aqui, só com o que você registrou.',
         ),
       );
     }
-    final unpriced = state.pastUnpriced;
+    if (state.monthOutings == 0) {
+      return const SurfaceCard(
+        child: Text('Nenhum rolê encerrado neste mês ainda.',
+            style: AppText.caption),
+      );
+    }
+    final unpriced = state.monthUnpriced;
     return SurfaceCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
             Expanded(
-              child: StatTile(label: 'Rolês', value: '${state.pastOutings}'),
+              child:
+                  StatTile(label: 'Rolês', value: '${state.monthOutings}'),
             ),
             Expanded(
-              child: StatTile(label: 'Bebidas', value: '${state.pastDrinks}'),
+              child:
+                  StatTile(label: 'Bebidas', value: '${state.monthDrinks}'),
             ),
             Expanded(
               child: StatTile(
-                  label: 'Seu volume', value: formatMl(state.pastPersonalMl)),
-            ),
-          ]),
-          const SizedBox(height: 14),
-          Text(
-            '${formatCents(state.pastInformedCents)} informados'
-            '${unpriced > 0 ? ' · $unpriced ${unpriced == 1 ? 'bebida sem preço' : 'bebidas sem preço'}' : ''}',
-            style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-sealed class _FeedbackResult {
-  const _FeedbackResult();
-}
-
-class _Answered extends _FeedbackResult {
-  const _Answered(this.mood);
-
-  final FeedbackMood mood;
-}
-
-class _Snoozed extends _FeedbackResult {
-  const _Snoozed();
-}
-
-class _Dismissed extends _FeedbackResult {
-  const _Dismissed();
-}
-
-class _FeedbackSheet extends StatelessWidget {
-  const _FeedbackSheet({required this.outing});
-
-  final Outing outing;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Como foi o último rolê?',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
-          const SizedBox(height: 4),
-          Text(
-            '${outing.displayName} · ${formatDate(outing.startedAt)}. '
-            'É só o seu relato, não uma medição.',
-            style: const TextStyle(color: AppColors.textMuted),
-          ),
-          const SizedBox(height: 16),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            childAspectRatio: 2.4,
-            children: [
-              for (final mood in FeedbackMood.values)
-                OutlinedButton(
-                  onPressed: () => Navigator.pop(context, _Answered(mood)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(mood.emoji, style: const TextStyle(fontSize: 22)),
-                      const SizedBox(width: 8),
-                      Text(mood.label),
-                    ],
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(children: [
-            Expanded(
-              child: TextButton(
-                onPressed: () => Navigator.pop(context, const _Snoozed()),
-                child: const Text('Depois'),
-              ),
-            ),
-            Expanded(
-              child: TextButton(
-                onPressed: () => Navigator.pop(context, const _Dismissed()),
-                child: const Text('Não perguntar',
-                    style: TextStyle(color: AppColors.textMuted)),
+                label: 'Gasto informado',
+                value: formatCents(state.monthInformedCents),
               ),
             ),
           ]),
+          if (unpriced > 0) ...[
+            const SizedBox(height: AppSpace.md),
+            InfoPill(
+              '$unpriced ${unpriced == 1 ? 'bebida' : 'bebidas'} sem preço',
+              icon: Icons.sell_outlined,
+              warning: true,
+            ),
+          ],
         ],
       ),
     );

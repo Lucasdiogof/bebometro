@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../domain/catalog_item.dart';
@@ -10,8 +11,11 @@ import '../domain/drink_draft.dart';
 import '../domain/drink_entry.dart';
 import 'drink_form_cubit.dart';
 
+/// How the entry screen was closed, when it changed something.
+enum EntryOutcome { saved, deleted }
+
 /// Register a drink (create) or correct an existing record (edit).
-/// Pops `true` when something was saved or deleted.
+/// Pops an [EntryOutcome] when something was saved or deleted.
 class DrinkEntryPage extends StatelessWidget {
   const DrinkEntryPage._(this._create, {super.key});
 
@@ -69,41 +73,81 @@ class _DrinkEntryView extends StatelessWidget {
     if (ok == true) await cubit.delete();
   }
 
+  Future<void> _confirmDiscard(BuildContext context) async {
+    final leave = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Descartar alterações?'),
+        content: const Text('O que você preencheu aqui será perdido.'),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Continuar editando')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('Descartar',
+                  style: TextStyle(color: AppColors.danger))),
+        ],
+      ),
+    );
+    if (leave == true && context.mounted) Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<DrinkFormCubit>();
     return BlocConsumer<DrinkFormCubit, DrinkFormState>(
-      listenWhen: (p, c) => !p.saved && c.saved,
-      listener: (context, state) => Navigator.of(context).pop(true),
+      listenWhen: (p, c) =>
+          (!p.saved && c.saved) ||
+          (!p.deleted && c.deleted) ||
+          (c.error != null && c.error != p.error),
+      listener: (context, state) {
+        if (state.saved) {
+          Navigator.of(context).pop(EntryOutcome.saved);
+        } else if (state.deleted) {
+          Navigator.of(context).pop(EntryOutcome.deleted);
+        } else if (state.error != null) {
+          showToast(context, state.error!);
+        }
+      },
       builder: (context, state) {
         final d = state.draft;
         final errors = state.showErrors ? d.errors : const <String, String>{};
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(d.isEditing ? 'Corrigir registro' : 'Registrar bebida'),
-            actions: [
-              if (d.isEditing)
-                IconButton(
-                  tooltip: 'Excluir',
-                  onPressed: () => _confirmDelete(context),
-                  icon: const Icon(Icons.delete_outline_rounded,
-                      color: AppColors.danger),
-                ),
-            ],
-          ),
-          body: SafeArea(
-            child: Column(
+        final canLeave = !state.dirty || state.saved || state.deleted;
+        return PopScope(
+          canPop: canLeave,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop) _confirmDiscard(context);
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(d.isEditing ? 'Corrigir registro' : 'Registrar bebida'),
+              actions: [
+                if (d.isEditing)
+                  IconButton(
+                    tooltip: 'Excluir',
+                    onPressed:
+                        state.saving ? null : () => _confirmDelete(context),
+                    icon: const Icon(Icons.delete_outline_rounded,
+                        color: AppColors.danger),
+                  ),
+              ],
+            ),
+            body: Column(
               children: [
                 Expanded(
                   child: ListView(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    padding: const EdgeInsets.fromLTRB(
+                        AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
                     children: [
                       _Header(draft: d),
+                      const SectionTitle('Bebida e tamanho'),
                       if (state.presentations.isNotEmpty) ...[
-                        const SectionTitle('TAMANHO'),
                         Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
+                          spacing: AppSpace.sm,
+                          runSpacing: AppSpace.sm,
                           children: [
                             for (final p in state.presentations)
                               ChoiceChip(
@@ -114,11 +158,12 @@ class _DrinkEntryView extends StatelessWidget {
                               ),
                           ],
                         ),
-                        const SizedBox(height: 12),
-                      ] else
-                        const SectionTitle('TAMANHO'),
+                        const SizedBox(height: AppSpace.md),
+                      ],
                       _NumberField<int>(
-                        label: 'Volume (ml)',
+                        label: state.presentations.isEmpty
+                            ? 'Volume (ml)'
+                            : 'Outro tamanho (ml)',
                         suffix: 'ml',
                         value: d.containerMl,
                         parse: parseInteger,
@@ -128,9 +173,9 @@ class _DrinkEntryView extends StatelessWidget {
                         onChanged: cubit.setVolume,
                       ),
                       if (d.category.canBeAlcoholic) ...[
-                        const SectionTitle('TEOR ALCOÓLICO'),
+                        const SizedBox(height: AppSpace.md),
                         _NumberField<double>(
-                          label: 'Teor (% vol.)',
+                          label: 'Teor alcoólico (opcional)',
                           suffix: '% vol.',
                           value: d.abvPercent,
                           parse: parseDecimal,
@@ -139,16 +184,32 @@ class _DrinkEntryView extends StatelessWidget {
                               decimal: true),
                           errorText: errors['abv'],
                           helper: d.abvPercent == null
-                              ? 'Desconhecido: não conta como zero no resumo.'
+                              ? 'Em branco = desconhecido (não conta como zero).'
                               : 'Confira no rótulo se puder.',
                           onChanged: cubit.setAbv,
                         ),
                       ],
-                      const SectionTitle('COMPARTILHAMENTO'),
-                      _SharingCard(draft: d, errors: errors),
-                      const SectionTitle('PREÇO'),
+                      const SectionTitle('Individual ou compartilhada'),
+                      SizedBox(
+                        width: double.infinity,
+                        child: SegmentedButton<bool>(
+                          showSelectedIcon: false,
+                          segments: const [
+                            ButtonSegment(value: false, label: Text('Só minha')),
+                            ButtonSegment(
+                                value: true, label: Text('Compartilhada')),
+                          ],
+                          selected: {d.isShared},
+                          onSelectionChanged: (s) => cubit.setShared(s.first),
+                        ),
+                      ),
+                      if (d.isShared) ...[
+                        const SizedBox(height: AppSpace.md),
+                        _SharingCard(draft: d, errors: errors),
+                      ],
+                      const SectionTitle('Preço (opcional)'),
                       _PriceCard(draft: d, errors: errors),
-                      const SectionTitle('HORÁRIO'),
+                      const SectionTitle('Horário'),
                       SurfaceCard(
                         onTap: () async {
                           final picked =
@@ -158,13 +219,10 @@ class _DrinkEntryView extends StatelessWidget {
                         child: Row(children: [
                           const Icon(Icons.schedule_rounded,
                               color: AppColors.amber),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppSpace.md),
                           Expanded(
-                            child: Text(
-                              formatDateTime(d.consumedAt),
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
-                            ),
+                            child: Text(formatDateTime(d.consumedAt),
+                                style: AppText.subtitle),
                           ),
                           const Text('Ajustar',
                               style: TextStyle(color: AppColors.amber)),
@@ -172,23 +230,40 @@ class _DrinkEntryView extends StatelessWidget {
                       ),
                       if (errors['time'] != null)
                         Padding(
-                          padding: const EdgeInsets.only(top: 8, left: 4),
+                          padding: const EdgeInsets.only(
+                              top: AppSpace.sm, left: AppSpace.xs),
                           child: Text(errors['time']!,
                               style: const TextStyle(color: AppColors.danger)),
                         ),
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-                  decoration: const BoxDecoration(
-                    color: AppColors.background,
-                    border: Border(top: BorderSide(color: AppColors.outline)),
-                  ),
-                  child: FilledButton(
-                    onPressed: state.saving ? null : cubit.submit,
-                    child: Text(
-                        d.isEditing ? 'Salvar alterações' : 'Registrar bebida'),
+                BottomActionBar(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (d.isShared && d.personalMl != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                          child: Text(
+                            'Sua parte: ${formatMl(d.personalMl!)}',
+                            style: AppText.caption,
+                          ),
+                        ),
+                      FilledButton(
+                        onPressed: state.saving ? null : cubit.submit,
+                        child: state.saving
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : Text(d.isEditing
+                                ? 'Salvar alterações'
+                                : 'Registrar bebida'),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -220,36 +295,34 @@ class _Header extends StatelessWidget {
           height: 52,
           decoration: BoxDecoration(
             color: AppColors.surfaceHigh,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(AppRadius.md),
           ),
           child: Icon(draft.category.icon, color: AppColors.amber, size: 28),
         ),
-        const SizedBox(width: 14),
+        const SizedBox(width: AppSpace.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                draft.name,
-                style:
-                    const TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
-              ),
-              Text(info, style: const TextStyle(color: AppColors.textMuted)),
+              Text(draft.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.title),
+              Text(info, style: AppText.caption),
               if (draft.ingredients != null)
                 Padding(
-                  padding: const EdgeInsets.only(top: 4),
+                  padding: const EdgeInsets.only(top: AppSpace.xs),
                   child: Text(
                     'Ingredientes: ${draft.ingredients!.join(', ')}',
-                    style: const TextStyle(
-                        color: AppColors.textMuted, fontSize: 12),
+                    style: AppText.caption.copyWith(fontSize: 12),
                   ),
                 ),
               if (draft.note != null || draft.origin == InfoOrigin.generic)
                 Padding(
-                  padding: const EdgeInsets.only(top: 4),
+                  padding: const EdgeInsets.only(top: AppSpace.xs),
                   child: Text(
-                    '${draft.origin.label}'
-                    '${draft.note != null ? ' · ${draft.note}' : ''}',
+                    draft.origin.label +
+                        (draft.note != null ? ' · ${draft.note}' : ''),
                     style: TextStyle(
                       color: AppColors.amber.withValues(alpha: 0.9),
                       fontSize: 12,
@@ -274,51 +347,62 @@ class _SharingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<DrinkFormCubit>();
     final others = draft.othersEachMl;
+    final personal = draft.personalMl;
     return SurfaceCard(
-      padding: const EdgeInsets.all(8),
-      child: Column(children: [
-        SwitchListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-          title: Text(draft.isShared ? 'Compartilhada' : 'Só minha'),
-          subtitle: const Text('Garrafa ou porção dividida com outras pessoas'),
-          value: draft.isShared,
-          activeThumbColor: AppColors.amber,
-          onChanged: cubit.setShared,
-        ),
-        if (draft.isShared)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 4, 8, 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      highlight: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            personal == null ? 'Sua parte: —' : 'Sua parte: ${formatMl(personal)}',
+            style: AppText.headline.copyWith(fontSize: 26),
+          ),
+          if (draft.containerMl != null)
+            Text(
+              'de ${formatMl(draft.containerMl!)} · '
+              '${draft.peopleCount} pessoas, com você',
+              style: AppText.caption,
+            ),
+          const SizedBox(height: AppSpace.md),
+          Row(children: [
+            const Expanded(
+              child: Text('Pessoas (incluindo você)', style: AppText.body),
+            ),
+            IconButton.filledTonal(
+              tooltip: 'Menos uma pessoa',
+              onPressed: draft.peopleCount > 2
+                  ? () => cubit.setPeople(draft.peopleCount - 1)
+                  : null,
+              icon: const Icon(Icons.remove_rounded),
+            ),
+            SizedBox(
+              width: 44,
+              child: Text('${draft.peopleCount}',
+                  textAlign: TextAlign.center, style: AppText.value),
+            ),
+            IconButton.filledTonal(
+              tooltip: 'Mais uma pessoa',
+              onPressed: draft.peopleCount < DrinkDraft.maxPeople
+                  ? () => cubit.setPeople(draft.peopleCount + 1)
+                  : null,
+              icon: const Icon(Icons.add_rounded),
+            ),
+          ]),
+          if (errors['personal'] != null)
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpace.sm),
+              child: Text(errors['personal']!,
+                  style: const TextStyle(color: AppColors.danger)),
+            ),
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: const EdgeInsets.only(bottom: AppSpace.sm),
+              initiallyExpanded: errors['personal'] != null,
+              title: const Text('Ajustar parcela e sobra',
+                  style: TextStyle(color: AppColors.amber)),
               children: [
-                Row(children: [
-                  const Expanded(
-                    child: Text('Pessoas (com você)',
-                        style: TextStyle(fontWeight: FontWeight.w600)),
-                  ),
-                  IconButton.filledTonal(
-                    onPressed: draft.peopleCount > 2
-                        ? () => cubit.setPeople(draft.peopleCount - 1)
-                        : null,
-                    icon: const Icon(Icons.remove_rounded),
-                  ),
-                  SizedBox(
-                    width: 44,
-                    child: Text(
-                      '${draft.peopleCount}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w800),
-                    ),
-                  ),
-                  IconButton.filledTonal(
-                    onPressed: draft.peopleCount < DrinkDraft.maxPeople
-                        ? () => cubit.setPeople(draft.peopleCount + 1)
-                        : null,
-                    icon: const Icon(Icons.add_rounded),
-                  ),
-                ]),
-                const SizedBox(height: 12),
                 _NumberField<int>(
                   label: 'Sua parte (ml)',
                   suffix: 'ml',
@@ -326,35 +410,34 @@ class _SharingCard extends StatelessWidget {
                   parse: parseInteger,
                   format: (v) => '$v',
                   keyboardType: TextInputType.number,
-                  errorText: errors['personal'],
-                  helper: 'Divisão igual por padrão; ajuste se precisar.',
+                  helper: 'Divisão igual por padrão.',
                   onChanged: cubit.setPersonalMl,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpace.md),
                 _NumberField<int>(
-                  label: 'Sobra (ml)',
+                  label: 'Sobra na garrafa (ml)',
                   suffix: 'ml',
                   value: draft.leftoverMl == 0 ? null : draft.leftoverMl,
                   parse: parseInteger,
                   format: (v) => '$v',
                   keyboardType: TextInputType.number,
-                  helper: 'Opcional: o que ficou na garrafa.',
+                  helper: 'Opcional.',
                   onChanged: (v) => cubit.setLeftoverMl(v ?? 0),
                 ),
                 if (others != null)
                   Padding(
-                    padding: const EdgeInsets.only(top: 12),
+                    padding: const EdgeInsets.only(top: AppSpace.md),
                     child: Text(
                       'Sobram ${formatMl(others)} para cada uma das outras '
                       '${draft.peopleCount - 1} pessoas.',
-                      style: const TextStyle(
-                          color: AppColors.textMuted, fontSize: 13),
+                      style: AppText.caption,
                     ),
                   ),
               ],
             ),
           ),
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -386,7 +469,7 @@ class _PriceCard extends StatelessWidget {
               onSelectionChanged: (s) => cubit.setPriceKind(s.first),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpace.md),
           if (draft.priceKind == PriceKind.informed) ...[
             if (draft.isShared) ...[
               _NumberField<int>(
@@ -399,12 +482,10 @@ class _PriceCard extends StatelessWidget {
                     const TextInputType.numberWithOptions(decimal: true),
                 onChanged: cubit.setBillTotalCents,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpace.md),
             ],
             _NumberField<int>(
-              label: draft.isShared
-                  ? 'Quanto você pagou'
-                  : 'Preço pago',
+              label: draft.isShared ? 'Quanto você pagou' : 'Preço pago',
               prefix: r'R$ ',
               value: draft.paidCents,
               parse: parseCents,
@@ -432,7 +513,7 @@ class _PriceCard extends StatelessWidget {
               draft.priceKind == PriceKind.complimentary
                   ? 'Cortesia conta como R\$ 0,00 informado.'
                   : 'Sem preço: aparece como "sem preço" no resumo.',
-              style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
+              style: AppText.caption,
             ),
         ],
       ),

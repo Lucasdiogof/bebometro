@@ -28,6 +28,11 @@ String formatTime(DateTime dt) => DateFormat.Hm(_locale).format(dt);
 
 String formatDate(DateTime dt) => DateFormat("d 'de' MMM", _locale).format(dt);
 
+String formatMonthYear(DateTime dt) {
+  final text = DateFormat("MMMM 'de' yyyy", _locale).format(dt);
+  return text[0].toUpperCase() + text.substring(1);
+}
+
 String formatDateTime(DateTime dt) =>
     DateFormat("d/MM 'às' HH:mm", _locale).format(dt);
 

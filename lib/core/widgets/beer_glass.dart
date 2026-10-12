@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import 'common.dart' show reduceMotion;
 
 /// Simple beer glass: amber liquid, foam on top. [fill] animates between
 /// 0 (empty) and 1 (full). Also used, full, as the provisional app mark.
@@ -14,7 +15,9 @@ class BeerGlass extends StatelessWidget {
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<double>(
       tween: Tween(end: fill.clamp(0.0, 1.0).toDouble()),
-      duration: const Duration(milliseconds: 600),
+      duration: reduceMotion(context)
+          ? Duration.zero
+          : const Duration(milliseconds: 600),
       curve: Curves.easeOutCubic,
       builder: (context, value, _) => CustomPaint(
         size: Size(size * 0.78, size),

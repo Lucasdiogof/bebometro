@@ -27,12 +27,35 @@ marca de "pendente de envio" (com versão) no mesmo passo. `SyncCubit` esvazia e
   pendente, as demais seguem, e as bebidas dela esperam o rolê.
 - Não há leitura da nuvem (pull): cada instalação é um usuário anônimo próprio.
 
+## Design system (core/theme + core/widgets)
+- Tokens em `app_tokens.dart`: `AppSpace`, `AppRadius`, `AppText` (headline > title > subtitle > body >
+  caption > overline), `kTouchTarget`. Cores em `app_colors.dart` (carvão, âmbar, branco quente; paleta
+  provisória, logo ainda indefinida: `BeerGlass` é só um marcador).
+- Componentes em `core/widgets/common.dart`: `SurfaceCard` (highlight/selected), `StatTile`,
+  `SectionTitle`, `InfoPill`, `BottomActionBar` (SafeArea + sobe com o teclado), `showToast`,
+  `SyncBadge` (só ícone, discreto), `reduceMotion(context)`. Novas telas devem usar esses blocos.
+
 ## Funcionalidades
-Home (ativo/ocioso, totais reais), iniciar rolê, catálogo com busca/filtros/favoritos/recentes, bebida
-própria, registro (tamanho, teor opcional, compartilhada, preço informado/cortesia/não sei, horário),
-"Mais uma" com desfazer e proteção contra toque duplo, água, corrigir/excluir, encerrar, resumo,
-histórico, configurações (armazenamento, sincronização, "Sincronizar agora"), feedback pós-rolê
-(responder / adiar 24 h / dispensar; fechar a sheet = adiar; uma vez por abertura do app).
+- **Home:** "Bora de rolê?" + Iniciar rolê; com rolê ativo, card com local/tempo/bebidas/gasto + Continuar;
+  último rolê; resumo do mês (dados reais); atalhos para histórico e configurações; sync só como ícone.
+- **Iniciar rolê:** tipos em grade com ícone, apelido OU endereço (erro no campo), horário editável,
+  botão fixo acima do teclado.
+- **Tela do rolê:** cabeçalho compacto, resumo, lista de registros (menu Corrigir/Excluir), barra inferior
+  com "Mais uma · <bebida tamanho>" (só se houver bebida alcoólica elegível), Adicionar bebida e Água;
+  "Encerrar rolê" no menu e como ação discreta no fim da lista; desfazer em snackbar.
+- **Catálogo:** busca em destaque, chips de categoria, atalhos Recentes/Favoritas, lista geral, vazio com
+  "Cadastrar bebida" (já abre com o termo buscado e volta direto ao registro da bebida criada).
+- **Formulário da bebida:** tamanhos rápidos + volume livre, teor opcional, Só minha/Compartilhada com
+  "Sua parte: X ml" imediato, pessoas incluindo o usuário, parcela/sobra em seção recolhida, preço
+  (valor / cortesia / não sei), horário validado contra o período do rolê, aviso ao sair com alterações,
+  botão bloqueado enquanto salva, erro de gravação mantém o formulário.
+- **Resumo:** local e data em destaque, início/fim/duração, bebidas agrupadas, gastos, avisos de preço e
+  teor ausentes, álcool puro declarado (nunca alcoolemia), registros corrigíveis com recálculo.
+- **Histórico:** agrupado por mês, busca por local, filtros de período e tipo, estados vazios distintos.
+- **Feedback pós-rolê:** sheet com rolê avaliado, quatro opções selecionáveis + "Salvar relato",
+  Depois / Não perguntar; fechar = adiar 24 h; uma vez por abertura do app (não após o resumo).
+- **Configurações:** armazenamento local, estado da sincronização, última sincronização, "Sincronizar agora".
+- Já existentes: bebida própria reutilizável, favoritos, correção de registros em rolês encerrados.
 
 ## Supabase (projeto jiisoqkryhmtopaojyyu)
 - Migration `supabase/migrations/20261012000000_initial_schema.sql`: **aplicada pelo dono no SQL
@@ -51,6 +74,11 @@ histórico, configurações (armazenamento, sincronização, "Sincronizar agora"
 - Catálogo só embutido; nada de marcas oficiais, OCR, Maps, estimativas de preço ou alcoolemia.
 - Sem pull da nuvem, sem login permanente, sem recuperar dados em outro aparelho.
 - Favoritos e a data da última sincronização ficam só no aparelho.
+
+## Revisão visual (estado real)
+Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
+executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de
+fonte grande, teclado aberto nas telas de formulário, layout largo na web.
 
 ## Próximo passo recomendado
 `flutter pub get`, `flutter analyze` e corrigir o que aparecer; rodar o cenário completo (Bar MELT)
