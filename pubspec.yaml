@@ -1,0 +1,28 @@
+name: bebometro
+description: "Bebômetro: registre bebidas, gastos e o histórico dos seus rolês."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_bloc: ^9.1.1
+  get_it: ^8.0.3
+  intl: any
+  shared_preferences: ^2.5.3
+  supabase_flutter: ^2.9.0
+  uuid: ^4.5.1
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

@@ -1,0 +1,5 @@
+package com.lucksrei.bebometro
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
