@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../outings/domain/outing.dart';
 import '../data/drink_repository.dart';
 import '../domain/catalog_item.dart';
 import '../domain/drink_draft.dart';
@@ -44,26 +45,39 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
   /// New registration from a catalog item.
   factory DrinkFormCubit.forItem(
     DrinkRepository drinks,
-    String outingId,
+    Outing outing,
     CatalogItem item,
   ) =>
       DrinkFormCubit._(
         drinks,
-        outingId,
+        outing.id,
         DrinkFormState(
-          draft: DrinkDraft.fromItem(item, now: DateTime.now()),
+          draft: DrinkDraft.fromItem(
+            item,
+            now: DateTime.now(),
+            notBefore: outing.startedAt,
+            notAfter: outing.endedAt,
+          ),
           presentations: item.presentations,
         ),
       );
 
   /// Correction of an existing entry.
-  factory DrinkFormCubit.forEntry(DrinkRepository drinks, DrinkEntry entry) {
+  factory DrinkFormCubit.forEntry(
+    DrinkRepository drinks,
+    Outing outing,
+    DrinkEntry entry,
+  ) {
     final item = drinks.itemById(entry.catalogItemId);
     return DrinkFormCubit._(
       drinks,
       entry.outingId,
       DrinkFormState(
-        draft: DrinkDraft.fromEntry(entry),
+        draft: DrinkDraft.fromEntry(
+          entry,
+          notBefore: outing.startedAt,
+          notAfter: outing.endedAt,
+        ),
         presentations: item?.presentations ?? const [],
       ),
     );

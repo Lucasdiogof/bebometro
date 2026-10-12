@@ -10,7 +10,6 @@ import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/drink_entry_page.dart';
-import '../domain/outing.dart';
 import '../domain/outing_summary.dart';
 import 'outing_cubit.dart';
 import 'outing_page.dart' show EntryTile;

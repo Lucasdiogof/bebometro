@@ -3,14 +3,13 @@ import 'dart:async';
 import 'package:uuid/uuid.dart';
 
 import '../../core/data/local_store.dart';
-import '../../core/sync/sync_cubit.dart';
 import '../domain/catalog_item.dart';
 import '../domain/drink_category.dart';
 import '../domain/drink_entry.dart';
 import 'catalog_source.dart';
 
 class DrinkRepository {
-  DrinkRepository(this._store, this._sync) {
+  DrinkRepository(this._store) {
     _store.changes
         .where(
           (c) => c == LocalStore.drinkEntries || c == LocalStore.customDrinks,
@@ -19,7 +18,6 @@ class DrinkRepository {
   }
 
   final LocalStore _store;
-  final SyncCubit _sync;
   final _changes = StreamController<void>.broadcast();
   static const _uuid = Uuid();
   static const _favoritesKey = 'favorites';
@@ -41,6 +39,12 @@ class DrinkRepository {
       ..sort((a, b) => a.consumedAt.compareTo(b.consumedAt));
   }
 
+  /// Number of live (not deleted) drink records on this device.
+  int liveEntryCount() => _store
+      .all(LocalStore.drinkEntries)
+      .where((j) => j['deleted_at'] == null)
+      .length;
+
   DrinkEntry? entryById(String id) {
     final json = _store.get(LocalStore.drinkEntries, id);
     return json == null ? null : DrinkEntry.fromJson(json);
@@ -57,7 +61,6 @@ class DrinkRepository {
   /// never creates a second row.
   Future<void> save(DrinkEntry entry) async {
     await _store.put(LocalStore.drinkEntries, entry.toJson());
-    await _sync.markDirty(LocalStore.drinkEntries, entry.id);
   }
 
   Future<void> delete(String id) async {
@@ -120,7 +123,6 @@ class DrinkRepository {
       'deleted_at': null,
     };
     await _store.put(LocalStore.customDrinks, json);
-    await _sync.markDirty(LocalStore.customDrinks, id);
     return _customFromJson(json);
   }
 

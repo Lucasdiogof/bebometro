@@ -11,6 +11,7 @@ import '../../home/presentation/home_cubit.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/presentation/outing_cubit.dart';
 import '../../outings/presentation/start_outing_cubit.dart';
+import '../../settings/presentation/settings_cubit.dart';
 import '../config/env.dart';
 import '../data/local_store.dart';
 import '../sync/sync_cubit.dart';
@@ -34,16 +35,19 @@ Future<void> configureDependencies() async {
     ..registerSingleton<LocalStore>(store)
     ..registerSingleton<SyncCubit>(SyncCubit(store, cloudEnabled: cloudEnabled))
     ..registerSingleton<OutingRepository>(
-      OutingRepository(store, getIt<SyncCubit>()),
+      OutingRepository(store),
     )
     ..registerSingleton<DrinkRepository>(
-      DrinkRepository(store, getIt<SyncCubit>()),
+      DrinkRepository(store),
     )
     ..registerFactory<HomeCubit>(
       () => HomeCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
     )
     ..registerFactory<HistoryCubit>(
       () => HistoryCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
+    )
+    ..registerFactory<SettingsCubit>(
+      () => SettingsCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
     )
     ..registerFactory<StartOutingCubit>(
       () => StartOutingCubit(getIt<OutingRepository>()),
@@ -60,13 +64,17 @@ Future<void> configureDependencies() async {
         void>(
       (args, _) => DrinkFormCubit.forItem(
         getIt<DrinkRepository>(),
-        args.outingId,
+        getIt<OutingRepository>().byId(args.outingId)!,
         args.item,
       ),
       instanceName: 'new',
     )
     ..registerFactoryParam<DrinkFormCubit, DrinkEntry, void>(
-      (entry, _) => DrinkFormCubit.forEntry(getIt<DrinkRepository>(), entry),
+      (entry, _) => DrinkFormCubit.forEntry(
+        getIt<DrinkRepository>(),
+        getIt<OutingRepository>().byId(entry.outingId)!,
+        entry,
+      ),
       instanceName: 'edit',
     );
 

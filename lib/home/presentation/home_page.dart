@@ -12,6 +12,7 @@ import '../../outings/domain/outing.dart';
 import '../../outings/presentation/outing_page.dart';
 import '../../outings/presentation/outing_summary_page.dart';
 import '../../outings/presentation/start_outing_page.dart';
+import '../../settings/presentation/settings_page.dart';
 import 'home_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -37,35 +38,26 @@ class _HomeViewState extends State<_HomeView> {
   @override
   void initState() {
     super.initState();
+    // Once per app opening: the feedback sheet for a finished outing.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) context.read<HomeCubit>().checkFeedback();
     });
   }
 
-  /// Runs a flow on top of the home screen and re-checks the feedback
-  /// prompt once the user is back.
-  Future<T?> _push<T>(Widget page, {bool check = true}) async {
-    final result = await Navigator.of(context)
-        .push<T>(MaterialPageRoute(builder: (_) => page));
-    if (check && mounted) context.read<HomeCubit>().checkFeedback();
-    return result;
-  }
+  Future<T?> _push<T>(Widget page) =>
+      Navigator.of(context).push<T>(MaterialPageRoute(builder: (_) => page));
 
   Future<void> _openOuting(String id) async {
-    // When the outing was just finished, show its summary first; the
-    // feedback prompt only comes after the summary is closed.
-    final finishedId =
-        await _push<String>(OutingPage(outingId: id), check: false);
-    if (!mounted) return;
-    if (finishedId != null) {
+    final finishedId = await _push<String>(OutingPage(outingId: id));
+    if (finishedId != null && mounted) {
+      // The feedback prompt is deliberately not shown after the summary; it
+      // waits for the next time the app is opened.
       await _push<void>(OutingSummaryPage(outingId: finishedId));
-    } else {
-      context.read<HomeCubit>().checkFeedback();
     }
   }
 
   Future<void> _startOuting() async {
-    final id = await _push<String>(const StartOutingPage(), check: false);
+    final id = await _push<String>(const StartOutingPage());
     if (id != null && mounted) await _openOuting(id);
   }
 
@@ -110,7 +102,9 @@ class _HomeViewState extends State<_HomeView> {
                             fontWeight: FontWeight.w900,
                             letterSpacing: -0.3)),
                     const Spacer(),
-                    const SyncBadge(),
+                    SyncBadge(
+                      onTap: () => _push<void>(const SettingsPage()),
+                    ),
                   ]),
                   const SizedBox(height: 24),
                   if (state.active != null)

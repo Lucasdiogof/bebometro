@@ -70,6 +70,9 @@ double? _parseNumber(String cleaned) {
     }
   } else if (lastComma >= 0) {
     text = text.replaceAll(',', '.');
+  } else if (RegExp(r'^\d{1,3}(\.\d{3})+$').hasMatch(text)) {
+    // "1.500" is one thousand five hundred in pt-BR, not 1.5.
+    text = text.replaceAll('.', '');
   }
   return double.tryParse(text);
 }

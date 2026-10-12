@@ -150,7 +150,9 @@ class _ElapsedTextState extends State<ElapsedText> {
 
 /// Small pill showing whether data reached the cloud.
 class SyncBadge extends StatelessWidget {
-  const SyncBadge({super.key});
+  const SyncBadge({super.key, this.onTap});
+
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -159,14 +161,16 @@ class SyncBadge extends StatelessWidget {
         final (icon, color) = switch (state.status) {
           SyncStatus.synced => (Icons.cloud_done_rounded, AppColors.success),
           SyncStatus.syncing => (Icons.cloud_sync_rounded, AppColors.amber),
+          SyncStatus.pending => (Icons.cloud_upload_rounded, AppColors.amber),
           SyncStatus.failed => (Icons.cloud_off_rounded, AppColors.danger),
           SyncStatus.localOnly =>
             (Icons.phone_iphone_rounded, AppColors.textMuted),
         };
-        return Tooltip(
-          message: state.label,
+        return InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(icon, size: 18, color: color),
               const SizedBox(width: 6),

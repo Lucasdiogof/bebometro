@@ -1,3 +1,4 @@
+import '../../core/utils/formatters.dart';
 import 'catalog_item.dart';
 import 'drink_category.dart';
 import 'drink_entry.dart';
@@ -28,9 +29,16 @@ class DrinkDraft {
     this.leftoverMl = 0,
     this.personalEdited = false,
     this.existing,
+    this.notBefore,
+    this.notAfter,
   });
 
-  factory DrinkDraft.fromItem(CatalogItem item, {required DateTime now}) {
+  factory DrinkDraft.fromItem(
+    CatalogItem item, {
+    required DateTime now,
+    DateTime? notBefore,
+    DateTime? notAfter,
+  }) {
     final first = item.presentations.isEmpty ? null : item.presentations.first;
     return DrinkDraft(
       name: item.name,
@@ -46,10 +54,17 @@ class DrinkDraft {
       containerMl: first?.volumeMl,
       abvPercent: item.abvPercent,
       personalMl: first?.volumeMl,
+      notBefore: notBefore,
+      notAfter: notAfter,
     );
   }
 
-  factory DrinkDraft.fromEntry(DrinkEntry e) => DrinkDraft(
+  factory DrinkDraft.fromEntry(
+    DrinkEntry e, {
+    DateTime? notBefore,
+    DateTime? notAfter,
+  }) =>
+      DrinkDraft(
         name: e.name,
         category: e.category,
         brand: e.brand,
@@ -70,6 +85,8 @@ class DrinkDraft {
         leftoverMl: e.leftoverMl,
         personalEdited: true,
         existing: e,
+        notBefore: notBefore,
+        notAfter: notAfter,
       );
 
   final String name;
@@ -98,6 +115,11 @@ class DrinkDraft {
   final bool personalEdited;
 
   final DrinkEntry? existing;
+
+  /// Period of the outing the drink belongs to. [notAfter] is null while the
+  /// outing is still running (then "now" is the limit).
+  final DateTime? notBefore;
+  final DateTime? notAfter;
 
   static const maxPeople = 30;
 
@@ -128,6 +150,8 @@ class DrinkDraft {
         origin: origin,
         note: note,
         existing: existing,
+        notBefore: notBefore,
+        notAfter: notAfter,
         consumedAt: consumedAt ?? this.consumedAt,
         presentationLabel: presentationLabel != null
             ? presentationLabel()
@@ -258,6 +282,16 @@ class DrinkDraft {
         result['personal'] =
             'Sua parte + sobra passam do volume (${container}ml)';
       }
+    }
+    final before = notBefore;
+    if (before != null && consumedAt.isBefore(before)) {
+      result['time'] = 'Antes do início do rolê (${formatTime(before)})';
+    }
+    final after = notAfter ?? DateTime.now().add(const Duration(minutes: 5));
+    if (consumedAt.isAfter(after)) {
+      result['time'] = notAfter == null
+          ? 'O horário não pode estar no futuro'
+          : 'Depois do fim do rolê (${formatTime(notAfter!)})';
     }
     if (priceKind == PriceKind.informed && paidCents == null) {
       result['paid'] = 'Informe o valor ou escolha outra opção';

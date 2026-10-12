@@ -170,6 +170,12 @@ class _DrinkEntryView extends StatelessWidget {
                               style: TextStyle(color: AppColors.amber)),
                         ]),
                       ),
+                      if (errors['time'] != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 4),
+                          child: Text(errors['time']!,
+                              style: const TextStyle(color: AppColors.danger)),
+                        ),
                     ],
                   ),
                 ),

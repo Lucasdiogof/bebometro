@@ -1,7 +1,6 @@
 import 'package:uuid/uuid.dart';
 
 import '../../core/data/local_store.dart';
-import '../../core/sync/sync_cubit.dart';
 import '../domain/outing.dart';
 
 class ActiveOutingExistsException implements Exception {
@@ -12,10 +11,9 @@ class ActiveOutingExistsException implements Exception {
 }
 
 class OutingRepository {
-  OutingRepository(this._store, this._sync);
+  OutingRepository(this._store);
 
   final LocalStore _store;
-  final SyncCubit _sync;
   static const _uuid = Uuid();
 
   Stream<void> get changes =>
@@ -30,6 +28,8 @@ class OutingRepository {
       ..sort((a, b) => b.startedAt.compareTo(a.startedAt));
     return running.isEmpty ? null : running.first;
   }
+
+  int count() => _store.count(LocalStore.outings);
 
   Outing? byId(String id) {
     final json = _store.get(LocalStore.outings, id);
@@ -81,6 +81,9 @@ class OutingRepository {
     if (endedAt.isBefore(outing.startedAt)) {
       throw ArgumentError('O fim não pode ser antes do início.');
     }
+    if (endedAt.isAfter(DateTime.now().add(const Duration(minutes: 5)))) {
+      throw ArgumentError('O fim não pode estar no futuro.');
+    }
     await _save(outing.copyWith(endedAt: endedAt, updatedAt: DateTime.now()));
   }
 
@@ -116,8 +119,6 @@ class OutingRepository {
     ));
   }
 
-  Future<void> _save(Outing outing) async {
-    await _store.put(LocalStore.outings, outing.toJson());
-    await _sync.markDirty(LocalStore.outings, outing.id);
-  }
+  Future<void> _save(Outing outing) =>
+      _store.put(LocalStore.outings, outing.toJson());
 }
