@@ -158,6 +158,15 @@ class _DrinkEntryView extends StatelessWidget {
                               ),
                           ],
                         ),
+                        if (state.sizesAreGeneric)
+                          const Padding(
+                            padding: EdgeInsets.only(top: AppSpace.sm),
+                            child: Text(
+                              'Tamanhos comuns: este produto não tem tamanhos '
+                              'verificados. Confira na embalagem.',
+                              style: AppText.caption,
+                            ),
+                          ),
                         const SizedBox(height: AppSpace.md),
                       ],
                       _NumberField<int>(

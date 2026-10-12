@@ -75,6 +75,48 @@ marca de "pendente de envio" (com versão) no mesmo passo. `SyncCubit` esvazia e
 - Sem pull da nuvem, sem login permanente, sem recuperar dados em outro aparelho.
 - Favoritos e a data da última sincronização ficam só no aparelho.
 
+## Identidade (logos)
+`assets/branding/logo_cap.png` (tampinha "B": ícone do app, splash, loadings via `BrandLoader`) e
+`logo_wordmark.png` ("Bebômetro" escrito: cabeçalho da home; reservado para as telas de login/cadastro
+quando existirem, via `BrandWordmark`). Ícones Android/iOS/web e splash nativa foram gerados a partir da
+tampinha (fundo preto). Os originais enviados no chat tinham fundo preto; os PNGs foram recortados por
+máscara, então vale conferir as bordas em aparelho.
+
+## Catálogo (etapa de produtos reais)
+- **Dados:** `assets/catalog/catalog_v1.json` (versionado, `consultedOn: 2026-10-12`), lido por
+  `CatalogLoader` e entregue ao `DrinkRepository`. IDs estáveis (`marca-produto`). Atualizar o arquivo não
+  apaga favoritos, bebidas próprias nem registros (cada registro guarda a própria cópia). Não há
+  distribuição pelo Supabase e **nenhuma migration nova** foi necessária.
+- **Modelo:** `CatalogItem` (marca, nome, categoria, estilo, teor, ingredientes declarados, apresentações
+  com tipo e volume, aliases, fonte `SourceRef`). Um produto tem várias apresentações; versão sem álcool é
+  produto à parte. Origem exibida: "Dados do fabricante", "Genérico" ou "Criada por você" (sem selos de
+  certificação). Produto sem tamanhos verificados usa "tamanhos comuns da categoria" no formulário, avisado
+  na tela.
+- **Cobertura:** 65 produtos distintos de 24 marcas (55 cervejas, 7 chopps, 3 sem álcool), 56 apresentações
+  em 19 produtos, 36 com estilo, 61 com teor, 30 com ingredientes. Estilos: Lager/Pilsen, IPA (inclui
+  Imperial, Session, English), Pale Ale, Weiss/Weizen, Witbier, Porter, Imperial Stout, Tripel, Golden
+  Strong, Honey Wheat Ale, Malzbier e outros, como a fonte declara.
+- **Fontes:** páginas de produto dos fabricantes (Ambev e marcas: brahma/skol/ambev.com.br; Heineken Brasil
+  e Sol; Eisenbahn; Baden Baden; Itaipava e Grupo Petrópolis; Kaiser) lidas via buscas restritas ao domínio
+  (várias páginas bloqueiam leitura automática, então o texto veio dos resultados indexados). Exceção: o teor
+  da Itaipava Pilsen vem do rótulo da lata de 350 ml transcrito no Open Food Facts (código 7897395020101).
+  Cada produto guarda o endereço da fonte, visível em "Fonte dos dados" no detalhe.
+- **Campos incompletos:** sem teor: Heineken 0.0, Kaiser, Itaipava Premium e Malzbier; ingredientes ausentes
+  na maioria (só entram listas declaradas completas); tamanhos verificados só em 19 produtos; estilo
+  ausente quando o fabricante não declara (nada foi inferido pelo nome). Divergências ficam em `note`
+  (ex.: Skol Pilsen 4,6% na página vs 4,7% nas embalagens). Dados podem variar por versão/mercado/data.
+- **Busca/filtros:** sem acento/maiúscula, por marca, produto, estilo, aliases e apresentações; filtros de
+  categoria, marca, estilo (família), apresentação e "só sem álcool", filtros ativos removíveis e "Limpar
+  filtros"; recentes e favoritos; um cartão por produto (nunca por tamanho).
+- **Detalhe:** nome/marca, categoria, estilo, teor, ingredientes, apresentações, fonte discreta (copiável),
+  favoritar e registrar. Bebida própria: criar, **editar**, excluir (soft) e reutilizar, com ingredientes.
+- **Receitas de drinks: NÃO feitas.** Exigem modelo de componentes (ingrediente, quantidade, teor) e edição
+  na hora do registro, e as fontes encontradas não trazem teor dos componentes (sem eles não se calcula
+  álcool). Etapa delimitada para depois: receita de referência (com fonte) separada do drink servido,
+  ingredientes/quantidades editáveis, álcool só com quantidades e teores conhecidos, gelo e volume do copo
+  fora do consumo, sem calorias/açúcar inventados. Os drinks genéricos atuais continuam como estão.
+- **Ainda não coberto:** chopps/marcas regionais, mais artesanais, vinhos e destilados de marca.
+
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
 executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../outings/domain/outing.dart';
 import '../data/drink_repository.dart';
 import '../domain/catalog_item.dart';
+import '../domain/common_sizes.dart';
 import '../domain/drink_draft.dart';
 import '../domain/drink_entry.dart';
 
@@ -11,6 +12,7 @@ class DrinkFormState {
   const DrinkFormState({
     required this.draft,
     this.presentations = const [],
+    this.sizesAreGeneric = false,
     this.showErrors = false,
     this.saving = false,
     this.saved = false,
@@ -23,6 +25,10 @@ class DrinkFormState {
 
   /// Known sizes for the chosen product (chips above the free volume field).
   final List<Presentation> presentations;
+
+  /// True when [presentations] are common sizes for the category, not sizes
+  /// verified for this product.
+  final bool sizesAreGeneric;
   final bool showErrors;
   final bool saving;
   final bool saved;
@@ -46,6 +52,7 @@ class DrinkFormState {
       DrinkFormState(
         draft: draft ?? this.draft,
         presentations: presentations,
+        sizesAreGeneric: sizesAreGeneric,
         showErrors: showErrors ?? this.showErrors,
         saving: saving ?? this.saving,
         saved: saved ?? this.saved,
@@ -75,7 +82,10 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
             notBefore: outing.startedAt,
             notAfter: outing.endedAt,
           ),
-          presentations: item.presentations,
+          presentations: item.presentations.isEmpty
+              ? commonSizesFor(item.category)
+              : item.presentations,
+          sizesAreGeneric: item.presentations.isEmpty,
         ),
       );
 
@@ -95,7 +105,10 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
           notBefore: outing.startedAt,
           notAfter: outing.endedAt,
         ),
-        presentations: item?.presentations ?? const [],
+        presentations: (item != null && item.presentations.isNotEmpty)
+            ? item.presentations
+            : commonSizesFor(entry.category),
+        sizesAreGeneric: item == null || item.presentations.isEmpty,
       ),
     );
   }

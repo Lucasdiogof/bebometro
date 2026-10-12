@@ -20,10 +20,10 @@ class CatalogSource {
       abvPercent: 4.8,
       note: _typical,
       presentations: [
-        Presentation('Lata 350 ml', 350),
-        Presentation('Lata 473 ml', 473),
-        Presentation('Long neck 355 ml', 355),
-        Presentation('Garrafa 600 ml', 600),
+        Presentation('Lata 350 ml', 350, kind: PresentationKind.can),
+        Presentation('Lata 473 ml', 473, kind: PresentationKind.can),
+        Presentation('Long neck 355 ml', 355, kind: PresentationKind.longNeck),
+        Presentation('Garrafa 600 ml', 600, kind: PresentationKind.bottle),
       ],
     ),
     CatalogItem(
@@ -34,9 +34,9 @@ class CatalogSource {
       abvPercent: 6.5,
       note: _typical,
       presentations: [
-        Presentation('Lata 350 ml', 350),
-        Presentation('Lata 473 ml', 473),
-        Presentation('Garrafa 500 ml', 500),
+        Presentation('Lata 350 ml', 350, kind: PresentationKind.can),
+        Presentation('Lata 473 ml', 473, kind: PresentationKind.can),
+        Presentation('Garrafa 500 ml', 500, kind: PresentationKind.bottle),
       ],
     ),
     CatalogItem(
@@ -47,8 +47,8 @@ class CatalogSource {
       abvPercent: 5.0,
       note: _typical,
       presentations: [
-        Presentation('Long neck 355 ml', 355),
-        Presentation('Garrafa 500 ml', 500),
+        Presentation('Long neck 355 ml', 355, kind: PresentationKind.longNeck),
+        Presentation('Garrafa 500 ml', 500, kind: PresentationKind.bottle),
       ],
     ),
     // Chopp
@@ -60,10 +60,10 @@ class CatalogSource {
       abvPercent: 4.8,
       note: _typical,
       presentations: [
-        Presentation('Tulipa 300 ml', 300),
-        Presentation('Copo 400 ml', 400),
-        Presentation('Caneca 500 ml', 500),
-        Presentation('Tulipa 1 L', 1000),
+        Presentation('Tulipa 300 ml', 300, kind: PresentationKind.glass),
+        Presentation('Copo 400 ml', 400, kind: PresentationKind.glass),
+        Presentation('Caneca 500 ml', 500, kind: PresentationKind.glass),
+        Presentation('Tulipa 1 L', 1000, kind: PresentationKind.glass),
       ],
     ),
     CatalogItem(
@@ -74,9 +74,9 @@ class CatalogSource {
       abvPercent: 5.0,
       note: _typical,
       presentations: [
-        Presentation('Tulipa 300 ml', 300),
-        Presentation('Copo 400 ml', 400),
-        Presentation('Caneca 500 ml', 500),
+        Presentation('Tulipa 300 ml', 300, kind: PresentationKind.glass),
+        Presentation('Copo 400 ml', 400, kind: PresentationKind.glass),
+        Presentation('Caneca 500 ml', 500, kind: PresentationKind.glass),
       ],
     ),
     // Drinks (ABV unknown: depends on the recipe and the bar)
@@ -87,8 +87,8 @@ class CatalogSource {
       ingredients: ['Cachaça', 'Limão', 'Açúcar', 'Gelo'],
       note: 'Receita comum. Teor depende do bar: informe se souber.',
       presentations: [
-        Presentation('Copo 300 ml', 300),
-        Presentation('Copo 400 ml', 400),
+        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass),
+        Presentation('Copo 400 ml', 400, kind: PresentationKind.glass),
       ],
     ),
     CatalogItem(
@@ -98,8 +98,8 @@ class CatalogSource {
       ingredients: ['Gin', 'Água tônica', 'Gelo'],
       note: 'Receita comum. Teor depende do bar: informe se souber.',
       presentations: [
-        Presentation('Taça 400 ml', 400),
-        Presentation('Copo 300 ml', 300),
+        Presentation('Taça 400 ml', 400, kind: PresentationKind.glass),
+        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass),
       ],
     ),
     CatalogItem(
@@ -108,8 +108,8 @@ class CatalogSource {
       category: DrinkCategory.cocktail,
       note: 'Ingredientes e teor desconhecidos.',
       presentations: [
-        Presentation('Copo 300 ml', 300),
-        Presentation('Copo 400 ml', 400),
+        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass),
+        Presentation('Copo 400 ml', 400, kind: PresentationKind.glass),
       ],
     ),
     // Destilados
@@ -120,8 +120,8 @@ class CatalogSource {
       abvPercent: 40,
       note: _typical,
       presentations: [
-        Presentation('Dose 50 ml', 50),
-        Presentation('Dose dupla 100 ml', 100),
+        Presentation('Dose 50 ml', 50, kind: PresentationKind.shot),
+        Presentation('Dose dupla 100 ml', 100, kind: PresentationKind.shot),
       ],
     ),
     CatalogItem(
@@ -131,8 +131,8 @@ class CatalogSource {
       abvPercent: 40,
       note: _typical,
       presentations: [
-        Presentation('Dose 50 ml', 50),
-        Presentation('Dose dupla 100 ml', 100),
+        Presentation('Dose 50 ml', 50, kind: PresentationKind.shot),
+        Presentation('Dose dupla 100 ml', 100, kind: PresentationKind.shot),
       ],
     ),
     CatalogItem(
@@ -142,8 +142,8 @@ class CatalogSource {
       abvPercent: 40,
       note: _typical,
       presentations: [
-        Presentation('Dose 50 ml', 50),
-        Presentation('Dose dupla 100 ml', 100),
+        Presentation('Dose 50 ml', 50, kind: PresentationKind.shot),
+        Presentation('Dose dupla 100 ml', 100, kind: PresentationKind.shot),
       ],
     ),
     CatalogItem(
@@ -153,8 +153,8 @@ class CatalogSource {
       abvPercent: 40,
       note: _typical,
       presentations: [
-        Presentation('Dose 50 ml', 50),
-        Presentation('Dose dupla 100 ml', 100),
+        Presentation('Dose 50 ml', 50, kind: PresentationKind.shot),
+        Presentation('Dose dupla 100 ml', 100, kind: PresentationKind.shot),
       ],
     ),
     // Vinho
@@ -165,9 +165,9 @@ class CatalogSource {
       abvPercent: 12.5,
       note: _typical,
       presentations: [
-        Presentation('Taça 150 ml', 150),
-        Presentation('Taça 200 ml', 200),
-        Presentation('Garrafa 750 ml', 750),
+        Presentation('Taça 150 ml', 150, kind: PresentationKind.glass),
+        Presentation('Taça 200 ml', 200, kind: PresentationKind.glass),
+        Presentation('Garrafa 750 ml', 750, kind: PresentationKind.bottle),
       ],
     ),
     CatalogItem(
@@ -177,9 +177,9 @@ class CatalogSource {
       abvPercent: 12.0,
       note: _typical,
       presentations: [
-        Presentation('Taça 150 ml', 150),
-        Presentation('Taça 200 ml', 200),
-        Presentation('Garrafa 750 ml', 750),
+        Presentation('Taça 150 ml', 150, kind: PresentationKind.glass),
+        Presentation('Taça 200 ml', 200, kind: PresentationKind.glass),
+        Presentation('Garrafa 750 ml', 750, kind: PresentationKind.bottle),
       ],
     ),
     // Sem álcool
@@ -188,9 +188,9 @@ class CatalogSource {
       name: 'Refrigerante',
       category: DrinkCategory.nonAlcoholic,
       presentations: [
-        Presentation('Lata 350 ml', 350),
-        Presentation('Garrafa 600 ml', 600),
-        Presentation('Copo 300 ml', 300),
+        Presentation('Lata 350 ml', 350, kind: PresentationKind.can),
+        Presentation('Garrafa 600 ml', 600, kind: PresentationKind.bottle),
+        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass),
       ],
     ),
     CatalogItem(
@@ -198,8 +198,8 @@ class CatalogSource {
       name: 'Suco',
       category: DrinkCategory.nonAlcoholic,
       presentations: [
-        Presentation('Copo 300 ml', 300),
-        Presentation('Copo 500 ml', 500),
+        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass),
+        Presentation('Copo 500 ml', 500, kind: PresentationKind.glass),
       ],
     ),
     CatalogItem(
@@ -207,8 +207,8 @@ class CatalogSource {
       name: 'Cerveja sem álcool',
       category: DrinkCategory.nonAlcoholic,
       presentations: [
-        Presentation('Long neck 355 ml', 355),
-        Presentation('Lata 350 ml', 350),
+        Presentation('Long neck 355 ml', 355, kind: PresentationKind.longNeck),
+        Presentation('Lata 350 ml', 350, kind: PresentationKind.can),
       ],
     ),
     // Água
@@ -217,9 +217,9 @@ class CatalogSource {
       name: 'Água sem gás',
       category: DrinkCategory.water,
       presentations: [
-        Presentation('Copo 300 ml', 300),
-        Presentation('Garrafa 500 ml', 500),
-        Presentation('Garrafa 1 L', 1000),
+        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass),
+        Presentation('Garrafa 500 ml', 500, kind: PresentationKind.bottle),
+        Presentation('Garrafa 1 L', 1000, kind: PresentationKind.bottle),
       ],
     ),
     CatalogItem(
@@ -227,8 +227,8 @@ class CatalogSource {
       name: 'Água com gás',
       category: DrinkCategory.water,
       presentations: [
-        Presentation('Copo 300 ml', 300),
-        Presentation('Garrafa 500 ml', 500),
+        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass),
+        Presentation('Garrafa 500 ml', 500, kind: PresentationKind.bottle),
       ],
     ),
   ];

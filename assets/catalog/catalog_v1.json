@@ -1,0 +1,1494 @@
+{
+ "version": 1,
+ "consultedOn": "2026-10-12",
+ "description": "Catálogo inicial do Bebômetro. Campos ausentes são desconhecidos, nunca zero.",
+ "products": [
+  {
+   "id": "brahma-chopp",
+   "brand": "Brahma",
+   "name": "Chopp",
+   "category": "beer",
+   "style": "American Lager",
+   "abv": 4.8,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Milho",
+    "Lúpulo"
+   ],
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
+   "aliases": [
+    "chopp brahma",
+    "chope brahma"
+   ],
+   "source": {
+    "url": "https://www.brahma.com.br/pt-br/produto/chopp-brahma-claro",
+    "label": "Brahma (site oficial)"
+   },
+   "note": "Vendido em lata; a página também descreve o chope."
+  },
+  {
+   "id": "brahma-duplo-malte",
+   "brand": "Brahma",
+   "name": "Duplo Malte",
+   "category": "beer",
+   "style": null,
+   "abv": 4.7,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Lúpulo"
+   ],
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "can",
+     "ml": 473
+    },
+    {
+     "kind": "bottle",
+     "ml": 330
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    }
+   ],
+   "aliases": [
+    "duplo malte pilsen"
+   ],
+   "source": {
+    "url": "https://www.brahma.com.br/pt-br/produto/brahma-duplo-malte",
+    "label": "Brahma (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "brahma-duplo-malte-trigo",
+   "brand": "Brahma",
+   "name": "Duplo Malte Trigo",
+   "category": "beer",
+   "style": null,
+   "abv": 4.9,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.brahma.com.br/pt-br/produto/brahma-duplo-malte-trigo",
+    "label": "Brahma (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "brahma-duplo-malte-tostada",
+   "brand": "Brahma",
+   "name": "Duplo Malte Tostada",
+   "category": "beer",
+   "style": null,
+   "abv": 4.9,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.brahma.com.br/pt-br/produto/brahma-duplo-malte-tostada",
+    "label": "Brahma (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "brahma-duplo-malte-black",
+   "brand": "Brahma",
+   "name": "Duplo Malte Black",
+   "category": "beer",
+   "style": null,
+   "abv": 4.7,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.brahma.com.br/pt-br/produto/brahma-duplo-malte-black",
+    "label": "Brahma (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "brahma-zero",
+   "brand": "Brahma",
+   "name": "Zero",
+   "category": "nonAlcoholic",
+   "style": null,
+   "abv": 0.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 300
+    }
+   ],
+   "aliases": [
+    "brahma 0,0",
+    "brahma sem alcool"
+   ],
+   "source": {
+    "url": "https://www.brahma.com.br/pt-br/produto/brahma-zero",
+    "label": "Brahma (site oficial)"
+   },
+   "note": "Teor declarado: 0,00%."
+  },
+  {
+   "id": "skol-pilsen",
+   "brand": "Skol",
+   "name": "Pilsen",
+   "category": "beer",
+   "style": "American Lager",
+   "abv": 4.6,
+   "ingredients": [
+    "Lúpulo",
+    "Malte",
+    "Água",
+    "Milho"
+   ],
+   "presentations": [
+    {
+     "ml": 269
+    },
+    {
+     "kind": "bottle",
+     "ml": 300
+    },
+    {
+     "ml": 410
+    },
+    {
+     "ml": 473
+    },
+    {
+     "ml": 550
+    },
+    {
+     "ml": 600
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://www.skol.com.br/produto/skol-pilsen",
+    "label": "Skol (site oficial)"
+   },
+   "note": "Teor de 4,6% na página do produto; embalagens aparecem com 4,7% vol. Confira no rótulo."
+  },
+  {
+   "id": "skol-puro-malte",
+   "brand": "Skol",
+   "name": "Puro Malte",
+   "category": "beer",
+   "style": null,
+   "abv": 4.4,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Lúpulo"
+   ],
+   "presentations": [
+    {
+     "ml": 269
+    },
+    {
+     "ml": 275
+    },
+    {
+     "kind": "bottle",
+     "ml": 300
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "ml": 473
+    },
+    {
+     "ml": 600
+    },
+    {
+     "ml": 1000
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://www.skol.com.br/produto/skol-puro-malte",
+    "label": "Skol (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "antarctica-pilsen",
+   "brand": "Antarctica",
+   "name": "Pilsen",
+   "category": "beer",
+   "style": null,
+   "abv": 4.7,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Milho",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/antarctica/antarctica-pilsen",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "antarctica-original",
+   "brand": "Antarctica",
+   "name": "Original",
+   "category": "beer",
+   "style": null,
+   "abv": 4.9,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Milho",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/original/original",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "antarctica-subzero",
+   "brand": "Antarctica",
+   "name": "Subzero",
+   "category": "beer",
+   "style": null,
+   "abv": 4.5,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Milho",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/antarctica/antarctica-subzero",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "antarctica-chopp",
+   "brand": "Antarctica",
+   "name": "Chopp",
+   "category": "draft",
+   "style": null,
+   "abv": 4.7,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Milho",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [
+    "chopp antarctica",
+    "chope antarctica"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/chopes/antarctica/chopp-antarctica",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "serrana-serrana",
+   "brand": "Serrana",
+   "name": "Serrana",
+   "category": "beer",
+   "style": null,
+   "abv": 4.5,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/serrana/serrana",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "budweiser-budweiser",
+   "brand": "Budweiser",
+   "name": "Budweiser",
+   "category": "beer",
+   "style": null,
+   "abv": 5.0,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Arroz",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [
+    "bud"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/budweiser/budweiser",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "corona-corona",
+   "brand": "Corona",
+   "name": "Corona",
+   "category": "beer",
+   "style": null,
+   "abv": 4.6,
+   "ingredients": [
+    "Água",
+    "Cevada maltada",
+    "Arroz",
+    "Lúpulo"
+   ],
+   "presentations": [
+    {
+     "ml": 330
+    },
+    {
+     "ml": 210,
+     "label": "Coronita 210 ml"
+    }
+   ],
+   "aliases": [
+    "corona extra",
+    "coronita"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/corona/corona",
+    "label": "Ambev (site oficial)"
+   },
+   "note": "A Coronita (210 ml) aparece na página da Ambev com os mesmos dados."
+  },
+  {
+   "id": "stella-artois-stella-artois",
+   "brand": "Stella Artois",
+   "name": "Stella Artois",
+   "category": "beer",
+   "style": null,
+   "abv": 5.0,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Lúpulo"
+   ],
+   "presentations": [
+    {
+     "ml": 330
+    }
+   ],
+   "aliases": [
+    "stella"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/stella-artois/stella-artois",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "spaten-spaten",
+   "brand": "Spaten",
+   "name": "Spaten",
+   "category": "beer",
+   "style": null,
+   "abv": 5.2,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/spaten/spaten/",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "beck-s-beck-s",
+   "brand": "Beck's",
+   "name": "Beck's",
+   "category": "beer",
+   "style": null,
+   "abv": 5.0,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [
+    "becks"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/becks/becks",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "michelob-ultra",
+   "brand": "Michelob",
+   "name": "Ultra",
+   "category": "beer",
+   "style": null,
+   "abv": 3.5,
+   "ingredients": [
+    "Malte",
+    "Lúpulo",
+    "Arroz"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/michelob-ultra/michelob-ultra",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "bohemia-14-weiss",
+   "brand": "Bohemia",
+   "name": "14-Weiss",
+   "category": "beer",
+   "style": "German Weizen",
+   "abv": 4.3,
+   "ingredients": [
+    "Água",
+    "Malte de trigo",
+    "Malte de cevada",
+    "Lúpulo",
+    "Levedura"
+   ],
+   "presentations": [],
+   "aliases": [
+    "bohemia weiss"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/bohemia/bohemia-14-weiss",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "bohemia-imperial",
+   "brand": "Bohemia",
+   "name": "Imperial",
+   "category": "beer",
+   "style": "Premium American Lager",
+   "abv": 5.2,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/bohemia/bohemia-imperial",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "bohemia-magna-pils",
+   "brand": "Bohemia",
+   "name": "Magna Pils",
+   "category": "beer",
+   "style": "German Pilsner",
+   "abv": 4.8,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/bohemia/bohemia-magna-pils",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "colorado-ribeirao-lager",
+   "brand": "Colorado",
+   "name": "Ribeirão Lager",
+   "category": "beer",
+   "style": "American Lager",
+   "abv": 4.5,
+   "ingredients": [
+    "Água",
+    "Malte de cevada",
+    "Lúpulo",
+    "Extrato de casca de laranja"
+   ],
+   "presentations": [],
+   "aliases": [
+    "ribeirao lager"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-ribeirao",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "colorado-appia",
+   "brand": "Colorado",
+   "name": "Appia",
+   "category": "beer",
+   "style": "Honey Wheat Ale",
+   "abv": 5.5,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-appia",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "colorado-cauim",
+   "brand": "Colorado",
+   "name": "Cauim",
+   "category": "beer",
+   "style": null,
+   "abv": 4.5,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-cauim",
+    "label": "Ambev (site oficial)"
+   },
+   "note": "Dado da versão padrão; a edição Cauim 016 aparece com 4,2%."
+  },
+  {
+   "id": "colorado-indica",
+   "brand": "Colorado",
+   "name": "Indica",
+   "category": "beer",
+   "style": "India Pale Ale",
+   "abv": 7.0,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Rapadura",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-indica",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "colorado-vixnu",
+   "brand": "Colorado",
+   "name": "Vixnu",
+   "category": "beer",
+   "style": "Imperial IPA",
+   "abv": 9.5,
+   "ingredients": [
+    "Água",
+    "Malte de cevada",
+    "Rapadura",
+    "Açúcar",
+    "Lúpulo",
+    "Fermento"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-vixnu",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "colorado-demoiselle",
+   "brand": "Colorado",
+   "name": "Demoiselle",
+   "category": "beer",
+   "style": "Porter",
+   "abv": 6.0,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Açúcar",
+    "Extrato natural de café",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-demoiselle",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "colorado-indica-chopp",
+   "brand": "Colorado",
+   "name": "Indica Chopp",
+   "category": "draft",
+   "style": null,
+   "abv": 7.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "indica chope"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/chopes/cervejaria-colorado/colorado-indica-chopp",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "wals-trippel",
+   "brand": "Wäls",
+   "name": "Trippel",
+   "category": "beer",
+   "style": "Belgian Tripel",
+   "abv": 9.0,
+   "ingredients": [
+    "Água",
+    "Malte de cevada",
+    "Açúcar",
+    "Lúpulo",
+    "Extrato de laranja",
+    "Extrato de coentro",
+    "Levedura"
+   ],
+   "presentations": [],
+   "aliases": [
+    "wals tripel"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/wals/wals-trippel",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "wals-verano",
+   "brand": "Wäls",
+   "name": "Verano",
+   "category": "beer",
+   "style": "Pale Ale",
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "wals verano"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/wals/wals-verano",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "wals-petroleum",
+   "brand": "Wäls",
+   "name": "Petroleum",
+   "category": "beer",
+   "style": "Imperial Stout",
+   "abv": 12.0,
+   "ingredients": [
+    "Água",
+    "Malte de cevada",
+    "Açúcar mascavo",
+    "Flocos de aveia",
+    "Lúpulo",
+    "Extrato de cacau",
+    "Levedura"
+   ],
+   "presentations": [],
+   "aliases": [
+    "wals petroleum"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/wals/wals-petroleum",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "hoegaarden-grand-cru",
+   "brand": "Hoegaarden",
+   "name": "Grand Cru",
+   "category": "beer",
+   "style": "Belgian Golden Strong Ale",
+   "abv": 8.5,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/hoegaarden/hoegaarden-grand-cru/",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "hoegaarden-forbidden-fruit",
+   "brand": "Hoegaarden",
+   "name": "Forbidden Fruit",
+   "category": "beer",
+   "style": null,
+   "abv": 8.5,
+   "ingredients": [
+    "Água",
+    "Malte de cevada",
+    "Xarope de glicose",
+    "Lúpulo",
+    "Sementes de coentro",
+    "Casca de laranja natural",
+    "Levedura"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/hoegaarden/hoegaarden-forbidden-fruit",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "patagonia-weisse",
+   "brand": "Patagonia",
+   "name": "Weisse",
+   "category": "beer",
+   "style": "Witbier",
+   "abv": 4.4,
+   "ingredients": [
+    "Água",
+    "Malte de cevada",
+    "Malte de trigo",
+    "Cereais não malteados",
+    "Lúpulo",
+    "Extrato natural de laranja",
+    "Semente de coentro"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/patagonia/patagonia-weisse",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "patagonia-amber-lager",
+   "brand": "Patagonia",
+   "name": "Amber Lager",
+   "category": "beer",
+   "style": "American Amber Lager",
+   "abv": 4.5,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Cereais não malteados",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/patagonia/patagonia-amber-lager",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "patagonia-bohemian-pilsener",
+   "brand": "Patagonia",
+   "name": "Bohemian Pilsener",
+   "category": "beer",
+   "style": "Pilsen",
+   "abv": 5.2,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/patagonia/patagonia-bohemian-pilsener",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "goose-island-ipa",
+   "brand": "Goose Island",
+   "name": "IPA",
+   "category": "beer",
+   "style": "India Pale Ale",
+   "abv": 5.9,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Lúpulo"
+   ],
+   "presentations": [],
+   "aliases": [
+    "goose ipa"
+   ],
+   "source": {
+    "url": "https://www.ambev.com.br/marcas/cervejas/goose-island/goose-ipa",
+    "label": "Ambev (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "heineken-heineken",
+   "brand": "Heineken",
+   "name": "Heineken",
+   "category": "beer",
+   "style": null,
+   "abv": 5.0,
+   "ingredients": [
+    "Água",
+    "Malte de cevada",
+    "Lúpulo",
+    "Levedura A"
+   ],
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 600
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://www.heinekenbrasil.com.br/heineken",
+    "label": "Heineken Brasil (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "heineken-0-0",
+   "brand": "Heineken",
+   "name": "0.0",
+   "category": "nonAlcoholic",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "heineken zero",
+    "heineken sem alcool",
+    "heineken 0,0"
+   ],
+   "source": {
+    "url": "https://www.heinekenbrasil.com.br/nossas-marcas",
+    "label": "Heineken Brasil (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "heineken-ultimate",
+   "brand": "Heineken",
+   "name": "Ultimate",
+   "category": "beer",
+   "style": null,
+   "abv": 3.5,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.heinekenbrasil.com.br/heineken-ultimate",
+    "label": "Heineken Brasil (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "sol-sol",
+   "brand": "Sol",
+   "name": "Sol",
+   "category": "beer",
+   "style": null,
+   "abv": 4.2,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Milho",
+    "Lúpulo"
+   ],
+   "presentations": [
+    {
+     "ml": 330
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://www.cervejasol.com.br/produtos/sol/",
+    "label": "Cerveja Sol (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "eisenbahn-pilsen",
+   "brand": "Eisenbahn",
+   "name": "Pilsen",
+   "category": "beer",
+   "style": "Pilsen",
+   "abv": 4.8,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "longNeck",
+     "ml": 355
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://www.eisenbahn.com.br/produtos/pilsen/",
+    "label": "Eisenbahn (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "eisenbahn-unfiltered",
+   "brand": "Eisenbahn",
+   "name": "Unfiltered",
+   "category": "beer",
+   "style": "Unfiltered Pilsen",
+   "abv": 4.8,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Lúpulo",
+    "Levedura"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://unfiltered.eisenbahn.com.br/faq.php",
+    "label": "Eisenbahn Unfiltered (FAQ oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "eisenbahn-weizenbier",
+   "brand": "Eisenbahn",
+   "name": "Weizenbier",
+   "category": "beer",
+   "style": "Weizenbier",
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "eisenbahn weiss"
+   ],
+   "source": {
+    "url": "https://www.eisenbahn.com.br/nossos-rotulos/",
+    "label": "Eisenbahn (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "eisenbahn-american-ipa",
+   "brand": "Eisenbahn",
+   "name": "American IPA",
+   "category": "beer",
+   "style": "American IPA",
+   "abv": 6.9,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.eisenbahn.com.br/nossos-rotulos/",
+    "label": "Eisenbahn (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "eisenbahn-pale-ale",
+   "brand": "Eisenbahn",
+   "name": "Pale Ale",
+   "category": "beer",
+   "style": "Pale Ale",
+   "abv": 4.8,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.eisenbahn.com.br/nossos-rotulos/",
+    "label": "Eisenbahn (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "eisenbahn-session-ipa",
+   "brand": "Eisenbahn",
+   "name": "Session IPA",
+   "category": "beer",
+   "style": "Session IPA",
+   "abv": 4.6,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.eisenbahn.com.br/nossos-rotulos/",
+    "label": "Eisenbahn (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "kaiser-lager",
+   "brand": "Kaiser",
+   "name": "Lager",
+   "category": "beer",
+   "style": "Lager",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    }
+   ],
+   "aliases": [
+    "kaiser"
+   ],
+   "source": {
+    "url": "https://www.kaiser.com.br/produtos/kaiser-350ml/",
+    "label": "Kaiser (site oficial)"
+   },
+   "note": "A página não informa o teor alcoólico."
+  },
+  {
+   "id": "baden-baden-ipa",
+   "brand": "Baden Baden",
+   "name": "IPA",
+   "category": "beer",
+   "style": "American India Pale Ale",
+   "abv": 6.4,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 600
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
+   "aliases": [
+    "baden ipa",
+    "baden baden maracuja"
+   ],
+   "source": {
+    "url": "https://www.badenbaden.com.br/produtos/ipa/",
+    "label": "Baden Baden (site oficial)"
+   },
+   "note": "A página cita suco de maracujá; lista completa não informada."
+  },
+  {
+   "id": "baden-baden-witbier",
+   "brand": "Baden Baden",
+   "name": "Witbier",
+   "category": "beer",
+   "style": "Witbier",
+   "abv": 4.9,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 600
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://www.badenbaden.com.br/produtos/witbier/",
+    "label": "Baden Baden (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "baden-baden-cristal",
+   "brand": "Baden Baden",
+   "name": "Cristal",
+   "category": "beer",
+   "style": "Pilsen",
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 600
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://www.badenbaden.com.br/produtos/cristal/",
+    "label": "Baden Baden (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "baden-baden-golden",
+   "brand": "Baden Baden",
+   "name": "Golden",
+   "category": "beer",
+   "style": "Ale",
+   "abv": 4.5,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 600
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://www.badenbaden.com.br/produtos/golden/",
+    "label": "Baden Baden (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "itaipava-pilsen",
+   "brand": "Itaipava",
+   "name": "Pilsen",
+   "category": "beer",
+   "style": "Pilsen",
+   "abv": 4.5,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 250
+    },
+    {
+     "kind": "bottle",
+     "ml": 300
+    },
+    {
+     "kind": "bottle",
+     "ml": 330
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    },
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "can",
+     "ml": 473
+    },
+    {
+     "kind": "can",
+     "ml": 550
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejaitaipava.com.br/produto/pilsen/",
+    "label": "Itaipava (site oficial) e rótulo da lata 350 ml"
+   },
+   "note": "Teor lido no rótulo da lata de 350 ml (código 7897395020101, via Open Food Facts)."
+  },
+  {
+   "id": "itaipava-premium",
+   "brand": "Itaipava",
+   "name": "Premium",
+   "category": "beer",
+   "style": "American Lager",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 600
+    },
+    {
+     "kind": "can",
+     "ml": 473
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "longNeck",
+     "ml": 330
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejaitaipava.com.br/produto/premium/",
+    "label": "Itaipava (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "itaipava-100-malte",
+   "brand": "Itaipava",
+   "name": "100% Malte",
+   "category": "beer",
+   "style": null,
+   "abv": 4.8,
+   "ingredients": [
+    "Água",
+    "Lúpulo",
+    "Malte de cevada"
+   ],
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.grupopetropolis.com.br/itaipava-apresenta-a-sua-cerveja-100-malte/",
+    "label": "Grupo Petrópolis (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "itaipava-zero",
+   "brand": "Itaipava",
+   "name": "Zero",
+   "category": "nonAlcoholic",
+   "style": null,
+   "abv": 0.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 330
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejaitaipava.com.br/produto/zero/",
+    "label": "Itaipava (site oficial)"
+   },
+   "note": "Teor declarado: 0,0%."
+  },
+  {
+   "id": "itaipava-malzbier",
+   "brand": "Itaipava",
+   "name": "Malzbier",
+   "category": "beer",
+   "style": "Malzbier",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 330
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejaitaipava.com.br/produto/malzbier/",
+    "label": "Itaipava (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "petra-origem",
+   "brand": "Petra",
+   "name": "Origem",
+   "category": "beer",
+   "style": "American Lager",
+   "abv": 4.8,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.cervejapetra.com.br/cerveja/petra-origem-puro-malte/",
+    "label": "Petra (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "petra-stark-bier",
+   "brand": "Petra",
+   "name": "Stark Bier",
+   "category": "beer",
+   "style": null,
+   "abv": 8.2,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.cervejapetra.com.br/cerveja/petra-stark-bier/",
+    "label": "Petra (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "black-princess-chopp-gold",
+   "brand": "Black Princess",
+   "name": "Chopp Gold",
+   "category": "draft",
+   "style": null,
+   "abv": 4.7,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "black princess gold",
+    "chope black princess"
+   ],
+   "source": {
+    "url": "https://www.grupopetropolis.com.br/eng/brands/beers/black-princess/",
+    "label": "Grupo Petrópolis (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "black-princess-chopp-dark",
+   "brand": "Black Princess",
+   "name": "Chopp Dark",
+   "category": "draft",
+   "style": null,
+   "abv": 4.8,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "black princess dark",
+    "chope black princess"
+   ],
+   "source": {
+    "url": "https://www.grupopetropolis.com.br/eng/brands/beers/black-princess/",
+    "label": "Grupo Petrópolis (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "black-princess-chopp-red-lager",
+   "brand": "Black Princess",
+   "name": "Chopp Red Lager",
+   "category": "draft",
+   "style": "Red Lager",
+   "abv": 5.5,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "black princess red lager",
+    "chope black princess"
+   ],
+   "source": {
+    "url": "https://www.grupopetropolis.com.br/eng/brands/beers/black-princess/",
+    "label": "Grupo Petrópolis (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "black-princess-chopp-kristallweizen",
+   "brand": "Black Princess",
+   "name": "Chopp Kristallweizen",
+   "category": "draft",
+   "style": "Kristallweizen",
+   "abv": 5.2,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "black princess kristallweizen",
+    "chope black princess"
+   ],
+   "source": {
+    "url": "https://www.grupopetropolis.com.br/eng/brands/beers/black-princess/",
+    "label": "Grupo Petrópolis (site oficial)"
+   },
+   "note": null
+  },
+  {
+   "id": "black-princess-chopp-english-ipa",
+   "brand": "Black Princess",
+   "name": "Chopp English IPA",
+   "category": "draft",
+   "style": "English IPA",
+   "abv": 6.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "black princess english ipa",
+    "chope black princess"
+   ],
+   "source": {
+    "url": "https://www.grupopetropolis.com.br/eng/brands/beers/black-princess/",
+    "label": "Grupo Petrópolis (site oficial)"
+   },
+   "note": null
+  }
+ ]
+}

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/di/injector.dart';
 import '../../core/sync/sync_cubit.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import 'settings_cubit.dart';
@@ -63,7 +64,8 @@ class _SettingsViewState extends State<_SettingsView> {
                 sync.status == SyncStatus.pending;
             final busy = _running || sync.status == SyncStatus.syncing;
             return ListView(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
+              padding: const EdgeInsets.fromLTRB(
+                  AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
               children: [
                 const SectionTitle('ARMAZENAMENTO'),
                 BlocBuilder<SettingsCubit, SettingsState>(
@@ -96,23 +98,23 @@ class _SettingsViewState extends State<_SettingsView> {
                         value: sync.label,
                         icon: Icons.cloud_sync_rounded,
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppSpace.md),
                       Text(
                         sync.lastSyncAt == null
                             ? 'Última sincronização: ainda não houve.'
                             : 'Última sincronização: '
                                 '${formatDateTime(sync.lastSyncAt!)}',
-                        style: const TextStyle(color: AppColors.textMuted),
+                        style: AppText.caption,
                       ),
                       if (sync.pending > 0)
                         Padding(
-                          padding: const EdgeInsets.only(top: 4),
+                          padding: const EdgeInsets.only(top: AppSpace.xs),
                           child: Text(
                             '${sync.pending} alteração(ões) aguardando envio.',
-                            style: const TextStyle(color: AppColors.textMuted),
+                            style: AppText.caption,
                           ),
                         ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpace.lg),
                       FilledButton.icon(
                         onPressed: busy ? null : _syncNow,
                         icon: busy
@@ -130,7 +132,7 @@ class _SettingsViewState extends State<_SettingsView> {
                   ),
                 ),
                 if (onlyHere) ...[
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpace.md),
                   SurfaceCard(
                     highlight: true,
                     child: Row(
@@ -138,14 +140,14 @@ class _SettingsViewState extends State<_SettingsView> {
                       children: [
                         const Icon(Icons.info_outline_rounded,
                             color: AppColors.amber),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppSpace.md),
                         Expanded(
                           child: Text(
                             '${sync.message ?? 'Alguns dados ainda não chegaram à nuvem.'}\n\n'
                             'Enquanto isso, se você desinstalar o app ou '
                             'limpar os dados do navegador, o que está só '
                             'neste aparelho será perdido.',
-                            style: const TextStyle(height: 1.4),
+                            style: AppText.body,
                           ),
                         ),
                       ],

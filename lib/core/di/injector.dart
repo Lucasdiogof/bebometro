@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../drinks/data/catalog_loader.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/catalog_item.dart';
 import '../../drinks/domain/drink_entry.dart';
@@ -20,6 +21,7 @@ final getIt = GetIt.instance;
 
 Future<void> configureDependencies() async {
   final store = await LocalStore.open();
+  final bundledCatalog = await CatalogLoader.load();
 
   var cloudEnabled = true;
   try {
@@ -38,7 +40,7 @@ Future<void> configureDependencies() async {
       OutingRepository(store),
     )
     ..registerSingleton<DrinkRepository>(
-      DrinkRepository(store),
+      DrinkRepository(store, bundledCatalog),
     )
     ..registerFactory<HomeCubit>(
       () => HomeCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),

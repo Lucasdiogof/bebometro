@@ -9,7 +9,8 @@ import '../domain/drink_entry.dart';
 import 'catalog_source.dart';
 
 class DrinkRepository {
-  DrinkRepository(this._store) {
+  /// [bundled] is the catalog shipped with the app (see [CatalogLoader]).
+  DrinkRepository(this._store, this._bundled) {
     _store.changes
         .where(
           (c) => c == LocalStore.drinkEntries || c == LocalStore.customDrinks,
@@ -18,6 +19,7 @@ class DrinkRepository {
   }
 
   final LocalStore _store;
+  final List<CatalogItem> _bundled;
   final _changes = StreamController<void>.broadcast();
   static const _uuid = Uuid();
   static const _favoritesKey = 'favorites';
@@ -85,7 +87,9 @@ class DrinkRepository {
       .toList()
     ..sort((a, b) => a.name.compareTo(b.name));
 
-  List<CatalogItem> catalog() => [...customItems(), ...CatalogSource.items];
+  /// The user's own drinks first, then the bundled products, then generics.
+  List<CatalogItem> catalog() =>
+      [...customItems(), ..._bundled, ...CatalogSource.items];
 
   CatalogItem? itemById(String? id) {
     if (id == null) return null;
@@ -95,35 +99,63 @@ class DrinkRepository {
     return null;
   }
 
+  /// Creates a personal drink, or updates it when [itemId] (the catalog id of
+  /// an existing custom drink) is given. Records already made with the drink
+  /// keep their own copy of the old data.
   Future<CatalogItem> saveCustomDrink({
+    String? itemId,
     required String name,
     required DrinkCategory category,
     required int volumeMl,
     String? brand,
     String? style,
     double? abvPercent,
+    List<String>? ingredients,
   }) async {
     final trimmed = name.trim();
     if (trimmed.isEmpty) throw ArgumentError('Dê um nome para a bebida.');
     if (volumeMl <= 0) throw ArgumentError('Informe o volume em ml.');
-    final now = DateTime.now().toUtc().toIso8601String();
-    final id = _uuid.v4();
-    String? clean(String? v) => (v == null || v.trim().isEmpty) ? null : v.trim();
+    if (abvPercent != null && (abvPercent < 0 || abvPercent > 100)) {
+      throw ArgumentError('O teor vai de 0 a 100%.');
+    }
+    final nowIso = DateTime.now().toUtc().toIso8601String();
+    final rawId = itemId == null
+        ? _uuid.v4()
+        : itemId.substring(CatalogItem.customPrefix.length);
+    final existing = _store.get(LocalStore.customDrinks, rawId);
+    String? clean(String? v) =>
+        (v == null || v.trim().isEmpty) ? null : v.trim();
+    final cleanIngredients = [
+      for (final i in ingredients ?? const <String>[])
+        if (i.trim().isNotEmpty) i.trim(),
+    ];
     final json = <String, dynamic>{
-      'id': id,
+      'id': rawId,
       'name': trimmed,
       'category': category.code,
       'brand': clean(brand),
       'style': clean(style),
       'volume_ml': volumeMl,
       'abv_percent': abvPercent,
-      'ingredients': null,
-      'created_at': now,
-      'updated_at': now,
+      'ingredients': cleanIngredients.isEmpty ? null : cleanIngredients,
+      'created_at': existing?['created_at'] ?? nowIso,
+      'updated_at': nowIso,
       'deleted_at': null,
     };
     await _store.put(LocalStore.customDrinks, json);
     return _customFromJson(json);
+  }
+
+  /// Hides a personal drink from the catalog. Past records are untouched.
+  Future<void> deleteCustomDrink(String itemId) async {
+    final rawId = itemId.substring(CatalogItem.customPrefix.length);
+    final json = _store.get(LocalStore.customDrinks, rawId);
+    if (json == null) return;
+    await _store.put(LocalStore.customDrinks, {
+      ...json,
+      'deleted_at': DateTime.now().toUtc().toIso8601String(),
+      'updated_at': DateTime.now().toUtc().toIso8601String(),
+    });
   }
 
   CatalogItem _customFromJson(Map<String, dynamic> j) {

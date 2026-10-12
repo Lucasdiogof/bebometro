@@ -41,7 +41,7 @@ class DrinkDraft {
   }) {
     final first = item.presentations.isEmpty ? null : item.presentations.first;
     return DrinkDraft(
-      name: item.name,
+      name: item.displayName,
       category: item.category,
       brand: item.brand,
       style: item.style,
