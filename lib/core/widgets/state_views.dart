@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import 'brand.dart';
 
 class LoadingView extends StatelessWidget {
   const LoadingView({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      const Center(child: CircularProgressIndicator(color: AppColors.amber));
+  Widget build(BuildContext context) => const Center(child: BrandLoader());
 }
 
 class EmptyView extends StatelessWidget {

@@ -5,7 +5,7 @@ import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
-import '../../core/widgets/beer_glass.dart';
+import '../../core/widgets/brand.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../history/presentation/history_page.dart';
@@ -139,11 +139,11 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      const BeerGlass(size: 40, fill: 0.85),
-      const SizedBox(width: AppSpace.sm),
-      const Expanded(
-        child: Text('Bebômetro', style: AppText.title),
+      const Padding(
+        padding: EdgeInsets.only(left: AppSpace.xs),
+        child: BrandWordmark(height: 30),
       ),
+      const Spacer(),
       IconButton(
         tooltip: 'Histórico',
         onPressed: onHistory,
