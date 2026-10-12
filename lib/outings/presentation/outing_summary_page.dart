@@ -169,7 +169,7 @@ class _SummaryViewState extends State<_SummaryView> {
                             Expanded(
                               child: StatTile(
                                 label: 'Seu volume',
-                                value: formatMl(s.personalMl),
+                                value: s.volumeLabel,
                                 icon: Icons.opacity_rounded,
                               ),
                             ),
@@ -298,7 +298,10 @@ class _GroupRow extends StatelessWidget {
           ),
         ),
         const SizedBox(width: AppSpace.sm),
-        Text(formatMl(group.personalMl), style: AppText.caption),
+        Text(
+          group.personalMl == null ? 'volume ?' : formatMl(group.personalMl!),
+          style: AppText.caption,
+        ),
       ]),
     );
   }
@@ -321,19 +324,31 @@ class _AlcoholInfo extends StatelessWidget {
           icon: Icons.science_outlined,
         ),
         const SizedBox(height: AppSpace.sm),
-        if (summary.unknownAbvCount > 0) ...[
+        if (summary.incompleteAlcoholCount > 0) ...[
           InfoPill(
-            '${summary.unknownAbvCount} '
-            '${summary.unknownAbvCount == 1 ? 'registro' : 'registros'} '
-            'sem teor informado ficaram fora da conta',
+            '${summary.incompleteAlcoholCount} '
+            '${summary.incompleteAlcoholCount == 1 ? 'registro' : 'registros'} '
+            'com teor ou quantidade desconhecidos: o total é um mínimo',
             icon: Icons.help_outline_rounded,
             warning: true,
           ),
           const SizedBox(height: AppSpace.sm),
         ],
+        if (summary.unknownVolumeCount > 0) ...[
+          InfoPill(
+            '${summary.unknownVolumeCount} '
+            '${summary.unknownVolumeCount == 1 ? 'registro' : 'registros'} '
+            'sem volume informado (não entram no volume)',
+            icon: Icons.opacity_outlined,
+            warning: true,
+          ),
+          const SizedBox(height: AppSpace.sm),
+        ],
         const Text(
-          'Volume × teor declarado de cada registro. Não é a concentração de '
-          'álcool no sangue e não indica se você pode dirigir.',
+          'Calculado só com o que foi informado: volume × teor nas bebidas '
+          'simples e quantidade × teor de cada componente nos drinks. Em '
+          'drinks vale a receita declarada, não o que o bar serviu. Não é a '
+          'concentração de álcool no sangue e não indica se você pode dirigir.',
           style: AppText.caption,
         ),
       ],

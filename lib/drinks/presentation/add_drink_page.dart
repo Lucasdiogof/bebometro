@@ -421,7 +421,7 @@ class _ItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final count = item.presentations.length;
+    final count = item.documentedPresentations.length;
     return SurfaceCard(
       onTap: onTap,
       padding: const EdgeInsets.fromLTRB(

@@ -6,6 +6,7 @@ import '../../core/data/local_store.dart';
 import '../domain/catalog_item.dart';
 import '../domain/drink_category.dart';
 import '../domain/drink_entry.dart';
+import '../domain/recipe.dart';
 import 'catalog_source.dart';
 
 class DrinkRepository {
@@ -158,7 +159,63 @@ class DrinkRepository {
     });
   }
 
+  /// Saves the user's own reusable recipe (a mixed drink with components).
+  /// Passing [itemId] of an existing one updates it; records already made keep
+  /// their own snapshot of the composition.
+  Future<CatalogItem> saveCustomRecipe({
+    String? itemId,
+    required String name,
+    required List<EntryComponent> components,
+  }) async {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) throw ArgumentError('Dê um nome para a receita.');
+    if (components.isEmpty) {
+      throw ArgumentError('Adicione pelo menos um ingrediente.');
+    }
+    final nowIso = DateTime.now().toUtc().toIso8601String();
+    final rawId = itemId == null
+        ? _uuid.v4()
+        : itemId.substring(CatalogItem.customPrefix.length);
+    final existing = _store.get(LocalStore.customDrinks, rawId);
+    final json = <String, dynamic>{
+      'id': rawId,
+      'name': trimmed,
+      'category': DrinkCategory.cocktail.code,
+      'brand': null,
+      'style': null,
+      // A recipe has no single volume; unknown stays null (never 0).
+      'volume_ml': null,
+      'abv_percent': null,
+      'ingredients': null,
+      'components': [for (final c in components) c.toJson()],
+      'created_at': existing?['created_at'] ?? nowIso,
+      'updated_at': nowIso,
+      'deleted_at': null,
+    };
+    await _store.put(LocalStore.customDrinks, json);
+    return _customFromJson(json);
+  }
+
   CatalogItem _customFromJson(Map<String, dynamic> j) {
+    final rawComponents = j['components'] as List?;
+    if (rawComponents != null) {
+      final id = '${CatalogItem.customPrefix}${j['id']}';
+      return CatalogItem(
+        id: id,
+        name: j['name'] as String,
+        category: DrinkCategory.cocktail,
+        presentations: const [],
+        origin: InfoOrigin.user,
+        recipe: Recipe(
+          id: id,
+          name: j['name'] as String,
+          components: [
+            for (final c in rawComponents)
+              EntryComponent.fromJson(Map<String, dynamic>.from(c as Map)),
+          ],
+        ),
+      );
+    }
     final volume = (j['volume_ml'] as num).toInt();
     return CatalogItem(
       id: '${CatalogItem.customPrefix}${j['id']}',

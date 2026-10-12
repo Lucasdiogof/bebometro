@@ -1,0 +1,579 @@
+{
+ "version": 1,
+ "consultedOn": "2026-10-12",
+ "description": "Receitas de referência. Não representam o que um bar serve.",
+ "recipes": [
+  {
+   "id": "caipirinha",
+   "name": "Caipirinha",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/caipirinha/",
+    "label": "IBA, Contemporary Classics",
+    "publisher": "IBA"
+   },
+   "method": "Amasse suavemente o limão com o açúcar, complete o copo com gelo picado, junte a cachaça e misture com delicadeza.",
+   "garnish": null,
+   "note": "O gelo não entra na conta de volume. A IBA publica 60 ml de cachaça; bares variam.",
+   "aliases": [
+    "caipira"
+   ],
+   "components": [
+    {
+     "name": "Cachaça",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 60,
+     "role": "cachaca"
+    },
+    {
+     "name": "Limão",
+     "alcoholic": false,
+     "unit": "unit",
+     "amount": 1,
+     "text": "1 limão cortado em gomos pequenos"
+    },
+    {
+     "name": "Açúcar branco",
+     "alcoholic": false,
+     "unit": "tsp",
+     "amount": 4,
+     "text": "4 colheres de chá"
+    }
+   ]
+  },
+  {
+   "id": "caipiroska",
+   "name": "Caipiroska",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/caipirinha/",
+    "label": "IBA, página da Caipirinha (Contemporary Classics)",
+    "publisher": "IBA"
+   },
+   "method": "Igual à Caipirinha, trocando a cachaça por vodka.",
+   "garnish": null,
+   "note": "A IBA não publica a Caipiroska como receita própria: a página da Caipirinha indica trocar a cachaça por vodka. As quantidades são as da Caipirinha.",
+   "aliases": [
+    "caipirosca",
+    "caipivodka"
+   ],
+   "components": [
+    {
+     "name": "Vodka",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 60,
+     "role": "vodka"
+    },
+    {
+     "name": "Limão",
+     "alcoholic": false,
+     "unit": "unit",
+     "amount": 1,
+     "text": "1 limão cortado em gomos pequenos"
+    },
+    {
+     "name": "Açúcar branco",
+     "alcoholic": false,
+     "unit": "tsp",
+     "amount": 4,
+     "text": "4 colheres de chá"
+    }
+   ]
+  },
+  {
+   "id": "gin-tonica",
+   "name": "Gin Tônica",
+   "source": {
+    "url": "https://www.bombaysapphire.com/gin-cocktails/bombay-sapphire-and-tonic/23153/",
+    "label": "Bombay Sapphire (receita da marca)",
+    "publisher": "Bombay Sapphire"
+   },
+   "method": "Encha uma taça balão com gelo em cubos grandes, junte o gin, esprema o limão, complete com a tônica e misture.",
+   "garnish": null,
+   "note": "A IBA não publica o Gin Tônica. Outras marcas usam proporções diferentes (Beefeater: 50 ml de gin e 125 ml de tônica; Hendrick's: 50 ml e 150 ml).",
+   "aliases": [
+    "gin tonic",
+    "gt"
+   ],
+   "components": [
+    {
+     "name": "Gin",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 50,
+     "role": "gin"
+    },
+    {
+     "name": "Água tônica premium",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 100
+    },
+    {
+     "name": "Limão",
+     "alcoholic": false,
+     "unit": "wedge",
+     "amount": 1,
+     "text": "1 gomo de limão"
+    }
+   ]
+  },
+  {
+   "id": "mojito",
+   "name": "Mojito",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/mojito/",
+    "label": "IBA, Contemporary Classics",
+    "publisher": "IBA"
+   },
+   "method": "Misture a hortelã com o açúcar e o suco de limão, junte um pouco de água com gás e gelo, coloque o rum e complete com água com gás.",
+   "garnish": "Ramos de hortelã e rodela de limão.",
+   "note": null,
+   "aliases": [],
+   "components": [
+    {
+     "name": "Rum branco",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 45,
+     "role": "rum"
+    },
+    {
+     "name": "Suco de limão fresco",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 20
+    },
+    {
+     "name": "Hortelã",
+     "alcoholic": false,
+     "unit": "pcs",
+     "amount": 6,
+     "text": "6 ramos de hortelã"
+    },
+    {
+     "name": "Açúcar branco",
+     "alcoholic": false,
+     "unit": "tsp",
+     "amount": 2,
+     "text": "2 colheres de chá"
+    },
+    {
+     "name": "Água com gás",
+     "alcoholic": false,
+     "unit": "topup",
+     "text": "completar"
+    }
+   ]
+  },
+  {
+   "id": "negroni",
+   "name": "Negroni",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/negroni/",
+    "label": "IBA, The Unforgettables",
+    "publisher": "IBA"
+   },
+   "method": "Despeje tudo direto no copo old fashioned gelado com gelo e misture com delicadeza.",
+   "garnish": "Meia rodela de laranja.",
+   "note": null,
+   "aliases": [],
+   "components": [
+    {
+     "name": "Gin",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 30,
+     "role": "gin"
+    },
+    {
+     "name": "Campari",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 30,
+     "role": "campari"
+    },
+    {
+     "name": "Vermute doce",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 30,
+     "role": "vermouth-sweet"
+    }
+   ]
+  },
+  {
+   "id": "aperol-spritz",
+   "name": "Aperol Spritz",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/spritz/",
+    "label": "IBA, New Era (receita \"Spritz\")",
+    "publisher": "IBA"
+   },
+   "method": "Monte tudo numa taça de vinho com gelo e misture com delicadeza.",
+   "garnish": "Fatia de laranja.",
+   "note": "A IBA lista a receita como \"Spritz\" com Aperol e comenta que há versões com Campari, Cynar ou Select.",
+   "aliases": [
+    "spritz"
+   ],
+   "components": [
+    {
+     "name": "Prosecco",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 90,
+     "role": "sparkling-wine"
+    },
+    {
+     "name": "Aperol",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 60,
+     "role": "aperol"
+    },
+    {
+     "name": "Água com gás",
+     "alcoholic": false,
+     "unit": "splash",
+     "text": "um toque"
+    }
+   ]
+  },
+  {
+   "id": "moscow-mule",
+   "name": "Moscow Mule",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/moscow-mule/",
+    "label": "IBA, Contemporary Classics",
+    "publisher": "IBA"
+   },
+   "method": "Na caneca (ou copo baixo), misture a vodka e a ginger beer, junte o suco de limão e mexa com delicadeza.",
+   "garnish": "Rodela de limão.",
+   "note": "A página da IBA cita a marca Smirnoff para a vodka.",
+   "aliases": [
+    "moscow mule"
+   ],
+   "components": [
+    {
+     "name": "Vodka",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 45,
+     "role": "vodka"
+    },
+    {
+     "name": "Ginger beer",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 120
+    },
+    {
+     "name": "Suco de limão fresco",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 10
+    }
+   ]
+  },
+  {
+   "id": "margarita",
+   "name": "Margarita",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/margarita/",
+    "label": "IBA, Contemporary Classics",
+    "publisher": "IBA"
+   },
+   "method": "Bata tudo numa coqueteleira com gelo e coe numa taça gelada.",
+   "garnish": "Meia borda de sal (opcional).",
+   "note": null,
+   "aliases": [],
+   "components": [
+    {
+     "name": "Tequila 100% agave",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 50,
+     "role": "tequila"
+    },
+    {
+     "name": "Triple sec",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 20,
+     "role": "orange-liqueur"
+    },
+    {
+     "name": "Suco de limão espremido na hora",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 15
+    }
+   ]
+  },
+  {
+   "id": "cuba-libre",
+   "name": "Cuba Libre",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/cuba-libre/",
+    "label": "IBA, Contemporary Classics",
+    "publisher": "IBA"
+   },
+   "method": "Monte tudo num copo alto com gelo.",
+   "garnish": "Gomo de limão.",
+   "note": null,
+   "aliases": [
+    "cuba libre",
+    "rum com coca"
+   ],
+   "components": [
+    {
+     "name": "Rum branco",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 50,
+     "role": "rum"
+    },
+    {
+     "name": "Refrigerante de cola",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 120
+    },
+    {
+     "name": "Suco de limão fresco",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 10
+    }
+   ]
+  },
+  {
+   "id": "pina-colada",
+   "name": "Piña Colada",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/pina-colada/",
+    "label": "IBA, Contemporary Classics",
+    "publisher": "IBA"
+   },
+   "method": "Bata tudo com gelo no liquidificador e sirva num copo grande com canudo.",
+   "garnish": "Fatia de abacaxi com cereja.",
+   "note": "A IBA comenta que historicamente se juntavam gotas de limão e que 4 fatias de abacaxi podem substituir o suco.",
+   "aliases": [
+    "pina colada"
+   ],
+   "components": [
+    {
+     "name": "Rum branco",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 50,
+     "role": "rum"
+    },
+    {
+     "name": "Creme de coco",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 30
+    },
+    {
+     "name": "Suco de abacaxi fresco",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 50
+    }
+   ]
+  },
+  {
+   "id": "daiquiri",
+   "name": "Daiquiri",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/daiquiri/",
+    "label": "IBA, The Unforgettables",
+    "publisher": "IBA"
+   },
+   "method": "Misture tudo na coqueteleira até dissolver o açúcar, junte gelo, bata e coe numa taça gelada.",
+   "garnish": null,
+   "note": null,
+   "aliases": [],
+   "components": [
+    {
+     "name": "Rum branco",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 60,
+     "role": "rum"
+    },
+    {
+     "name": "Suco de limão fresco",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 20
+    },
+    {
+     "name": "Açúcar superfino",
+     "alcoholic": false,
+     "unit": "barspoon",
+     "amount": 2,
+     "text": "2 colheres de bar"
+    }
+   ]
+  },
+  {
+   "id": "cosmopolitan",
+   "name": "Cosmopolitan",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/cosmopolitan/",
+    "label": "IBA, Contemporary Classics",
+    "publisher": "IBA"
+   },
+   "method": "Bata tudo com gelo na coqueteleira e coe numa taça de coquetel grande.",
+   "garnish": "Casca de limão (twist).",
+   "note": "A IBA especifica vodka cítrica e a marca Cointreau.",
+   "aliases": [],
+   "components": [
+    {
+     "name": "Vodka cítrica",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 40,
+     "role": "vodka"
+    },
+    {
+     "name": "Cointreau",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 15,
+     "role": "orange-liqueur"
+    },
+    {
+     "name": "Suco de limão fresco",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 15
+    },
+    {
+     "name": "Suco de cranberry",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 30
+    }
+   ]
+  },
+  {
+   "id": "old-fashioned",
+   "name": "Old Fashioned",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/old-fashioned/",
+    "label": "IBA, The Unforgettables",
+    "publisher": "IBA"
+   },
+   "method": "Num copo old fashioned, molhe o cubo de açúcar com o bitter e um pouco de água, amasse até dissolver, junte gelo e o whisky e mexa com delicadeza.",
+   "garnish": "Fatia ou casca de laranja e cereja.",
+   "note": "A IBA indica bourbon ou rye. O bitter e a água vêm em gotas, sem volume em ml.",
+   "aliases": [],
+   "components": [
+    {
+     "name": "Bourbon ou rye",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 45,
+     "role": "whisky"
+    },
+    {
+     "name": "Cubo de açúcar",
+     "alcoholic": false,
+     "unit": "unit",
+     "amount": 1,
+     "text": "1 cubo"
+    },
+    {
+     "name": "Angostura bitters",
+     "alcoholic": true,
+     "unit": "dash",
+     "role": "bitters",
+     "text": "algumas gotas/dashes"
+    },
+    {
+     "name": "Água",
+     "alcoholic": false,
+     "unit": "dash",
+     "text": "algumas gotas"
+    }
+   ]
+  },
+  {
+   "id": "dry-martini",
+   "name": "Dry Martini",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/dry-martini/",
+    "label": "IBA, The Unforgettables",
+    "publisher": "IBA"
+   },
+   "method": "Misture com gelo num copo de mistura, mexa bem e coe numa taça de martini gelada.",
+   "garnish": "Casca de limão espremida sobre a bebida, ou azeitona verde se pedirem.",
+   "note": null,
+   "aliases": [
+    "martini seco"
+   ],
+   "components": [
+    {
+     "name": "Gin",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 60,
+     "role": "gin"
+    },
+    {
+     "name": "Vermute seco",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 10,
+     "role": "vermouth-dry"
+    }
+   ]
+  },
+  {
+   "id": "whiskey-sour",
+   "name": "Whiskey Sour",
+   "source": {
+    "url": "https://iba-world.com/iba-cocktail/whiskey-sour/",
+    "label": "IBA, The Unforgettables",
+    "publisher": "IBA"
+   },
+   "method": "Bata tudo com gelo na coqueteleira e coe numa taça cobbler (ou num copo com gelo, se for \"on the rocks\").",
+   "garnish": "Meia rodela de laranja e cereja marasquino.",
+   "note": "Se usar clara de ovo, bata com mais força para formar a espuma.",
+   "aliases": [
+    "whisky sour"
+   ],
+   "components": [
+    {
+     "name": "Bourbon",
+     "alcoholic": true,
+     "unit": "ml",
+     "amount": 45,
+     "role": "whisky"
+    },
+    {
+     "name": "Suco de limão-siciliano fresco",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 25
+    },
+    {
+     "name": "Xarope de açúcar",
+     "alcoholic": false,
+     "unit": "ml",
+     "amount": 20
+    },
+    {
+     "name": "Clara de ovo",
+     "alcoholic": false,
+     "unit": "drops",
+     "text": "poucas gotas (opcional)",
+     "optional": true
+    }
+   ]
+  }
+ ]
+}

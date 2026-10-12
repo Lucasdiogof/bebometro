@@ -7,6 +7,8 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../domain/catalog_item.dart';
+import '../domain/drink_category.dart';
+import '../domain/recipe.dart';
 import '../domain/drink_draft.dart';
 import '../domain/drink_entry.dart';
 import 'drink_form_cubit.dart';
@@ -121,7 +123,9 @@ class _DrinkEntryView extends StatelessWidget {
           },
           child: Scaffold(
             appBar: AppBar(
-              title: Text(d.isEditing ? 'Corrigir registro' : 'Registrar bebida'),
+              title: Text(d.isEditing
+                  ? 'Corrigir registro'
+                  : (d.isRecipe ? 'Registrar drink' : 'Registrar bebida')),
               actions: [
                 if (d.isEditing)
                   IconButton(
@@ -143,6 +147,11 @@ class _DrinkEntryView extends StatelessWidget {
                         AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
                     children: [
                       _Header(draft: d),
+                      if (d.isRecipe)
+                        ...[
+                        _RecipeSection(state: state, errors: errors),
+                        ]
+                      else ...[
                       const SectionTitle('Bebida e tamanho'),
                       if (state.presentations.isNotEmpty) ...[
                         Wrap(
@@ -152,18 +161,27 @@ class _DrinkEntryView extends StatelessWidget {
                             for (final p in state.presentations)
                               ChoiceChip(
                                 label: Text(p.label),
-                                selected: d.presentationLabel == p.label,
+                                selected: p.isSuggestion
+                                    ? (d.presentationLabel == null &&
+                                        d.containerMl == p.volumeMl)
+                                    : d.presentationLabel == p.label,
                                 showCheckmark: false,
                                 onSelected: (_) => cubit.selectPresentation(p),
                               ),
                           ],
                         ),
                         if (state.sizesAreGeneric)
-                          const Padding(
-                            padding: EdgeInsets.only(top: AppSpace.sm),
+                          Padding(
+                            padding: const EdgeInsets.only(top: AppSpace.sm),
                             child: Text(
-                              'Tamanhos comuns: este produto não tem tamanhos '
-                              'verificados. Confira na embalagem.',
+                              d.category == DrinkCategory.spirit
+                                  ? 'Tamanhos sugeridos de dose, editáveis: não '
+                                      'são medidas oficiais de nenhum '
+                                      'estabelecimento. Escolher uma garrafa '
+                                      'marca a bebida como compartilhada.'
+                                  : 'Tamanhos sugeridos: este produto não tem '
+                                      'embalagens verificadas no catálogo. '
+                                      'Confira na embalagem.',
                               style: AppText.caption,
                             ),
                           ),
@@ -197,6 +215,27 @@ class _DrinkEntryView extends StatelessWidget {
                               : 'Confira no rótulo se puder.',
                           onChanged: cubit.setAbv,
                         ),
+                        if (state.abvVariants.isNotEmpty) ...[
+                          const SizedBox(height: AppSpace.sm),
+                          const Text(
+                            'As fontes divergem. Escolha o que estiver no seu '
+                            'rótulo ou digite:',
+                            style: AppText.caption,
+                          ),
+                          const SizedBox(height: AppSpace.xs),
+                          Wrap(
+                            spacing: AppSpace.sm,
+                            runSpacing: AppSpace.sm,
+                            children: [
+                              for (final v in state.abvVariants)
+                                ActionChip(
+                                  label: Text(
+                                      '${formatAbv(v.value)} · ${v.scope}'),
+                                  onPressed: () => cubit.setAbv(v.value),
+                                ),
+                            ],
+                          ),
+                        ],
                       ],
                       const SectionTitle('Individual ou compartilhada'),
                       SizedBox(
@@ -215,6 +254,7 @@ class _DrinkEntryView extends StatelessWidget {
                       if (d.isShared) ...[
                         const SizedBox(height: AppSpace.md),
                         _SharingCard(draft: d, errors: errors),
+                      ],
                       ],
                       const SectionTitle('Preço (opcional)'),
                       _PriceCard(draft: d, errors: errors),
@@ -270,7 +310,9 @@ class _DrinkEntryView extends StatelessWidget {
                               )
                             : Text(d.isEditing
                                 ? 'Salvar alterações'
-                                : 'Registrar bebida'),
+                                : (d.isRecipe
+                                    ? 'Registrar drink'
+                                    : 'Registrar bebida')),
                       ),
                     ],
                   ),
@@ -603,4 +645,368 @@ class _NumberFieldState<T> extends State<_NumberField<T>> {
       ),
     );
   }
+}
+
+
+/// Mixed drink: the composition (collapsed by default), the optional served
+/// volume and the honest alcohol preview.
+class _RecipeSection extends StatelessWidget {
+  const _RecipeSection({required this.state, required this.errors});
+
+  final DrinkFormState state;
+  final Map<String, String> errors;
+
+  Future<void> _addComponent(BuildContext context) async {
+    final cubit = context.read<DrinkFormCubit>();
+    final nameController = TextEditingController();
+    var alcoholic = false;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setState) => AlertDialog(
+          title: const Text('Adicionar ingrediente'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                autofocus: true,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: const InputDecoration(labelText: 'Ingrediente'),
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Tem álcool'),
+                value: alcoholic,
+                activeThumbColor: AppColors.amber,
+                onChanged: (v) => setState(() => alcoholic = v),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(ctx, false),
+                child: const Text('Cancelar')),
+            TextButton(
+                onPressed: () => Navigator.pop(ctx, true),
+                child: const Text('Adicionar')),
+          ],
+        ),
+      ),
+    );
+    if (ok == true) {
+      cubit.addComponent(nameController.text, alcoholic: alcoholic);
+    }
+    nameController.dispose();
+  }
+
+  Future<void> _saveRecipe(BuildContext context) async {
+    final cubit = context.read<DrinkFormCubit>();
+    final d = state.draft;
+    final controller = TextEditingController(
+      text: d.composition?.customized == true ? '${d.name} (minha)' : d.name,
+    );
+    final name = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Salvar como minha receita'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: controller,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: const InputDecoration(labelText: 'Nome da receita'),
+            ),
+            const SizedBox(height: AppSpace.sm),
+            const Text(
+              'Guarda ingredientes, quantidades e teores para reutilizar. '
+              'Registros antigos não mudam.',
+              style: AppText.caption,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Cancelar')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, controller.text),
+              child: const Text('Salvar')),
+        ],
+      ),
+    );
+    controller.dispose();
+    if (name == null || !context.mounted) return;
+    final error = await cubit.saveAsMyRecipe(name);
+    if (context.mounted) {
+      showToast(context, error ?? 'Receita salva no seu catálogo');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<DrinkFormCubit>();
+    final d = state.draft;
+    final comp = d.composition!;
+    final estimate = d.alcoholEstimate;
+    final summary = d.components.map((c) => c.name).join(', ');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionTitle('Composição'),
+        Text(
+          comp.recipeId == null || comp.sourceLabel == null
+              ? 'Informe só o que você sabe.'
+              : 'Receita de referência (${comp.sourceLabel}). Ajuste para '
+                  'o que foi realmente servido.',
+          style: AppText.caption,
+        ),
+        const SizedBox(height: AppSpace.sm),
+        SurfaceCard(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpace.md),
+          child: Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: const EdgeInsets.only(bottom: AppSpace.md),
+              title: Text(
+                comp.customized ? 'Composição ajustada' : 'Ver e ajustar composição',
+                style: AppText.subtitle,
+              ),
+              subtitle: Text(
+                summary.isEmpty ? 'Nenhum ingrediente ainda' : summary,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: AppText.caption,
+              ),
+              children: [
+                for (var i = 0; i < d.components.length; i++)
+                  _ComponentCard(
+                    key: ValueKey('component-$i-${d.components[i].name}'),
+                    index: i,
+                    component: d.components[i],
+                    abvError: errors['component_abv_$i'],
+                  ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton.icon(
+                    onPressed: () => _addComponent(context),
+                    icon: const Icon(Icons.add_rounded, size: 18),
+                    label: const Text('Adicionar ingrediente'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SectionTitle('Volume do drink (opcional)'),
+        _NumberField<int>(
+          label: 'Volume servido (ml)',
+          suffix: 'ml',
+          value: d.containerMl,
+          parse: parseInteger,
+          format: (v) => '$v',
+          keyboardType: TextInputType.number,
+          errorText: errors['volume'],
+          helper: 'Se não souber, deixe em branco: o resumo mostra como '
+              'desconhecido. O tamanho do copo e o gelo não contam como '
+              'volume bebido.',
+          onChanged: cubit.setVolume,
+        ),
+        if (estimate != null) ...[
+          const SizedBox(height: AppSpace.md),
+          SurfaceCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                StatTile(
+                  label: 'Álcool puro da composição acima',
+                  value: (estimate.isComplete ? '' : 'pelo menos ') +
+                      formatGrams(estimate.grams),
+                  icon: Icons.science_outlined,
+                ),
+                const SizedBox(height: AppSpace.sm),
+                if (!estimate.isComplete)
+                  InfoPill(
+                    'Faltam teor ou quantidade de: ${estimate.missing.join(', ')}',
+                    icon: Icons.help_outline_rounded,
+                    warning: true,
+                  ),
+                const SizedBox(height: AppSpace.sm),
+                const Text(
+                  'Vale a composição declarada, assumindo a porção inteira. '
+                  'Não é concentração no sangue.',
+                  style: AppText.caption,
+                ),
+              ],
+            ),
+          ),
+        ],
+        if (d.components.isNotEmpty)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: () => _saveRecipe(context),
+              icon: const Icon(Icons.bookmark_add_outlined, size: 18),
+              label: const Text('Salvar como minha receita'),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _ComponentCard extends StatelessWidget {
+  const _ComponentCard({
+    super.key,
+    required this.index,
+    required this.component,
+    this.abvError,
+  });
+
+  final int index;
+  final EntryComponent component;
+  final String? abvError;
+
+  Future<void> _pickProduct(BuildContext context) async {
+    final cubit = context.read<DrinkFormCubit>();
+    final products = cubit.productsForRole(component.role!);
+    final picked = await showModalBottomSheet<_ProductChoice>(
+      context: context,
+      isScrollControlled: true,
+      builder: (ctx) => SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.fromLTRB(
+              AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+          children: [
+            Text('Qual ${component.name.toLowerCase()}?', style: AppText.title),
+            const SizedBox(height: AppSpace.sm),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.edit_outlined),
+              title: const Text('Sem marca: informar o teor'),
+              onTap: () => Navigator.pop(ctx, const _ProductChoice(null)),
+            ),
+            for (final p in products)
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(p.category.icon, color: AppColors.amber),
+                title: Text(p.displayName),
+                subtitle: Text(
+                  p.abvPercent != null
+                      ? 'Teor ${formatAbv(p.abvPercent!)}'
+                      : (p.abvVariants.isNotEmpty
+                          ? 'Teor varia conforme a fonte'
+                          : 'Teor não informado'),
+                  style: AppText.caption,
+                ),
+                onTap: () => Navigator.pop(ctx, _ProductChoice(p)),
+              ),
+          ],
+        ),
+      ),
+    );
+    if (picked != null) cubit.pickComponentProduct(index, picked.product);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<DrinkFormCubit>();
+    final c = component;
+    final pure = c.pureAlcoholMl;
+    return Padding(
+      padding: const EdgeInsets.only(top: AppSpace.md),
+      child: Container(
+        padding: const EdgeInsets.all(AppSpace.md),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceHigh,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: [
+              Expanded(
+                child: Text(
+                  c.name + (c.optional ? ' (opcional)' : ''),
+                  style: AppText.subtitle,
+                ),
+              ),
+              if (c.alcoholic)
+                const Icon(Icons.local_bar_outlined,
+                    size: 16, color: AppColors.amber),
+              IconButton(
+                tooltip: 'Remover ingrediente',
+                onPressed: () => cubit.removeComponent(index),
+                icon: const Icon(Icons.close_rounded, size: 18),
+              ),
+            ]),
+            if (c.amountMl == null && c.amountText != null)
+              Text('Na receita: ${c.amountText}', style: AppText.caption),
+            const SizedBox(height: AppSpace.sm),
+            _NumberField<double>(
+              label: 'Quantidade (ml)',
+              suffix: 'ml',
+              value: c.amountMl,
+              parse: parseDecimal,
+              format: decimalToInput,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              helper: c.amountMl == null
+                  ? 'Em branco = desconhecida. Só informe se souber o volume.'
+                  : null,
+              onChanged: (v) => cubit.setComponentAmount(index, v),
+            ),
+            if (c.alcoholic) ...[
+              const SizedBox(height: AppSpace.sm),
+              if (c.role != null)
+                OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(44)),
+                  onPressed: () => _pickProduct(context),
+                  icon: const Icon(Icons.local_offer_outlined, size: 18),
+                  label: Text(
+                    c.productName ?? 'Escolher marca/produto',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              if (c.role != null) const SizedBox(height: AppSpace.sm),
+              _NumberField<double>(
+                label: 'Teor alcoólico (% vol.)',
+                suffix: '% vol.',
+                value: c.abvPercent,
+                parse: parseDecimal,
+                format: decimalToInput,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                errorText: abvError,
+                helper: c.abvPercent == null
+                    ? 'Desconhecido: sem ele o álcool total fica incompleto.'
+                    : null,
+                onChanged: (v) => cubit.setComponentAbv(index, v),
+              ),
+              const SizedBox(height: AppSpace.xs),
+              Text(
+                pure == null
+                    ? 'Álcool deste ingrediente: não calculado (falta '
+                        '${c.amountMl == null ? 'a quantidade' : 'o teor'}).'
+                    : 'Álcool deste ingrediente: ${formatGrams(pure * 0.789)}',
+                style: AppText.caption,
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Result of the product picker (null product = "no brand").
+class _ProductChoice {
+  const _ProductChoice(this.product);
+
+  final CatalogItem? product;
 }

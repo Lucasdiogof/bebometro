@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": 2,
  "consultedOn": "2026-10-12",
  "description": "Catálogo inicial do Bebômetro. Campos ausentes são desconhecidos, nunca zero.",
  "products": [
@@ -18,8 +18,31 @@
    ],
    "presentations": [
     {
+     "ml": 269
+    },
+    {
+     "ml": 300
+    },
+    {
      "kind": "can",
      "ml": 350
+    },
+    {
+     "ml": 355
+    },
+    {
+     "ml": 473
+    },
+    {
+     "ml": 550
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
     }
    ],
    "aliases": [
@@ -30,7 +53,7 @@
     "url": "https://www.brahma.com.br/pt-br/produto/chopp-brahma-claro",
     "label": "Brahma (site oficial)"
    },
-   "note": "Vendido em lata; a página também descreve o chope."
+   "note": "Os tamanhos vêm da página do produto; ela só distingue lata (350 ml) e garrafas de vidro (600 ml e 1 L)."
   },
   {
    "id": "brahma-duplo-malte",
@@ -157,7 +180,7 @@
    "name": "Pilsen",
    "category": "beer",
    "style": "American Lager",
-   "abv": 4.6,
+   "abv": null,
    "ingredients": [
     "Lúpulo",
     "Malte",
@@ -194,7 +217,17 @@
     "url": "https://www.skol.com.br/produto/skol-pilsen",
     "label": "Skol (site oficial)"
    },
-   "note": "Teor de 4,6% na página do produto; embalagens aparecem com 4,7% vol. Confira no rótulo."
+   "note": null,
+   "abvVariants": [
+    {
+     "value": 4.6,
+     "scope": "página do produto no site da Skol"
+    },
+    {
+     "value": 4.7,
+     "scope": "embalagens long neck e lata, segundo o site da Skol"
+    }
+   ]
   },
   {
    "id": "skol-puro-malte",
@@ -253,7 +286,29 @@
     "Milho",
     "Lúpulo"
    ],
-   "presentations": [],
+   "presentations": [
+    {
+     "ml": 269
+    },
+    {
+     "ml": 300
+    },
+    {
+     "ml": 350
+    },
+    {
+     "ml": 473
+    },
+    {
+     "ml": 550
+    },
+    {
+     "ml": 600
+    },
+    {
+     "ml": 1000
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/antarctica/antarctica-pilsen",
@@ -274,7 +329,17 @@
     "Milho",
     "Lúpulo"
    ],
-   "presentations": [],
+   "presentations": [
+    {
+     "ml": 300
+    },
+    {
+     "ml": 350
+    },
+    {
+     "ml": 600
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/original/original",
@@ -295,7 +360,26 @@
     "Milho",
     "Lúpulo"
    ],
-   "presentations": [],
+   "presentations": [
+    {
+     "ml": 269
+    },
+    {
+     "ml": 300
+    },
+    {
+     "ml": 350
+    },
+    {
+     "ml": 473
+    },
+    {
+     "ml": 600
+    },
+    {
+     "ml": 1000
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/antarctica/antarctica-subzero",
@@ -356,13 +440,26 @@
     "Arroz",
     "Lúpulo"
    ],
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "longNeck",
+     "ml": 330
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    }
+   ],
    "aliases": [
     "bud"
    ],
    "source": {
-    "url": "https://www.ambev.com.br/marcas/cervejas/budweiser/budweiser",
-    "label": "Ambev (site oficial)"
+    "url": "https://budweiser.com.br/produto/budweiser",
+    "label": "Budweiser Brasil (site oficial)"
    },
    "note": null
   },
@@ -382,6 +479,9 @@
    "presentations": [
     {
      "ml": 330
+    },
+    {
+     "ml": 355
     },
     {
      "ml": 210,
@@ -412,15 +512,37 @@
    ],
    "presentations": [
     {
+     "kind": "longNeck",
      "ml": 330
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "can",
+     "ml": 473
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    },
+    {
+     "ml": 269
+    },
+    {
+     "ml": 310
+    },
+    {
+     "ml": 410
     }
    ],
    "aliases": [
     "stella"
    ],
    "source": {
-    "url": "https://www.ambev.com.br/marcas/cervejas/stella-artois/stella-artois",
-    "label": "Ambev (site oficial)"
+    "url": "https://www.stellaartois.com.br/produto/stella-artois",
+    "label": "Stella Artois Brasil (site oficial)"
    },
    "note": null
   },
@@ -591,7 +713,7 @@
    "name": "Cauim",
    "category": "beer",
    "style": null,
-   "abv": 4.5,
+   "abv": null,
    "ingredients": null,
    "presentations": [],
    "aliases": [],
@@ -599,7 +721,17 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-cauim",
     "label": "Ambev (site oficial)"
    },
-   "note": "Dado da versão padrão; a edição Cauim 016 aparece com 4,2%."
+   "note": null,
+   "abvVariants": [
+    {
+     "value": 4.5,
+     "scope": "versão padrão (página da Ambev)"
+    },
+    {
+     "value": 4.2,
+     "scope": "edição Cauim 016 (página da Ambev)"
+    }
+   ]
   },
   {
    "id": "colorado-indica",
@@ -892,6 +1024,10 @@
     "Levedura A"
    ],
    "presentations": [
+    {
+     "kind": "longNeck",
+     "ml": 330
+    },
     {
      "kind": "bottle",
      "ml": 600
@@ -1254,7 +1390,12 @@
     "url": "https://cervejaitaipava.com.br/produto/pilsen/",
     "label": "Itaipava (site oficial) e rótulo da lata 350 ml"
    },
-   "note": "Teor lido no rótulo da lata de 350 ml (código 7897395020101, via Open Food Facts)."
+   "note": "Teor lido no rótulo da lata de 350 ml (código 7897395020101, via Open Food Facts).",
+   "abvEvidence": "secondary",
+   "abvSource": {
+    "url": "https://world.openfoodfacts.org/product/7897395020101",
+    "label": "Rótulo da lata de 350 ml, transcrito no Open Food Facts (fonte secundária)"
+   }
   },
   {
    "id": "itaipava-premium",
@@ -1489,6 +1630,400 @@
     "label": "Grupo Petrópolis (site oficial)"
    },
    "note": null
+  },
+  {
+   "id": "absolut-original",
+   "brand": "Absolut",
+   "name": "Original",
+   "category": "spirit",
+   "style": "Vodka",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "absolut vodka"
+   ],
+   "source": {
+    "url": "https://www.absolut.com/en/vodka-guide/vodka-basics/understanding-vodka-alcohol-content/",
+    "label": "Absolut (site oficial)"
+   },
+   "note": "Teor informado pela marca para a Original. Confira o rótulo da garrafa vendida no Brasil.",
+   "roles": [
+    "vodka"
+   ]
+  },
+  {
+   "id": "bombay-sapphire-london-dry-gin",
+   "brand": "Bombay Sapphire",
+   "name": "London Dry Gin",
+   "category": "spirit",
+   "style": "Gin",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 700
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    }
+   ],
+   "aliases": [
+    "bombay"
+   ],
+   "source": {
+    "url": "https://shop.bombaysapphire.com/products/bombay-sapphire",
+    "label": "Bombay Sapphire (loja oficial)"
+   },
+   "note": "Garrafas de 70 cl e 1 L na loja oficial (mercado fora do Brasil). Confira o rótulo local.",
+   "roles": [
+    "gin"
+   ]
+  },
+  {
+   "id": "beefeater-london-dry-gin",
+   "brand": "Beefeater",
+   "name": "London Dry Gin",
+   "category": "spirit",
+   "style": "London Dry Gin",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.beefeatergin.com/en-us/frequently-asked-questions/",
+    "label": "Beefeater (site oficial)"
+   },
+   "note": "A marca informa 40% na maioria dos países.",
+   "roles": [
+    "gin"
+   ]
+  },
+  {
+   "id": "johnnie-walker-red-label",
+   "brand": "Johnnie Walker",
+   "name": "Red Label",
+   "category": "spirit",
+   "style": "Blended Scotch Whisky",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.johnniewalker.com/en-us/our-whisky/core-range/johnnie-walker-red-label",
+    "label": "Johnnie Walker (site oficial)"
+   },
+   "note": null,
+   "roles": [
+    "whisky"
+   ]
+  },
+  {
+   "id": "johnnie-walker-black-label",
+   "brand": "Johnnie Walker",
+   "name": "Black Label",
+   "category": "spirit",
+   "style": "Blended Scotch Whisky",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.johnniewalker.com/en-us/our-whisky/core-range/johnnie-walker-black-label",
+    "label": "Johnnie Walker (site oficial)"
+   },
+   "note": null,
+   "roles": [
+    "whisky"
+   ],
+   "abvVariants": [
+    {
+     "value": 40.0,
+     "scope": "páginas dos EUA, Canadá e Reino Unido"
+    },
+    {
+     "value": 43.0,
+     "scope": "página da África do Sul"
+    }
+   ]
+  },
+  {
+   "id": "jack-daniel-s-old-no-7",
+   "brand": "Jack Daniel's",
+   "name": "Old No. 7",
+   "category": "spirit",
+   "style": "Tennessee Whiskey",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "jack daniels",
+    "jack"
+   ],
+   "source": {
+    "url": "https://pressroom.jackdaniels.com/wp-content/uploads/2015/01/Old-No.7-Fact-Sheet.pdf",
+    "label": "Jack Daniel's (ficha oficial)"
+   },
+   "note": "A ficha informa 80 proof (40% vol.). Edições especiais têm outros teores.",
+   "roles": [
+    "whisky"
+   ]
+  },
+  {
+   "id": "chivas-regal-12-anos",
+   "brand": "Chivas Regal",
+   "name": "12 anos",
+   "category": "spirit",
+   "style": "Blended Scotch Whisky",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chivas 12"
+   ],
+   "source": {
+    "url": "https://www.chivas.com/en-ae/product-information/",
+    "label": "Chivas Regal (site oficial)"
+   },
+   "note": null,
+   "roles": [
+    "whisky"
+   ]
+  },
+  {
+   "id": "cachaca-51",
+   "brand": "51",
+   "name": "Cachaça 51",
+   "category": "spirit",
+   "style": "Cachaça",
+   "abv": 39.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "cachaca 51",
+    "pirassununga"
+   ],
+   "source": {
+    "url": "https://cachaca51.com.br/",
+    "label": "Cachaça 51 (site oficial)"
+   },
+   "note": null,
+   "roles": [
+    "cachaca"
+   ]
+  },
+  {
+   "id": "velho-barreiro-gold-black-label",
+   "brand": "Velho Barreiro",
+   "name": "Gold (Black Label)",
+   "category": "spirit",
+   "style": "Cachaça",
+   "abv": 39.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.diffordsguide.com/en-au/beer-wine-spirits/1567/velho-barreiro-gold-cachaca-black-label",
+    "label": "Difford's Guide (fonte secundária)"
+   },
+   "note": "Teor de fonte secundária (guia de bebidas e distribuidores), não do fabricante.",
+   "roles": [
+    "cachaca"
+   ],
+   "evidence": "secondary"
+  },
+  {
+   "id": "patron-silver",
+   "brand": "Patrón",
+   "name": "Silver",
+   "category": "spirit",
+   "style": "Tequila 100% agave",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 200
+    },
+    {
+     "kind": "bottle",
+     "ml": 375
+    },
+    {
+     "kind": "bottle",
+     "ml": 750
+    },
+    {
+     "kind": "bottle",
+     "ml": 1750
+    }
+   ],
+   "aliases": [
+    "patron silver"
+   ],
+   "source": {
+    "url": "https://www.patrontequila.com/products/patron-silver.html",
+    "label": "Patrón (site oficial)"
+   },
+   "note": null,
+   "roles": [
+    "tequila"
+   ]
+  },
+  {
+   "id": "olmeca-silver",
+   "brand": "Olmeca",
+   "name": "Silver",
+   "category": "spirit",
+   "style": "Tequila",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://olmecatequila.com/product/olmeca-silver/",
+    "label": "Olmeca (site oficial)"
+   },
+   "note": "A página não informa o teor alcoólico.",
+   "roles": [
+    "tequila"
+   ]
+  },
+  {
+   "id": "bacardi-superior",
+   "brand": "Bacardí",
+   "name": "Superior",
+   "category": "spirit",
+   "style": "Rum branco",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "bacardi carta blanca",
+    "bacardi branco"
+   ],
+   "source": {
+    "url": "https://shop.bacardi.com/products/bacardi-superior",
+    "label": "Bacardí (loja oficial)"
+   },
+   "note": "Teor da loja oficial; o nome do produto varia por mercado (Superior/Carta Blanca).",
+   "roles": [
+    "rum"
+   ]
+  },
+  {
+   "id": "havana-club-3-anos",
+   "brand": "Havana Club",
+   "name": "3 Años",
+   "category": "spirit",
+   "style": "Rum branco",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://havana-club.com/en/product/havana-club-3/",
+    "label": "Havana Club (site oficial)"
+   },
+   "note": "A página não informa o teor alcoólico.",
+   "roles": [
+    "rum"
+   ]
+  },
+  {
+   "id": "aperol-aperol",
+   "brand": "Aperol",
+   "name": "Aperol",
+   "category": "spirit",
+   "style": "Aperitivo",
+   "abv": 11.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 700
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    }
+   ],
+   "aliases": [
+    "aperol spritz"
+   ],
+   "source": {
+    "url": "https://www.aperol.com/our-products/aperol/",
+    "label": "Aperol (site oficial)"
+   },
+   "note": null,
+   "roles": [
+    "aperol"
+   ]
+  },
+  {
+   "id": "campari-campari",
+   "brand": "Campari",
+   "name": "Campari",
+   "category": "spirit",
+   "style": "Aperitivo bitter",
+   "abv": 25.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.aperol.com/en-us/faq/about-aperol/",
+    "label": "FAQ da Aperol (mesmo grupo Campari)"
+   },
+   "note": "Teor citado na FAQ da Aperol; a página do produto Campari não o informa.",
+   "roles": [
+    "campari"
+   ]
+  },
+  {
+   "id": "martini-rosso",
+   "brand": "Martini",
+   "name": "Rosso",
+   "category": "spirit",
+   "style": "Vermute doce",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "martini rosso",
+    "vermute tinto"
+   ],
+   "source": {
+    "url": "https://www.martini.com/products/martini-rosso/",
+    "label": "Martini (site oficial)"
+   },
+   "note": "A página não informa o teor alcoólico.",
+   "roles": [
+    "vermouth-sweet"
+   ]
+  },
+  {
+   "id": "martini-extra-dry",
+   "brand": "Martini",
+   "name": "Extra Dry",
+   "category": "spirit",
+   "style": "Vermute seco",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "martini extra dry",
+    "vermute seco"
+   ],
+   "source": {
+    "url": "https://www.martini.com/products/martini-extra-dry/",
+    "label": "Martini (site oficial)"
+   },
+   "note": "A página não informa o teor alcoólico.",
+   "roles": [
+    "vermouth-dry"
+   ]
   }
  ]
 }

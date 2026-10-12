@@ -155,7 +155,7 @@ class CatalogCubit extends Cubit<CatalogState> {
     if (f.category != null && i.category != f.category) return false;
     if (f.brand != null && i.brand != f.brand) return false;
     if (f.styleGroup != null && i.styleGroup != f.styleGroup) return false;
-    if (f.kind != null && !i.presentations.any((p) => p.kind == f.kind)) {
+    if (f.kind != null && !i.documentedPresentations.any((p) => p.kind == f.kind)) {
       return false;
     }
     if (f.nonAlcoholic &&
@@ -222,7 +222,7 @@ class CatalogCubit extends Cubit<CatalogState> {
       styleGroups: styleGroups,
       kinds: [
         for (final k in PresentationKind.values)
-          if (all.any((i) => i.presentations.any((p) => p.kind == k))) k,
+          if (all.any((i) => i.documentedPresentations.any((p) => p.kind == k))) k,
       ],
     ));
   }

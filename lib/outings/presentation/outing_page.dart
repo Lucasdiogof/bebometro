@@ -204,7 +204,7 @@ class _OutingViewState extends State<_OutingView> {
                           Expanded(
                             child: StatTile(
                               label: 'Seu volume',
-                              value: formatMl(summary.personalMl),
+                              value: summary.volumeLabel,
                             ),
                           ),
                           Expanded(
@@ -310,10 +310,17 @@ class _RepeatButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   String get _what {
-    final size = formatMl(entry.containerMl);
-    return entry.isShared
-        ? '${entry.name} $size · sua parte ${formatMl(entry.personalMl)}'
-        : '${entry.name} $size';
+    final container = entry.containerMl;
+    final personal = entry.personalMl;
+    if (entry.isMixed) {
+      return entry.composition!.customized
+          ? '${entry.name} (ajustada)'
+          : entry.name;
+    }
+    final size = container == null ? '' : ' ${formatMl(container)}';
+    return entry.isShared && personal != null
+        ? '${entry.name}$size · sua parte ${formatMl(personal)}'
+        : '${entry.name}$size';
   }
 
   @override
@@ -394,14 +401,22 @@ class EntryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final personal = entry.personalMl;
+    final container = entry.containerMl;
+    final alcohol = entry.alcohol;
     final meta = <String>[
       formatTime(entry.consumedAt),
+      if (entry.isMixed && entry.composition!.customized) 'receita ajustada',
       if (entry.presentation != null && !entry.isShared) entry.presentation!,
-      if (entry.isShared)
-        'sua parte ${formatMl(entry.personalMl)} de '
-            '${formatMl(entry.containerMl)} (${entry.peopleCount} pessoas)'
+      if (entry.isShared && personal != null && container != null)
+        'sua parte ${formatMl(personal)} de ${formatMl(container)} '
+            '(${entry.peopleCount} pessoas)'
+      else if (personal == null)
+        'volume desconhecido'
       else if (entry.presentation == null)
-        formatMl(entry.personalMl),
+        formatMl(personal),
+      if (entry.isMixed && alcohol != null && !alcohol.isComplete)
+        'álcool incompleto',
     ];
     return SurfaceCard(
       onTap: onTap,

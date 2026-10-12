@@ -1,4 +1,5 @@
 import 'drink_category.dart';
+import 'recipe.dart';
 
 enum PriceKind {
   /// The user typed a value (in cents).
@@ -27,16 +28,17 @@ class DrinkEntry {
     required this.consumedAt,
     required this.name,
     required this.category,
-    required this.containerMl,
-    required this.personalMl,
     required this.createdAt,
     required this.updatedAt,
+    this.containerMl,
+    this.personalMl,
     this.brand,
     this.style,
     this.presentation,
     this.catalogItemId,
     this.abvPercent,
     this.ingredients,
+    this.composition,
     this.isShared = false,
     this.peopleCount = 1,
     this.leftoverMl = 0,
@@ -60,14 +62,19 @@ class DrinkEntry {
   final double? abvPercent;
   final List<String>? ingredients;
 
-  /// Volume of the whole serving (a 600 ml bottle, a 400 ml tulip).
-  final int containerMl;
+  /// What went into a mixed drink, as registered. Null for simple drinks.
+  final Composition? composition;
+
+  /// Volume of the whole serving (a 600 ml bottle, a 400 ml tulip). Null =
+  /// unknown (mixed drinks whose final volume was not informed). Never 0 as a
+  /// stand-in for "unknown".
+  final int? containerMl;
 
   final bool isShared;
   final int peopleCount;
 
-  /// What the user declares to have drunk.
-  final int personalMl;
+  /// What the user declares to have drunk; null when not known.
+  final int? personalMl;
   final int leftoverMl;
 
   // Payment is tracked separately from consumption.
@@ -81,20 +88,36 @@ class DrinkEntry {
 
   bool get isDeleted => deletedAt != null;
 
+  bool get isMixed => composition != null;
+
   /// Unknown ABV on a drink that may contain alcohol still counts as alcoholic.
-  bool get isAlcoholic =>
-      category.canBeAlcoholic && (abvPercent == null || abvPercent! > 0);
+  bool get isAlcoholic {
+    final comp = composition;
+    if (comp != null) return comp.components.any((c) => c.alcoholic);
+    return category.canBeAlcoholic && (abvPercent == null || abvPercent! > 0);
+  }
 
   bool get hasPrice => priceKind != PriceKind.unknown;
 
   int get effectivePaidCents => priceKind == PriceKind.informed ? (paidCents ?? 0) : 0;
 
-  /// Pure alcohol in millilitres, or null when the ABV is unknown.
-  double? get pureAlcoholMl =>
-      abvPercent == null ? null : personalMl * abvPercent! / 100;
+  /// Pure alcohol of this record, with what is missing, or null when the drink
+  /// is not alcoholic. For mixed drinks it comes from the components; for
+  /// simple drinks from the volume and the ABV.
+  AlcoholEstimate? get alcohol {
+    if (!isAlcoholic) return null;
+    final comp = composition;
+    if (comp != null) return estimateComponents(comp.components);
+    final ml = personalMl;
+    final abv = abvPercent;
+    if (ml == null || abv == null) {
+      return AlcoholEstimate(pureMl: 0, missing: [name]);
+    }
+    return AlcoholEstimate(pureMl: ml * abv / 100, missing: const []);
+  }
 
-  /// Copy for "Mais uma": same drink, size, ABV, sharing and price, but a new
-  /// id and its own timestamp.
+  /// Copy for "Mais uma": same drink, composition (with the user's changes),
+  /// size, ABV, sharing and price, but a new id and its own timestamp.
   DrinkEntry repeated({required String newId, required DateTime at}) =>
       DrinkEntry(
         id: newId,
@@ -108,6 +131,7 @@ class DrinkEntry {
         catalogItemId: catalogItemId,
         abvPercent: abvPercent,
         ingredients: ingredients,
+        composition: composition,
         containerMl: containerMl,
         isShared: isShared,
         peopleCount: peopleCount,
@@ -133,6 +157,7 @@ class DrinkEntry {
         catalogItemId: catalogItemId,
         abvPercent: abvPercent,
         ingredients: ingredients,
+        composition: composition,
         containerMl: containerMl,
         isShared: isShared,
         peopleCount: peopleCount,
@@ -170,6 +195,9 @@ class DrinkEntry {
         'created_at': createdAt.toUtc().toIso8601String(),
         'updated_at': updatedAt.toUtc().toIso8601String(),
         'deleted_at': deletedAt?.toUtc().toIso8601String(),
+        // Only present for mixed drinks, so simple drinks keep syncing to a
+        // database that does not have the column yet.
+        if (composition != null) 'composition': composition!.toJson(),
       };
 
   factory DrinkEntry.fromJson(Map<String, dynamic> json) => DrinkEntry(
@@ -184,10 +212,14 @@ class DrinkEntry {
         catalogItemId: json['catalog_item_id'] as String?,
         abvPercent: (json['abv_percent'] as num?)?.toDouble(),
         ingredients: (json['ingredients'] as List?)?.cast<String>(),
-        containerMl: (json['container_ml'] as num).toInt(),
+        composition: json['composition'] == null
+            ? null
+            : Composition.fromJson(
+                Map<String, dynamic>.from(json['composition'] as Map)),
+        containerMl: (json['container_ml'] as num?)?.toInt(),
         isShared: json['is_shared'] as bool? ?? false,
         peopleCount: (json['people_count'] as num?)?.toInt() ?? 1,
-        personalMl: (json['personal_ml'] as num).toInt(),
+        personalMl: (json['personal_ml'] as num?)?.toInt(),
         leftoverMl: (json['leftover_ml'] as num?)?.toInt() ?? 0,
         priceKind: PriceKind.fromCode(json['price_kind'] as String? ?? 'unknown'),
         paidCents: (json['paid_cents'] as num?)?.toInt(),

@@ -90,7 +90,8 @@ class OutingCubit extends Cubit<OutingState> {
       final entry = last.repeated(newId: _drinks.newId(), at: DateTime.now());
       await _drinks.save(entry);
       _notices.add(OutingNotice(
-        'Mais uma: ${entry.name} · ${formatMl(entry.personalMl)}',
+        'Mais uma: ${entry.name}'
+        '${entry.personalMl == null ? '' : ' · ${formatMl(entry.personalMl!)}'}',
         undoLabel: 'Desfazer',
         undo: () => _drinks.delete(entry.id),
       ));
@@ -111,7 +112,8 @@ class OutingCubit extends Cubit<OutingState> {
       );
       await _drinks.save(entry);
       _notices.add(OutingNotice(
-        'Água registrada · ${formatMl(entry.personalMl)}',
+        'Água registrada'
+        '${entry.personalMl == null ? '' : ' · ${formatMl(entry.personalMl!)}'}',
         undoLabel: 'Desfazer',
         undo: () => _drinks.delete(entry.id),
       ));

@@ -12,7 +12,9 @@ class DrinkGroup {
 
   final String name;
   final int count;
-  final int personalMl;
+
+  /// Sum of the known volumes of the group; null when none is known.
+  final int? personalMl;
   final String detail;
 }
 
@@ -20,54 +22,56 @@ class OutingSummary {
   const OutingSummary({
     required this.entryCount,
     required this.personalMl,
+    required this.unknownVolumeCount,
     required this.informedCents,
     required this.pricedCount,
     required this.unpricedCount,
     required this.groups,
     required this.alcoholicCount,
     required this.pureAlcoholGrams,
-    required this.alcoholIncomplete,
-    required this.unknownAbvCount,
+    required this.incompleteAlcoholCount,
   });
 
   /// Summary of the given (non-deleted) entries.
   factory OutingSummary.of(List<DrinkEntry> entries) {
     var personalMl = 0;
+    var unknownVolume = 0;
     var informed = 0;
     var priced = 0;
     var unpriced = 0;
     var alcoholic = 0;
-    var incomplete = false;
-    var unknownAbv = 0;
+    var incomplete = 0;
     var pureMl = 0.0;
     final groups = <String, _GroupAcc>{};
 
     for (final e in entries) {
-      personalMl += e.personalMl;
+      final ml = e.personalMl;
+      if (ml == null) {
+        unknownVolume++;
+      } else {
+        personalMl += ml;
+      }
       if (e.hasPrice) {
         priced++;
         informed += e.effectivePaidCents;
       } else {
         unpriced++;
       }
-      if (e.isAlcoholic) {
+      final alcohol = e.alcohol;
+      if (alcohol != null) {
         alcoholic++;
-        final pure = e.pureAlcoholMl;
-        if (pure == null) {
-          incomplete = true;
-          unknownAbv++;
-        } else {
-          pureMl += pure;
-        }
+        pureMl += alcohol.pureMl;
+        if (!alcohol.isComplete) incomplete++;
       }
       final key =
-          '${e.name}|${e.presentation}|${e.containerMl}|${e.personalMl}|${e.isShared}';
+          '${e.name}|${e.presentation}|${e.containerMl}|${e.personalMl}|${e.isShared}|${e.composition?.customized}';
       groups.putIfAbsent(key, () => _GroupAcc(e)).count++;
     }
 
     return OutingSummary(
       entryCount: entries.length,
       personalMl: personalMl,
+      unknownVolumeCount: unknownVolume,
       informedCents: informed,
       pricedCount: priced,
       unpricedCount: unpriced,
@@ -76,23 +80,37 @@ class OutingSummary {
       alcoholicCount: alcoholic,
       // Ethanol density is about 0.789 g/ml.
       pureAlcoholGrams: pureMl * 0.789,
-      alcoholIncomplete: incomplete,
-      unknownAbvCount: unknownAbv,
+      incompleteAlcoholCount: incomplete,
     );
   }
 
   final int entryCount;
+
+  /// Sum of the volumes that are known.
   final int personalMl;
+
+  /// Records whose volume is unknown (not counted, and not counted as zero).
+  final int unknownVolumeCount;
   final int informedCents;
   final int pricedCount;
   final int unpricedCount;
   final List<DrinkGroup> groups;
   final int alcoholicCount;
-  final double pureAlcoholGrams;
-  final bool alcoholIncomplete;
 
-  /// Alcoholic records whose ABV was not informed (unknown, not zero).
-  final int unknownAbvCount;
+  /// Pure alcohol from what could be computed.
+  final double pureAlcoholGrams;
+
+  /// Alcoholic records missing an ABV or an amount, so the total is a minimum.
+  final int incompleteAlcoholCount;
+
+  bool get alcoholIncomplete => incompleteAlcoholCount > 0;
+
+  /// "Seu volume": the known sum, flagged when some records have no volume.
+  String get volumeLabel {
+    final known = formatMl(personalMl);
+    if (unknownVolumeCount == 0) return known;
+    return personalMl == 0 ? 'desconhecido' : '$known+';
+  }
 
   /// E.g. "R$ 90,00 informados · 2 bebidas sem preço".
   String get financeLine {
@@ -114,16 +132,22 @@ class _GroupAcc {
   int count = 0;
 
   DrinkGroup build() {
+    final personal = sample.personalMl;
+    final container = sample.containerMl;
     final parts = <String>[
+      if (sample.composition?.customized == true) 'receita ajustada',
       if (sample.presentation != null) sample.presentation!,
-      sample.isShared
-          ? '${formatMl(sample.personalMl)} seus de ${formatMl(sample.containerMl)}'
-          : formatMl(sample.containerMl),
+      if (personal == null)
+        'volume desconhecido'
+      else if (sample.isShared && container != null)
+        '${formatMl(personal)} seus de ${formatMl(container)}'
+      else
+        formatMl(personal),
     ];
     return DrinkGroup(
       name: sample.name,
       count: count,
-      personalMl: sample.personalMl * count,
+      personalMl: personal == null ? null : personal * count,
       detail: parts.join(' · '),
     );
   }

@@ -2,6 +2,7 @@ import '../../core/utils/formatters.dart';
 import 'catalog_item.dart';
 import 'drink_category.dart';
 import 'drink_entry.dart';
+import 'recipe.dart';
 
 /// Editable state of the "register drink" form, with all the sharing and
 /// price rules kept out of the widgets.
@@ -31,6 +32,8 @@ class DrinkDraft {
     this.existing,
     this.notBefore,
     this.notAfter,
+    this.composition,
+    this.reference,
   });
 
   factory DrinkDraft.fromItem(
@@ -39,6 +42,28 @@ class DrinkDraft {
     DateTime? notBefore,
     DateTime? notAfter,
   }) {
+    final recipe = item.recipe;
+    if (recipe != null) {
+      // Mixed drink: starts from the recipe, no volume until the user says one.
+      return DrinkDraft(
+        name: item.displayName,
+        category: item.category,
+        catalogItemId: item.id,
+        origin: item.origin,
+        note: item.note,
+        consumedAt: now,
+        notBefore: notBefore,
+        notAfter: notAfter,
+        reference: recipe.components,
+        composition: Composition(
+          recipeId: recipe.id,
+          recipeName: recipe.name,
+          sourceLabel: recipe.source?.label,
+          sourceUrl: recipe.source?.url,
+          components: recipe.components,
+        ),
+      );
+    }
     final first = item.presentations.isEmpty ? null : item.presentations.first;
     return DrinkDraft(
       name: item.displayName,
@@ -50,7 +75,8 @@ class DrinkDraft {
       origin: item.origin,
       note: item.note,
       consumedAt: now,
-      presentationLabel: first?.label,
+      presentationLabel:
+          (first == null || first.isSuggestion) ? null : first.label,
       containerMl: first?.volumeMl,
       abvPercent: item.abvPercent,
       personalMl: first?.volumeMl,
@@ -87,6 +113,7 @@ class DrinkDraft {
         existing: e,
         notBefore: notBefore,
         notAfter: notAfter,
+        composition: e.composition,
       );
 
   final String name;
@@ -116,6 +143,11 @@ class DrinkDraft {
 
   final DrinkEntry? existing;
 
+  /// What went into a mixed drink (null for simple drinks). The components
+  /// are editable; [reference] is the recipe they started from, if any.
+  final Composition? composition;
+  final List<EntryComponent>? reference;
+
   /// Period of the outing the drink belongs to. [notAfter] is null while the
   /// outing is still running (then "now" is the limit).
   final DateTime? notBefore;
@@ -124,6 +156,16 @@ class DrinkDraft {
   static const maxPeople = 30;
 
   bool get isEditing => existing != null;
+
+  bool get isRecipe => composition != null;
+
+  List<EntryComponent> get components => composition?.components ?? const [];
+
+  /// Pure alcohol of the composition as it stands, with what is missing.
+  AlcoholEstimate? get alcoholEstimate =>
+      composition == null || !components.any((c) => c.alcoholic)
+          ? null
+          : estimateComponents(components);
 
   DrinkDraft _copy({
     String? Function()? presentationLabel,
@@ -139,6 +181,7 @@ class DrinkDraft {
     int? leftoverMl,
     bool? personalEdited,
     DateTime? consumedAt,
+    Composition? composition,
   }) =>
       DrinkDraft(
         name: name,
@@ -152,6 +195,8 @@ class DrinkDraft {
         existing: existing,
         notBefore: notBefore,
         notAfter: notAfter,
+        reference: reference,
+        composition: composition ?? this.composition,
         consumedAt: consumedAt ?? this.consumedAt,
         presentationLabel: presentationLabel != null
             ? presentationLabel()
@@ -193,15 +238,17 @@ class DrinkDraft {
     return next;
   }
 
+  /// A documented package is saved as the record's presentation; a size
+  /// suggestion only fills the volume.
   DrinkDraft withPresentation(Presentation p) => _copy(
-        presentationLabel: () => p.label,
+        presentationLabel: () => p.isSuggestion ? null : p.label,
         containerMl: () => p.volumeMl,
       )._rebalance();
 
   DrinkDraft withContainerMl(int? ml, List<Presentation> known) {
     String? label;
     for (final p in known) {
-      if (p.volumeMl == ml) label = p.label;
+      if (!p.isSuggestion && p.volumeMl == ml) label = p.label;
     }
     return _copy(containerMl: () => ml, presentationLabel: () => label)
         ._rebalance();
@@ -252,6 +299,72 @@ class DrinkDraft {
 
   DrinkDraft withConsumedAt(DateTime at) => _copy(consumedAt: at);
 
+  // ---- Mixed drinks (components) ---------------------------------------------
+
+  bool _sameAsReference(List<EntryComponent> list) {
+    final ref = reference;
+    if (ref == null || ref.length != list.length) return false;
+    for (var i = 0; i < ref.length; i++) {
+      final a = ref[i];
+      final b = list[i];
+      if (a.name != b.name ||
+          a.amountMl != b.amountMl ||
+          a.abvPercent != b.abvPercent ||
+          a.productId != b.productId) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  DrinkDraft _withComponents(List<EntryComponent> list) {
+    final comp = composition;
+    if (comp == null) return this;
+    // Without a reference (editing a saved record) any change counts as one.
+    final customized = reference == null ? true : !_sameAsReference(list);
+    return _copy(
+      composition: comp.copyWith(
+        components: list,
+        customized: customized || (reference == null && comp.customized),
+      ),
+    );
+  }
+
+  DrinkDraft withComponentAmount(int index, double? ml) {
+    final list = [...components];
+    list[index] = list[index].copyWith(
+      amountMl: () => ml,
+      amountText: () => ml == null ? list[index].amountText : null,
+    );
+    return _withComponents(list);
+  }
+
+  DrinkDraft withComponentAbv(int index, double? abv) {
+    final list = [...components];
+    list[index] = list[index].copyWith(abvPercent: () => abv);
+    return _withComponents(list);
+  }
+
+  /// Chooses a brand/product for an ingredient (its ABV comes along when the
+  /// product has a single known one) or clears the choice with null.
+  DrinkDraft withComponentProduct(int index, CatalogItem? product) {
+    final list = [...components];
+    list[index] = list[index].copyWith(
+      productId: () => product?.id,
+      productName: () => product?.displayName,
+      abvPercent: () => product?.abvPercent,
+    );
+    return _withComponents(list);
+  }
+
+  DrinkDraft addComponent(EntryComponent component) =>
+      _withComponents([...components, component]);
+
+  DrinkDraft removeComponent(int index) {
+    final list = [...components]..removeAt(index);
+    return _withComponents(list);
+  }
+
   /// ml left for the other people once the user's portion and leftovers are
   /// taken out, split among them. Null when it cannot be computed.
   int? get othersEachMl {
@@ -265,7 +378,20 @@ class DrinkDraft {
   Map<String, String> get errors {
     final result = <String, String>{};
     final container = containerMl;
-    if (container == null || container <= 0) {
+    if (isRecipe) {
+      // The final volume of a mixed drink may stay unknown.
+      if (container != null && (container <= 0 || container > 20000)) {
+        result['volume'] = 'Volume inválido';
+      }
+      for (var i = 0; i < components.length; i++) {
+        final abv = components[i].abvPercent;
+        if (abv != null && (abv < 0 || abv > 100)) {
+          result['component_abv_$i'] = 'O teor vai de 0 a 100%';
+        }
+        final ml = components[i].amountMl;
+        if (ml != null && ml < 0) result['component_ml_$i'] = 'Quantidade inválida';
+      }
+    } else if (container == null || container <= 0) {
       result['volume'] = 'Informe o volume em ml';
     } else if (container > 20000) {
       result['volume'] = 'Volume alto demais';
@@ -306,7 +432,8 @@ class DrinkDraft {
     required String outingId,
     required DateTime now,
   }) {
-    final container = containerMl!;
+    final container = containerMl;
+    final personal = isShared ? personalMl : container;
     return DrinkEntry(
       id: existing?.id ?? id,
       outingId: existing?.outingId ?? outingId,
@@ -317,12 +444,13 @@ class DrinkDraft {
       style: style,
       presentation: presentationLabel,
       catalogItemId: catalogItemId,
-      abvPercent: abvPercent,
+      abvPercent: isRecipe ? null : abvPercent,
       ingredients: ingredients,
+      composition: composition,
       containerMl: container,
       isShared: isShared,
       peopleCount: isShared ? peopleCount : 1,
-      personalMl: isShared ? personalMl! : container,
+      personalMl: personal,
       leftoverMl: isShared ? leftoverMl : 0,
       priceKind: priceKind,
       paidCents: switch (priceKind) {

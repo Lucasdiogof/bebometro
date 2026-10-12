@@ -1,5 +1,6 @@
 import '../../core/utils/formatters.dart';
 import 'drink_category.dart';
+import 'recipe.dart';
 
 /// Where a catalog item's information comes from.
 enum InfoOrigin {
@@ -9,9 +10,19 @@ enum InfoOrigin {
   /// Created by the user on this device/account.
   user('user', 'Criada por você'),
 
-  /// Taken from the manufacturer's own pages or label, with the source kept.
-  /// It says where the data came from, not that it is certified or current.
-  verified('verified', 'Dados do fabricante');
+  /// Taken from the manufacturer's own pages, with the source kept. It says
+  /// where the data came from, not that it is certified or current.
+  verified('verified', 'Dados do fabricante'),
+
+  /// Manufacturer data, except at least one field (e.g. ABV) that only has a
+  /// label transcribed in a secondary source.
+  mixed('mixed', 'Fabricante + rótulo (fonte secundária)'),
+
+  /// Label or listing consulted in a secondary source, not the manufacturer.
+  secondary('secondary', 'Rótulo em fonte secundária'),
+
+  /// A published reference recipe. It is not what any bar served.
+  recipe('recipe', 'Receita de referência');
 
   const InfoOrigin(this.code, this.label);
 
@@ -44,7 +55,8 @@ enum PresentationKind {
 /// The package volume is not what the user drank: that is decided when the
 /// drink is registered (individual or shared).
 class Presentation {
-  const Presentation(this.label, this.volumeMl, {this.kind});
+  const Presentation(this.label, this.volumeMl,
+      {this.kind, this.isSuggestion = false});
 
   /// Builds the label from the kind and volume ("Lata 350 ml"), or just the
   /// volume when the source does not say what the package is.
@@ -62,6 +74,20 @@ class Presentation {
   final String label;
   final int volumeMl;
   final PresentationKind? kind;
+
+  /// A size offered for convenience (common serving, dose), not a package the
+  /// product is documented to come in. Suggestions never match package
+  /// filters and are not saved as the record's presentation.
+  final bool isSuggestion;
+}
+
+/// An ABV that differs between sources, presentations or markets. Kept as
+/// documented variants instead of silently choosing one.
+class AbvVariant {
+  const AbvVariant(this.value, this.scope);
+
+  final double value;
+  final String scope;
 }
 
 /// Where a catalog fact was read, so it can be checked again.
@@ -91,6 +117,10 @@ class CatalogItem {
     this.note,
     this.aliases = const [],
     this.source,
+    this.abvVariants = const [],
+    this.abvSource,
+    this.roles = const [],
+    this.recipe,
   });
 
   final String id;
@@ -115,9 +145,28 @@ class CatalogItem {
   final List<String> aliases;
   final SourceRef? source;
 
+  /// Documented ABVs when sources disagree ([abvPercent] is then null).
+  final List<AbvVariant> abvVariants;
+
+  /// Set when the ABV comes from a different (secondary) source than
+  /// [source], e.g. a label transcribed elsewhere.
+  final SourceRef? abvSource;
+
+  /// What this product can be in a recipe ("gin", "cachaca"...).
+  final List<String> roles;
+
+  /// Present for reference or personal recipes (mixed drinks).
+  final Recipe? recipe;
+
   static const customPrefix = 'custom:';
 
   bool get isCustom => id.startsWith(customPrefix);
+
+  /// Packages documented for this product (suggestions excluded).
+  List<Presentation> get documentedPresentations =>
+      presentations.where((p) => !p.isSuggestion).toList();
+
+  bool get isRecipe => recipe != null;
 
   /// "Brahma Duplo Malte"; the brand is not repeated when the name already
   /// starts with it.
@@ -130,7 +179,10 @@ class CatalogItem {
   String get subtitle {
     final parts = <String>[
       if (style != null && style!.isNotEmpty) style!,
-      if (abvPercent != null) formatAbv(abvPercent!),
+      if (abvPercent != null)
+        formatAbv(abvPercent!)
+      else if (abvVariants.isNotEmpty)
+        'teor varia',
     ];
     return parts.isEmpty ? category.label : parts.join(' · ');
   }
@@ -158,6 +210,7 @@ class CatalogItem {
         styleGroup ?? '',
         category.label,
         ...aliases,
-        ...presentations.map((p) => p.label),
+        ...documentedPresentations.map((p) => p.label),
+        ...(recipe?.components.map((c) => c.name) ?? const <String>[]),
       ].join(' '));
 }

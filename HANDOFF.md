@@ -92,8 +92,8 @@ máscara, então vale conferir as bordas em aparelho.
   produto à parte. Origem exibida: "Dados do fabricante", "Genérico" ou "Criada por você" (sem selos de
   certificação). Produto sem tamanhos verificados usa "tamanhos comuns da categoria" no formulário, avisado
   na tela.
-- **Cobertura:** 65 produtos distintos de 24 marcas (55 cervejas, 7 chopps, 3 sem álcool), 56 apresentações
-  em 19 produtos, 36 com estilo, 61 com teor, 30 com ingredientes. Estilos: Lager/Pilsen, IPA (inclui
+- **Cobertura (v2):** 82 produtos distintos (55 cervejas, 7 chopps, 3 sem álcool, 17 destilados/aperitivos),
+  98 apresentações em 26 produtos, 71 com teor, 30 com ingredientes. Estilos: Lager/Pilsen, IPA (inclui
   Imperial, Session, English), Pale Ale, Weiss/Weizen, Witbier, Porter, Imperial Stout, Tripel, Golden
   Strong, Honey Wheat Ale, Malzbier e outros, como a fonte declara.
 - **Fontes:** páginas de produto dos fabricantes (Ambev e marcas: brahma/skol/ambev.com.br; Heineken Brasil
@@ -110,12 +110,58 @@ máscara, então vale conferir as bordas em aparelho.
   filtros"; recentes e favoritos; um cartão por produto (nunca por tamanho).
 - **Detalhe:** nome/marca, categoria, estilo, teor, ingredientes, apresentações, fonte discreta (copiável),
   favoritar e registrar. Bebida própria: criar, **editar**, excluir (soft) e reutilizar, com ingredientes.
-- **Receitas de drinks: NÃO feitas.** Exigem modelo de componentes (ingrediente, quantidade, teor) e edição
-  na hora do registro, e as fontes encontradas não trazem teor dos componentes (sem eles não se calcula
-  álcool). Etapa delimitada para depois: receita de referência (com fonte) separada do drink servido,
-  ingredientes/quantidades editáveis, álcool só com quantidades e teores conhecidos, gelo e volume do copo
-  fora do consumo, sem calorias/açúcar inventados. Os drinks genéricos atuais continuam como estão.
+- **Receitas de drinks (feitas na etapa seguinte, ver seção abaixo).**
 - **Ainda não coberto:** chopps/marcas regionais, mais artesanais, vinhos e destilados de marca.
+
+## Drinks, doses e procedência (etapa atual)
+- **Receitas de referência** (`assets/catalog/recipes_v1.json`, 15): Caipirinha, Caipiroska, Mojito, Negroni,
+  Aperol Spritz, Moscow Mule, Margarita, Cuba Libre, Piña Colada, Daiquiri, Cosmopolitan, Old Fashioned, Dry
+  Martini, Whiskey Sour (todas de iba-world.com/iba-cocktail/, consultadas em 2026-10-12) e Gin Tônica
+  (Bombay Sapphire, pois a IBA não publica). Atenção à atribuição: **Caipiroska** não é receita própria da IBA
+  (a página da Caipirinha manda trocar a cachaça por vodka); **Aperol Spritz** é a receita "Spritz" (New Era)
+  da IBA, que usa Aperol. Cada receita guarda componentes (ml só quando a fonte dá ml; colheres, folhas,
+  gotas e "completar" ficam como texto), papel alcoólico, fonte, preparo, decoração e observações.
+- **Registro:** o item de receita abre o formulário em modo drink: composição recolhida ("Ver e ajustar"),
+  quantidade e teor por componente, marca/produto do destilado (quando há no catálogo), volume servido
+  opcional, preço e horário como sempre. "Drink personalizado" começa vazio; "Salvar como minha receita" cria
+  uma receita própria reutilizável. "Mais uma" repete a composição **como foi registrada**, com os ajustes.
+  O registro guarda uma cópia (`composition`) com receita de origem, fonte, se foi ajustada e todos os
+  componentes.
+- **Cálculos honestos** (`recipe.dart`, `DrinkEntry.alcohol`): álcool puro só por componente com ml e teor
+  conhecidos; soma dos conhecidos + lista do que falta. Nunca: volume do copo como consumido, gelo como volume,
+  colher/folha/fruta em ml, teor padrão por categoria. Volume final desconhecido é aceito e gravado como NULL.
+  Aparece como: "pelo menos X g" + "Faltam teor ou quantidade de: ..." no formulário; no resumo, "N registros
+  com teor ou quantidade desconhecidos: o total é um mínimo", "N registros sem volume informado" e o volume
+  como "120 ml+" ou "desconhecido"; no registro, "volume desconhecido" e "álcool incompleto". Sem alcoolemia.
+- **Destilados (17):** Absolut Original, Bombay Sapphire, Beefeater, Johnnie Walker Red e Black Label, Jack
+  Daniel's Old No. 7, Chivas Regal 12, Cachaça 51, Velho Barreiro Gold, Patrón Silver, Olmeca Silver, Bacardí
+  Superior, Havana Club 3 Años, Aperol, Campari, Martini Rosso e Extra Dry, cada um com fonte. Várias páginas
+  são de mercados fora do Brasil (anotado em cada produto). Sem teor: Olmeca, Havana Club, Martini (x2).
+  Garrafa comercial é apresentação do produto; dose é sugestão editável (30/50/100 ml, não medida oficial);
+  escolher uma garrafa marca como compartilhada. Destilado genérico continua com teor desconhecido.
+- **Procedência (campo a campo):** `verified` = fabricante; `mixed` = fabricante + algum campo (teor) só de
+  rótulo em fonte secundária (Itaipava Pilsen: Open Food Facts, com a fonte do teor visível); `secondary`
+  (Velho Barreiro: guia de bebidas); `generic`; `user`; `recipe`. O selo "Dados do fabricante" não aparece
+  para dado cuja única evidência é o Open Food Facts.
+- **Divergência de teor** vira `abvVariants` com o escopo de cada valor e o produto fica sem teor único:
+  Skol Pilsen (4,6% página × 4,7% embalagens), Colorado Cauim (4,5% × 4,2% edição 016), Johnnie Walker Black
+  Label (40% EUA/CA/UK × 43% África do Sul). O formulário mostra os valores como opções, sem escolher um.
+- **Embalagens completadas** (páginas dos fabricantes): Budweiser, Stella Artois, Brahma Chopp, Antarctica
+  Pilsen/Original/Subzero, Heineken (long neck 330 ml), Corona (330/355 ml e Coronita 210 ml), além de
+  destilados (Patrón, Bombay Sapphire, Aperol). Quando a página só lista volumes, a embalagem fica só com o
+  volume. **Sugestões de tamanho** (`isSuggestion`) têm rótulo só de volume ("600 ml"), não viram a
+  apresentação do registro e **não entram** na busca/filtro de embalagem (só apresentações documentadas).
+- **Persistência:** `DrinkEntry.containerMl/personalMl` agora são anuláveis; `composition` (jsonb) só vai na
+  sincronização quando há composição, e `custom_drinks.components` só em receitas próprias, então bebidas
+  simples seguem sincronizando mesmo sem a migration. Registros antigos leem normalmente.
+- **Migration pendente (não aplicada, sem acesso administrativo):**
+  `supabase/migrations/20261013000000_recipes_and_unknown_volume.sql` (idempotente: torna `container_ml`,
+  `personal_ml` e `custom_drinks.volume_ml` anuláveis e cria `composition`/`components`). Até ser aplicada,
+  drinks/receitas ficam salvos no aparelho e a sincronização deles fica pendente/recusada (aviso na tela).
+- **Pendências reais:** nada disso foi compilado/executado; marcas de destilados com teor de fonte do
+  fabricante no Brasil (Smirnoff, Tanqueray, Gordon's, Ypióca, Sagatiba, Cointreau, Jameson, Cuervo) não
+  foram incluídas por falta de fonte confiável; editor de receita própria do zero só via "Drink
+  personalizado" (sem tela de edição de receita salva); catálogo de licores e vinhos de marca ainda vazio.
 
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem

@@ -6,13 +6,16 @@ import '../data/drink_repository.dart';
 import '../domain/catalog_item.dart';
 import '../domain/common_sizes.dart';
 import '../domain/drink_draft.dart';
+import '../domain/drink_category.dart';
 import '../domain/drink_entry.dart';
+import '../domain/recipe.dart';
 
 class DrinkFormState {
   const DrinkFormState({
     required this.draft,
     this.presentations = const [],
     this.sizesAreGeneric = false,
+    this.abvVariants = const [],
     this.showErrors = false,
     this.saving = false,
     this.saved = false,
@@ -29,6 +32,9 @@ class DrinkFormState {
   /// True when [presentations] are common sizes for the category, not sizes
   /// verified for this product.
   final bool sizesAreGeneric;
+
+  /// Documented ABVs when sources disagree; the user picks one or types it.
+  final List<AbvVariant> abvVariants;
   final bool showErrors;
   final bool saving;
   final bool saved;
@@ -53,6 +59,7 @@ class DrinkFormState {
         draft: draft ?? this.draft,
         presentations: presentations,
         sizesAreGeneric: sizesAreGeneric,
+        abvVariants: abvVariants,
         showErrors: showErrors ?? this.showErrors,
         saving: saving ?? this.saving,
         saved: saved ?? this.saved,
@@ -82,12 +89,33 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
             notBefore: outing.startedAt,
             notAfter: outing.endedAt,
           ),
-          presentations: item.presentations.isEmpty
-              ? commonSizesFor(item.category)
-              : item.presentations,
-          sizesAreGeneric: item.presentations.isEmpty,
+          presentations: _sizesFor(item).list,
+          sizesAreGeneric: _sizesFor(item).generic,
+          abvVariants: item.abvVariants,
         ),
       );
+
+  /// Sizes shown as chips. Documented packages are kept apart from plain
+  /// suggestions; spirits get dose suggestions plus their documented bottles
+  /// (a bottle is shared, a dose is what one person drinks).
+  static ({List<Presentation> list, bool generic}) _sizesFor(CatalogItem item) {
+    if (item.isRecipe) return (list: const <Presentation>[], generic: false);
+    final documented = item.documentedPresentations;
+    if (item.category == DrinkCategory.spirit) {
+      return (
+        list: [
+          ...commonSizesFor(DrinkCategory.spirit),
+          ...documented.where((p) => p.kind == PresentationKind.bottle),
+        ],
+        generic: true,
+      );
+    }
+    if (documented.isNotEmpty) return (list: documented, generic: false);
+    if (item.presentations.isNotEmpty) {
+      return (list: item.presentations, generic: true);
+    }
+    return (list: commonSizesFor(item.category), generic: true);
+  }
 
   /// Correction of an existing entry.
   factory DrinkFormCubit.forEntry(
@@ -105,10 +133,13 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
           notBefore: outing.startedAt,
           notAfter: outing.endedAt,
         ),
-        presentations: (item != null && item.presentations.isNotEmpty)
-            ? item.presentations
-            : commonSizesFor(entry.category),
-        sizesAreGeneric: item == null || item.presentations.isEmpty,
+        presentations: entry.isMixed
+            ? const []
+            : (item != null
+                ? _sizesFor(item).list
+                : commonSizesFor(entry.category)),
+        sizesAreGeneric: entry.isMixed ? false : (item == null || _sizesFor(item).generic),
+        abvVariants: item?.abvVariants ?? const [],
       ),
     );
   }
@@ -121,8 +152,16 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
 
   void _set(DrinkDraft draft) => emit(state.copyWith(draft: draft, dirty: true));
 
-  void selectPresentation(Presentation p) =>
-      _set(state.draft.withPresentation(p));
+  void selectPresentation(Presentation p) {
+    var draft = state.draft.withPresentation(p);
+    // A spirit bottle is meant to be shared; a dose is one person's.
+    if (draft.category == DrinkCategory.spirit &&
+        !p.isSuggestion &&
+        p.kind == PresentationKind.bottle) {
+      draft = draft.withShared(true);
+    }
+    _set(draft);
+  }
 
   void setVolume(int? ml) =>
       _set(state.draft.withContainerMl(ml, state.presentations));
@@ -137,6 +176,45 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
   void setBillTotalCents(int? c) => _set(state.draft.withBillTotalCents(c));
   void suggestPayment() => _set(state.draft.withSuggestedPayment());
   void setConsumedAt(DateTime at) => _set(state.draft.withConsumedAt(at));
+
+  // ---- Mixed drinks ------------------------------------------------------------
+
+  void setComponentAmount(int i, double? ml) =>
+      _set(state.draft.withComponentAmount(i, ml));
+  void setComponentAbv(int i, double? abv) =>
+      _set(state.draft.withComponentAbv(i, abv));
+  void pickComponentProduct(int i, CatalogItem? product) =>
+      _set(state.draft.withComponentProduct(i, product));
+  void removeComponent(int i) => _set(state.draft.removeComponent(i));
+  void addComponent(String name, {required bool alcoholic}) {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return;
+    _set(state.draft.addComponent(
+      EntryComponent(name: trimmed, alcoholic: alcoholic),
+    ));
+  }
+
+  /// Products (brands) that can fill an ingredient with this role.
+  List<CatalogItem> productsForRole(String role) => [
+        for (final i in _drinks.catalog())
+          if (i.roles.contains(role)) i,
+      ];
+
+  /// Saves the composition as the user's own reusable recipe. Returns an
+  /// error message, or null on success.
+  Future<String?> saveAsMyRecipe(String name) async {
+    try {
+      await _drinks.saveCustomRecipe(
+        name: name,
+        components: state.draft.components,
+      );
+      return null;
+    } on ArgumentError catch (e) {
+      return '${e.message}';
+    } catch (_) {
+      return 'Não foi possível salvar a receita.';
+    }
+  }
 
   Future<void> submit() async {
     if (state.saving || state.saved || state.deleted) return;

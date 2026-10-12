@@ -198,7 +198,7 @@ class _OutingCard extends StatelessWidget {
               const SizedBox(height: AppSpace.xs),
               Text(
                 '${s.entryCount} ${s.entryCount == 1 ? 'bebida' : 'bebidas'}'
-                ' · ${formatMl(s.personalMl)}',
+                ' · ${s.volumeLabel}',
                 style: AppText.caption.copyWith(color: AppColors.text),
               ),
             ],
