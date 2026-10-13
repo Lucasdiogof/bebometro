@@ -1,6 +1,194 @@
 {
   "@@locale": "pt",
+  "accountAllConfirmed": "Tudo confirmado na nuvem",
+  "accountAllSentNow": "Tudo enviado. Agora você pode sair.",
+  "accountChangePassword": "Alterar senha",
+  "accountCloud": "Nuvem",
+  "accountCodeField": "Código recebido por e-mail",
+  "accountCodeSent": "Enviamos um código para o seu e-mail.",
+  "accountConflicts": "{count, plural, =1{1 alteração para resolver} other{{count} alterações para resolver}}",
+  "@accountConflicts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "1": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDelete": "Excluir conta",
+  "accountEditName": "Editar nome",
+  "accountEmailConfirmed": "E-mail confirmado",
+  "accountEmailNotConfirmed": "E-mail não confirmado",
+  "accountHistoryNotDone": "O histórico da nuvem ainda não terminou de chegar neste aparelho.",
+  "accountLastSync": "Última sincronização concluída: {when}",
+  "@accountLastSync": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "accountLastSyncNever": "Última sincronização concluída: ainda não houve.",
+  "accountLegacy": "Registros antigos deste aparelho",
+  "accountLegacyDecide": "Registros antigos deste aparelho: importar ou exportar",
+  "accountName": "Nome",
+  "accountNameUpdated": "Nome atualizado",
+  "accountNoName": "Sem nome",
+  "accountNothingWaiting": "Nada aguardando envio.",
+  "accountOnlyHerePhotos": "{count, plural, =1{Também 1 foto aguardando envio.} other{Também {count} fotos aguardando envio.}}",
+  "@accountOnlyHerePhotos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "Também": {
+        "type": "String"
+      }
+    }
+  },
+  "accountOnlyHereRecords": "{count, plural, =1{Salvo só neste aparelho por enquanto: 1 registro.} other{Salvo só neste aparelho por enquanto: {count} registros.}}",
+  "@accountOnlyHereRecords": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "Salvo": {
+        "type": "String"
+      }
+    }
+  },
+  "accountPasswordChanged": "Senha alterada",
+  "accountResendCode": "Enviar código de novo",
+  "accountRestoring": "Recuperando…",
+  "accountSaveNewPassword": "Salvar nova senha",
+  "accountSession": "Sessão",
+  "accountSignOut": "Sair",
+  "accountSignOutClean": "Seus dados estão na nuvem e voltam quando você entrar de novo. Neste aparelho eles ficam guardados só para esta conta.",
+  "accountSignOutConflicts": "{count, plural, =1{Também há 1 alteração para resolver.} other{Também há {count} alterações para resolver.}}",
+  "@accountSignOutConflicts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "Também": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSignOutPending": "{count, plural, =1{Há 1 alteração ainda não enviada.} other{Há {count} alterações ainda não enviadas.}} Elas continuam guardadas neste aparelho, presas a esta conta, e só reaparecem quando você entrar nela de novo.",
+  "@accountSignOutPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "Há": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSignOutTitle": "Sair da conta?",
+  "accountStillPending": "Ainda há pendências: elas ficam guardadas neste aparelho.",
+  "accountSyncFirst": "Sincronizar antes",
+  "accountYourData": "Seus dados",
+  "accountYourName": "Seu nome",
   "appName": "Bebômetro",
+  "authAlreadyConfirmed": "Já confirmei: entrar",
+  "authCancelAndLeave": "Cancelar e sair",
+  "authCheckEmail": "Confira o e-mail digitado.",
+  "authCheckInboxBody": "Enviamos um link para {email}. Abra o link neste aparelho para concluir.",
+  "@authCheckInboxBody": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authCheckInboxTitle": "Confira seu e-mail",
+  "authChoosePassword": "Escolha sua senha",
+  "authChoosePasswordBody": "E-mail confirmado. Agora escolha a senha para entrar em outros aparelhos.",
+  "authCloudDown": "Não foi possível falar com o servidor agora. Confira a internet e tente de novo em instantes.",
+  "authConfirmNewPassword": "Confirmar nova senha",
+  "authConfirmPassword": "Confirmar senha",
+  "authConvertBody": "Seus registros deste aparelho continuam com você. Depois de confirmar o e-mail, você escolhe a senha.",
+  "authCreateAccount": "Criar conta",
+  "authCreateWithRecords": "Criar conta com seus registros",
+  "authDifferentAccount": "Conta diferente da sessão atual.",
+  "authEmail": "E-mail",
+  "authEmailExists": "Já existe uma conta com esse e-mail. Entre com ela ou recupere a senha.",
+  "authEmailNotConfirmed": "Confirme seu e-mail antes de entrar. Procure o link na sua caixa de entrada (e no spam).",
+  "authEnterEmail": "Informe seu e-mail.",
+  "authEnterPassword": "Informe sua senha.",
+  "authForgot": "Esqueci minha senha",
+  "authGenericError": "Não foi possível concluir agora. Tente de novo.",
+  "authHidePassword": "Ocultar senha",
+  "authLinkInvalid": "Esse link expirou ou já foi usado. Peça outro e abra-o neste aparelho. Se você confirmou o e-mail em outro aparelho, é só entrar com e-mail e senha.",
+  "authLinkingDisabled": "A conversão da conta antiga não está liberada no servidor ainda. Você pode criar uma conta nova e importar os registros depois.",
+  "authNameMissing": "Como podemos te chamar?",
+  "authNeedsCode": "Por segurança, confirme com o código enviado ao seu e-mail.",
+  "authNewPassword": "Nova senha",
+  "authNewPasswordFor": "Crie uma nova senha para {email}.",
+  "@authNewPasswordFor": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authNewPasswordTitle": "Nova senha",
+  "authNoConnection": "Sem conexão. Confira a internet e tente de novo.",
+  "authNoOldSession": "Não há uma sessão antiga para converter.",
+  "authNotArrived": "Não chegou? Confira o spam e se o endereço está certo. O link vale por tempo limitado.",
+  "authPassword": "Senha",
+  "authPasswordHelper": "Pelo menos 8 caracteres, com letras e números.",
+  "authPasswordMin": "Use pelo menos 8 caracteres.",
+  "authPasswordMix": "Misture letras e números.",
+  "authPasswordsDiffer": "As senhas não são iguais.",
+  "authRecoverBody": "Enviamos um link para criar uma nova senha. Abra-o neste aparelho.",
+  "authRecoverSent": "Se houver uma conta com esse e-mail, o link chega em instantes. Confira também o spam.",
+  "authRecoverTitle": "Recuperar senha",
+  "authResend": "Reenviar e-mail",
+  "authResendIn": "Reenviar em {seconds} s",
+  "@authResendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "authResendWait": "Aguarde {seconds} s para pedir outro e-mail.",
+  "@authResendWait": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "authResent": "Enviamos outro e-mail. Confira também o spam.",
+  "authSamePassword": "A nova senha precisa ser diferente da atual.",
+  "authSavePassword": "Salvar senha",
+  "authSendAgain": "Enviar de novo",
+  "authSendConfirmation": "Enviar confirmação",
+  "authSendLink": "Enviar link",
+  "authServerUnreachable": "Sem conexão com o servidor agora. Tente de novo em instantes.",
+  "authSessionEnded": "Sua sessão terminou. Entre novamente.",
+  "authShowPassword": "Mostrar senha",
+  "authSignIn": "Entrar",
+  "authSignInAgainBody": "Sua sessão terminou no servidor. Seus registros continuam neste aparelho e voltam quando você entrar na mesma conta.",
+  "authSignInAgainTitle": "Entre novamente",
+  "authSignInAgainToContinue": "Entre novamente para continuar.",
+  "authSignInBody": "Seus rolês ficam salvos na sua conta e voltam em qualquer aparelho.",
+  "authSignUpNote": "Vamos enviar um link para confirmar o e-mail. Seu nome e e-mail só servem para a sua conta.",
+  "authSignupDisabled": "Cadastro desativado no servidor no momento.",
+  "authTooManyAttempts": "Muitas tentativas. Espere alguns minutos e tente de novo.",
+  "authTooManyShort": "Muitas tentativas. Espere alguns minutos.",
+  "authUseOtherEmail": "Usar outro e-mail",
+  "authUseOtherEmailBack": "Voltar e usar outro e-mail",
+  "authWeakPassword": "Senha fraca. Use pelo menos 8 caracteres, misturando letras e números.",
+  "authWrongCredentials": "E-mail ou senha incorretos.",
+  "authYourAccount": "sua conta",
+  "authYourEmail": "o seu e-mail",
   "commonBack": "Voltar",
   "commonCancel": "Cancelar",
   "commonClose": "Fechar",
@@ -17,6 +205,119 @@
   "commonRetry": "Tentar de novo",
   "commonSave": "Salvar",
   "commonUndo": "Desfazer",
+  "conflictAcceptDeletion": "Aceitar a exclusão",
+  "conflictApplyFailed": "Não foi possível aplicar. Nada foi perdido.",
+  "conflictCloud": "Na nuvem",
+  "conflictCloudDeleted": "Na nuvem (excluído)",
+  "conflictCustomDrink": "Bebida pessoal alterada em dois aparelhos",
+  "conflictDeletionAccepted": "Exclusão aceita",
+  "conflictDrink": "Bebida editada em dois aparelhos",
+  "conflictEditedAt": "Editado em {when}",
+  "@conflictEditedAt": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "conflictEnd": "Fim: {when}",
+  "@conflictEnd": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "conflictEndHere": "Encerrar o deste aparelho",
+  "conflictEndOther": "Encerrar o do outro aparelho",
+  "conflictFromHere": "Deste aparelho",
+  "conflictFromOther": "Do outro aparelho",
+  "conflictHere": "Neste aparelho",
+  "conflictIntro": "Estas alterações foram feitas em mais de um aparelho ao mesmo tempo. Escolha qual versão vale. A outra é descartada só quando você escolher.",
+  "conflictItem": "Item alterado em dois aparelhos",
+  "conflictKeepLocal": "Manter a deste aparelho",
+  "conflictKeptLocal": "Mantida a versão deste aparelho",
+  "conflictNone": "Nada para resolver. Tudo certo.",
+  "conflictOuting": "Rolê alterado em dois aparelhos",
+  "conflictOutingEnded": "Rolê encerrado",
+  "conflictOutingLine": "{label}: {name}",
+  "@conflictOutingLine": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "conflictPaid": "Pago: {amount}",
+  "@conflictPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "conflictPlace": "Local alterado em dois aparelhos",
+  "conflictRemoteUnreadable": "Não deu para ler a versão da nuvem agora. Você pode manter a deste aparelho ou tentar mais tarde.",
+  "conflictRestore": "Restaurar com a versão deste aparelho",
+  "conflictRestored": "Restaurado com a sua versão",
+  "conflictSince": "desde {when}",
+  "@conflictSince": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "conflictStart": "Início: {when}",
+  "@conflictStart": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "conflictTab": "Comanda alterada em dois aparelhos",
+  "conflictTabPayments": "{count, plural, =0{Nenhum pagamento registrado} =1{1 pagamento registrado: {amount}} other{{count} pagamentos registrados: {amount}}}",
+  "@conflictTabPayments": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "Nenhum": {
+        "type": "String"
+      },
+      "1": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "conflictTabPeople": "{people, plural, =1{1 participante} other{{people} participantes}} · {extras, plural, =0{nenhum item extra} =1{1 item extra} other{{extras} itens extras}}",
+  "@conflictTabPeople": {
+    "placeholders": {
+      "people": {
+        "type": "int"
+      },
+      "1": {
+        "type": "String"
+      },
+      "extras": {
+        "type": "int"
+      },
+      "nenhum": {
+        "type": "String"
+      }
+    }
+  },
+  "conflictTitle": "Alterações para resolver",
+  "conflictTwoActiveBody": "Um foi começado neste aparelho e outro em outro aparelho, sem internet. Os dois foram guardados com as suas bebidas. Escolha qual encerrar agora.",
+  "conflictUseRemote": "Usar a da nuvem",
+  "conflictUsedRemote": "Usada a versão da nuvem",
   "dateAtTime": "{date} às {time}",
   "@dateAtTime": {
     "placeholders": {
@@ -28,6 +329,28 @@
       }
     }
   },
+  "deleteBody": "Isso apaga de vez a sua conta, todos os rolês, bebidas, locais, comandas e fotos guardados na nuvem, e os dados desta conta neste aparelho. Não dá para desfazer.",
+  "deleteConfirmPassword": "Confirme sua senha.",
+  "deleteConfirmPasswordAgain": "Confirme sua senha de novo.",
+  "deleteExportFirst": "Se quiser guardar uma cópia, exporte seus dados antes (Configurações > Exportar meus dados).",
+  "deleteOffline": "Sem conexão. Nada foi apagado.",
+  "deletePartial": "A exclusão começou mas não terminou. Nada local foi apagado. Toque em \"Excluir conta\" de novo para continuar.",
+  "deleteTickFirst": "Marque a confirmação para continuar.",
+  "deleteUnavailable": "A exclusão ainda não está disponível no servidor. Nada foi apagado. Tente mais tarde.",
+  "deleteUnderstand": "Entendo que a exclusão é permanente.",
+  "deleteYourPassword": "Sua senha",
+  "drinkCount": "{count, plural, =1{1 bebida} other{{count} bebidas}}",
+  "@drinkCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "1": {
+        "type": "String"
+      }
+    }
+  },
+  "drinkFallbackName": "Bebida",
   "durationHours": "{hours} h",
   "@durationHours": {
     "placeholders": {
@@ -55,12 +378,63 @@
       }
     }
   },
+  "fileGenerationFailed": "Não foi possível gerar o arquivo.",
+  "itemFallbackName": "Item",
   "languageEn": "English",
   "languageEs": "Español",
   "languageMoneyNote": "Valores continuam em reais (R$) em qualquer idioma.",
   "languagePt": "Português (Brasil)",
   "languageSystem": "Idioma do sistema",
   "languageSystemHint": "Português, inglês ou espanhol conforme o aparelho; outros idiomas usam português.",
+  "legacyAnonBody": "Se você já usava o app neste aparelho, seus registros foram guardados. Crie sua conta para continuar com eles e recuperá-los em outro aparelho.",
+  "legacyAnonCreate": "Criar conta com meus registros",
+  "legacyAnonHaveAccount": "Já tenho conta",
+  "legacyAnonHaveAccountHint": "Os registros antigos ficam separados neste aparelho; você decide depois se importa para a conta.",
+  "legacyAnonTitle": "Agora o Bebômetro usa conta",
+  "legacyAnonView": "Ver ou exportar os registros antigos",
+  "legacyDrinks": "Bebidas",
+  "legacyExport": "Exportar registros antigos (JSON)",
+  "legacyImport": "Importar para minha conta",
+  "legacyImportAsEnded": "Importar como encerrado",
+  "legacyImportExplain": "Importar copia os registros para a conta atual com novos identificadores (as fotos são reenviadas). Uma conta anônima antiga não pode ser recuperada sem a sessão dela: o que importa é o que está neste aparelho.",
+  "legacyImportFailed": "A importação não terminou. Nada foi apagado; tente de novo.",
+  "legacyImported": "{count, plural, =1{Importação concluída: 1 registro copiado para a sua conta. A cópia antiga continua guardada neste aparelho.} other{Importação concluída: {count} registros copiados para a sua conta. A cópia antiga continua guardada neste aparelho.}}",
+  "@legacyImported": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "Importação": {
+        "type": "String"
+      }
+    }
+  },
+  "legacyKeep": "Manter separados por enquanto",
+  "legacyKept": "Os registros antigos continuam separados neste aparelho. Você pode importar quando quiser, por \"Minha conta\".",
+  "legacyNeverSent": "Nunca enviados",
+  "legacyNone": "Não há registros antigos neste aparelho.",
+  "legacyNotice": "Há registros antigos neste aparelho. Eles estão guardados: depois de entrar, você pode importá-los. Toque para ver ou exportar.",
+  "legacyOfferBody": "{count, plural, =1{Há 1 rolê de antes de o Bebômetro usar contas. Ele está guardado e não entra na sua conta sem você escolher.} other{Há {count} rolês de antes de o Bebômetro usar contas. Eles estão guardados e não entram na sua conta sem você escolher.}}",
+  "@legacyOfferBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "Há": {
+        "type": "String"
+      }
+    }
+  },
+  "legacyOfferOpen": "Ver e decidir",
+  "legacyOfferTitle": "Registros antigos neste aparelho",
+  "legacyOutings": "Rolês",
+  "legacyStatusAdopted": "Estes registros já são da sua conta (criada a partir deles).",
+  "legacyStatusImported": "Estes registros já foram importados para uma conta. A cópia antiga fica guardada aqui por segurança.",
+  "legacyStatusKept": "Você escolheu manter estes registros separados.",
+  "legacyStatusPending": "Registros feitos antes de o Bebômetro usar contas. Eles não foram apagados.",
+  "legacyTitle": "Registros antigos",
+  "legacyTwoActiveBody": "Sua conta já tem um rolê em andamento e os registros antigos também. Para importar, o rolê antigo entra como encerrado agora. As bebidas dele continuam nele, sem se misturar.",
+  "legacyTwoActiveTitle": "Dois rolês em andamento",
   "moneyFieldHelper": "Valores em reais (R$). Ex.: 15 ou 15,50.",
   "navCatalog": "Catálogo",
   "navGames": "Resenha",
@@ -68,6 +442,27 @@
   "navHome": "Início",
   "numberAmbiguous": "Formato ambíguo. Use vírgula ou ponto só para os centavos (ex.: 1500 ou 15,50).",
   "numberInvalid": "Número inválido.",
+  "outingFallbackName": "Rolê",
+  "outingInProgress": "Em andamento",
+  "priceUnknown": "sem preço",
+  "restoreBody": "Trazendo seus rolês, bebidas, locais e comandas da nuvem.",
+  "restoreConnecting": "Conectando…",
+  "restoreFailedBody": "Sem conexão com a nuvem. Nada foi perdido: tente de novo quando estiver com internet.",
+  "restoreFailedTitle": "Não deu para recuperar agora",
+  "restoreReceived": "{count, plural, =1{1 registro recebido até agora} other{{count} registros recebidos até agora}}",
+  "@restoreReceived": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "1": {
+        "type": "String"
+      }
+    }
+  },
+  "restoreTitle": "Recuperando seu histórico",
+  "restoreUseApp": "Usar o app enquanto isso",
+  "restoreUseAppHint": "Se continuar agora, o histórico aparece conforme chegar. Os registros novos ficam salvos neste aparelho e são enviados depois.",
   "settingsAccount": "Minha conta",
   "settingsBudget": "Orçamento",
   "settingsBudgetAlerts": "Avisos de orçamento",
@@ -136,6 +531,7 @@
   "settingsTableDefault": "Mostrar mesa como padrão",
   "settingsTableDefaultHint": "Na tela do rolê, a mesa ilustrada abre antes da lista.",
   "settingsTitle": "Configurações",
+  "shareUnavailableCopied": "Compartilhar não está disponível aqui. O conteúdo foi copiado: cole em um arquivo para guardar.",
   "shellBackToOuting": "Voltar ao rolê",
   "shellOutingRunning": "Rolê em andamento · {name}",
   "@shellOutingRunning": {

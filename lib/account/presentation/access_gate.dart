@@ -14,6 +14,7 @@ import '../data/legacy_data.dart';
 import 'legacy_data_page.dart';
 import 'auth_pages.dart';
 import 'auth_widgets.dart';
+import '../../l10n/l10n.dart';
 
 /// The ONLY place that decides what can be opened. Every screen of the
 /// product lives under [_AccountHome], which only exists for a permanent
@@ -137,17 +138,15 @@ class _AccountHomeState extends State<_AccountHome> {
     final open = await showDialog<bool>(
       context: nav.context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Registros antigos neste aparelho'),
-        content: Text(
-            'Há ${info.outings} rolê(s) de antes de o Bebômetro usar contas. '
-            'Eles estão guardados e não entram na sua conta sem você escolher.'),
+        title: Text(tr.legacyOfferTitle),
+        content: Text(tr.legacyOfferBody(info.outings)),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Depois')),
+              child: Text(tr.commonLater)),
           FilledButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Ver e decidir')),
+              child: Text(tr.legacyOfferOpen)),
         ],
       ),
     );
@@ -196,16 +195,15 @@ class _RestorePage extends StatelessWidget {
             sync.status == SyncStatus.failed ||
             sync.status == SyncStatus.localOnly);
     return AuthScaffold(
-      title: failed ? 'Não deu para recuperar agora' : 'Recuperando seu histórico',
+      title: failed ? tr.restoreFailedTitle : tr.restoreTitle,
       subtitle: failed
           ? (sync.message ??
-              'Sem conexão com a nuvem. Nada foi perdido: tente de novo quando '
-                  'estiver com internet.')
-          : 'Trazendo seus rolês, bebidas, locais e comandas da nuvem.',
+              tr.restoreFailedBody)
+          : tr.restoreBody,
       action: failed
           ? FilledButton(
               onPressed: () => context.read<SyncCubit>().retryRestore(),
-              child: const Text('Tentar de novo'),
+              child: Text(tr.commonRetry),
             )
           : null,
       children: [
@@ -214,21 +212,17 @@ class _RestorePage extends StatelessWidget {
           const SizedBox(height: AppSpace.md),
           Text(
             sync.restoredRows == 0
-                ? 'Conectando…'
-                : '${sync.restoredRows} registros recebidos até agora',
+                ? tr.restoreConnecting
+                : tr.restoreReceived(sync.restoredRows),
             style: AppText.body,
           ),
         ],
         const SizedBox(height: AppSpace.lg),
         TextButton(
           onPressed: onContinue,
-          child: const Text('Usar o app enquanto isso'),
+          child: Text(tr.restoreUseApp),
         ),
-        const Text(
-          'Se continuar agora, o histórico aparece conforme chegar. Os '
-          'registros novos ficam salvos neste aparelho e são enviados depois.',
-          style: AppText.caption,
-        ),
+        Text(tr.restoreUseAppHint, style: AppText.caption),
       ],
     );
   }

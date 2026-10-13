@@ -294,7 +294,7 @@ class LegacyData {
       await target.setString(
         'import.legacy',
         jsonEncode({
-          'from': owner ?? 'aparelho (dono desconhecido)',
+          'from': owner ?? 'unknown',
           'at': DateTime.now().toUtc().toIso8601String(),
           'rows': map.length,
         }),

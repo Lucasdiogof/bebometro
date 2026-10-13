@@ -13,6 +13,7 @@ import '../../scan/data/photo_files.dart';
 import '../../share/data/share_service.dart';
 import '../data/legacy_data.dart';
 import 'auth_widgets.dart';
+import '../../l10n/l10n.dart';
 
 /// The records kept from before accounts became mandatory: what there is,
 /// and the explicit choices. Reachable without an account (to export), and
@@ -59,11 +60,10 @@ class _LegacyDataPageState extends State<LegacyDataPage> {
       );
       if (!ok) {
         await Clipboard.setData(ClipboardData(text: text));
-        _say('Compartilhar não está disponível aqui. O conteúdo foi copiado: '
-            'cole em um arquivo para guardar.');
+        _say(tr.shareUnavailableCopied);
       }
     } catch (_) {
-      _say('Não foi possível gerar o arquivo.', error: true);
+      _say(tr.fileGenerationFailed, error: true);
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -79,25 +79,21 @@ class _LegacyDataPageState extends State<LegacyDataPage> {
         importActiveAsEndedAt: endActiveAt,
       );
       await _load();
-      _say('Importação concluída: $n registros copiados para a sua conta. A '
-          'cópia antiga continua guardada neste aparelho.');
+      _say(tr.legacyImported(n));
     } on LegacyImportBlocked {
       if (!mounted) return;
       final ok = await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('Dois rolês em andamento'),
-          content: const Text(
-              'Sua conta já tem um rolê em andamento e os registros antigos '
-              'também. Para importar, o rolê antigo entra como encerrado agora. '
-              'As bebidas dele continuam nele, sem se misturar.'),
+          title: Text(tr.legacyTwoActiveTitle),
+          content: Text(tr.legacyTwoActiveBody),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: const Text('Cancelar')),
+                child: Text(tr.commonCancel)),
             FilledButton(
                 onPressed: () => Navigator.pop(ctx, true),
-                child: const Text('Importar como encerrado')),
+                child: Text(tr.legacyImportAsEnded)),
           ],
         ),
       );
@@ -106,7 +102,7 @@ class _LegacyDataPageState extends State<LegacyDataPage> {
         return;
       }
     } catch (_) {
-      _say('A importação não terminou. Nada foi apagado; tente de novo.',
+      _say(tr.legacyImportFailed,
           error: true);
     } finally {
       if (mounted) setState(() => _busy = false);
@@ -116,8 +112,7 @@ class _LegacyDataPageState extends State<LegacyDataPage> {
   Future<void> _keep() async {
     await _legacy.keepSeparate();
     await _load();
-    _say('Os registros antigos continuam separados neste aparelho. Você pode '
-        'importar quando quiser, por "Minha conta".',
+    _say(tr.legacyKept,
         error: false);
   }
 
@@ -126,7 +121,7 @@ class _LegacyDataPageState extends State<LegacyDataPage> {
     final info = _info;
     final signedIn = AccountScope.isOpen;
     return Scaffold(
-      appBar: AppBar(title: const Text('Registros antigos')),
+      appBar: AppBar(title: Text(tr.legacyTitle)),
       body: info == null
           ? const Center(child: CircularProgressIndicator())
           : ListView(
@@ -135,7 +130,7 @@ class _LegacyDataPageState extends State<LegacyDataPage> {
               children: [
                 if (_message != null) FormMessage(_message!, error: _error),
                 if (!info.hasData)
-                  const Text('Não há registros antigos neste aparelho.',
+                  Text(tr.legacyNone,
                       style: AppText.body)
                 else ...[
                   SurfaceCard(
@@ -143,13 +138,13 @@ class _LegacyDataPageState extends State<LegacyDataPage> {
                     child: Row(children: [
                       Expanded(
                           child: StatTile(
-                              label: 'Rolês', value: '${info.outings}')),
+                              label: tr.legacyOutings, value: '${info.outings}')),
                       Expanded(
                           child: StatTile(
-                              label: 'Bebidas', value: '${info.entries}')),
+                              label: tr.legacyDrinks, value: '${info.entries}')),
                       Expanded(
                           child: StatTile(
-                              label: 'Nunca enviados',
+                              label: tr.legacyNeverSent,
                               value: '${info.pendingUploads}')),
                     ]),
                   ),
@@ -157,46 +152,37 @@ class _LegacyDataPageState extends State<LegacyDataPage> {
                   Text(
                     switch (info.status) {
                       LegacyStatus.adopted =>
-                        'Estes registros já são da sua conta (criada a partir '
-                            'deles).',
+                        tr.legacyStatusAdopted,
                       LegacyStatus.imported =>
-                        'Estes registros já foram importados para uma conta. A '
-                            'cópia antiga fica guardada aqui por segurança.',
+                        tr.legacyStatusImported,
                       LegacyStatus.kept =>
-                        'Você escolheu manter estes registros separados.',
+                        tr.legacyStatusKept,
                       _ =>
-                        'Registros feitos antes de o Bebômetro usar contas. '
-                            'Eles não foram apagados.',
+                        tr.legacyStatusPending,
                     },
                     style: AppText.body,
                   ),
                   const SizedBox(height: AppSpace.sm),
-                  const Text(
-                    'Importar copia os registros para a conta atual com novos '
-                    'identificadores (as fotos são reenviadas). Uma conta '
-                    'anônima antiga não pode ser recuperada sem a sessão dela: '
-                    'o que importa é o que está neste aparelho.',
-                    style: AppText.caption,
-                  ),
+                  Text(tr.legacyImportExplain, style: AppText.caption),
                   const SizedBox(height: AppSpace.lg),
                   if (signedIn &&
                       info.status != LegacyStatus.imported &&
                       info.status != LegacyStatus.adopted)
                     BusyButton(
-                      label: 'Importar para minha conta',
+                      label: tr.legacyImport,
                       busy: _busy,
                       onPressed: () => _import(),
                     ),
                   if (signedIn && info.status == LegacyStatus.pending)
                     TextButton(
                       onPressed: _busy ? null : _keep,
-                      child: const Text('Manter separados por enquanto'),
+                      child: Text(tr.legacyKeep),
                     ),
                   const SizedBox(height: AppSpace.sm),
                   OutlinedButton.icon(
                     onPressed: _busy ? null : _export,
                     icon: const Icon(Icons.download_outlined),
-                    label: const Text('Exportar registros antigos (JSON)'),
+                    label: Text(tr.legacyExport),
                   ),
                 ],
               ],
@@ -231,15 +217,11 @@ class _LegacyNoticeCardState extends State<LegacyNoticeCard> {
     return SurfaceCard(
       onTap: () => Navigator.of(context)
           .push(MaterialPageRoute(builder: (_) => const LegacyDataPage())),
-      child: const Row(children: [
+      child: Row(children: [
         Icon(Icons.inventory_2_outlined, color: AppColors.amber),
         SizedBox(width: AppSpace.md),
         Expanded(
-          child: Text(
-            'Há registros antigos neste aparelho. Eles estão guardados: depois '
-            'de entrar, você pode importá-los. Toque para ver ou exportar.',
-            style: AppText.caption,
-          ),
+          child: Text(tr.legacyNotice, style: AppText.caption),
         ),
       ]),
     );

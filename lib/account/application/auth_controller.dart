@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/config/env.dart';
 import '../../core/data/device_store.dart';
 import '../data/legacy_data.dart';
+import '../../l10n/l10n.dart';
 
 enum AccessStatus {
   /// Restoring the session from disk.
@@ -93,7 +94,8 @@ class AuthFailure implements Exception {
 
   final String message;
 
-  /// 'email', 'password' or null for the whole form.
+  /// 'email', 'password', 'code' (a code sent by e-mail is required) or null
+  /// for the whole form.
   final String? field;
 }
 
@@ -177,9 +179,7 @@ class AuthController extends Cubit<AccessState> {
         // logged with the URL.
         _log('auth link error: ${e.runtimeType}');
         emit(state.copyWith(
-            notice: 'Esse link expirou ou já foi usado. Peça outro e abra-o '
-                'neste aparelho. Se você confirmou o e-mail em outro aparelho, '
-                'é só entrar com e-mail e senha.'));
+            notice: tr.authLinkInvalid));
       },
     );
     await _enqueue(() => _apply(session));
@@ -347,7 +347,7 @@ class AuthController extends Cubit<AccessState> {
     _requireCloud();
     final user = _auth.currentUser;
     if (user == null || !user.isAnonymous) {
-      throw const AuthFailure('Não há uma sessão antiga para converter.');
+      throw AuthFailure(tr.authNoOldSession);
     }
     try {
       await _auth.updateUser(
@@ -389,7 +389,7 @@ class AuthController extends Cubit<AccessState> {
     final email = state.pendingEmail;
     if (email == null) return;
     if (resendWaitSeconds > 0) {
-      throw AuthFailure('Aguarde $resendWaitSeconds s para pedir outro e-mail.');
+      throw AuthFailure(tr.authResendWait(resendWaitSeconds));
     }
     try {
       await _auth.resend(
@@ -465,11 +465,11 @@ class AuthController extends Cubit<AccessState> {
   Future<void> verifyPassword(String password) async {
     _requireCloud();
     final email = _auth.currentUser?.email;
-    if (email == null) throw const AuthFailure('Entre novamente para continuar.');
+    if (email == null) throw AuthFailure(tr.authSignInAgainToContinue);
     try {
       final res = await _auth.signInWithPassword(email: email, password: password);
       if (res.user?.id != state.userId) {
-        throw const AuthFailure('Conta diferente da sessão atual.');
+        throw AuthFailure(tr.authDifferentAccount);
       }
     } on AuthException catch (e) {
       throw _map(e);
@@ -507,47 +507,36 @@ class AuthController extends Cubit<AccessState> {
 
   void _requireCloud() {
     if (!cloudEnabled) {
-      throw const AuthFailure(
-          'Sem conexão com o servidor agora. Tente de novo em instantes.');
+      throw AuthFailure(tr.authServerUnreachable);
     }
   }
 
   AuthFailure _map(AuthException e) {
     if (e is AuthRetryableFetchException) {
-      return const AuthFailure('Sem conexão. Confira a internet e tente de novo.');
+      return AuthFailure(tr.authNoConnection);
     }
     final code = e.code ?? '';
     return switch (code) {
       'invalid_credentials' =>
-        const AuthFailure('E-mail ou senha incorretos.', field: 'password'),
-      'email_not_confirmed' => const AuthFailure(
-          'Confirme seu e-mail antes de entrar. Procure o link na sua caixa de '
-          'entrada (e no spam).'),
-      'user_already_exists' || 'email_exists' => const AuthFailure(
-          'Já existe uma conta com esse e-mail. Entre com ela ou recupere a senha.',
+        AuthFailure(tr.authWrongCredentials, field: 'password'),
+      'email_not_confirmed' => AuthFailure(tr.authEmailNotConfirmed),
+      'user_already_exists' || 'email_exists' => AuthFailure(tr.authEmailExists,
           field: 'email'),
-      'weak_password' => const AuthFailure(
-          'Senha fraca. Use pelo menos 8 caracteres, misturando letras e números.',
+      'weak_password' => AuthFailure(tr.authWeakPassword,
           field: 'password'),
-      'same_password' => const AuthFailure(
-          'A nova senha precisa ser diferente da atual.',
+      'same_password' => AuthFailure(tr.authSamePassword,
           field: 'password'),
-      'over_email_send_rate_limit' || 'over_request_rate_limit' => const AuthFailure(
-          'Muitas tentativas. Espere alguns minutos e tente de novo.'),
+      'over_email_send_rate_limit' || 'over_request_rate_limit' => AuthFailure(tr.authTooManyAttempts),
       'email_address_invalid' || 'validation_failed' =>
-        const AuthFailure('Confira o e-mail digitado.', field: 'email'),
-      'reauthentication_needed' || 'reauthentication_not_valid' => const AuthFailure(
-          'Por segurança, confirme com o código enviado ao seu e-mail.'),
-      'signup_disabled' => const AuthFailure(
-          'Cadastro desativado no servidor no momento.'),
-      'manual_linking_disabled' => const AuthFailure(
-          'A conversão da conta antiga não está liberada no servidor ainda. Você '
-          'pode criar uma conta nova e importar os registros depois.'),
+        AuthFailure(tr.authCheckEmail, field: 'email'),
+      'reauthentication_needed' || 'reauthentication_not_valid' => AuthFailure(tr.authNeedsCode, field: 'code'),
+      'signup_disabled' => AuthFailure(tr.authSignupDisabled),
+      'manual_linking_disabled' => AuthFailure(tr.authLinkingDisabled),
       'session_not_found' || 'refresh_token_not_found' =>
-        const AuthFailure('Sua sessão terminou. Entre novamente.'),
+        AuthFailure(tr.authSessionEnded),
       _ => (e.statusCode == '429')
-          ? const AuthFailure('Muitas tentativas. Espere alguns minutos.')
-          : const AuthFailure('Não foi possível concluir agora. Tente de novo.'),
+          ? AuthFailure(tr.authTooManyShort)
+          : AuthFailure(tr.authGenericError),
     };
   }
 

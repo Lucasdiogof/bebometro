@@ -16,6 +16,7 @@ import '../data/legacy_data.dart';
 import 'auth_widgets.dart';
 import 'conflicts_page.dart';
 import 'legacy_data_page.dart';
+import '../../l10n/l10n.dart';
 
 /// "Minha conta": profile, password, what is saved where, sign out and
 /// account deletion.
@@ -43,21 +44,21 @@ class _AccountPageState extends State<AccountPage> {
     final name = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Seu nome'),
+        title: Text(tr.accountYourName),
         content: TextField(
           controller: controller,
           autofocus: true,
           textCapitalization: TextCapitalization.words,
           autofillHints: const [AutofillHints.name],
-          decoration: const InputDecoration(labelText: 'Nome'),
+          decoration: InputDecoration(labelText: tr.accountName),
         ),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancelar')),
+              child: Text(tr.commonCancel)),
           FilledButton(
               onPressed: () => Navigator.pop(ctx, controller.text),
-              child: const Text('Salvar')),
+              child: Text(tr.commonSave)),
         ],
       ),
     );
@@ -65,7 +66,7 @@ class _AccountPageState extends State<AccountPage> {
     if (name == null || name.trim().isEmpty || !mounted) return;
     try {
       await context.read<AuthController>().updateName(name);
-      if (mounted) showToast(context, 'Nome atualizado');
+      if (mounted) showToast(context, tr.accountNameUpdated);
     } on AuthFailure catch (e) {
       if (mounted) showToast(context, e.message);
     }
@@ -84,25 +85,24 @@ class _AccountPageState extends State<AccountPage> {
     final choice = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Sair da conta?'),
+        title: Text(tr.accountSignOutTitle),
         content: Text(waiting
-            ? 'Há ${sync.pending} alteração(ões) ainda não enviadas'
-                '${sync.conflicts > 0 ? ' e ${sync.conflicts} para resolver' : ''}. '
-                'Elas continuam guardadas neste aparelho, presas a esta conta, e '
-                'só reaparecem quando você entrar nela de novo.'
-            : 'Seus dados estão na nuvem e voltam quando você entrar de novo. '
-                'Neste aparelho eles ficam guardados só para esta conta.'),
+            ? [
+                tr.accountSignOutPending(sync.pending),
+                if (sync.conflicts > 0) tr.accountSignOutConflicts(sync.conflicts),
+              ].join(' ')
+            : tr.accountSignOutClean),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancelar')),
+              child: Text(tr.commonCancel)),
           if (waiting)
             TextButton(
                 onPressed: () => Navigator.pop(ctx, 'sync'),
-                child: const Text('Sincronizar antes')),
+                child: Text(tr.accountSyncFirst)),
           FilledButton(
               onPressed: () => Navigator.pop(ctx, 'out'),
-              child: const Text('Sair')),
+              child: Text(tr.accountSignOut)),
         ],
       ),
     );
@@ -113,8 +113,8 @@ class _AccountPageState extends State<AccountPage> {
         showToast(
             context,
             s.allSaved
-                ? 'Tudo enviado. Agora você pode sair.'
-                : 'Ainda há pendências: elas ficam guardadas neste aparelho.');
+                ? tr.accountAllSentNow
+                : tr.accountStillPending);
       }
       return;
     }
@@ -125,7 +125,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     final a = context.watch<AuthController>().state;
     return Scaffold(
-      appBar: AppBar(title: const Text('Minha conta')),
+      appBar: AppBar(title: Text(tr.settingsAccount)),
       body: BlocBuilder<SyncCubit, SyncState>(
         builder: (context, sync) {
           final rowsWaiting = getIt<LocalStore>().pendingCount;
@@ -141,11 +141,11 @@ class _AccountPageState extends State<AccountPage> {
                   children: [
                     Row(children: [
                       Expanded(
-                        child: Text(a.displayName ?? 'Sem nome',
+                        child: Text(a.displayName ?? tr.accountNoName,
                             style: AppText.headline),
                       ),
                       IconButton(
-                        tooltip: 'Editar nome',
+                        tooltip: tr.accountEditName,
                         icon: const Icon(Icons.edit_outlined),
                         onPressed: () => _editName(a.displayName),
                       ),
@@ -153,7 +153,7 @@ class _AccountPageState extends State<AccountPage> {
                     Text(a.email ?? '', style: AppText.body),
                     const SizedBox(height: AppSpace.sm),
                     InfoPill(
-                      a.emailConfirmed ? 'E-mail confirmado' : 'E-mail não confirmado',
+                      a.emailConfirmed ? tr.accountEmailConfirmed : tr.accountEmailNotConfirmed,
                       icon: a.emailConfirmed
                           ? Icons.verified_outlined
                           : Icons.mark_email_unread_outlined,
@@ -166,52 +166,50 @@ class _AccountPageState extends State<AccountPage> {
               SurfaceCard(
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const ChangePasswordPage())),
-                child: const Row(children: [
+                child: Row(children: [
                   Icon(Icons.password_rounded, color: AppColors.amber),
                   SizedBox(width: AppSpace.md),
-                  Expanded(child: Text('Alterar senha', style: AppText.subtitle)),
+                  Expanded(child: Text(tr.accountChangePassword, style: AppText.subtitle)),
                   Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
                 ]),
               ),
-              const SectionTitle('Seus dados'),
+              SectionTitle(tr.accountYourData),
               SurfaceCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     StatTile(
-                      label: 'Nuvem',
+                      label: tr.accountCloud,
                       value: sync.restoring
-                          ? 'Recuperando…'
+                          ? tr.accountRestoring
                           : sync.allSaved
-                              ? 'Tudo confirmado na nuvem'
+                              ? tr.accountAllConfirmed
                               : sync.label,
                       icon: Icons.cloud_done_outlined,
                     ),
                     const SizedBox(height: AppSpace.md),
                     Text(
                       sync.lastSyncAt == null
-                          ? 'Última sincronização concluída: ainda não houve.'
-                          : 'Última sincronização concluída: '
-                              '${formatDateTime(sync.lastSyncAt!)}',
+                          ? tr.accountLastSyncNever
+                          : tr.accountLastSync(formatDateTime(sync.lastSyncAt!)),
                       style: AppText.caption,
                     ),
                     const SizedBox(height: AppSpace.xs),
                     Text(
                       rowsWaiting == 0 && filesWaiting == 0
-                          ? 'Nada aguardando envio.'
-                          : 'Salvo só neste aparelho por enquanto: '
-                              '$rowsWaiting registro(s)'
-                              '${filesWaiting > 0 ? ' e $filesWaiting foto(s)' : ''}.',
+                          ? tr.accountNothingWaiting
+                          : [
+                              tr.accountOnlyHereRecords(rowsWaiting),
+                              if (filesWaiting > 0)
+                                tr.accountOnlyHerePhotos(filesWaiting),
+                            ].join(' '),
                       style: AppText.caption,
                     ),
                     if (!sync.historyRestored)
-                      const Padding(
-                        padding: EdgeInsets.only(top: AppSpace.xs),
-                        child: Text(
-                          'O histórico da nuvem ainda não terminou de chegar '
-                          'neste aparelho.',
-                          style: AppText.caption,
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppSpace.xs),
+                        child: Text(tr.accountHistoryNotDone,
+                            style: AppText.caption),
                       ),
                     if (sync.message != null && !sync.allSaved)
                       Padding(
@@ -220,7 +218,7 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     const SizedBox(height: AppSpace.md),
                     BusyButton(
-                      label: 'Sincronizar agora',
+                      label: tr.settingsSyncNow,
                       busy: _syncing || sync.status == SyncStatus.syncing,
                       onPressed: _syncNow,
                     ),
@@ -237,7 +235,7 @@ class _AccountPageState extends State<AccountPage> {
                     const SizedBox(width: AppSpace.md),
                     Expanded(
                       child: Text(
-                        '${sync.conflicts} alteração(ões) para resolver',
+                        tr.accountConflicts(sync.conflicts),
                         style: AppText.subtitle,
                       ),
                     ),
@@ -258,8 +256,8 @@ class _AccountPageState extends State<AccountPage> {
                     Expanded(
                       child: Text(
                         _legacy!.needsDecision || _legacy!.status == LegacyStatus.kept
-                            ? 'Registros antigos deste aparelho: importar ou exportar'
-                            : 'Registros antigos deste aparelho',
+                            ? tr.accountLegacyDecide
+                            : tr.accountLegacy,
                         style: AppText.subtitle,
                       ),
                     ),
@@ -268,18 +266,18 @@ class _AccountPageState extends State<AccountPage> {
                   ]),
                 ),
               ],
-              const SectionTitle('Sessão'),
+              SectionTitle(tr.accountSession),
               OutlinedButton.icon(
                 onPressed: _signOut,
                 icon: const Icon(Icons.logout_rounded),
-                label: const Text('Sair'),
+                label: Text(tr.accountSignOut),
               ),
               const SizedBox(height: AppSpace.sm),
               TextButton(
                 style: TextButton.styleFrom(foregroundColor: AppColors.danger),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const DeleteAccountPage())),
-                child: const Text('Excluir conta'),
+                child: Text(tr.accountDelete),
               ),
             ],
           );
@@ -320,7 +318,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       await context.read<AuthController>().reauthenticate();
       setState(() {
         _needsCode = true;
-        _info = 'Enviamos um código para o seu e-mail.';
+        _info = tr.accountCodeSent;
         _error = null;
       });
     } on AuthFailure catch (e) {
@@ -334,7 +332,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     setState(() {
       _passwordError = validateNewPassword(_password.text);
       _confirmError =
-          _confirm.text != _password.text ? 'As senhas não são iguais.' : null;
+          _confirm.text != _password.text ? tr.authPasswordsDiffer : null;
       _error = null;
     });
     if (_passwordError != null || _confirmError != null) return;
@@ -347,13 +345,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 : null,
           );
       if (mounted) {
-        showToast(context, 'Senha alterada');
+        showToast(context, tr.accountPasswordChanged);
         Navigator.of(context).pop();
       }
     } on AuthFailure catch (e) {
       if (!mounted) return;
       setState(() {
-        if (e.message.contains('código')) {
+        if (e.field == 'code') {
           // The project requires a code for password changes.
           _needsCode = true;
           _error = e.message;
@@ -372,22 +370,22 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget build(BuildContext context) {
     return AuthScaffold(
       showBack: true,
-      title: 'Alterar senha',
-      action: BusyButton(label: 'Salvar nova senha', busy: _busy, onPressed: _submit),
+      title: tr.accountChangePassword,
+      action: BusyButton(label: tr.accountSaveNewPassword, busy: _busy, onPressed: _submit),
       children: [
         if (_error != null) FormMessage(_error!),
         if (_info != null) FormMessage(_info!, error: false),
         PasswordField(
           controller: _password,
-          label: 'Nova senha',
+          label: tr.authNewPassword,
           newPassword: true,
           error: _passwordError,
-          helper: 'Pelo menos 8 caracteres, com letras e números.',
+          helper: tr.authPasswordHelper,
         ),
         const SizedBox(height: AppSpace.md),
         PasswordField(
           controller: _confirm,
-          label: 'Confirmar nova senha',
+          label: tr.authConfirmNewPassword,
           newPassword: true,
           done: !_needsCode,
           error: _confirmError,
@@ -398,14 +396,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             controller: _code,
             keyboardType: TextInputType.number,
             autofillHints: const [AutofillHints.oneTimeCode],
-            decoration: const InputDecoration(
-              labelText: 'Código recebido por e-mail',
-              prefixIcon: Icon(Icons.pin_outlined),
+            decoration: InputDecoration(
+              labelText: tr.accountCodeField,
+              prefixIcon: const Icon(Icons.pin_outlined),
             ),
           ),
           TextButton(
             onPressed: _busy ? null : _sendCode,
-            child: const Text('Enviar código de novo'),
+            child: Text(tr.accountResendCode),
           ),
         ],
       ],
@@ -437,11 +435,11 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
   Future<void> _delete() async {
     if (!_understood) {
-      setState(() => _error = 'Marque a confirmação para continuar.');
+      setState(() => _error = tr.deleteTickFirst);
       return;
     }
     if (_password.text.isEmpty) {
-      setState(() => _passwordError = 'Confirme sua senha.');
+      setState(() => _passwordError = tr.deleteConfirmPassword);
       return;
     }
     setState(() {
@@ -466,17 +464,13 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
           if (userId != null) await service.wipeLocal(userId);
           return;
         case DeleteOutcome.needsReauth:
-          setState(() => _passwordError = 'Confirme sua senha de novo.');
+          setState(() => _passwordError = tr.deleteConfirmPasswordAgain);
         case DeleteOutcome.partial:
-          setState(() => _error =
-              'A exclusão começou mas não terminou. Nada local foi apagado. '
-              'Toque em "Excluir conta" de novo para continuar.');
+          setState(() => _error = tr.deletePartial);
         case DeleteOutcome.unavailable:
-          setState(() => _error =
-              'A exclusão ainda não está disponível no servidor. Nada foi '
-              'apagado. Tente mais tarde.');
+          setState(() => _error = tr.deleteUnavailable);
         case DeleteOutcome.offline:
-          setState(() => _error = 'Sem conexão. Nada foi apagado.');
+          setState(() => _error = tr.deleteOffline);
       }
     } on AuthFailure catch (e) {
       if (mounted) {
@@ -497,10 +491,8 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
   Widget build(BuildContext context) {
     return AuthScaffold(
       showBack: true,
-      title: 'Excluir conta',
-      subtitle: 'Isso apaga de vez a sua conta, todos os rolês, bebidas, locais, '
-          'comandas e fotos guardados na nuvem, e os dados desta conta neste '
-          'aparelho. Não dá para desfazer.',
+      title: tr.accountDelete,
+      subtitle: tr.deleteBody,
       action: FilledButton(
         style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
         onPressed: _busy ? null : _delete,
@@ -509,26 +501,22 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(strokeWidth: 2))
-            : const Text('Excluir conta'),
+            : Text(tr.accountDelete),
       ),
       children: [
         if (_error != null) FormMessage(_error!),
-        const Text(
-          'Se quiser guardar uma cópia, exporte seus dados antes (Configurações '
-          '> Exportar meus dados).',
-          style: AppText.caption,
-        ),
+        Text(tr.deleteExportFirst, style: AppText.caption),
         const SizedBox(height: AppSpace.md),
         CheckboxListTile(
           contentPadding: EdgeInsets.zero,
           value: _understood,
           activeColor: AppColors.danger,
           onChanged: (v) => setState(() => _understood = v ?? false),
-          title: const Text('Entendo que a exclusão é permanente.'),
+          title: Text(tr.deleteUnderstand),
         ),
         PasswordField(
           controller: _password,
-          label: 'Sua senha',
+          label: tr.deleteYourPassword,
           error: _passwordError,
           done: true,
         ),

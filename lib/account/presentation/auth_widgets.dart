@@ -4,6 +4,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/brand.dart';
 import '../../core/widgets/common.dart';
+import '../../l10n/l10n.dart';
 
 /// Layout of every auth screen: brand on top, a short title, the form, and
 /// the main action pinned at the bottom (it stays visible with the keyboard
@@ -88,7 +89,7 @@ class EmailField extends StatelessWidget {
         autofillHints: const [AutofillHints.email, AutofillHints.username],
         onSubmitted: onSubmitted,
         decoration: InputDecoration(
-          labelText: 'E-mail',
+          labelText: tr.authEmail,
           prefixIcon: const Icon(Icons.mail_outline_rounded),
           errorText: error,
         ),
@@ -99,7 +100,7 @@ class PasswordField extends StatefulWidget {
   const PasswordField({
     super.key,
     required this.controller,
-    this.label = 'Senha',
+    this.label,
     this.error,
     this.helper,
     this.newPassword = false,
@@ -108,7 +109,8 @@ class PasswordField extends StatefulWidget {
   });
 
   final TextEditingController controller;
-  final String label;
+  /// Defaults to "Senha" in the language on screen.
+  final String? label;
   final String? error;
   final String? helper;
 
@@ -137,14 +139,14 @@ class _PasswordFieldState extends State<PasswordField> {
         ],
         onSubmitted: widget.onSubmitted,
         decoration: InputDecoration(
-          labelText: widget.label,
+          labelText: widget.label ?? tr.authPassword,
           prefixIcon: const Icon(Icons.lock_outline_rounded),
           helperText: widget.helper,
           helperMaxLines: 2,
           errorText: widget.error,
           errorMaxLines: 3,
           suffixIcon: IconButton(
-            tooltip: _visible ? 'Ocultar senha' : 'Mostrar senha',
+            tooltip: _visible ? tr.authHidePassword : tr.authShowPassword,
             icon: Icon(_visible
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined),
@@ -215,17 +217,17 @@ class BusyButton extends StatelessWidget {
 /// Basic client-side checks; the server has the last word.
 String? validateEmail(String v) {
   final t = v.trim();
-  if (t.isEmpty) return 'Informe seu e-mail.';
+  if (t.isEmpty) return tr.authEnterEmail;
   if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(t)) {
-    return 'Confira o e-mail digitado.';
+    return tr.authCheckEmail;
   }
   return null;
 }
 
 String? validateNewPassword(String v) {
-  if (v.length < 8) return 'Use pelo menos 8 caracteres.';
+  if (v.length < 8) return tr.authPasswordMin;
   if (!RegExp(r'[A-Za-z]').hasMatch(v) || !RegExp(r'\d').hasMatch(v)) {
-    return 'Misture letras e números.';
+    return tr.authPasswordMix;
   }
   return null;
 }

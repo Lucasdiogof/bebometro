@@ -9,6 +9,7 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../outings/data/outing_repository.dart';
+import '../../l10n/l10n.dart';
 
 /// "Alterações para resolver": changes that could not be sent as they are.
 /// Each one keeps both versions until the person chooses; nothing is merged
@@ -33,7 +34,7 @@ class _ConflictsPageState extends State<ConflictsPage> {
       getIt<SyncCubit>().schedule(immediate: true);
       if (mounted) showToast(context, done);
     } catch (_) {
-      if (mounted) showToast(context, 'Não foi possível aplicar. Nada foi perdido.');
+      if (mounted) showToast(context, tr.conflictApplyFailed);
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -56,16 +57,16 @@ class _ConflictsPageState extends State<ConflictsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Alterações para resolver')),
+      appBar: AppBar(title: Text(tr.conflictTitle)),
       body: StreamBuilder<void>(
         stream: _conflicts.changes,
         builder: (context, _) {
           final items = _conflicts.all;
           if (items.isEmpty) {
-            return const Center(
+            return Center(
               child: Padding(
                 padding: EdgeInsets.all(AppSpace.xl),
-                child: Text('Nada para resolver. Tudo certo.',
+                child: Text(tr.conflictNone,
                     style: AppText.body, textAlign: TextAlign.center),
               ),
             );
@@ -74,12 +75,7 @@ class _ConflictsPageState extends State<ConflictsPage> {
             padding: const EdgeInsets.fromLTRB(
                 AppSpace.gutter, AppSpace.sm, AppSpace.gutter, AppSpace.xxl),
             children: [
-              const Text(
-                'Estas alterações foram feitas em mais de um aparelho ao mesmo '
-                'tempo. Escolha qual versão vale. A outra é descartada só '
-                'quando você escolher.',
-                style: AppText.caption,
-              ),
+              Text(tr.conflictIntro, style: AppText.caption),
               const SizedBox(height: AppSpace.md),
               for (final c in items)
                 Padding(
@@ -105,31 +101,26 @@ class _ConflictsPageState extends State<ConflictsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Dois rolês em andamento', style: AppText.title),
+          Text(tr.legacyTwoActiveTitle, style: AppText.title),
           const SizedBox(height: AppSpace.xs),
-          const Text(
-            'Um foi começado neste aparelho e outro em outro aparelho, sem '
-            'internet. Os dois foram guardados com as suas bebidas. Escolha '
-            'qual encerrar agora.',
-            style: AppText.caption,
-          ),
+          Text(tr.conflictTwoActiveBody, style: AppText.caption),
           const SizedBox(height: AppSpace.md),
-          _outingLine('Deste aparelho', local),
-          if (other != null) _outingLine('Do outro aparelho', other),
+          _outingLine(tr.conflictFromHere, local),
+          if (other != null) _outingLine(tr.conflictFromOther, other),
           const SizedBox(height: AppSpace.sm),
           Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
             OutlinedButton(
               onPressed: _busy
                   ? null
-                  : () => _run(() => _endOne(c, c.id), 'Rolê encerrado'),
-              child: const Text('Encerrar o deste aparelho'),
+                  : () => _run(() => _endOne(c, c.id), tr.conflictOutingEnded),
+              child: Text(tr.conflictEndHere),
             ),
             if (other != null)
               OutlinedButton(
                 onPressed: _busy
                     ? null
-                    : () => _run(() => _endOne(c, c.otherId!), 'Rolê encerrado'),
-                child: const Text('Encerrar o do outro aparelho'),
+                    : () => _run(() => _endOne(c, c.otherId!), tr.conflictOutingEnded),
+                child: Text(tr.conflictEndOther),
               ),
           ]),
         ],
@@ -146,13 +137,16 @@ class _ConflictsPageState extends State<ConflictsPage> {
     final name = (o['nickname'] as String?) ??
         (o['place_name'] as String?) ??
         (o['address'] as String?) ??
-        'Rolê';
+        tr.outingFallbackName;
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpace.xs),
       child: Text(
-        '$label: $name'
-        '${started != null ? ' · desde ${formatDateTime(started.toLocal())}' : ''}'
-        ' · $drinks ${drinks == 1 ? 'bebida' : 'bebidas'}',
+        [
+          tr.conflictOutingLine(label, name),
+          if (started != null)
+            tr.conflictSince(formatDateTime(started.toLocal())),
+          tr.drinkCount(drinks),
+        ].join(' · '),
         style: AppText.body,
       ),
     );
@@ -166,16 +160,12 @@ class _ConflictsPageState extends State<ConflictsPage> {
         children: [
           Text(_title(c), style: AppText.title),
           const SizedBox(height: AppSpace.sm),
-          _version('Neste aparelho', c.collection, c.local),
+          _version(tr.conflictHere, c.collection, c.local),
           const SizedBox(height: AppSpace.sm),
           if (remote == null)
-            const Text(
-              'Não deu para ler a versão da nuvem agora. Você pode manter a '
-              'deste aparelho ou tentar mais tarde.',
-              style: AppText.caption,
-            )
+            Text(tr.conflictRemoteUnreadable, style: AppText.caption)
           else
-            _version(c.remoteDeleted ? 'Na nuvem (excluído)' : 'Na nuvem',
+            _version(c.remoteDeleted ? tr.conflictCloudDeleted : tr.conflictCloud,
                 c.collection, remote),
           const SizedBox(height: AppSpace.md),
           Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
@@ -183,20 +173,20 @@ class _ConflictsPageState extends State<ConflictsPage> {
               onPressed: _busy
                   ? null
                   : () => _run(() => _conflicts.keepLocal(c),
-                      c.remoteDeleted ? 'Restaurado com a sua versão' : 'Mantida a versão deste aparelho'),
+                      c.remoteDeleted ? tr.conflictRestored : tr.conflictKeptLocal),
               child: Text(c.remoteDeleted
-                  ? 'Restaurar com a versão deste aparelho'
-                  : 'Manter a deste aparelho'),
+                  ? tr.conflictRestore
+                  : tr.conflictKeepLocal),
             ),
             if (remote != null)
               OutlinedButton(
                 onPressed: _busy
                     ? null
                     : () => _run(() => _conflicts.useRemote(c),
-                        c.remoteDeleted ? 'Exclusão aceita' : 'Usada a versão da nuvem'),
+                        c.remoteDeleted ? tr.conflictDeletionAccepted : tr.conflictUsedRemote),
                 child: Text(c.remoteDeleted
-                    ? 'Aceitar a exclusão'
-                    : 'Usar a da nuvem'),
+                    ? tr.conflictAcceptDeletion
+                    : tr.conflictUseRemote),
               ),
           ]),
         ],
@@ -205,19 +195,19 @@ class _ConflictsPageState extends State<ConflictsPage> {
   }
 
   String _title(SyncConflict c) => switch (c.collection) {
-        LocalStore.drinkEntries => 'Bebida editada em dois aparelhos',
-        LocalStore.outingTabs => 'Comanda alterada em dois aparelhos',
-        LocalStore.outings => 'Rolê alterado em dois aparelhos',
-        LocalStore.places => 'Local alterado em dois aparelhos',
-        LocalStore.customDrinks => 'Bebida pessoal alterada em dois aparelhos',
-        _ => 'Item alterado em dois aparelhos',
+        LocalStore.drinkEntries => tr.conflictDrink,
+        LocalStore.outingTabs => tr.conflictTab,
+        LocalStore.outings => tr.conflictOuting,
+        LocalStore.places => tr.conflictPlace,
+        LocalStore.customDrinks => tr.conflictCustomDrink,
+        _ => tr.conflictItem,
       };
 
   Widget _version(String label, String collection, Map<String, dynamic> j) {
     final updated = DateTime.tryParse(j['updated_at'] as String? ?? '');
     final lines = <String>[
       ..._describe(collection, j),
-      if (updated != null) 'Editado em ${formatDateTime(updated.toLocal())}',
+      if (updated != null) tr.conflictEditedAt(formatDateTime(updated.toLocal())),
     ];
     return Container(
       width: double.infinity,
@@ -238,12 +228,13 @@ class _ConflictsPageState extends State<ConflictsPage> {
 
   /// A few readable facts of each version (never ids or column names).
   List<String> _describe(String collection, Map<String, dynamic> j) {
-    String money(Object? c) => c is num ? formatCents(c.toInt()) : 'sem preço';
+    String money(Object? c) => c is num ? formatCents(c.toInt()) : tr.priceUnknown;
     switch (collection) {
       case LocalStore.drinkEntries:
         return [
-          '${j['name'] ?? 'Bebida'} · ${j['personal_ml'] ?? '?'} ml',
-          'Pago: ${money(j['paid_cents'])}',
+          '${j['name'] ?? tr.drinkFallbackName} · '
+              '${j['personal_ml'] is num ? formatMl((j['personal_ml'] as num).toInt()) : '?'}',
+          tr.conflictPaid(money(j['paid_cents'])),
         ];
       case LocalStore.outingTabs:
         final data = j['data'] is Map ? j['data'] as Map : const {};
@@ -252,20 +243,20 @@ class _ConflictsPageState extends State<ConflictsPage> {
             0, (s, p) => s + ((p is Map ? p['cents'] : 0) as num? ?? 0).toInt());
         final people = (data['participants'] as List?)?.length ?? 0;
         return [
-          '$people participante(s) · ${(data['extras'] as List?)?.length ?? 0} item(ns) extra(s)',
-          '${payments.length} pagamento(s) registrados: ${formatCents(paid)}',
+          tr.conflictTabPeople(people, (data['extras'] as List?)?.length ?? 0),
+          tr.conflictTabPayments(payments.length, formatCents(paid)),
         ];
       case LocalStore.outings:
         final started = DateTime.tryParse(j['started_at'] as String? ?? '');
         final ended = DateTime.tryParse(j['ended_at'] as String? ?? '');
         return [
-          (j['nickname'] ?? j['place_name'] ?? j['address'] ?? 'Rolê').toString(),
-          if (started != null) 'Início: ${formatDateTime(started.toLocal())}',
-          ended != null ? 'Fim: ${formatDateTime(ended.toLocal())}' : 'Em andamento',
+          (j['nickname'] ?? j['place_name'] ?? j['address'] ?? tr.outingFallbackName).toString(),
+          if (started != null) tr.conflictStart(formatDateTime(started.toLocal())),
+          ended != null ? tr.conflictEnd(formatDateTime(ended.toLocal())) : tr.outingInProgress,
         ];
       default:
         return [
-          (j['nickname'] ?? j['name'] ?? j['provider_name'] ?? j['address'] ?? 'Item')
+          (j['nickname'] ?? j['name'] ?? j['provider_name'] ?? j['address'] ?? tr.itemFallbackName)
               .toString(),
         ];
     }

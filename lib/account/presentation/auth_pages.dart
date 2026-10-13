@@ -10,6 +10,7 @@ import '../../core/widgets/common.dart';
 import '../application/auth_controller.dart';
 import 'auth_widgets.dart';
 import 'legacy_data_page.dart';
+import '../../l10n/l10n.dart';
 
 // ------------------------------------------------------------------ sign in
 
@@ -45,7 +46,7 @@ class _SignInPageState extends State<SignInPage> {
     final emailErr = validateEmail(_email.text);
     setState(() {
       _emailError = emailErr;
-      _passwordError = _password.text.isEmpty ? 'Informe sua senha.' : null;
+      _passwordError = _password.text.isEmpty ? tr.authEnterPassword : null;
       _error = null;
     });
     if (emailErr != null || _password.text.isEmpty) return;
@@ -73,18 +74,15 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>().state;
     return AuthScaffold(
-      title: widget.reauth ? 'Entre novamente' : 'Entrar',
+      title: widget.reauth ? tr.authSignInAgainTitle : tr.authSignIn,
       subtitle: widget.reauth
-          ? 'Sua sessão terminou no servidor. Seus registros continuam neste '
-              'aparelho e voltam quando você entrar na mesma conta.'
-          : 'Seus rolês ficam salvos na sua conta e voltam em qualquer aparelho.',
-      action: BusyButton(label: 'Entrar', busy: _busy, onPressed: _submit),
+          ? tr.authSignInAgainBody
+          : tr.authSignInBody,
+      action: BusyButton(label: tr.authSignIn, busy: _busy, onPressed: _submit),
       children: [
         if (auth.notice != null) FormMessage(auth.notice!),
         if (auth.cloudUnavailable)
-          const FormMessage(
-              'Não foi possível falar com o servidor agora. Confira a internet '
-              'e tente de novo em instantes.'),
+          FormMessage(tr.authCloudDown),
         if (_error != null) FormMessage(_error!),
         EmailField(controller: _email, error: _emailError),
         const SizedBox(height: AppSpace.md),
@@ -99,14 +97,14 @@ class _SignInPageState extends State<SignInPage> {
           child: TextButton(
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => ForgotPasswordPage(initialEmail: _email.text))),
-            child: const Text('Esqueci minha senha'),
+            child: Text(tr.authForgot),
           ),
         ),
         const SizedBox(height: AppSpace.md),
         OutlinedButton(
           onPressed: () => Navigator.of(context)
               .push(MaterialPageRoute(builder: (_) => const SignUpPage())),
-          child: const Text('Criar conta'),
+          child: Text(tr.authCreateAccount),
         ),
         const SizedBox(height: AppSpace.lg),
         const LegacyNoticeCard(),
@@ -147,12 +145,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<void> _submit() async {
     setState(() {
-      _nameError = _name.text.trim().isEmpty ? 'Como podemos te chamar?' : null;
+      _nameError = _name.text.trim().isEmpty ? tr.authNameMissing : null;
       _emailError = validateEmail(_email.text);
       if (!widget.convert) {
         _passwordError = validateNewPassword(_password.text);
         _confirmError = _confirm.text != _password.text
-            ? 'As senhas não são iguais.'
+            ? tr.authPasswordsDiffer
             : null;
       }
       _error = null;
@@ -191,13 +189,12 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return AuthScaffold(
       showBack: true,
-      title: widget.convert ? 'Criar conta com seus registros' : 'Criar conta',
+      title: widget.convert ? tr.authCreateWithRecords : tr.authCreateAccount,
       subtitle: widget.convert
-          ? 'Seus registros deste aparelho continuam com você. Depois de '
-              'confirmar o e-mail, você escolhe a senha.'
+          ? tr.authConvertBody
           : null,
       action: BusyButton(
-          label: widget.convert ? 'Enviar confirmação' : 'Criar conta',
+          label: widget.convert ? tr.authSendConfirmation : tr.authCreateAccount,
           busy: _busy,
           onPressed: _submit),
       children: [
@@ -208,7 +205,7 @@ class _SignUpPageState extends State<SignUpPage> {
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.name],
           decoration: InputDecoration(
-            labelText: 'Nome',
+            labelText: tr.accountName,
             prefixIcon: const Icon(Icons.person_outline_rounded),
             errorText: _nameError,
           ),
@@ -221,12 +218,12 @@ class _SignUpPageState extends State<SignUpPage> {
             controller: _password,
             newPassword: true,
             error: _passwordError,
-            helper: 'Pelo menos 8 caracteres, com letras e números.',
+            helper: tr.authPasswordHelper,
           ),
           const SizedBox(height: AppSpace.md),
           PasswordField(
             controller: _confirm,
-            label: 'Confirmar senha',
+            label: tr.authConfirmPassword,
             newPassword: true,
             done: true,
             error: _confirmError,
@@ -234,11 +231,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ],
         const SizedBox(height: AppSpace.md),
-        const Text(
-          'Vamos enviar um link para confirmar o e-mail. Seu nome e e-mail só '
-          'servem para a sua conta.',
-          style: AppText.caption,
-        ),
+        Text(tr.authSignUpNote, style: AppText.caption),
       ],
     );
   }
@@ -279,7 +272,7 @@ class _CheckEmailPageState extends State<CheckEmailPage> {
       await context.read<AuthController>().resendConfirmation();
       if (mounted) {
         setState(() {
-          _message = 'Enviamos outro e-mail. Confira também o spam.';
+          _message = tr.authResent;
           _messageIsError = false;
         });
       }
@@ -301,26 +294,21 @@ class _CheckEmailPageState extends State<CheckEmailPage> {
     final s = auth.state;
     final wait = auth.resendWaitSeconds;
     return AuthScaffold(
-      title: 'Confira seu e-mail',
-      subtitle: 'Enviamos um link para ${s.pendingEmail ?? 'o seu e-mail'}. '
-          'Abra o link neste aparelho para concluir.',
+      title: tr.authCheckInboxTitle,
+      subtitle: tr.authCheckInboxBody(s.pendingEmail ?? tr.authYourEmail),
       action: OutlinedButton(
         onPressed: _busy || wait > 0 ? null : _resend,
-        child: Text(wait > 0 ? 'Reenviar em $wait s' : 'Reenviar e-mail'),
+        child: Text(wait > 0 ? tr.authResendIn(wait) : tr.authResend),
       ),
       children: [
         if (s.notice != null) FormMessage(s.notice!),
         if (_message != null) FormMessage(_message!, error: _messageIsError),
-        const SurfaceCard(
+        SurfaceCard(
           child: Row(children: [
             Icon(Icons.mark_email_unread_outlined, color: AppColors.amber),
             SizedBox(width: AppSpace.md),
             Expanded(
-              child: Text(
-                'Não chegou? Confira o spam e se o endereço está certo. O link '
-                'vale por tempo limitado.',
-                style: AppText.body,
-              ),
+              child: Text(tr.authNotArrived, style: AppText.body),
             ),
           ]),
         ),
@@ -328,16 +316,16 @@ class _CheckEmailPageState extends State<CheckEmailPage> {
         if (s.converting)
           TextButton(
             onPressed: () => context.read<AuthController>().cancelConversion(),
-            child: const Text('Voltar e usar outro e-mail'),
+            child: Text(tr.authUseOtherEmailBack),
           )
         else ...[
           FilledButton.tonal(
             onPressed: () => context.read<AuthController>().forgetPendingEmail(),
-            child: const Text('Já confirmei: entrar'),
+            child: Text(tr.authAlreadyConfirmed),
           ),
           TextButton(
             onPressed: () => context.read<AuthController>().forgetPendingEmail(),
-            child: const Text('Usar outro e-mail'),
+            child: Text(tr.authUseOtherEmail),
           ),
         ],
       ],
@@ -391,20 +379,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return AuthScaffold(
       showBack: true,
-      title: 'Recuperar senha',
-      subtitle: 'Enviamos um link para criar uma nova senha. Abra-o neste '
-          'aparelho.',
+      title: tr.authRecoverTitle,
+      subtitle: tr.authRecoverBody,
       action: BusyButton(
-          label: _sent ? 'Enviar de novo' : 'Enviar link',
+          label: _sent ? tr.authSendAgain : tr.authSendLink,
           busy: _busy,
           onPressed: _submit),
       children: [
         if (_sent)
-          const FormMessage(
-            'Se houver uma conta com esse e-mail, o link chega em instantes. '
-            'Confira também o spam.',
-            error: false,
-          ),
+          FormMessage(tr.authRecoverSent, error: false),
         if (_error != null) FormMessage(_error!),
         EmailField(
           controller: _email,
@@ -445,7 +428,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
     setState(() {
       _passwordError = validateNewPassword(_password.text);
       _confirmError =
-          _confirm.text != _password.text ? 'As senhas não são iguais.' : null;
+          _confirm.text != _password.text ? tr.authPasswordsDiffer : null;
       _error = null;
     });
     if (_passwordError != null || _confirmError != null) return;
@@ -471,25 +454,24 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
   Widget build(BuildContext context) {
     final s = context.watch<AuthController>().state;
     return AuthScaffold(
-      title: widget.recovery ? 'Nova senha' : 'Escolha sua senha',
+      title: widget.recovery ? tr.authNewPasswordTitle : tr.authChoosePassword,
       subtitle: widget.recovery
-          ? 'Crie uma nova senha para ${s.email ?? 'sua conta'}.'
-          : 'E-mail confirmado. Agora escolha a senha para entrar em outros '
-              'aparelhos.',
-      action: BusyButton(label: 'Salvar senha', busy: _busy, onPressed: _submit),
+          ? tr.authNewPasswordFor(s.email ?? tr.authYourAccount)
+          : tr.authChoosePasswordBody,
+      action: BusyButton(label: tr.authSavePassword, busy: _busy, onPressed: _submit),
       children: [
         if (_error != null) FormMessage(_error!),
         PasswordField(
           controller: _password,
-          label: 'Nova senha',
+          label: tr.authNewPassword,
           newPassword: true,
           error: _passwordError,
-          helper: 'Pelo menos 8 caracteres, com letras e números.',
+          helper: tr.authPasswordHelper,
         ),
         const SizedBox(height: AppSpace.md),
         PasswordField(
           controller: _confirm,
-          label: 'Confirmar nova senha',
+          label: tr.authConfirmNewPassword,
           newPassword: true,
           done: true,
           error: _confirmError,
@@ -499,7 +481,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
           const SizedBox(height: AppSpace.lg),
           TextButton(
             onPressed: () => context.read<AuthController>().cancelRecovery(),
-            child: const Text('Cancelar e sair'),
+            child: Text(tr.authCancelAndLeave),
           ),
         ],
       ],
@@ -519,33 +501,27 @@ class LegacyAnonymousPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = context.watch<AuthController>().state;
     return AuthScaffold(
-      title: 'Agora o Bebômetro usa conta',
-      subtitle: 'Se você já usava o app neste aparelho, seus registros foram '
-          'guardados. Crie sua conta para continuar com eles e recuperá-los em '
-          'outro aparelho.',
+      title: tr.legacyAnonTitle,
+      subtitle: tr.legacyAnonBody,
       action: FilledButton(
         onPressed: () => Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => const SignUpPage(convert: true))),
-        child: const Text('Criar conta com meus registros'),
+        child: Text(tr.legacyAnonCreate),
       ),
       children: [
         if (s.notice != null) FormMessage(s.notice!),
         SurfaceCard(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (_) => const SignInPage())),
-          child: const Row(children: [
+          child: Row(children: [
             Icon(Icons.login_rounded, color: AppColors.amber),
             SizedBox(width: AppSpace.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Já tenho conta', style: AppText.subtitle),
-                  Text(
-                    'Os registros antigos ficam separados neste aparelho; você '
-                    'decide depois se importa para a conta.',
-                    style: AppText.caption,
-                  ),
+                  Text(tr.legacyAnonHaveAccount, style: AppText.subtitle),
+                  Text(tr.legacyAnonHaveAccountHint, style: AppText.caption),
                 ],
               ),
             ),
@@ -555,11 +531,11 @@ class LegacyAnonymousPage extends StatelessWidget {
         SurfaceCard(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (_) => const LegacyDataPage())),
-          child: const Row(children: [
+          child: Row(children: [
             Icon(Icons.inventory_2_outlined, color: AppColors.amber),
             SizedBox(width: AppSpace.md),
             Expanded(
-              child: Text('Ver ou exportar os registros antigos',
+              child: Text(tr.legacyAnonView,
                   style: AppText.subtitle),
             ),
           ]),
