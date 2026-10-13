@@ -103,6 +103,7 @@ class SyncCubit extends Cubit<SyncState> {
   Future<void> syncNow() {
     _debounce?.cancel();
     _retry?.cancel();
+    _failures = 0; // an explicit request should not wait on the backoff
     return flush();
   }
 
@@ -356,11 +357,13 @@ class SyncCubit extends Cubit<SyncState> {
       e.code == 'PGRST205' || e.code == '42P01';
 
   /// A column the server does not have (or, for outings, a place that is not
-  /// on the server yet).
+  /// on the server yet: the FK says 23503 and the same-owner trigger raises
+  /// P0001, which is its only exception).
   bool _columnGap(PostgrestException e, String collection) =>
       e.code == 'PGRST204' ||
       e.code == '42703' ||
-      (collection == LocalStore.outings && e.code == '23503');
+      (collection == LocalStore.outings &&
+          (e.code == '23503' || e.code == 'P0001'));
 
   /// The row without its newer optional columns, or null if it had none.
   Map<String, dynamic>? _withoutOptionalColumns(

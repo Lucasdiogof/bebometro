@@ -229,9 +229,14 @@ Checklist por bloco em `docs/development-progress.md`. Nada foi compilado, anali
   exportação JSON (tudo) e CSV (rolês e bebidas; `;`, UTF-8 com BOM, vazio = desconhecido) em Configurações → Exportar meus dados.
 - **Sincronização compatível:** a coleção `places` entra na fila (antes dos rolês). Colunas/tabelas novas ausentes no servidor não bloqueiam o
   resto: o rolê é enviado sem os campos novos, a linha continua pendente e o aviso diz que parte dos dados aguarda atualização do servidor.
-- **Migration nova, NÃO aplicada (sem acesso administrativo):** `supabase/migrations/20261014000000_places_budget_feedback_details.sql`
-  (tabela `places` + RLS, `outings.place_id/city/state/budget_cents/feedback_wake/feedback_hangover/feedback_note`). Ação: rodar no SQL Editor
-  do projeto `jiisoqkryhmtopaojyyu`. Até lá locais, orçamento e detalhes do relato ficam só no aparelho (pendentes).
+- **Migration `20261014000000_places_budget_feedback_details.sql`: aplicada pelo dono** no projeto `jiisoqkryhmtopaojyyu`
+  (informado por ele em 13/10/2026). Conferido por leitura na API (só consulta de esquema com a chave publicável, sem criar registros): a tabela
+  `places` e as colunas `outings.place_id/city/state/budget_cents/feedback_wake/feedback_hangover/feedback_note` existem. Isto **não** é uma
+  sincronização observada no Flutter: o envio real dos dados pendentes ainda não foi visto rodando.
+- **Reenvio após a migration:** linhas que foram enviadas só com a parte compatível continuam na fila (nunca recebem ack parcial). Na próxima
+  rodada (retry de 5 min, mudança local, abertura do app ou "Sincronizar agora") a linha completa é reenviada por upsert com o mesmo `id`:
+  sem duplicar, sem perder o vínculo com o local e sem reinstalar. `places` sobe antes de `outings`. Um local ainda não enviado (FK `23503` ou
+  gatilho `P0001`) não bloqueia mais o rolê nem as bebidas: o rolê sobe sem `place_id` e fica pendente. "Sincronizar agora" zera o recuo.
 - **Limitações conhecidas:** tudo sem execução (podem existir erros de compilação); share via web depende do navegador; sem inclinação por
   sensor; cenários/recipientes desenhados em código (sem assets); "Resenha" não tem som/vibração; estatísticas não têm gráfico de linha
   (de propósito: dia sem registro não é dia sem beber).
