@@ -69,7 +69,7 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 - Alternância Mesa/Lista e seis cenários: bar, balada, churrasco, casa, praia e restaurante.
 - Latas, garrafas, copos e outros recipientes ilustrados, com agrupamento quando há muitos registros.
 - Esvaziamento decorativo opcional, redução de movimento e retrospectiva com recipientes vazios.
-- Copão de volume acumulado e brincadeira separada de “virar o copo” por arrastar ou slider. Nenhuma delas altera os consumos.
+- Copão de volume acumulado e brincadeira separada de “virar o copo” em tela cheia: o próprio celular é o copo, movido pelo acelerômetro no Android/iOS e por arrasto na web ou sem sensor. É só visual e não altera os consumos.
 
 **Locais e gastos**
 
@@ -125,6 +125,7 @@ Organização por funcionalidade com separação entre domínio, dados e apresen
 | Backend | Supabase Auth, PostgreSQL, RLS |
 | Gráficos | Widgets Flutter e custom painters |
 | Compartilhamento | `share_plus` |
+| Movimento do aparelho | `sensors_plus` |
 | Formatação / IDs | `intl`, `uuid` |
 
 Cloudflare faz parte da infraestrutura planejada, não de uma dependência implantada do app atual.
@@ -172,7 +173,7 @@ Na web, acrescente `-d chrome` ao comando de execução. São instruções de co
 - **Não verificado:** os interpretadores de rótulo e cardápio são heurísticos e não foram testados com fotos reais, então não se promete precisão. A migration `20261015000000` foi aplicada pelo responsável; a sincronização dessas tabelas e fotos pelo app ainda não foi observada.
 - **Regra de escopo (implementada):** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras.
 - **Depois:** busca de locais/mapas, atividades opcionais na tela bloqueada, preços regionais sustentados por observações reais e ampliação do catálogo.
-- **Validação pendente:** resolução de dependências, compilação, fluxos em aparelho/navegador, revisão visual e sincronização ponta a ponta. Inclinação do copo por sensor ainda não está implementada.
+- **Validação pendente:** resolução de dependências, compilação, fluxos em aparelho/navegador, revisão visual e sincronização ponta a ponta. A física da cerveja em tela cheia e os eixos do sensor estão implementados no código, mas nunca foram observados em aparelho.
 
 As bebidas pessoais reutilizáveis criadas antes desse escopo foram preservadas; dentro de um rolê, novos cadastros manuais ficam só nele.
 

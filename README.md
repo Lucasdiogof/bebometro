@@ -69,7 +69,7 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 - Table/list switch and six settings: bar, nightclub, barbecue, home, beach and restaurant.
 - Illustrated cans, bottles, glasses and other vessels, grouped when the table gets crowded.
 - Optional decorative emptying animation, reduced-motion support and an empty-vessel recap.
-- Accumulated-volume glass and a separate drag/slider “tip the glass” interaction. Neither changes consumption records.
+- Accumulated-volume glass and a separate full-screen “tip the glass” beer: the phone itself is the glass, driven by the accelerometer on Android/iOS and by dragging on the web or without a sensor. It is visual only and changes no consumption records.
 
 **Places and spending**
 
@@ -125,6 +125,7 @@ Feature-based organization separates domain, data and presentation, with Cubits 
 | Backend | Supabase Auth, PostgreSQL, RLS |
 | Graphics | Flutter widgets and custom painters |
 | Sharing | `share_plus` |
+| Device motion | `sensors_plus` |
 | Formatting / IDs | `intl`, `uuid` |
 
 Cloudflare is part of the planned infrastructure, not a deployed dependency of the current app.
@@ -172,7 +173,7 @@ For web, add `-d chrome` to the run command. These are setup instructions, not e
 - **Not verified:** the label and menu parsers are heuristic and were not tested on real photos, so no accuracy is claimed. The `20261015000000` migration was applied by the maintainer; synchronization of these tables and photos from the app has not been observed.
 - **Scope rule (implemented):** custom items, photos and menu prices belong to the outing ID, even across midnight. They do not enter the global catalog, do not automatically become reusable personal items and do not feed future-visit price suggestions.
 - **Later:** map/place search, opt-in lock-screen activities, regional prices backed by real observations and additional catalog coverage.
-- **Pending validation:** dependency resolution, compilation, device/browser flows, visual review and end-to-end synchronization. Sensor-based glass tilting is not implemented.
+- **Pending validation:** dependency resolution, compilation, device/browser flows, visual review and end-to-end synchronization. The full-screen beer physics and sensor axes are implemented in code but have not been observed on a device.
 
 The reusable personal drinks created before this scope were preserved; inside an outing, new manual drinks are outing-only.
 

@@ -69,7 +69,7 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 - Alternancia Mesa/Lista y seis ambientes: bar, discoteca, barbacoa, casa, playa y restaurante.
 - Latas, botellas, vasos y otros recipientes ilustrados, agrupados cuando hay muchos registros.
 - Vaciado decorativo opcional, reducción de movimiento y resumen con recipientes vacíos.
-- Vaso de volumen acumulado e interacción independiente para “inclinar el vaso” mediante arrastre o deslizador. Ninguna modifica los consumos.
+- Vaso de volumen acumulado e cerveza independiente a pantalla completa para “inclinar el vaso”: el propio móvil es el vaso, controlado por el acelerómetro en Android/iOS y por arrastre en la web o sin sensor. Es solo visual y no modifica los consumos.
 
 **Lugares y gastos**
 
@@ -125,6 +125,7 @@ Organización por funcionalidad con separación de dominio, datos y presentació
 | Backend | Supabase Auth, PostgreSQL, RLS |
 | Gráficos | Widgets Flutter y custom painters |
 | Compartir | `share_plus` |
+| Movimiento del dispositivo | `sensors_plus` |
 | Formato / IDs | `intl`, `uuid` |
 
 Cloudflare forma parte de la infraestructura prevista, no de una dependencia desplegada de la app actual.
@@ -172,7 +173,7 @@ Para web, añade `-d chrome` al comando de ejecución. Son instrucciones de conf
 - **No verificado:** los intérpretes de etiqueta y carta son heurísticos y no se probaron con fotos reales, por lo que no se promete precisión. La migración `20261015000000` fue aplicada por el responsable; la sincronización de esas tablas y fotos desde la app aún no se observó.
 - **Regla de alcance (implementada):** los artículos personalizados, fotos y precios de la carta pertenecen al ID de la salida, incluso después de medianoche. No entran al catálogo global, no se convierten automáticamente en artículos personales reutilizables ni alimentan sugerencias para visitas futuras.
 - **Más adelante:** búsqueda de lugares/mapas, actividades opcionales en pantalla bloqueada, precios regionales basados en observaciones reales y ampliación del catálogo.
-- **Validación pendiente:** resolución de dependencias, compilación, flujos en dispositivo/navegador, revisión visual y sincronización de extremo a extremo. La inclinación por sensores no está implementada.
+- **Validación pendiente:** resolución de dependencias, compilación, flujos en dispositivo/navegador, revisión visual y sincronización de extremo a extremo. La física de la cerveza a pantalla completa y los ejes del sensor están implementados en el código, pero nunca se observaron en un dispositivo.
 
 Las bebidas personales reutilizables creadas antes de este alcance se conservaron; dentro de una salida, los nuevos registros manuales quedan solo en ella.
 

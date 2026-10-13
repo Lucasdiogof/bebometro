@@ -223,7 +223,7 @@ Checklist por bloco em `docs/development-progress.md`. Nada foi compilado, anali
   acabar (depois pode reembaralhar), partida salva e retomável, cartas próprias (criar/excluir). 134 cartas originais em
   `assets/games/cards_v1.json` com ids estáveis; nenhuma carta pede para beber nem registra bebida.
 - **Copão e virar o copo** (`lib/glass/`): copão opcional no rolê (volume conhecido somado, escala explícita, "+N sem volume", sem metas);
-  "Virar o copo" é só brincadeira visual (arrastar ou slider; sensores não implementados, exigiriam `sensors_plus`).
+  "Virar o copo" é só brincadeira visual, refeita como tela imersiva (ver seção "Virar o copo: cerveja em tela cheia").
 - **Compartilhar e exportar** (`lib/share/`, `lib/export/`): cartão do resumo (escolhe-se nome do local, mesa, bebidas, gasto; nunca endereço
   nem relato) via `share_plus` (declarado no pubspec, **não resolvido: rode `flutter pub get`**) com cópia de texto como alternativa;
   exportação JSON (tudo) e CSV (rolês e bebidas; `;`, UTF-8 com BOM, vazio = desconhecido) em Configurações → Exportar meus dados.
@@ -243,8 +243,8 @@ Checklist por bloco em `docs/development-progress.md`. Nada foi compilado, anali
   bebidas dele; os rolês independentes seguem. Se o servidor recusar o vínculo (`23503` ou `P0001`), o rolê e o `place_id` ficam intactos e
   pendentes, as bebidas esperam, e o aviso é de erro ("O servidor não aceitou o vínculo..."): nenhuma validação é contornada. Só coluna
   ausente (`PGRST204`/`42703`) ainda gera envio parcial sem os campos novos, com a linha pendente. Tudo por inspeção; nada executado.
-- **Limitações conhecidas:** tudo sem execução (podem existir erros de compilação); share via web depende do navegador; sem inclinação por
-  sensor; cenários/recipientes desenhados em código (sem assets); "Resenha" não tem som/vibração; estatísticas não têm gráfico de linha
+- **Limitações conhecidas:** tudo sem execução (podem existir erros de compilação); share via web depende do navegador; "Virar o copo" com sensor
+  nunca observado em aparelho; cenários/recipientes desenhados em código (sem assets); "Resenha" não tem som/vibração; estatísticas não têm gráfico de linha
   (de propósito: dia sem registro não é dia sem beber).
 
 ## Bebida por foto, rótulo e cardápio (escopo: só o rolê)
@@ -323,6 +323,52 @@ Checklist por bloco em `docs/development-progress.md`. Nada foi compilado, anali
 - **Limitações:** nada compilado nem executado; pacotes novos não resolvidos (`flutter pub get`); heurísticas de OCR não validadas em
   fotos reais; na web não há leitura automática nem foto durável; leitura só de alfabeto latino; foto de rótulo curvo pode precisar de
   mais de uma imagem (o fluxo aceita uma por leitura de rótulo); `retrieveLostData` do Android não foi exercitado.
+
+## Virar o copo: cerveja em tela cheia (refeito em 13/10/2026)
+
+A tela inteira é o copo. Rota exclusiva (`TipGlassPage`, `lib/glass/presentation/tip_glass_page.dart`): sem AppBar, barra
+inferior, cards ou moldura; modo imersivo (`SystemUiMode.immersiveSticky`), retrato travado enquanto aberta; ao sair restaura
+`edgeToEdge` e todas as orientações. Controles em sobreposição (fechar, reencher, opções) dentro de `SafeArea`, sobre círculos
+escuros translúcidos. Sem som. O simulador tem nível próprio (começa em 78% da tela, deixando ar acima da espuma): **não lê nem
+grava registros, estatísticas ou metas**, e não há número de volume na tela.
+
+Camadas:
+- **Entrada** (`lib/glass/data/tilt_source.dart`): `sensors_plus` `accelerometerEventStream(SensorInterval.gameInterval)`, o
+  acelerômetro **com gravidade** (nunca o linear). Gravidade na tela = `(-ax, +ay)` (convenção Android; a documentação do pacote
+  não compara iOS, então o sinal no iOS precisa ser conferido em aparelho). Passa-baixa exponencial (τ = 0,09 s, com tempo real),
+  ignora leituras com |a| < 3 m/s² (queda livre/chacoalhão), segura o último ângulo estável e o leva a "nivelado" com `smoothstep`
+  quando a projeção da gravidade no plano da tela cai abaixo de 12–32% (aparelho quase deitado); entrada suavizada em 0,9 s.
+  Sem leitura em 1,5 s ou erro do stream → cai para o arrasto e avisa.
+- **Simulação** (`lib/glass/domain/beer_sim.dart`, sem Flutter além de `ChangeNotifier`): `angle` é a direção de "baixo" na tela;
+  mola amortecida angular (ζ ≈ 0,32, oscilação que se acomoda; crítica com redução de movimento) segue o alvo pelo caminho mais
+  curto (cruzar ±π não dá salto). O nível é achado por bisseção sobre a **área exata** do semiplano `n·p ≥ s` recortado na
+  tela, então o volume se conserva em qualquer ângulo, sem buracos nem retângulo girado. Ondas: amplitude excitada pela velocidade
+  angular e amortecida (`exp(-1,7 t)`), duas senoides ao longo da superfície. Bolhas: 40 (13 em modo calmo), arrays
+  `Float32List`, sobem contra a gravidade com leve ondulação, são recortadas dentro do líquido e renascem ao tocar a superfície.
+  Passo com tempo real entre quadros, limitado a 50 ms (retomada de segundo plano) e 2 subpassos.
+- **Escoamento:** a boca do copo é a borda superior da tela. Capacidade = área de `n·p ≥ max(0, nx·W)` (a superfície não pode
+  passar do ponto mais baixo da borda). Se `volume > capacidade`, sai por `min(excesso, taxa·dt + 1,5·excesso·dt)` com
+  `taxa = 0,05 + 0,55·inclinação` (maior inclinação, maior vazão); volume nunca fica negativo; ao voltar, a capacidade sobe e o
+  escoamento para sozinho. Com 78% de enchimento começa a derramar por volta de 40° de inclinação; de cabeça para baixo esvazia.
+  Ao esvaziar aparece "Encher novamente" (e o botão de reencher; enche com animação a 0,4/s).
+- **Desenho** (`beer_painter.dart`): `CustomPainter` com `repaint: sim` (sem rebuild da árvore por quadro), paints/paths
+  reaproveitados. Corpo em gradiente dourado→âmbar ao longo da gravidade, espuma como faixa na face de ar da superfície (espessura
+  ~3,4% da altura, borda irregular, contas pequenas), bolhas, leve escurecimento no fundo. O canvas não é girado.
+- **Tela** (`tip_glass_page.dart`): `Ticker` + `WidgetsBindingObserver` + `TickerMode`: ticker e sensor pausam em segundo plano
+  ou com a rota coberta e são cancelados no `dispose`. Dica "Incline o celular para mexer a cerveja." só na primeira abertura
+  (`glass.motion_hint_seen` no `LocalStore`), depois sem texto grande. Opções: reagir ao movimento, bolhas e ondas, nivelar.
+- **Sem sensor / web:** na web o sensor nem é assinado (nenhuma autorização). Arrastar gira o copo em torno do centro como um
+  disco (`dAngle = (p × delta)/|p|²`) e alimenta **a mesma simulação**; dica "Arraste para inclinar." O mesmo vale se o aparelho não
+  entregar leituras, se "Reagir ao movimento" for desligado ou com redução de movimento do sistema (padrão estático/manual,
+  ondas e partículas reduzidas).
+- **Dependência/configuração:** `sensors_plus: ^7.1.1` no `pubspec.yaml` (`pub get` não rodado; `pubspec.lock` intocado).
+  7.x exige AGP ≥ 8.12.1, Gradle ≥ 8.13 e Kotlin 2.2 (o projeto usa AGP 9.1.0, Gradle 9.3.1, Kotlin 2.4.0); iOS ≥ 12 (projeto: 15.5);
+  `NSMotionUsageDescription` adicionada ao `Info.plist`; Android sem permissão.
+- **A observar em aparelho (nada disso foi executado):** sinal dos eixos no iOS; direção da inclinação; sensação das constantes
+  (mola, ondas, taxa de escoamento, ângulo de início do derramamento); aparência das cores e da espuma; desempenho; tablets cuja
+  orientação natural é paisagem (eixos do sensor trocados com retrato travado, não tratado); o escoamento não tem
+  gota/fio visível (a borda do copo é a borda da tela, o líquido apenas recua); comportamento do modo imersivo e de restauração
+  das barras em cada versão do sistema.
 
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem

@@ -133,7 +133,7 @@ class _ResenhaPageState extends State<ResenhaPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Virar o copo', style: AppText.subtitle),
-                      Text('Arraste e veja o líquido escorrer. Só visual.',
+                      Text('A tela vira um copo: incline o celular. Só visual.',
                           style: AppText.caption),
                     ],
                   ),
