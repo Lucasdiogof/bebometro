@@ -17,6 +17,7 @@ import 'open_in_maps.dart';
 import 'place_editor_page.dart';
 import 'place_map.dart';
 import 'places_cubit.dart';
+import '../../l10n/l10n.dart';
 
 /// One saved place: its visits, what was registered there, and the user's own
 /// price history for it.
@@ -47,15 +48,15 @@ class _PlaceDetailView extends StatelessWidget {
         if (place == null) {
           return Scaffold(
             appBar: AppBar(),
-            body: const ErrorView(message: 'Esse local não foi encontrado.'),
+            body: ErrorView(message: tr.placeNotFound),
           );
         }
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Local'),
+            title: Text(tr.placeScreenTitle),
             actions: [
               IconButton(
-                tooltip: place.favorite ? 'Remover dos favoritos' : 'Favoritar',
+                tooltip: place.favorite ? tr.catalogUnfavorite : tr.catalogFavorite,
                 onPressed: cubit.toggleFavorite,
                 icon: Icon(
                   place.favorite ? Icons.star_rounded : Icons.star_outline_rounded,
@@ -63,7 +64,7 @@ class _PlaceDetailView extends StatelessWidget {
                 ),
               ),
               PopupMenuButton<String>(
-                tooltip: 'Opções',
+                tooltip: tr.commonOptions,
                 onSelected: (v) async {
                   if (v == 'edit') {
                     await Navigator.of(context).push(MaterialPageRoute(
@@ -72,15 +73,18 @@ class _PlaceDetailView extends StatelessWidget {
                     await cubit.setArchived(!place.isArchived);
                     if (context.mounted) {
                       showToast(context,
-                          place.isArchived ? 'Local reativado' : 'Local arquivado');
+                          place.isArchived
+                              ? tr.placeReactivated
+                              : tr.placeArchivedToast);
                     }
                   }
                 },
                 itemBuilder: (_) => [
-                  const PopupMenuItem(value: 'edit', child: Text('Editar')),
+                  PopupMenuItem(value: 'edit', child: Text(tr.commonEdit)),
                   PopupMenuItem(
                     value: 'archive',
-                    child: Text(place.isArchived ? 'Reativar' : 'Arquivar'),
+                    child: Text(
+                        place.isArchived ? tr.placeReactivate : tr.placeArchive),
                   ),
                 ],
               ),
@@ -102,7 +106,7 @@ class _PlaceDetailView extends StatelessWidget {
                       Text(place.type.label, style: AppText.caption),
                       if (place.isArchived) ...[
                         const SizedBox(width: AppSpace.sm),
-                        const InfoPill('Arquivado'),
+                        InfoPill(tr.placeArchivedPill),
                       ],
                     ]),
                     const SizedBox(height: AppSpace.sm),
@@ -117,15 +121,17 @@ class _PlaceDetailView extends StatelessWidget {
                     Row(children: [
                       Expanded(
                         child: StatTile(
-                            label: 'Rolês', value: '${state.visits.length}'),
+                            label: tr.placeStatOutings,
+                            value: '${state.visits.length}'),
                       ),
                       Expanded(
                         child: StatTile(
-                            label: 'Bebidas', value: '${state.drinkCount}'),
+                            label: tr.placeStatDrinks,
+                            value: '${state.drinkCount}'),
                       ),
                       Expanded(
                         child: StatTile(
-                          label: 'Gasto informado',
+                          label: tr.placeStatSpent,
                           value: formatCents(state.informedCents),
                         ),
                       ),
@@ -133,7 +139,8 @@ class _PlaceDetailView extends StatelessWidget {
                     if (state.visits.isNotEmpty) ...[
                       const SizedBox(height: AppSpace.sm),
                       Text(
-                        'Última visita: ${formatDate(state.visits.first.outing.startedAt)}',
+                        tr.placeLastVisit(
+                            formatDate(state.visits.first.outing.startedAt)),
                         style: AppText.caption,
                       ),
                     ],
@@ -143,21 +150,19 @@ class _PlaceDetailView extends StatelessWidget {
                         FilledButton.icon(
                           onPressed: () => _startHere(context, place),
                           icon: const Icon(Icons.play_arrow_rounded),
-                          label: const Text('Iniciar rolê aqui'),
+                          label: Text(tr.placeStartHere),
                         ),
                       if (_hasMapTarget(place))
                         OutlinedButton.icon(
                           onPressed: () => _openMaps(context, place),
                           icon: const Icon(Icons.map_outlined),
-                          label: const Text('Abrir no mapa'),
+                          label: Text(tr.placeOpenMap),
                         ),
                     ]),
                     if (state.unpricedCount > 0) ...[
                       const SizedBox(height: AppSpace.md),
                       InfoPill(
-                        '${state.unpricedCount} '
-                        '${state.unpricedCount == 1 ? 'bebida' : 'bebidas'} '
-                        'sem preço: o total pode estar maior',
+                        tr.summaryUnpricedPill(state.unpricedCount),
                         icon: Icons.sell_outlined,
                         warning: true,
                       ),
@@ -166,38 +171,23 @@ class _PlaceDetailView extends StatelessWidget {
                 ),
               ),
               _PlaceDetails(place: place),
-              const Padding(
-                padding: EdgeInsets.only(top: AppSpace.sm),
-                child: Text(
-                  'Gasto informado: o que você registrou nas suas bebidas aqui. '
-                  'O total da mesa e os pagamentos da comanda ficam no resumo '
-                  'de cada rolê e não entram nesta soma.',
-                  style: AppText.caption,
-                ),
+              Padding(
+                padding: const EdgeInsets.only(top: AppSpace.sm),
+                child: Text(tr.placeSpendNote, style: AppText.caption),
               ),
-              const SectionTitle('Seu histórico de preços'),
+              SectionTitle(tr.placePriceHistory),
               if (state.priceStats.isEmpty)
-                const Text(
-                  'Ainda não há preços informados por você aqui. Quando houver, '
-                  'o último preço e a faixa observada aparecem neste lugar.',
-                  style: AppText.caption,
-                )
+                Text(tr.placePriceHistoryNone, style: AppText.caption)
               else ...[
                 for (final g in state.priceStats) _PriceTile(stats: g),
-                const Padding(
-                  padding: EdgeInsets.only(top: AppSpace.sm),
-                  child: Text(
-                    'Seu histórico: só o que você mesmo informou neste local, '
-                    'por bebida e tamanho. Não é média de mercado, da cidade '
-                    'nem do estado.',
-                    style: AppText.caption,
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpace.sm),
+                  child: Text(tr.placePriceHistoryNote, style: AppText.caption),
                 ),
               ],
-              SectionTitle('Rolês neste local (${state.visits.length})'),
+              SectionTitle(tr.placeVisits(state.visits.length)),
               if (state.visits.isEmpty)
-                const Text('Nenhum rolê registrado aqui ainda.',
-                    style: AppText.caption)
+                Text(tr.placeNoVisits, style: AppText.caption)
               else
                 for (final v in state.visits)
                   Padding(
@@ -216,13 +206,12 @@ class _PlaceDetailView extends StatelessWidget {
                               Text(
                                 '${formatDate(v.outing.startedAt)} · '
                                 '${formatTime(v.outing.startedAt)}'
-                                '${v.outing.isActive ? ' · em andamento' : ''}',
+                                '${v.outing.isActive ? ' · ${tr.placeVisitInProgress}' : ''}',
                                 style: AppText.subtitle,
                               ),
                               Text(
-                                '${v.summary.entryCount} '
-                                '${v.summary.entryCount == 1 ? 'bebida' : 'bebidas'}'
-                                ' · ${v.summary.pricedCount == 0 ? 'sem valores' : formatCents(v.summary.informedCents)}',
+                                '${tr.drinkCount(v.summary.entryCount)}'
+                                ' · ${v.summary.pricedCount == 0 ? tr.placeNoValues : formatCents(v.summary.informedCents)}',
                                 style: AppText.caption,
                               ),
                             ],
@@ -251,12 +240,12 @@ class _PriceTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final range = stats.minCents == stats.maxCents
         ? formatCents(stats.minCents)
-        : '${formatCents(stats.minCents)} a ${formatCents(stats.maxCents)}';
+        : tr.rangeTo(formatCents(stats.minCents), formatCents(stats.maxCents));
     final period = stats.firstAt.year == stats.lastAt.year &&
             stats.firstAt.month == stats.lastAt.month &&
             stats.firstAt.day == stats.lastAt.day
         ? formatDate(stats.lastAt)
-        : '${formatDate(stats.firstAt)} a ${formatDate(stats.lastAt)}';
+        : tr.rangeTo(formatDate(stats.firstAt), formatDate(stats.lastAt));
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpace.sm),
       child: SurfaceCard(
@@ -266,13 +255,15 @@ class _PriceTile extends StatelessWidget {
             Text(stats.label, style: AppText.subtitle),
             const SizedBox(height: AppSpace.xs),
             Text(
-              'Último: ${formatCents(stats.lastCents)} em ${formatDate(stats.lastAt)}'
-              '${stats.shared ? ' (total da garrafa/porção)' : ''}',
+              stats.shared
+                  ? tr.placePriceLastShared(
+                      formatCents(stats.lastCents), formatDate(stats.lastAt))
+                  : tr.placePriceLast(
+                      formatCents(stats.lastCents), formatDate(stats.lastAt)),
               style: AppText.body,
             ),
             Text(
-              'Faixa observada: $range · ${stats.count} '
-              '${stats.count == 1 ? 'registro' : 'registros'} · $period',
+              tr.placePriceRangeLine(range, stats.count, period),
               style: AppText.caption,
             ),
           ],
@@ -294,13 +285,13 @@ Future<void> _openMaps(BuildContext context, Place p) async {
     label: p.providerName,
   );
   if (!ok && context.mounted) {
-    showToast(context, 'Não foi possível abrir um aplicativo de mapas.');
+    showToast(context, tr.openMapsFailed);
   }
 }
 
 Future<void> _startHere(BuildContext context, Place p) async {
   if (getIt<OutingRepository>().active != null) {
-    showToast(context, 'Já existe um rolê em andamento. Encerre-o antes.');
+    showToast(context, tr.placeAlreadyActive);
     return;
   }
   await OutingFlow.start(context, place: p);
@@ -324,21 +315,21 @@ class _PlaceDetailsState extends State<_PlaceDetails> {
   Widget build(BuildContext context) {
     final p = widget.place;
     final rows = <(String, String)>[
-      if (p.providerName != null) ('Nome no mapa', p.providerName!),
-      if (p.address != null) ('Endereço', p.address!),
-      if (p.cityState != null) ('Cidade', p.cityState!),
-      ('Origem', switch (p.source) {
-        LocationSource.search => 'Escolhido na busca (OpenStreetMap)',
-        LocationSource.currentLocation => 'Sua localização, conferida no mapa',
-        LocationSource.adjusted => 'Ponto ajustado por você',
-        null => 'Informado por você',
+      if (p.providerName != null) (tr.placeFieldMapName, p.providerName!),
+      if (p.address != null) (tr.placeFieldAddress, p.address!),
+      if (p.cityState != null) (tr.placeFieldCity, p.cityState!),
+      (tr.placeFieldOrigin, switch (p.source) {
+        LocationSource.search => tr.placeSourceSearch,
+        LocationSource.currentLocation => tr.placeSourceLocation,
+        LocationSource.adjusted => tr.placeSourceAdjusted,
+        null => tr.placeSourceManual,
       }),
     ];
     final point = p.point;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionTitle('Detalhes'),
+        SectionTitle(tr.placeDetailsTitle),
         if (point != null && PlaceMap.available && !_tilesFailed) ...[
           SizedBox(
             height: 200,
@@ -368,8 +359,7 @@ class _PlaceDetailsState extends State<_PlaceDetails> {
                   ),
                 ),
               if (point == null && p.address == null)
-                const Text('Sem endereço nem ponto no mapa. Dá para buscar '
-                    'em "Editar".', style: AppText.caption),
+                Text(tr.placeNoPointNoAddress, style: AppText.caption),
             ],
           ),
         ),

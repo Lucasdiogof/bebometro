@@ -776,7 +776,7 @@ abstract class AppLocalizations {
   ///
   /// In pt, this message translates to:
   /// **'{count, plural, =1{Dos gastos informados, sobram {amount} do orçamento (parcial: falta o preço de 1 bebida).} other{Dos gastos informados, sobram {amount} do orçamento (parcial: faltam preços de {count} bebidas).}}'**
-  String budgetLeftIncomplete(String amount, int count);
+  String budgetLeftIncomplete(int count, String amount);
 
   /// No description provided for @budgetLine.
   ///
@@ -812,7 +812,7 @@ abstract class AppLocalizations {
   ///
   /// In pt, this message translates to:
   /// **'Os gastos informados chegaram a {percent}% do orçamento ({spent} de {budget}).'**
-  String budgetReached(String budget, int percent, String spent);
+  String budgetReached(int percent, String spent, String budget);
 
   /// No description provided for @budgetReachedIncomplete.
   ///
@@ -1130,13 +1130,13 @@ abstract class AppLocalizations {
   ///
   /// In pt, this message translates to:
   /// **'{count, plural, =0{Nenhum pagamento registrado} =1{1 pagamento registrado: {amount}} other{{count} pagamentos registrados: {amount}}}'**
-  String conflictTabPayments(String amount, int count);
+  String conflictTabPayments(int count, String amount);
 
   /// No description provided for @conflictTabPeople.
   ///
   /// In pt, this message translates to:
   /// **'{people, plural, =1{1 participante} other{{people} participantes}} · {extras, plural, =0{nenhum item extra} =1{1 item extra} other{{extras} itens extras}}'**
-  String conflictTabPeople(int extras, int people);
+  String conflictTabPeople(int people, int extras);
 
   /// No description provided for @conflictTitle.
   ///
@@ -2096,7 +2096,7 @@ abstract class AppLocalizations {
   ///
   /// In pt, this message translates to:
   /// **'{type} · desde {time}'**
-  String outingTypeSince(String time, String type);
+  String outingTypeSince(String type, String time);
 
   /// No description provided for @outingYourVolume.
   ///
@@ -2492,7 +2492,7 @@ abstract class AppLocalizations {
   ///
   /// In pt, this message translates to:
   /// **'{name} começou em {start} e está aberto há {duration}.'**
-  String staleBody(String duration, String name, String start);
+  String staleBody(String name, String start, String duration);
 
   /// No description provided for @staleEndOtherTime.
   ///
@@ -2822,7 +2822,7 @@ abstract class AppLocalizations {
   ///
   /// In pt, this message translates to:
   /// **'{known} (+{count} sem volume)'**
-  String volumeKnownPlusUnknown(int count, String known);
+  String volumeKnownPlusUnknown(String known, int count);
 
   /// No description provided for @volumeUnknown.
   ///
@@ -3950,7 +3950,7 @@ abstract class AppLocalizations {
   ///
   /// In pt, this message translates to:
   /// **'de {total} · {count} pessoas, com você'**
-  String entrySharedLine(String count, String total);
+  String entrySharedLine(String total, String count);
 
   /// No description provided for @entryPeople.
   ///
@@ -4310,13 +4310,13 @@ abstract class AppLocalizations {
   ///
   /// In pt, this message translates to:
   /// **'Sua parcela foi {price} {scope} em {date}.'**
-  String entryHistoryShare(String date, String price, String scope);
+  String entryHistoryShare(String price, String scope, String date);
 
   /// No description provided for @entryHistoryPaid.
   ///
   /// In pt, this message translates to:
   /// **'Você pagou {price} {scope} em {date}.'**
-  String entryHistoryPaid(String date, String price, String scope);
+  String entryHistoryPaid(String price, String scope, String date);
 
   /// No description provided for @entryUseAsShare.
   ///
@@ -4334,7 +4334,7 @@ abstract class AppLocalizations {
   ///
   /// In pt, this message translates to:
   /// **'O total da garrafa/porção foi {price} em {date}.'**
-  String entryHistoryTotal(String date, String price);
+  String entryHistoryTotal(String price, String date);
 
   /// No description provided for @entryUseAsTotal.
   ///
@@ -4508,7 +4508,7 @@ abstract class AppLocalizations {
   ///
   /// In pt, this message translates to:
   /// **'{source} · consultado em {date}'**
-  String detailSourceLine(String date, String source);
+  String detailSourceLine(String source, String date);
 
   /// No description provided for @detailCopyAddress.
   ///
@@ -5913,6 +5913,1919 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Cardápio'**
   String get photoKindMenu;
+
+  /// No description provided for @pickerStartTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Onde é o rolê?'**
+  String get pickerStartTitle;
+
+  /// No description provided for @pickerChangeTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Corrigir local'**
+  String get pickerChangeTitle;
+
+  /// No description provided for @pickerLocateTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Localização do local'**
+  String get pickerLocateTitle;
+
+  /// No description provided for @pickerAlreadySavedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lugar já salvo'**
+  String get pickerAlreadySavedTitle;
+
+  /// No description provided for @pickerAlreadySavedBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este lugar já está nos seus locais como \"{name}\". Usar aqui também?'**
+  String pickerAlreadySavedBody(String name);
+
+  /// No description provided for @pickerUseAnyway.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar mesmo assim'**
+  String get pickerUseAnyway;
+
+  /// No description provided for @pickerSearchHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar bar, restaurante ou endereço'**
+  String get pickerSearchHint;
+
+  /// No description provided for @pickerClearSearch.
+  ///
+  /// In pt, this message translates to:
+  /// **'Limpar busca'**
+  String get pickerClearSearch;
+
+  /// No description provided for @pickerUseLocation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar minha localização'**
+  String get pickerUseLocation;
+
+  /// No description provided for @pickerApproximate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Localização aproximada: confira o lugar na lista ou no mapa.'**
+  String get pickerApproximate;
+
+  /// No description provided for @pickerLocationHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mostra lugares por perto. Você sempre confirma onde está.'**
+  String get pickerLocationHint;
+
+  /// No description provided for @pickerNicknameOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informar apenas um apelido'**
+  String get pickerNicknameOnly;
+
+  /// No description provided for @pickerNicknameOnlyExample.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem mapa nem endereço. Ex.: Casa da Samara'**
+  String get pickerNicknameOnlyExample;
+
+  /// No description provided for @pickerNicknameOnlyShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem mapa nem endereço.'**
+  String get pickerNicknameOnlyShort;
+
+  /// No description provided for @pickerYourPlaces.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seus locais'**
+  String get pickerYourPlaces;
+
+  /// No description provided for @pickerNotConfiguredFull.
+  ///
+  /// In pt, this message translates to:
+  /// **'A busca de lugares e o mapa não estão configurados nesta versão. Apelido, endereço digitado e locais salvos funcionam normalmente.'**
+  String get pickerNotConfiguredFull;
+
+  /// No description provided for @pickerNearYou.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perto de você'**
+  String get pickerNearYou;
+
+  /// No description provided for @pickerNothingNearby.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum bar ou restaurante encontrado bem perto. Você pode buscar pelo nome ou marcar só o ponto.'**
+  String get pickerNothingNearby;
+
+  /// No description provided for @pickerPinOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcar só este ponto no mapa'**
+  String get pickerPinOnly;
+
+  /// No description provided for @pickerPinOnlyHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você pode dar um apelido em seguida.'**
+  String get pickerPinOnlyHint;
+
+  /// No description provided for @pickerNotConfigured.
+  ///
+  /// In pt, this message translates to:
+  /// **'A busca de lugares não está configurada nesta versão.'**
+  String get pickerNotConfigured;
+
+  /// No description provided for @pickerMinChars.
+  ///
+  /// In pt, this message translates to:
+  /// **'Digite pelo menos 3 letras para buscar.'**
+  String get pickerMinChars;
+
+  /// No description provided for @pickerNothingFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nada encontrado. Tente o nome com o bairro ou a cidade, ou informe só um apelido.'**
+  String get pickerNothingFound;
+
+  /// No description provided for @pickerResults.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resultados'**
+  String get pickerResults;
+
+  /// No description provided for @pickerErrorOffline.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem internet agora. Você ainda pode usar um local salvo ou informar um apelido.'**
+  String get pickerErrorOffline;
+
+  /// No description provided for @pickerErrorUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'A busca está indisponível no momento. Você ainda pode usar um local salvo ou informar um apelido.'**
+  String get pickerErrorUnavailable;
+
+  /// No description provided for @pickerLocServiceOff.
+  ///
+  /// In pt, this message translates to:
+  /// **'A localização do aparelho está desligada.'**
+  String get pickerLocServiceOff;
+
+  /// No description provided for @pickerOpenSettings.
+  ///
+  /// In pt, this message translates to:
+  /// **'Abrir ajustes'**
+  String get pickerOpenSettings;
+
+  /// No description provided for @pickerLocDenied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem permissão de localização. Você pode buscar pelo nome ou endereço normalmente.'**
+  String get pickerLocDenied;
+
+  /// No description provided for @pickerLocDeniedForever.
+  ///
+  /// In pt, this message translates to:
+  /// **'A localização foi negada para o Bebômetro. Se quiser usá-la, libere nos ajustes do aparelho. A busca funciona sem ela.'**
+  String get pickerLocDeniedForever;
+
+  /// No description provided for @pickerLocTimeout.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível obter a localização a tempo.'**
+  String get pickerLocTimeout;
+
+  /// No description provided for @pickerLocUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'A localização não está disponível aqui. Busque pelo nome ou endereço.'**
+  String get pickerLocUnavailable;
+
+  /// No description provided for @pickerSavedAs.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvo como \"{name}\"'**
+  String pickerSavedAs(String name);
+
+  /// No description provided for @pickerManualNickname.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apelido'**
+  String get pickerManualNickname;
+
+  /// No description provided for @pickerManualHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Casa da Samara'**
+  String get pickerManualHint;
+
+  /// No description provided for @pickerManualHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'O apelido sozinho já basta.'**
+  String get pickerManualHelper;
+
+  /// No description provided for @pickerAddAddress.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar endereço (opcional)'**
+  String get pickerAddAddress;
+
+  /// No description provided for @pickerNeedNicknameOrAddress.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe um apelido (ex.: Casa da Samara) ou um endereço'**
+  String get pickerNeedNicknameOrAddress;
+
+  /// No description provided for @pickerStateTwoLetters.
+  ///
+  /// In pt, this message translates to:
+  /// **'A UF tem 2 letras'**
+  String get pickerStateTwoLetters;
+
+  /// No description provided for @placeSaveToMine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar nos meus locais'**
+  String get placeSaveToMine;
+
+  /// No description provided for @placeSaveToMineHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para escolher de novo nos próximos rolês. Fica privado.'**
+  String get placeSaveToMineHint;
+
+  /// No description provided for @pickerUseThisPlace.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar este local'**
+  String get pickerUseThisPlace;
+
+  /// No description provided for @distanceMeters.
+  ///
+  /// In pt, this message translates to:
+  /// **'{meters} m'**
+  String distanceMeters(String meters);
+
+  /// No description provided for @distanceKm.
+  ///
+  /// In pt, this message translates to:
+  /// **'{km} km'**
+  String distanceKm(String km);
+
+  /// No description provided for @confirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conferir local'**
+  String get confirmTitle;
+
+  /// No description provided for @confirmTapMap.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque no mapa para ajustar o ponto, se precisar.'**
+  String get confirmTapMap;
+
+  /// No description provided for @confirmMapFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'O mapa não carregou. Você pode confirmar pelos dados abaixo.'**
+  String get confirmMapFailed;
+
+  /// No description provided for @confirmNoAddress.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem endereço confirmado para este ponto.'**
+  String get confirmNoAddress;
+
+  /// No description provided for @confirmAdjustedWas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ponto ajustado: \"{name}\" e o endereço dele não valem mais para este ponto.'**
+  String confirmAdjustedWas(String name);
+
+  /// No description provided for @confirmAdjusted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ponto ajustado por você.'**
+  String get confirmAdjusted;
+
+  /// No description provided for @confirmLookUp.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar endereço deste ponto'**
+  String get confirmLookUp;
+
+  /// No description provided for @confirmNoAddressFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum endereço encontrado para este ponto.'**
+  String get confirmNoAddressFound;
+
+  /// No description provided for @confirmOfflinePointKept.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem internet. O ponto continua marcado.'**
+  String get confirmOfflinePointKept;
+
+  /// No description provided for @confirmLookUpFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível buscar o endereço agora.'**
+  String get confirmLookUpFailed;
+
+  /// No description provided for @confirmAlreadySaved.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você já salvou este lugar como \"{name}\". Ele será reaproveitado.'**
+  String confirmAlreadySaved(String name);
+
+  /// No description provided for @confirmAlreadySavedNick.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você já salvou este lugar como \"{name}\". Ele será reaproveitado e o apelido continua.'**
+  String confirmAlreadySavedNick(String name);
+
+  /// No description provided for @confirmNicknameSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apelido (opcional)'**
+  String get confirmNicknameSection;
+
+  /// No description provided for @confirmNicknameHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aparece no lugar do nome. O endereço fica nos detalhes.'**
+  String get confirmNicknameHelper;
+
+  /// No description provided for @confirmUseAsNickname.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar \"{name}\" como apelido'**
+  String confirmUseAsNickname(String name);
+
+  /// No description provided for @confirmNeedNickname.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dê um apelido para salvar este ponto.'**
+  String get confirmNeedNickname;
+
+  /// No description provided for @placeFallbackName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Local'**
+  String get placeFallbackName;
+
+  /// No description provided for @placePointOnMap.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ponto no mapa'**
+  String get placePointOnMap;
+
+  /// No description provided for @changePlaceTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar o local deste rolê?'**
+  String get changePlaceTitle;
+
+  /// No description provided for @changePlaceBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'O rolê passa a ser \"{name}\". Só este rolê muda: as bebidas, fotos e a comanda continuam nele, e os outros rolês não são alterados.'**
+  String changePlaceBody(String name);
+
+  /// No description provided for @changePlaceConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar local'**
+  String get changePlaceConfirm;
+
+  /// No description provided for @changePlaceDone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Local do rolê atualizado'**
+  String get changePlaceDone;
+
+  /// No description provided for @changePlaceFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível trocar o local. Nada foi alterado.'**
+  String get changePlaceFailed;
+
+  /// No description provided for @openMapsFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível abrir um aplicativo de mapas.'**
+  String get openMapsFailed;
+
+  /// No description provided for @mapSemantics.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mapa com o ponto do local'**
+  String get mapSemantics;
+
+  /// No description provided for @mapZoomIn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aproximar'**
+  String get mapZoomIn;
+
+  /// No description provided for @mapZoomOut.
+  ///
+  /// In pt, this message translates to:
+  /// **'Afastar'**
+  String get mapZoomOut;
+
+  /// No description provided for @mapCenter.
+  ///
+  /// In pt, this message translates to:
+  /// **'Centralizar no ponto'**
+  String get mapCenter;
+
+  /// No description provided for @placeNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse local não foi encontrado.'**
+  String get placeNotFound;
+
+  /// No description provided for @placeScreenTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Local'**
+  String get placeScreenTitle;
+
+  /// No description provided for @placeReactivated.
+  ///
+  /// In pt, this message translates to:
+  /// **'Local reativado'**
+  String get placeReactivated;
+
+  /// No description provided for @placeArchivedToast.
+  ///
+  /// In pt, this message translates to:
+  /// **'Local arquivado'**
+  String get placeArchivedToast;
+
+  /// No description provided for @placeReactivate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reativar'**
+  String get placeReactivate;
+
+  /// No description provided for @placeArchive.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arquivar'**
+  String get placeArchive;
+
+  /// No description provided for @placeArchivedPill.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arquivado'**
+  String get placeArchivedPill;
+
+  /// No description provided for @placeStatOutings.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rolês'**
+  String get placeStatOutings;
+
+  /// No description provided for @placeStatDrinks.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebidas'**
+  String get placeStatDrinks;
+
+  /// No description provided for @placeStatSpent.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gasto informado'**
+  String get placeStatSpent;
+
+  /// No description provided for @placeLastVisit.
+  ///
+  /// In pt, this message translates to:
+  /// **'Última visita: {date}'**
+  String placeLastVisit(String date);
+
+  /// No description provided for @placeStartHere.
+  ///
+  /// In pt, this message translates to:
+  /// **'Iniciar rolê aqui'**
+  String get placeStartHere;
+
+  /// No description provided for @placeOpenMap.
+  ///
+  /// In pt, this message translates to:
+  /// **'Abrir no mapa'**
+  String get placeOpenMap;
+
+  /// No description provided for @placeSpendNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gasto informado: o que você registrou nas suas bebidas aqui. O total da mesa e os pagamentos da comanda ficam no resumo de cada rolê e não entram nesta soma.'**
+  String get placeSpendNote;
+
+  /// No description provided for @placePriceHistory.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu histórico de preços'**
+  String get placePriceHistory;
+
+  /// No description provided for @placePriceHistoryNone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há preços informados por você aqui. Quando houver, o último preço e a faixa observada aparecem neste lugar.'**
+  String get placePriceHistoryNone;
+
+  /// No description provided for @placePriceHistoryNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu histórico: só o que você mesmo informou neste local, por bebida e tamanho. Não é média de mercado, da cidade nem do estado.'**
+  String get placePriceHistoryNote;
+
+  /// No description provided for @placeVisits.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rolês neste local ({count})'**
+  String placeVisits(String count);
+
+  /// No description provided for @placeNoVisits.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum rolê registrado aqui ainda.'**
+  String get placeNoVisits;
+
+  /// No description provided for @placeVisitInProgress.
+  ///
+  /// In pt, this message translates to:
+  /// **'em andamento'**
+  String get placeVisitInProgress;
+
+  /// No description provided for @placeNoValues.
+  ///
+  /// In pt, this message translates to:
+  /// **'sem valores'**
+  String get placeNoValues;
+
+  /// No description provided for @rangeTo.
+  ///
+  /// In pt, this message translates to:
+  /// **'{from} a {to}'**
+  String rangeTo(String from, String to);
+
+  /// No description provided for @placePriceLast.
+  ///
+  /// In pt, this message translates to:
+  /// **'Último: {price} em {date}'**
+  String placePriceLast(String price, String date);
+
+  /// No description provided for @placePriceLastShared.
+  ///
+  /// In pt, this message translates to:
+  /// **'Último: {price} em {date} (total da garrafa/porção)'**
+  String placePriceLastShared(String price, String date);
+
+  /// No description provided for @placePriceRangeLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Faixa observada: {range} · {count, plural, =1{1 registro} other{{count} registros}} · {period}'**
+  String placePriceRangeLine(String range, int count, String period);
+
+  /// No description provided for @placeAlreadyActive.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já existe um rolê em andamento. Encerre-o antes.'**
+  String get placeAlreadyActive;
+
+  /// No description provided for @placeFieldMapName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome no mapa'**
+  String get placeFieldMapName;
+
+  /// No description provided for @placeFieldAddress.
+  ///
+  /// In pt, this message translates to:
+  /// **'Endereço'**
+  String get placeFieldAddress;
+
+  /// No description provided for @placeFieldCity.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cidade'**
+  String get placeFieldCity;
+
+  /// No description provided for @placeFieldOrigin.
+  ///
+  /// In pt, this message translates to:
+  /// **'Origem'**
+  String get placeFieldOrigin;
+
+  /// No description provided for @placeSourceSearch.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolhido na busca (OpenStreetMap)'**
+  String get placeSourceSearch;
+
+  /// No description provided for @placeSourceLocation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua localização, conferida no mapa'**
+  String get placeSourceLocation;
+
+  /// No description provided for @placeSourceAdjusted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ponto ajustado por você'**
+  String get placeSourceAdjusted;
+
+  /// No description provided for @placeSourceManual.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informado por você'**
+  String get placeSourceManual;
+
+  /// No description provided for @placeDetailsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Detalhes'**
+  String get placeDetailsTitle;
+
+  /// No description provided for @placeNoPointNoAddress.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem endereço nem ponto no mapa. Dá para buscar em \"Editar\".'**
+  String get placeNoPointNoAddress;
+
+  /// No description provided for @placesEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum local salvo'**
+  String get placesEmptyTitle;
+
+  /// No description provided for @placesEmptyBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salve os lugares onde você costuma ir para escolher rápido ao iniciar um rolê. Eles ficam privados no seu perfil.'**
+  String get placesEmptyBody;
+
+  /// No description provided for @placesArchivedSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arquivados'**
+  String get placesArchivedSection;
+
+  /// No description provided for @placesNew.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo local'**
+  String get placesNew;
+
+  /// No description provided for @placesVisits.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 rolê} other{{count} rolês}}'**
+  String placesVisits(int count);
+
+  /// No description provided for @placeEditTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar local'**
+  String get placeEditTitle;
+
+  /// No description provided for @placeEditorNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'As mudanças valem para os próximos rolês. Os rolês que já aconteceram mantêm o nome e o endereço de quando foram feitos.'**
+  String get placeEditorNote;
+
+  /// No description provided for @placeEditorLocation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Localização'**
+  String get placeEditorLocation;
+
+  /// No description provided for @placeEditorSourceSearch.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolhido na busca (dados do OpenStreetMap)'**
+  String get placeEditorSourceSearch;
+
+  /// No description provided for @placeEditorSourceAdjusted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ponto ajustado por você no mapa'**
+  String get placeEditorSourceAdjusted;
+
+  /// No description provided for @placeEditorNoPointHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Opcional. Apelido ou endereço já bastam.'**
+  String get placeEditorNoPointHint;
+
+  /// No description provided for @placeEditorPointSaved.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ponto salvo'**
+  String get placeEditorPointSaved;
+
+  /// No description provided for @placeEditorNoPoint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem ponto no mapa'**
+  String get placeEditorNoPoint;
+
+  /// No description provided for @placeEditorSearchMap.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar no mapa'**
+  String get placeEditorSearchMap;
+
+  /// No description provided for @placeEditorSearchAdjust.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar ou ajustar'**
+  String get placeEditorSearchAdjust;
+
+  /// No description provided for @placeEditorRemoveFromMap.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover do mapa'**
+  String get placeEditorRemoveFromMap;
+
+  /// No description provided for @placeEditorAddressHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apelido, nome do lugar ou endereço já bastam.'**
+  String get placeEditorAddressHelper;
+
+  /// No description provided for @placeEditorPrivate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seus locais e endereços são privados: só aparecem para você.'**
+  String get placeEditorPrivate;
+
+  /// No description provided for @placeEditorSave.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar local'**
+  String get placeEditorSave;
+
+  /// No description provided for @tabMe.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você'**
+  String get tabMe;
+
+  /// No description provided for @tabCatFood.
+  ///
+  /// In pt, this message translates to:
+  /// **'Petisco / comida'**
+  String get tabCatFood;
+
+  /// No description provided for @tabCatSoft.
+  ///
+  /// In pt, this message translates to:
+  /// **'Água / refrigerante'**
+  String get tabCatSoft;
+
+  /// No description provided for @tabCatCover.
+  ///
+  /// In pt, this message translates to:
+  /// **'Couvert'**
+  String get tabCatCover;
+
+  /// No description provided for @tabCatStarter.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entrada'**
+  String get tabCatStarter;
+
+  /// No description provided for @tabCatTransport.
+  ///
+  /// In pt, this message translates to:
+  /// **'Transporte'**
+  String get tabCatTransport;
+
+  /// No description provided for @tabCatOther.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outros'**
+  String get tabCatOther;
+
+  /// No description provided for @tabCatDrink.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebida só da comanda'**
+  String get tabCatDrink;
+
+  /// No description provided for @tabSplitEqual.
+  ///
+  /// In pt, this message translates to:
+  /// **'Igualmente'**
+  String get tabSplitEqual;
+
+  /// No description provided for @tabSplitItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Por item'**
+  String get tabSplitItem;
+
+  /// No description provided for @tabSplitCustom.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valores personalizados'**
+  String get tabSplitCustom;
+
+  /// No description provided for @tabShared.
+  ///
+  /// In pt, this message translates to:
+  /// **'compartilhada'**
+  String get tabShared;
+
+  /// No description provided for @tabShareHeader.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comanda · {title}'**
+  String tabShareHeader(String title);
+
+  /// No description provided for @tabShareNoItems.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem itens na comanda.'**
+  String get tabShareNoItems;
+
+  /// No description provided for @tabShareItems.
+  ///
+  /// In pt, this message translates to:
+  /// **'Itens'**
+  String get tabShareItems;
+
+  /// No description provided for @tabShareLineGroup.
+  ///
+  /// In pt, this message translates to:
+  /// **'• {title} · {count} × {unit} = {sum}'**
+  String tabShareLineGroup(String title, String count, String unit, String sum);
+
+  /// No description provided for @tabShareLineQty.
+  ///
+  /// In pt, this message translates to:
+  /// **'• {title} · {qty}× = {total}'**
+  String tabShareLineQty(String title, String qty, String total);
+
+  /// No description provided for @tabShareLineGroupNoPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'• {title} · {count} × sem preço'**
+  String tabShareLineGroupNoPrice(String title, String count);
+
+  /// No description provided for @tabShareLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'• {title} · {price}'**
+  String tabShareLine(String title, String price);
+
+  /// No description provided for @tabShareLineNoPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'• {title} · sem preço'**
+  String tabShareLineNoPrice(String title);
+
+  /// No description provided for @tabShareSubtotalKnown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Subtotal conhecido: {amount}'**
+  String tabShareSubtotalKnown(String amount);
+
+  /// No description provided for @tabShareSubtotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Subtotal: {amount}'**
+  String tabShareSubtotal(String amount);
+
+  /// No description provided for @tabShareDiscount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desconto: -{amount}'**
+  String tabShareDiscount(String amount);
+
+  /// No description provided for @tabShareService.
+  ///
+  /// In pt, this message translates to:
+  /// **'Serviço ({pct} sobre {base}): {amount}'**
+  String tabShareService(String pct, String base, String amount);
+
+  /// No description provided for @tabShareTotalKnown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total conhecido: {amount}'**
+  String tabShareTotalKnown(String amount);
+
+  /// No description provided for @tabShareTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total: {amount}'**
+  String tabShareTotal(String amount);
+
+  /// No description provided for @tabSharePartial.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Conta parcial: 1 item sem preço.} other{Conta parcial: {count} itens sem preço.}}'**
+  String tabSharePartial(int count);
+
+  /// No description provided for @tabShareSplitHeader.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão ({mode})'**
+  String tabShareSplitHeader(String mode);
+
+  /// No description provided for @tabShareSplitLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'• {name}: {amount}'**
+  String tabShareSplitLine(String name, String amount);
+
+  /// No description provided for @tabSharePaid.
+  ///
+  /// In pt, this message translates to:
+  /// **' · pagou {amount}'**
+  String tabSharePaid(String amount);
+
+  /// No description provided for @tabShareMissing.
+  ///
+  /// In pt, this message translates to:
+  /// **' · falta {amount}'**
+  String tabShareMissing(String amount);
+
+  /// No description provided for @tabShareOver.
+  ///
+  /// In pt, this message translates to:
+  /// **' · a mais {amount}'**
+  String tabShareOver(String amount);
+
+  /// No description provided for @tabShareUnassigned.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda sem dividir: {amount}'**
+  String tabShareUnassigned(String amount);
+
+  /// No description provided for @tabShareOverTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acima do total: {amount}'**
+  String tabShareOverTotal(String amount);
+
+  /// No description provided for @tabShareSplitPartial.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão parcial: os valores podem mudar.'**
+  String get tabShareSplitPartial;
+
+  /// No description provided for @tabTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comanda'**
+  String get tabTitle;
+
+  /// No description provided for @tabShareSplitTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar divisão'**
+  String get tabShareSplitTooltip;
+
+  /// No description provided for @tabIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Opcional. A comanda não registra consumo: o que você bebeu continua nos seus registros.'**
+  String get tabIntro;
+
+  /// No description provided for @tabEnded.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rolê encerrado. A comanda segue editável; encerrar não marca a conta como paga.'**
+  String get tabEnded;
+
+  /// No description provided for @tabItemsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Itens ({count})'**
+  String tabItemsTitle(String count);
+
+  /// No description provided for @tabEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comanda vazia'**
+  String get tabEmptyTitle;
+
+  /// No description provided for @tabEmptyBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicione petiscos e outros gastos, ou inclua as bebidas que você já registrou.'**
+  String get tabEmptyBody;
+
+  /// No description provided for @tabNoDrinksToLink.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma bebida registrada para incluir'**
+  String get tabNoDrinksToLink;
+
+  /// No description provided for @tabLinkDrinks.
+  ///
+  /// In pt, this message translates to:
+  /// **'Incluir bebidas registradas ({count})'**
+  String tabLinkDrinks(String count);
+
+  /// No description provided for @tabSplitBill.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dividir conta'**
+  String get tabSplitBill;
+
+  /// No description provided for @tabSubtotalKnown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Subtotal conhecido'**
+  String get tabSubtotalKnown;
+
+  /// No description provided for @tabSubtotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Subtotal'**
+  String get tabSubtotal;
+
+  /// No description provided for @tabDiscount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desconto'**
+  String get tabDiscount;
+
+  /// No description provided for @tabServiceLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Serviço {pct} sobre {base}'**
+  String tabServiceLine(String pct, String base);
+
+  /// No description provided for @tabTotalKnown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total conhecido'**
+  String get tabTotalKnown;
+
+  /// No description provided for @tabTotalTab.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total da comanda'**
+  String get tabTotalTab;
+
+  /// No description provided for @tabPartialPill.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 item sem preço: a conta e a divisão são parciais.} other{{count} itens sem preço: a conta e a divisão são parciais.}}'**
+  String tabPartialPill(int count);
+
+  /// No description provided for @tabYourShareProvisional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua parte (provisória)'**
+  String get tabYourShareProvisional;
+
+  /// No description provided for @tabYourShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua parte'**
+  String get tabYourShare;
+
+  /// No description provided for @tabOrderNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ordem: subtotal → desconto → serviço sobre os itens com serviço, já com desconto → total.'**
+  String get tabOrderNote;
+
+  /// No description provided for @tabServiceAndDiscount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Serviço e desconto'**
+  String get tabServiceAndDiscount;
+
+  /// No description provided for @tabServiceSummary.
+  ///
+  /// In pt, this message translates to:
+  /// **'serviço {pct}'**
+  String tabServiceSummary(String pct);
+
+  /// No description provided for @tabNoService.
+  ///
+  /// In pt, this message translates to:
+  /// **'sem serviço'**
+  String get tabNoService;
+
+  /// No description provided for @tabDiscountSummary.
+  ///
+  /// In pt, this message translates to:
+  /// **'desconto {amount}'**
+  String tabDiscountSummary(String amount);
+
+  /// No description provided for @tabChargeService.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cobrar serviço'**
+  String get tabChargeService;
+
+  /// No description provided for @tabChargeServiceHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só nos itens marcados com serviço. Transporte e entrada começam sem.'**
+  String get tabChargeServiceHint;
+
+  /// No description provided for @tabPercent.
+  ///
+  /// In pt, this message translates to:
+  /// **'Percentual'**
+  String get tabPercent;
+
+  /// No description provided for @tabServiceBase.
+  ///
+  /// In pt, this message translates to:
+  /// **'Base {base} → {service}'**
+  String tabServiceBase(String base, String service);
+
+  /// No description provided for @tabDiscountNone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum'**
+  String get tabDiscountNone;
+
+  /// No description provided for @tabDiscountAmountLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor do desconto'**
+  String get tabDiscountAmountLabel;
+
+  /// No description provided for @tabDiscountPercentLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Percentual do desconto'**
+  String get tabDiscountPercentLabel;
+
+  /// No description provided for @tabDiscountCapped.
+  ///
+  /// In pt, this message translates to:
+  /// **'Limitado ao subtotal: {amount}'**
+  String tabDiscountCapped(String amount);
+
+  /// No description provided for @tabDiscountHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sobre o subtotal dos itens, distribuído entre eles.'**
+  String get tabDiscountHelper;
+
+  /// No description provided for @tabGroupHeaderMulti.
+  ///
+  /// In pt, this message translates to:
+  /// **'{title} · {count} × {unit} = {sum}'**
+  String tabGroupHeaderMulti(
+    String title,
+    String count,
+    String unit,
+    String sum,
+  );
+
+  /// No description provided for @tabGroupHeaderNoPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'{title} · {count} × sem preço'**
+  String tabGroupHeaderNoPrice(String title, String count);
+
+  /// No description provided for @tabGroupQtyNoPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'{title} · {qty}× sem preço'**
+  String tabGroupQtyNoPrice(String title, String qty);
+
+  /// No description provided for @tabGroupQtyTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'{title} · {qty}× = {total}'**
+  String tabGroupQtyTotal(String title, String qty, String total);
+
+  /// No description provided for @tabComplimentary.
+  ///
+  /// In pt, this message translates to:
+  /// **'cortesia'**
+  String get tabComplimentary;
+
+  /// No description provided for @tabNoPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'sem preço'**
+  String get tabNoPrice;
+
+  /// No description provided for @tabPersonalOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'só a sua parte ({amount}) é conhecida · total da garrafa desconhecido'**
+  String tabPersonalOnly(String amount);
+
+  /// No description provided for @tabPersonalOnlyShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'só a parte pessoal é conhecida; total desconhecido'**
+  String get tabPersonalOnlyShort;
+
+  /// No description provided for @tabLineOnlyYourShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'só sua parte {amount}'**
+  String tabLineOnlyYourShare(String amount);
+
+  /// No description provided for @tabLineDiscount.
+  ///
+  /// In pt, this message translates to:
+  /// **'desc. −{amount}'**
+  String tabLineDiscount(String amount);
+
+  /// No description provided for @tabLineService.
+  ///
+  /// In pt, this message translates to:
+  /// **'serviço +{amount}'**
+  String tabLineService(String amount);
+
+  /// No description provided for @tabLineRegisteredDrink.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebida registrada'**
+  String get tabLineRegisteredDrink;
+
+  /// No description provided for @tabLineItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Item da comanda'**
+  String get tabLineItem;
+
+  /// No description provided for @tabActions.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ações'**
+  String get tabActions;
+
+  /// No description provided for @tabFillTotalTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total da garrafa/jarra'**
+  String get tabFillTotalTitle;
+
+  /// No description provided for @tabFillPriceTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço'**
+  String get tabFillPriceTitle;
+
+  /// No description provided for @tabFillTotalLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total da conta deste item'**
+  String get tabFillTotalLabel;
+
+  /// No description provided for @tabFillTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informar total'**
+  String get tabFillTotal;
+
+  /// No description provided for @tabFillPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informar preço'**
+  String get tabFillPrice;
+
+  /// No description provided for @tabNoServiceItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem serviço neste item'**
+  String get tabNoServiceItem;
+
+  /// No description provided for @tabRemoveFromTab.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar da comanda'**
+  String get tabRemoveFromTab;
+
+  /// No description provided for @tabDeleteItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir item'**
+  String get tabDeleteItem;
+
+  /// No description provided for @splitTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dividir conta'**
+  String get splitTitle;
+
+  /// No description provided for @splitRename.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renomear'**
+  String get splitRename;
+
+  /// No description provided for @splitRemoveTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover {name}?'**
+  String splitRemoveTitle(String name);
+
+  /// No description provided for @splitRemoveBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} tem {share} atribuídos. Escolha o que acontece com eles:'**
+  String splitRemoveBody(String name, String share);
+
+  /// No description provided for @splitRemoveBodyPay.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} tem {share} atribuídos e {count, plural, =1{1 pagamento} other{{count} pagamentos}} ({paid}). Escolha o que acontece com eles:'**
+  String splitRemoveBodyPay(String name, String share, int count, String paid);
+
+  /// No description provided for @splitPassTo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passar para'**
+  String get splitPassTo;
+
+  /// No description provided for @splitNobody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ninguém (redistribuir)'**
+  String get splitNobody;
+
+  /// No description provided for @splitRedistributeNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os itens só dessa pessoa voltam a ser divididos entre todos e os pagamentos dela são apagados.'**
+  String get splitRedistributeNote;
+
+  /// No description provided for @splitTransferNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Itens, valores e pagamentos passam para essa pessoa.'**
+  String get splitTransferNote;
+
+  /// No description provided for @splitRegisterPayment.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registrar pagamento'**
+  String get splitRegisterPayment;
+
+  /// No description provided for @splitEditPayment.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar pagamento'**
+  String get splitEditPayment;
+
+  /// No description provided for @splitWhoPaid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem pagou'**
+  String get splitWhoPaid;
+
+  /// No description provided for @splitPaidAmount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor pago ao estabelecimento'**
+  String get splitPaidAmount;
+
+  /// No description provided for @splitNoteOptional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Observação (opcional)'**
+  String get splitNoteOptional;
+
+  /// No description provided for @splitPaymentPositive.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe um valor maior que zero.'**
+  String get splitPaymentPositive;
+
+  /// No description provided for @splitTotalKnown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total conhecido {amount}'**
+  String splitTotalKnown(String amount);
+
+  /// No description provided for @splitTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total {amount}'**
+  String splitTotal(String amount);
+
+  /// No description provided for @splitPendingPill.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 item sem preço: a divisão e os saldos são provisórios.} other{{count} itens sem preço: a divisão e os saldos são provisórios.}}'**
+  String splitPendingPill(int count);
+
+  /// No description provided for @splitComplete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão completa: as parcelas somam o total.'**
+  String get splitComplete;
+
+  /// No description provided for @splitMissing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Falta distribuir {amount}.'**
+  String splitMissing(String amount);
+
+  /// No description provided for @splitOver.
+  ///
+  /// In pt, this message translates to:
+  /// **'Distribuído {amount} a mais que o total.'**
+  String splitOver(String amount);
+
+  /// No description provided for @splitPeople.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pessoas'**
+  String get splitPeople;
+
+  /// No description provided for @splitAddPerson.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar pessoa (apelido)'**
+  String get splitAddPerson;
+
+  /// No description provided for @splitNicknamesOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só apelidos, sem login nem convite. Ficam apenas nesta comanda.'**
+  String get splitNicknamesOnly;
+
+  /// No description provided for @splitHow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como dividir'**
+  String get splitHow;
+
+  /// No description provided for @splitModeEqualShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'Igual'**
+  String get splitModeEqualShort;
+
+  /// No description provided for @splitModeItemShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'Por item'**
+  String get splitModeItemShort;
+
+  /// No description provided for @splitModeValuesShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valores'**
+  String get splitModeValuesShort;
+
+  /// No description provided for @splitModeEqualNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo ativo: igualmente. O total é dividido entre as pessoas marcadas.'**
+  String get splitModeEqualNote;
+
+  /// No description provided for @splitModeItemNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo ativo: por item. Cada pedido é dividido entre quem participa dele, com serviço e desconto do próprio item.'**
+  String get splitModeItemNote;
+
+  /// No description provided for @splitModeCustomNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo ativo: valores personalizados. Você digita a parcela de cada um; só fecha quando a soma bate com o total.'**
+  String get splitModeCustomNote;
+
+  /// No description provided for @splitAddItemsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicione itens à comanda para dividir por item.'**
+  String get splitAddItemsHint;
+
+  /// No description provided for @splitFillEqually.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preencher igualmente'**
+  String get splitFillEqually;
+
+  /// No description provided for @splitAllDistributed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tudo distribuído.'**
+  String get splitAllDistributed;
+
+  /// No description provided for @splitNotDistributed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não distribuído: {amount}'**
+  String splitNotDistributed(String amount);
+
+  /// No description provided for @splitPassedTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passou do total em {amount}'**
+  String splitPassedTotal(String amount);
+
+  /// No description provided for @splitResult.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resultado'**
+  String get splitResult;
+
+  /// No description provided for @splitProvisionalNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Provisório: os valores mudam se a conta mudar.'**
+  String get splitProvisionalNote;
+
+  /// No description provided for @splitAttributedNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atribuído é o que cabe a cada um; pago é o que a pessoa disse ter pago ao estabelecimento.'**
+  String get splitAttributedNote;
+
+  /// No description provided for @splitPaidLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pagou {paid} · {balance}'**
+  String splitPaidLine(String paid, String balance);
+
+  /// No description provided for @splitBalanceMissing.
+  ///
+  /// In pt, this message translates to:
+  /// **'falta pagar {amount}{provisional, select, true{ (provisório)} other{}}'**
+  String splitBalanceMissing(String amount, String provisional);
+
+  /// No description provided for @splitBalanceOver.
+  ///
+  /// In pt, this message translates to:
+  /// **'pagou {amount} a mais{provisional, select, true{ (provisório)} other{}}'**
+  String splitBalanceOver(String amount, String provisional);
+
+  /// No description provided for @splitBalanceEven.
+  ///
+  /// In pt, this message translates to:
+  /// **'em dia{provisional, select, true{ (provisório)} other{}}'**
+  String splitBalanceEven(String provisional);
+
+  /// No description provided for @splitPayments.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pagamentos'**
+  String get splitPayments;
+
+  /// No description provided for @splitNoPayments.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum pagamento registrado.'**
+  String get splitNoPayments;
+
+  /// No description provided for @splitRemovedPerson.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pessoa removida'**
+  String get splitRemovedPerson;
+
+  /// No description provided for @splitDeletePayment.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir pagamento'**
+  String get splitDeletePayment;
+
+  /// No description provided for @splitPaymentNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registrar um pagamento não muda o total, o consumo nem o orçamento: só o saldo. O app não faz cobrança, Pix nem transferência, e não diz quem deve pagar a quem. O preço de um consumo não conta como pagamento.'**
+  String get splitPaymentNote;
+
+  /// No description provided for @splitAssignEveryone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos dividem'**
+  String get splitAssignEveryone;
+
+  /// No description provided for @splitAssignNobody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ninguém'**
+  String get splitAssignNobody;
+
+  /// No description provided for @splitAssignIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem participa e com que peso. Quem não participa não recebe parcela deste item.'**
+  String get splitAssignIntro;
+
+  /// No description provided for @splitWeight.
+  ///
+  /// In pt, this message translates to:
+  /// **'peso {number}'**
+  String splitWeight(String number);
+
+  /// No description provided for @tabExtraNew.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo item da comanda'**
+  String get tabExtraNew;
+
+  /// No description provided for @tabExtraNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só na comanda deste rolê. Não vira consumo nem entra no catálogo.'**
+  String get tabExtraNote;
+
+  /// No description provided for @tabExtraDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descrição'**
+  String get tabExtraDescription;
+
+  /// No description provided for @tabExtraHintTransport.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Uber de volta (opcional)'**
+  String get tabExtraHintTransport;
+
+  /// No description provided for @tabExtraHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Porção de fritas'**
+  String get tabExtraHint;
+
+  /// No description provided for @tabBasisUnit.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço de cada um'**
+  String get tabBasisUnit;
+
+  /// No description provided for @tabBasisTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total dos {qty}'**
+  String tabBasisTotal(String qty);
+
+  /// No description provided for @tabValueEach.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor de cada unidade'**
+  String get tabValueEach;
+
+  /// No description provided for @tabValueTotalQty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor total dos {qty}'**
+  String tabValueTotalQty(String qty);
+
+  /// No description provided for @tabExtraServiceItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cobrar serviço neste item'**
+  String get tabExtraServiceItem;
+
+  /// No description provided for @tabExtraServiceHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só vale se o serviço estiver ligado.'**
+  String get tabExtraServiceHint;
+
+  /// No description provided for @tabExtraWho.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem divide este item'**
+  String get tabExtraWho;
+
+  /// No description provided for @tabExtraAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos'**
+  String get tabExtraAll;
+
+  /// No description provided for @tabExtraSome.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count} de {total}'**
+  String tabExtraSome(String count, String total);
+
+  /// No description provided for @tabExtraWhoNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vale no modo \"Por item\" da divisão.'**
+  String get tabExtraWhoNote;
+
+  /// No description provided for @tabExtraSave.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar item'**
+  String get tabExtraSave;
+
+  /// No description provided for @tabExtraNeedValue.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe o valor, ou escolha Cortesia / Não sei.'**
+  String get tabExtraNeedValue;
+
+  /// No description provided for @tabExtraHelperUnit.
+  ///
+  /// In pt, this message translates to:
+  /// **'{qty} × {unit} = {total}'**
+  String tabExtraHelperUnit(String qty, String unit, String total);
+
+  /// No description provided for @tabExtraHelperLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total da linha: {amount}'**
+  String tabExtraHelperLine(String amount);
+
+  /// No description provided for @tabExtraNoPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem preço: a conta fica parcial até você preencher.'**
+  String get tabExtraNoPrice;
+
+  /// No description provided for @tabLinkSharedTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'compartilhada · total {amount}'**
+  String tabLinkSharedTotal(String amount);
+
+  /// No description provided for @tabLinkSharedPersonal.
+  ///
+  /// In pt, this message translates to:
+  /// **'compartilhada · só a sua parte ({amount}) é conhecida'**
+  String tabLinkSharedPersonal(String amount);
+
+  /// No description provided for @tabLinkSameBottleTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mesma garrafa ou outra?'**
+  String get tabLinkSameBottleTitle;
+
+  /// No description provided for @tabLinkSameBottleBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count} registros compartilhados de \"{name}\" têm o mesmo total ({total}). Foi a mesma garrafa/jarra ou {count} separadas?\n\nO total entra na comanda uma vez por garrafa; o app não adivinha.'**
+  String tabLinkSameBottleBody(String count, String name, String total);
+
+  /// No description provided for @tabLinkSeparate.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count} separadas'**
+  String tabLinkSeparate(String count);
+
+  /// No description provided for @tabLinkSame.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mesma garrafa'**
+  String get tabLinkSame;
+
+  /// No description provided for @tabLinkTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebidas já registradas'**
+  String get tabLinkTitle;
+
+  /// No description provided for @tabLinkNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elas só são ligadas à comanda: o preço continua no registro e uma correção lá vale aqui. Seus registros não mostram tudo o que a mesa pediu.'**
+  String get tabLinkNote;
+
+  /// No description provided for @tabLinkAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todas'**
+  String get tabLinkAll;
+
+  /// No description provided for @tabLinkNone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma'**
+  String get tabLinkNone;
+
+  /// No description provided for @tabLinkInclude.
+  ///
+  /// In pt, this message translates to:
+  /// **'Incluir {count} na comanda'**
+  String tabLinkInclude(String count);
+
+  /// No description provided for @tabSharePreview.
+  ///
+  /// In pt, this message translates to:
+  /// **'Prévia do texto. Nada é enviado até você tocar em Compartilhar.'**
+  String get tabSharePreview;
+
+  /// No description provided for @tabShareIncludePayments.
+  ///
+  /// In pt, this message translates to:
+  /// **'Incluir pagamentos e saldos'**
+  String get tabShareIncludePayments;
+
+  /// No description provided for @tabShareOffDefault.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desligado por padrão.'**
+  String get tabShareOffDefault;
+
+  /// No description provided for @tabShareExcludes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não inclui endereço, fotos, anotações pessoais nem relato de embriaguez.'**
+  String get tabShareExcludes;
+
+  /// No description provided for @tabShareButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar'**
+  String get tabShareButton;
+
+  /// No description provided for @tabCopyText.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copiar texto'**
+  String get tabCopyText;
+
+  /// No description provided for @tabTextCopied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Texto copiado'**
+  String get tabTextCopied;
+
+  /// No description provided for @tabShareSubject.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão da conta'**
+  String get tabShareSubject;
+
+  /// No description provided for @tabShareFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível abrir o compartilhamento. Copie o texto.'**
+  String get tabShareFailed;
+
+  /// No description provided for @tabCardHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Opcional: petiscos, serviço e divisão da conta.'**
+  String get tabCardHint;
+
+  /// No description provided for @tabCardTotalPartial.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total da comanda (parcial): {amount}'**
+  String tabCardTotalPartial(String amount);
+
+  /// No description provided for @tabCardTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total da comanda: {amount}'**
+  String tabCardTotal(String amount);
+
+  /// No description provided for @tabCardShareProv.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua parte da comanda (provisória): {amount}'**
+  String tabCardShareProv(String amount);
+
+  /// No description provided for @tabCardShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua parte da comanda: {amount}'**
+  String tabCardShare(String amount);
+
+  /// No description provided for @tabCardLineTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total {amount}'**
+  String tabCardLineTotal(String amount);
+
+  /// No description provided for @tabCardLineKnown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total conhecido {amount}'**
+  String tabCardLineKnown(String amount);
+
+  /// No description provided for @tabCardLineTotalShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total {amount} · sua parte {mine}'**
+  String tabCardLineTotalShare(String amount, String mine);
+
+  /// No description provided for @tabCardLineKnownShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total conhecido {amount} · sua parte {mine}'**
+  String tabCardLineKnownShare(String amount, String mine);
 }
 
 class _AppLocalizationsDelegate

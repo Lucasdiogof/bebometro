@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
 
 import '../../drinks/domain/drink_entry.dart';
+import '../../l10n/l10n.dart';
 
 /// What an extra line of the tab is. Extras belong to one outing only: they
 /// never enter the drink catalog or any price history.
 enum ExtraCategory {
-  food('food', 'Petisco / comida', Icons.restaurant_rounded, true),
-  soft('soft', 'Água / refrigerante', Icons.water_drop_outlined, true),
-  cover('cover', 'Couvert', Icons.music_note_rounded, true),
-  starter('starter', 'Entrada', Icons.confirmation_number_outlined, false),
-  transport('transport', 'Transporte', Icons.directions_car_outlined, false),
-  other('other', 'Outros', Icons.receipt_long_outlined, true),
-  drink('drink', 'Bebida só da comanda', Icons.local_bar_outlined, true);
+  food('food', Icons.restaurant_rounded, true),
+  soft('soft', Icons.water_drop_outlined, true),
+  cover('cover', Icons.music_note_rounded, true),
+  starter('starter', Icons.confirmation_number_outlined, false),
+  transport('transport', Icons.directions_car_outlined, false),
+  other('other', Icons.receipt_long_outlined, true),
+  drink('drink', Icons.local_bar_outlined, true);
 
-  const ExtraCategory(this.code, this.label, this.icon, this.defaultService);
+  const ExtraCategory(this.code, this.icon, this.defaultService);
 
+  /// Stored value; never translated.
   final String code;
-  final String label;
   final IconData icon;
+
+  String get label => switch (this) {
+        ExtraCategory.food => tr.tabCatFood,
+        ExtraCategory.soft => tr.tabCatSoft,
+        ExtraCategory.cover => tr.tabCatCover,
+        ExtraCategory.starter => tr.tabCatStarter,
+        ExtraCategory.transport => tr.tabCatTransport,
+        ExtraCategory.other => tr.tabCatOther,
+        ExtraCategory.drink => tr.tabCatDrink,
+      };
 
   /// Entry and transport start without the service charge.
   final bool defaultService;
@@ -40,14 +51,20 @@ enum PriceBasis {
 }
 
 enum SplitMode {
-  equal('equal', 'Igualmente'),
-  item('item', 'Por item'),
-  custom('custom', 'Valores personalizados');
+  equal('equal'),
+  item('item'),
+  custom('custom');
 
-  const SplitMode(this.code, this.label);
+  const SplitMode(this.code);
 
+  /// Stored value; never translated.
   final String code;
-  final String label;
+
+  String get label => switch (this) {
+        SplitMode.equal => tr.tabSplitEqual,
+        SplitMode.item => tr.tabSplitItem,
+        SplitMode.custom => tr.tabSplitCustom,
+      };
 
   static SplitMode fromCode(String? code) => SplitMode.values
       .firstWhere((m) => m.code == code, orElse: () => SplitMode.equal);
@@ -74,6 +91,11 @@ class Participant {
   final String id;
   final String name;
   final bool isMe;
+
+  /// The name to show. The automatic "me" person keeps showing in the
+  /// language on screen until the user renames it.
+  String get displayName =>
+      isMe && const {'Você', 'You', 'Tú'}.contains(name) ? tr.tabMe : name;
 
   Participant copyWith({String? name}) =>
       Participant(id: id, name: name ?? this.name, isMe: isMe);

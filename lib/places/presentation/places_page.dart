@@ -9,6 +9,7 @@ import '../../core/widgets/state_views.dart';
 import 'place_detail_page.dart';
 import 'place_editor_page.dart';
 import 'places_cubit.dart';
+import '../../l10n/l10n.dart';
 
 /// The user's saved places (private). Archived ones are kept out of the way.
 class PlacesPage extends StatelessWidget {
@@ -55,7 +56,7 @@ class _PlacesView extends StatelessWidget {
                 Text(
                   [
                     if (p.cityState != null) p.cityState!,
-                    '${row.visits} ${row.visits == 1 ? 'rolê' : 'rolês'}',
+                    tr.placesVisits(row.visits),
                   ].join(' · '),
                   style: AppText.caption,
                 ),
@@ -63,7 +64,7 @@ class _PlacesView extends StatelessWidget {
             ),
           ),
           IconButton(
-            tooltip: p.favorite ? 'Remover dos favoritos' : 'Favoritar',
+            tooltip: p.favorite ? tr.catalogUnfavorite : tr.catalogFavorite,
             onPressed: () => cubit.toggleFavorite(p),
             icon: Icon(
               p.favorite ? Icons.star_rounded : Icons.star_outline_rounded,
@@ -78,7 +79,7 @@ class _PlacesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Locais salvos')),
+      appBar: AppBar(title: Text(tr.settingsSavedPlaces)),
       body: BlocBuilder<PlacesCubit, PlacesState>(
         builder: (context, state) {
           final cubit = context.read<PlacesCubit>();
@@ -86,12 +87,10 @@ class _PlacesView extends StatelessWidget {
             children: [
               Expanded(
                 child: state.active.isEmpty && state.archived.isEmpty
-                    ? const EmptyView(
+                    ? EmptyView(
                         icon: Icons.place_outlined,
-                        title: 'Nenhum local salvo',
-                        message: 'Salve os lugares onde você costuma ir para '
-                            'escolher rápido ao iniciar um rolê. Eles ficam '
-                            'privados no seu perfil.',
+                        title: tr.placesEmptyTitle,
+                        message: tr.placesEmptyBody,
                       )
                     : ListView(
                         padding: const EdgeInsets.fromLTRB(AppSpace.gutter, 0,
@@ -99,7 +98,7 @@ class _PlacesView extends StatelessWidget {
                         children: [
                           for (final r in state.active) _tile(context, r, cubit),
                           if (state.archived.isNotEmpty) ...[
-                            const SectionTitle('Arquivados'),
+                            SectionTitle(tr.placesArchivedSection),
                             for (final r in state.archived)
                               _tile(context, r, cubit),
                           ],
@@ -112,7 +111,7 @@ class _PlacesView extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const PlaceEditorPage()),
                   ),
                   icon: const Icon(Icons.add_rounded),
-                  label: const Text('Novo local'),
+                  label: Text(tr.placesNew),
                 ),
               ),
             ],

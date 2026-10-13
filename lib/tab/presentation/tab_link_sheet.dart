@@ -4,6 +4,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../drinks/domain/drink_entry.dart';
+import '../../l10n/l10n.dart';
 
 /// Which drink records to put on the tab, and which of them the user said are
 /// the same shared bottle.
@@ -43,16 +44,15 @@ class _LinkFormState extends State<_LinkForm> {
   String _priceText(DrinkEntry e) {
     switch (e.priceKind) {
       case PriceKind.complimentary:
-        return 'cortesia';
+        return tr.tabComplimentary;
       case PriceKind.unknown:
-        return 'sem preço';
+        return tr.tabNoPrice;
       case PriceKind.informed:
         if (e.isShared) {
           if (e.billTotalCents != null) {
-            return 'compartilhada · total ${formatCents(e.billTotalCents!)}';
+            return tr.tabLinkSharedTotal(formatCents(e.billTotalCents!));
           }
-          return 'compartilhada · só a sua parte (${formatCents(e.paidCents ?? 0)}) '
-              'é conhecida';
+          return tr.tabLinkSharedPersonal(formatCents(e.paidCents ?? 0));
         }
         return formatCents(e.paidCents ?? 0);
     }
@@ -83,20 +83,18 @@ class _LinkFormState extends State<_LinkForm> {
       final same = await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('Mesma garrafa ou outra?'),
+          title: Text(tr.tabLinkSameBottleTitle),
           content: Text(
-            '${g.length} registros compartilhados de "${g.first.name}" têm o '
-            'mesmo total (${formatCents(g.first.billTotalCents!)}). Foi a mesma '
-            'garrafa/jarra ou ${g.length} separadas?\n\n'
-            'O total entra na comanda uma vez por garrafa; o app não adivinha.',
+            tr.tabLinkSameBottleBody(g.length, g.first.name,
+                formatCents(g.first.billTotalCents!)),
           ),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: Text('${g.length} separadas')),
+                child: Text(tr.tabLinkSeparate(g.length))),
             TextButton(
                 onPressed: () => Navigator.pop(ctx, true),
-                child: const Text('Mesma garrafa')),
+                child: Text(tr.tabLinkSame)),
           ],
         ),
       );
@@ -128,23 +126,18 @@ class _LinkFormState extends State<_LinkForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Bebidas já registradas', style: AppText.title),
+                  Text(tr.tabLinkTitle, style: AppText.title),
                   const SizedBox(height: AppSpace.xs),
-                  const Text(
-                    'Elas só são ligadas à comanda: o preço continua no '
-                    'registro e uma correção lá vale aqui. Seus registros não '
-                    'mostram tudo o que a mesa pediu.',
-                    style: AppText.caption,
-                  ),
+                  Text(tr.tabLinkNote, style: AppText.caption),
                   Row(children: [
                     TextButton(
                       onPressed: () => setState(
                           () => _picked.addAll([for (final e in all) e.id])),
-                      child: const Text('Todas'),
+                      child: Text(tr.tabLinkAll),
                     ),
                     TextButton(
                       onPressed: () => setState(_picked.clear),
-                      child: const Text('Nenhuma'),
+                      child: Text(tr.tabLinkNone),
                     ),
                   ]),
                 ],
@@ -186,7 +179,7 @@ class _LinkFormState extends State<_LinkForm> {
                             Navigator.of(context).pop(choice);
                           }
                         },
-                  child: Text('Incluir ${_picked.length} na comanda'),
+                  child: Text(tr.tabLinkInclude(_picked.length)),
                 ),
               ),
             ),

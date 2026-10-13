@@ -7,6 +7,7 @@ import '../../outings/domain/outing.dart';
 import '../data/place_repository.dart';
 import 'open_in_maps.dart';
 import 'place_picker_page.dart';
+import '../../l10n/l10n.dart';
 
 /// Explicit correction of the place of ONE outing. Only that outing's copy
 /// changes; its drinks, photos, outing-only items and tab stay on the same
@@ -19,19 +20,15 @@ Future<void> changeOutingPlace(BuildContext context, Outing outing) async {
   final ok = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text('Trocar o local deste rolê?'),
-      content: Text(
-        'O rolê passa a ser "${draft.title}". Só este rolê muda: as bebidas, '
-        'fotos e a comanda continuam nele, e os outros rolês não são '
-        'alterados.',
-      ),
+      title: Text(tr.changePlaceTitle),
+      content: Text(tr.changePlaceBody(draft.title)),
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancelar')),
+            child: Text(tr.commonCancel)),
         FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Trocar local')),
+            child: Text(tr.changePlaceConfirm)),
       ],
     ),
   );
@@ -39,10 +36,10 @@ Future<void> changeOutingPlace(BuildContext context, Outing outing) async {
   try {
     final snapshot = await getIt<PlaceRepository>().resolve(draft, outing.type);
     await getIt<OutingRepository>().changePlace(outing.id, snapshot);
-    if (context.mounted) showToast(context, 'Local do rolê atualizado');
+    if (context.mounted) showToast(context, tr.changePlaceDone);
   } catch (_) {
     if (context.mounted) {
-      showToast(context, 'Não foi possível trocar o local. Nada foi alterado.');
+      showToast(context, tr.changePlaceFailed);
     }
   }
 }
@@ -57,7 +54,7 @@ Future<void> openOutingInMaps(BuildContext context, Outing outing) async {
     label: outing.placeName,
   );
   if (!opened && context.mounted) {
-    showToast(context, 'Não foi possível abrir um aplicativo de mapas.');
+    showToast(context, tr.openMapsFailed);
   }
 }
 

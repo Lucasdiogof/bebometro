@@ -444,7 +444,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String budgetLeftIncomplete(String amount, int count) {
+  String budgetLeftIncomplete(int count, String amount) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -479,7 +479,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String budgetReached(String budget, int percent, String spent) {
+  String budgetReached(int percent, String spent, String budget) {
     return 'Os gastos informados chegaram a $percent% do orçamento ($spent de $budget).';
   }
 
@@ -656,7 +656,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get conflictTab => 'Comanda alterada em dois aparelhos';
 
   @override
-  String conflictTabPayments(String amount, int count) {
+  String conflictTabPayments(int count, String amount) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -668,7 +668,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String conflictTabPeople(int extras, int people) {
+  String conflictTabPeople(int people, int extras) {
     String _temp0 = intl.Intl.pluralLogic(
       people,
       locale: localeName,
@@ -1286,7 +1286,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get outingTypeRestaurant => 'Restaurante';
 
   @override
-  String outingTypeSince(String time, String type) {
+  String outingTypeSince(String type, String time) {
     return '$type · desde $time';
   }
 
@@ -1540,7 +1540,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String staleBody(String duration, String name, String start) {
+  String staleBody(String name, String start, String duration) {
     return '$name começou em $start e está aberto há $duration.';
   }
 
@@ -1752,7 +1752,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String volumeKnownPlusUnknown(int count, String known) {
+  String volumeKnownPlusUnknown(String known, int count) {
     return '$known (+$count sem volume)';
   }
 
@@ -2392,7 +2392,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String entrySharedLine(String count, String total) {
+  String entrySharedLine(String total, String count) {
     return 'de $total · $count pessoas, com você';
   }
 
@@ -2613,12 +2613,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get entryHistory => 'Seu histórico';
 
   @override
-  String entryHistoryShare(String date, String price, String scope) {
+  String entryHistoryShare(String price, String scope, String date) {
     return 'Sua parcela foi $price $scope em $date.';
   }
 
   @override
-  String entryHistoryPaid(String date, String price, String scope) {
+  String entryHistoryPaid(String price, String scope, String date) {
     return 'Você pagou $price $scope em $date.';
   }
 
@@ -2629,7 +2629,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get entryUseValue => 'Usar este valor';
 
   @override
-  String entryHistoryTotal(String date, String price) {
+  String entryHistoryTotal(String price, String date) {
     return 'O total da garrafa/porção foi $price em $date.';
   }
 
@@ -2730,7 +2730,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get detailSourceTitle => 'Fonte dos dados';
 
   @override
-  String detailSourceLine(String date, String source) {
+  String detailSourceLine(String source, String date) {
     return '$source · consultado em $date';
   }
 
@@ -3606,4 +3606,1243 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get photoKindMenu => 'Cardápio';
+
+  @override
+  String get pickerStartTitle => 'Onde é o rolê?';
+
+  @override
+  String get pickerChangeTitle => 'Corrigir local';
+
+  @override
+  String get pickerLocateTitle => 'Localização do local';
+
+  @override
+  String get pickerAlreadySavedTitle => 'Lugar já salvo';
+
+  @override
+  String pickerAlreadySavedBody(String name) {
+    return 'Este lugar já está nos seus locais como \"$name\". Usar aqui também?';
+  }
+
+  @override
+  String get pickerUseAnyway => 'Usar mesmo assim';
+
+  @override
+  String get pickerSearchHint => 'Buscar bar, restaurante ou endereço';
+
+  @override
+  String get pickerClearSearch => 'Limpar busca';
+
+  @override
+  String get pickerUseLocation => 'Usar minha localização';
+
+  @override
+  String get pickerApproximate =>
+      'Localização aproximada: confira o lugar na lista ou no mapa.';
+
+  @override
+  String get pickerLocationHint =>
+      'Mostra lugares por perto. Você sempre confirma onde está.';
+
+  @override
+  String get pickerNicknameOnly => 'Informar apenas um apelido';
+
+  @override
+  String get pickerNicknameOnlyExample =>
+      'Sem mapa nem endereço. Ex.: Casa da Samara';
+
+  @override
+  String get pickerNicknameOnlyShort => 'Sem mapa nem endereço.';
+
+  @override
+  String get pickerYourPlaces => 'Seus locais';
+
+  @override
+  String get pickerNotConfiguredFull =>
+      'A busca de lugares e o mapa não estão configurados nesta versão. Apelido, endereço digitado e locais salvos funcionam normalmente.';
+
+  @override
+  String get pickerNearYou => 'Perto de você';
+
+  @override
+  String get pickerNothingNearby =>
+      'Nenhum bar ou restaurante encontrado bem perto. Você pode buscar pelo nome ou marcar só o ponto.';
+
+  @override
+  String get pickerPinOnly => 'Marcar só este ponto no mapa';
+
+  @override
+  String get pickerPinOnlyHint => 'Você pode dar um apelido em seguida.';
+
+  @override
+  String get pickerNotConfigured =>
+      'A busca de lugares não está configurada nesta versão.';
+
+  @override
+  String get pickerMinChars => 'Digite pelo menos 3 letras para buscar.';
+
+  @override
+  String get pickerNothingFound =>
+      'Nada encontrado. Tente o nome com o bairro ou a cidade, ou informe só um apelido.';
+
+  @override
+  String get pickerResults => 'Resultados';
+
+  @override
+  String get pickerErrorOffline =>
+      'Sem internet agora. Você ainda pode usar um local salvo ou informar um apelido.';
+
+  @override
+  String get pickerErrorUnavailable =>
+      'A busca está indisponível no momento. Você ainda pode usar um local salvo ou informar um apelido.';
+
+  @override
+  String get pickerLocServiceOff => 'A localização do aparelho está desligada.';
+
+  @override
+  String get pickerOpenSettings => 'Abrir ajustes';
+
+  @override
+  String get pickerLocDenied =>
+      'Sem permissão de localização. Você pode buscar pelo nome ou endereço normalmente.';
+
+  @override
+  String get pickerLocDeniedForever =>
+      'A localização foi negada para o Bebômetro. Se quiser usá-la, libere nos ajustes do aparelho. A busca funciona sem ela.';
+
+  @override
+  String get pickerLocTimeout =>
+      'Não foi possível obter a localização a tempo.';
+
+  @override
+  String get pickerLocUnavailable =>
+      'A localização não está disponível aqui. Busque pelo nome ou endereço.';
+
+  @override
+  String pickerSavedAs(String name) {
+    return 'Salvo como \"$name\"';
+  }
+
+  @override
+  String get pickerManualNickname => 'Apelido';
+
+  @override
+  String get pickerManualHint => 'Ex.: Casa da Samara';
+
+  @override
+  String get pickerManualHelper => 'O apelido sozinho já basta.';
+
+  @override
+  String get pickerAddAddress => 'Adicionar endereço (opcional)';
+
+  @override
+  String get pickerNeedNicknameOrAddress =>
+      'Informe um apelido (ex.: Casa da Samara) ou um endereço';
+
+  @override
+  String get pickerStateTwoLetters => 'A UF tem 2 letras';
+
+  @override
+  String get placeSaveToMine => 'Salvar nos meus locais';
+
+  @override
+  String get placeSaveToMineHint =>
+      'Para escolher de novo nos próximos rolês. Fica privado.';
+
+  @override
+  String get pickerUseThisPlace => 'Usar este local';
+
+  @override
+  String distanceMeters(String meters) {
+    return '$meters m';
+  }
+
+  @override
+  String distanceKm(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get confirmTitle => 'Conferir local';
+
+  @override
+  String get confirmTapMap =>
+      'Toque no mapa para ajustar o ponto, se precisar.';
+
+  @override
+  String get confirmMapFailed =>
+      'O mapa não carregou. Você pode confirmar pelos dados abaixo.';
+
+  @override
+  String get confirmNoAddress => 'Sem endereço confirmado para este ponto.';
+
+  @override
+  String confirmAdjustedWas(String name) {
+    return 'Ponto ajustado: \"$name\" e o endereço dele não valem mais para este ponto.';
+  }
+
+  @override
+  String get confirmAdjusted => 'Ponto ajustado por você.';
+
+  @override
+  String get confirmLookUp => 'Buscar endereço deste ponto';
+
+  @override
+  String get confirmNoAddressFound =>
+      'Nenhum endereço encontrado para este ponto.';
+
+  @override
+  String get confirmOfflinePointKept =>
+      'Sem internet. O ponto continua marcado.';
+
+  @override
+  String get confirmLookUpFailed => 'Não foi possível buscar o endereço agora.';
+
+  @override
+  String confirmAlreadySaved(String name) {
+    return 'Você já salvou este lugar como \"$name\". Ele será reaproveitado.';
+  }
+
+  @override
+  String confirmAlreadySavedNick(String name) {
+    return 'Você já salvou este lugar como \"$name\". Ele será reaproveitado e o apelido continua.';
+  }
+
+  @override
+  String get confirmNicknameSection => 'Apelido (opcional)';
+
+  @override
+  String get confirmNicknameHelper =>
+      'Aparece no lugar do nome. O endereço fica nos detalhes.';
+
+  @override
+  String confirmUseAsNickname(String name) {
+    return 'Usar \"$name\" como apelido';
+  }
+
+  @override
+  String get confirmNeedNickname => 'Dê um apelido para salvar este ponto.';
+
+  @override
+  String get placeFallbackName => 'Local';
+
+  @override
+  String get placePointOnMap => 'Ponto no mapa';
+
+  @override
+  String get changePlaceTitle => 'Trocar o local deste rolê?';
+
+  @override
+  String changePlaceBody(String name) {
+    return 'O rolê passa a ser \"$name\". Só este rolê muda: as bebidas, fotos e a comanda continuam nele, e os outros rolês não são alterados.';
+  }
+
+  @override
+  String get changePlaceConfirm => 'Trocar local';
+
+  @override
+  String get changePlaceDone => 'Local do rolê atualizado';
+
+  @override
+  String get changePlaceFailed =>
+      'Não foi possível trocar o local. Nada foi alterado.';
+
+  @override
+  String get openMapsFailed => 'Não foi possível abrir um aplicativo de mapas.';
+
+  @override
+  String get mapSemantics => 'Mapa com o ponto do local';
+
+  @override
+  String get mapZoomIn => 'Aproximar';
+
+  @override
+  String get mapZoomOut => 'Afastar';
+
+  @override
+  String get mapCenter => 'Centralizar no ponto';
+
+  @override
+  String get placeNotFound => 'Esse local não foi encontrado.';
+
+  @override
+  String get placeScreenTitle => 'Local';
+
+  @override
+  String get placeReactivated => 'Local reativado';
+
+  @override
+  String get placeArchivedToast => 'Local arquivado';
+
+  @override
+  String get placeReactivate => 'Reativar';
+
+  @override
+  String get placeArchive => 'Arquivar';
+
+  @override
+  String get placeArchivedPill => 'Arquivado';
+
+  @override
+  String get placeStatOutings => 'Rolês';
+
+  @override
+  String get placeStatDrinks => 'Bebidas';
+
+  @override
+  String get placeStatSpent => 'Gasto informado';
+
+  @override
+  String placeLastVisit(String date) {
+    return 'Última visita: $date';
+  }
+
+  @override
+  String get placeStartHere => 'Iniciar rolê aqui';
+
+  @override
+  String get placeOpenMap => 'Abrir no mapa';
+
+  @override
+  String get placeSpendNote =>
+      'Gasto informado: o que você registrou nas suas bebidas aqui. O total da mesa e os pagamentos da comanda ficam no resumo de cada rolê e não entram nesta soma.';
+
+  @override
+  String get placePriceHistory => 'Seu histórico de preços';
+
+  @override
+  String get placePriceHistoryNone =>
+      'Ainda não há preços informados por você aqui. Quando houver, o último preço e a faixa observada aparecem neste lugar.';
+
+  @override
+  String get placePriceHistoryNote =>
+      'Seu histórico: só o que você mesmo informou neste local, por bebida e tamanho. Não é média de mercado, da cidade nem do estado.';
+
+  @override
+  String placeVisits(String count) {
+    return 'Rolês neste local ($count)';
+  }
+
+  @override
+  String get placeNoVisits => 'Nenhum rolê registrado aqui ainda.';
+
+  @override
+  String get placeVisitInProgress => 'em andamento';
+
+  @override
+  String get placeNoValues => 'sem valores';
+
+  @override
+  String rangeTo(String from, String to) {
+    return '$from a $to';
+  }
+
+  @override
+  String placePriceLast(String price, String date) {
+    return 'Último: $price em $date';
+  }
+
+  @override
+  String placePriceLastShared(String price, String date) {
+    return 'Último: $price em $date (total da garrafa/porção)';
+  }
+
+  @override
+  String placePriceRangeLine(String range, int count, String period) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count registros',
+      one: '1 registro',
+    );
+    return 'Faixa observada: $range · $_temp0 · $period';
+  }
+
+  @override
+  String get placeAlreadyActive =>
+      'Já existe um rolê em andamento. Encerre-o antes.';
+
+  @override
+  String get placeFieldMapName => 'Nome no mapa';
+
+  @override
+  String get placeFieldAddress => 'Endereço';
+
+  @override
+  String get placeFieldCity => 'Cidade';
+
+  @override
+  String get placeFieldOrigin => 'Origem';
+
+  @override
+  String get placeSourceSearch => 'Escolhido na busca (OpenStreetMap)';
+
+  @override
+  String get placeSourceLocation => 'Sua localização, conferida no mapa';
+
+  @override
+  String get placeSourceAdjusted => 'Ponto ajustado por você';
+
+  @override
+  String get placeSourceManual => 'Informado por você';
+
+  @override
+  String get placeDetailsTitle => 'Detalhes';
+
+  @override
+  String get placeNoPointNoAddress =>
+      'Sem endereço nem ponto no mapa. Dá para buscar em \"Editar\".';
+
+  @override
+  String get placesEmptyTitle => 'Nenhum local salvo';
+
+  @override
+  String get placesEmptyBody =>
+      'Salve os lugares onde você costuma ir para escolher rápido ao iniciar um rolê. Eles ficam privados no seu perfil.';
+
+  @override
+  String get placesArchivedSection => 'Arquivados';
+
+  @override
+  String get placesNew => 'Novo local';
+
+  @override
+  String placesVisits(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count rolês',
+      one: '1 rolê',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get placeEditTitle => 'Editar local';
+
+  @override
+  String get placeEditorNote =>
+      'As mudanças valem para os próximos rolês. Os rolês que já aconteceram mantêm o nome e o endereço de quando foram feitos.';
+
+  @override
+  String get placeEditorLocation => 'Localização';
+
+  @override
+  String get placeEditorSourceSearch =>
+      'Escolhido na busca (dados do OpenStreetMap)';
+
+  @override
+  String get placeEditorSourceAdjusted => 'Ponto ajustado por você no mapa';
+
+  @override
+  String get placeEditorNoPointHint =>
+      'Opcional. Apelido ou endereço já bastam.';
+
+  @override
+  String get placeEditorPointSaved => 'Ponto salvo';
+
+  @override
+  String get placeEditorNoPoint => 'Sem ponto no mapa';
+
+  @override
+  String get placeEditorSearchMap => 'Buscar no mapa';
+
+  @override
+  String get placeEditorSearchAdjust => 'Buscar ou ajustar';
+
+  @override
+  String get placeEditorRemoveFromMap => 'Remover do mapa';
+
+  @override
+  String get placeEditorAddressHelper =>
+      'Apelido, nome do lugar ou endereço já bastam.';
+
+  @override
+  String get placeEditorPrivate =>
+      'Seus locais e endereços são privados: só aparecem para você.';
+
+  @override
+  String get placeEditorSave => 'Salvar local';
+
+  @override
+  String get tabMe => 'Você';
+
+  @override
+  String get tabCatFood => 'Petisco / comida';
+
+  @override
+  String get tabCatSoft => 'Água / refrigerante';
+
+  @override
+  String get tabCatCover => 'Couvert';
+
+  @override
+  String get tabCatStarter => 'Entrada';
+
+  @override
+  String get tabCatTransport => 'Transporte';
+
+  @override
+  String get tabCatOther => 'Outros';
+
+  @override
+  String get tabCatDrink => 'Bebida só da comanda';
+
+  @override
+  String get tabSplitEqual => 'Igualmente';
+
+  @override
+  String get tabSplitItem => 'Por item';
+
+  @override
+  String get tabSplitCustom => 'Valores personalizados';
+
+  @override
+  String get tabShared => 'compartilhada';
+
+  @override
+  String tabShareHeader(String title) {
+    return 'Comanda · $title';
+  }
+
+  @override
+  String get tabShareNoItems => 'Sem itens na comanda.';
+
+  @override
+  String get tabShareItems => 'Itens';
+
+  @override
+  String tabShareLineGroup(
+    String title,
+    String count,
+    String unit,
+    String sum,
+  ) {
+    return '• $title · $count × $unit = $sum';
+  }
+
+  @override
+  String tabShareLineQty(String title, String qty, String total) {
+    return '• $title · $qty× = $total';
+  }
+
+  @override
+  String tabShareLineGroupNoPrice(String title, String count) {
+    return '• $title · $count × sem preço';
+  }
+
+  @override
+  String tabShareLine(String title, String price) {
+    return '• $title · $price';
+  }
+
+  @override
+  String tabShareLineNoPrice(String title) {
+    return '• $title · sem preço';
+  }
+
+  @override
+  String tabShareSubtotalKnown(String amount) {
+    return 'Subtotal conhecido: $amount';
+  }
+
+  @override
+  String tabShareSubtotal(String amount) {
+    return 'Subtotal: $amount';
+  }
+
+  @override
+  String tabShareDiscount(String amount) {
+    return 'Desconto: -$amount';
+  }
+
+  @override
+  String tabShareService(String pct, String base, String amount) {
+    return 'Serviço ($pct sobre $base): $amount';
+  }
+
+  @override
+  String tabShareTotalKnown(String amount) {
+    return 'Total conhecido: $amount';
+  }
+
+  @override
+  String tabShareTotal(String amount) {
+    return 'Total: $amount';
+  }
+
+  @override
+  String tabSharePartial(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Conta parcial: $count itens sem preço.',
+      one: 'Conta parcial: 1 item sem preço.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tabShareSplitHeader(String mode) {
+    return 'Divisão ($mode)';
+  }
+
+  @override
+  String tabShareSplitLine(String name, String amount) {
+    return '• $name: $amount';
+  }
+
+  @override
+  String tabSharePaid(String amount) {
+    return ' · pagou $amount';
+  }
+
+  @override
+  String tabShareMissing(String amount) {
+    return ' · falta $amount';
+  }
+
+  @override
+  String tabShareOver(String amount) {
+    return ' · a mais $amount';
+  }
+
+  @override
+  String tabShareUnassigned(String amount) {
+    return 'Ainda sem dividir: $amount';
+  }
+
+  @override
+  String tabShareOverTotal(String amount) {
+    return 'Acima do total: $amount';
+  }
+
+  @override
+  String get tabShareSplitPartial => 'Divisão parcial: os valores podem mudar.';
+
+  @override
+  String get tabTitle => 'Comanda';
+
+  @override
+  String get tabShareSplitTooltip => 'Compartilhar divisão';
+
+  @override
+  String get tabIntro =>
+      'Opcional. A comanda não registra consumo: o que você bebeu continua nos seus registros.';
+
+  @override
+  String get tabEnded =>
+      'Rolê encerrado. A comanda segue editável; encerrar não marca a conta como paga.';
+
+  @override
+  String tabItemsTitle(String count) {
+    return 'Itens ($count)';
+  }
+
+  @override
+  String get tabEmptyTitle => 'Comanda vazia';
+
+  @override
+  String get tabEmptyBody =>
+      'Adicione petiscos e outros gastos, ou inclua as bebidas que você já registrou.';
+
+  @override
+  String get tabNoDrinksToLink => 'Nenhuma bebida registrada para incluir';
+
+  @override
+  String tabLinkDrinks(String count) {
+    return 'Incluir bebidas registradas ($count)';
+  }
+
+  @override
+  String get tabSplitBill => 'Dividir conta';
+
+  @override
+  String get tabSubtotalKnown => 'Subtotal conhecido';
+
+  @override
+  String get tabSubtotal => 'Subtotal';
+
+  @override
+  String get tabDiscount => 'Desconto';
+
+  @override
+  String tabServiceLine(String pct, String base) {
+    return 'Serviço $pct sobre $base';
+  }
+
+  @override
+  String get tabTotalKnown => 'Total conhecido';
+
+  @override
+  String get tabTotalTab => 'Total da comanda';
+
+  @override
+  String tabPartialPill(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count itens sem preço: a conta e a divisão são parciais.',
+      one: '1 item sem preço: a conta e a divisão são parciais.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tabYourShareProvisional => 'Sua parte (provisória)';
+
+  @override
+  String get tabYourShare => 'Sua parte';
+
+  @override
+  String get tabOrderNote =>
+      'Ordem: subtotal → desconto → serviço sobre os itens com serviço, já com desconto → total.';
+
+  @override
+  String get tabServiceAndDiscount => 'Serviço e desconto';
+
+  @override
+  String tabServiceSummary(String pct) {
+    return 'serviço $pct';
+  }
+
+  @override
+  String get tabNoService => 'sem serviço';
+
+  @override
+  String tabDiscountSummary(String amount) {
+    return 'desconto $amount';
+  }
+
+  @override
+  String get tabChargeService => 'Cobrar serviço';
+
+  @override
+  String get tabChargeServiceHint =>
+      'Só nos itens marcados com serviço. Transporte e entrada começam sem.';
+
+  @override
+  String get tabPercent => 'Percentual';
+
+  @override
+  String tabServiceBase(String base, String service) {
+    return 'Base $base → $service';
+  }
+
+  @override
+  String get tabDiscountNone => 'Nenhum';
+
+  @override
+  String get tabDiscountAmountLabel => 'Valor do desconto';
+
+  @override
+  String get tabDiscountPercentLabel => 'Percentual do desconto';
+
+  @override
+  String tabDiscountCapped(String amount) {
+    return 'Limitado ao subtotal: $amount';
+  }
+
+  @override
+  String get tabDiscountHelper =>
+      'Sobre o subtotal dos itens, distribuído entre eles.';
+
+  @override
+  String tabGroupHeaderMulti(
+    String title,
+    String count,
+    String unit,
+    String sum,
+  ) {
+    return '$title · $count × $unit = $sum';
+  }
+
+  @override
+  String tabGroupHeaderNoPrice(String title, String count) {
+    return '$title · $count × sem preço';
+  }
+
+  @override
+  String tabGroupQtyNoPrice(String title, String qty) {
+    return '$title · $qty× sem preço';
+  }
+
+  @override
+  String tabGroupQtyTotal(String title, String qty, String total) {
+    return '$title · $qty× = $total';
+  }
+
+  @override
+  String get tabComplimentary => 'cortesia';
+
+  @override
+  String get tabNoPrice => 'sem preço';
+
+  @override
+  String tabPersonalOnly(String amount) {
+    return 'só a sua parte ($amount) é conhecida · total da garrafa desconhecido';
+  }
+
+  @override
+  String get tabPersonalOnlyShort =>
+      'só a parte pessoal é conhecida; total desconhecido';
+
+  @override
+  String tabLineOnlyYourShare(String amount) {
+    return 'só sua parte $amount';
+  }
+
+  @override
+  String tabLineDiscount(String amount) {
+    return 'desc. −$amount';
+  }
+
+  @override
+  String tabLineService(String amount) {
+    return 'serviço +$amount';
+  }
+
+  @override
+  String get tabLineRegisteredDrink => 'Bebida registrada';
+
+  @override
+  String get tabLineItem => 'Item da comanda';
+
+  @override
+  String get tabActions => 'Ações';
+
+  @override
+  String get tabFillTotalTitle => 'Total da garrafa/jarra';
+
+  @override
+  String get tabFillPriceTitle => 'Preço';
+
+  @override
+  String get tabFillTotalLabel => 'Total da conta deste item';
+
+  @override
+  String get tabFillTotal => 'Informar total';
+
+  @override
+  String get tabFillPrice => 'Informar preço';
+
+  @override
+  String get tabNoServiceItem => 'Sem serviço neste item';
+
+  @override
+  String get tabRemoveFromTab => 'Tirar da comanda';
+
+  @override
+  String get tabDeleteItem => 'Excluir item';
+
+  @override
+  String get splitTitle => 'Dividir conta';
+
+  @override
+  String get splitRename => 'Renomear';
+
+  @override
+  String splitRemoveTitle(String name) {
+    return 'Remover $name?';
+  }
+
+  @override
+  String splitRemoveBody(String name, String share) {
+    return '$name tem $share atribuídos. Escolha o que acontece com eles:';
+  }
+
+  @override
+  String splitRemoveBodyPay(String name, String share, int count, String paid) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pagamentos',
+      one: '1 pagamento',
+    );
+    return '$name tem $share atribuídos e $_temp0 ($paid). Escolha o que acontece com eles:';
+  }
+
+  @override
+  String get splitPassTo => 'Passar para';
+
+  @override
+  String get splitNobody => 'Ninguém (redistribuir)';
+
+  @override
+  String get splitRedistributeNote =>
+      'Os itens só dessa pessoa voltam a ser divididos entre todos e os pagamentos dela são apagados.';
+
+  @override
+  String get splitTransferNote =>
+      'Itens, valores e pagamentos passam para essa pessoa.';
+
+  @override
+  String get splitRegisterPayment => 'Registrar pagamento';
+
+  @override
+  String get splitEditPayment => 'Editar pagamento';
+
+  @override
+  String get splitWhoPaid => 'Quem pagou';
+
+  @override
+  String get splitPaidAmount => 'Valor pago ao estabelecimento';
+
+  @override
+  String get splitNoteOptional => 'Observação (opcional)';
+
+  @override
+  String get splitPaymentPositive => 'Informe um valor maior que zero.';
+
+  @override
+  String splitTotalKnown(String amount) {
+    return 'Total conhecido $amount';
+  }
+
+  @override
+  String splitTotal(String amount) {
+    return 'Total $amount';
+  }
+
+  @override
+  String splitPendingPill(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count itens sem preço: a divisão e os saldos são provisórios.',
+      one: '1 item sem preço: a divisão e os saldos são provisórios.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get splitComplete => 'Divisão completa: as parcelas somam o total.';
+
+  @override
+  String splitMissing(String amount) {
+    return 'Falta distribuir $amount.';
+  }
+
+  @override
+  String splitOver(String amount) {
+    return 'Distribuído $amount a mais que o total.';
+  }
+
+  @override
+  String get splitPeople => 'Pessoas';
+
+  @override
+  String get splitAddPerson => 'Adicionar pessoa (apelido)';
+
+  @override
+  String get splitNicknamesOnly =>
+      'Só apelidos, sem login nem convite. Ficam apenas nesta comanda.';
+
+  @override
+  String get splitHow => 'Como dividir';
+
+  @override
+  String get splitModeEqualShort => 'Igual';
+
+  @override
+  String get splitModeItemShort => 'Por item';
+
+  @override
+  String get splitModeValuesShort => 'Valores';
+
+  @override
+  String get splitModeEqualNote =>
+      'Modo ativo: igualmente. O total é dividido entre as pessoas marcadas.';
+
+  @override
+  String get splitModeItemNote =>
+      'Modo ativo: por item. Cada pedido é dividido entre quem participa dele, com serviço e desconto do próprio item.';
+
+  @override
+  String get splitModeCustomNote =>
+      'Modo ativo: valores personalizados. Você digita a parcela de cada um; só fecha quando a soma bate com o total.';
+
+  @override
+  String get splitAddItemsHint =>
+      'Adicione itens à comanda para dividir por item.';
+
+  @override
+  String get splitFillEqually => 'Preencher igualmente';
+
+  @override
+  String get splitAllDistributed => 'Tudo distribuído.';
+
+  @override
+  String splitNotDistributed(String amount) {
+    return 'Ainda não distribuído: $amount';
+  }
+
+  @override
+  String splitPassedTotal(String amount) {
+    return 'Passou do total em $amount';
+  }
+
+  @override
+  String get splitResult => 'Resultado';
+
+  @override
+  String get splitProvisionalNote =>
+      'Provisório: os valores mudam se a conta mudar.';
+
+  @override
+  String get splitAttributedNote =>
+      'Atribuído é o que cabe a cada um; pago é o que a pessoa disse ter pago ao estabelecimento.';
+
+  @override
+  String splitPaidLine(String paid, String balance) {
+    return 'Pagou $paid · $balance';
+  }
+
+  @override
+  String splitBalanceMissing(String amount, String provisional) {
+    String _temp0 = intl.Intl.selectLogic(provisional, {
+      'true': ' (provisório)',
+      'other': '',
+    });
+    return 'falta pagar $amount$_temp0';
+  }
+
+  @override
+  String splitBalanceOver(String amount, String provisional) {
+    String _temp0 = intl.Intl.selectLogic(provisional, {
+      'true': ' (provisório)',
+      'other': '',
+    });
+    return 'pagou $amount a mais$_temp0';
+  }
+
+  @override
+  String splitBalanceEven(String provisional) {
+    String _temp0 = intl.Intl.selectLogic(provisional, {
+      'true': ' (provisório)',
+      'other': '',
+    });
+    return 'em dia$_temp0';
+  }
+
+  @override
+  String get splitPayments => 'Pagamentos';
+
+  @override
+  String get splitNoPayments => 'Nenhum pagamento registrado.';
+
+  @override
+  String get splitRemovedPerson => 'Pessoa removida';
+
+  @override
+  String get splitDeletePayment => 'Excluir pagamento';
+
+  @override
+  String get splitPaymentNote =>
+      'Registrar um pagamento não muda o total, o consumo nem o orçamento: só o saldo. O app não faz cobrança, Pix nem transferência, e não diz quem deve pagar a quem. O preço de um consumo não conta como pagamento.';
+
+  @override
+  String get splitAssignEveryone => 'Todos dividem';
+
+  @override
+  String get splitAssignNobody => 'Ninguém';
+
+  @override
+  String get splitAssignIntro =>
+      'Quem participa e com que peso. Quem não participa não recebe parcela deste item.';
+
+  @override
+  String splitWeight(String number) {
+    return 'peso $number';
+  }
+
+  @override
+  String get tabExtraNew => 'Novo item da comanda';
+
+  @override
+  String get tabExtraNote =>
+      'Só na comanda deste rolê. Não vira consumo nem entra no catálogo.';
+
+  @override
+  String get tabExtraDescription => 'Descrição';
+
+  @override
+  String get tabExtraHintTransport => 'Ex.: Uber de volta (opcional)';
+
+  @override
+  String get tabExtraHint => 'Ex.: Porção de fritas';
+
+  @override
+  String get tabBasisUnit => 'Preço de cada um';
+
+  @override
+  String tabBasisTotal(String qty) {
+    return 'Total dos $qty';
+  }
+
+  @override
+  String get tabValueEach => 'Valor de cada unidade';
+
+  @override
+  String tabValueTotalQty(String qty) {
+    return 'Valor total dos $qty';
+  }
+
+  @override
+  String get tabExtraServiceItem => 'Cobrar serviço neste item';
+
+  @override
+  String get tabExtraServiceHint => 'Só vale se o serviço estiver ligado.';
+
+  @override
+  String get tabExtraWho => 'Quem divide este item';
+
+  @override
+  String get tabExtraAll => 'Todos';
+
+  @override
+  String tabExtraSome(String count, String total) {
+    return '$count de $total';
+  }
+
+  @override
+  String get tabExtraWhoNote => 'Vale no modo \"Por item\" da divisão.';
+
+  @override
+  String get tabExtraSave => 'Salvar item';
+
+  @override
+  String get tabExtraNeedValue =>
+      'Informe o valor, ou escolha Cortesia / Não sei.';
+
+  @override
+  String tabExtraHelperUnit(String qty, String unit, String total) {
+    return '$qty × $unit = $total';
+  }
+
+  @override
+  String tabExtraHelperLine(String amount) {
+    return 'Total da linha: $amount';
+  }
+
+  @override
+  String get tabExtraNoPrice =>
+      'Sem preço: a conta fica parcial até você preencher.';
+
+  @override
+  String tabLinkSharedTotal(String amount) {
+    return 'compartilhada · total $amount';
+  }
+
+  @override
+  String tabLinkSharedPersonal(String amount) {
+    return 'compartilhada · só a sua parte ($amount) é conhecida';
+  }
+
+  @override
+  String get tabLinkSameBottleTitle => 'Mesma garrafa ou outra?';
+
+  @override
+  String tabLinkSameBottleBody(String count, String name, String total) {
+    return '$count registros compartilhados de \"$name\" têm o mesmo total ($total). Foi a mesma garrafa/jarra ou $count separadas?\n\nO total entra na comanda uma vez por garrafa; o app não adivinha.';
+  }
+
+  @override
+  String tabLinkSeparate(String count) {
+    return '$count separadas';
+  }
+
+  @override
+  String get tabLinkSame => 'Mesma garrafa';
+
+  @override
+  String get tabLinkTitle => 'Bebidas já registradas';
+
+  @override
+  String get tabLinkNote =>
+      'Elas só são ligadas à comanda: o preço continua no registro e uma correção lá vale aqui. Seus registros não mostram tudo o que a mesa pediu.';
+
+  @override
+  String get tabLinkAll => 'Todas';
+
+  @override
+  String get tabLinkNone => 'Nenhuma';
+
+  @override
+  String tabLinkInclude(String count) {
+    return 'Incluir $count na comanda';
+  }
+
+  @override
+  String get tabSharePreview =>
+      'Prévia do texto. Nada é enviado até você tocar em Compartilhar.';
+
+  @override
+  String get tabShareIncludePayments => 'Incluir pagamentos e saldos';
+
+  @override
+  String get tabShareOffDefault => 'Desligado por padrão.';
+
+  @override
+  String get tabShareExcludes =>
+      'Não inclui endereço, fotos, anotações pessoais nem relato de embriaguez.';
+
+  @override
+  String get tabShareButton => 'Compartilhar';
+
+  @override
+  String get tabCopyText => 'Copiar texto';
+
+  @override
+  String get tabTextCopied => 'Texto copiado';
+
+  @override
+  String get tabShareSubject => 'Divisão da conta';
+
+  @override
+  String get tabShareFailed =>
+      'Não foi possível abrir o compartilhamento. Copie o texto.';
+
+  @override
+  String get tabCardHint => 'Opcional: petiscos, serviço e divisão da conta.';
+
+  @override
+  String tabCardTotalPartial(String amount) {
+    return 'Total da comanda (parcial): $amount';
+  }
+
+  @override
+  String tabCardTotal(String amount) {
+    return 'Total da comanda: $amount';
+  }
+
+  @override
+  String tabCardShareProv(String amount) {
+    return 'Sua parte da comanda (provisória): $amount';
+  }
+
+  @override
+  String tabCardShare(String amount) {
+    return 'Sua parte da comanda: $amount';
+  }
+
+  @override
+  String tabCardLineTotal(String amount) {
+    return 'Total $amount';
+  }
+
+  @override
+  String tabCardLineKnown(String amount) {
+    return 'Total conhecido $amount';
+  }
+
+  @override
+  String tabCardLineTotalShare(String amount, String mine) {
+    return 'Total $amount · sua parte $mine';
+  }
+
+  @override
+  String tabCardLineKnownShare(String amount, String mine) {
+    return 'Total conhecido $amount · sua parte $mine';
+  }
 }

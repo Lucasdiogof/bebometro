@@ -1,6 +1,8 @@
 import '../../core/utils/formatters.dart';
 import '../../drinks/domain/drink_entry.dart';
+import '../../drinks/domain/presentation_label.dart';
 import 'tab_models.dart';
+import '../../l10n/l10n.dart';
 
 enum LineSource { entry, extra }
 
@@ -170,7 +172,7 @@ class TabCalculator {
 
   static String _sizeOf(DrinkEntry e) {
     if (e.presentation != null && e.presentation!.trim().isNotEmpty) {
-      return e.presentation!;
+      return localizePresentation(e.presentation!);
     }
     return e.containerMl == null ? '' : formatMl(e.containerMl!);
   }
@@ -214,7 +216,7 @@ class TabCalculator {
       id: e.id,
       source: LineSource.entry,
       title: title,
-      detail: e.isShared ? 'compartilhada' : null,
+      detail: e.isShared ? tr.tabShared : null,
       at: e.consumedAt,
       totalCents: total,
       personalOnlyCents: personal,

@@ -8,6 +8,7 @@ import '../../core/theme/app_tokens.dart';
 import '../data/geo_search.dart';
 import '../domain/geo_point.dart';
 import 'open_in_maps.dart';
+import '../../l10n/l10n.dart';
 
 /// The map used to confirm and show a place. Only exists while its screen is
 /// open (never on the home nor during the whole outing). Without a key it is
@@ -67,7 +68,7 @@ class _PlaceMapState extends State<PlaceMap> {
       child: Stack(
         children: [
           Semantics(
-            label: 'Mapa com o ponto do local',
+            label: tr.mapSemantics,
             child: FlutterMap(
               mapController: _controller,
               options: MapOptions(
@@ -121,17 +122,17 @@ class _PlaceMapState extends State<PlaceMap> {
               child: Column(children: [
                 _MapButton(
                     icon: Icons.add_rounded,
-                    label: 'Aproximar',
+                    label: tr.mapZoomIn,
                     onTap: () => _zoom(1)),
                 const SizedBox(height: AppSpace.sm),
                 _MapButton(
                     icon: Icons.remove_rounded,
-                    label: 'Afastar',
+                    label: tr.mapZoomOut,
                     onTap: () => _zoom(-1)),
                 const SizedBox(height: AppSpace.sm),
                 _MapButton(
                     icon: Icons.my_location_rounded,
-                    label: 'Centralizar no ponto',
+                    label: tr.mapCenter,
                     onTap: () => _controller.move(_center, 17)),
               ]),
             ),

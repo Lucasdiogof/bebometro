@@ -1,5 +1,6 @@
 import 'geo_point.dart';
 import 'place.dart';
+import '../../l10n/l10n.dart';
 
 /// What the place picker hands back: a saved place as it is, or new place
 /// data the person confirmed (from a search result, the device location or
@@ -56,7 +57,7 @@ class PlaceDraft {
           providerName: providerName,
           address: address,
           point: point,
-          fallback: 'Local');
+          fallback: tr.placeFallbackName);
 
   /// Something to show and store: a name, an address or a point.
   bool get isEmpty =>

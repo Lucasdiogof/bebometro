@@ -10,6 +10,7 @@ import '../data/place_repository.dart';
 import '../domain/geo_point.dart';
 import '../domain/place.dart';
 import 'place_picker_page.dart';
+import '../../l10n/l10n.dart';
 
 /// Creates or edits a saved place. Editing never rewrites the place data kept
 /// inside past outings.
@@ -123,7 +124,7 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
     } catch (_) {
       if (mounted) {
         setState(() => _saving = false);
-        showToast(context, 'Não foi possível salvar. Seus dados continuam aqui.');
+        showToast(context, tr.customSaveFailed);
       }
     }
   }
@@ -132,7 +133,7 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
   Widget build(BuildContext context) {
     final editing = widget.editing != null;
     return Scaffold(
-      appBar: AppBar(title: Text(editing ? 'Editar local' : 'Novo local')),
+      appBar: AppBar(title: Text(editing ? tr.placeEditTitle : tr.placesNew)),
       body: Column(
         children: [
           Expanded(
@@ -142,29 +143,24 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                   AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
               children: [
                 if (editing)
-                  const Text(
-                    'As mudanças valem para os próximos rolês. Os rolês que '
-                    'já aconteceram mantêm o nome e o endereço de quando '
-                    'foram feitos.',
-                    style: AppText.caption,
-                  ),
-                const SectionTitle('Tipo'),
+                  Text(tr.placeEditorNote, style: AppText.caption),
+                SectionTitle(tr.customType),
                 OutingTypePicker(
                   selected: _type,
                   onSelected: (t) => setState(() => _type = t),
                 ),
-                const SectionTitle('Identificação'),
+                SectionTitle(tr.customIdentification),
                 TextField(
                   controller: _nickname,
                   textCapitalization: TextCapitalization.words,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: 'Apelido',
-                    hintText: 'Ex.: Bar MELT, Casa da Samara',
+                    labelText: tr.pickerManualNickname,
+                    hintText: tr.startNicknameHint,
                     errorText: _error,
                   ),
                 ),
-                const SectionTitle('Localização'),
+                SectionTitle(tr.placeEditorLocation),
                 SurfaceCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,21 +182,21 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                               Text(
                                 _providerName ??
                                     (_point != null
-                                        ? 'Ponto no mapa'
-                                        : 'Sem ponto no mapa'),
+                                        ? tr.placePointOnMap
+                                        : tr.placeEditorNoPoint),
                                 style: AppText.subtitle,
                               ),
                               Text(
                                 switch (_source) {
                                   LocationSource.search =>
-                                    'Escolhido na busca (dados do OpenStreetMap)',
+                                    tr.placeEditorSourceSearch,
                                   LocationSource.currentLocation =>
-                                    'Sua localização, conferida no mapa',
+                                    tr.placeSourceLocation,
                                   LocationSource.adjusted =>
-                                    'Ponto ajustado por você no mapa',
+                                    tr.placeEditorSourceAdjusted,
                                   null => _point == null
-                                      ? 'Opcional. Apelido ou endereço já bastam.'
-                                      : 'Ponto salvo',
+                                      ? tr.placeEditorNoPointHint
+                                      : tr.placeEditorPointSaved,
                                 },
                                 style: AppText.caption,
                               ),
@@ -214,13 +210,13 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                           onPressed: _locate,
                           icon: const Icon(Icons.search_rounded),
                           label: Text(_point == null
-                              ? 'Buscar no mapa'
-                              : 'Buscar ou ajustar'),
+                              ? tr.placeEditorSearchMap
+                              : tr.placeEditorSearchAdjust),
                         ),
                         if (_point != null || _providerName != null)
                           TextButton(
                             onPressed: _clearLocation,
-                            child: const Text('Remover do mapa'),
+                            child: Text(tr.placeEditorRemoveFromMap),
                           ),
                       ]),
                     ],
@@ -231,9 +227,9 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                   controller: _address,
                   textCapitalization: TextCapitalization.words,
                   textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Endereço (opcional)',
-                    helperText: 'Apelido, nome do lugar ou endereço já bastam.',
+                  decoration: InputDecoration(
+                    labelText: tr.startAddressLabel,
+                    helperText: tr.placeEditorAddressHelper,
                   ),
                 ),
                 const SizedBox(height: AppSpace.md),
@@ -245,8 +241,8 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                       child: TextField(
                         controller: _city,
                         textCapitalization: TextCapitalization.words,
-                        decoration: const InputDecoration(
-                            labelText: 'Cidade (opcional)'),
+                        decoration:
+                            InputDecoration(labelText: tr.startCityLabel),
                       ),
                     ),
                     const SizedBox(width: AppSpace.sm),
@@ -255,23 +251,22 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                         controller: _state,
                         textCapitalization: TextCapitalization.characters,
                         maxLength: 2,
-                        decoration: const InputDecoration(
-                            labelText: 'UF', counterText: ''),
+                        decoration: InputDecoration(
+                            labelText: tr.startStateLabel, counterText: ''),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: AppSpace.lg),
-                const Row(
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.lock_outline_rounded,
+                    const Icon(Icons.lock_outline_rounded,
                         size: 16, color: AppColors.textMuted),
-                    SizedBox(width: AppSpace.sm),
+                    const SizedBox(width: AppSpace.sm),
                     Expanded(
                       child: Text(
-                        'Seus locais e endereços são privados: só aparecem '
-                        'para você.',
+                        tr.placeEditorPrivate,
                         style: AppText.caption,
                       ),
                     ),
@@ -283,7 +278,7 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
           BottomActionBar(
             child: FilledButton(
               onPressed: _saving ? null : _save,
-              child: Text(editing ? 'Salvar alterações' : 'Salvar local'),
+              child: Text(editing ? tr.entrySaveChanges : tr.placeEditorSave),
             ),
           ),
         ],

@@ -11,6 +11,7 @@ import '../data/tab_repository.dart';
 import '../domain/tab_calc.dart';
 import '../domain/tab_models.dart';
 import 'tab_page.dart';
+import '../../l10n/l10n.dart';
 
 /// Access to the tab from inside an outing and from its summary. It is not a
 /// tab of the main navigation. Totals here are the tab's own: they are never
@@ -58,18 +59,23 @@ class _TabEntryCardState extends State<TabEntryCard> {
 
     final lines = <String>[];
     if (r == null) {
-      lines.add('Opcional: petiscos, serviço e divisão da conta.');
+      lines.add(tr.tabCardHint);
     } else if (widget.detailed) {
-      lines.add('${r.isPartial ? 'Total da comanda (parcial)' : 'Total da comanda'}: '
-          '${formatCents(r.total)}');
+      lines.add(r.isPartial
+          ? tr.tabCardTotalPartial(formatCents(r.total))
+          : tr.tabCardTotal(formatCents(r.total)));
       if (mine != null) {
-        lines.add('Sua parte da comanda${partial ? ' (provisória)' : ''}: '
-            '${formatCents(mine)}');
+        lines.add(partial
+            ? tr.tabCardShareProv(formatCents(mine))
+            : tr.tabCardShare(formatCents(mine)));
       }
     } else {
-      lines.add('${r.isPartial ? 'Total conhecido' : 'Total'} '
-          '${formatCents(r.total)}'
-          '${mine == null ? '' : ' · sua parte ${formatCents(mine)}'}');
+      final total = formatCents(r.total);
+      lines.add(mine == null
+          ? (r.isPartial ? tr.tabCardLineKnown(total) : tr.tabCardLineTotal(total))
+          : (r.isPartial
+              ? tr.tabCardLineKnownShare(total, formatCents(mine))
+              : tr.tabCardLineTotalShare(total, formatCents(mine))));
     }
 
     return SurfaceCard(
@@ -83,7 +89,7 @@ class _TabEntryCardState extends State<TabEntryCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Comanda', style: AppText.subtitle),
+              Text(tr.tabTitle, style: AppText.subtitle),
               for (final l in lines) Text(l, style: AppText.caption),
             ],
           ),

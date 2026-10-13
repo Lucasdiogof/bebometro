@@ -5,9 +5,11 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
+import '../../core/widgets/money_field.dart';
 import '../domain/tab_calc.dart';
 import '../domain/tab_models.dart';
 import 'tab_cubit.dart';
+import '../../l10n/l10n.dart';
 
 /// "Dividir conta": participants by nickname, the split mode, what each person
 /// was assigned and what they say to have paid. Assigned cost, payment and
@@ -48,23 +50,23 @@ class _SplitViewState extends State<_SplitView> {
   }
 
   Future<void> _rename(TabCubit cubit, Participant p) async {
-    final c = TextEditingController(text: p.name);
+    final c = TextEditingController(text: p.displayName);
     final name = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Renomear'),
+        title: Text(tr.splitRename),
         content: TextField(
           controller: c,
           autofocus: true,
           textCapitalization: TextCapitalization.words,
-          decoration: const InputDecoration(labelText: 'Apelido'),
+          decoration: InputDecoration(labelText: tr.pickerManualNickname),
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx), child: const Text('Cancelar')),
+              onPressed: () => Navigator.pop(ctx), child: Text(tr.commonCancel)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, c.text),
-              child: const Text('Salvar')),
+              child: Text(tr.commonSave)),
         ],
       ),
     );
@@ -89,34 +91,33 @@ class _SplitViewState extends State<_SplitView> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setD) => AlertDialog(
-          title: Text('Remover ${p.name}?'),
+          title: Text(tr.splitRemoveTitle(p.displayName)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Ele tem ${formatCents(share)} atribuídos'
-                '${payments.isEmpty ? '' : ' e ${payments.length} pagamento(s) '
-                    '(${formatCents(paid)})'}. Escolha o que acontece com eles:',
+                payments.isEmpty
+                    ? tr.splitRemoveBody(p.displayName, formatCents(share))
+                    : tr.splitRemoveBodyPay(p.displayName, formatCents(share),
+                        payments.length, formatCents(paid)),
               ),
               const SizedBox(height: AppSpace.md),
               DropdownButtonFormField<String?>(
                 initialValue: target,
-                decoration: const InputDecoration(labelText: 'Passar para'),
+                decoration: InputDecoration(labelText: tr.splitPassTo),
                 items: [
-                  const DropdownMenuItem(
-                      value: null, child: Text('Ninguém (redistribuir)')),
+                  DropdownMenuItem(value: null, child: Text(tr.splitNobody)),
                   for (final o in others)
-                    DropdownMenuItem(value: o.id, child: Text(o.name)),
+                    DropdownMenuItem(value: o.id, child: Text(o.displayName)),
                 ],
                 onChanged: (v) => setD(() => target = v),
               ),
               const SizedBox(height: AppSpace.sm),
               Text(
                 target == null
-                    ? 'Os itens só dele voltam a ser divididos entre todos e '
-                        'os pagamentos dele são apagados.'
-                    : 'Itens, valores e pagamentos passam para essa pessoa.',
+                    ? tr.splitRedistributeNote
+                    : tr.splitTransferNote,
                 style: AppText.caption,
               ),
             ],
@@ -124,11 +125,11 @@ class _SplitViewState extends State<_SplitView> {
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: const Text('Cancelar')),
+                child: Text(tr.commonCancel)),
             TextButton(
                 onPressed: () => Navigator.pop(ctx, true),
-                child: const Text('Remover',
-                    style: TextStyle(color: AppColors.danger))),
+                child: Text(tr.commonRemove,
+                    style: const TextStyle(color: AppColors.danger))),
           ],
         ),
       ),
@@ -148,36 +149,36 @@ class _SplitViewState extends State<_SplitView> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setD) => AlertDialog(
-          title: Text(existing == null ? 'Registrar pagamento' : 'Editar pagamento'),
+          title: Text(existing == null
+              ? tr.splitRegisterPayment
+              : tr.splitEditPayment),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 DropdownButtonFormField<String>(
                   initialValue: who,
-                  decoration: const InputDecoration(labelText: 'Quem pagou'),
+                  decoration: InputDecoration(labelText: tr.splitWhoPaid),
                   items: [
                     for (final p in doc.participants)
-                      DropdownMenuItem(value: p.id, child: Text(p.name)),
+                      DropdownMenuItem(value: p.id, child: Text(p.displayName)),
                   ],
                   onChanged: (v) => setD(() => who = v ?? who),
                 ),
                 const SizedBox(height: AppSpace.md),
-                TextField(
+                MoneyField(
                   controller: value,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                    labelText: 'Valor pago ao estabelecimento',
-                    prefixText: r'R$ ',
-                    errorText: error,
-                  ),
+                  label: tr.splitPaidAmount,
+                  errorText: error,
+                  onChanged: (_) {
+                    if (error != null) setD(() => error = null);
+                  },
                 ),
                 const SizedBox(height: AppSpace.md),
                 TextField(
                   controller: note,
                   decoration:
-                      const InputDecoration(labelText: 'Observação (opcional)'),
+                      InputDecoration(labelText: tr.splitNoteOptional),
                 ),
               ],
             ),
@@ -185,12 +186,13 @@ class _SplitViewState extends State<_SplitView> {
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(ctx),
-                child: const Text('Cancelar')),
+                child: Text(tr.commonCancel)),
             TextButton(
               onPressed: () {
                 final cents = parseCents(value.text);
                 if (cents == null || cents <= 0) {
-                  setD(() => error = 'Informe um valor maior que zero.');
+                  setD(() => error =
+                      numberInputError(value.text) ?? tr.splitPaymentPositive);
                   return;
                 }
                 final n = note.text.trim();
@@ -205,7 +207,7 @@ class _SplitViewState extends State<_SplitView> {
                   ),
                 );
               },
-              child: const Text('Salvar'),
+              child: Text(tr.commonSave),
             ),
           ],
         ),
@@ -234,9 +236,9 @@ class _SplitViewState extends State<_SplitView> {
       builder: (context, state) {
         final doc = state.doc;
         final r = state.result;
-        final names = {for (final p in doc.participants) p.id: p.name};
+        final names = {for (final p in doc.participants) p.id: p.displayName};
         return Scaffold(
-          appBar: AppBar(title: const Text('Dividir conta')),
+          appBar: AppBar(title: Text(tr.splitTitle)),
           body: ListView(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             padding: const EdgeInsets.fromLTRB(
@@ -249,33 +251,32 @@ class _SplitViewState extends State<_SplitView> {
                   children: [
                     Text(
                       r.isPartial
-                          ? 'Total conhecido ${formatCents(r.total)}'
-                          : 'Total ${formatCents(r.total)}',
+                          ? tr.splitTotalKnown(formatCents(r.total))
+                          : tr.splitTotal(formatCents(r.total)),
                       style: AppText.title,
                     ),
                     const SizedBox(height: AppSpace.xs),
                     if (r.isPartial)
                       InfoPill(
-                        '${r.pendingCount} item(ns) sem preço: a divisão e os '
-                        'saldos são provisórios.',
+                        tr.splitPendingPill(r.pendingCount),
                         icon: Icons.warning_amber_rounded,
                         warning: true,
                       )
                     else if (r.splitComplete)
-                      const InfoPill('Divisão completa: as parcelas somam o total.',
+                      InfoPill(tr.splitComplete,
                           icon: Icons.check_circle_outline_rounded)
                     else
                       InfoPill(
                         r.unassigned > 0
-                            ? 'Falta distribuir ${formatCents(r.unassigned)}.'
-                            : 'Distribuído ${formatCents(-r.unassigned)} a mais que o total.',
+                            ? tr.splitMissing(formatCents(r.unassigned))
+                            : tr.splitOver(formatCents(-r.unassigned)),
                         icon: Icons.info_outline_rounded,
                         warning: true,
                       ),
                   ],
                 ),
               ),
-              const SectionTitle('Pessoas'),
+              SectionTitle(tr.splitPeople),
               for (final p in doc.participants)
                 Padding(
                   padding: const EdgeInsets.only(bottom: AppSpace.xs),
@@ -286,15 +287,16 @@ class _SplitViewState extends State<_SplitView> {
                       Icon(p.isMe ? Icons.person_rounded : Icons.person_outline,
                           color: AppColors.amber),
                       const SizedBox(width: AppSpace.md),
-                      Expanded(child: Text(p.name, style: AppText.subtitle)),
+                      Expanded(
+                          child: Text(p.displayName, style: AppText.subtitle)),
                       IconButton(
-                        tooltip: 'Renomear',
+                        tooltip: tr.splitRename,
                         onPressed: () => _rename(cubit, p),
                         icon: const Icon(Icons.edit_outlined),
                       ),
                       if (!p.isMe)
                         IconButton(
-                          tooltip: 'Remover',
+                          tooltip: tr.commonRemove,
                           onPressed: () => _remove(cubit, p),
                           icon: const Icon(Icons.close_rounded,
                               color: AppColors.danger),
@@ -309,23 +311,20 @@ class _SplitViewState extends State<_SplitView> {
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.done,
                     onSubmitted: (_) => _add(cubit),
-                    decoration: const InputDecoration(
-                        labelText: 'Adicionar pessoa (apelido)'),
+                    decoration:
+                        InputDecoration(labelText: tr.splitAddPerson),
                   ),
                 ),
                 const SizedBox(width: AppSpace.sm),
                 IconButton.filled(
-                  tooltip: 'Adicionar',
+                  tooltip: tr.commonAdd,
                   onPressed: () => _add(cubit),
                   icon: const Icon(Icons.add_rounded),
                 ),
               ]),
               const SizedBox(height: AppSpace.xs),
-              const Text(
-                'Só apelidos, sem login nem convite. Ficam apenas nesta comanda.',
-                style: AppText.caption,
-              ),
-              const SectionTitle('Como dividir'),
+              Text(tr.splitNicknamesOnly, style: AppText.caption),
+              SectionTitle(tr.splitHow),
               SizedBox(
                 width: double.infinity,
                 child: SegmentedButton<SplitMode>(
@@ -335,9 +334,9 @@ class _SplitViewState extends State<_SplitView> {
                       ButtonSegment(
                         value: m,
                         label: Text(switch (m) {
-                          SplitMode.equal => 'Igual',
-                          SplitMode.item => 'Por item',
-                          SplitMode.custom => 'Valores',
+                          SplitMode.equal => tr.splitModeEqualShort,
+                          SplitMode.item => tr.splitModeItemShort,
+                          SplitMode.custom => tr.splitModeValuesShort,
                         }),
                       ),
                   ],
@@ -348,15 +347,9 @@ class _SplitViewState extends State<_SplitView> {
               const SizedBox(height: AppSpace.sm),
               Text(
                 switch (doc.mode) {
-                  SplitMode.equal =>
-                    'Modo ativo: igualmente. O total é dividido entre as '
-                        'pessoas marcadas.',
-                  SplitMode.item =>
-                    'Modo ativo: por item. Cada pedido é dividido entre quem '
-                        'participa dele, com serviço e desconto do próprio item.',
-                  SplitMode.custom =>
-                    'Modo ativo: valores personalizados. Você digita a parcela '
-                        'de cada um; só fecha quando a soma bate com o total.',
+                  SplitMode.equal => tr.splitModeEqualNote,
+                  SplitMode.item => tr.splitModeItemNote,
+                  SplitMode.custom => tr.splitModeCustomNote,
                 },
                 style: AppText.caption,
               ),
@@ -368,14 +361,13 @@ class _SplitViewState extends State<_SplitView> {
                     activeColor: AppColors.amber,
                     value: doc.equalIds.contains(p.id),
                     onChanged: (_) => cubit.toggleEqual(p.id),
-                    title: Text(p.name),
+                    title: Text(p.displayName),
                     secondary: Text(formatCents(r.shareOf(p.id)),
                         style: AppText.subtitle),
                   ),
               if (doc.mode == SplitMode.item) ...[
                 if (r.results.isEmpty)
-                  const Text('Adicione itens à comanda para dividir por item.',
-                      style: AppText.caption),
+                  Text(tr.splitAddItemsHint, style: AppText.caption),
                 for (final res in r.results)
                   Padding(
                     padding: const EdgeInsets.only(bottom: AppSpace.xs),
@@ -395,7 +387,7 @@ class _SplitViewState extends State<_SplitView> {
                         ),
                         Text(
                           res.finalCents == null
-                              ? 'sem preço'
+                              ? tr.tabNoPrice
                               : formatCents(res.finalCents!),
                           style: AppText.body,
                         ),
@@ -411,7 +403,7 @@ class _SplitViewState extends State<_SplitView> {
                     padding: const EdgeInsets.only(bottom: AppSpace.sm),
                     child: _CustomField(
                       key: ValueKey('c-${p.id}'),
-                      label: p.name,
+                      label: p.displayName,
                       cents: doc.custom[p.id],
                       onChanged: (c) => cubit.setCustom(p.id, c),
                     ),
@@ -428,24 +420,23 @@ class _SplitViewState extends State<_SplitView> {
                       }
                     },
                     icon: const Icon(Icons.balance_rounded, size: 18),
-                    label: const Text('Preencher igualmente'),
+                    label: Text(tr.splitFillEqually),
                   ),
                 ),
                 Text(
                   r.unassigned == 0
-                      ? 'Tudo distribuído.'
+                      ? tr.splitAllDistributed
                       : (r.unassigned > 0
-                          ? 'Ainda não distribuído: ${formatCents(r.unassigned)}'
-                          : 'Passou do total em ${formatCents(-r.unassigned)}'),
+                          ? tr.splitNotDistributed(formatCents(r.unassigned))
+                          : tr.splitPassedTotal(formatCents(-r.unassigned))),
                   style: AppText.subtitle,
                 ),
               ],
-              const SectionTitle('Resultado'),
+              SectionTitle(tr.splitResult),
               Text(
                 r.isPartial || r.unassigned != 0
-                    ? 'Provisório: os valores mudam se a conta mudar.'
-                    : 'Atribuído é o que cabe a cada um; pago é o que a pessoa '
-                        'disse ter pago ao estabelecimento.',
+                    ? tr.splitProvisionalNote
+                    : tr.splitAttributedNote,
                 style: AppText.caption,
               ),
               const SizedBox(height: AppSpace.sm),
@@ -458,14 +449,19 @@ class _SplitViewState extends State<_SplitView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(children: [
-                          Expanded(child: Text(p.name, style: AppText.subtitle)),
+                          Expanded(
+                              child:
+                                  Text(p.displayName, style: AppText.subtitle)),
                           Text(formatCents(r.shareOf(p.id)),
                               style: AppText.title),
                         ]),
                         const SizedBox(height: 2),
                         Text(
-                          'Pagou ${formatCents(r.paidBy(p.id))} · '
-                          '${_balanceText(r.balanceOf(p.id), provisional: r.isPartial || r.unassigned != 0)}',
+                          tr.splitPaidLine(
+                              formatCents(r.paidBy(p.id)),
+                              _balanceText(r.balanceOf(p.id),
+                                  provisional:
+                                      r.isPartial || r.unassigned != 0)),
                           style: AppText.caption,
                         ),
                       ],
@@ -473,21 +469,20 @@ class _SplitViewState extends State<_SplitView> {
                   ),
                 ),
               SectionTitle(
-                'Pagamentos',
+                tr.splitPayments,
                 trailing: TextButton.icon(
                   onPressed: () => _payment(cubit),
                   icon: const Icon(Icons.add_rounded, size: 18),
-                  label: const Text('Registrar'),
+                  label: Text(tr.myDrinksActionLog),
                 ),
               ),
               if (doc.payments.isEmpty)
-                const Text('Nenhum pagamento registrado.',
-                    style: AppText.caption),
+                Text(tr.splitNoPayments, style: AppText.caption),
               for (final pay in doc.payments)
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   title: Text(
-                      '${names[pay.participantId] ?? 'Pessoa removida'} · '
+                      '${names[pay.participantId] ?? tr.splitRemovedPerson} · '
                       '${formatCents(pay.cents)}'),
                   subtitle: Text(
                     [formatDateTime(pay.at), if (pay.note != null) pay.note!]
@@ -496,20 +491,14 @@ class _SplitViewState extends State<_SplitView> {
                   ),
                   onTap: () => _payment(cubit, existing: pay),
                   trailing: IconButton(
-                    tooltip: 'Excluir pagamento',
+                    tooltip: tr.splitDeletePayment,
                     onPressed: () => cubit.removePayment(pay.id),
                     icon: const Icon(Icons.delete_outline_rounded,
                         color: AppColors.danger),
                   ),
                 ),
               const SizedBox(height: AppSpace.sm),
-              const Text(
-                'Registrar um pagamento não muda o total, o consumo nem o '
-                'orçamento: só o saldo. O app não faz cobrança, Pix nem '
-                'transferência, e não diz quem deve pagar a quem. O preço de '
-                'um consumo não conta como pagamento.',
-                style: AppText.caption,
-              ),
+              Text(tr.splitPaymentNote, style: AppText.caption),
             ],
           ),
         );
@@ -518,20 +507,20 @@ class _SplitViewState extends State<_SplitView> {
   }
 
   static String _assignText(Map<String, int>? a, Map<String, String> names) {
-    if (a == null) return 'Todos dividem';
+    if (a == null) return tr.splitAssignEveryone;
     final parts = [
       for (final e in a.entries)
         if (names.containsKey(e.key))
           e.value > 1 ? '${names[e.key]} ×${e.value}' : names[e.key]!,
     ];
-    return parts.isEmpty ? 'Ninguém' : parts.join(', ');
+    return parts.isEmpty ? tr.splitAssignNobody : parts.join(', ');
   }
 
   static String _balanceText(int balance, {required bool provisional}) {
-    final tag = provisional ? ' (provisório)' : '';
-    if (balance > 0) return 'falta pagar ${formatCents(balance)}$tag';
-    if (balance < 0) return 'pagou ${formatCents(-balance)} a mais$tag';
-    return 'em dia$tag';
+    final tag = provisional.toString();
+    if (balance > 0) return tr.splitBalanceMissing(formatCents(balance), tag);
+    if (balance < 0) return tr.splitBalanceOver(formatCents(-balance), tag);
+    return tr.splitBalanceEven(tag);
   }
 }
 
@@ -576,7 +565,12 @@ class _CustomFieldState extends State<_CustomField> {
     return TextField(
       controller: _c,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      decoration: InputDecoration(labelText: widget.label, prefixText: r'R$ '),
+      decoration: InputDecoration(
+        labelText: widget.label,
+        prefixText: r'R$ ',
+        errorText: numberInputError(_c.text),
+        errorMaxLines: 3,
+      ),
       onChanged: (v) => widget.onChanged(v.trim().isEmpty ? null : parseCents(v)),
     );
   }
@@ -614,11 +608,7 @@ class _AssignDialogState extends State<_AssignDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Quem participa e com que peso. Quem não participa não recebe '
-              'parcela deste item.',
-              style: AppText.caption,
-            ),
+            Text(tr.splitAssignIntro, style: AppText.caption),
             for (final p in widget.participants)
               Row(children: [
                 Checkbox(
@@ -632,14 +622,14 @@ class _AssignDialogState extends State<_AssignDialog> {
                     }
                   }),
                 ),
-                Expanded(child: Text(p.name)),
+                Expanded(child: Text(p.displayName)),
                 if (_w.containsKey(p.id))
                   DropdownButton<int>(
                     value: _w[p.id],
                     underline: const SizedBox.shrink(),
                     items: [
                       for (var i = 1; i <= 9; i++)
-                        DropdownMenuItem(value: i, child: Text('peso $i')),
+                        DropdownMenuItem(value: i, child: Text(tr.splitWeight(i))),
                     ],
                     onChanged: (v) => setState(() => _w[p.id] = v ?? 1),
                   ),
@@ -650,14 +640,14 @@ class _AssignDialogState extends State<_AssignDialog> {
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar')),
+            child: Text(tr.commonCancel)),
         TextButton(
           onPressed: () {
             final all = _w.length == widget.participants.length &&
                 _w.values.every((v) => v == 1);
             Navigator.pop(context, (assign: all ? null : Map<String, int>.of(_w)));
           },
-          child: const Text('Salvar'),
+          child: Text(tr.commonSave),
         ),
       ],
     );

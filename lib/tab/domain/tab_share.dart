@@ -1,7 +1,10 @@
+import 'package:intl/intl.dart';
+
 import '../../core/utils/formatters.dart';
 import '../../outings/domain/outing.dart';
 import 'tab_calc.dart';
 import 'tab_models.dart';
+import '../../l10n/l10n.dart';
 
 /// Plain-text summary of the split, for the share sheet or the clipboard.
 /// It never carries the address, photos, personal notes or any drinking
@@ -22,74 +25,74 @@ class TabShareText {
     bool includePayments = false,
   }) {
     final b = StringBuffer()
-      ..writeln('Comanda · ${_title(outing)}')
+      ..writeln(tr.tabShareHeader(_title(outing)))
       ..writeln();
 
     if (result.groups.isEmpty) {
-      b.writeln('Sem itens na comanda.');
+      b.writeln(tr.tabShareNoItems);
     } else {
-      b.writeln('Itens');
+      b.writeln(tr.tabShareItems);
       for (final g in result.groups) {
         final l = g.first;
         if (g.count > 1 && g.isPriced) {
-          b.writeln('• ${l.title} · ${g.count} × ${formatCents(g.unitCents!)}'
-              ' = ${formatCents(g.sumCents!)}');
+          b.writeln(tr.tabShareLineGroup(l.title, g.count,
+              formatCents(g.unitCents!), formatCents(g.sumCents!)));
         } else if (l.quantity > 1 && l.totalCents != null) {
-          b.writeln('• ${l.title} · ${l.quantity}× = '
-              '${formatCents(l.totalCents!)}');
+          b.writeln(tr.tabShareLineQty(
+              l.title, l.quantity, formatCents(l.totalCents!)));
         } else if (g.count > 1) {
-          b.writeln('• ${l.title} · ${g.count} × sem preço');
+          b.writeln(tr.tabShareLineGroupNoPrice(l.title, g.count));
         } else if (l.totalCents != null) {
-          b.writeln('• ${l.title} · ${formatCents(l.totalCents!)}');
+          b.writeln(tr.tabShareLine(l.title, formatCents(l.totalCents!)));
         } else {
-          b.writeln('• ${l.title} · sem preço');
+          b.writeln(tr.tabShareLineNoPrice(l.title));
         }
       }
     }
 
     b.writeln();
     b.writeln(result.isPartial
-        ? 'Subtotal conhecido: ${formatCents(result.subtotal)}'
-        : 'Subtotal: ${formatCents(result.subtotal)}');
+        ? tr.tabShareSubtotalKnown(formatCents(result.subtotal))
+        : tr.tabShareSubtotal(formatCents(result.subtotal)));
     if (result.discount > 0) {
-      b.writeln('Desconto: -${formatCents(result.discount)}');
+      b.writeln(tr.tabShareDiscount(formatCents(result.discount)));
     }
     if (doc.serviceOn) {
-      b.writeln('Serviço (${_pct(doc.serviceBp)} sobre '
-          '${formatCents(result.serviceBase)}): ${formatCents(result.service)}');
+      b.writeln(tr.tabShareService(_pct(doc.serviceBp),
+          formatCents(result.serviceBase), formatCents(result.service)));
     }
     b.writeln(result.isPartial
-        ? 'Total conhecido: ${formatCents(result.total)}'
-        : 'Total: ${formatCents(result.total)}');
+        ? tr.tabShareTotalKnown(formatCents(result.total))
+        : tr.tabShareTotal(formatCents(result.total)));
     if (result.isPartial) {
-      b.writeln('Conta parcial: ${result.pendingCount} '
-          '${result.pendingCount == 1 ? 'item sem preço' : 'itens sem preço'}.');
+      b.writeln(tr.tabSharePartial(result.pendingCount));
     }
 
     if (doc.participants.isNotEmpty) {
       b
         ..writeln()
-        ..writeln('Divisão (${doc.mode.label.toLowerCase()})');
+        ..writeln(tr.tabShareSplitHeader(doc.mode.label.toLowerCase()));
       for (final p in doc.participants) {
-        var line = '• ${p.name}: ${formatCents(result.shareOf(p.id))}';
+        var line =
+            tr.tabShareSplitLine(p.displayName, formatCents(result.shareOf(p.id)));
         if (includePayments) {
-          line += ' · pagou ${formatCents(result.paidBy(p.id))}';
+          line += tr.tabSharePaid(formatCents(result.paidBy(p.id)));
           final bal = result.balanceOf(p.id);
           if (bal > 0) {
-            line += ' · falta ${formatCents(bal)}';
+            line += tr.tabShareMissing(formatCents(bal));
           } else if (bal < 0) {
-            line += ' · a mais ${formatCents(-bal)}';
+            line += tr.tabShareOver(formatCents(-bal));
           }
         }
         b.writeln(line);
       }
       if (result.unassigned != 0) {
         b.writeln(result.unassigned > 0
-            ? 'Ainda sem dividir: ${formatCents(result.unassigned)}'
-            : 'Acima do total: ${formatCents(-result.unassigned)}');
+            ? tr.tabShareUnassigned(formatCents(result.unassigned))
+            : tr.tabShareOverTotal(formatCents(-result.unassigned)));
       }
       if (result.isPartial || result.unassigned != 0) {
-        b.writeln('Divisão parcial: os valores podem mudar.');
+        b.writeln(tr.tabShareSplitPartial);
       }
     }
     return b.toString().trimRight();
@@ -98,14 +101,10 @@ class TabShareText {
   static String _pct(int bp) => formatBp(bp);
 }
 
-/// Basis points as a percentage: 1000 -> "10%", 1250 -> "12,5%".
-String formatBp(int bp) {
-  final v = bp / 100;
-  final text = v == v.roundToDouble()
-      ? v.toStringAsFixed(0)
-      : v.toStringAsFixed(2).replaceAll('.', ',').replaceFirst(RegExp(r'0$'), '');
-  return '$text%';
-}
+/// Basis points as a percentage in the language on screen:
+/// 1000 -> "10%", 1250 -> "12,5%" (pt, es) or "12.5%" (en).
+String formatBp(int bp) =>
+    '${NumberFormat('#,##0.##', trLocaleTag).format(bp / 100)}%';
 
 /// Percentage typed by the user ("10", "12,5") to basis points; null if invalid.
 int? parseBp(String input) {

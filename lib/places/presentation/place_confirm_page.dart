@@ -9,6 +9,7 @@ import '../domain/geo_point.dart';
 import '../domain/place.dart';
 import '../domain/place_draft.dart';
 import 'place_map.dart';
+import '../../l10n/l10n.dart';
 
 /// Shows the chosen result (or the device point) on the map so the person
 /// can check it, adjust the point, give a nickname and decide whether to
@@ -96,7 +97,7 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
       setState(() {
         _reverseLoading = false;
         if (r == null || r.address == null) {
-          _reverseMessage = 'Nenhum endereço encontrado para este ponto.';
+          _reverseMessage = tr.confirmNoAddressFound;
         } else {
           // Only the address: a name nearby may be another establishment.
           _address = r.name != null ? r.address : (r.address ?? r.line1);
@@ -109,8 +110,8 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
       setState(() {
         _reverseLoading = false;
         _reverseMessage = e.error == GeoSearchError.offline
-            ? 'Sem internet. O ponto continua marcado.'
-            : 'Não foi possível buscar o endereço agora.';
+            ? tr.confirmOfflinePointKept
+            : tr.confirmLookUpFailed;
       });
     }
   }
@@ -122,7 +123,7 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
         (_name?.isNotEmpty ?? false) ||
         (_address?.isNotEmpty ?? false);
     if (saving && !hasName) {
-      setState(() => _error = 'Dê um apelido para salvar este ponto.');
+      setState(() => _error = tr.confirmNeedNickname);
       return;
     }
     Navigator.of(context).pop(PlaceDraft(
@@ -149,14 +150,14 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
         providerName: _name,
         address: _address,
         point: point,
-        fallback: 'Local');
+        fallback: tr.placeFallbackName);
     final canReverse = point != null &&
         getIt<GeoSearch>().configured &&
         _name == null &&
         (_address == null || _adjusted);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Conferir local')),
+      appBar: AppBar(title: Text(tr.confirmTitle)),
       body: Column(
         children: [
           Expanded(
@@ -178,15 +179,12 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                     ),
                   ),
                   const SizedBox(height: AppSpace.sm),
-                  const Text(
-                    'Toque no mapa para ajustar o ponto, se precisar.',
-                    style: AppText.caption,
-                  ),
+                  Text(tr.confirmTapMap, style: AppText.caption),
                 ] else if (point != null && _tilesFailed)
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: AppSpace.sm),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpace.sm),
                     child: InfoPill(
-                      'O mapa não carregou. Você pode confirmar pelos dados abaixo.',
+                      tr.confirmMapFailed,
                       icon: Icons.map_outlined,
                       warning: true,
                     ),
@@ -204,9 +202,9 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                           child: Text(_address!, style: AppText.body),
                         ),
                       if (_name == null && _address == null && point != null)
-                        const Padding(
-                          padding: EdgeInsets.only(top: AppSpace.xs),
-                          child: Text('Sem endereço confirmado para este ponto.',
+                        Padding(
+                          padding: const EdgeInsets.only(top: AppSpace.xs),
+                          child: Text(tr.confirmNoAddress,
                               style: AppText.caption),
                         ),
                       if (_adjusted)
@@ -214,9 +212,8 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                           padding: const EdgeInsets.only(top: AppSpace.sm),
                           child: InfoPill(
                             _previousName != null
-                                ? 'Ponto ajustado: "$_previousName" e o endereço '
-                                    'dele não valem mais para este ponto.'
-                                : 'Ponto ajustado por você.',
+                                ? tr.confirmAdjustedWas(_previousName!)
+                                : tr.confirmAdjusted,
                             icon: Icons.edit_location_alt_outlined,
                           ),
                         ),
@@ -230,7 +227,7 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                                   height: 16,
                                   child: CircularProgressIndicator(strokeWidth: 2))
                               : const Icon(Icons.travel_explore_rounded),
-                          label: const Text('Buscar endereço deste ponto'),
+                          label: Text(tr.confirmLookUp),
                         ),
                       ],
                       if (_reverseMessage != null)
@@ -245,20 +242,21 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                 if (_match != null) ...[
                   const SizedBox(height: AppSpace.md),
                   InfoPill(
-                    'Você já salvou este lugar como "${_match!.displayName}". '
-                    'Ele será reaproveitado${_match!.nickname != null ? ' e o apelido continua' : ''}.',
+                    _match!.nickname != null
+                        ? tr.confirmAlreadySavedNick(_match!.displayName)
+                        : tr.confirmAlreadySaved(_match!.displayName),
                     icon: Icons.bookmark_rounded,
                   ),
                 ],
-                const SectionTitle('Apelido (opcional)'),
+                SectionTitle(tr.confirmNicknameSection),
                 TextField(
                   controller: _nickname,
                   textCapitalization: TextCapitalization.words,
                   textInputAction: TextInputAction.done,
                   onChanged: (_) => setState(() => _error = null),
                   decoration: InputDecoration(
-                    hintText: 'Ex.: Casa da Samara',
-                    helperText: 'Aparece no lugar do nome. O endereço fica nos detalhes.',
+                    hintText: tr.pickerManualHint,
+                    helperText: tr.confirmNicknameHelper,
                     errorText: _error,
                   ),
                 ),
@@ -270,7 +268,7 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                     child: ActionChip(
                       avatar: const Icon(Icons.label_outline_rounded,
                           size: 18, color: AppColors.amber),
-                      label: Text('Usar "$_previousName" como apelido'),
+                      label: Text(tr.confirmUseAsNickname(_previousName!)),
                       onPressed: () => setState(() {
                         _nickname.text = _previousName!;
                         _error = null;
@@ -281,9 +279,8 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                 if (widget.allowSave && _match == null)
                   SwitchListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: const Text('Salvar nos meus locais'),
-                    subtitle: const Text(
-                        'Para escolher de novo nos próximos rolês. Fica privado.'),
+                    title: Text(tr.placeSaveToMine),
+                    subtitle: Text(tr.placeSaveToMineHint),
                     value: _save,
                     activeThumbColor: AppColors.amber,
                     onChanged: (v) => setState(() {
@@ -302,7 +299,7 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
             child: FilledButton.icon(
               onPressed: _use,
               icon: const Icon(Icons.check_rounded),
-              label: const Text('Usar este local'),
+              label: Text(tr.pickerUseThisPlace),
             ),
           ),
         ],

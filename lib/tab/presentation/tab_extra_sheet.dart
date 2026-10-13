@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
+import '../../core/widgets/money_field.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../domain/tab_models.dart';
+import '../../l10n/l10n.dart';
 
 /// Add or edit an extra line of the tab. Returns the extra, or null when
 /// cancelled. Nothing here touches drink records or the catalog.
@@ -85,14 +87,15 @@ class _ExtraFormState extends State<_ExtraForm> {
   void _save() {
     final description = _description.text.trim();
     if (description.isEmpty && _category != ExtraCategory.transport) {
-      setState(() => _error = 'Dê um nome ao item.');
+      setState(() => _error = tr.scanMenuNeedName);
       return;
     }
     int? cents;
     if (_kind == PriceKind.informed) {
       cents = parseCents(_price.text);
       if (cents == null) {
-        setState(() => _error = 'Informe o valor, ou escolha Cortesia / Não sei.');
+        setState(() => _error =
+            numberInputError(_price.text) ?? tr.tabExtraNeedValue);
         return;
       }
     }
@@ -135,14 +138,10 @@ class _ExtraFormState extends State<_ExtraForm> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.existing == null ? 'Novo item da comanda' : 'Editar item',
+              Text(widget.existing == null ? tr.tabExtraNew : tr.scanMenuEditItem,
                   style: AppText.title),
               const SizedBox(height: AppSpace.xs),
-              const Text(
-                'Só na comanda deste rolê. Não vira consumo nem entra no '
-                'catálogo.',
-                style: AppText.caption,
-              ),
+              Text(tr.tabExtraNote, style: AppText.caption),
               const SizedBox(height: AppSpace.md),
               Wrap(
                 spacing: AppSpace.sm,
@@ -166,10 +165,10 @@ class _ExtraFormState extends State<_ExtraForm> {
                 controller: _description,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                  labelText: 'Descrição',
+                  labelText: tr.tabExtraDescription,
                   hintText: _category == ExtraCategory.transport
-                      ? 'Ex.: Uber de volta (opcional)'
-                      : 'Ex.: Porção de fritas',
+                      ? tr.tabExtraHintTransport
+                      : tr.tabExtraHint,
                 ),
               ),
               const SizedBox(height: AppSpace.md),
@@ -180,18 +179,23 @@ class _ExtraFormState extends State<_ExtraForm> {
                     controller: _quantity,
                     keyboardType: TextInputType.number,
                     onChanged: (_) => setState(() {}),
-                    decoration: const InputDecoration(labelText: 'Quantidade'),
+                    decoration: InputDecoration(labelText: tr.entryAmount),
                   ),
                 ),
                 const SizedBox(width: AppSpace.md),
                 Expanded(
                   child: SegmentedButton<PriceKind>(
                     showSelectedIcon: false,
-                    segments: const [
-                      ButtonSegment(value: PriceKind.informed, label: Text('Valor')),
+                    segments: [
                       ButtonSegment(
-                          value: PriceKind.complimentary, label: Text('Cortesia')),
-                      ButtonSegment(value: PriceKind.unknown, label: Text('Não sei')),
+                          value: PriceKind.informed,
+                          label: Text(tr.entryPriceValue)),
+                      ButtonSegment(
+                          value: PriceKind.complimentary,
+                          label: Text(tr.priceComplimentary)),
+                      ButtonSegment(
+                          value: PriceKind.unknown,
+                          label: Text(tr.entryPriceDontKnow)),
                     ],
                     selected: {_kind},
                     onSelectionChanged: (s) => setState(() => _kind = s.first),
@@ -204,43 +208,40 @@ class _ExtraFormState extends State<_ExtraForm> {
                   SegmentedButton<PriceBasis>(
                     showSelectedIcon: false,
                     segments: [
-                      const ButtonSegment(
-                          value: PriceBasis.unit, label: Text('Preço de cada um')),
                       ButtonSegment(
-                          value: PriceBasis.total, label: Text('Total dos $qty')),
+                          value: PriceBasis.unit,
+                          label: Text(tr.tabBasisUnit)),
+                      ButtonSegment(
+                          value: PriceBasis.total,
+                          label: Text(tr.tabBasisTotal(qty))),
                     ],
                     selected: {_basis},
                     onSelectionChanged: (s) => setState(() => _basis = s.first),
                   ),
                 if (qty > 1) const SizedBox(height: AppSpace.sm),
-                TextField(
+                MoneyField(
                   controller: _price,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
                   onChanged: (_) => setState(() {}),
-                  decoration: InputDecoration(
-                    labelText: qty > 1 && _basis == PriceBasis.unit
-                        ? 'Valor de cada unidade'
-                        : (qty > 1 ? 'Valor total dos $qty' : 'Valor'),
-                    prefixText: r'R$ ',
-                    helperText: _helper(qty),
-                  ),
+                  label: qty > 1 && _basis == PriceBasis.unit
+                      ? tr.tabValueEach
+                      : (qty > 1 ? tr.tabValueTotalQty(qty) : tr.entryPriceValue),
+                  helper: _helper(qty),
                 ),
               ] else
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpace.sm),
                   child: Text(
                     _kind == PriceKind.complimentary
-                        ? 'Cortesia conta como R\$ 0,00 informado.'
-                        : 'Sem preço: a conta fica parcial até você preencher.',
+                        ? tr.entryComplimentaryNote(formatCents(0))
+                        : tr.tabExtraNoPrice,
                     style: AppText.caption,
                   ),
                 ),
               const SizedBox(height: AppSpace.sm),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Cobrar serviço neste item'),
-                subtitle: const Text('Só vale se o serviço estiver ligado.'),
+                title: Text(tr.tabExtraServiceItem),
+                subtitle: Text(tr.tabExtraServiceHint),
                 value: _service,
                 onChanged: (v) => setState(() {
                   _service = v;
@@ -250,12 +251,11 @@ class _ExtraFormState extends State<_ExtraForm> {
               if (widget.participants.isNotEmpty)
                 ExpansionTile(
                   tilePadding: EdgeInsets.zero,
-                  title: const Text('Quem divide este item',
-                      style: AppText.subtitle),
+                  title: Text(tr.tabExtraWho, style: AppText.subtitle),
                   subtitle: Text(
                     _who.length == widget.participants.length
-                        ? 'Todos'
-                        : '${_who.length} de ${widget.participants.length}',
+                        ? tr.tabExtraAll
+                        : tr.tabExtraSome(_who.length, widget.participants.length),
                     style: AppText.caption,
                   ),
                   children: [
@@ -264,7 +264,7 @@ class _ExtraFormState extends State<_ExtraForm> {
                         dense: true,
                         contentPadding: EdgeInsets.zero,
                         activeColor: AppColors.amber,
-                        title: Text(p.name),
+                        title: Text(p.displayName),
                         value: _who.contains(p.id),
                         onChanged: (v) => setState(() {
                           if (v == true) {
@@ -274,10 +274,7 @@ class _ExtraFormState extends State<_ExtraForm> {
                           }
                         }),
                       ),
-                    const Text(
-                      'Vale no modo "Por item" da divisão.',
-                      style: AppText.caption,
-                    ),
+                    Text(tr.tabExtraWhoNote, style: AppText.caption),
                   ],
                 ),
               if (_error != null)
@@ -290,7 +287,7 @@ class _ExtraFormState extends State<_ExtraForm> {
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                    onPressed: _save, child: const Text('Salvar item')),
+                    onPressed: _save, child: Text(tr.tabExtraSave)),
               ),
             ],
           ),
@@ -303,7 +300,8 @@ class _ExtraFormState extends State<_ExtraForm> {
     final cents = parseCents(_price.text);
     if (cents == null || qty <= 1) return null;
     return _basis == PriceBasis.unit
-        ? '$qty × ${formatCents(cents)} = ${formatCents(cents * qty)}'
-        : 'Total da linha: ${formatCents(cents)}';
+        ? tr.tabExtraHelperUnit(
+            qty, formatCents(cents), formatCents(cents * qty))
+        : tr.tabExtraHelperLine(formatCents(cents));
   }
 }

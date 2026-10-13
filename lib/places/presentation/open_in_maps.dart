@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../domain/geo_point.dart';
+import '../../l10n/l10n.dart';
 
 /// Opens the place in a maps app, only after a tap. Coordinates when known,
 /// otherwise a text search for the ADDRESS (a nickname is never sent as a
@@ -37,7 +38,7 @@ Future<bool> openInMaps({
         : Uri.https('www.openstreetmap.org', '/search', {'query': query}));
   } else if (defaultTargetPlatform == TargetPlatform.iOS) {
     candidates.add(point != null
-        ? Uri.https('maps.apple.com', '/', {'ll': '$lat,$lng', 'q': name ?? 'Local'})
+        ? Uri.https('maps.apple.com', '/', {'ll': '$lat,$lng', 'q': name ?? tr.placeFallbackName})
         : Uri.https('maps.apple.com', '/', {'q': query}));
   } else if (defaultTargetPlatform == TargetPlatform.android) {
     // geo: lets the person pick any installed maps app.

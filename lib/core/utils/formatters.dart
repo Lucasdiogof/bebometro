@@ -18,6 +18,11 @@ String formatNumber(num value) =>
 
 String formatMl(int ml) => tr.unitMl(formatNumber(ml));
 
+/// "250 m", "1.5 km" (decimal mark of the language on screen).
+String formatDistance(int meters) => meters < 1000
+    ? tr.distanceMeters(formatNumber(meters))
+    : tr.distanceKm(NumberFormat('#,##0.0', trLocaleTag).format(meters / 1000));
+
 String formatGrams(double grams) =>
     tr.unitGrams(NumberFormat('#,##0.#', trLocaleTag).format(grams));
 

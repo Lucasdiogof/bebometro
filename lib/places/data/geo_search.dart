@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../../core/config/env.dart';
 import '../domain/geo_point.dart';
+import '../../l10n/l10n.dart';
 
 /// Why a search gave no answer.
 enum GeoSearchError {
@@ -62,7 +63,7 @@ class GeoResult {
   final String? placeId;
   final int? distanceMeters;
 
-  String get title => name ?? line1 ?? address ?? 'Ponto no mapa';
+  String get title => name ?? line1 ?? address ?? tr.placePointOnMap;
 
   /// Second line that tells homonyms apart (street, district, city).
   String? get subtitle => name != null ? (address ?? line2) : line2;

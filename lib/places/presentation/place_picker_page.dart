@@ -15,6 +15,7 @@ import '../domain/geo_point.dart';
 import '../domain/place.dart';
 import '../domain/place_draft.dart';
 import 'place_confirm_page.dart';
+import '../../l10n/l10n.dart';
 
 enum PlacePickerMode {
   /// Choosing the place of a new outing.
@@ -190,16 +191,15 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
         final go = await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: const Text('Lugar já salvo'),
-            content: Text('Este lugar já está nos seus locais como '
-                '"${match!.displayName}". Usar aqui também?'),
+            title: Text(tr.pickerAlreadySavedTitle),
+            content: Text(tr.pickerAlreadySavedBody(match!.displayName)),
             actions: [
               TextButton(
                   onPressed: () => Navigator.pop(ctx, false),
-                  child: const Text('Cancelar')),
+                  child: Text(tr.commonCancel)),
               FilledButton(
                   onPressed: () => Navigator.pop(ctx, true),
-                  child: const Text('Usar mesmo assim')),
+                  child: Text(tr.pickerUseAnyway)),
             ],
           ),
         );
@@ -264,9 +264,9 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(switch (widget.mode) {
-          PlacePickerMode.start => 'Onde é o rolê?',
-          PlacePickerMode.change => 'Corrigir local',
-          PlacePickerMode.locate => 'Localização do local',
+          PlacePickerMode.start => tr.pickerStartTitle,
+          PlacePickerMode.change => tr.pickerChangeTitle,
+          PlacePickerMode.locate => tr.pickerLocateTitle,
         }),
       ),
       body: SafeArea(
@@ -290,11 +290,11 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
                   }
                 },
                 decoration: InputDecoration(
-                  hintText: 'Buscar bar, restaurante ou endereço',
+                  hintText: tr.pickerSearchHint,
                   prefixIcon: const Icon(Icons.search_rounded),
                   suffixIcon: typing
                       ? IconButton(
-                          tooltip: 'Limpar busca',
+                          tooltip: tr.pickerClearSearch,
                           icon: const Icon(Icons.close_rounded),
                           onPressed: () {
                             _query.clear();
@@ -325,10 +325,10 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
     return [
       _ActionTile(
         icon: Icons.my_location_rounded,
-        title: 'Usar minha localização',
+        title: tr.pickerUseLocation,
         subtitle: _approximate && _near != null
-            ? 'Localização aproximada: confira o lugar na lista ou no mapa.'
-            : 'Mostra lugares por perto. Você sempre confirma onde está.',
+            ? tr.pickerApproximate
+            : tr.pickerLocationHint,
         busy: _locating,
         onTap: _useLocation,
       ),
@@ -336,22 +336,20 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
       if (!_locate)
         _ActionTile(
           icon: Icons.edit_note_rounded,
-          title: 'Informar apenas um apelido',
-          subtitle: 'Sem mapa nem endereço. Ex.: Casa da Samara',
+          title: tr.pickerNicknameOnly,
+          subtitle: tr.pickerNicknameOnlyExample,
           onTap: _nicknameOnly,
         ),
       if (_near != null) ..._nearbySection(),
       if (saved.isNotEmpty) ...[
-        const SectionTitle('Seus locais'),
+        SectionTitle(tr.pickerYourPlaces),
         for (final p in saved) _SavedTile(place: p, onTap: () => _chooseSaved(p)),
       ],
       if (!_search.configured) ...[
         const SizedBox(height: AppSpace.lg),
-        const _Notice(
+        _Notice(
           icon: Icons.search_off_rounded,
-          text: 'A busca de lugares e o mapa não estão configurados nesta '
-              'versão. Apelido, endereço digitado e locais salvos funcionam '
-              'normalmente.',
+          text: tr.pickerNotConfiguredFull,
         ),
       ],
     ];
@@ -370,7 +368,7 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
   List<Widget> _nearbySection() {
     final list = _nearby;
     return [
-      const SectionTitle('Perto de você'),
+      SectionTitle(tr.pickerNearYou),
       if (_nearbyLoading)
         const Padding(
           padding: EdgeInsets.symmetric(vertical: AppSpace.md),
@@ -382,18 +380,17 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
           text: _errorText(_nearbyError!),
         )
       else if (list != null && list.isEmpty)
-        const _Notice(
+        _Notice(
           icon: Icons.location_searching_rounded,
-          text: 'Nenhum bar ou restaurante encontrado bem perto. Você pode '
-              'buscar pelo nome ou marcar só o ponto.',
+          text: tr.pickerNothingNearby,
         )
       else if (list != null)
         for (final r in list.take(10))
           _ResultTile(result: r, onTap: () => _chooseResult(r)),
       _ActionTile(
         icon: Icons.push_pin_outlined,
-        title: 'Marcar só este ponto no mapa',
-        subtitle: 'Você pode dar um apelido em seguida.',
+        title: tr.pickerPinOnly,
+        subtitle: tr.pickerPinOnlyHint,
         onTap: () => _confirmPoint(_near!),
       ),
       if (list != null && list.isNotEmpty) const MapAttribution(compact: true),
@@ -405,22 +402,21 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
     final children = <Widget>[];
     if (saved.isNotEmpty) {
       children
-        ..add(const SectionTitle('Seus locais'))
+        ..add(SectionTitle(tr.pickerYourPlaces))
         ..addAll([
           for (final p in saved)
             _SavedTile(place: p, onTap: () => _chooseSaved(p)),
         ]);
     }
     if (!_search.configured) {
-      children.add(const _Notice(
+      children.add(_Notice(
         icon: Icons.search_off_rounded,
-        text: 'A busca de lugares não está configurada nesta versão.',
+        text: tr.pickerNotConfigured,
       ));
     } else if (q.length < GeoSearch.minChars) {
-      children.add(const Padding(
-        padding: EdgeInsets.symmetric(vertical: AppSpace.md),
-        child: Text('Digite pelo menos 3 letras para buscar.',
-            style: AppText.caption),
+      children.add(Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpace.md),
+        child: Text(tr.pickerMinChars, style: AppText.caption),
       ));
     } else if (_error != null) {
       children.add(_Notice(
@@ -428,18 +424,17 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
             ? Icons.wifi_off_rounded
             : Icons.cloud_off_rounded,
         text: _errorText(_error!),
-        action: 'Tentar de novo',
+        action: tr.commonRetry,
         onAction: () => _run(q, force: true),
       ));
     } else if (!_loading && _lastSent == q && _results.isEmpty) {
-      children.add(const _Notice(
+      children.add(_Notice(
         icon: Icons.search_off_rounded,
-        text: 'Nada encontrado. Tente o nome com o bairro ou a cidade, ou '
-            'informe só um apelido.',
+        text: tr.pickerNothingFound,
       ));
     } else if (_results.isNotEmpty) {
       children
-        ..add(const SectionTitle('Resultados'))
+        ..add(SectionTitle(tr.pickerResults))
         ..addAll([
           for (final r in _results)
             _ResultTile(
@@ -455,8 +450,8 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
     if (!_locate) {
       children.add(_ActionTile(
         icon: Icons.edit_note_rounded,
-        title: 'Informar apenas um apelido',
-        subtitle: 'Sem mapa nem endereço.',
+        title: tr.pickerNicknameOnly,
+        subtitle: tr.pickerNicknameOnlyShort,
         onTap: _nicknameOnly,
       ));
     }
@@ -464,14 +459,9 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
   }
 
   String _errorText(GeoSearchError e) => switch (e) {
-        GeoSearchError.offline =>
-          'Sem internet agora. Você ainda pode usar um local salvo ou '
-              'informar um apelido.',
-        GeoSearchError.unavailable =>
-          'A busca está indisponível no momento. Você ainda pode usar um '
-              'local salvo ou informar um apelido.',
-        GeoSearchError.notConfigured =>
-          'A busca de lugares não está configurada nesta versão.',
+        GeoSearchError.offline => tr.pickerErrorOffline,
+        GeoSearchError.unavailable => tr.pickerErrorUnavailable,
+        GeoSearchError.notConfigured => tr.pickerNotConfigured,
       };
 
   Widget _locationProblemCard(LocationProblem p) {
@@ -479,32 +469,29 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
     return switch (p) {
       LocationProblem.serviceOff => _Notice(
           icon: Icons.location_disabled_rounded,
-          text: 'A localização do aparelho está desligada.',
-          action: 'Abrir ajustes',
+          text: tr.pickerLocServiceOff,
+          action: tr.pickerOpenSettings,
           onAction: location.openLocationSettings,
         ),
-      LocationProblem.denied => const _Notice(
+      LocationProblem.denied => _Notice(
           icon: Icons.location_off_rounded,
-          text: 'Sem permissão de localização. Você pode buscar pelo nome ou '
-              'endereço normalmente.',
+          text: tr.pickerLocDenied,
         ),
       LocationProblem.deniedForever => _Notice(
           icon: Icons.location_off_rounded,
-          text: 'A localização foi negada para o Bebômetro. Se quiser usá-la, '
-              'libere nos ajustes do aparelho. A busca funciona sem ela.',
-          action: 'Abrir ajustes',
+          text: tr.pickerLocDeniedForever,
+          action: tr.pickerOpenSettings,
           onAction: location.openAppSettings,
         ),
       LocationProblem.timeout => _Notice(
           icon: Icons.timer_off_outlined,
-          text: 'Não foi possível obter a localização a tempo.',
-          action: 'Tentar de novo',
+          text: tr.pickerLocTimeout,
+          action: tr.commonRetry,
           onAction: _useLocation,
         ),
-      LocationProblem.unavailable => const _Notice(
+      LocationProblem.unavailable => _Notice(
           icon: Icons.location_off_rounded,
-          text: 'A localização não está disponível aqui. Busque pelo nome ou '
-              'endereço.',
+          text: tr.pickerLocUnavailable,
         ),
     };
   }
@@ -639,8 +626,8 @@ class _ResultTile extends StatelessWidget {
                     padding: const EdgeInsets.only(top: AppSpace.xs),
                     child: Text(
                       [
-                        if (d != null) d < 1000 ? '$d m' : '${(d / 1000).toStringAsFixed(1)} km',
-                        if (savedAs != null) 'Salvo como "$savedAs"',
+                        if (d != null) formatDistance(d),
+                        if (savedAs != null) tr.pickerSavedAs(savedAs!),
                       ].join(' · '),
                       style: AppText.caption.copyWith(color: AppColors.amber),
                     ),
@@ -736,10 +723,10 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
     final uf = clean(_state)?.toUpperCase();
     setState(() {
       _error = nick == null && addr == null
-          ? 'Informe um apelido (ex.: Casa da Samara) ou um endereço'
+          ? tr.pickerNeedNicknameOrAddress
           : null;
       _stateError = uf != null && !RegExp(r'^[A-Z]{2}$').hasMatch(uf)
-          ? 'A UF tem 2 letras'
+          ? tr.pickerStateTwoLetters
           : null;
     });
     if (_error != null || _stateError != null) return;
@@ -755,7 +742,7 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Apelido do local')),
+      appBar: AppBar(title: Text(tr.startNicknameLabel)),
       body: Column(
         children: [
           Expanded(
@@ -771,9 +758,9 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
                   textInputAction: TextInputAction.done,
                   onSubmitted: (_) => _done(),
                   decoration: InputDecoration(
-                    labelText: 'Apelido',
-                    hintText: 'Ex.: Casa da Samara',
-                    helperText: 'O apelido sozinho já basta.',
+                    labelText: tr.pickerManualNickname,
+                    hintText: tr.pickerManualHint,
+                    helperText: tr.pickerManualHelper,
                     errorText: _error,
                   ),
                 ),
@@ -783,7 +770,7 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
                     child: TextButton.icon(
                       onPressed: () => setState(() => _showAddress = true),
                       icon: const Icon(Icons.add_rounded),
-                      label: const Text('Adicionar endereço (opcional)'),
+                      label: Text(tr.pickerAddAddress),
                     ),
                   )
                 else ...[
@@ -791,9 +778,9 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
                   TextField(
                     controller: _address,
                     textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
-                      labelText: 'Endereço (opcional)',
-                      hintText: 'Rua, número, bairro',
+                    decoration: InputDecoration(
+                      labelText: tr.startAddressLabel,
+                      hintText: tr.startAddressHint,
                     ),
                   ),
                   const SizedBox(height: AppSpace.md),
@@ -806,7 +793,7 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
                           controller: _city,
                           textCapitalization: TextCapitalization.words,
                           decoration:
-                              const InputDecoration(labelText: 'Cidade (opcional)'),
+                              InputDecoration(labelText: tr.startCityLabel),
                         ),
                       ),
                       const SizedBox(width: AppSpace.sm),
@@ -816,7 +803,7 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
                           textCapitalization: TextCapitalization.characters,
                           maxLength: 2,
                           decoration: InputDecoration(
-                            labelText: 'UF',
+                            labelText: tr.startStateLabel,
                             counterText: '',
                             errorText: _stateError,
                           ),
@@ -827,9 +814,8 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
                 ],
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('Salvar nos meus locais'),
-                  subtitle: const Text(
-                      'Para escolher de novo nos próximos rolês. Fica privado.'),
+                  title: Text(tr.placeSaveToMine),
+                  subtitle: Text(tr.placeSaveToMineHint),
                   value: _save,
                   activeThumbColor: AppColors.amber,
                   onChanged: (v) => setState(() => _save = v),
@@ -840,7 +826,7 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
           BottomActionBar(
             child: FilledButton(
               onPressed: _done,
-              child: const Text('Usar este local'),
+              child: Text(tr.pickerUseThisPlace),
             ),
           ),
         ],

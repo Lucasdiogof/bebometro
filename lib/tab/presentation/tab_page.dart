@@ -19,6 +19,7 @@ import 'tab_cubit.dart';
 import 'tab_extra_sheet.dart';
 import 'tab_link_sheet.dart';
 import 'tab_share_page.dart';
+import '../../l10n/l10n.dart';
 
 /// "Comanda": what the table ordered, extras, service, discount and the way
 /// to split. Optional and separate from the drink records: adding something
@@ -72,10 +73,10 @@ class _TabView extends StatelessWidget {
         final ended = state.outing?.isActive == false;
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Comanda'),
+            title: Text(tr.tabTitle),
             actions: [
               IconButton(
-                tooltip: 'Compartilhar divisão',
+                tooltip: tr.tabShareSplitTooltip,
                 onPressed: state.doc.isEmpty
                     ? null
                     : () => Navigator.of(context).push(MaterialPageRoute(
@@ -97,16 +98,11 @@ class _TabView extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(
                     AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
                 children: [
-                  const Text(
-                    'Opcional. A comanda não registra consumo: o que você '
-                    'bebeu continua nos seus registros.',
-                    style: AppText.caption,
-                  ),
+                  Text(tr.tabIntro, style: AppText.caption),
                   if (ended) ...[
                     const SizedBox(height: AppSpace.sm),
-                    const InfoPill(
-                      'Rolê encerrado. A comanda segue editável; encerrar não '
-                      'marca a conta como paga.',
+                    InfoPill(
+                      tr.tabEnded,
                       icon: Icons.info_outline_rounded,
                     ),
                   ],
@@ -115,19 +111,18 @@ class _TabView extends StatelessWidget {
                   const SizedBox(height: AppSpace.md),
                   _ServiceDiscountCard(state: state),
                   SectionTitle(
-                    'Itens (${r.results.length})',
+                    tr.tabItemsTitle(r.results.length),
                     trailing: TextButton.icon(
                       onPressed: () => _addExtra(context, cubit),
                       icon: const Icon(Icons.add_rounded, size: 18),
-                      label: const Text('Adicionar'),
+                      label: Text(tr.commonAdd),
                     ),
                   ),
                   if (r.groups.isEmpty)
-                    const EmptyView(
+                    EmptyView(
                       icon: Icons.receipt_long_outlined,
-                      title: 'Comanda vazia',
-                      message: 'Adicione petiscos e outros gastos, ou inclua '
-                          'as bebidas que você já registrou.',
+                      title: tr.tabEmptyTitle,
+                      message: tr.tabEmptyBody,
                     )
                   else
                     for (final g in r.groups)
@@ -142,8 +137,8 @@ class _TabView extends StatelessWidget {
                         : () => _link(context, cubit),
                     icon: const Icon(Icons.local_bar_outlined),
                     label: Text(state.available.isEmpty
-                        ? 'Nenhuma bebida registrada para incluir'
-                        : 'Incluir bebidas registradas (${state.available.length})'),
+                        ? tr.tabNoDrinksToLink
+                        : tr.tabLinkDrinks(state.available.length)),
                   ),
                 ],
               ),
@@ -158,7 +153,7 @@ class _TabView extends StatelessWidget {
                   ));
                 },
                 icon: const Icon(Icons.call_split_rounded),
-                label: const Text('Dividir conta'),
+                label: Text(tr.tabSplitBill),
               ),
             ),
           ]),
@@ -209,25 +204,23 @@ class _TotalsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _Row(partial ? 'Subtotal conhecido' : 'Subtotal',
+          _Row(partial ? tr.tabSubtotalKnown : tr.tabSubtotal,
               formatCents(r.subtotal)),
-          if (r.discount > 0) _Row('Desconto', '− ${formatCents(r.discount)}'),
+          if (r.discount > 0) _Row(tr.tabDiscount, '− ${formatCents(r.discount)}'),
           if (d.serviceOn)
             _Row(
-              'Serviço ${formatBp(d.serviceBp)} sobre ${formatCents(r.serviceBase)}',
+              tr.tabServiceLine(
+                  formatBp(d.serviceBp), formatCents(r.serviceBase)),
               '+ ${formatCents(r.service)}',
             ),
           const Divider(height: 20),
-          _Row(partial ? 'Total conhecido' : 'Total da comanda',
+          _Row(partial ? tr.tabTotalKnown : tr.tabTotalTab,
               formatCents(r.total),
               strong: true),
           if (partial) ...[
             const SizedBox(height: AppSpace.sm),
             InfoPill(
-              r.pendingCount == 1
-                  ? '1 item sem preço: a conta e a divisão são parciais.'
-                  : '${r.pendingCount} itens sem preço: a conta e a divisão '
-                      'são parciais.',
+              tr.tabPartialPill(r.pendingCount),
               icon: Icons.warning_amber_rounded,
               warning: true,
             ),
@@ -236,18 +229,14 @@ class _TotalsCard extends StatelessWidget {
             const Divider(height: 20),
             _Row(
               partial || r.unassigned != 0
-                  ? 'Sua parte (provisória)'
-                  : 'Sua parte',
+                  ? tr.tabYourShareProvisional
+                  : tr.tabYourShare,
               formatCents(r.shareOf(me.id)),
               strong: true,
             ),
           ],
           const SizedBox(height: AppSpace.sm),
-          const Text(
-            'Ordem: subtotal → desconto → serviço sobre os itens com serviço, '
-            'já com desconto → total.',
-            style: AppText.caption,
-          ),
+          Text(tr.tabOrderNote, style: AppText.caption),
         ],
       ),
     );
@@ -308,22 +297,22 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
             AppSpace.lg, 0, AppSpace.lg, AppSpace.lg),
         shape: const Border(),
         collapsedShape: const Border(),
-        title: const Text('Serviço e desconto', style: AppText.subtitle),
+        title: Text(tr.tabServiceAndDiscount, style: AppText.subtitle),
         subtitle: Text(
           [
-            d.serviceOn ? 'serviço ${formatBp(d.serviceBp)}' : 'sem serviço',
+            d.serviceOn
+                ? tr.tabServiceSummary(formatBp(d.serviceBp))
+                : tr.tabNoService,
             if (d.discountKind != DiscountKind.none && r.discount > 0)
-              'desconto ${formatCents(r.discount)}',
+              tr.tabDiscountSummary(formatCents(r.discount)),
           ].join(' · '),
           style: AppText.caption,
         ),
         children: [
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
-            title: const Text('Cobrar serviço'),
-            subtitle: const Text(
-                'Só nos itens marcados com serviço. Transporte e entrada '
-                'começam sem.'),
+            title: Text(tr.tabChargeService),
+            subtitle: Text(tr.tabChargeServiceHint),
             value: d.serviceOn,
             onChanged: (v) => cubit.setService(on: v),
           ),
@@ -345,8 +334,11 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
                   controller: _pct,
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),
-                  decoration: const InputDecoration(
-                      labelText: 'Percentual', suffixText: '%'),
+                  decoration: InputDecoration(
+                      labelText: tr.tabPercent,
+                      suffixText: '%',
+                      errorText: numberInputError(_pct.text),
+                      errorMaxLines: 3),
                   onChanged: (v) {
                     final bp = parseBp(v);
                     if (bp != null) cubit.setService(on: true, bp: bp);
@@ -356,22 +348,26 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
               const SizedBox(width: AppSpace.md),
               Expanded(
                 child: Text(
-                  'Base ${formatCents(r.serviceBase)} → ${formatCents(r.service)}',
+                  tr.tabServiceBase(
+                      formatCents(r.serviceBase), formatCents(r.service)),
                   style: AppText.caption,
                 ),
               ),
             ]),
           const Divider(height: 24),
-          const Text('Desconto', style: AppText.subtitle),
+          Text(tr.tabDiscount, style: AppText.subtitle),
           const SizedBox(height: AppSpace.sm),
           SizedBox(
             width: double.infinity,
             child: SegmentedButton<DiscountKind>(
               showSelectedIcon: false,
-              segments: const [
-                ButtonSegment(value: DiscountKind.none, label: Text('Nenhum')),
-                ButtonSegment(value: DiscountKind.amount, label: Text('R\$')),
-                ButtonSegment(value: DiscountKind.percent, label: Text('%')),
+              segments: [
+                ButtonSegment(
+                    value: DiscountKind.none, label: Text(tr.tabDiscountNone)),
+                const ButtonSegment(
+                    value: DiscountKind.amount, label: Text(r'R$')),
+                const ButtonSegment(
+                    value: DiscountKind.percent, label: Text('%')),
               ],
               selected: {d.discountKind},
               onSelectionChanged: (s) {
@@ -388,13 +384,16 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
                   const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 labelText: d.discountKind == DiscountKind.amount
-                    ? 'Valor do desconto'
-                    : 'Percentual do desconto',
+                    ? tr.tabDiscountAmountLabel
+                    : tr.tabDiscountPercentLabel,
+                errorText: numberInputError(_discount.text),
+                errorMaxLines: 3,
                 prefixText: d.discountKind == DiscountKind.amount ? r'R$ ' : null,
                 suffixText: d.discountKind == DiscountKind.percent ? '%' : null,
                 helperText: capped
-                    ? 'Limitado ao subtotal: ${formatCents(r.subtotal)}'
-                    : 'Sobre o subtotal dos itens, distribuído entre eles.',
+                    ? tr.tabDiscountCapped(formatCents(r.subtotal))
+                    : tr.tabDiscountHelper,
+                helperMaxLines: 3,
               ),
               onChanged: (v) {
                 final value = d.discountKind == DiscountKind.amount
@@ -421,14 +420,14 @@ class _GroupTile extends StatelessWidget {
   String _header() {
     final l = group.first;
     if (group.count > 1 && group.isPriced) {
-      return '${l.title} · ${group.count} × ${formatCents(group.unitCents!)}'
-          ' = ${formatCents(group.sumCents!)}';
+      return tr.tabGroupHeaderMulti(l.title, group.count,
+          formatCents(group.unitCents!), formatCents(group.sumCents!));
     }
-    if (group.count > 1) return '${l.title} · ${group.count} × sem preço';
+    if (group.count > 1) return tr.tabGroupHeaderNoPrice(l.title, group.count);
     if (l.quantity > 1) {
       return l.totalCents == null
-          ? '${l.title} · ${l.quantity}× sem preço'
-          : '${l.title} · ${l.quantity}× = ${formatCents(l.totalCents!)}';
+          ? tr.tabGroupQtyNoPrice(l.title, l.quantity)
+          : tr.tabGroupQtyTotal(l.title, l.quantity, formatCents(l.totalCents!));
     }
     return l.title;
   }
@@ -439,19 +438,16 @@ class _GroupTile extends StatelessWidget {
       if (l.totalCents != null) {
         return [
           if (l.detail != null) l.detail!,
-          l.complimentary ? 'cortesia' : formatCents(l.totalCents!),
+          l.complimentary ? tr.tabComplimentary : formatCents(l.totalCents!),
         ].join(' · ');
       }
       if (l.isPersonalOnly) {
-        return 'só a sua parte (${formatCents(l.personalOnlyCents!)}) é '
-            'conhecida · total da garrafa desconhecido';
+        return tr.tabPersonalOnly(formatCents(l.personalOnlyCents!));
       }
-      return [if (l.detail != null) l.detail!, 'sem preço'].join(' · ');
+      return [if (l.detail != null) l.detail!, tr.tabNoPrice].join(' · ');
     }
     if (!group.isPriced) {
-      return l.isPersonalOnly
-          ? 'só a parte pessoal é conhecida; total desconhecido'
-          : 'sem preço';
+      return l.isPersonalOnly ? tr.tabPersonalOnlyShort : tr.tabNoPrice;
     }
     return null;
   }
@@ -503,18 +499,27 @@ class _LineRow extends StatelessWidget {
           controller: c,
           autofocus: true,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          decoration: InputDecoration(labelText: label, prefixText: r'R$ '),
+          decoration: InputDecoration(
+            labelText: label,
+            prefixText: r'R$ ',
+            helperText: tr.moneyFieldHelper,
+            helperMaxLines: 3,
+          ),
         ),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancelar')),
+              child: Text(tr.commonCancel)),
           TextButton(
             onPressed: () {
               final cents = parseCents(c.text);
-              if (cents != null) Navigator.pop(ctx, cents);
+              if (cents != null) {
+                Navigator.pop(ctx, cents);
+              } else {
+                showToast(ctx, numberInputError(c.text) ?? tr.numberInvalid);
+              }
             },
-            child: const Text('Salvar'),
+            child: Text(tr.commonSave),
           ),
         ],
       ),
@@ -529,15 +534,15 @@ class _LineRow extends StatelessWidget {
     final parts = <String>[
       formatTime(line.at),
       if (line.totalCents != null)
-        line.complimentary ? 'cortesia' : formatCents(line.totalCents!),
+        line.complimentary ? tr.tabComplimentary : formatCents(line.totalCents!),
       if (line.totalCents == null)
         line.isPersonalOnly
-            ? 'só sua parte ${formatCents(line.personalOnlyCents!)}'
-            : 'sem preço',
+            ? tr.tabLineOnlyYourShare(formatCents(line.personalOnlyCents!))
+            : tr.tabNoPrice,
       if (result != null && result!.discount > 0)
-        'desc. −${formatCents(result!.discount)}',
+        tr.tabLineDiscount(formatCents(result!.discount)),
       if (result != null && result!.service > 0)
-        'serviço +${formatCents(result!.service)}',
+        tr.tabLineService(formatCents(result!.service)),
     ];
     final canQuickFill = entry != null &&
         ((!entry.isShared && entry.priceKind == PriceKind.unknown) ||
@@ -549,18 +554,20 @@ class _LineRow extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       title: Text(parts.join(' · '), style: AppText.body),
       subtitle: Text(
-        entry != null ? 'Bebida registrada' : (line.detail ?? 'Item da comanda'),
+        entry != null
+            ? tr.tabLineRegisteredDrink
+            : (line.detail ?? tr.tabLineItem),
         style: AppText.caption,
       ),
       trailing: PopupMenuButton<String>(
-        tooltip: 'Ações',
+        tooltip: tr.tabActions,
         onSelected: (v) async {
           switch (v) {
             case 'fill':
               final cents = await _askMoney(
                 context,
-                entry!.isShared ? 'Total da garrafa/jarra' : 'Preço',
-                entry.isShared ? 'Total da conta deste item' : 'Preço pago',
+                entry!.isShared ? tr.tabFillTotalTitle : tr.tabFillPriceTitle,
+                entry.isShared ? tr.tabFillTotalLabel : tr.priceFixPaidLabel,
               );
               if (cents != null) await cubit.fillEntryPrice(entry, cents);
             case 'edit':
@@ -590,19 +597,21 @@ class _LineRow extends StatelessWidget {
           if (canQuickFill)
             PopupMenuItem(
               value: 'fill',
-              child: Text(entry!.isShared ? 'Informar total' : 'Informar preço'),
+              child: Text(entry!.isShared ? tr.tabFillTotal : tr.tabFillPrice),
             ),
           PopupMenuItem(
             value: 'edit',
-            child: Text(entry != null ? 'Corrigir registro' : 'Editar'),
+            child: Text(entry != null ? tr.entryFix : tr.commonEdit),
           ),
           PopupMenuItem(
             value: 'service',
-            child: Text(line.service ? 'Sem serviço neste item' : 'Cobrar serviço'),
+            child:
+                Text(line.service ? tr.tabNoServiceItem : tr.tabChargeService),
           ),
           PopupMenuItem(
             value: 'remove',
-            child: Text(entry != null ? 'Tirar da comanda' : 'Excluir item'),
+            child:
+                Text(entry != null ? tr.tabRemoveFromTab : tr.tabDeleteItem),
           ),
         ],
       ),

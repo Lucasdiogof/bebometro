@@ -1,5 +1,6 @@
 import '../../outings/domain/outing.dart';
 import 'geo_point.dart';
+import '../../l10n/l10n.dart';
 
 /// A personal, reusable place. Private to the user. Rolês keep their own
 /// copy of the name/address, so editing a place never rewrites old outings.
@@ -173,6 +174,6 @@ String placeTitle({
   if (has(nickname)) return nickname!.trim();
   if (has(providerName)) return providerName!.trim();
   if (has(address)) return address!.trim();
-  if (point != null) return 'Ponto no mapa';
+  if (point != null) return tr.placePointOnMap;
   return fallback;
 }

@@ -10,6 +10,7 @@ import '../../outings/domain/outing.dart';
 import '../data/tab_repository.dart';
 import '../domain/tab_calc.dart';
 import '../domain/tab_models.dart';
+import '../../l10n/l10n.dart';
 
 class TabState {
   const TabState({
@@ -193,7 +194,7 @@ class TabCubit extends Cubit<TabState> {
       final id = newId();
       return d.copyWith(
         participants: [
-          Participant(id: id, name: 'Você', isMe: true),
+          Participant(id: id, name: tr.tabMe, isMe: true),
           ...d.participants,
         ],
         equalIds: [id, ...d.equalIds],

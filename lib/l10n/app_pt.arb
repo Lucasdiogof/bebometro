@@ -213,11 +213,11 @@
   "budgetLeftIncomplete": "{count, plural, =1{Dos gastos informados, sobram {amount} do orçamento (parcial: falta o preço de 1 bebida).} other{Dos gastos informados, sobram {amount} do orçamento (parcial: faltam preços de {count} bebidas).}}",
   "@budgetLeftIncomplete": {
     "placeholders": {
-      "amount": {
-        "type": "String"
-      },
       "count": {
         "type": "int"
+      },
+      "amount": {
+        "type": "String"
       }
     }
   },
@@ -253,13 +253,13 @@
   "budgetReached": "Os gastos informados chegaram a {percent}% do orçamento ({spent} de {budget}).",
   "@budgetReached": {
     "placeholders": {
-      "budget": {
-        "type": "String"
-      },
       "percent": {
         "type": "int"
       },
       "spent": {
+        "type": "String"
+      },
+      "budget": {
         "type": "String"
       }
     }
@@ -364,21 +364,21 @@
   "conflictTabPayments": "{count, plural, =0{Nenhum pagamento registrado} =1{1 pagamento registrado: {amount}} other{{count} pagamentos registrados: {amount}}}",
   "@conflictTabPayments": {
     "placeholders": {
-      "amount": {
-        "type": "String"
-      },
       "count": {
         "type": "int"
+      },
+      "amount": {
+        "type": "String"
       }
     }
   },
   "conflictTabPeople": "{people, plural, =1{1 participante} other{{people} participantes}} · {extras, plural, =0{nenhum item extra} =1{1 item extra} other{{extras} itens extras}}",
   "@conflictTabPeople": {
     "placeholders": {
-      "extras": {
+      "people": {
         "type": "int"
       },
-      "people": {
+      "extras": {
         "type": "int"
       }
     }
@@ -700,10 +700,10 @@
   "outingTypeSince": "{type} · desde {time}",
   "@outingTypeSince": {
     "placeholders": {
-      "time": {
+      "type": {
         "type": "String"
       },
-      "type": {
+      "time": {
         "type": "String"
       }
     }
@@ -846,13 +846,13 @@
   "staleBody": "{name} começou em {start} e está aberto há {duration}.",
   "@staleBody": {
     "placeholders": {
-      "duration": {
-        "type": "String"
-      },
       "name": {
         "type": "String"
       },
       "start": {
+        "type": "String"
+      },
+      "duration": {
         "type": "String"
       }
     }
@@ -963,11 +963,11 @@
   "volumeKnownPlusUnknown": "{known} (+{count} sem volume)",
   "@volumeKnownPlusUnknown": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      },
       "known": {
         "type": "String"
+      },
+      "count": {
+        "type": "int"
       }
     }
   },
@@ -1252,10 +1252,10 @@
   "entrySharedLine": "de {total} · {count} pessoas, com você",
   "@entrySharedLine": {
     "placeholders": {
-      "count": {
+      "total": {
         "type": "String"
       },
-      "total": {
+      "count": {
         "type": "String"
       }
     }
@@ -1423,13 +1423,13 @@
   "entryHistoryShare": "Sua parcela foi {price} {scope} em {date}.",
   "@entryHistoryShare": {
     "placeholders": {
-      "date": {
-        "type": "String"
-      },
       "price": {
         "type": "String"
       },
       "scope": {
+        "type": "String"
+      },
+      "date": {
         "type": "String"
       }
     }
@@ -1437,13 +1437,13 @@
   "entryHistoryPaid": "Você pagou {price} {scope} em {date}.",
   "@entryHistoryPaid": {
     "placeholders": {
-      "date": {
-        "type": "String"
-      },
       "price": {
         "type": "String"
       },
       "scope": {
+        "type": "String"
+      },
+      "date": {
         "type": "String"
       }
     }
@@ -1453,10 +1453,10 @@
   "entryHistoryTotal": "O total da garrafa/porção foi {price} em {date}.",
   "@entryHistoryTotal": {
     "placeholders": {
-      "date": {
+      "price": {
         "type": "String"
       },
-      "price": {
+      "date": {
         "type": "String"
       }
     }
@@ -1520,10 +1520,10 @@
   "detailSourceLine": "{source} · consultado em {date}",
   "@detailSourceLine": {
     "placeholders": {
-      "date": {
+      "source": {
         "type": "String"
       },
-      "source": {
+      "date": {
         "type": "String"
       }
     }
@@ -1984,5 +1984,1032 @@
     }
   },
   "photoKindLabel": "Rótulo",
-  "photoKindMenu": "Cardápio"
+  "photoKindMenu": "Cardápio",
+  "pickerStartTitle": "Onde é o rolê?",
+  "pickerChangeTitle": "Corrigir local",
+  "pickerLocateTitle": "Localização do local",
+  "pickerAlreadySavedTitle": "Lugar já salvo",
+  "pickerAlreadySavedBody": "Este lugar já está nos seus locais como \"{name}\". Usar aqui também?",
+  "@pickerAlreadySavedBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "pickerUseAnyway": "Usar mesmo assim",
+  "pickerSearchHint": "Buscar bar, restaurante ou endereço",
+  "pickerClearSearch": "Limpar busca",
+  "pickerUseLocation": "Usar minha localização",
+  "pickerApproximate": "Localização aproximada: confira o lugar na lista ou no mapa.",
+  "pickerLocationHint": "Mostra lugares por perto. Você sempre confirma onde está.",
+  "pickerNicknameOnly": "Informar apenas um apelido",
+  "pickerNicknameOnlyExample": "Sem mapa nem endereço. Ex.: Casa da Samara",
+  "pickerNicknameOnlyShort": "Sem mapa nem endereço.",
+  "pickerYourPlaces": "Seus locais",
+  "pickerNotConfiguredFull": "A busca de lugares e o mapa não estão configurados nesta versão. Apelido, endereço digitado e locais salvos funcionam normalmente.",
+  "pickerNearYou": "Perto de você",
+  "pickerNothingNearby": "Nenhum bar ou restaurante encontrado bem perto. Você pode buscar pelo nome ou marcar só o ponto.",
+  "pickerPinOnly": "Marcar só este ponto no mapa",
+  "pickerPinOnlyHint": "Você pode dar um apelido em seguida.",
+  "pickerNotConfigured": "A busca de lugares não está configurada nesta versão.",
+  "pickerMinChars": "Digite pelo menos 3 letras para buscar.",
+  "pickerNothingFound": "Nada encontrado. Tente o nome com o bairro ou a cidade, ou informe só um apelido.",
+  "pickerResults": "Resultados",
+  "pickerErrorOffline": "Sem internet agora. Você ainda pode usar um local salvo ou informar um apelido.",
+  "pickerErrorUnavailable": "A busca está indisponível no momento. Você ainda pode usar um local salvo ou informar um apelido.",
+  "pickerLocServiceOff": "A localização do aparelho está desligada.",
+  "pickerOpenSettings": "Abrir ajustes",
+  "pickerLocDenied": "Sem permissão de localização. Você pode buscar pelo nome ou endereço normalmente.",
+  "pickerLocDeniedForever": "A localização foi negada para o Bebômetro. Se quiser usá-la, libere nos ajustes do aparelho. A busca funciona sem ela.",
+  "pickerLocTimeout": "Não foi possível obter a localização a tempo.",
+  "pickerLocUnavailable": "A localização não está disponível aqui. Busque pelo nome ou endereço.",
+  "pickerSavedAs": "Salvo como \"{name}\"",
+  "@pickerSavedAs": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "pickerManualNickname": "Apelido",
+  "pickerManualHint": "Ex.: Casa da Samara",
+  "pickerManualHelper": "O apelido sozinho já basta.",
+  "pickerAddAddress": "Adicionar endereço (opcional)",
+  "pickerNeedNicknameOrAddress": "Informe um apelido (ex.: Casa da Samara) ou um endereço",
+  "pickerStateTwoLetters": "A UF tem 2 letras",
+  "placeSaveToMine": "Salvar nos meus locais",
+  "placeSaveToMineHint": "Para escolher de novo nos próximos rolês. Fica privado.",
+  "pickerUseThisPlace": "Usar este local",
+  "distanceMeters": "{meters} m",
+  "@distanceMeters": {
+    "placeholders": {
+      "meters": {
+        "type": "String"
+      }
+    }
+  },
+  "distanceKm": "{km} km",
+  "@distanceKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmTitle": "Conferir local",
+  "confirmTapMap": "Toque no mapa para ajustar o ponto, se precisar.",
+  "confirmMapFailed": "O mapa não carregou. Você pode confirmar pelos dados abaixo.",
+  "confirmNoAddress": "Sem endereço confirmado para este ponto.",
+  "confirmAdjustedWas": "Ponto ajustado: \"{name}\" e o endereço dele não valem mais para este ponto.",
+  "@confirmAdjustedWas": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmAdjusted": "Ponto ajustado por você.",
+  "confirmLookUp": "Buscar endereço deste ponto",
+  "confirmNoAddressFound": "Nenhum endereço encontrado para este ponto.",
+  "confirmOfflinePointKept": "Sem internet. O ponto continua marcado.",
+  "confirmLookUpFailed": "Não foi possível buscar o endereço agora.",
+  "confirmAlreadySaved": "Você já salvou este lugar como \"{name}\". Ele será reaproveitado.",
+  "@confirmAlreadySaved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmAlreadySavedNick": "Você já salvou este lugar como \"{name}\". Ele será reaproveitado e o apelido continua.",
+  "@confirmAlreadySavedNick": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmNicknameSection": "Apelido (opcional)",
+  "confirmNicknameHelper": "Aparece no lugar do nome. O endereço fica nos detalhes.",
+  "confirmUseAsNickname": "Usar \"{name}\" como apelido",
+  "@confirmUseAsNickname": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmNeedNickname": "Dê um apelido para salvar este ponto.",
+  "placeFallbackName": "Local",
+  "placePointOnMap": "Ponto no mapa",
+  "changePlaceTitle": "Trocar o local deste rolê?",
+  "changePlaceBody": "O rolê passa a ser \"{name}\". Só este rolê muda: as bebidas, fotos e a comanda continuam nele, e os outros rolês não são alterados.",
+  "@changePlaceBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "changePlaceConfirm": "Trocar local",
+  "changePlaceDone": "Local do rolê atualizado",
+  "changePlaceFailed": "Não foi possível trocar o local. Nada foi alterado.",
+  "openMapsFailed": "Não foi possível abrir um aplicativo de mapas.",
+  "mapSemantics": "Mapa com o ponto do local",
+  "mapZoomIn": "Aproximar",
+  "mapZoomOut": "Afastar",
+  "mapCenter": "Centralizar no ponto",
+  "placeNotFound": "Esse local não foi encontrado.",
+  "placeScreenTitle": "Local",
+  "placeReactivated": "Local reativado",
+  "placeArchivedToast": "Local arquivado",
+  "placeReactivate": "Reativar",
+  "placeArchive": "Arquivar",
+  "placeArchivedPill": "Arquivado",
+  "placeStatOutings": "Rolês",
+  "placeStatDrinks": "Bebidas",
+  "placeStatSpent": "Gasto informado",
+  "placeLastVisit": "Última visita: {date}",
+  "@placeLastVisit": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "placeStartHere": "Iniciar rolê aqui",
+  "placeOpenMap": "Abrir no mapa",
+  "placeSpendNote": "Gasto informado: o que você registrou nas suas bebidas aqui. O total da mesa e os pagamentos da comanda ficam no resumo de cada rolê e não entram nesta soma.",
+  "placePriceHistory": "Seu histórico de preços",
+  "placePriceHistoryNone": "Ainda não há preços informados por você aqui. Quando houver, o último preço e a faixa observada aparecem neste lugar.",
+  "placePriceHistoryNote": "Seu histórico: só o que você mesmo informou neste local, por bebida e tamanho. Não é média de mercado, da cidade nem do estado.",
+  "placeVisits": "Rolês neste local ({count})",
+  "@placeVisits": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "placeNoVisits": "Nenhum rolê registrado aqui ainda.",
+  "placeVisitInProgress": "em andamento",
+  "placeNoValues": "sem valores",
+  "rangeTo": "{from} a {to}",
+  "@rangeTo": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "placePriceLast": "Último: {price} em {date}",
+  "@placePriceLast": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "placePriceLastShared": "Último: {price} em {date} (total da garrafa/porção)",
+  "@placePriceLastShared": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "placePriceRangeLine": "Faixa observada: {range} · {count, plural, =1{1 registro} other{{count} registros}} · {period}",
+  "@placePriceRangeLine": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "placeAlreadyActive": "Já existe um rolê em andamento. Encerre-o antes.",
+  "placeFieldMapName": "Nome no mapa",
+  "placeFieldAddress": "Endereço",
+  "placeFieldCity": "Cidade",
+  "placeFieldOrigin": "Origem",
+  "placeSourceSearch": "Escolhido na busca (OpenStreetMap)",
+  "placeSourceLocation": "Sua localização, conferida no mapa",
+  "placeSourceAdjusted": "Ponto ajustado por você",
+  "placeSourceManual": "Informado por você",
+  "placeDetailsTitle": "Detalhes",
+  "placeNoPointNoAddress": "Sem endereço nem ponto no mapa. Dá para buscar em \"Editar\".",
+  "placesEmptyTitle": "Nenhum local salvo",
+  "placesEmptyBody": "Salve os lugares onde você costuma ir para escolher rápido ao iniciar um rolê. Eles ficam privados no seu perfil.",
+  "placesArchivedSection": "Arquivados",
+  "placesNew": "Novo local",
+  "placesVisits": "{count, plural, =1{1 rolê} other{{count} rolês}}",
+  "@placesVisits": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "placeEditTitle": "Editar local",
+  "placeEditorNote": "As mudanças valem para os próximos rolês. Os rolês que já aconteceram mantêm o nome e o endereço de quando foram feitos.",
+  "placeEditorLocation": "Localização",
+  "placeEditorSourceSearch": "Escolhido na busca (dados do OpenStreetMap)",
+  "placeEditorSourceAdjusted": "Ponto ajustado por você no mapa",
+  "placeEditorNoPointHint": "Opcional. Apelido ou endereço já bastam.",
+  "placeEditorPointSaved": "Ponto salvo",
+  "placeEditorNoPoint": "Sem ponto no mapa",
+  "placeEditorSearchMap": "Buscar no mapa",
+  "placeEditorSearchAdjust": "Buscar ou ajustar",
+  "placeEditorRemoveFromMap": "Remover do mapa",
+  "placeEditorAddressHelper": "Apelido, nome do lugar ou endereço já bastam.",
+  "placeEditorPrivate": "Seus locais e endereços são privados: só aparecem para você.",
+  "placeEditorSave": "Salvar local",
+  "tabMe": "Você",
+  "tabCatFood": "Petisco / comida",
+  "tabCatSoft": "Água / refrigerante",
+  "tabCatCover": "Couvert",
+  "tabCatStarter": "Entrada",
+  "tabCatTransport": "Transporte",
+  "tabCatOther": "Outros",
+  "tabCatDrink": "Bebida só da comanda",
+  "tabSplitEqual": "Igualmente",
+  "tabSplitItem": "Por item",
+  "tabSplitCustom": "Valores personalizados",
+  "tabShared": "compartilhada",
+  "tabShareHeader": "Comanda · {title}",
+  "@tabShareHeader": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareNoItems": "Sem itens na comanda.",
+  "tabShareItems": "Itens",
+  "tabShareLineGroup": "• {title} · {count} × {unit} = {sum}",
+  "@tabShareLineGroup": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      },
+      "sum": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareLineQty": "• {title} · {qty}× = {total}",
+  "@tabShareLineQty": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareLineGroupNoPrice": "• {title} · {count} × sem preço",
+  "@tabShareLineGroupNoPrice": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareLine": "• {title} · {price}",
+  "@tabShareLine": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareLineNoPrice": "• {title} · sem preço",
+  "@tabShareLineNoPrice": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareSubtotalKnown": "Subtotal conhecido: {amount}",
+  "@tabShareSubtotalKnown": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareSubtotal": "Subtotal: {amount}",
+  "@tabShareSubtotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareDiscount": "Desconto: -{amount}",
+  "@tabShareDiscount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareService": "Serviço ({pct} sobre {base}): {amount}",
+  "@tabShareService": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareTotalKnown": "Total conhecido: {amount}",
+  "@tabShareTotalKnown": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareTotal": "Total: {amount}",
+  "@tabShareTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabSharePartial": "{count, plural, =1{Conta parcial: 1 item sem preço.} other{Conta parcial: {count} itens sem preço.}}",
+  "@tabSharePartial": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tabShareSplitHeader": "Divisão ({mode})",
+  "@tabShareSplitHeader": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareSplitLine": "• {name}: {amount}",
+  "@tabShareSplitLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabSharePaid": " · pagou {amount}",
+  "@tabSharePaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareMissing": " · falta {amount}",
+  "@tabShareMissing": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareOver": " · a mais {amount}",
+  "@tabShareOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareUnassigned": "Ainda sem dividir: {amount}",
+  "@tabShareUnassigned": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareOverTotal": "Acima do total: {amount}",
+  "@tabShareOverTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabShareSplitPartial": "Divisão parcial: os valores podem mudar.",
+  "tabTitle": "Comanda",
+  "tabShareSplitTooltip": "Compartilhar divisão",
+  "tabIntro": "Opcional. A comanda não registra consumo: o que você bebeu continua nos seus registros.",
+  "tabEnded": "Rolê encerrado. A comanda segue editável; encerrar não marca a conta como paga.",
+  "tabItemsTitle": "Itens ({count})",
+  "@tabItemsTitle": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tabEmptyTitle": "Comanda vazia",
+  "tabEmptyBody": "Adicione petiscos e outros gastos, ou inclua as bebidas que você já registrou.",
+  "tabNoDrinksToLink": "Nenhuma bebida registrada para incluir",
+  "tabLinkDrinks": "Incluir bebidas registradas ({count})",
+  "@tabLinkDrinks": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tabSplitBill": "Dividir conta",
+  "tabSubtotalKnown": "Subtotal conhecido",
+  "tabSubtotal": "Subtotal",
+  "tabDiscount": "Desconto",
+  "tabServiceLine": "Serviço {pct} sobre {base}",
+  "@tabServiceLine": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "tabTotalKnown": "Total conhecido",
+  "tabTotalTab": "Total da comanda",
+  "tabPartialPill": "{count, plural, =1{1 item sem preço: a conta e a divisão são parciais.} other{{count} itens sem preço: a conta e a divisão são parciais.}}",
+  "@tabPartialPill": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tabYourShareProvisional": "Sua parte (provisória)",
+  "tabYourShare": "Sua parte",
+  "tabOrderNote": "Ordem: subtotal → desconto → serviço sobre os itens com serviço, já com desconto → total.",
+  "tabServiceAndDiscount": "Serviço e desconto",
+  "tabServiceSummary": "serviço {pct}",
+  "@tabServiceSummary": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "tabNoService": "sem serviço",
+  "tabDiscountSummary": "desconto {amount}",
+  "@tabDiscountSummary": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabChargeService": "Cobrar serviço",
+  "tabChargeServiceHint": "Só nos itens marcados com serviço. Transporte e entrada começam sem.",
+  "tabPercent": "Percentual",
+  "tabServiceBase": "Base {base} → {service}",
+  "@tabServiceBase": {
+    "placeholders": {
+      "base": {
+        "type": "String"
+      },
+      "service": {
+        "type": "String"
+      }
+    }
+  },
+  "tabDiscountNone": "Nenhum",
+  "tabDiscountAmountLabel": "Valor do desconto",
+  "tabDiscountPercentLabel": "Percentual do desconto",
+  "tabDiscountCapped": "Limitado ao subtotal: {amount}",
+  "@tabDiscountCapped": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabDiscountHelper": "Sobre o subtotal dos itens, distribuído entre eles.",
+  "tabGroupHeaderMulti": "{title} · {count} × {unit} = {sum}",
+  "@tabGroupHeaderMulti": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      },
+      "sum": {
+        "type": "String"
+      }
+    }
+  },
+  "tabGroupHeaderNoPrice": "{title} · {count} × sem preço",
+  "@tabGroupHeaderNoPrice": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tabGroupQtyNoPrice": "{title} · {qty}× sem preço",
+  "@tabGroupQtyNoPrice": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "tabGroupQtyTotal": "{title} · {qty}× = {total}",
+  "@tabGroupQtyTotal": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "tabComplimentary": "cortesia",
+  "tabNoPrice": "sem preço",
+  "tabPersonalOnly": "só a sua parte ({amount}) é conhecida · total da garrafa desconhecido",
+  "@tabPersonalOnly": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabPersonalOnlyShort": "só a parte pessoal é conhecida; total desconhecido",
+  "tabLineOnlyYourShare": "só sua parte {amount}",
+  "@tabLineOnlyYourShare": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabLineDiscount": "desc. −{amount}",
+  "@tabLineDiscount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabLineService": "serviço +{amount}",
+  "@tabLineService": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabLineRegisteredDrink": "Bebida registrada",
+  "tabLineItem": "Item da comanda",
+  "tabActions": "Ações",
+  "tabFillTotalTitle": "Total da garrafa/jarra",
+  "tabFillPriceTitle": "Preço",
+  "tabFillTotalLabel": "Total da conta deste item",
+  "tabFillTotal": "Informar total",
+  "tabFillPrice": "Informar preço",
+  "tabNoServiceItem": "Sem serviço neste item",
+  "tabRemoveFromTab": "Tirar da comanda",
+  "tabDeleteItem": "Excluir item",
+  "splitTitle": "Dividir conta",
+  "splitRename": "Renomear",
+  "splitRemoveTitle": "Remover {name}?",
+  "@splitRemoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "splitRemoveBody": "{name} tem {share} atribuídos. Escolha o que acontece com eles:",
+  "@splitRemoveBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "share": {
+        "type": "String"
+      }
+    }
+  },
+  "splitRemoveBodyPay": "{name} tem {share} atribuídos e {count, plural, =1{1 pagamento} other{{count} pagamentos}} ({paid}). Escolha o que acontece com eles:",
+  "@splitRemoveBodyPay": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "share": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "paid": {
+        "type": "String"
+      }
+    }
+  },
+  "splitPassTo": "Passar para",
+  "splitNobody": "Ninguém (redistribuir)",
+  "splitRedistributeNote": "Os itens só dessa pessoa voltam a ser divididos entre todos e os pagamentos dela são apagados.",
+  "splitTransferNote": "Itens, valores e pagamentos passam para essa pessoa.",
+  "splitRegisterPayment": "Registrar pagamento",
+  "splitEditPayment": "Editar pagamento",
+  "splitWhoPaid": "Quem pagou",
+  "splitPaidAmount": "Valor pago ao estabelecimento",
+  "splitNoteOptional": "Observação (opcional)",
+  "splitPaymentPositive": "Informe um valor maior que zero.",
+  "splitTotalKnown": "Total conhecido {amount}",
+  "@splitTotalKnown": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "splitTotal": "Total {amount}",
+  "@splitTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "splitPendingPill": "{count, plural, =1{1 item sem preço: a divisão e os saldos são provisórios.} other{{count} itens sem preço: a divisão e os saldos são provisórios.}}",
+  "@splitPendingPill": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "splitComplete": "Divisão completa: as parcelas somam o total.",
+  "splitMissing": "Falta distribuir {amount}.",
+  "@splitMissing": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "splitOver": "Distribuído {amount} a mais que o total.",
+  "@splitOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "splitPeople": "Pessoas",
+  "splitAddPerson": "Adicionar pessoa (apelido)",
+  "splitNicknamesOnly": "Só apelidos, sem login nem convite. Ficam apenas nesta comanda.",
+  "splitHow": "Como dividir",
+  "splitModeEqualShort": "Igual",
+  "splitModeItemShort": "Por item",
+  "splitModeValuesShort": "Valores",
+  "splitModeEqualNote": "Modo ativo: igualmente. O total é dividido entre as pessoas marcadas.",
+  "splitModeItemNote": "Modo ativo: por item. Cada pedido é dividido entre quem participa dele, com serviço e desconto do próprio item.",
+  "splitModeCustomNote": "Modo ativo: valores personalizados. Você digita a parcela de cada um; só fecha quando a soma bate com o total.",
+  "splitAddItemsHint": "Adicione itens à comanda para dividir por item.",
+  "splitFillEqually": "Preencher igualmente",
+  "splitAllDistributed": "Tudo distribuído.",
+  "splitNotDistributed": "Ainda não distribuído: {amount}",
+  "@splitNotDistributed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "splitPassedTotal": "Passou do total em {amount}",
+  "@splitPassedTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "splitResult": "Resultado",
+  "splitProvisionalNote": "Provisório: os valores mudam se a conta mudar.",
+  "splitAttributedNote": "Atribuído é o que cabe a cada um; pago é o que a pessoa disse ter pago ao estabelecimento.",
+  "splitPaidLine": "Pagou {paid} · {balance}",
+  "@splitPaidLine": {
+    "placeholders": {
+      "paid": {
+        "type": "String"
+      },
+      "balance": {
+        "type": "String"
+      }
+    }
+  },
+  "splitBalanceMissing": "falta pagar {amount}{provisional, select, true{ (provisório)} other{}}",
+  "@splitBalanceMissing": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "provisional": {
+        "type": "String"
+      }
+    }
+  },
+  "splitBalanceOver": "pagou {amount} a mais{provisional, select, true{ (provisório)} other{}}",
+  "@splitBalanceOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "provisional": {
+        "type": "String"
+      }
+    }
+  },
+  "splitBalanceEven": "em dia{provisional, select, true{ (provisório)} other{}}",
+  "@splitBalanceEven": {
+    "placeholders": {
+      "provisional": {
+        "type": "String"
+      }
+    }
+  },
+  "splitPayments": "Pagamentos",
+  "splitNoPayments": "Nenhum pagamento registrado.",
+  "splitRemovedPerson": "Pessoa removida",
+  "splitDeletePayment": "Excluir pagamento",
+  "splitPaymentNote": "Registrar um pagamento não muda o total, o consumo nem o orçamento: só o saldo. O app não faz cobrança, Pix nem transferência, e não diz quem deve pagar a quem. O preço de um consumo não conta como pagamento.",
+  "splitAssignEveryone": "Todos dividem",
+  "splitAssignNobody": "Ninguém",
+  "splitAssignIntro": "Quem participa e com que peso. Quem não participa não recebe parcela deste item.",
+  "splitWeight": "peso {number}",
+  "@splitWeight": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "tabExtraNew": "Novo item da comanda",
+  "tabExtraNote": "Só na comanda deste rolê. Não vira consumo nem entra no catálogo.",
+  "tabExtraDescription": "Descrição",
+  "tabExtraHintTransport": "Ex.: Uber de volta (opcional)",
+  "tabExtraHint": "Ex.: Porção de fritas",
+  "tabBasisUnit": "Preço de cada um",
+  "tabBasisTotal": "Total dos {qty}",
+  "@tabBasisTotal": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "tabValueEach": "Valor de cada unidade",
+  "tabValueTotalQty": "Valor total dos {qty}",
+  "@tabValueTotalQty": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "tabExtraServiceItem": "Cobrar serviço neste item",
+  "tabExtraServiceHint": "Só vale se o serviço estiver ligado.",
+  "tabExtraWho": "Quem divide este item",
+  "tabExtraAll": "Todos",
+  "tabExtraSome": "{count} de {total}",
+  "@tabExtraSome": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "tabExtraWhoNote": "Vale no modo \"Por item\" da divisão.",
+  "tabExtraSave": "Salvar item",
+  "tabExtraNeedValue": "Informe o valor, ou escolha Cortesia / Não sei.",
+  "tabExtraHelperUnit": "{qty} × {unit} = {total}",
+  "@tabExtraHelperUnit": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "tabExtraHelperLine": "Total da linha: {amount}",
+  "@tabExtraHelperLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabExtraNoPrice": "Sem preço: a conta fica parcial até você preencher.",
+  "tabLinkSharedTotal": "compartilhada · total {amount}",
+  "@tabLinkSharedTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabLinkSharedPersonal": "compartilhada · só a sua parte ({amount}) é conhecida",
+  "@tabLinkSharedPersonal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabLinkSameBottleTitle": "Mesma garrafa ou outra?",
+  "tabLinkSameBottleBody": "{count} registros compartilhados de \"{name}\" têm o mesmo total ({total}). Foi a mesma garrafa/jarra ou {count} separadas?\n\nO total entra na comanda uma vez por garrafa; o app não adivinha.",
+  "@tabLinkSameBottleBody": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "tabLinkSeparate": "{count} separadas",
+  "@tabLinkSeparate": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tabLinkSame": "Mesma garrafa",
+  "tabLinkTitle": "Bebidas já registradas",
+  "tabLinkNote": "Elas só são ligadas à comanda: o preço continua no registro e uma correção lá vale aqui. Seus registros não mostram tudo o que a mesa pediu.",
+  "tabLinkAll": "Todas",
+  "tabLinkNone": "Nenhuma",
+  "tabLinkInclude": "Incluir {count} na comanda",
+  "@tabLinkInclude": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tabSharePreview": "Prévia do texto. Nada é enviado até você tocar em Compartilhar.",
+  "tabShareIncludePayments": "Incluir pagamentos e saldos",
+  "tabShareOffDefault": "Desligado por padrão.",
+  "tabShareExcludes": "Não inclui endereço, fotos, anotações pessoais nem relato de embriaguez.",
+  "tabShareButton": "Compartilhar",
+  "tabCopyText": "Copiar texto",
+  "tabTextCopied": "Texto copiado",
+  "tabShareSubject": "Divisão da conta",
+  "tabShareFailed": "Não foi possível abrir o compartilhamento. Copie o texto.",
+  "tabCardHint": "Opcional: petiscos, serviço e divisão da conta.",
+  "tabCardTotalPartial": "Total da comanda (parcial): {amount}",
+  "@tabCardTotalPartial": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabCardTotal": "Total da comanda: {amount}",
+  "@tabCardTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabCardShareProv": "Sua parte da comanda (provisória): {amount}",
+  "@tabCardShareProv": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabCardShare": "Sua parte da comanda: {amount}",
+  "@tabCardShare": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabCardLineTotal": "Total {amount}",
+  "@tabCardLineTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabCardLineKnown": "Total conhecido {amount}",
+  "@tabCardLineKnown": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tabCardLineTotalShare": "Total {amount} · sua parte {mine}",
+  "@tabCardLineTotalShare": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "mine": {
+        "type": "String"
+      }
+    }
+  },
+  "tabCardLineKnownShare": "Total conhecido {amount} · sua parte {mine}",
+  "@tabCardLineKnownShare": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "mine": {
+        "type": "String"
+      }
+    }
+  }
 }
