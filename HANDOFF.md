@@ -671,6 +671,16 @@ Leia `docs/i18n-checklist.md` (decisões e limites), `docs/export-format.md` e `
 - Ferramentas de conferência usadas (não versionadas): checagem de chaves×uso, ordem/quantidade de argumentos dos
   placeholders, `tr.` em contexto `const`, imports. **Nunca rodou `flutter analyze`.**
 
+## Configuração externa (13/10/2026)
+
+Guia único: `docs/external-setup.md`. Sem acesso administrativo ao Supabase do Bebômetro (a CLI e o conector daqui são de outros
+projetos, não tocados). Feito no repositório: `delete-account` revisada e corrigida (bucket esvaziado em várias passadas, também
+arquivos soltos na raiz); templates de e-mail com layout responsivo e teste de idioma protegido; `env.example.json` (+ `env.json`
+no `.gitignore`); comentário do Geoapify corrigido (a doc da Places API permite guardar; a de geocodificação não diz nada: dúvida
+delimitada). Lido pela API pública: `delete-account` 404 (não publicada); `mailer_autoconfirm: true`; `anonymous_users: true`;
+migration `20261018000000` visível no esquema. Não configurado/validado: deploy, redirects, Manual linking, SMTP, templates, chave
+Geoapify, Team iOS. O nome do app continua **Bebômetro**.
+
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
 executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de

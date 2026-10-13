@@ -53,6 +53,15 @@ Ainda pendente (exige execução): `flutter pub get`, analyze, testes, QA em apa
 negadas, OCR em fotos reais, upload para o bucket, exclusão de foto enviada, retomada após fechar o app) e conferência no painel
 do Supabase de que as linhas e os arquivos chegam. Heurísticas dos leitores de rótulo e cardápio não foram validadas.
 
+## Configuração externa (13/10/2026)
+
+Guia: [`external-setup.md`](external-setup.md). Sem acesso administrativo ao projeto do Bebômetro, nada foi aplicado no painel.
+Feito: revisão e correção da função `delete-account` (esvaziamento completo do bucket do usuário), templates de e-mail revisados,
+geoapify/redirects/SMTP/iOS documentados, `env.example.json`. Verificado pela API pública: função **não publicada** (404),
+"Confirm email" desligado, login anônimo ligado, colunas/tabelas da migration `20261018000000` existentes. Pendente (responsável):
+deploy da função, redirects, *Manual linking*, SMTP e confirmação de e-mail, templates, chave Geoapify, Team no Xcode.
+Nada foi validado no app.
+
 ## Bloqueios conhecidos
 
 - Sem acesso administrativo ao Supabase neste ambiente: novas migrations são preparadas e aplicadas pelo dono.

@@ -186,7 +186,7 @@ flutter pub get
 flutter run --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLISHABLE_KEY --dart-define=GEOAPIFY_KEY=YOUR_GEOAPIFY_KEY
 ```
 
-`GEOAPIFY_KEY` is optional: without it, place search and the map are off and the rest of the app works. See the key setup in [HANDOFF](HANDOFF.md) (Portuguese).
+`GEOAPIFY_KEY` is optional: without it, place search and the map are off and the rest of the app works. See the key setup in [HANDOFF](HANDOFF.md) (Portuguese). All external setup (Edge Function, Auth redirects, SMTP, e-mail templates, Geoapify, iOS signing) is in [docs/external-setup.md](docs/external-setup.md) (Portuguese); it is **not applied yet**.
 
 For web, add `-d chrome` to the run command. These are setup instructions, not evidence that the commands were executed for this documentation update. When backend access fails, the implemented flow keeps records locally and shows pending synchronization.
 

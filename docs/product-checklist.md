@@ -51,6 +51,8 @@ nesta rodada. Detalhes: `docs/development-progress.md`.
 
 ## Configurações externas pendentes
 
+Passo a passo e estado real (implementado / configurado / verificado pela API / validado no app): [`external-setup.md`](external-setup.md).
+
 1. SMTP próprio, redirects (`bebometro://auth-callback` e origem web), *Manual linking*.
 2. Deploy de `delete-account`.
 3. Templates de e-mail trilíngues (`supabase/email-templates/`, ver `docs/auth-emails.md`).

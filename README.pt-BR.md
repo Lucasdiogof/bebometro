@@ -186,7 +186,7 @@ flutter pub get
 flutter run --dart-define=SUPABASE_URL=https://SEU_PROJETO.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=SUA_CHAVE_PUBLICAVEL --dart-define=GEOAPIFY_KEY=SUA_CHAVE_GEOAPIFY
 ```
 
-`GEOAPIFY_KEY` é opcional: sem ela, a busca de lugares e o mapa ficam desligados e o resto do app funciona. Veja a configuração da chave no [HANDOFF](HANDOFF.md).
+`GEOAPIFY_KEY` é opcional: sem ela, a busca de lugares e o mapa ficam desligados e o resto do app funciona. Veja a configuração da chave no [HANDOFF](HANDOFF.md). Toda a configuração externa (função, redirects de Auth, SMTP, templates de e-mail, Geoapify, assinatura iOS) está em [docs/external-setup.md](docs/external-setup.md); **ainda não foi aplicada**.
 
 Na web, acrescente `-d chrome` ao comando de execução. São instruções de configuração, não evidência de comandos executados nesta atualização da documentação. Quando o backend falha, o fluxo implementado mantém os registros locais e mostra a sincronização pendente.
 
