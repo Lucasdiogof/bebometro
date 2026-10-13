@@ -1,19 +1,25 @@
+import 'device_store.dart';
 import 'local_store.dart';
 
-/// Small device-local preferences and "already shown" markers that do not
-/// belong to any synced record.
+/// Small preferences and "already shown" markers that do not belong to any
+/// synced record: the budget alerts switch is the device's; the per-outing
+/// markers live in the account space.
 class AppPrefs {
-  AppPrefs(this._store);
+  AppPrefs(this._device, this._store);
 
+  /// Device choices (budget alerts switch).
+  final DeviceStore _device;
+
+  /// Per-outing markers of the account.
   final LocalStore _store;
 
   static const _budgetAlertsKey = 'prefs.budget_alerts';
 
   /// Budget warnings on/off (default on).
-  bool get budgetAlerts => _store.getString(_budgetAlertsKey) != '0';
+  bool get budgetAlerts => _device.getString(_budgetAlertsKey) != '0';
 
   Future<void> setBudgetAlerts(bool on) =>
-      _store.setString(_budgetAlertsKey, on ? '1' : '0');
+      _device.setString(_budgetAlertsKey, on ? '1' : '0');
 
   // ---- budget thresholds already announced (per outing and budget value) -----
 

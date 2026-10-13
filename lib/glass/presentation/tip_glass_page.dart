@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
-import '../../core/data/local_store.dart';
+import '../../core/data/device_store.dart';
 import '../../core/di/injector.dart';
 import '../../core/widgets/common.dart';
 import '../data/tilt_source.dart';
@@ -88,12 +88,12 @@ class _TipGlassPageState extends State<TipGlassPage>
     if (_usingSensor) {
       var seen = false;
       try {
-        seen = getIt<LocalStore>().getString(_hintKey) == '1';
+        seen = getIt<DeviceStore>().getString(_hintKey) == '1';
       } catch (_) {}
       if (!seen) {
         _showHint('Incline o celular para mexer a cerveja.');
         try {
-          getIt<LocalStore>().setString(_hintKey, '1');
+          getIt<DeviceStore>().setString(_hintKey, '1');
         } catch (_) {}
       }
     } else {

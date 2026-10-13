@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../../core/data/local_store.dart';
+import '../../core/data/device_store.dart';
 
 /// Device-local choices for the lock-screen tracking. Not synced and needing
 /// no migration. Everything that must survive a restart is stored, because
@@ -8,7 +8,7 @@ import '../../core/data/local_store.dart';
 class TrackingPrefs {
   TrackingPrefs(this._store);
 
-  final LocalStore _store;
+  final DeviceStore _store;
   final _changes = StreamController<void>.broadcast();
 
   static const _enabled = 'tracking.enabled';

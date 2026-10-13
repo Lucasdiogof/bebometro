@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/data/local_store.dart';
+import '../../core/data/device_store.dart';
 import '../../outings/domain/outing.dart';
 import '../domain/table_scenario.dart';
 
@@ -47,7 +47,7 @@ class TablePrefsCubit extends Cubit<TablePrefs> {
     emit(_read());
   }
 
-  final LocalStore _store;
+  final DeviceStore _store;
 
   static const _viewKey = 'table.view';
   static const _animKey = 'table.animations';
