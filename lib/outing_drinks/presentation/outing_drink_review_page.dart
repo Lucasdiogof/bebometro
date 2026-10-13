@@ -320,7 +320,7 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
         widget.outingId,
         _origin == OutingDrinkOrigin.menu
             ? OutingPhotoKind.menu
-            : OutingPhotoKind.label,
+            : OutingPhotoKind.photoLabel,
         photoIds,
       );
       await _repo.save(drink);

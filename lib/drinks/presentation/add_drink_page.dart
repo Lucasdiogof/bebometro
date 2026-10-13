@@ -12,7 +12,6 @@ import '../../core/navigation/app_routes.dart';
 import '../../core/navigation/outing_flow.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/presentation/start_outing_page.dart';
-import '../../outing_drinks/domain/outing_drink.dart';
 import '../../outing_drinks/presentation/outing_drink_review_page.dart';
 import '../../outing_drinks/presentation/outing_drinks_section.dart';
 import '../../scan/presentation/scan_label_page.dart';

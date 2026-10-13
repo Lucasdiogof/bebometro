@@ -2,7 +2,7 @@
 /// value so a corrected ABV is never mistaken for the official one.
 enum AbvSource {
   /// Read from a label photo and confirmed by the user.
-  label('label', 'Rótulo (foto), conferido por você'),
+  photoLabel('label', 'Rótulo (foto), conferido por você'),
 
   /// Written in a menu photo and confirmed by the user.
   menu('menu', 'Cardápio (foto), conferido por você'),

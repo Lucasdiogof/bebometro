@@ -6,7 +6,7 @@ import '../../drinks/domain/recipe.dart';
 /// How an outing drink was created.
 enum OutingDrinkOrigin {
   manual('manual', 'Cadastro neste rolê'),
-  label('label', 'Foto do rótulo'),
+  photoLabel('label', 'Foto do rótulo'),
   menu('menu', 'Foto do cardápio');
 
   const OutingDrinkOrigin(this.code, this.label);
@@ -224,7 +224,7 @@ class OutingDrink {
 
 /// What a photo shows. Photos belong to the outing they were taken in.
 enum OutingPhotoKind {
-  label('label', 'Rótulo'),
+  photoLabel('label', 'Rótulo'),
   menu('menu', 'Cardápio');
 
   const OutingPhotoKind(this.code, this.label);
@@ -234,7 +234,7 @@ enum OutingPhotoKind {
 
   static OutingPhotoKind fromCode(String? code) =>
       OutingPhotoKind.values.firstWhere((k) => k.code == code,
-          orElse: () => OutingPhotoKind.label);
+          orElse: () => OutingPhotoKind.photoLabel);
 }
 
 /// Metadata of a photo. The image itself is a file (never base64 in a row);

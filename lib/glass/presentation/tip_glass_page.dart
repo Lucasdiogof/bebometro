@@ -80,7 +80,7 @@ class _TipGlassPageState extends State<TipGlassPage>
       _initialHint();
     }
     // Hidden behind another route: stop both the ticker and the sensor.
-    _visible = TickerMode.of(context);
+    _visible = TickerMode.valuesOf(context).enabled;
     _syncRunning();
   }
 

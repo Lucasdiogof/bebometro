@@ -72,7 +72,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
   }
 
   Future<void> _restore() async {
-    final draft = _drafts.load(widget.outingId, OutingPhotoKind.label);
+    final draft = _drafts.load(widget.outingId, OutingPhotoKind.photoLabel);
     if (draft != null) {
       _text.text = draft.text;
       if (draft.photoIds.isNotEmpty) {
@@ -105,7 +105,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
     if (_done) return;
     await _drafts.save(ScanDraft(
         outingId: widget.outingId,
-        kind: OutingPhotoKind.label,
+        kind: OutingPhotoKind.photoLabel,
         photoIds: [if (_photoId != null) _photoId!],
         text: _text.text,
       ));
@@ -172,7 +172,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
     final id = _photoId;
     _debounce?.cancel();
     if (id != null) await _repo.discardPhoto(id);
-    await _drafts.clear(widget.outingId, OutingPhotoKind.label);
+    await _drafts.clear(widget.outingId, OutingPhotoKind.photoLabel);
     if (!mounted) return;
     setState(() {
       _photoId = null;
@@ -238,9 +238,9 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
         category: r.category,
         volumeMl: r.volumeMl,
         abvPercent: r.abvPercent,
-        abvSource: r.abvPercent == null ? null : AbvSource.label,
+        abvSource: r.abvPercent == null ? null : AbvSource.photoLabel,
         ingredients: r.ingredients,
-        origin: OutingDrinkOrigin.label,
+        origin: OutingDrinkOrigin.photoLabel,
         photoIds: [if (_photoId != null) _photoId!],
         sourceText: text,
         notes: r.notes,
@@ -250,7 +250,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
       prefill = ReviewPrefill(
         origin: _photoId == null
             ? OutingDrinkOrigin.manual
-            : OutingDrinkOrigin.label,
+            : OutingDrinkOrigin.photoLabel,
         photoIds: [if (_photoId != null) _photoId!],
         sourceText: text.isEmpty ? null : text,
       );
@@ -274,7 +274,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
     // is already gone.
     _done = true;
     _debounce?.cancel();
-    await _drafts.clear(widget.outingId, OutingPhotoKind.label);
+    await _drafts.clear(widget.outingId, OutingPhotoKind.photoLabel);
     if (mounted) Navigator.of(context).pop(result);
   }
 
