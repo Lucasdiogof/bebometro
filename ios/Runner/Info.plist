@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
@@ -6,14 +6,6 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<!-- Languages of the app. The permission texts below are the Portuguese ones; the
-	     InfoPlist.strings of each language replace them in the system language. -->
-	<key>CFBundleLocalizations</key>
-	<array>
-		<string>pt-BR</string>
-		<string>en</string>
-		<string>es</string>
-	</array>
 	<key>CFBundleDisplayName</key>
 	<string>Bebômetro</string>
 	<key>CFBundleExecutable</key>
@@ -22,6 +14,12 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>pt-BR</string>
+		<string>en</string>
+		<string>es</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>bebometro</string>
 	<key>CFBundlePackageType</key>
@@ -30,20 +28,6 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Só quando você toca em "Usar minha localização": para sugerir lugares por perto e marcar o ponto no mapa. O Bebômetro não acompanha seus deslocamentos.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>A câmera é usada só para fotografar rótulos e cardápios do rolê. As fotos ficam no seu aparelho.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>A galeria é usada só para você escolher fotos de rótulos e cardápios do rolê.</string>
-	<!-- Links are handled by the app, not turned into routes: bebometro://outing/... by
-	     TrackingChannel, bebometro://auth-callback by supabase_flutter (app_links). -->
-	<key>FlutterDeepLinkingEnabled</key>
-	<false/>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -55,9 +39,23 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FlutterDeepLinkingEnabled</key>
+	<false/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>A câmera é usada só para fotografar rótulos e cardápios do rolê. As fotos ficam no seu aparelho.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Só quando você toca em "Usar minha localização": para sugerir lugares por perto e marcar o ponto no mapa. O Bebômetro não acompanha seus deslocamentos.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>O movimento do aparelho é usado só para inclinar a cerveja no "Virar o copo". Nada é gravado.</string>
-	<key>LSRequiresIPhoneOS</key>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>A galeria é usada só para você escolher fotos de rótulos e cardápios do rolê.</string>
+	<key>NSSupportsLiveActivities</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
