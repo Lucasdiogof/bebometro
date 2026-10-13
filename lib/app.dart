@@ -7,6 +7,7 @@ import 'core/sync/sync_cubit.dart';
 import 'core/theme/app_colors.dart';
 import 'core/theme/app_theme.dart';
 import 'home/presentation/home_page.dart';
+import 'table/data/table_prefs_cubit.dart';
 
 class BebometroApp extends StatefulWidget {
   const BebometroApp({super.key});
@@ -40,8 +41,11 @@ class _BebometroAppState extends State<BebometroApp>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: getIt<SyncCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: getIt<SyncCubit>()),
+        BlocProvider.value(value: getIt<TablePrefsCubit>()),
+      ],
       child: MaterialApp(
         title: 'Bebômetro',
         debugShowCheckedModeBanner: false,

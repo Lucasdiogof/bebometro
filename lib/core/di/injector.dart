@@ -11,6 +11,7 @@ import '../../drinks/presentation/my_drinks_cubit.dart';
 import '../../history/presentation/history_cubit.dart';
 import '../../home/presentation/home_cubit.dart';
 import '../../outings/data/outing_repository.dart';
+import '../../table/data/table_prefs_cubit.dart';
 import '../../outings/presentation/outing_cubit.dart';
 import '../../outings/presentation/start_outing_cubit.dart';
 import '../../settings/presentation/settings_cubit.dart';
@@ -43,6 +44,7 @@ Future<void> configureDependencies() async {
     ..registerSingleton<DrinkRepository>(
       DrinkRepository(store, bundledCatalog),
     )
+    ..registerSingleton<TablePrefsCubit>(TablePrefsCubit(store))
     ..registerFactory<HomeCubit>(
       () => HomeCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
     )

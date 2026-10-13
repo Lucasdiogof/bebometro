@@ -12,6 +12,8 @@ import '../../core/widgets/state_views.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/drink_entry_page.dart';
 import '../domain/outing_summary.dart';
+import '../../table/data/table_prefs_cubit.dart';
+import '../../table/presentation/table_scene.dart';
 import 'outing_cubit.dart';
 import 'outing_page.dart' show EntryTile;
 
@@ -153,6 +155,27 @@ class _SummaryViewState extends State<_SummaryView> {
                         ],
                       ),
                     ),
+                    if (state.entries.isNotEmpty) ...[
+                      const SectionTitle('Mesa do rolê'),
+                      TableScene(
+                        entries: state.entries,
+                        scenario: context
+                            .watch<TablePrefsCubit>()
+                            .state
+                            .scenarioFor(outing.id, outing.type),
+                        animate: false,
+                        retrospective: true,
+                        compact: true,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: AppSpace.sm),
+                        child: Text(
+                          'Retrospectiva ilustrativa dos registros. Os '
+                          'números reais estão abaixo.',
+                          style: AppText.caption,
+                        ),
+                      ),
+                    ],
                     const SectionTitle('Consumo'),
                     SurfaceCard(
                       child: Column(

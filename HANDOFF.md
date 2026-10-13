@@ -178,6 +178,24 @@ máscara, então vale conferir as bordas em aparelho.
   no Brasil (Smirnoff, Tanqueray, Gordon's, Ypióca, Sagatiba, Cointreau, Jameson, Cuervo) não entraram; licores
   e vinhos de marca ainda vazios; o editor de bebida simples não tem ingredientes por componente (use receita).
 
+## Mesa do rolê (`lib/table/`)
+- **Unidades das receitas:** `RecipeUnit` (ml, g, unidade, colher de chá/sopa, folha, gota, a gosto + `other`, o texto original da
+  receita). Só ml entra no cálculo de álcool; nada é convertido para ml. Snapshots antigos (`amount_ml`/`amount_text`) são lidos como
+  ml/`other`; novos snapshots gravam `amount` + `unit` e ainda `amount_ml` por compatibilidade. Editor e formulário têm campo de
+  quantidade + seletor de unidade; receitas de referência preservam a unidade original (barspoon, ramos, gomos, "completar" ficam como texto).
+- **Mesa/Lista** na tela do rolê (`SegmentedButton`), menu da mesa: "Trocar cenário" e "Animação ilustrativa das bebidas registradas".
+  Preferências (só no aparelho, `TablePrefsCubit`, chaves `table.view`, `table.animations`, `table.scenarios`): mesa como padrão e
+  animações (Configurações), e o cenário por rolê. Nenhuma migration.
+- **Cenários** (`ScenePainter`): bar/boteco, balada, churrasco, casa, praia, restaurante; o tipo do rolê sugere o inicial; trocar não muda
+  local, tipo nem registros. **Recipientes** (`VesselPainter`): lata, long neck, garrafa, copo de cerveja, copo de chopp, dose, taça,
+  copo de drink, água e copo genérico; escolhidos pelo rótulo da apresentação e pela categoria (desconhecido = copo genérico coerente).
+- **Esvaziamento ilustrativo** (`vesselFill`): só pelo tempo decorrido desde o horário do registro; relógio de 3 s só enquanto a tela está
+  visível, app em primeiro plano, animações ligadas e sem "reduzir movimento"; senão, imagem estática do instante da reconstrução.
+  Garrafa compartilhada só esvazia a parcela pessoal e mostra "N ml seus". Retrospectiva (rolê encerrado/resumo): recipientes vazios.
+- **Muitos registros** (`planTable`): 2 fileiras, slots fixos por ordem; acima da capacidade agrupa iguais ("×N", abre a lista) e,
+  se ainda faltar espaço, o último slot vira "+N". Tocar abre detalhes com Corrigir/Excluir existentes; "Desfazer" continua removendo o
+  registro certo. Nada de recompensas por quantidade.
+
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
 executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de

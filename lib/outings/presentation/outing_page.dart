@@ -13,6 +13,9 @@ import '../../core/widgets/state_views.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/add_drink_page.dart';
 import '../../drinks/presentation/drink_entry_page.dart';
+import '../../table/data/table_prefs_cubit.dart';
+import '../../table/presentation/table_scene.dart';
+import '../../table/presentation/table_sheets.dart';
 import 'outing_cubit.dart';
 
 /// Running outing. Pops with the outing id after it is finished, so the
@@ -134,6 +137,9 @@ class _OutingViewState extends State<_OutingView> {
         final summary = state.summary!;
         final last = state.lastAlcoholic;
         final entries = state.entries.reversed.toList();
+        final prefs = context.watch<TablePrefsCubit>().state;
+        final prefsCubit = context.read<TablePrefsCubit>();
+        final scenario = prefs.scenarioFor(outing.id, outing.type);
         return Scaffold(
           appBar: AppBar(
             titleSpacing: 0,
@@ -248,27 +254,93 @@ class _OutingViewState extends State<_OutingView> {
                         ],
                       ]),
                     ),
-                    SectionTitle('Registros (${entries.length})'),
-                    if (entries.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: AppSpace.xl),
-                        child: EmptyView(
-                          icon: Icons.sports_bar_outlined,
-                          title: 'Nenhuma bebida ainda',
-                          message: 'Registre a primeira e o botão '
-                              '"Mais uma" aparece aqui embaixo.',
+                    const SizedBox(height: AppSpace.md),
+                    Row(children: [
+                      Expanded(
+                        child: SegmentedButton<TableView>(
+                          showSelectedIcon: false,
+                          segments: const [
+                            ButtonSegment(
+                              value: TableView.table,
+                              icon: Icon(Icons.table_restaurant_outlined),
+                              label: Text('Mesa'),
+                            ),
+                            ButtonSegment(
+                              value: TableView.list,
+                              icon: Icon(Icons.view_list_rounded),
+                              label: Text('Lista'),
+                            ),
+                          ],
+                          selected: {prefs.view},
+                          onSelectionChanged: (s) =>
+                              prefsCubit.setView(s.first),
                         ),
-                      )
-                    else
-                      for (final e in entries)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: AppSpace.sm),
-                          child: EntryTile(
-                            entry: e,
-                            onTap: () => _edit(e),
-                            onDelete: () => cubit.deleteEntry(e),
+                      ),
+                      PopupMenuButton<String>(
+                        tooltip: 'Opções da mesa',
+                        onSelected: (v) {
+                          if (v == 'scenario') {
+                            showScenarioPicker(
+                              context,
+                              current: scenario,
+                              onSelected: (s) =>
+                                  prefsCubit.setScenario(outing.id, s),
+                            );
+                          } else if (v == 'about') {
+                            showTableAbout(context);
+                          }
+                        },
+                        itemBuilder: (_) => const [
+                          PopupMenuItem(
+                              value: 'scenario', child: Text('Trocar cenário')),
+                          PopupMenuItem(
+                              value: 'about',
+                              child: Text('Animação ilustrativa das bebidas '
+                                  'registradas')),
+                        ],
+                      ),
+                    ]),
+                    if (prefs.view == TableView.table) ...[
+                      const SizedBox(height: AppSpace.sm),
+                      TableScene(
+                        entries: state.entries,
+                        scenario: scenario,
+                        animate: prefs.animations,
+                        onEdit: _edit,
+                        onDelete: cubit.deleteEntry,
+                      ),
+                      if (state.entries.isEmpty)
+                        const Padding(
+                          padding: EdgeInsets.only(top: AppSpace.sm),
+                          child: Text(
+                            'Registre a primeira bebida e o botão "Mais uma" '
+                            'aparece aqui embaixo.',
+                            style: AppText.caption,
                           ),
                         ),
+                    ] else ...[
+                      SectionTitle('Registros (${entries.length})'),
+                      if (entries.isEmpty)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: AppSpace.xl),
+                          child: EmptyView(
+                            icon: Icons.sports_bar_outlined,
+                            title: 'Nenhuma bebida ainda',
+                            message: 'Registre a primeira e o botão '
+                                '"Mais uma" aparece aqui embaixo.',
+                          ),
+                        )
+                      else
+                        for (final e in entries)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                            child: EntryTile(
+                              entry: e,
+                              onTap: () => _edit(e),
+                              onDelete: () => cubit.deleteEntry(e),
+                            ),
+                          ),
+                    ],
                     const SizedBox(height: AppSpace.lg),
                     Center(
                       child: TextButton.icon(

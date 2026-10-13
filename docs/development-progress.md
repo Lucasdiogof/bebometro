@@ -9,7 +9,7 @@ implementado.
 | # | Bloco | Estado |
 |---|-------|--------|
 | 1a | Unidades dos ingredientes (ml, g, unidade, colher de chá/sopa, folha, gota, a gosto) | Implementado, ainda não executado |
-| 1b | Mesa do rolê: mesa/lista, cenários, recipientes, animação ilustrativa, muitos registros, preferências, retrospectiva | Em andamento |
+| 1b | Mesa do rolê: mesa/lista, cenários, recipientes, animação ilustrativa, muitos registros, preferências, retrospectiva | Implementado, ainda não executado |
 | 2 | Navegação principal (Início, Catálogo, Histórico, Resenha) + catálogo sem rolê ativo | Pendente |
 | 3 | Locais salvos (+ migration de `places`/`place_id`) | Pendente |
 | 4 | Orçamento e gastos, edição rápida de preços ausentes | Pendente |

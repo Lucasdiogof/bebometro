@@ -8,6 +8,7 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../drinks/presentation/my_drinks_page.dart';
+import '../../table/data/table_prefs_cubit.dart';
 import 'settings_cubit.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -68,6 +69,39 @@ class _SettingsViewState extends State<_SettingsView> {
               padding: const EdgeInsets.fromLTRB(
                   AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
               children: [
+                const SectionTitle('Mesa do rolê'),
+                BlocBuilder<TablePrefsCubit, TablePrefs>(
+                  builder: (context, prefs) {
+                    final cubit = context.read<TablePrefsCubit>();
+                    return SurfaceCard(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpace.sm, vertical: AppSpace.xs),
+                      child: Column(children: [
+                        SwitchListTile(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: AppSpace.sm),
+                          title: const Text('Mostrar mesa como padrão'),
+                          subtitle: const Text(
+                              'Na tela do rolê, a mesa ilustrada abre antes da lista.'),
+                          value: prefs.view == TableView.table,
+                          activeThumbColor: AppColors.amber,
+                          onChanged: (v) => cubit
+                              .setView(v ? TableView.table : TableView.list),
+                        ),
+                        SwitchListTile(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: AppSpace.sm),
+                          title: const Text('Animações da mesa'),
+                          subtitle: const Text(
+                              'Os recipientes esvaziam como ilustração. Desligado, a mesa fica estática.'),
+                          value: prefs.animations,
+                          activeThumbColor: AppColors.amber,
+                          onChanged: cubit.setAnimations,
+                        ),
+                      ]),
+                    );
+                  },
+                ),
                 const SectionTitle('Minhas bebidas'),
                 SurfaceCard(
                   onTap: () => Navigator.of(context).push(
