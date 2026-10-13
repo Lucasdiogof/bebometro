@@ -13,6 +13,7 @@ import '../../glass/presentation/tip_glass_page.dart';
 import 'custom_cards_page.dart';
 import 'game_play_page.dart';
 import 'game_setup_page.dart';
+import '../../l10n/l10n.dart';
 
 /// Home of the party games. Works offline, needs no account and no active
 /// outing, and nothing here registers drinks.
@@ -51,7 +52,7 @@ class _ResenhaPageState extends State<ResenhaPage> {
     final saved = _repo.savedSession;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Resenha'),
+        title: Text(tr.navGames),
         actions: const [SettingsAction()],
       ),
       body: SafeArea(
@@ -59,13 +60,9 @@ class _ResenhaPageState extends State<ResenhaPage> {
           padding: const EdgeInsets.fromLTRB(
               AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
           children: [
-            const Text(
-              'Jogos para a mesa, sem internet e sem conta. As cartas não '
-              'pedem para beber e não registram nenhuma bebida.',
-              style: AppText.caption,
-            ),
+            Text(tr.resenhaIntro, style: AppText.caption),
             if (saved != null) ...[
-              const SectionTitle('Partida em andamento'),
+              SectionTitle(tr.resenhaInProgress),
               SurfaceCard(
                 highlight: true,
                 child: Column(
@@ -74,8 +71,7 @@ class _ResenhaPageState extends State<ResenhaPage> {
                     Text(saved.game.title, style: AppText.title),
                     const SizedBox(height: AppSpace.xs),
                     Text(
-                      '${saved.players.length} participantes · '
-                      'modo ${saved.mode.label}',
+                      tr.resenhaSession(saved.players.length, saved.mode.label),
                       style: AppText.caption,
                     ),
                     const SizedBox(height: AppSpace.md),
@@ -83,7 +79,7 @@ class _ResenhaPageState extends State<ResenhaPage> {
                       Expanded(
                         child: FilledButton(
                           onPressed: () => _open(const GamePlayPage.resume()),
-                          child: const Text('Retomar'),
+                          child: Text(tr.resenhaResume),
                         ),
                       ),
                       const SizedBox(width: AppSpace.sm),
@@ -92,14 +88,14 @@ class _ResenhaPageState extends State<ResenhaPage> {
                           await _repo.clearSession();
                           if (mounted) setState(() {});
                         },
-                        child: const Text('Descartar'),
+                        child: Text(tr.entryDiscard),
                       ),
                     ]),
                   ],
                 ),
               ),
             ],
-            const SectionTitle('Jogos'),
+            SectionTitle(tr.resenhaGames),
             for (final g in GameType.values)
               Padding(
                 padding: const EdgeInsets.only(bottom: AppSpace.sm),
@@ -122,19 +118,18 @@ class _ResenhaPageState extends State<ResenhaPage> {
                   ]),
                 ),
               ),
-            const SectionTitle('Brincadeira'),
+            SectionTitle(tr.resenhaPlay),
             SurfaceCard(
               onTap: () => _open(const TipGlassPage()),
               child: Row(children: [
                 const Icon(Icons.rotate_right_rounded, color: AppColors.amber),
                 const SizedBox(width: AppSpace.md),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Virar o copo', style: AppText.subtitle),
-                      Text('A tela vira um copo: incline o celular. Só visual.',
-                          style: AppText.caption),
+                      Text(tr.resenhaTipTitle, style: AppText.subtitle),
+                      Text(tr.resenhaTipBody, style: AppText.caption),
                     ],
                   ),
                 ),
@@ -142,7 +137,7 @@ class _ResenhaPageState extends State<ResenhaPage> {
                     color: AppColors.textMuted),
               ]),
             ),
-            const SectionTitle('Cartas'),
+            SectionTitle(tr.resenhaCards),
             SurfaceCard(
               onTap: () => _open(const CustomCardsPage()),
               child: Row(children: [
@@ -152,9 +147,9 @@ class _ResenhaPageState extends State<ResenhaPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Minhas cartas', style: AppText.subtitle),
+                      Text(tr.resenhaMyCards, style: AppText.subtitle),
                       Text(
-                        '${_repo.customCards.length} criadas por você',
+                        tr.resenhaMyCardsCount(_repo.customCards.length),
                         style: AppText.caption,
                       ),
                     ],

@@ -3,26 +3,36 @@ import 'package:flutter/material.dart';
 import '../../core/utils/formatters.dart';
 import '../../drinks/domain/drink_category.dart';
 import '../../drinks/domain/drink_entry.dart';
+import '../../l10n/l10n.dart';
 
 /// The container drawn for a record. It is chosen from the data that exists
 /// (the presentation label and the category). When the presentation is
 /// unknown a generic vessel coherent with the category is used, never a
 /// specific package.
 enum VesselKind {
-  can('Lata'),
-  longNeck('Long neck'),
-  bottle('Garrafa'),
-  beerGlass('Copo de cerveja'),
-  draftMug('Copo de chopp'),
-  shot('Dose'),
-  wineGlass('Taça de vinho'),
-  cocktailGlass('Copo de drink'),
-  waterGlass('Copo de água'),
-  genericGlass('Copo');
+  can,
+  longNeck,
+  bottle,
+  beerGlass,
+  draftMug,
+  shot,
+  wineGlass,
+  cocktailGlass,
+  waterGlass,
+  genericGlass;
 
-  const VesselKind(this.label);
-
-  final String label;
+  String get label => switch (this) {
+        VesselKind.can => tr.vesselCan,
+        VesselKind.longNeck => tr.vesselLongNeck,
+        VesselKind.bottle => tr.vesselBottle,
+        VesselKind.beerGlass => tr.vesselBeerGlass,
+        VesselKind.draftMug => tr.vesselDraftMug,
+        VesselKind.shot => tr.vesselShot,
+        VesselKind.wineGlass => tr.vesselWineGlass,
+        VesselKind.cocktailGlass => tr.vesselCocktailGlass,
+        VesselKind.waterGlass => tr.vesselWaterGlass,
+        VesselKind.genericGlass => tr.vesselGlass,
+      };
 
   /// How long the purely decorative "emptying" takes. It is an illustration
   /// of the registered drink, not an estimate of how fast anyone drinks.
@@ -120,13 +130,14 @@ double _restingFill(DrinkEntry e) {
 /// Spoken description of a vessel (for screen readers and tooltips).
 String vesselSemantics(DrinkEntry e, VesselKind kind, {int count = 1}) {
   final parts = <String>[
-    count > 1 ? '$count registros de ${e.name}' : e.name,
+    count > 1 ? tr.tableSemanticsMany(count, e.name) : e.name,
     kind.label,
     if (count == 1) formatTime(e.consumedAt),
     if (count == 1 && e.personalMl != null) formatMl(e.personalMl!),
-    if (count == 1 && e.isShared && e.personalMl != null) 'sua parte de bebida compartilhada',
+    if (count == 1 && e.isShared && e.personalMl != null)
+      tr.tableSemanticsSharedPart,
     if (count == 1 && e.priceKind == PriceKind.informed && e.paidCents != null)
       formatCents(e.paidCents!),
   ];
-  return '${parts.join(', ')}. Toque para ver os detalhes.';
+  return '${parts.join(', ')}. ${tr.tableSemanticsTap}';
 }

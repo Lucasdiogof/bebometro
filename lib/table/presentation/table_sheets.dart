@@ -7,6 +7,7 @@ import '../../drinks/domain/drink_entry.dart';
 import '../domain/drink_vessel.dart';
 import '../domain/table_scenario.dart';
 import '../../drinks/domain/presentation_label.dart';
+import '../../l10n/l10n.dart';
 
 /// Details of one record, with the existing edit and delete actions.
 Future<void> showEntryDetailSheet(
@@ -79,14 +80,17 @@ Future<void> showEntryGroupSheet(
 
 String _summaryLine(DrinkEntry e) => [
       formatTime(e.consumedAt),
-      if (e.personalMl != null) formatMl(e.personalMl!) else 'volume desconhecido',
+      if (e.personalMl != null)
+        formatMl(e.personalMl!)
+      else
+        tr.recordsUnknownVolume,
       _price(e),
     ].join(' · ');
 
 String _price(DrinkEntry e) => switch (e.priceKind) {
       PriceKind.informed => formatCents(e.paidCents ?? 0),
-      PriceKind.complimentary => 'Cortesia',
-      PriceKind.unknown => 'Sem preço',
+      PriceKind.complimentary => tr.priceComplimentary,
+      PriceKind.unknown => tr.priceNone,
     };
 
 class _EntryDetail extends StatelessWidget {
@@ -123,27 +127,29 @@ class _EntryDetail extends StatelessWidget {
               style: AppText.caption,
             ),
             const SizedBox(height: AppSpace.lg),
-            _Line(Icons.schedule_rounded, 'Horário', formatDateTime(e.consumedAt)),
+            _Line(Icons.schedule_rounded, tr.entryTimeSection,
+                formatDateTime(e.consumedAt)),
             _Line(
               Icons.opacity_rounded,
-              'Seu volume',
-              personal == null ? 'Não informado' : formatMl(personal),
+              tr.tableYourVolume,
+              personal == null ? tr.detailNotGiven : formatMl(personal),
             ),
             if (e.isShared && personal != null && container != null)
               _Line(
                 Icons.groups_outlined,
-                'Compartilhada',
-                'Sua parte: ${formatMl(personal)} de ${formatMl(container)} '
-                    '(${e.peopleCount} pessoas)',
+                tr.entryShared,
+                tr.tableSharedLine(formatMl(personal), formatMl(container),
+                    e.peopleCount),
               ),
-            _Line(Icons.payments_outlined, 'Preço', _price(e)),
+            _Line(Icons.payments_outlined, tr.tabFillPriceTitle, _price(e)),
             if (e.isMixed && e.composition!.customized)
-              const _Line(Icons.tune_rounded, 'Composição', 'Receita ajustada'),
+              _Line(Icons.tune_rounded, tr.entryCompositionTitle,
+                  tr.tableRecipeAdjusted),
             const SizedBox(height: AppSpace.lg),
             FilledButton.icon(
               onPressed: () => onEdit(e),
               icon: const Icon(Icons.edit_outlined),
-              label: const Text('Corrigir registro'),
+              label: Text(tr.entryFix),
             ),
             const SizedBox(height: AppSpace.xs),
             Center(
@@ -151,8 +157,8 @@ class _EntryDetail extends StatelessWidget {
                 onPressed: () => onDelete(e),
                 icon: const Icon(Icons.delete_outline_rounded,
                     size: 18, color: AppColors.danger),
-                label: const Text('Excluir',
-                    style: TextStyle(color: AppColors.danger)),
+                label: Text(tr.commonDelete,
+                    style: const TextStyle(color: AppColors.danger)),
               ),
             ),
           ],
@@ -209,13 +215,9 @@ Future<void> showScenarioPicker(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Cenário da mesa', style: AppText.title),
+            Text(tr.tableScenarioTitle, style: AppText.title),
             const SizedBox(height: AppSpace.xs),
-            const Text(
-              'Só muda a ilustração. O local, o tipo e os registros do rolê '
-              'continuam iguais.',
-              style: AppText.caption,
-            ),
+            Text(tr.tableScenarioNote, style: AppText.caption),
             const SizedBox(height: AppSpace.lg),
             Wrap(
               spacing: AppSpace.sm,
@@ -250,17 +252,11 @@ Future<void> showTableAbout(BuildContext context) {
   return showDialog<void>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text('Sobre a mesa'),
-      content: const Text(
-        'Animação ilustrativa das bebidas registradas.\n\n'
-        'Os recipientes esvaziam só como efeito visual, com base no horário '
-        'do registro. Isso não mede quanto você bebeu, não indica álcool no '
-        'corpo e não muda nenhum registro: os totais vêm apenas do que você '
-        'informou.',
-      ),
+      title: Text(tr.tableAboutTitle),
+      content: Text(tr.tableAboutBody),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(ctx), child: const Text('Entendi')),
+            onPressed: () => Navigator.pop(ctx), child: Text(tr.tableUnderstood)),
       ],
     ),
   );

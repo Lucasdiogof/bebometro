@@ -4,6 +4,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/common.dart';
 import '../domain/glass_math.dart';
+import '../../l10n/l10n.dart';
 
 /// Optional picture of the known volume registered so far: a glass with the
 /// total on an explicit scale. It is not alcohol in the body, a capacity or a
@@ -30,9 +31,8 @@ class AccumulatedGlass extends StatelessWidget {
     final total = alcoholicMl + otherMl;
     final scale = glassScaleMl(total);
     return Semantics(
-      label: 'Copão: ${formatVolume(total)} de volume informado, em uma '
-          'escala de até ${formatVolume(scale)}'
-          '${unknownVolumeCount > 0 ? ', mais $unknownVolumeCount registros sem volume' : ''}.',
+      label: tr.glassSemantics(
+          formatVolume(total), formatVolume(scale), unknownVolumeCount),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -52,33 +52,29 @@ class AccumulatedGlass extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Volume informado', style: AppText.caption),
+                Text(tr.glassVolumeReported, style: AppText.caption),
                 Text(formatVolume(total), style: AppText.headline),
                 const SizedBox(height: AppSpace.xs),
-                Text('Escala: até ${formatVolume(scale)}',
+                Text(tr.glassScale(formatVolume(scale)),
                     style: AppText.caption),
                 const SizedBox(height: AppSpace.md),
                 _Legend(
                     color: AppColors.amber,
-                    text: 'Com álcool: ${formatVolume(alcoholicMl)}'),
+                    text: tr.glassAlcoholic(formatVolume(alcoholicMl))),
                 const SizedBox(height: AppSpace.xs),
                 _Legend(
                     color: const Color(0xFF6EC1E4),
-                    text: 'Água e sem álcool: ${formatVolume(otherMl)}'),
+                    text: tr.glassOther(formatVolume(otherMl))),
                 if (unknownVolumeCount > 0) ...[
                   const SizedBox(height: AppSpace.md),
                   InfoPill(
-                    '+ $unknownVolumeCount sem volume (não entram)',
+                    tr.glassNoVolume(unknownVolumeCount),
                     icon: Icons.opacity_outlined,
                     warning: true,
                   ),
                 ],
                 const SizedBox(height: AppSpace.md),
-                const Text(
-                  'Só uma forma de ver a soma dos volumes registrados. Não '
-                  'representa álcool no corpo, capacidade nem meta.',
-                  style: AppText.caption,
-                ),
+                Text(tr.glassNote, style: AppText.caption),
               ],
             ),
           ),

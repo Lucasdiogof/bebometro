@@ -7,6 +7,7 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/common.dart';
 import '../domain/game_models.dart';
 import 'game_cubit.dart';
+import '../../l10n/l10n.dart';
 
 /// A match in progress. The match is saved after every action, so leaving the
 /// screen keeps it for later ("Retomar" in Resenha).
@@ -60,16 +61,15 @@ class _PlayView extends StatelessWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Encerrar a partida?'),
-        content: const Text(
-            'Ela não ficará salva. Para só dar uma pausa, volte e retome depois.'),
+        title: Text(tr.gameFinishTitle),
+        content: Text(tr.gameFinishBody),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Continuar jogando')),
+              child: Text(tr.gameKeepPlaying)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Encerrar')),
+              child: Text(tr.gameFinish)),
         ],
       ),
     );
@@ -99,7 +99,7 @@ class _PlayView extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () => _confirmFinish(context),
-                child: const Text('Encerrar'),
+                child: Text(tr.gameFinish),
               ),
             ],
           ),
@@ -108,9 +108,10 @@ class _PlayView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
                 child: Row(children: [
-                  InfoPill('Modo ${session.mode.label}', icon: Icons.tune_rounded),
+                  InfoPill(tr.gameModePill(session.mode.label),
+                      icon: Icons.tune_rounded),
                   const SizedBox(width: AppSpace.sm),
-                  InfoPill('$left cartas restantes', icon: Icons.style_outlined),
+                  InfoPill(tr.gameCardsLeft(left), icon: Icons.style_outlined),
                 ]),
               ),
               Expanded(
@@ -147,17 +148,17 @@ class _Stage extends StatelessWidget {
         children: [
           const Icon(Icons.style_rounded, size: 40, color: AppColors.amber),
           const SizedBox(height: AppSpace.md),
-          const Text('Acabaram as cartas', style: AppText.title),
+          Text(tr.gameOutOfCards, style: AppText.title),
           const SizedBox(height: AppSpace.sm),
-          const Text(
-            'Dá para embaralhar tudo de novo ou encerrar a partida.',
+          Text(
+            tr.gameOutOfCardsHint,
             textAlign: TextAlign.center,
             style: AppText.caption,
           ),
           const SizedBox(height: AppSpace.lg),
           FilledButton(
             onPressed: cubit.reshuffle,
-            child: const Text('Embaralhar de novo'),
+            child: Text(tr.gameReshuffle),
           ),
         ],
       );
@@ -165,22 +166,27 @@ class _Stage extends StatelessWidget {
       child = _Panel(
         key: ValueKey('choice-${session.turn}'),
         children: [
-          Text('Vez de ${session.currentPlayer}', style: AppText.title),
+          Text(tr.gameTurnOf(session.currentPlayer), style: AppText.title),
           const SizedBox(height: AppSpace.sm),
-          const Text('Verdade ou desafio?', style: AppText.subtitle),
-          if (state.notice != null) ...[
+          Text(tr.gameTruthOrDareQ, style: AppText.subtitle),
+          if (state.noticeKind != null) ...[
             const SizedBox(height: AppSpace.sm),
-            Text(state.notice!, style: AppText.caption, textAlign: TextAlign.center),
+            Text(
+                state.noticeKind == CardKind.truth
+                    ? tr.gameNoTruthLeft
+                    : tr.gameNoDareLeft,
+                style: AppText.caption,
+                textAlign: TextAlign.center),
           ],
           const SizedBox(height: AppSpace.xl),
           FilledButton(
             onPressed: () => cubit.choose(CardKind.truth),
-            child: const Text('Verdade'),
+            child: Text(CardKind.truth.label),
           ),
           const SizedBox(height: AppSpace.sm),
           OutlinedButton(
             onPressed: () => cubit.choose(CardKind.dare),
-            child: const Text('Desafio'),
+            child: Text(CardKind.dare.label),
           ),
         ],
       );
@@ -200,7 +206,7 @@ class _Stage extends StatelessWidget {
           else
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpace.md),
-              child: Text('Quem lê: ${session.currentPlayer}',
+              child: Text(tr.gameWhoReads(session.currentPlayer),
                   style: AppText.caption),
             ),
           Text(
@@ -210,8 +216,8 @@ class _Stage extends StatelessWidget {
           ),
           if (card.optional || card.mode == GameMode.adult) ...[
             const SizedBox(height: AppSpace.lg),
-            const Text(
-              'Opcional: pode pular sem punição.',
+            Text(
+              tr.gameOptional,
               textAlign: TextAlign.center,
               style: AppText.caption,
             ),
@@ -282,7 +288,7 @@ class _Scoreboard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Toque no nome para somar 1 ponto', style: AppText.caption),
+          Text(tr.gameTapToScore, style: AppText.caption),
           const SizedBox(height: AppSpace.xs),
           Wrap(
             spacing: AppSpace.sm,
@@ -297,10 +303,10 @@ class _Scoreboard extends StatelessWidget {
                     messenger
                       ..hideCurrentSnackBar()
                       ..showSnackBar(SnackBar(
-                        content: Text('+1 para $p'),
+                        content: Text(tr.gamePlusOne(p)),
                         duration: const Duration(seconds: 3),
                         action: SnackBarAction(
-                          label: 'Desfazer',
+                          label: tr.commonUndo,
                           onPressed: () => cubit.removePoint(p),
                         ),
                       ));
@@ -334,7 +340,7 @@ class _Controls extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: cubit.skip,
                   icon: const Icon(Icons.skip_next_rounded),
-                  label: const Text('Pular'),
+                  label: Text(tr.gameSkip),
                 ),
               ),
               const SizedBox(width: AppSpace.sm),
@@ -342,13 +348,13 @@ class _Controls extends StatelessWidget {
                 child: FilledButton.icon(
                   onPressed: cubit.next,
                   icon: const Icon(Icons.arrow_forward_rounded),
-                  label: const Text('Próxima'),
+                  label: Text(tr.gameNext),
                 ),
               ),
             ])
           else
-            const Text(
-              'A partida fica salva: você pode sair e retomar na Resenha.',
+            Text(
+              tr.gameSavedNote(tr.navGames),
               textAlign: TextAlign.center,
               style: AppText.caption,
             ),

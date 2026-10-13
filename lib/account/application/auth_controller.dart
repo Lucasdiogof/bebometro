@@ -324,7 +324,7 @@ class AuthController extends Cubit<AccessState> {
       final res = await _auth.signUp(
         email: email.trim(),
         password: password,
-        data: {'display_name': name.trim()},
+        data: {'display_name': name.trim(), 'language': trLanguage},
         emailRedirectTo: redirectUrl,
       );
       if (res.session == null) {
@@ -351,7 +351,9 @@ class AuthController extends Cubit<AccessState> {
     }
     try {
       await _auth.updateUser(
-        UserAttributes(email: email.trim(), data: {'display_name': name.trim()}),
+        UserAttributes(
+            email: email.trim(),
+            data: {'display_name': name.trim(), 'language': trLanguage}),
         emailRedirectTo: redirectUrl,
       );
       await _device.setString(
@@ -474,6 +476,18 @@ class AuthController extends Cubit<AccessState> {
     } on AuthException catch (e) {
       throw _map(e);
     }
+  }
+
+  /// Records the app language in the account (user_metadata.language) so the
+  /// e-mail templates can answer in it. Best effort and silent: the e-mails
+  /// fall back to Portuguese when it was never recorded.
+  Future<void> syncLanguage() async {
+    final user = _auth.currentUser;
+    if (!cloudEnabled || user == null || user.isAnonymous) return;
+    if (user.userMetadata?['language'] == trLanguage) return;
+    try {
+      await _auth.updateUser(UserAttributes(data: {'language': trLanguage}));
+    } catch (_) {}
   }
 
   Future<void> updateName(String name) async {

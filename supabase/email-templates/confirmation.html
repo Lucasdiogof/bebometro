@@ -1,0 +1,19 @@
+<!-- Bebômetro · auth e-mail "confirmation" · pt-BR (default), en, es.
+     The language comes from user_metadata.language (set by the app). Anything else, or
+     an account that never recorded it, gets Portuguese. Subject: Confirme seu e-mail · Confirm your email · Confirma tu correo -->
+{{ if eq .Data.language "en" }}
+<h2>Confirm your email</h2>
+<p>Just confirm this email address to activate your Bebômetro account.</p>
+<p><a href="{{ .ConfirmationURL }}">Confirm email</a></p>
+<p>Or enter this code in the app: <strong>{{ .Token }}</strong></p>
+{{ else if eq .Data.language "es" }}
+<h2>Confirma tu correo</h2>
+<p>Solo falta confirmar este correo para activar tu cuenta de Bebômetro.</p>
+<p><a href="{{ .ConfirmationURL }}">Confirmar correo</a></p>
+<p>O escribe este código en la app: <strong>{{ .Token }}</strong></p>
+{{ else }}
+<h2>Confirme seu e-mail</h2>
+<p>Falta só confirmar este e-mail para ativar sua conta no Bebômetro.</p>
+<p><a href="{{ .ConfirmationURL }}">Confirmar e-mail</a></p>
+<p>Ou digite este código no app: <strong>{{ .Token }}</strong></p>
+{{ end }}

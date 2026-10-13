@@ -7,6 +7,7 @@ import '../../core/widgets/common.dart';
 import '../data/game_repository.dart';
 import '../domain/game_models.dart';
 import 'game_play_page.dart';
+import '../../l10n/l10n.dart';
 
 /// Participants (nicknames only), mode and optional points, then start.
 class GameSetupPage extends StatefulWidget {
@@ -37,11 +38,11 @@ class _GameSetupPageState extends State<GameSetupPage> {
     final value = _name.text.trim();
     if (value.isEmpty) return;
     if (_players.any((p) => p.toLowerCase() == value.toLowerCase())) {
-      setState(() => _error = 'Já existe alguém com esse apelido.');
+      setState(() => _error = tr.gameAlreadyPlayer);
       return;
     }
     if (_players.length >= 20) {
-      setState(() => _error = 'No máximo 20 participantes.');
+      setState(() => _error = tr.gameMaxPlayers);
       return;
     }
     setState(() {
@@ -85,7 +86,7 @@ class _GameSetupPageState extends State<GameSetupPage> {
                   AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
               children: [
                 Text(g.description, style: AppText.caption),
-                const SectionTitle('Quem vai jogar?'),
+                SectionTitle(tr.gameWhoPlays),
                 Row(children: [
                   Expanded(
                     child: TextField(
@@ -94,14 +95,14 @@ class _GameSetupPageState extends State<GameSetupPage> {
                       textInputAction: TextInputAction.done,
                       onSubmitted: (_) => _add(),
                       decoration: InputDecoration(
-                        labelText: 'Apelido',
+                        labelText: tr.pickerManualNickname,
                         errorText: _error,
                       ),
                     ),
                   ),
                   const SizedBox(width: AppSpace.sm),
                   IconButton.filled(
-                    tooltip: 'Adicionar participante',
+                    tooltip: tr.gameAddPlayerTooltip,
                     onPressed: _add,
                     icon: const Icon(Icons.add_rounded),
                   ),
@@ -109,9 +110,7 @@ class _GameSetupPageState extends State<GameSetupPage> {
                 const SizedBox(height: AppSpace.md),
                 if (_players.isEmpty)
                   Text(
-                    g.minPlayers == 1
-                        ? 'Adicione pelo menos 1 participante.'
-                        : 'Adicione pelo menos ${g.minPlayers} participantes.',
+                    tr.gameNeedPlayers(g.minPlayers),
                     style: AppText.caption,
                   )
                 else
@@ -123,18 +122,22 @@ class _GameSetupPageState extends State<GameSetupPage> {
                         InputChip(
                           label: Text(p),
                           onDeleted: () => setState(() => _players.remove(p)),
-                          deleteButtonTooltipMessage: 'Remover $p',
+                          deleteButtonTooltipMessage: tr.gameRemovePlayer(p),
                         ),
                     ],
                   ),
-                const SectionTitle('Modo'),
+                SectionTitle(tr.gameMode),
                 SizedBox(
                   width: double.infinity,
                   child: SegmentedButton<GameMode>(
                     showSelectedIcon: false,
-                    segments: const [
-                      ButtonSegment(value: GameMode.light, label: Text('Leve')),
-                      ButtonSegment(value: GameMode.adult, label: Text('+18')),
+                    segments: [
+                      ButtonSegment(
+                          value: GameMode.light,
+                          label: Text(GameMode.light.label)),
+                      ButtonSegment(
+                          value: GameMode.adult,
+                          label: Text(GameMode.adult.label)),
                     ],
                     selected: {_mode},
                     onSelectionChanged: (s) => setState(() {
@@ -145,11 +148,7 @@ class _GameSetupPageState extends State<GameSetupPage> {
                 ),
                 const SizedBox(height: AppSpace.sm),
                 Text(
-                  _mode == GameMode.light
-                      ? 'Sem conteúdo sexual. Para qualquer turma.'
-                      : 'Mistura as cartas leves com flerte e humor para '
-                          'adultos. Nada explícito, e tudo pode ser pulado '
-                          'sem punição.',
+                  _mode == GameMode.light ? tr.gameLightNote : tr.gameAdultNote,
                   style: AppText.caption,
                 ),
                 if (_mode == GameMode.adult)
@@ -160,27 +159,19 @@ class _GameSetupPageState extends State<GameSetupPage> {
                     value: _adultsConfirmed,
                     onChanged: (v) =>
                         setState(() => _adultsConfirmed = v ?? false),
-                    title: const Text(
-                      'Confirmo que todas as pessoas que vão jogar são '
-                      'adultas (18+) e toparam o modo +18.',
-                    ),
+                    title: Text(tr.gameAdultConfirm),
                   ),
-                const SectionTitle('Pontos'),
+                SectionTitle(tr.gamePoints),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('Contar pontos (opcional)'),
-                  subtitle: const Text(
-                      'Dá para jogar só na conversa, sem placar.'),
+                  title: Text(tr.gameCountPoints),
+                  subtitle: Text(tr.gameCountPointsHint),
                   value: _points,
                   activeThumbColor: AppColors.amber,
                   onChanged: (v) => setState(() => _points = v),
                 ),
                 const SizedBox(height: AppSpace.md),
-                const Text(
-                  'As cartas nunca pedem para beber, virar doses ou '
-                  'acumular bebidas, e nada aqui registra bebidas no seu rolê.',
-                  style: AppText.caption,
-                ),
+                Text(tr.gameNoDrinkNote, style: AppText.caption),
               ],
             ),
           ),
@@ -188,7 +179,7 @@ class _GameSetupPageState extends State<GameSetupPage> {
             child: FilledButton.icon(
               onPressed: _canStart ? _start : null,
               icon: const Icon(Icons.play_arrow_rounded),
-              label: const Text('Começar'),
+              label: Text(tr.gameStart),
             ),
           ),
         ],

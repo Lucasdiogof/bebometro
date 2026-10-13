@@ -5252,4 +5252,491 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get trackingChannelDescription =>
       'Elapsed time and count of the outing on the lock screen. No sound or vibration.';
+
+  @override
+  String get vesselCan => 'Can';
+
+  @override
+  String get vesselLongNeck => 'Long neck';
+
+  @override
+  String get vesselBottle => 'Bottle';
+
+  @override
+  String get vesselBeerGlass => 'Beer glass';
+
+  @override
+  String get vesselDraftMug => 'Draft beer mug';
+
+  @override
+  String get vesselShot => 'Shot';
+
+  @override
+  String get vesselWineGlass => 'Wine glass';
+
+  @override
+  String get vesselCocktailGlass => 'Cocktail glass';
+
+  @override
+  String get vesselWaterGlass => 'Water glass';
+
+  @override
+  String get vesselGlass => 'Glass';
+
+  @override
+  String get scenarioBar => 'Bar/pub';
+
+  @override
+  String get scenarioClub => 'Club';
+
+  @override
+  String get scenarioBarbecue => 'Barbecue';
+
+  @override
+  String get scenarioHome => 'Home';
+
+  @override
+  String get scenarioBeach => 'Beach';
+
+  @override
+  String get scenarioRestaurant => 'Restaurant';
+
+  @override
+  String tableSemanticsMany(String count, String name) {
+    return '$count records of $name';
+  }
+
+  @override
+  String get tableSemanticsSharedPart => 'your share of a shared drink';
+
+  @override
+  String get tableSemanticsTap => 'Tap to see the details.';
+
+  @override
+  String tableOthersTitle(String count) {
+    return 'Other records ($count)';
+  }
+
+  @override
+  String tableGroupTitle(String count, String name) {
+    return '$count × $name';
+  }
+
+  @override
+  String tableSemanticsOuting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Outing table with $count records',
+      one: 'Outing table with 1 record',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tableSemanticsTable(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Table with $count records',
+      one: 'Table with 1 record',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tableEmpty => 'The table is empty';
+
+  @override
+  String tableOverflowSemantics(String count) {
+    return '$count more records. Tap to see the list.';
+  }
+
+  @override
+  String tableYours(String amount) {
+    return '$amount yours';
+  }
+
+  @override
+  String get tableYourVolume => 'Your volume';
+
+  @override
+  String tableSharedLine(String mine, String total, String count) {
+    return 'Your share: $mine of $total ($count people)';
+  }
+
+  @override
+  String get tableRecipeAdjusted => 'Adjusted recipe';
+
+  @override
+  String get tableScenarioTitle => 'Table scenery';
+
+  @override
+  String get tableScenarioNote =>
+      'Only the illustration changes. The place, the type and the records of the outing stay the same.';
+
+  @override
+  String get tableAboutTitle => 'About the table';
+
+  @override
+  String get tableAboutBody =>
+      'Illustrative animation of the drinks logged.\n\nThe containers empty only as a visual effect, based on the time of the record. This does not measure how much you drank, does not indicate alcohol in the body and does not change any record: the totals come only from what you entered.';
+
+  @override
+  String get tableUnderstood => 'Got it';
+
+  @override
+  String glassSemantics(String total, String scale, int unknown) {
+    String _temp0 = intl.Intl.pluralLogic(
+      unknown,
+      locale: localeName,
+      other: ', plus $unknown records without a volume',
+      one: ', plus 1 record without a volume',
+      zero: '',
+    );
+    return 'Big glass: $total of reported volume, on a scale up to $scale$_temp0.';
+  }
+
+  @override
+  String get glassVolumeReported => 'Reported volume';
+
+  @override
+  String glassScale(String scale) {
+    return 'Scale: up to $scale';
+  }
+
+  @override
+  String glassAlcoholic(String amount) {
+    return 'With alcohol: $amount';
+  }
+
+  @override
+  String glassOther(String amount) {
+    return 'Water and non-alcoholic: $amount';
+  }
+
+  @override
+  String glassNoVolume(String count) {
+    return '+ $count without a volume (not included)';
+  }
+
+  @override
+  String get glassNote =>
+      'Just a way to see the sum of the volumes logged. It does not represent alcohol in the body, capacity or a goal.';
+
+  @override
+  String get tipNoSensor => 'No motion sensor. Drag to tilt.';
+
+  @override
+  String get tipHintTilt => 'Tilt the phone to move the beer.';
+
+  @override
+  String get tipHintDrag => 'Drag to tilt.';
+
+  @override
+  String get tipNoReading => 'No motion reading. Drag to tilt.';
+
+  @override
+  String get tipReactMotion => 'React to motion';
+
+  @override
+  String get tipWebNote => 'Not available in the browser: drag to tilt.';
+
+  @override
+  String get tipOffNote => 'Off, you drag your finger to tilt.';
+
+  @override
+  String get tipBubbles => 'Bubbles and waves';
+
+  @override
+  String get tipBubblesNote => 'Turn off for a calmer beer.';
+
+  @override
+  String get tipLevel => 'Level';
+
+  @override
+  String get tipVisualNote =>
+      'Visual only: the glass does not measure or log consumption, and filling it is not a goal.';
+
+  @override
+  String get tipSemantics =>
+      'Beer filling the screen. Tilt the phone to move the liquid. Visual only, it does not log consumption.';
+
+  @override
+  String get tipRefill => 'Refill';
+
+  @override
+  String get tipRefillAgain => 'Fill again';
+
+  @override
+  String get gameNeverTitle => 'Never have I ever';
+
+  @override
+  String get gameNeverDesc => 'Whoever has done it, tells. No pressure.';
+
+  @override
+  String get gameMostTitle => 'Most likely to';
+
+  @override
+  String get gameMostDesc => 'The group points to who fits the sentence best.';
+
+  @override
+  String get gameTruthTitle => 'Truth or dare';
+
+  @override
+  String get gameTruthDesc => 'Each in their turn, with the option to skip.';
+
+  @override
+  String get gameModeLight => 'Light';
+
+  @override
+  String get gameModeAdult => '18+';
+
+  @override
+  String get gameKindCard => 'Card';
+
+  @override
+  String get gameKindTruth => 'Truth';
+
+  @override
+  String get gameKindDare => 'Dare';
+
+  @override
+  String get resenhaIntro =>
+      'Table games, with no internet and no account. The cards never ask you to drink and do not log any drink.';
+
+  @override
+  String get resenhaInProgress => 'Game in progress';
+
+  @override
+  String resenhaSession(int count, String mode) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count players · $mode mode',
+      one: '1 player · $mode mode',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get resenhaResume => 'Resume';
+
+  @override
+  String get resenhaGames => 'Games';
+
+  @override
+  String get resenhaPlay => 'Just for fun';
+
+  @override
+  String get resenhaTipTitle => 'Tilt the glass';
+
+  @override
+  String get resenhaTipBody =>
+      'The screen becomes a glass: tilt the phone. Visual only.';
+
+  @override
+  String get resenhaCards => 'Cards';
+
+  @override
+  String get resenhaMyCards => 'My cards';
+
+  @override
+  String resenhaMyCardsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count created by you',
+      one: '1 created by you',
+      zero: 'None created by you',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gameAlreadyPlayer => 'Someone already has that nickname.';
+
+  @override
+  String get gameMaxPlayers => 'At most 20 players.';
+
+  @override
+  String get gameWhoPlays => 'Who is playing?';
+
+  @override
+  String get gameAddPlayerTooltip => 'Add player';
+
+  @override
+  String gameNeedPlayers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Add at least $count players.',
+      one: 'Add at least 1 player.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gameRemovePlayer(String name) {
+    return 'Remove $name';
+  }
+
+  @override
+  String get gameMode => 'Mode';
+
+  @override
+  String get gameLightNote => 'No sexual content. For any group.';
+
+  @override
+  String get gameAdultNote =>
+      'Mixes the light cards with flirting and humor for adults. Nothing explicit, and everything can be skipped without penalty.';
+
+  @override
+  String get gameAdultConfirm =>
+      'I confirm that everyone playing is an adult (18+) and agreed to the 18+ mode.';
+
+  @override
+  String get gamePoints => 'Points';
+
+  @override
+  String get gameCountPoints => 'Keep score (optional)';
+
+  @override
+  String get gameCountPointsHint =>
+      'You can play just by talking, without a scoreboard.';
+
+  @override
+  String get gameNoDrinkNote =>
+      'The cards never ask you to drink, take shots or pile up drinks, and nothing here logs drinks in your outing.';
+
+  @override
+  String get gameStart => 'Start';
+
+  @override
+  String get gameFinishTitle => 'End the game?';
+
+  @override
+  String get gameFinishBody =>
+      'It will not be saved. To just take a break, go back and resume later.';
+
+  @override
+  String get gameKeepPlaying => 'Keep playing';
+
+  @override
+  String get gameFinish => 'End';
+
+  @override
+  String gameModePill(String mode) {
+    return '$mode mode';
+  }
+
+  @override
+  String gameCardsLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cards left',
+      one: '1 card left',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gameOutOfCards => 'Out of cards';
+
+  @override
+  String get gameOutOfCardsHint =>
+      'You can shuffle everything again or end the game.';
+
+  @override
+  String get gameReshuffle => 'Shuffle again';
+
+  @override
+  String gameTurnOf(String name) {
+    return '$name\'s turn';
+  }
+
+  @override
+  String get gameTruthOrDareQ => 'Truth or dare?';
+
+  @override
+  String get gameNoTruthLeft => 'Out of truth cards. Pick another.';
+
+  @override
+  String get gameNoDareLeft => 'Out of dare cards. Pick another.';
+
+  @override
+  String gameWhoReads(String name) {
+    return 'Reads: $name';
+  }
+
+  @override
+  String get gameOptional => 'Optional: you can skip it without penalty.';
+
+  @override
+  String get gameTapToScore => 'Tap a name to add 1 point';
+
+  @override
+  String gamePlusOne(String name) {
+    return '+1 for $name';
+  }
+
+  @override
+  String get gameSkip => 'Skip';
+
+  @override
+  String get gameNext => 'Next';
+
+  @override
+  String gameSavedNote(String hub) {
+    return 'The game is saved: you can leave and resume it in $hub.';
+  }
+
+  @override
+  String get gameNewCard => 'New card';
+
+  @override
+  String get gameCardHintNever => 'Never have I ever…';
+
+  @override
+  String get gameCardHintMost => 'Who is most likely to…';
+
+  @override
+  String get gameCardText => 'Card text';
+
+  @override
+  String get gameCardRules =>
+      'No exposure, recording, coercion, driving, violence, dangerous activities or drinking as a penalty.';
+
+  @override
+  String get gameCardCreated => 'Card created';
+
+  @override
+  String get gameCardDeleteTitle => 'Delete this card?';
+
+  @override
+  String get gameCardsEmptyTitle => 'No cards of yours yet';
+
+  @override
+  String get gameCardsEmptyBody =>
+      'Create cards for your games. They join the draw in the next matches.';
+
+  @override
+  String get gameCardDelete => 'Delete card';
+
+  @override
+  String gameCardLine(String game, String mode) {
+    return '$game · $mode';
+  }
+
+  @override
+  String gameCardLineKind(String game, String mode, String kind) {
+    return '$game · $mode · $kind';
+  }
+
+  @override
+  String get gameCardNeedText => 'Write the card text.';
+
+  @override
+  String get gameCardTooLong => 'Text too long.';
 }

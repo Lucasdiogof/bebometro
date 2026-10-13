@@ -3281,5 +3281,336 @@
     }
   },
   "trackingWater": "Água",
-  "trackingChannelDescription": "Tempo e contagem do rolê na tela bloqueada. Sem som nem vibração."
+  "trackingChannelDescription": "Tempo e contagem do rolê na tela bloqueada. Sem som nem vibração.",
+  "vesselCan": "Lata",
+  "vesselLongNeck": "Long neck",
+  "vesselBottle": "Garrafa",
+  "vesselBeerGlass": "Copo de cerveja",
+  "vesselDraftMug": "Copo de chopp",
+  "vesselShot": "Dose",
+  "vesselWineGlass": "Taça de vinho",
+  "vesselCocktailGlass": "Copo de drink",
+  "vesselWaterGlass": "Copo de água",
+  "vesselGlass": "Copo",
+  "scenarioBar": "Bar/boteco",
+  "scenarioClub": "Balada",
+  "scenarioBarbecue": "Churrasco",
+  "scenarioHome": "Casa",
+  "scenarioBeach": "Praia",
+  "scenarioRestaurant": "Restaurante",
+  "tableSemanticsMany": "{count} registros de {name}",
+  "@tableSemanticsMany": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tableSemanticsSharedPart": "sua parte de bebida compartilhada",
+  "tableSemanticsTap": "Toque para ver os detalhes.",
+  "tableOthersTitle": "Outros registros ({count})",
+  "@tableOthersTitle": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tableGroupTitle": "{count} × {name}",
+  "@tableGroupTitle": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tableSemanticsOuting": "{count, plural, =1{Mesa do rolê com 1 registro} other{Mesa do rolê com {count} registros}}",
+  "@tableSemanticsOuting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tableSemanticsTable": "{count, plural, =1{Mesa com 1 registro} other{Mesa com {count} registros}}",
+  "@tableSemanticsTable": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tableEmpty": "A mesa está vazia",
+  "tableOverflowSemantics": "Mais {count} registros. Toque para ver a lista.",
+  "@tableOverflowSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tableYours": "{amount} seus",
+  "@tableYours": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "tableYourVolume": "Seu volume",
+  "tableSharedLine": "Sua parte: {mine} de {total} ({count} pessoas)",
+  "@tableSharedLine": {
+    "placeholders": {
+      "mine": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tableRecipeAdjusted": "Receita ajustada",
+  "tableScenarioTitle": "Cenário da mesa",
+  "tableScenarioNote": "Só muda a ilustração. O local, o tipo e os registros do rolê continuam iguais.",
+  "tableAboutTitle": "Sobre a mesa",
+  "tableAboutBody": "Animação ilustrativa das bebidas registradas.\n\nOs recipientes esvaziam só como efeito visual, com base no horário do registro. Isso não mede quanto você bebeu, não indica álcool no corpo e não muda nenhum registro: os totais vêm apenas do que você informou.",
+  "tableUnderstood": "Entendi",
+  "glassSemantics": "Copão: {total} de volume informado, em uma escala de até {scale}{unknown, plural, =0{} =1{, mais 1 registro sem volume} other{, mais {unknown} registros sem volume}}.",
+  "@glassSemantics": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "scale": {
+        "type": "String"
+      },
+      "unknown": {
+        "type": "int"
+      }
+    }
+  },
+  "glassVolumeReported": "Volume informado",
+  "glassScale": "Escala: até {scale}",
+  "@glassScale": {
+    "placeholders": {
+      "scale": {
+        "type": "String"
+      }
+    }
+  },
+  "glassAlcoholic": "Com álcool: {amount}",
+  "@glassAlcoholic": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "glassOther": "Água e sem álcool: {amount}",
+  "@glassOther": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "glassNoVolume": "+ {count} sem volume (não entram)",
+  "@glassNoVolume": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "glassNote": "Só uma forma de ver a soma dos volumes registrados. Não representa álcool no corpo, capacidade nem meta.",
+  "tipNoSensor": "Sem sensor de movimento. Arraste para inclinar.",
+  "tipHintTilt": "Incline o celular para mexer a cerveja.",
+  "tipHintDrag": "Arraste para inclinar.",
+  "tipNoReading": "Sem leitura de movimento. Arraste para inclinar.",
+  "tipReactMotion": "Reagir ao movimento",
+  "tipWebNote": "Não disponível no navegador: arraste para inclinar.",
+  "tipOffNote": "Desligado, você arrasta o dedo para inclinar.",
+  "tipBubbles": "Bolhas e ondas",
+  "tipBubblesNote": "Desligue para uma cerveja mais calma.",
+  "tipLevel": "Nivelar",
+  "tipVisualNote": "Só visual: o copo não mede nem registra consumo, e encher não é meta.",
+  "tipSemantics": "Cerveja que ocupa a tela. Incline o celular para mexer o líquido. Só visual, não registra consumo.",
+  "tipRefill": "Reencher",
+  "tipRefillAgain": "Encher novamente",
+  "gameNeverTitle": "Eu nunca",
+  "gameNeverDesc": "Quem já fez, conta. Sem pressão.",
+  "gameMostTitle": "Quem é mais provável",
+  "gameMostDesc": "A turma aponta quem combina mais com a frase.",
+  "gameTruthTitle": "Verdade ou desafio",
+  "gameTruthDesc": "Cada um na sua vez, com opção de pular.",
+  "gameModeLight": "Leve",
+  "gameModeAdult": "+18",
+  "gameKindCard": "Carta",
+  "gameKindTruth": "Verdade",
+  "gameKindDare": "Desafio",
+  "resenhaIntro": "Jogos para a mesa, sem internet e sem conta. As cartas não pedem para beber e não registram nenhuma bebida.",
+  "resenhaInProgress": "Partida em andamento",
+  "resenhaSession": "{count, plural, =1{1 participante · modo {mode}} other{{count} participantes · modo {mode}}}",
+  "@resenhaSession": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "resenhaResume": "Retomar",
+  "resenhaGames": "Jogos",
+  "resenhaPlay": "Brincadeira",
+  "resenhaTipTitle": "Virar o copo",
+  "resenhaTipBody": "A tela vira um copo: incline o celular. Só visual.",
+  "resenhaCards": "Cartas",
+  "resenhaMyCards": "Minhas cartas",
+  "resenhaMyCardsCount": "{count, plural, =0{Nenhuma criada por você} =1{1 criada por você} other{{count} criadas por você}}",
+  "@resenhaMyCardsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gameAlreadyPlayer": "Já existe alguém com esse apelido.",
+  "gameMaxPlayers": "No máximo 20 participantes.",
+  "gameWhoPlays": "Quem vai jogar?",
+  "gameAddPlayerTooltip": "Adicionar participante",
+  "gameNeedPlayers": "{count, plural, =1{Adicione pelo menos 1 participante.} other{Adicione pelo menos {count} participantes.}}",
+  "@gameNeedPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gameRemovePlayer": "Remover {name}",
+  "@gameRemovePlayer": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gameMode": "Modo",
+  "gameLightNote": "Sem conteúdo sexual. Para qualquer turma.",
+  "gameAdultNote": "Mistura as cartas leves com flerte e humor para adultos. Nada explícito, e tudo pode ser pulado sem punição.",
+  "gameAdultConfirm": "Confirmo que todas as pessoas que vão jogar são adultas (18+) e toparam o modo +18.",
+  "gamePoints": "Pontos",
+  "gameCountPoints": "Contar pontos (opcional)",
+  "gameCountPointsHint": "Dá para jogar só na conversa, sem placar.",
+  "gameNoDrinkNote": "As cartas nunca pedem para beber, virar doses ou acumular bebidas, e nada aqui registra bebidas no seu rolê.",
+  "gameStart": "Começar",
+  "gameFinishTitle": "Encerrar a partida?",
+  "gameFinishBody": "Ela não ficará salva. Para só dar uma pausa, volte e retome depois.",
+  "gameKeepPlaying": "Continuar jogando",
+  "gameFinish": "Encerrar",
+  "gameModePill": "Modo {mode}",
+  "@gameModePill": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardsLeft": "{count, plural, =1{1 carta restante} other{{count} cartas restantes}}",
+  "@gameCardsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gameOutOfCards": "Acabaram as cartas",
+  "gameOutOfCardsHint": "Dá para embaralhar tudo de novo ou encerrar a partida.",
+  "gameReshuffle": "Embaralhar de novo",
+  "gameTurnOf": "Vez de {name}",
+  "@gameTurnOf": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gameTruthOrDareQ": "Verdade ou desafio?",
+  "gameNoTruthLeft": "Acabaram as cartas de verdade. Escolha outra.",
+  "gameNoDareLeft": "Acabaram as cartas de desafio. Escolha outra.",
+  "gameWhoReads": "Quem lê: {name}",
+  "@gameWhoReads": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gameOptional": "Opcional: pode pular sem punição.",
+  "gameTapToScore": "Toque no nome para somar 1 ponto",
+  "gamePlusOne": "+1 para {name}",
+  "@gamePlusOne": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gameSkip": "Pular",
+  "gameNext": "Próxima",
+  "gameSavedNote": "A partida fica salva: você pode sair e retomar em {hub}.",
+  "@gameSavedNote": {
+    "placeholders": {
+      "hub": {
+        "type": "String"
+      }
+    }
+  },
+  "gameNewCard": "Nova carta",
+  "gameCardHintNever": "Eu nunca…",
+  "gameCardHintMost": "Quem é mais provável de…",
+  "gameCardText": "Texto da carta",
+  "gameCardRules": "Sem exposição, gravação, coerção, direção, violência, atividades perigosas ou beber como penalidade.",
+  "gameCardCreated": "Carta criada",
+  "gameCardDeleteTitle": "Excluir esta carta?",
+  "gameCardsEmptyTitle": "Nenhuma carta sua ainda",
+  "gameCardsEmptyBody": "Crie cartas para os seus jogos. Elas entram no sorteio das próximas partidas.",
+  "gameCardDelete": "Excluir carta",
+  "gameCardLine": "{game} · {mode}",
+  "@gameCardLine": {
+    "placeholders": {
+      "game": {
+        "type": "String"
+      },
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardLineKind": "{game} · {mode} · {kind}",
+  "@gameCardLineKind": {
+    "placeholders": {
+      "game": {
+        "type": "String"
+      },
+      "mode": {
+        "type": "String"
+      },
+      "kind": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardNeedText": "Escreva o texto da carta.",
+  "gameCardTooLong": "Texto longo demais."
 }

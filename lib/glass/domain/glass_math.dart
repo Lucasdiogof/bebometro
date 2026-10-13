@@ -1,6 +1,11 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:intl/intl.dart';
+
+import '../../core/utils/formatters.dart';
+import '../../l10n/l10n.dart';
+
 /// Scale of the accumulated-volume glass: the smallest step that holds the
 /// known total, so the glass never overflows and the scale is always stated.
 /// It is a way to read the number, not a capacity or a goal.
@@ -13,12 +18,10 @@ int glassScaleMl(int totalMl) {
   return ((totalMl / 10000).ceil()) * 10000;
 }
 
-/// "850 ml" below 1 L, "1,45 L" above.
+/// "850 ml" below 1 L, "1,45 L" above (decimal mark of the language on screen).
 String formatVolume(int ml) {
-  if (ml < 1000) return '$ml ml';
-  final liters = ml / 1000;
-  final text = liters.toStringAsFixed(2).replaceAll('.', ',');
-  return '${text.endsWith('0') ? text.substring(0, text.length - 1) : text} L';
+  if (ml < 1000) return formatMl(ml);
+  return tr.unitLiters(NumberFormat('#,##0.##', trLocaleTag).format(ml / 1000));
 }
 
 /// Fraction (0..1) of a w×h glass that can stay in it when it is tilted by

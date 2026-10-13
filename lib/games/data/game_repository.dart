@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../core/data/local_store.dart';
 import '../domain/game_models.dart';
+import '../../l10n/l10n.dart';
 
 /// Cards (bundled + the user's own) and the saved match. Everything is local:
 /// games work offline, without an account and without an active outing.
@@ -67,8 +68,8 @@ class GameRepository {
     required String text,
   }) async {
     final trimmed = text.trim();
-    if (trimmed.isEmpty) throw ArgumentError('Escreva o texto da carta.');
-    if (trimmed.length > 240) throw ArgumentError('Texto longo demais.');
+    if (trimmed.isEmpty) throw ArgumentError(tr.gameCardNeedText);
+    if (trimmed.length > 240) throw ArgumentError(tr.gameCardTooLong);
     final card = GameCard(
       id: 'custom:${_uuid.v4()}',
       game: game,

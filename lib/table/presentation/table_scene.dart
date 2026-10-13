@@ -12,6 +12,7 @@ import '../domain/table_scenario.dart';
 import 'scene_painter.dart';
 import 'table_sheets.dart';
 import 'vessel_painter.dart';
+import '../../l10n/l10n.dart';
 
 /// Illustrated table of the outing, built from the real records.
 ///
@@ -123,8 +124,8 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
       showEntryGroupSheet(
         context,
         item.isOverflow
-            ? 'Outros registros (${item.count})'
-            : '${item.count} × ${item.lead.name}',
+            ? tr.tableOthersTitle(item.count)
+            : tr.tableGroupTitle(item.count, item.lead.name),
         item.entries,
         onEdit: _edit,
         onDelete: _delete,
@@ -148,8 +149,8 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
       return Semantics(
         container: true,
         label: widget.retrospective
-            ? 'Mesa do rolê com ${widget.entries.length} registros'
-            : 'Mesa com ${widget.entries.length} registros',
+            ? tr.tableSemanticsOuting(widget.entries.length)
+            : tr.tableSemanticsTable(widget.entries.length),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: SizedBox(
@@ -165,11 +166,11 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
                   ),
                 ),
                 if (widget.entries.isEmpty)
-                  const Positioned.fill(
+                  Positioned.fill(
                     child: Center(
                       child: Text(
-                        'A mesa está vazia',
-                        style: TextStyle(
+                        tr.tableEmpty,
+                        style: const TextStyle(
                           color: AppColors.textMuted,
                           fontWeight: FontWeight.w600,
                         ),
@@ -245,7 +246,7 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
     }
 
     final label = item.isOverflow
-        ? 'Mais ${item.count} registros. Toque para ver a lista.'
+        ? tr.tableOverflowSemantics(item.count)
         : vesselSemantics(lead, kind, count: item.count);
 
     Widget content = SizedBox(
@@ -280,7 +281,7 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
               right: -8,
               bottom: -14,
               child: Text(
-                '${formatMl(lead.personalMl!)} seus',
+                tr.tableYours(formatMl(lead.personalMl!)),
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 style: TextStyle(

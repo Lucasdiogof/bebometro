@@ -9,6 +9,7 @@ import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../data/game_repository.dart';
 import '../domain/game_models.dart';
+import '../../l10n/l10n.dart';
 
 /// The user's own cards: create and delete. Bundled cards are not editable.
 class CustomCardsPage extends StatefulWidget {
@@ -46,7 +47,7 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setState) => AlertDialog(
-          title: const Text('Nova carta'),
+          title: Text(tr.gameNewCard),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -68,9 +69,11 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
                 const SizedBox(height: AppSpace.md),
                 SegmentedButton<GameMode>(
                   showSelectedIcon: false,
-                  segments: const [
-                    ButtonSegment(value: GameMode.light, label: Text('Leve')),
-                    ButtonSegment(value: GameMode.adult, label: Text('+18')),
+                  segments: [
+                    ButtonSegment(
+                        value: GameMode.light, label: Text(GameMode.light.label)),
+                    ButtonSegment(
+                        value: GameMode.adult, label: Text(GameMode.adult.label)),
                   ],
                   selected: {mode},
                   onSelectionChanged: (s) => setState(() => mode = s.first),
@@ -79,9 +82,12 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
                   const SizedBox(height: AppSpace.md),
                   SegmentedButton<CardKind>(
                     showSelectedIcon: false,
-                    segments: const [
-                      ButtonSegment(value: CardKind.truth, label: Text('Verdade')),
-                      ButtonSegment(value: CardKind.dare, label: Text('Desafio')),
+                    segments: [
+                      ButtonSegment(
+                          value: CardKind.truth,
+                          label: Text(CardKind.truth.label)),
+                      ButtonSegment(
+                          value: CardKind.dare, label: Text(CardKind.dare.label)),
                     ],
                     selected: {kind},
                     onSelectionChanged: (s) => setState(() => kind = s.first),
@@ -95,28 +101,24 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
                   maxLines: 4,
                   textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
-                    labelText: 'Texto da carta',
+                    labelText: tr.gameCardText,
                     hintText: game == GameType.neverHaveIEver
-                        ? 'Eu nunca…'
+                        ? tr.gameCardHintNever
                         : (game == GameType.mostLikely
-                            ? 'Quem é mais provável de…'
+                            ? tr.gameCardHintMost
                             : null),
                     errorText: error,
                   ),
                 ),
                 const SizedBox(height: AppSpace.xs),
-                const Text(
-                  'Sem exposição, gravação, coerção, direção, violência, '
-                  'atividades perigosas ou beber como penalidade.',
-                  style: AppText.caption,
-                ),
+                Text(tr.gameCardRules, style: AppText.caption),
               ],
             ),
           ),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: const Text('Cancelar')),
+                child: Text(tr.commonCancel)),
             TextButton(
               onPressed: () async {
                 try {
@@ -127,30 +129,30 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
                   setState(() => error = '${e.message}');
                 }
               },
-              child: const Text('Salvar'),
+              child: Text(tr.commonSave),
             ),
           ],
         ),
       ),
     );
     text.dispose();
-    if (created == true && mounted) showToast(context, 'Carta criada');
+    if (created == true && mounted) showToast(context, tr.gameCardCreated);
   }
 
   Future<void> _delete(GameCard card) async {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Excluir esta carta?'),
+        title: Text(tr.gameCardDeleteTitle),
         content: Text(card.text),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancelar')),
+              child: Text(tr.commonCancel)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Excluir',
-                  style: TextStyle(color: AppColors.danger))),
+              child: Text(tr.commonDelete,
+                  style: const TextStyle(color: AppColors.danger))),
         ],
       ),
     );
@@ -161,16 +163,15 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
   Widget build(BuildContext context) {
     final cards = _repo.customCards;
     return Scaffold(
-      appBar: AppBar(title: const Text('Minhas cartas')),
+      appBar: AppBar(title: Text(tr.resenhaMyCards)),
       body: Column(
         children: [
           Expanded(
             child: cards.isEmpty
-                ? const EmptyView(
+                ? EmptyView(
                     icon: Icons.edit_note_rounded,
-                    title: 'Nenhuma carta sua ainda',
-                    message: 'Crie cartas para os seus jogos. Elas entram no '
-                        'sorteio das próximas partidas.',
+                    title: tr.gameCardsEmptyTitle,
+                    message: tr.gameCardsEmptyBody,
                   )
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(
@@ -188,15 +189,18 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
                                     Text(c.text, style: AppText.body),
                                     const SizedBox(height: AppSpace.xs),
                                     Text(
-                                      '${c.game.title} · ${c.mode.label}'
-                                      '${c.game == GameType.truthOrDare ? ' · ${c.kind.label}' : ''}',
+                                      c.game == GameType.truthOrDare
+                                          ? tr.gameCardLineKind(c.game.title,
+                                              c.mode.label, c.kind.label)
+                                          : tr.gameCardLine(
+                                              c.game.title, c.mode.label),
                                       style: AppText.caption,
                                     ),
                                   ],
                                 ),
                               ),
                               IconButton(
-                                tooltip: 'Excluir carta',
+                                tooltip: tr.gameCardDelete,
                                 onPressed: () => _delete(c),
                                 icon: const Icon(Icons.delete_outline_rounded,
                                     color: AppColors.danger),
@@ -211,7 +215,7 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
             child: FilledButton.icon(
               onPressed: _add,
               icon: const Icon(Icons.add_rounded),
-              label: const Text('Nova carta'),
+              label: Text(tr.gameNewCard),
             ),
           ),
         ],

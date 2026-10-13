@@ -12,6 +12,7 @@ import '../../core/widgets/common.dart';
 import '../data/tilt_source.dart';
 import '../domain/beer_sim.dart';
 import 'beer_painter.dart';
+import '../../l10n/l10n.dart';
 
 /// "Virar o copo": the whole screen is a glass of beer. It is a visual toy
 /// with its own fill level: it does not read, write or change any drink
@@ -64,7 +65,7 @@ class _TipGlassPageState extends State<TipGlassPage>
       if (!mounted) return;
       setState(() => _sensorFailed = true);
       _syncRunning();
-      _showHint('Sem sensor de movimento. Arraste para inclinar.');
+      _showHint(tr.tipNoSensor);
     };
   }
 
@@ -91,13 +92,13 @@ class _TipGlassPageState extends State<TipGlassPage>
         seen = getIt<DeviceStore>().getString(_hintKey) == '1';
       } catch (_) {}
       if (!seen) {
-        _showHint('Incline o celular para mexer a cerveja.');
+        _showHint(tr.tipHintTilt);
         try {
           getIt<DeviceStore>().setString(_hintKey, '1');
         } catch (_) {}
       }
     } else {
-      _showHint('Arraste para inclinar.', long: true);
+      _showHint(tr.tipHintDrag, long: true);
     }
   }
 
@@ -138,7 +139,7 @@ class _TipGlassPageState extends State<TipGlassPage>
       if (mounted && _usingSensor && !_tilt.hasData) {
         setState(() => _sensorFailed = true);
         _syncRunning();
-        _showHint('Sem leitura de movimento. Arraste para inclinar.');
+        _showHint(tr.tipNoReading);
       }
     });
   }
@@ -209,7 +210,7 @@ class _TipGlassPageState extends State<TipGlassPage>
       if (!on) _manualAngle = _sim.angle;
     });
     _syncRunning();
-    if (!_usingSensor && !_dragged) _showHint('Arraste para inclinar.', long: true);
+    if (!_usingSensor && !_dragged) _showHint(tr.tipHintDrag, long: true);
   }
 
   Future<void> _options() async {
@@ -224,10 +225,8 @@ class _TipGlassPageState extends State<TipGlassPage>
               mainAxisSize: MainAxisSize.min,
               children: [
                 SwitchListTile(
-                  title: const Text('Reagir ao movimento'),
-                  subtitle: Text(kIsWeb
-                      ? 'Não disponível no navegador: arraste para inclinar.'
-                      : 'Desligado, você arrasta o dedo para inclinar.'),
+                  title: Text(tr.tipReactMotion),
+                  subtitle: Text(kIsWeb ? tr.tipWebNote : tr.tipOffNote),
                   value: _usingSensor,
                   onChanged: kIsWeb
                       ? null
@@ -237,8 +236,8 @@ class _TipGlassPageState extends State<TipGlassPage>
                         },
                 ),
                 SwitchListTile(
-                  title: const Text('Bolhas e ondas'),
-                  subtitle: const Text('Desligue para uma cerveja mais calma.'),
+                  title: Text(tr.tipBubbles),
+                  subtitle: Text(tr.tipBubblesNote),
                   value: _sim.effects,
                   onChanged: (v) {
                     _sim.effects = v;
@@ -247,18 +246,18 @@ class _TipGlassPageState extends State<TipGlassPage>
                 ),
                 ListTile(
                   leading: const Icon(Icons.straighten_rounded),
-                  title: const Text('Nivelar'),
+                  title: Text(tr.tipLevel),
                   onTap: () {
                     _level();
                     Navigator.pop(ctx);
                   },
                 ),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 4, 16, 0),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
                   child: Text(
-                    'Só visual: o copo não mede nem registra consumo, e encher '
-                    'não é meta.',
-                    style: TextStyle(fontSize: 12, color: Colors.white60),
+                    tr.tipVisualNote,
+                    style:
+                        const TextStyle(fontSize: 12, color: Colors.white60),
                   ),
                 ),
               ],
@@ -290,8 +289,7 @@ class _TipGlassPageState extends State<TipGlassPage>
                   behavior: HitTestBehavior.opaque,
                   onPanUpdate: (d) => _onPan(d, size),
                   child: Semantics(
-                    label: 'Cerveja que ocupa a tela. Incline o celular para '
-                        'mexer o líquido. Só visual, não registra consumo.',
+                    label: tr.tipSemantics,
                     child: RepaintBoundary(
                       child: CustomPaint(
                         painter: BeerPainter(_sim),
@@ -308,19 +306,19 @@ class _TipGlassPageState extends State<TipGlassPage>
                       child: Row(children: [
                         _RoundButton(
                           icon: Icons.close_rounded,
-                          tooltip: 'Fechar',
+                          tooltip: tr.commonClose,
                           onPressed: () => Navigator.of(context).maybePop(),
                         ),
                         const Spacer(),
                         _RoundButton(
                           icon: Icons.refresh_rounded,
-                          tooltip: 'Reencher',
+                          tooltip: tr.tipRefill,
                           onPressed: _refill,
                         ),
                         const SizedBox(width: 8),
                         _RoundButton(
                           icon: Icons.tune_rounded,
-                          tooltip: 'Opções',
+                          tooltip: tr.commonOptions,
                           onPressed: _options,
                         ),
                       ]),
@@ -338,7 +336,7 @@ class _TipGlassPageState extends State<TipGlassPage>
                             ? FilledButton.icon(
                                 onPressed: _refill,
                                 icon: const Icon(Icons.local_drink_rounded),
-                                label: const Text('Encher novamente'),
+                                label: Text(tr.tipRefillAgain),
                               )
                             : ValueListenableBuilder<String?>(
                                 valueListenable: _hint,

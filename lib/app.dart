@@ -48,6 +48,7 @@ class _BebometroAppState extends State<BebometroApp>
     rebuildAllChildren(context);
     if (AccountScope.isOpen) {
       getIt<TrackingCoordinator>().refreshTexts();
+      getIt<AuthController>().syncLanguage();
     }
   }
 

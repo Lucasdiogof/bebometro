@@ -11,7 +11,7 @@ class GameState {
     this.card,
     this.exhausted = false,
     this.finished = false,
-    this.notice,
+    this.noticeKind,
   });
 
   final GameSession? session;
@@ -24,8 +24,8 @@ class GameState {
   final bool exhausted;
   final bool finished;
 
-  /// One-off message (e.g. no dares left); shown once.
-  final String? notice;
+  /// One-off notice (no cards of this kind left); shown once.
+  final CardKind? noticeKind;
 
   bool get awaitingChoice =>
       session != null &&
@@ -101,9 +101,7 @@ class GameCubit extends Cubit<GameState> {
       emit(GameState(
         session: s,
         exhausted: nothingAtAll,
-        notice: nothingAtAll || kind == null
-            ? null
-            : 'Acabaram as cartas de ${kind.label.toLowerCase()}. Escolha outra.',
+        noticeKind: nothingAtAll ? null : kind,
       ));
       return;
     }

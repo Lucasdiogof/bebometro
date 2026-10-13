@@ -8456,6 +8456,762 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Tempo e contagem do rolê na tela bloqueada. Sem som nem vibração.'**
   String get trackingChannelDescription;
+
+  /// No description provided for @vesselCan.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lata'**
+  String get vesselCan;
+
+  /// No description provided for @vesselLongNeck.
+  ///
+  /// In pt, this message translates to:
+  /// **'Long neck'**
+  String get vesselLongNeck;
+
+  /// No description provided for @vesselBottle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Garrafa'**
+  String get vesselBottle;
+
+  /// No description provided for @vesselBeerGlass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copo de cerveja'**
+  String get vesselBeerGlass;
+
+  /// No description provided for @vesselDraftMug.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copo de chopp'**
+  String get vesselDraftMug;
+
+  /// No description provided for @vesselShot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dose'**
+  String get vesselShot;
+
+  /// No description provided for @vesselWineGlass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Taça de vinho'**
+  String get vesselWineGlass;
+
+  /// No description provided for @vesselCocktailGlass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copo de drink'**
+  String get vesselCocktailGlass;
+
+  /// No description provided for @vesselWaterGlass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copo de água'**
+  String get vesselWaterGlass;
+
+  /// No description provided for @vesselGlass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copo'**
+  String get vesselGlass;
+
+  /// No description provided for @scenarioBar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bar/boteco'**
+  String get scenarioBar;
+
+  /// No description provided for @scenarioClub.
+  ///
+  /// In pt, this message translates to:
+  /// **'Balada'**
+  String get scenarioClub;
+
+  /// No description provided for @scenarioBarbecue.
+  ///
+  /// In pt, this message translates to:
+  /// **'Churrasco'**
+  String get scenarioBarbecue;
+
+  /// No description provided for @scenarioHome.
+  ///
+  /// In pt, this message translates to:
+  /// **'Casa'**
+  String get scenarioHome;
+
+  /// No description provided for @scenarioBeach.
+  ///
+  /// In pt, this message translates to:
+  /// **'Praia'**
+  String get scenarioBeach;
+
+  /// No description provided for @scenarioRestaurant.
+  ///
+  /// In pt, this message translates to:
+  /// **'Restaurante'**
+  String get scenarioRestaurant;
+
+  /// No description provided for @tableSemanticsMany.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count} registros de {name}'**
+  String tableSemanticsMany(String count, String name);
+
+  /// No description provided for @tableSemanticsSharedPart.
+  ///
+  /// In pt, this message translates to:
+  /// **'sua parte de bebida compartilhada'**
+  String get tableSemanticsSharedPart;
+
+  /// No description provided for @tableSemanticsTap.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque para ver os detalhes.'**
+  String get tableSemanticsTap;
+
+  /// No description provided for @tableOthersTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outros registros ({count})'**
+  String tableOthersTitle(String count);
+
+  /// No description provided for @tableGroupTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count} × {name}'**
+  String tableGroupTitle(String count, String name);
+
+  /// No description provided for @tableSemanticsOuting.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Mesa do rolê com 1 registro} other{Mesa do rolê com {count} registros}}'**
+  String tableSemanticsOuting(int count);
+
+  /// No description provided for @tableSemanticsTable.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Mesa com 1 registro} other{Mesa com {count} registros}}'**
+  String tableSemanticsTable(int count);
+
+  /// No description provided for @tableEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'A mesa está vazia'**
+  String get tableEmpty;
+
+  /// No description provided for @tableOverflowSemantics.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais {count} registros. Toque para ver a lista.'**
+  String tableOverflowSemantics(String count);
+
+  /// No description provided for @tableYours.
+  ///
+  /// In pt, this message translates to:
+  /// **'{amount} seus'**
+  String tableYours(String amount);
+
+  /// No description provided for @tableYourVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu volume'**
+  String get tableYourVolume;
+
+  /// No description provided for @tableSharedLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua parte: {mine} de {total} ({count} pessoas)'**
+  String tableSharedLine(String mine, String total, String count);
+
+  /// No description provided for @tableRecipeAdjusted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Receita ajustada'**
+  String get tableRecipeAdjusted;
+
+  /// No description provided for @tableScenarioTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cenário da mesa'**
+  String get tableScenarioTitle;
+
+  /// No description provided for @tableScenarioNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só muda a ilustração. O local, o tipo e os registros do rolê continuam iguais.'**
+  String get tableScenarioNote;
+
+  /// No description provided for @tableAboutTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sobre a mesa'**
+  String get tableAboutTitle;
+
+  /// No description provided for @tableAboutBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Animação ilustrativa das bebidas registradas.\n\nOs recipientes esvaziam só como efeito visual, com base no horário do registro. Isso não mede quanto você bebeu, não indica álcool no corpo e não muda nenhum registro: os totais vêm apenas do que você informou.'**
+  String get tableAboutBody;
+
+  /// No description provided for @tableUnderstood.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entendi'**
+  String get tableUnderstood;
+
+  /// No description provided for @glassSemantics.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copão: {total} de volume informado, em uma escala de até {scale}{unknown, plural, =0{} =1{, mais 1 registro sem volume} other{, mais {unknown} registros sem volume}}.'**
+  String glassSemantics(String total, String scale, int unknown);
+
+  /// No description provided for @glassVolumeReported.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume informado'**
+  String get glassVolumeReported;
+
+  /// No description provided for @glassScale.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escala: até {scale}'**
+  String glassScale(String scale);
+
+  /// No description provided for @glassAlcoholic.
+  ///
+  /// In pt, this message translates to:
+  /// **'Com álcool: {amount}'**
+  String glassAlcoholic(String amount);
+
+  /// No description provided for @glassOther.
+  ///
+  /// In pt, this message translates to:
+  /// **'Água e sem álcool: {amount}'**
+  String glassOther(String amount);
+
+  /// No description provided for @glassNoVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'+ {count} sem volume (não entram)'**
+  String glassNoVolume(String count);
+
+  /// No description provided for @glassNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só uma forma de ver a soma dos volumes registrados. Não representa álcool no corpo, capacidade nem meta.'**
+  String get glassNote;
+
+  /// No description provided for @tipNoSensor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem sensor de movimento. Arraste para inclinar.'**
+  String get tipNoSensor;
+
+  /// No description provided for @tipHintTilt.
+  ///
+  /// In pt, this message translates to:
+  /// **'Incline o celular para mexer a cerveja.'**
+  String get tipHintTilt;
+
+  /// No description provided for @tipHintDrag.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arraste para inclinar.'**
+  String get tipHintDrag;
+
+  /// No description provided for @tipNoReading.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem leitura de movimento. Arraste para inclinar.'**
+  String get tipNoReading;
+
+  /// No description provided for @tipReactMotion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reagir ao movimento'**
+  String get tipReactMotion;
+
+  /// No description provided for @tipWebNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não disponível no navegador: arraste para inclinar.'**
+  String get tipWebNote;
+
+  /// No description provided for @tipOffNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desligado, você arrasta o dedo para inclinar.'**
+  String get tipOffNote;
+
+  /// No description provided for @tipBubbles.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bolhas e ondas'**
+  String get tipBubbles;
+
+  /// No description provided for @tipBubblesNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desligue para uma cerveja mais calma.'**
+  String get tipBubblesNote;
+
+  /// No description provided for @tipLevel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nivelar'**
+  String get tipLevel;
+
+  /// No description provided for @tipVisualNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só visual: o copo não mede nem registra consumo, e encher não é meta.'**
+  String get tipVisualNote;
+
+  /// No description provided for @tipSemantics.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cerveja que ocupa a tela. Incline o celular para mexer o líquido. Só visual, não registra consumo.'**
+  String get tipSemantics;
+
+  /// No description provided for @tipRefill.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reencher'**
+  String get tipRefill;
+
+  /// No description provided for @tipRefillAgain.
+  ///
+  /// In pt, this message translates to:
+  /// **'Encher novamente'**
+  String get tipRefillAgain;
+
+  /// No description provided for @gameNeverTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Eu nunca'**
+  String get gameNeverTitle;
+
+  /// No description provided for @gameNeverDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem já fez, conta. Sem pressão.'**
+  String get gameNeverDesc;
+
+  /// No description provided for @gameMostTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem é mais provável'**
+  String get gameMostTitle;
+
+  /// No description provided for @gameMostDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'A turma aponta quem combina mais com a frase.'**
+  String get gameMostDesc;
+
+  /// No description provided for @gameTruthTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Verdade ou desafio'**
+  String get gameTruthTitle;
+
+  /// No description provided for @gameTruthDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cada um na sua vez, com opção de pular.'**
+  String get gameTruthDesc;
+
+  /// No description provided for @gameModeLight.
+  ///
+  /// In pt, this message translates to:
+  /// **'Leve'**
+  String get gameModeLight;
+
+  /// No description provided for @gameModeAdult.
+  ///
+  /// In pt, this message translates to:
+  /// **'+18'**
+  String get gameModeAdult;
+
+  /// No description provided for @gameKindCard.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carta'**
+  String get gameKindCard;
+
+  /// No description provided for @gameKindTruth.
+  ///
+  /// In pt, this message translates to:
+  /// **'Verdade'**
+  String get gameKindTruth;
+
+  /// No description provided for @gameKindDare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desafio'**
+  String get gameKindDare;
+
+  /// No description provided for @resenhaIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Jogos para a mesa, sem internet e sem conta. As cartas não pedem para beber e não registram nenhuma bebida.'**
+  String get resenhaIntro;
+
+  /// No description provided for @resenhaInProgress.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partida em andamento'**
+  String get resenhaInProgress;
+
+  /// No description provided for @resenhaSession.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 participante · modo {mode}} other{{count} participantes · modo {mode}}}'**
+  String resenhaSession(int count, String mode);
+
+  /// No description provided for @resenhaResume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Retomar'**
+  String get resenhaResume;
+
+  /// No description provided for @resenhaGames.
+  ///
+  /// In pt, this message translates to:
+  /// **'Jogos'**
+  String get resenhaGames;
+
+  /// No description provided for @resenhaPlay.
+  ///
+  /// In pt, this message translates to:
+  /// **'Brincadeira'**
+  String get resenhaPlay;
+
+  /// No description provided for @resenhaTipTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Virar o copo'**
+  String get resenhaTipTitle;
+
+  /// No description provided for @resenhaTipBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'A tela vira um copo: incline o celular. Só visual.'**
+  String get resenhaTipBody;
+
+  /// No description provided for @resenhaCards.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cartas'**
+  String get resenhaCards;
+
+  /// No description provided for @resenhaMyCards.
+  ///
+  /// In pt, this message translates to:
+  /// **'Minhas cartas'**
+  String get resenhaMyCards;
+
+  /// No description provided for @resenhaMyCardsCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Nenhuma criada por você} =1{1 criada por você} other{{count} criadas por você}}'**
+  String resenhaMyCardsCount(int count);
+
+  /// No description provided for @gameAlreadyPlayer.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já existe alguém com esse apelido.'**
+  String get gameAlreadyPlayer;
+
+  /// No description provided for @gameMaxPlayers.
+  ///
+  /// In pt, this message translates to:
+  /// **'No máximo 20 participantes.'**
+  String get gameMaxPlayers;
+
+  /// No description provided for @gameWhoPlays.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem vai jogar?'**
+  String get gameWhoPlays;
+
+  /// No description provided for @gameAddPlayerTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar participante'**
+  String get gameAddPlayerTooltip;
+
+  /// No description provided for @gameNeedPlayers.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Adicione pelo menos 1 participante.} other{Adicione pelo menos {count} participantes.}}'**
+  String gameNeedPlayers(int count);
+
+  /// No description provided for @gameRemovePlayer.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover {name}'**
+  String gameRemovePlayer(String name);
+
+  /// No description provided for @gameMode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo'**
+  String get gameMode;
+
+  /// No description provided for @gameLightNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem conteúdo sexual. Para qualquer turma.'**
+  String get gameLightNote;
+
+  /// No description provided for @gameAdultNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mistura as cartas leves com flerte e humor para adultos. Nada explícito, e tudo pode ser pulado sem punição.'**
+  String get gameAdultNote;
+
+  /// No description provided for @gameAdultConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmo que todas as pessoas que vão jogar são adultas (18+) e toparam o modo +18.'**
+  String get gameAdultConfirm;
+
+  /// No description provided for @gamePoints.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pontos'**
+  String get gamePoints;
+
+  /// No description provided for @gameCountPoints.
+  ///
+  /// In pt, this message translates to:
+  /// **'Contar pontos (opcional)'**
+  String get gameCountPoints;
+
+  /// No description provided for @gameCountPointsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dá para jogar só na conversa, sem placar.'**
+  String get gameCountPointsHint;
+
+  /// No description provided for @gameNoDrinkNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'As cartas nunca pedem para beber, virar doses ou acumular bebidas, e nada aqui registra bebidas no seu rolê.'**
+  String get gameNoDrinkNote;
+
+  /// No description provided for @gameStart.
+  ///
+  /// In pt, this message translates to:
+  /// **'Começar'**
+  String get gameStart;
+
+  /// No description provided for @gameFinishTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Encerrar a partida?'**
+  String get gameFinishTitle;
+
+  /// No description provided for @gameFinishBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ela não ficará salva. Para só dar uma pausa, volte e retome depois.'**
+  String get gameFinishBody;
+
+  /// No description provided for @gameKeepPlaying.
+  ///
+  /// In pt, this message translates to:
+  /// **'Continuar jogando'**
+  String get gameKeepPlaying;
+
+  /// No description provided for @gameFinish.
+  ///
+  /// In pt, this message translates to:
+  /// **'Encerrar'**
+  String get gameFinish;
+
+  /// No description provided for @gameModePill.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo {mode}'**
+  String gameModePill(String mode);
+
+  /// No description provided for @gameCardsLeft.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 carta restante} other{{count} cartas restantes}}'**
+  String gameCardsLeft(int count);
+
+  /// No description provided for @gameOutOfCards.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acabaram as cartas'**
+  String get gameOutOfCards;
+
+  /// No description provided for @gameOutOfCardsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dá para embaralhar tudo de novo ou encerrar a partida.'**
+  String get gameOutOfCardsHint;
+
+  /// No description provided for @gameReshuffle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Embaralhar de novo'**
+  String get gameReshuffle;
+
+  /// No description provided for @gameTurnOf.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vez de {name}'**
+  String gameTurnOf(String name);
+
+  /// No description provided for @gameTruthOrDareQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'Verdade ou desafio?'**
+  String get gameTruthOrDareQ;
+
+  /// No description provided for @gameNoTruthLeft.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acabaram as cartas de verdade. Escolha outra.'**
+  String get gameNoTruthLeft;
+
+  /// No description provided for @gameNoDareLeft.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acabaram as cartas de desafio. Escolha outra.'**
+  String get gameNoDareLeft;
+
+  /// No description provided for @gameWhoReads.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem lê: {name}'**
+  String gameWhoReads(String name);
+
+  /// No description provided for @gameOptional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Opcional: pode pular sem punição.'**
+  String get gameOptional;
+
+  /// No description provided for @gameTapToScore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque no nome para somar 1 ponto'**
+  String get gameTapToScore;
+
+  /// No description provided for @gamePlusOne.
+  ///
+  /// In pt, this message translates to:
+  /// **'+1 para {name}'**
+  String gamePlusOne(String name);
+
+  /// No description provided for @gameSkip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pular'**
+  String get gameSkip;
+
+  /// No description provided for @gameNext.
+  ///
+  /// In pt, this message translates to:
+  /// **'Próxima'**
+  String get gameNext;
+
+  /// No description provided for @gameSavedNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'A partida fica salva: você pode sair e retomar em {hub}.'**
+  String gameSavedNote(String hub);
+
+  /// No description provided for @gameNewCard.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova carta'**
+  String get gameNewCard;
+
+  /// No description provided for @gameCardHintNever.
+  ///
+  /// In pt, this message translates to:
+  /// **'Eu nunca…'**
+  String get gameCardHintNever;
+
+  /// No description provided for @gameCardHintMost.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem é mais provável de…'**
+  String get gameCardHintMost;
+
+  /// No description provided for @gameCardText.
+  ///
+  /// In pt, this message translates to:
+  /// **'Texto da carta'**
+  String get gameCardText;
+
+  /// No description provided for @gameCardRules.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem exposição, gravação, coerção, direção, violência, atividades perigosas ou beber como penalidade.'**
+  String get gameCardRules;
+
+  /// No description provided for @gameCardCreated.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carta criada'**
+  String get gameCardCreated;
+
+  /// No description provided for @gameCardDeleteTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir esta carta?'**
+  String get gameCardDeleteTitle;
+
+  /// No description provided for @gameCardsEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma carta sua ainda'**
+  String get gameCardsEmptyTitle;
+
+  /// No description provided for @gameCardsEmptyBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie cartas para os seus jogos. Elas entram no sorteio das próximas partidas.'**
+  String get gameCardsEmptyBody;
+
+  /// No description provided for @gameCardDelete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir carta'**
+  String get gameCardDelete;
+
+  /// No description provided for @gameCardLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'{game} · {mode}'**
+  String gameCardLine(String game, String mode);
+
+  /// No description provided for @gameCardLineKind.
+  ///
+  /// In pt, this message translates to:
+  /// **'{game} · {mode} · {kind}'**
+  String gameCardLineKind(String game, String mode, String kind);
+
+  /// No description provided for @gameCardNeedText.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escreva o texto da carta.'**
+  String get gameCardNeedText;
+
+  /// No description provided for @gameCardTooLong.
+  ///
+  /// In pt, this message translates to:
+  /// **'Texto longo demais.'**
+  String get gameCardTooLong;
 }
 
 class _AppLocalizationsDelegate

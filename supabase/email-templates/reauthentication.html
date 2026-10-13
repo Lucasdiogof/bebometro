@@ -1,0 +1,16 @@
+<!-- Bebômetro · auth e-mail "reauthentication" · pt-BR (default), en, es.
+     The language comes from user_metadata.language (set by the app). Anything else, or
+     an account that never recorded it, gets Portuguese. Subject: Código de verificação · Verification code · Código de verificación -->
+{{ if eq .Data.language "en" }}
+<h2>Verification code</h2>
+<p>Use this code in the app to confirm the change of your password:</p>
+<p style="font-size:24px;letter-spacing:4px"><strong>{{ .Token }}</strong></p>
+{{ else if eq .Data.language "es" }}
+<h2>Código de verificación</h2>
+<p>Usa este código en la app para confirmar el cambio de tu contraseña:</p>
+<p style="font-size:24px;letter-spacing:4px"><strong>{{ .Token }}</strong></p>
+{{ else }}
+<h2>Código de verificação</h2>
+<p>Use este código no app para confirmar a alteração da sua senha:</p>
+<p style="font-size:24px;letter-spacing:4px"><strong>{{ .Token }}</strong></p>
+{{ end }}

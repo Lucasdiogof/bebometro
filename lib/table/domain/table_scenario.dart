@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 
 import '../../outings/domain/outing.dart';
+import '../../l10n/l10n.dart';
 
 /// Visual setting of the outing table. Purely decorative: it never changes the
 /// outing's place, type or records.
 enum TableScenario {
-  bar('bar', 'Bar/boteco', Icons.sports_bar_rounded),
-  club('club', 'Balada', Icons.nightlife_rounded),
-  barbecue('barbecue', 'Churrasco', Icons.outdoor_grill_rounded),
-  home('home', 'Casa', Icons.home_rounded),
-  beach('beach', 'Praia', Icons.beach_access_rounded),
-  restaurant('restaurant', 'Restaurante', Icons.restaurant_rounded);
+  bar('bar', Icons.sports_bar_rounded),
+  club('club', Icons.nightlife_rounded),
+  barbecue('barbecue', Icons.outdoor_grill_rounded),
+  home('home', Icons.home_rounded),
+  beach('beach', Icons.beach_access_rounded),
+  restaurant('restaurant', Icons.restaurant_rounded);
 
-  const TableScenario(this.code, this.label, this.icon);
+  const TableScenario(this.code, this.icon);
 
+  /// Stored value; never translated.
   final String code;
-  final String label;
   final IconData icon;
+
+  String get label => switch (this) {
+        TableScenario.bar => tr.scenarioBar,
+        TableScenario.club => tr.scenarioClub,
+        TableScenario.barbecue => tr.scenarioBarbecue,
+        TableScenario.home => tr.scenarioHome,
+        TableScenario.beach => tr.scenarioBeach,
+        TableScenario.restaurant => tr.scenarioRestaurant,
+      };
 
   static TableScenario? fromCode(String? code) {
     for (final s in TableScenario.values) {

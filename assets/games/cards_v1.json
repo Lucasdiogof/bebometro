@@ -7,7 +7,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca fingi que estava ouvindo uma conversa sem entender nada.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever pretended to listen to a conversation without understanding a thing.",
+    "es": "Yo nunca he fingido escuchar una conversación sin entender nada."
+   }
   },
   {
    "id": "ni-l-02",
@@ -15,7 +19,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca mandei mensagem para a pessoa errada.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever texted the wrong person.",
+    "es": "Yo nunca le he mandado un mensaje a la persona equivocada."
+   }
   },
   {
    "id": "ni-l-03",
@@ -23,7 +31,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca chorei vendo comercial.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever cried watching a commercial.",
+    "es": "Yo nunca he llorado viendo un anuncio."
+   }
   },
   {
    "id": "ni-l-04",
@@ -31,7 +43,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca perdi o ônibus por estar distraído no celular.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever missed the bus because I was distracted by my phone.",
+    "es": "Yo nunca he perdido el autobús por ir distraído con el móvil."
+   }
   },
   {
    "id": "ni-l-05",
@@ -39,7 +55,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca cantei no chuveiro como se fosse um show.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever sung in the shower as if it were a concert.",
+    "es": "Yo nunca he cantado en la ducha como si fuera un concierto."
+   }
   },
   {
    "id": "ni-l-06",
@@ -47,7 +67,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca esqueci o nome de alguém logo depois de me apresentar.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever forgotten someone's name right after being introduced.",
+    "es": "Yo nunca he olvidado el nombre de alguien justo después de que me lo presentaran."
+   }
   },
   {
    "id": "ni-l-07",
@@ -55,7 +79,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca fingi que sabia dançar numa festa.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever pretended I could dance at a party.",
+    "es": "Yo nunca he fingido que sabía bailar en una fiesta."
+   }
   },
   {
    "id": "ni-l-08",
@@ -63,7 +91,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca comi escondido para não dividir.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever eaten in secret so I wouldn't have to share.",
+    "es": "Yo nunca he comido a escondidas para no compartir."
+   }
   },
   {
    "id": "ni-l-09",
@@ -71,7 +103,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca li uma mensagem e esqueci de responder por dias.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever read a message and forgotten to reply for days.",
+    "es": "Yo nunca he leído un mensaje y me he olvidado de responder durante días."
+   }
   },
   {
    "id": "ni-l-10",
@@ -79,7 +115,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca dormi no meio de uma série que eu mesmo escolhi.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever fallen asleep in the middle of a show I picked myself.",
+    "es": "Yo nunca me he dormido en medio de una serie que elegí yo mismo."
+   }
   },
   {
    "id": "ni-l-11",
@@ -87,7 +127,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca cheguei adiantado em um compromisso.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever arrived early to an appointment.",
+    "es": "Yo nunca he llegado temprano a un compromiso."
+   }
   },
   {
    "id": "ni-l-12",
@@ -95,7 +139,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca me perdi em um lugar que eu já conhecia.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever gotten lost in a place I already knew.",
+    "es": "Yo nunca me he perdido en un lugar que ya conocía."
+   }
   },
   {
    "id": "ni-l-13",
@@ -103,7 +151,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca disse \"já estou chegando\" ainda dentro de casa.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever said \"I'm almost there\" while still at home.",
+    "es": "Yo nunca he dicho \"ya casi llego\" estando todavía en casa."
+   }
   },
   {
    "id": "ni-l-14",
@@ -111,7 +163,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca troquei de canal para fugir de um programa vergonhoso.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever changed the channel to escape an embarrassing show.",
+    "es": "Yo nunca he cambiado de canal para huir de un programa vergonzoso."
+   }
   },
   {
    "id": "ni-l-15",
@@ -119,7 +175,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca ri na hora errada.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever laughed at the wrong moment.",
+    "es": "Yo nunca me he reído en el momento equivocado."
+   }
   },
   {
    "id": "ni-l-16",
@@ -127,7 +187,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca guardei um segredo por tempo demais.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever kept a secret for too long.",
+    "es": "Yo nunca he guardado un secreto durante demasiado tiempo."
+   }
   },
   {
    "id": "ni-l-17",
@@ -135,7 +199,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca fiz cara de paisagem para um elogio que não entendi.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever kept a blank face at a compliment I didn't understand.",
+    "es": "Yo nunca he puesto cara de nada ante un cumplido que no entendí."
+   }
   },
   {
    "id": "ni-l-18",
@@ -143,7 +211,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca postei algo e apaguei logo depois.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever posted something and deleted it right after.",
+    "es": "Yo nunca he publicado algo y lo he borrado enseguida."
+   }
   },
   {
    "id": "ni-l-19",
@@ -151,7 +223,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca inventei uma desculpa para sair de um rolê mais cedo.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever made up an excuse to leave a get-together early.",
+    "es": "Yo nunca he inventado una excusa para irme temprano de una salida."
+   }
   },
   {
    "id": "ni-l-20",
@@ -159,7 +235,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca fiquei o dia inteiro com uma música grudada na cabeça.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever had a song stuck in my head all day.",
+    "es": "Yo nunca he tenido una canción pegada en la cabeza todo el día."
+   }
   },
   {
    "id": "ni-l-21",
@@ -167,7 +247,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca ganhei um presente e fingi que amei.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever received a gift and pretended to love it.",
+    "es": "Yo nunca he recibido un regalo y he fingido que me encantaba."
+   }
   },
   {
    "id": "ni-l-22",
@@ -175,7 +259,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca pesquisei meu próprio nome na internet.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever searched my own name on the internet.",
+    "es": "Yo nunca he buscado mi propio nombre en internet."
+   }
   },
   {
    "id": "ni-l-23",
@@ -183,7 +271,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca derrubei comida na roupa num dia importante.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever spilled food on my clothes on an important day.",
+    "es": "Yo nunca me he manchado la ropa de comida en un día importante."
+   }
   },
   {
    "id": "ni-l-24",
@@ -191,7 +283,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Eu nunca me emocionei com música de novela.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Never have I ever gotten emotional over a soap opera song.",
+    "es": "Yo nunca me he emocionado con la música de una telenovela."
+   }
   },
   {
    "id": "ni-a-01",
@@ -199,7 +295,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca troquei mensagens com alguém só para chamar atenção.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever exchanged messages with someone just to get attention.",
+    "es": "Yo nunca he intercambiado mensajes con alguien solo para llamar la atención."
+   }
   },
   {
    "id": "ni-a-02",
@@ -207,7 +307,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca dei em cima de alguém e levei um fora.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever flirted with someone and gotten turned down.",
+    "es": "Yo nunca he coqueteado con alguien y me han rechazado."
+   }
   },
   {
    "id": "ni-a-03",
@@ -215,7 +319,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca fingi que não vi a mensagem de alguém que me interessava.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever pretended not to see a message from someone I was interested in.",
+    "es": "Yo nunca he fingido no ver el mensaje de alguien que me interesaba."
+   }
   },
   {
    "id": "ni-a-04",
@@ -223,7 +331,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca fucei o perfil de um crush até o último post.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever scrolled through a crush's profile all the way to the last post.",
+    "es": "Yo nunca he cotilleado el perfil de un crush hasta la última publicación."
+   }
   },
   {
    "id": "ni-a-05",
@@ -231,7 +343,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca fiquei sem graça depois de um flerte.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever felt awkward after flirting.",
+    "es": "Yo nunca me he sentido incómodo después de coquetear."
+   }
   },
   {
    "id": "ni-a-06",
@@ -239,7 +355,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca mandei um \"oi, sumido\" com segundas intenções.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever sent a \"hey, stranger\" with ulterior motives.",
+    "es": "Yo nunca he mandado un \"hola, desaparecido\" con segundas intenciones."
+   }
   },
   {
    "id": "ni-a-07",
@@ -247,7 +367,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca me arrumei demais só para encontrar uma pessoa específica.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever dressed up too much just to see one specific person.",
+    "es": "Yo nunca me he arreglado demasiado solo para ver a una persona concreta."
+   }
   },
   {
    "id": "ni-a-08",
@@ -255,7 +379,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca terminei um relacionamento por mensagem.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever ended a relationship by text.",
+    "es": "Yo nunca he terminado una relación por mensaje."
+   }
   },
   {
    "id": "ni-a-09",
@@ -263,7 +391,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca me apaixonei por alguém do meu grupo de amigos.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever fallen for someone in my group of friends.",
+    "es": "Yo nunca me he enamorado de alguien de mi grupo de amigos."
+   }
   },
   {
    "id": "ni-a-10",
@@ -271,7 +403,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca dei um beijo logo no primeiro encontro.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever kissed someone on the first date.",
+    "es": "Yo nunca he dado un beso en la primera cita."
+   }
   },
   {
    "id": "ni-a-11",
@@ -279,7 +415,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca fingi não lembrar de alguém no dia seguinte a uma festa.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever pretended not to remember someone the day after a party.",
+    "es": "Yo nunca he fingido no acordarme de alguien al día siguiente de una fiesta."
+   }
   },
   {
    "id": "ni-a-12",
@@ -287,7 +427,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca voltei com um ex.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever gotten back together with an ex.",
+    "es": "Yo nunca he vuelto con un ex."
+   }
   },
   {
    "id": "ni-a-13",
@@ -295,7 +439,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca passei meu número de propósito para quem eu queria que ligasse.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever given my number on purpose to someone I wanted to call me.",
+    "es": "Yo nunca he dado mi número a propósito a alguien de quien quería que me llamara."
+   }
   },
   {
    "id": "ni-a-14",
@@ -303,7 +451,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca senti ciúme sem ter direito nenhum.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever felt jealous without having any right to.",
+    "es": "Yo nunca he sentido celos sin tener ningún derecho."
+   }
   },
   {
    "id": "ni-a-15",
@@ -311,7 +463,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca fui a um encontro às cegas.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever gone on a blind date.",
+    "es": "Yo nunca he ido a una cita a ciegas."
+   }
   },
   {
    "id": "ni-a-16",
@@ -319,7 +475,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca levei um fora de um jeito engraçado.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever been turned down in a funny way.",
+    "es": "Yo nunca me han rechazado de una forma graciosa."
+   }
   },
   {
    "id": "ni-a-17",
@@ -327,7 +487,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca escrevi uma mensagem enorme para alguém e não enviei.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever written a huge message to someone and never sent it.",
+    "es": "Yo nunca he escrito un mensaje enorme para alguien y no lo he enviado."
+   }
   },
   {
    "id": "ni-a-18",
@@ -335,7 +499,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca usei aplicativo de relacionamento.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever used a dating app.",
+    "es": "Yo nunca he usado una aplicación de citas."
+   }
   },
   {
    "id": "ni-a-19",
@@ -343,7 +511,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca pedi conselho amoroso para a pessoa errada.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever asked the wrong person for love advice.",
+    "es": "Yo nunca le he pedido un consejo amoroso a la persona equivocada."
+   }
   },
   {
    "id": "ni-a-20",
@@ -351,7 +523,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Eu nunca fingi estar ocupado para não responder alguém interessado demais.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Never have I ever pretended to be busy to avoid answering someone too interested.",
+    "es": "Yo nunca he fingido estar ocupado para no responder a alguien demasiado interesado."
+   }
   },
   {
    "id": "qmp-l-01",
@@ -359,7 +535,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de chegar atrasado ao próprio aniversário?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to be late to their own birthday?",
+    "es": "¿Quién es más probable que llegue tarde a su propio cumpleaños?"
+   }
   },
   {
    "id": "qmp-l-02",
@@ -367,7 +547,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de esquecer onde deixou o celular enquanto fala nele?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to forget where they left their phone while talking on it?",
+    "es": "¿Quién es más probable que olvide dónde dejó el móvil mientras habla con él?"
+   }
   },
   {
    "id": "qmp-l-03",
@@ -375,7 +559,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de virar celebridade na internet sem querer?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to become an internet celebrity by accident?",
+    "es": "¿Quién es más probable que se haga famoso en internet sin querer?"
+   }
   },
   {
    "id": "qmp-l-04",
@@ -383,7 +571,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de pedir comida mesmo depois de ter jantado?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to order food even after having had dinner?",
+    "es": "¿Quién es más probable que pida comida incluso después de haber cenado?"
+   }
   },
   {
    "id": "qmp-l-05",
@@ -391,7 +583,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de chorar em filme de animação?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to cry at an animated movie?",
+    "es": "¿Quién es más probable que llore con una película de animación?"
+   }
   },
   {
    "id": "qmp-l-06",
@@ -399,7 +595,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de perder a chave de casa toda semana?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to lose their house key every week?",
+    "es": "¿Quién es más probable que pierda la llave de casa cada semana?"
+   }
   },
   {
    "id": "qmp-l-07",
@@ -407,7 +607,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de dar o melhor conselho do grupo?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to give the best advice in the group?",
+    "es": "¿Quién es más probable que dé el mejor consejo del grupo?"
+   }
   },
   {
    "id": "qmp-l-08",
@@ -415,7 +619,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de sobreviver a um reality de aventura?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to survive an adventure reality show?",
+    "es": "¿Quién es más probable que sobreviva a un reality de aventura?"
+   }
   },
   {
    "id": "qmp-l-09",
@@ -423,7 +631,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de ganhar um concurso de dança?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to win a dance contest?",
+    "es": "¿Quién es más probable que gane un concurso de baile?"
+   }
   },
   {
    "id": "qmp-l-10",
@@ -431,7 +643,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de ficar famoso por causa de um vídeo engraçado?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to become famous because of a funny video?",
+    "es": "¿Quién es más probable que se haga famoso por un vídeo gracioso?"
+   }
   },
   {
    "id": "qmp-l-11",
@@ -439,7 +655,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de se meter numa confusão por causa de um mal-entendido?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to get into trouble because of a misunderstanding?",
+    "es": "¿Quién es más probable que se meta en un lío por un malentendido?"
+   }
   },
   {
    "id": "qmp-l-12",
@@ -447,7 +667,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de mudar de cidade de uma hora para outra?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to move to another city out of the blue?",
+    "es": "¿Quién es más probable que se mude de ciudad de un día para otro?"
+   }
   },
   {
    "id": "qmp-l-13",
@@ -455,7 +679,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de ser o primeiro a dormir na festa?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to be the first to fall asleep at the party?",
+    "es": "¿Quién es más probable que sea el primero en dormirse en la fiesta?"
+   }
   },
   {
    "id": "qmp-l-14",
@@ -463,7 +691,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de passar horas no telefone com um amigo?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to spend hours on the phone with a friend?",
+    "es": "¿Quién es más probable que pase horas al teléfono con un amigo?"
+   }
   },
   {
    "id": "qmp-l-15",
@@ -471,7 +703,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de comprar algo inútil só porque estava em promoção?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to buy something useless just because it was on sale?",
+    "es": "¿Quién es más probable que compre algo inútil solo porque estaba de oferta?"
+   }
   },
   {
    "id": "qmp-l-16",
@@ -479,7 +715,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de conseguir mesa em restaurante lotado só na lábia?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to get a table at a packed restaurant just by sweet-talking?",
+    "es": "¿Quién es más probable que consiga mesa en un restaurante lleno solo con labia?"
+   }
   },
   {
    "id": "qmp-l-17",
@@ -487,7 +727,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de esquecer uma data importante?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to forget an important date?",
+    "es": "¿Quién es más probable que olvide una fecha importante?"
+   }
   },
   {
    "id": "qmp-l-18",
@@ -495,7 +739,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de ser o último a ir embora da festa?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to be the last to leave the party?",
+    "es": "¿Quién es más probable que sea el último en irse de la fiesta?"
+   }
   },
   {
    "id": "qmp-l-19",
@@ -503,7 +751,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de virar chef de cozinha?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to become a chef?",
+    "es": "¿Quién es más probable que se convierta en chef?"
+   }
   },
   {
    "id": "qmp-l-20",
@@ -511,7 +763,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de ser o mais calmo numa situação de emergência?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to be the calmest in an emergency?",
+    "es": "¿Quién es más probable que sea el más tranquilo en una emergencia?"
+   }
   },
   {
    "id": "qmp-l-21",
@@ -519,7 +775,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de adotar mais um bicho de estimação?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to adopt yet another pet?",
+    "es": "¿Quién es más probable que adopte una mascota más?"
+   }
   },
   {
    "id": "qmp-l-22",
@@ -527,7 +787,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de se perder mesmo usando o GPS?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to get lost even with GPS?",
+    "es": "¿Quién es más probable que se pierda incluso con GPS?"
+   }
   },
   {
    "id": "qmp-l-23",
@@ -535,7 +799,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de contar a mesma história pela terceira vez?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to tell the same story for the third time?",
+    "es": "¿Quién es más probable que cuente la misma historia por tercera vez?"
+   }
   },
   {
    "id": "qmp-l-24",
@@ -543,7 +811,11 @@
    "mode": "light",
    "kind": "statement",
    "text": "Quem é mais provável de passar mais tempo escolhendo a série do que assistindo?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Who is most likely to spend more time choosing the show than watching it?",
+    "es": "¿Quién es más probable que pase más tiempo eligiendo la serie que viéndola?"
+   }
   },
   {
    "id": "qmp-a-01",
@@ -551,7 +823,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de mandar mensagem para o ex de madrugada?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to text their ex in the middle of the night?",
+    "es": "¿Quién es más probable que le escriba a su ex de madrugada?"
+   }
   },
   {
    "id": "qmp-a-02",
@@ -559,7 +835,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de ter mais crushes ao mesmo tempo?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to have the most crushes at the same time?",
+    "es": "¿Quién es más probable que tenga más crushes a la vez?"
+   }
   },
   {
    "id": "qmp-a-03",
@@ -567,7 +847,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de conquistar alguém só no olhar?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to win someone over with just a look?",
+    "es": "¿Quién es más probable que conquiste a alguien solo con la mirada?"
+   }
   },
   {
    "id": "qmp-a-04",
@@ -575,7 +859,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de ser o mais ciumento?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to be the most jealous?",
+    "es": "¿Quién es más probable que sea el más celoso?"
+   }
   },
   {
    "id": "qmp-a-05",
@@ -583,7 +871,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de casar primeiro?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to get married first?",
+    "es": "¿Quién es más probable que se case primero?"
+   }
   },
   {
    "id": "qmp-a-06",
@@ -591,7 +883,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de chegar a um encontro com a roupa totalmente errada?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to show up to a date wearing completely the wrong outfit?",
+    "es": "¿Quién es más probable que llegue a una cita con la ropa totalmente equivocada?"
+   }
   },
   {
    "id": "qmp-a-07",
@@ -599,7 +895,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de se apaixonar durante uma viagem?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to fall in love during a trip?",
+    "es": "¿Quién es más probable que se enamore durante un viaje?"
+   }
   },
   {
    "id": "qmp-a-08",
@@ -607,7 +907,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de ter o pior histórico de encontros?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to have the worst dating history?",
+    "es": "¿Quién es más probable que tenga el peor historial de citas?"
+   }
   },
   {
    "id": "qmp-a-09",
@@ -615,7 +919,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de flertar para conseguir um brinde?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to flirt to get a freebie?",
+    "es": "¿Quién es más probable que coquetee para conseguir un regalito?"
+   }
   },
   {
    "id": "qmp-a-10",
@@ -623,7 +931,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de terminar um namoro por um motivo bobo?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to end a relationship over a silly reason?",
+    "es": "¿Quién es más probable que termine una relación por un motivo tonto?"
+   }
   },
   {
    "id": "qmp-a-11",
@@ -631,7 +943,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de fazer um pedido de namoro cheio de drama?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to ask someone to be their partner with lots of drama?",
+    "es": "¿Quién es más probable que pida noviazgo con mucho drama?"
+   }
   },
   {
    "id": "qmp-a-12",
@@ -639,7 +955,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de ser o mais romântico?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to be the most romantic?",
+    "es": "¿Quién es más probable que sea el más romántico?"
+   }
   },
   {
    "id": "qmp-a-13",
@@ -647,7 +967,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de viver um romance de verão?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to have a summer romance?",
+    "es": "¿Quién es más probable que viva un romance de verano?"
+   }
   },
   {
    "id": "qmp-a-14",
@@ -655,7 +979,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de esquecer o aniversário de namoro?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to forget their relationship anniversary?",
+    "es": "¿Quién es más probable que olvide el aniversario de pareja?"
+   }
   },
   {
    "id": "qmp-a-15",
@@ -663,7 +991,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de sumir depois de um encontro que foi ótimo?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to disappear after a great date?",
+    "es": "¿Quién es más probable que desaparezca después de una cita estupenda?"
+   }
   },
   {
    "id": "qmp-a-16",
@@ -671,7 +1003,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de mandar a melhor cantada?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to come up with the best pickup line?",
+    "es": "¿Quién es más probable que suelte el mejor piropo?"
+   }
   },
   {
    "id": "qmp-a-17",
@@ -679,7 +1015,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de ter mais histórias de balada?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to have the most nightclub stories?",
+    "es": "¿Quién es más probable que tenga más historias de discoteca?"
+   }
   },
   {
    "id": "qmp-a-18",
@@ -687,7 +1027,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de chorar num término e montar uma playlist sobre isso?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to cry over a breakup and make a playlist about it?",
+    "es": "¿Quién es más probable que llore en una ruptura y haga una playlist sobre eso?"
+   }
   },
   {
    "id": "qmp-a-19",
@@ -695,7 +1039,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de voltar com o ex mais uma vez?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to get back with their ex one more time?",
+    "es": "¿Quién es más probable que vuelva con su ex una vez más?"
+   }
   },
   {
    "id": "qmp-a-20",
@@ -703,7 +1051,11 @@
    "mode": "adult",
    "kind": "statement",
    "text": "Quem é mais provável de ser fiel até o fim do mundo?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Who is most likely to stay faithful until the end of the world?",
+    "es": "¿Quién es más probable que sea fiel hasta el fin del mundo?"
+   }
   },
   {
    "id": "vod-lt-01",
@@ -711,7 +1063,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Qual foi o momento mais engraçado que você passou em público?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "What was the funniest moment you've had in public?",
+    "es": "¿Cuál fue el momento más gracioso que viviste en público?"
+   }
   },
   {
    "id": "vod-lt-02",
@@ -719,7 +1075,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Qual é a música que você mais gosta e tem vergonha de admitir?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "What song do you like the most and are embarrassed to admit?",
+    "es": "¿Qué canción es la que más te gusta y te da vergüenza admitir?"
+   }
   },
   {
    "id": "vod-lt-03",
@@ -727,7 +1087,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Qual foi a maior mentira inofensiva que você já contou?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "What is the biggest harmless lie you've ever told?",
+    "es": "¿Cuál es la mayor mentira inofensiva que has dicho?"
+   }
   },
   {
    "id": "vod-lt-04",
@@ -735,7 +1099,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Qual talento escondido você tem?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "What hidden talent do you have?",
+    "es": "¿Qué talento escondido tienes?"
+   }
   },
   {
    "id": "vod-lt-05",
@@ -743,7 +1111,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "O que você faria se ganhasse uma semana de folga?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "What would you do if you got a week off?",
+    "es": "¿Qué harías si te dieran una semana libre?"
+   }
   },
   {
    "id": "vod-lt-06",
@@ -751,7 +1123,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Qual foi o pior presente que você já recebeu?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "What was the worst gift you've ever received?",
+    "es": "¿Cuál fue el peor regalo que has recibido?"
+   }
   },
   {
    "id": "vod-lt-07",
@@ -759,7 +1135,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Qual hábito seu mais irrita quem mora com você?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Which of your habits annoys the people you live with the most?",
+    "es": "¿Qué hábito tuyo molesta más a quienes viven contigo?"
+   }
   },
   {
    "id": "vod-lt-08",
@@ -767,7 +1147,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Qual foi a coisa mais corajosa que você já fez?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "What is the bravest thing you've ever done?",
+    "es": "¿Qué es lo más valiente que has hecho?"
+   }
   },
   {
    "id": "vod-lt-09",
@@ -775,7 +1159,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Qual filme você já viu mais de cinco vezes?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Which movie have you watched more than five times?",
+    "es": "¿Qué película has visto más de cinco veces?"
+   }
   },
   {
    "id": "vod-lt-10",
@@ -783,7 +1171,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Qual apelido de infância você tinha?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "What childhood nickname did you have?",
+    "es": "¿Qué apodo tenías de niño?"
+   }
   },
   {
    "id": "vod-lt-11",
@@ -791,7 +1183,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Qual foi o maior mico da sua vida escolar?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "What was the most embarrassing moment of your school days?",
+    "es": "¿Cuál fue el mayor oso de tu época escolar?"
+   }
   },
   {
    "id": "vod-lt-12",
@@ -799,7 +1195,11 @@
    "mode": "light",
    "kind": "truth",
    "text": "Se pudesse morar em qualquer lugar do Brasil, onde seria?",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "If you could live anywhere in Brazil, where would it be?",
+    "es": "Si pudieras vivir en cualquier lugar de Brasil, ¿dónde sería?"
+   }
   },
   {
    "id": "vod-ld-01",
@@ -807,7 +1207,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Imite alguém do grupo por 20 segundos, com carinho e sem ofender.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Imitate someone in the group for 20 seconds, kindly and without offending.",
+    "es": "Imita a alguien del grupo durante 20 segundos, con cariño y sin ofender."
+   }
   },
   {
    "id": "vod-ld-02",
@@ -815,7 +1219,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Conte uma piada. Se ninguém rir, vale mais uma tentativa.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Tell a joke. If nobody laughs, you get one more try.",
+    "es": "Cuenta un chiste. Si nadie se ríe, tienes otro intento."
+   }
   },
   {
    "id": "vod-ld-03",
@@ -823,7 +1231,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Faça a sua melhor pose de capa de revista.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Strike your best magazine cover pose.",
+    "es": "Haz tu mejor pose de portada de revista."
+   }
   },
   {
    "id": "vod-ld-04",
@@ -831,7 +1243,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Fale uma frase inteira com sotaque de outro estado.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Say a whole sentence with the accent of another state.",
+    "es": "Di una frase entera con el acento de otro estado."
+   }
   },
   {
    "id": "vod-ld-05",
@@ -839,7 +1255,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Cante o refrão de uma música que todo mundo conhece.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Sing the chorus of a song everyone knows.",
+    "es": "Canta el estribillo de una canción que todo el mundo conoce."
+   }
   },
   {
    "id": "vod-ld-06",
@@ -847,7 +1267,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Faça um elogio sincero a cada pessoa da mesa.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Give a sincere compliment to each person at the table.",
+    "es": "Haz un cumplido sincero a cada persona de la mesa."
+   }
   },
   {
    "id": "vod-ld-07",
@@ -855,7 +1279,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Invente um slogan para o seu prato favorito.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Make up a slogan for your favorite dish.",
+    "es": "Inventa un eslogan para tu plato favorito."
+   }
   },
   {
    "id": "vod-ld-08",
@@ -863,7 +1291,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Dance uma música imaginária por 15 segundos.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Dance to an imaginary song for 15 seconds.",
+    "es": "Baila una canción imaginaria durante 15 segundos."
+   }
   },
   {
    "id": "vod-ld-09",
@@ -871,7 +1303,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Narre a próxima ação de alguém como um locutor de futebol.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Narrate someone's next action like a soccer announcer.",
+    "es": "Narra la próxima acción de alguien como un locutor de fútbol."
+   }
   },
   {
    "id": "vod-ld-10",
@@ -879,7 +1315,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Conte uma história de 30 segundos usando só palavras que começam com a letra M.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Tell a 30-second story using only words that start with the letter M.",
+    "es": "Cuenta una historia de 30 segundos usando solo palabras que empiecen con la letra M."
+   }
   },
   {
    "id": "vod-ld-11",
@@ -887,7 +1327,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Descreva alguém do grupo sem dizer o nome e deixe todo mundo adivinhar.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Describe someone in the group without saying their name and let everyone guess.",
+    "es": "Describe a alguien del grupo sin decir su nombre y deja que todos adivinen."
+   }
   },
   {
    "id": "vod-ld-12",
@@ -895,7 +1339,11 @@
    "mode": "light",
    "kind": "dare",
    "text": "Faça uma careta engraçada e segure por 10 segundos.",
-   "optional": false
+   "optional": false,
+   "i18n": {
+    "en": "Make a funny face and hold it for 10 seconds.",
+    "es": "Haz una mueca graciosa y mantenla durante 10 segundos."
+   }
   },
   {
    "id": "vod-at-01",
@@ -903,7 +1351,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "Qual foi o seu melhor encontro e o que o tornou especial?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "What was your best date and what made it special?",
+    "es": "¿Cuál fue tu mejor cita y qué la hizo especial?"
+   }
   },
   {
    "id": "vod-at-02",
@@ -911,7 +1363,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "Qual é a pior cantada que você já recebeu?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "What is the worst pickup line you've ever received?",
+    "es": "¿Cuál es el peor piropo que te han dicho?"
+   }
   },
   {
    "id": "vod-at-03",
@@ -919,7 +1375,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "Qual foi a sua paixão mais improvável?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "What was your most unlikely crush?",
+    "es": "¿Cuál fue tu enamoramiento más improbable?"
+   }
   },
   {
    "id": "vod-at-04",
@@ -927,7 +1387,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "Você já sentiu atração por alguém do grupo de amigos? Responda só se quiser.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Have you ever been attracted to someone in the friend group? Answer only if you want to.",
+    "es": "¿Alguna vez te ha atraído alguien del grupo de amigos? Responde solo si quieres."
+   }
   },
   {
    "id": "vod-at-05",
@@ -935,7 +1399,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "Qual foi o maior fora que você já levou?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "What was the biggest rejection you've ever gotten?",
+    "es": "¿Cuál fue el mayor rechazo que has recibido?"
+   }
   },
   {
    "id": "vod-at-06",
@@ -943,7 +1411,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "O que mais te atrai em uma pessoa logo de cara?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "What attracts you most about a person right away?",
+    "es": "¿Qué es lo que más te atrae de una persona a primera vista?"
+   }
   },
   {
    "id": "vod-at-07",
@@ -951,7 +1423,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "Qual foi a mensagem mais constrangedora que você já mandou para alguém de quem gostava?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "What was the most embarrassing message you've ever sent to someone you liked?",
+    "es": "¿Cuál fue el mensaje más vergonzoso que le has mandado a alguien que te gustaba?"
+   }
   },
   {
    "id": "vod-at-08",
@@ -959,7 +1435,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "O que você nunca perdoaria em um relacionamento?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "What would you never forgive in a relationship?",
+    "es": "¿Qué nunca perdonarías en una relación?"
+   }
   },
   {
    "id": "vod-at-09",
@@ -967,7 +1447,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "Qual é o seu maior defeito em um relacionamento?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "What is your biggest flaw in a relationship?",
+    "es": "¿Cuál es tu mayor defecto en una relación?"
+   }
   },
   {
    "id": "vod-at-10",
@@ -975,7 +1459,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "Qual é o seu sinal mais óbvio de que está interessado em alguém?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "What is your most obvious sign that you're interested in someone?",
+    "es": "¿Cuál es tu señal más obvia de que te interesa alguien?"
+   }
   },
   {
    "id": "vod-at-11",
@@ -983,7 +1471,11 @@
    "mode": "adult",
    "kind": "truth",
    "text": "Qual foi o lugar mais inusitado em que você conheceu alguém?",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "What was the most unusual place where you met someone?",
+    "es": "¿Cuál fue el lugar más inusual donde conociste a alguien?"
+   }
   },
   {
    "id": "vod-ad-01",
@@ -991,7 +1483,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Faça a sua melhor cantada (bem boba) para a pessoa ao seu lado, só se ela topar.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Give your best (very silly) pickup line to the person next to you, only if they agree.",
+    "es": "Suelta tu mejor piropo (bien tonto) a la persona de al lado, solo si ella acepta."
+   }
   },
   {
    "id": "vod-ad-02",
@@ -999,7 +1495,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Faça um elogio carinhoso para alguém do grupo, olhando nos olhos.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Give a warm compliment to someone in the group, looking them in the eye.",
+    "es": "Haz un cumplido cariñoso a alguien del grupo, mirándole a los ojos."
+   }
   },
   {
    "id": "vod-ad-03",
@@ -1007,7 +1507,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Descreva o seu crush ideal em três palavras.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Describe your ideal crush in three words.",
+    "es": "Describe a tu crush ideal en tres palabras."
+   }
   },
   {
    "id": "vod-ad-04",
@@ -1015,7 +1519,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Imite o jeito de flertar de um personagem famoso.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Imitate the flirting style of a famous character.",
+    "es": "Imita la forma de coquetear de un personaje famoso."
+   }
   },
   {
    "id": "vod-ad-05",
@@ -1023,7 +1531,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Escolha alguém do grupo e diga uma qualidade que você admira nessa pessoa.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Pick someone in the group and say a quality you admire in them.",
+    "es": "Elige a alguien del grupo y di una cualidad que admiras en esa persona."
+   }
   },
   {
    "id": "vod-ad-06",
@@ -1031,7 +1543,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Conte o seu segredo de paquera mais inocente.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Tell your most innocent flirting secret.",
+    "es": "Cuenta tu secreto de coqueteo más inocente."
+   }
   },
   {
    "id": "vod-ad-07",
@@ -1039,7 +1555,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Faça uma declaração de amor dramática para um alimento.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Make a dramatic declaration of love to a food.",
+    "es": "Haz una declaración de amor dramática a una comida."
+   }
   },
   {
    "id": "vod-ad-08",
@@ -1047,7 +1567,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Convide alguém da roda para uma dança leve de dois passos, se a pessoa quiser.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Invite someone in the circle to a light two-step dance, if they want to.",
+    "es": "Invita a alguien del círculo a un baile suave de dos pasos, si quiere."
+   }
   },
   {
    "id": "vod-ad-09",
@@ -1055,7 +1579,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Dê uma nota de 0 a 10 para a sua última cantada e conte qual foi.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Rate your last pickup line from 0 to 10 and tell what it was.",
+    "es": "Ponle una nota de 0 a 10 a tu último piropo y cuenta cuál fue."
+   }
   },
   {
    "id": "vod-ad-10",
@@ -1063,7 +1591,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Dedique uma música a alguém do grupo, de forma divertida, e diga o motivo.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Dedicate a song to someone in the group, in a fun way, and say why.",
+    "es": "Dedica una canción a alguien del grupo, de forma divertida, y di el motivo."
+   }
   },
   {
    "id": "vod-ad-11",
@@ -1071,7 +1603,11 @@
    "mode": "adult",
    "kind": "dare",
    "text": "Faça uma pose de capa de novela com alguém que topar.",
-   "optional": true
+   "optional": true,
+   "i18n": {
+    "en": "Strike a soap-opera-cover pose with someone who agrees.",
+    "es": "Haz una pose de portada de telenovela con alguien que acepte."
+   }
   }
  ]
 }

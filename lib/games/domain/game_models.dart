@@ -1,15 +1,28 @@
 import 'dart:math';
 
+import '../../l10n/l10n.dart';
+
 enum GameType {
-  neverHaveIEver('neverHaveIEver', 'Eu nunca', 'Quem já fez, conta. Sem pressão.', 1),
-  mostLikely('mostLikely', 'Quem é mais provável', 'A turma aponta quem combina mais com a frase.', 2),
-  truthOrDare('truthOrDare', 'Verdade ou desafio', 'Cada um na sua vez, com opção de pular.', 2);
+  neverHaveIEver('neverHaveIEver', 1),
+  mostLikely('mostLikely', 2),
+  truthOrDare('truthOrDare', 2);
 
-  const GameType(this.code, this.title, this.description, this.minPlayers);
+  const GameType(this.code, this.minPlayers);
 
+  /// Stored value (saved matches, cards); never translated.
   final String code;
-  final String title;
-  final String description;
+
+  String get title => switch (this) {
+        GameType.neverHaveIEver => tr.gameNeverTitle,
+        GameType.mostLikely => tr.gameMostTitle,
+        GameType.truthOrDare => tr.gameTruthTitle,
+      };
+
+  String get description => switch (this) {
+        GameType.neverHaveIEver => tr.gameNeverDesc,
+        GameType.mostLikely => tr.gameMostDesc,
+        GameType.truthOrDare => tr.gameTruthDesc,
+      };
 
   /// Fewest participants needed to start.
   final int minPlayers;
@@ -25,13 +38,17 @@ enum GameType {
 /// Light has no sexual content. +18 adds flirting and humour for adults, with
 /// optional challenges; it never asks for explicit content.
 enum GameMode {
-  light('light', 'Leve'),
-  adult('adult', '+18');
+  light('light'),
+  adult('adult');
 
-  const GameMode(this.code, this.label);
+  const GameMode(this.code);
 
   final String code;
-  final String label;
+
+  String get label => switch (this) {
+        GameMode.light => tr.gameModeLight,
+        GameMode.adult => tr.gameModeAdult,
+      };
 
   static GameMode? fromCode(String? code) {
     for (final m in GameMode.values) {
@@ -42,14 +59,19 @@ enum GameMode {
 }
 
 enum CardKind {
-  statement('statement', 'Carta'),
-  truth('truth', 'Verdade'),
-  dare('dare', 'Desafio');
+  statement('statement'),
+  truth('truth'),
+  dare('dare');
 
-  const CardKind(this.code, this.label);
+  const CardKind(this.code);
 
   final String code;
-  final String label;
+
+  String get label => switch (this) {
+        CardKind.statement => tr.gameKindCard,
+        CardKind.truth => tr.gameKindTruth,
+        CardKind.dare => tr.gameKindDare,
+      };
 
   static CardKind fromCode(String? code) => CardKind.values.firstWhere(
         (k) => k.code == code,
@@ -63,17 +85,27 @@ class GameCard {
     required this.game,
     required this.mode,
     required this.kind,
-    required this.text,
+    required String text,
+    this.translations = const {},
     this.optional = false,
     this.isCustom = false,
-  });
+  }) : _text = text;
 
   /// Stable id ("ni-l-01"; custom cards are "custom:`<uuid>`").
   final String id;
   final GameType game;
   final GameMode mode;
   final CardKind kind;
-  final String text;
+  final String _text;
+
+  /// Editorial translations of a bundled card, by language code. The card id
+  /// and its meaning never change; a card of the user has none and always
+  /// shows exactly what was written.
+  final Map<String, String> translations;
+
+  /// The card text in the language on screen (bundled cards) or as written
+  /// (the user's own).
+  String get text => isCustom ? _text : (translations[trLanguage] ?? _text);
 
   /// Shown as "pode pular sem punição" (all +18 cards are marked).
   final bool optional;
@@ -84,7 +116,7 @@ class GameCard {
         'game': game.code,
         'mode': mode.code,
         'kind': kind.code,
-        'text': text,
+        'text': _text,
         'optional': optional,
       };
 
@@ -101,6 +133,13 @@ class GameCard {
       mode: mode,
       kind: CardKind.fromCode(j['kind'] as String?),
       text: text,
+      translations: custom
+          ? const {}
+          : {
+              for (final e in ((j['i18n'] as Map?) ?? const {}).entries)
+                if (e.value is String && (e.value as String).trim().isNotEmpty)
+                  e.key as String: e.value as String,
+            },
       optional: j['optional'] as bool? ?? false,
       isCustom: custom,
     );
