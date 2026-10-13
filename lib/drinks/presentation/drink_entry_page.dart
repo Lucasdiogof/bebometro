@@ -14,6 +14,7 @@ import '../domain/drink_entry.dart';
 import '../domain/price_history.dart';
 import 'drink_form_cubit.dart';
 import 'unit_dropdown.dart';
+import '../../l10n/l10n.dart';
 
 /// How the entry screen was closed, when it changed something.
 enum EntryOutcome { saved, deleted }
@@ -61,16 +62,16 @@ class _DrinkEntryView extends StatelessWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Excluir registro?'),
-        content: const Text('Ele sai do rolê e do resumo.'),
+        title: Text(tr.entryDeleteTitle),
+        content: Text(tr.entryDeleteBody),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancelar')),
+              child: Text(tr.commonCancel)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Excluir',
-                  style: TextStyle(color: AppColors.danger))),
+              child: Text(tr.commonDelete,
+                  style: const TextStyle(color: AppColors.danger))),
         ],
       ),
     );
@@ -81,16 +82,16 @@ class _DrinkEntryView extends StatelessWidget {
     final leave = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Descartar alterações?'),
-        content: const Text('O que você preencheu aqui será perdido.'),
+        title: Text(tr.entryDiscardTitle),
+        content: Text(tr.entryDiscardBody),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Continuar editando')),
+              child: Text(tr.entryKeepEditing)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Descartar',
-                  style: TextStyle(color: AppColors.danger))),
+              child: Text(tr.entryDiscard,
+                  style: const TextStyle(color: AppColors.danger))),
         ],
       ),
     );
@@ -126,12 +127,12 @@ class _DrinkEntryView extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               title: Text(d.isEditing
-                  ? 'Corrigir registro'
-                  : (d.isRecipe ? 'Registrar drink' : 'Registrar bebida')),
+                  ? tr.entryFix
+                  : (d.isRecipe ? tr.entryLogCocktail : tr.entryLogDrink)),
               actions: [
                 if (d.isEditing)
                   IconButton(
-                    tooltip: 'Excluir',
+                    tooltip: tr.commonDelete,
                     onPressed:
                         state.saving ? null : () => _confirmDelete(context),
                     icon: const Icon(Icons.delete_outline_rounded,
@@ -154,7 +155,7 @@ class _DrinkEntryView extends StatelessWidget {
                         _RecipeSection(state: state, errors: errors),
                         ]
                       else ...[
-                      const SectionTitle('Bebida e tamanho'),
+                      SectionTitle(tr.entryDrinkAndSize),
                       if (state.presentations.isNotEmpty) ...[
                         Wrap(
                           spacing: AppSpace.sm,
@@ -162,7 +163,7 @@ class _DrinkEntryView extends StatelessWidget {
                           children: [
                             for (final p in state.presentations)
                               ChoiceChip(
-                                label: Text(p.label),
+                                label: Text(p.displayLabel),
                                 selected: p.isSuggestion
                                     ? (d.presentationLabel == null &&
                                         d.containerMl == p.volumeMl)
@@ -177,13 +178,8 @@ class _DrinkEntryView extends StatelessWidget {
                             padding: const EdgeInsets.only(top: AppSpace.sm),
                             child: Text(
                               d.category == DrinkCategory.spirit
-                                  ? 'Doses sugeridas, editáveis: não são '
-                                      'medidas oficiais de nenhum '
-                                      'estabelecimento. A garrafa é a '
-                                      'embalagem, não a sua dose.'
-                                  : 'Tamanhos sugeridos: este produto não tem '
-                                      'embalagens verificadas no catálogo. '
-                                      'Confira na embalagem.',
+                                  ? tr.entryGenericSpirit
+                                  : tr.entryGenericSizes,
                               style: AppText.caption,
                             ),
                           ),
@@ -191,8 +187,8 @@ class _DrinkEntryView extends StatelessWidget {
                       ],
                       _NumberField<int>(
                         label: state.presentations.isEmpty
-                            ? 'Volume (ml)'
-                            : 'Outro tamanho (ml)',
+                            ? tr.entryVolume
+                            : tr.entryOtherSize,
                         suffix: 'ml',
                         value: d.containerMl,
                         parse: parseInteger,
@@ -204,8 +200,9 @@ class _DrinkEntryView extends StatelessWidget {
                       if (d.category.canBeAlcoholic) ...[
                         const SizedBox(height: AppSpace.md),
                         _NumberField<double>(
-                          label: 'Teor alcoólico (opcional)',
+                          label: tr.entryAbvOptional,
                           suffix: '% vol.',
+                          numeric: true,
                           value: d.abvPercent,
                           parse: parseDecimal,
                           format: decimalToInput,
@@ -213,17 +210,14 @@ class _DrinkEntryView extends StatelessWidget {
                               decimal: true),
                           errorText: errors['abv'],
                           helper: d.abvPercent == null
-                              ? 'Em branco = desconhecido (não conta como zero).'
-                              : 'Confira no rótulo se puder.',
+                              ? tr.entryAbvBlank
+                              : tr.entryAbvCheck,
                           onChanged: cubit.setAbv,
                         ),
                         if (state.abvVariants.isNotEmpty) ...[
                           const SizedBox(height: AppSpace.sm),
-                          const Text(
-                            'As fontes divergem. Escolha o que estiver no seu '
-                            'rótulo ou digite:',
-                            style: AppText.caption,
-                          ),
+                          Text(tr.entryAbvVariantsIntro,
+                              style: AppText.caption),
                           const SizedBox(height: AppSpace.xs),
                           Wrap(
                             spacing: AppSpace.sm,
@@ -232,7 +226,7 @@ class _DrinkEntryView extends StatelessWidget {
                               for (final v in state.abvVariants)
                                 ActionChip(
                                   label: Text(
-                                      '${formatAbv(v.value)} · ${v.scope}'),
+                                      '${formatAbv(v.value)} · ${v.displayScope}'),
                                   onPressed: () => cubit.setAbv(v.value),
                                 ),
                             ],
@@ -243,12 +237,10 @@ class _DrinkEntryView extends StatelessWidget {
                         const SizedBox(height: AppSpace.md),
                         Text(
                           d.isShared
-                              ? 'Garrafa que está sendo dividida (preenche o '
-                                  'volume da garrafa):'
-                              : 'Embalagens do produto: '
-                                  '${state.bottles.map((b) => b.label).join(', ')}. '
-                                  'Para dividir uma garrafa, marque '
-                                  '"Compartilhada" abaixo.',
+                              ? tr.entryBottleShared
+                              : tr.entryBottlesInfo(state.bottles
+                                  .map((b) => b.displayLabel)
+                                  .join(', ')),
                           style: AppText.caption,
                         ),
                         if (d.isShared)
@@ -260,7 +252,7 @@ class _DrinkEntryView extends StatelessWidget {
                               children: [
                                 for (final b in state.bottles)
                                   ChoiceChip(
-                                    label: Text(b.label),
+                                    label: Text(b.displayLabel),
                                     selected: d.containerMl == b.volumeMl,
                                     showCheckmark: false,
                                     onSelected: (_) =>
@@ -270,15 +262,16 @@ class _DrinkEntryView extends StatelessWidget {
                             ),
                           ),
                       ],
-                      const SectionTitle('Individual ou compartilhada'),
+                      SectionTitle(tr.entryIndividualOrShared),
                       SizedBox(
                         width: double.infinity,
                         child: SegmentedButton<bool>(
                           showSelectedIcon: false,
-                          segments: const [
-                            ButtonSegment(value: false, label: Text('Só minha')),
+                          segments: [
                             ButtonSegment(
-                                value: true, label: Text('Compartilhada')),
+                                value: false, label: Text(tr.entryOnlyMine)),
+                            ButtonSegment(
+                                value: true, label: Text(tr.entryShared)),
                           ],
                           selected: {d.isShared},
                           onSelectionChanged: (s) => cubit.setShared(s.first),
@@ -289,15 +282,17 @@ class _DrinkEntryView extends StatelessWidget {
                         _SharingCard(draft: d, errors: errors),
                       ],
                       ],
-                      const SectionTitle('Preço (opcional)'),
+                      SectionTitle(tr.entryPriceSection),
                       _PriceCard(
                         draft: d,
                         errors: errors,
                         suggestion: state.suggestion,
-                        scope: state.suggestionScope,
+                        scope: state.suggestionAtPlace
+                            ? tr.entryScopeAtPlace
+                            : tr.entryScopeAtOuting,
                         advertisedCents: state.advertisedCents,
                       ),
-                      const SectionTitle('Horário'),
+                      SectionTitle(tr.entryTimeSection),
                       SurfaceCard(
                         onTap: () async {
                           final picked =
@@ -312,8 +307,8 @@ class _DrinkEntryView extends StatelessWidget {
                             child: Text(formatDateTime(d.consumedAt),
                                 style: AppText.subtitle),
                           ),
-                          const Text('Ajustar',
-                              style: TextStyle(color: AppColors.amber)),
+                          Text(tr.commonAdjust,
+                              style: const TextStyle(color: AppColors.amber)),
                         ]),
                       ),
                       if (errors['time'] != null)
@@ -334,7 +329,7 @@ class _DrinkEntryView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(bottom: AppSpace.sm),
                           child: Text(
-                            'Sua parte: ${formatMl(d.personalMl!)}',
+                            tr.entryYourShare(formatMl(d.personalMl!)),
                             style: AppText.caption,
                           ),
                         ),
@@ -348,10 +343,10 @@ class _DrinkEntryView extends StatelessWidget {
                                     CircularProgressIndicator(strokeWidth: 2),
                               )
                             : Text(d.isEditing
-                                ? 'Salvar alterações'
+                                ? tr.entrySaveChanges
                                 : (d.isRecipe
-                                    ? 'Registrar drink'
-                                    : 'Registrar bebida')),
+                                    ? tr.entryLogCocktail
+                                    : tr.entryLogDrink)),
                       ),
                     ],
                   ),
@@ -374,7 +369,7 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final info = <String>[
       if (draft.brand != null) draft.brand!,
-      if (draft.style != null) draft.style!,
+      if (draft.style != null) styleLabel(draft.style!),
       draft.category.label,
     ].join(' · ');
     return SurfaceCard(
@@ -403,7 +398,7 @@ class _Header extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpace.xs),
                   child: Text(
-                    'Ingredientes: ${draft.ingredients!.join(', ')}',
+                    tr.entryIngredients(draft.ingredients!.join(', ')),
                     style: AppText.caption.copyWith(fontSize: 12),
                   ),
                 ),
@@ -444,22 +439,24 @@ class _SharingCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            personal == null ? 'Sua parte: —' : 'Sua parte: ${formatMl(personal)}',
+            personal == null
+                ? tr.entryYourShareUnknown
+                : tr.entryYourShare(formatMl(personal)),
             style: AppText.headline.copyWith(fontSize: 26),
           ),
           if (draft.containerMl != null)
             Text(
-              'de ${formatMl(draft.containerMl!)} · '
-              '${draft.peopleCount} pessoas, com você',
+              tr.entrySharedLine(
+                  formatMl(draft.containerMl!), draft.peopleCount),
               style: AppText.caption,
             ),
           const SizedBox(height: AppSpace.md),
           Row(children: [
-            const Expanded(
-              child: Text('Pessoas (incluindo você)', style: AppText.body),
+            Expanded(
+              child: Text(tr.entryPeople, style: AppText.body),
             ),
             IconButton.filledTonal(
-              tooltip: 'Menos uma pessoa',
+              tooltip: tr.entryFewerPeople,
               onPressed: draft.peopleCount > 2
                   ? () => cubit.setPeople(draft.peopleCount - 1)
                   : null,
@@ -471,7 +468,7 @@ class _SharingCard extends StatelessWidget {
                   textAlign: TextAlign.center, style: AppText.value),
             ),
             IconButton.filledTonal(
-              tooltip: 'Mais uma pessoa',
+              tooltip: tr.entryMorePeople,
               onPressed: draft.peopleCount < DrinkDraft.maxPeople
                   ? () => cubit.setPeople(draft.peopleCount + 1)
                   : null,
@@ -490,36 +487,36 @@ class _SharingCard extends StatelessWidget {
               tilePadding: EdgeInsets.zero,
               childrenPadding: const EdgeInsets.only(bottom: AppSpace.sm),
               initiallyExpanded: errors['personal'] != null,
-              title: const Text('Ajustar parcela e sobra',
-                  style: TextStyle(color: AppColors.amber)),
+              title: Text(tr.entryAdjustShare,
+                  style: const TextStyle(color: AppColors.amber)),
               children: [
                 _NumberField<int>(
-                  label: 'Sua parte (ml)',
+                  label: tr.entryYourShareMl,
                   suffix: 'ml',
                   value: draft.personalMl,
                   parse: parseInteger,
                   format: (v) => '$v',
                   keyboardType: TextInputType.number,
-                  helper: 'Divisão igual por padrão.',
+                  helper: tr.entryEqualSplit,
                   onChanged: cubit.setPersonalMl,
                 ),
                 const SizedBox(height: AppSpace.md),
                 _NumberField<int>(
-                  label: 'Sobra na garrafa (ml)',
+                  label: tr.entryLeftover,
                   suffix: 'ml',
                   value: draft.leftoverMl == 0 ? null : draft.leftoverMl,
                   parse: parseInteger,
                   format: (v) => '$v',
                   keyboardType: TextInputType.number,
-                  helper: 'Opcional.',
+                  helper: tr.entryOptionalDot,
                   onChanged: (v) => cubit.setLeftoverMl(v ?? 0),
                 ),
                 if (others != null)
                   Padding(
                     padding: const EdgeInsets.only(top: AppSpace.md),
                     child: Text(
-                      'Sobram ${formatMl(others)} para cada uma das outras '
-                      '${draft.peopleCount - 1} pessoas.',
+                      tr.entryOthersEach(
+                          formatMl(others), draft.peopleCount - 1),
                       style: AppText.caption,
                     ),
                   ),
@@ -558,11 +555,14 @@ class _PriceCard extends StatelessWidget {
             width: double.infinity,
             child: SegmentedButton<PriceKind>(
               showSelectedIcon: false,
-              segments: const [
-                ButtonSegment(value: PriceKind.informed, label: Text('Valor')),
+              segments: [
                 ButtonSegment(
-                    value: PriceKind.complimentary, label: Text('Cortesia')),
-                ButtonSegment(value: PriceKind.unknown, label: Text('Não sei')),
+                    value: PriceKind.informed, label: Text(tr.entryPriceValue)),
+                ButtonSegment(
+                    value: PriceKind.complimentary,
+                    label: Text(tr.priceComplimentary)),
+                ButtonSegment(
+                    value: PriceKind.unknown, label: Text(tr.entryPriceDontKnow)),
               ],
               selected: {draft.priceKind},
               onSelectionChanged: (s) => cubit.setPriceKind(s.first),
@@ -581,8 +581,9 @@ class _PriceCard extends StatelessWidget {
           if (draft.priceKind == PriceKind.informed) ...[
             if (draft.isShared) ...[
               _NumberField<int>(
-                label: 'Total da conta/garrafa (opcional)',
+                label: tr.entryBillTotal,
                 prefix: r'R$ ',
+                numeric: true,
                 value: draft.billTotalCents,
                 parse: parseCents,
                 format: centsToInput,
@@ -593,17 +594,17 @@ class _PriceCard extends StatelessWidget {
               const SizedBox(height: AppSpace.md),
             ],
             _NumberField<int>(
-              label: draft.isShared ? 'Quanto você pagou' : 'Preço pago',
+              label:
+                  draft.isShared ? tr.priceFixPaidShared : tr.priceFixPaidLabel,
               prefix: r'R$ ',
+              numeric: true,
               value: draft.paidCents,
               parse: parseCents,
               format: centsToInput,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               errorText: errors['paid'],
-              helper: draft.isShared
-                  ? 'O que você pagou, não o que bebeu.'
-                  : null,
+              helper: draft.isShared ? tr.entryPaidHelper : null,
               onChanged: cubit.setPaidCents,
             ),
             if (draft.isShared && draft.billTotalCents != null)
@@ -612,15 +613,14 @@ class _PriceCard extends StatelessWidget {
                 child: TextButton.icon(
                   onPressed: cubit.suggestPayment,
                   icon: const Icon(Icons.call_split_rounded, size: 18),
-                  label: Text(
-                      'Dividir igualmente (${draft.peopleCount} pessoas)'),
+                  label: Text(tr.entrySplitEqually(draft.peopleCount)),
                 ),
               ),
           ] else
             Text(
               draft.priceKind == PriceKind.complimentary
-                  ? 'Cortesia conta como R\$ 0,00 informado.'
-                  : 'Sem preço: aparece como "sem preço" no resumo.',
+                  ? tr.entryComplimentaryNote(formatCents(0))
+                  : tr.entryNoPriceNote,
               style: AppText.caption,
             ),
         ],
@@ -644,8 +644,12 @@ class _NumberField<T> extends StatefulWidget {
     this.prefix,
     this.helper,
     this.errorText,
+    this.numeric = false,
   });
 
+  /// A decimal or money field: an unreadable or ambiguous text ("1.500") is
+  /// flagged in the field instead of being guessed.
+  final bool numeric;
   final String label;
   final String? suffix;
   final String? prefix;
@@ -662,6 +666,8 @@ class _NumberField<T> extends StatefulWidget {
 }
 
 class _NumberFieldState<T> extends State<_NumberField<T>> {
+  String? _formatError;
+
   late final TextEditingController _controller = TextEditingController(
     text: widget.value == null ? '' : widget.format(widget.value as T),
   );
@@ -690,15 +696,20 @@ class _NumberFieldState<T> extends State<_NumberField<T>> {
     return TextField(
       controller: _controller,
       keyboardType: widget.keyboardType,
-      onChanged: (text) => widget.onChanged(widget.parse(text)),
+      onChanged: (text) {
+        if (widget.numeric) {
+          setState(() => _formatError = numberInputError(text));
+        }
+        widget.onChanged(widget.parse(text));
+      },
       decoration: InputDecoration(
         labelText: widget.label,
         suffixText: widget.suffix,
         prefixText: widget.prefix,
         helperText: widget.helper,
         helperMaxLines: 2,
-        errorText: widget.errorText,
-        errorMaxLines: 2,
+        errorText: widget.errorText ?? _formatError,
+        errorMaxLines: 3,
       ),
     );
   }
@@ -721,7 +732,7 @@ class _RecipeSection extends StatelessWidget {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setState) => AlertDialog(
-          title: const Text('Adicionar ingrediente'),
+          title: Text(tr.entryAddIngredient),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -729,11 +740,11 @@ class _RecipeSection extends StatelessWidget {
                 controller: nameController,
                 autofocus: true,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(labelText: 'Ingrediente'),
+                decoration: InputDecoration(labelText: tr.entryIngredientField),
               ),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Tem álcool'),
+                title: Text(tr.entryHasAlcohol),
                 value: alcoholic,
                 activeThumbColor: AppColors.amber,
                 onChanged: (v) => setState(() => alcoholic = v),
@@ -743,10 +754,10 @@ class _RecipeSection extends StatelessWidget {
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: const Text('Cancelar')),
+                child: Text(tr.commonCancel)),
             TextButton(
                 onPressed: () => Navigator.pop(ctx, true),
-                child: const Text('Adicionar')),
+                child: Text(tr.commonAdd)),
           ],
         ),
       ),
@@ -761,12 +772,14 @@ class _RecipeSection extends StatelessWidget {
     final cubit = context.read<DrinkFormCubit>();
     final d = state.draft;
     final controller = TextEditingController(
-      text: d.composition?.customized == true ? '${d.name} (minha)' : d.name,
+      text: d.composition?.customized == true
+          ? tr.entryMineSuffix(d.name)
+          : d.name,
     );
     final name = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Salvar como minha receita'),
+        title: Text(tr.entrySaveRecipeTitle),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -774,23 +787,19 @@ class _RecipeSection extends StatelessWidget {
             TextField(
               controller: controller,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(labelText: 'Nome da receita'),
+              decoration: InputDecoration(labelText: tr.entryRecipeName),
             ),
             const SizedBox(height: AppSpace.sm),
-            const Text(
-              'Guarda ingredientes, quantidades e teores para reutilizar. '
-              'Registros antigos não mudam.',
-              style: AppText.caption,
-            ),
+            Text(tr.entrySaveRecipeBody, style: AppText.caption),
           ],
         ),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancelar')),
+              child: Text(tr.commonCancel)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, controller.text),
-              child: const Text('Salvar')),
+              child: Text(tr.commonSave)),
         ],
       ),
     );
@@ -798,7 +807,7 @@ class _RecipeSection extends StatelessWidget {
     if (name == null || !context.mounted) return;
     final error = await cubit.saveAsMyRecipe(name);
     if (context.mounted) {
-      showToast(context, error ?? 'Receita salva no seu catálogo');
+      showToast(context, error ?? tr.entryRecipeSaved);
     }
   }
 
@@ -812,12 +821,11 @@ class _RecipeSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionTitle('Composição'),
+        SectionTitle(tr.entryCompositionTitle),
         Text(
           comp.recipeId == null || comp.sourceLabel == null
-              ? 'Informe só o que você sabe.'
-              : 'Receita de referência (${comp.sourceLabel}). Ajuste para '
-                  'o que foi realmente servido.',
+              ? tr.entryCompositionSimple
+              : tr.entryCompositionReference(comp.sourceLabel!),
           style: AppText.caption,
         ),
         const SizedBox(height: AppSpace.sm),
@@ -829,11 +837,13 @@ class _RecipeSection extends StatelessWidget {
               tilePadding: EdgeInsets.zero,
               childrenPadding: const EdgeInsets.only(bottom: AppSpace.md),
               title: Text(
-                comp.customized ? 'Composição ajustada' : 'Ver e ajustar composição',
+                comp.customized
+                    ? tr.entryCompositionAdjusted
+                    : tr.entryCompositionView,
                 style: AppText.subtitle,
               ),
               subtitle: Text(
-                summary.isEmpty ? 'Nenhum ingrediente ainda' : summary,
+                summary.isEmpty ? tr.entryNoIngredients : summary,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: AppText.caption,
@@ -851,25 +861,23 @@ class _RecipeSection extends StatelessWidget {
                   child: TextButton.icon(
                     onPressed: () => _addComponent(context),
                     icon: const Icon(Icons.add_rounded, size: 18),
-                    label: const Text('Adicionar ingrediente'),
+                    label: Text(tr.entryAddIngredient),
                   ),
                 ),
               ],
             ),
           ),
         ),
-        const SectionTitle('Volume do drink (opcional)'),
+        SectionTitle(tr.entryDrinkVolumeSection),
         _NumberField<int>(
-          label: 'Volume servido (ml)',
+          label: tr.entryServedVolume,
           suffix: 'ml',
           value: d.containerMl,
           parse: parseInteger,
           format: (v) => '$v',
           keyboardType: TextInputType.number,
           errorText: errors['volume'],
-          helper: 'Se não souber, deixe em branco: o resumo mostra como '
-              'desconhecido. O tamanho do copo e o gelo não contam como '
-              'volume bebido.',
+          helper: tr.entryServedVolumeHelper,
           onChanged: cubit.setVolume,
         ),
         if (estimate != null) ...[
@@ -879,24 +887,21 @@ class _RecipeSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 StatTile(
-                  label: 'Álcool puro da composição acima',
-                  value: (estimate.isComplete ? '' : 'pelo menos ') +
-                      formatGrams(estimate.grams),
+                  label: tr.entryPureAlcohol,
+                  value: estimate.isComplete
+                      ? formatGrams(estimate.grams)
+                      : tr.entryAtLeast(formatGrams(estimate.grams)),
                   icon: Icons.science_outlined,
                 ),
                 const SizedBox(height: AppSpace.sm),
                 if (!estimate.isComplete)
                   InfoPill(
-                    'Faltam teor ou quantidade de: ${estimate.missing.join(', ')}',
+                    tr.entryMissingParts(estimate.missing.join(', ')),
                     icon: Icons.help_outline_rounded,
                     warning: true,
                   ),
                 const SizedBox(height: AppSpace.sm),
-                const Text(
-                  'Vale a composição declarada, assumindo a porção inteira. '
-                  'Não é concentração no sangue.',
-                  style: AppText.caption,
-                ),
+                Text(tr.entryDeclaredNote, style: AppText.caption),
               ],
             ),
           ),
@@ -907,7 +912,7 @@ class _RecipeSection extends StatelessWidget {
             child: TextButton.icon(
               onPressed: () => _saveRecipe(context),
               icon: const Icon(Icons.bookmark_add_outlined, size: 18),
-              label: const Text('Salvar como minha receita'),
+              label: Text(tr.entrySaveRecipeTitle),
             ),
           ),
       ],
@@ -939,12 +944,13 @@ class _ComponentCard extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(
               AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
           children: [
-            Text('Qual ${component.name.toLowerCase()}?', style: AppText.title),
+            Text(tr.entryWhichProduct(component.name.toLowerCase()),
+                style: AppText.title),
             const SizedBox(height: AppSpace.sm),
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: const Icon(Icons.edit_outlined),
-              title: const Text('Sem marca: informar o teor'),
+              title: Text(tr.entryNoBrand),
               onTap: () => Navigator.pop(ctx, const _ProductChoice(null)),
             ),
             for (final p in products)
@@ -954,10 +960,10 @@ class _ComponentCard extends StatelessWidget {
                 title: Text(p.displayName),
                 subtitle: Text(
                   p.abvPercent != null
-                      ? 'Teor ${formatAbv(p.abvPercent!)}'
+                      ? tr.entryProductAbv(formatAbv(p.abvPercent!))
                       : (p.abvVariants.isNotEmpty
-                          ? 'Teor varia conforme a fonte'
-                          : 'Teor não informado'),
+                          ? tr.entryProductAbvVaries
+                          : tr.entryProductAbvUnknown),
                   style: AppText.caption,
                 ),
                 onTap: () => Navigator.pop(ctx, _ProductChoice(p)),
@@ -988,7 +994,7 @@ class _ComponentCard extends StatelessWidget {
             Row(children: [
               Expanded(
                 child: Text(
-                  c.name + (c.optional ? ' (opcional)' : ''),
+                  c.optional ? tr.entryOptionalMark(c.name) : c.name,
                   style: AppText.subtitle,
                 ),
               ),
@@ -996,13 +1002,13 @@ class _ComponentCard extends StatelessWidget {
                 const Icon(Icons.local_bar_outlined,
                     size: 16, color: AppColors.amber),
               IconButton(
-                tooltip: 'Remover ingrediente',
+                tooltip: tr.entryRemoveIngredient,
                 onPressed: () => cubit.removeComponent(index),
                 icon: const Icon(Icons.close_rounded, size: 18),
               ),
             ]),
             if (c.amount == null && c.amountText != null)
-              Text('Na receita: ${c.amountText}', style: AppText.caption),
+              Text(tr.entryInRecipe(c.amountText!), style: AppText.caption),
             const SizedBox(height: AppSpace.sm),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1010,15 +1016,16 @@ class _ComponentCard extends StatelessWidget {
                 if (c.unit != RecipeUnit.toTaste && c.unit != RecipeUnit.other)
                   Expanded(
                     child: _NumberField<double>(
-                      label: 'Quantidade',
+                      label: tr.entryAmount,
                       suffix: c.unit.shortLabel,
+                      numeric: true,
                       value: c.amount,
                       parse: parseDecimal,
                       format: decimalToInput,
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
                       helper: c.amount == null
-                          ? 'Em branco = desconhecida.'
+                          ? tr.entryAmountUnknown
                           : null,
                       onChanged: (v) => cubit.setComponentAmount(index, v),
                     ),
@@ -1042,14 +1049,15 @@ class _ComponentCard extends StatelessWidget {
                   onPressed: () => _pickProduct(context),
                   icon: const Icon(Icons.local_offer_outlined, size: 18),
                   label: Text(
-                    c.productName ?? 'Escolher marca/produto',
+                    c.productName ?? tr.entryChooseProduct,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
               if (c.role != null) const SizedBox(height: AppSpace.sm),
               _NumberField<double>(
-                label: 'Teor alcoólico (% vol.)',
+                label: tr.entryComponentAbv,
                 suffix: '% vol.',
+                numeric: true,
                 value: c.abvPercent,
                 parse: parseDecimal,
                 format: decimalToInput,
@@ -1057,16 +1065,16 @@ class _ComponentCard extends StatelessWidget {
                     const TextInputType.numberWithOptions(decimal: true),
                 errorText: abvError,
                 helper: c.abvPercent == null
-                    ? 'Desconhecido: sem ele o álcool total fica incompleto.'
+                    ? tr.entryComponentAbvUnknown
                     : null,
                 onChanged: (v) => cubit.setComponentAbv(index, v),
               ),
               const SizedBox(height: AppSpace.xs),
               Text(
                 pure == null
-                    ? 'Álcool deste ingrediente: não calculado '
-                        '(${c.alcoholGap ?? 'dados incompletos'}).'
-                    : 'Álcool deste ingrediente: ${formatGrams(pure * 0.789)}',
+                    ? tr.entryComponentAlcoholNone(
+                        c.alcoholGap ?? tr.entryIncompleteData)
+                    : tr.entryComponentAlcohol(formatGrams(pure * 0.789)),
                 style: AppText.caption,
               ),
             ],
@@ -1107,13 +1115,10 @@ class _AdvertisedBanner extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Preço do cardápio', style: AppText.overline),
+          Text(tr.entryMenuPrice, style: AppText.overline),
           const SizedBox(height: AppSpace.xs),
           Text(
-            'O cardápio anunciava ${formatCents(cents)}. É só uma sugestão: '
-            'confirme o que foi pago de fato, pois pode ter promoção ou outro '
-            'pedido. Se for garrafa ou jarra dividida, marque "Compartilhada": '
-            'o valor vira o total da conta, não a sua parte.',
+            tr.entryMenuPriceBody(formatCents(cents)),
             style: AppText.body,
           ),
           Align(
@@ -1121,8 +1126,8 @@ class _AdvertisedBanner extends StatelessWidget {
             child: TextButton(
               onPressed: cubit.applyAdvertised,
               child: Text(draft.isShared
-                  ? 'Usar como total da conta'
-                  : 'Usar como o que paguei'),
+                  ? tr.entryUseAsBillTotal
+                  : tr.entryUseAsPaid),
             ),
           ),
         ],
@@ -1160,15 +1165,15 @@ class _SuggestionBanner extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Seu histórico', style: AppText.overline),
+          Text(tr.entryHistory, style: AppText.overline),
           const SizedBox(height: AppSpace.xs),
           if (paid != null) ...[
             Text(
               draft.isShared
-                  ? 'Sua parcela foi ${formatCents(paid)} $scope em '
-                      '${formatDate(suggestion.paidAt!)}.'
-                  : 'Você pagou ${formatCents(paid)} $scope em '
-                      '${formatDate(suggestion.paidAt!)}.',
+                  ? tr.entryHistoryShare(formatCents(paid), scope,
+                      formatDate(suggestion.paidAt!))
+                  : tr.entryHistoryPaid(formatCents(paid), scope,
+                      formatDate(suggestion.paidAt!)),
               style: AppText.body,
             ),
             Align(
@@ -1176,22 +1181,22 @@ class _SuggestionBanner extends StatelessWidget {
               child: TextButton(
                 onPressed: cubit.applySuggestedPaid,
                 child: Text(draft.isShared
-                    ? 'Usar como minha parcela'
-                    : 'Usar este valor'),
+                    ? tr.entryUseAsShare
+                    : tr.entryUseValue),
               ),
             ),
           ],
           if (draft.isShared && total != null) ...[
             Text(
-              'O total da garrafa/porção foi ${formatCents(total)} em '
-              '${formatDate(suggestion.totalAt!)}.',
+              tr.entryHistoryTotal(
+                  formatCents(total), formatDate(suggestion.totalAt!)),
               style: AppText.body,
             ),
             Align(
               alignment: Alignment.centerLeft,
               child: TextButton(
                 onPressed: cubit.applySuggestedTotal,
-                child: const Text('Usar como total'),
+                child: Text(tr.entryUseAsTotal),
               ),
             ),
           ],

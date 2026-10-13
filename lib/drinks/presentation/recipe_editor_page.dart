@@ -9,6 +9,7 @@ import '../data/drink_repository.dart';
 import '../domain/catalog_item.dart';
 import '../domain/recipe.dart';
 import 'unit_dropdown.dart';
+import '../../l10n/l10n.dart';
 
 /// Full editor for a personal recipe: name and every component (ingredient,
 /// alcohol flag, amount, ABV, role). Pops the saved [CatalogItem].
@@ -111,7 +112,9 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
     final source = widget.editing ?? widget.copyFrom;
     final defaultName = widget.editing != null
         ? widget.editing!.name
-        : (widget.copyFrom != null ? '${widget.copyFrom!.name} (minha versão)' : '');
+        : (widget.copyFrom != null
+            ? tr.recipeEditorNameCopy(widget.copyFrom!.name)
+            : '');
     _name = TextEditingController(text: defaultName);
     for (final c in source?.recipe?.components ?? const <EntryComponent>[]) {
       _rows.add(_RowModel.from(c));
@@ -131,16 +134,31 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
       [for (final r in _rows) r.toComponent()];
 
   String? _problem() {
-    if (_name.text.trim().isEmpty) return 'Dê um nome para a receita.';
-    if (_rows.isEmpty) return 'Adicione pelo menos um ingrediente.';
+    if (_name.text.trim().isEmpty) return tr.recipeEditorNeedName;
+    if (_rows.isEmpty) return tr.recipeEditorNeedIngredient;
+    // An unreadable or ambiguous number ("1.500") is reported, never guessed.
+    for (final r in _rows) {
+      final name = r.name.text.trim();
+      final texts = [
+        if (r.unit != RecipeUnit.toTaste && r.unit != RecipeUnit.other)
+          r.amount.text,
+        if (r.alcoholic) r.abv.text,
+      ];
+      for (final t in texts) {
+        final problem = numberInputError(t);
+        if (problem != null) {
+          return tr.recipeEditorNumberProblem(name, problem);
+        }
+      }
+    }
     for (final c in _components) {
-      if (c.name.isEmpty) return 'Todo ingrediente precisa de um nome.';
+      if (c.name.isEmpty) return tr.recipeEditorIngredientName;
       final abv = c.abvPercent;
       if (abv != null && (abv < 0 || abv > 100)) {
-        return 'O teor de "${c.name}" vai de 0 a 100%.';
+        return tr.recipeEditorAbvRange(c.name);
       }
       final qty = c.amount;
-      if (qty != null && qty < 0) return 'A quantidade de "${c.name}" é inválida.';
+      if (qty != null && qty < 0) return tr.recipeEditorAmountInvalid(c.name);
     }
     return null;
   }
@@ -164,7 +182,7 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _saving = false);
-      showToast(context, 'Não foi possível salvar. Seus dados continuam aqui.');
+      showToast(context, tr.customSaveFailed);
     }
   }
 
@@ -183,7 +201,10 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
         ? estimateComponents(_components)
         : null;
     return Scaffold(
-      appBar: AppBar(title: Text(editing ? 'Editar receita' : 'Nova receita')),
+      appBar: AppBar(
+          title: Text(editing
+              ? tr.recipeEditorEditTitle
+              : tr.recipeEditorNewTitle)),
       body: Column(
         children: [
           Expanded(
@@ -192,27 +213,22 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
               padding: const EdgeInsets.fromLTRB(
                   AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
               children: [
-                const Text(
-                  'Registre só o que você sabe. Quantidade ou teor em branco '
-                  'ficam como desconhecidos e o álcool total aparece como '
-                  'incompleto.',
-                  style: AppText.caption,
-                ),
-                const SectionTitle('Nome'),
+                Text(tr.recipeEditorIntro, style: AppText.caption),
+                SectionTitle(tr.recipeEditorNameSection),
                 TextField(
                   controller: _name,
                   textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
-                    labelText: 'Nome da receita',
+                    labelText: tr.entryRecipeName,
                     errorText: _showErrors && _name.text.trim().isEmpty
-                        ? 'Dê um nome para a receita'
+                        ? tr.recipeEditorNameRequired
                         : null,
                   ),
                   onChanged: (_) => setState(() {}),
                 ),
-                const SectionTitle('Ingredientes'),
+                SectionTitle(tr.recipeEditorIngredients),
                 if (_rows.isEmpty)
-                  const Text('Nenhum ingrediente ainda.', style: AppText.caption),
+                  Text(tr.recipeEditorNoneYet, style: AppText.caption),
                 for (var i = 0; i < _rows.length; i++)
                   Padding(
                     padding: const EdgeInsets.only(bottom: AppSpace.md),
@@ -231,25 +247,25 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
                 OutlinedButton.icon(
                   onPressed: () => setState(() => _rows.add(_RowModel())),
                   icon: const Icon(Icons.add_rounded),
-                  label: const Text('Adicionar ingrediente'),
+                  label: Text(tr.entryAddIngredient),
                 ),
                 if (estimate != null) ...[
-                  const SectionTitle('Álcool da composição'),
+                  SectionTitle(tr.recipeEditorAlcoholSection),
                   SurfaceCard(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         StatTile(
-                          label: 'Álcool puro declarado',
-                          value: (estimate.isComplete ? '' : 'pelo menos ') +
-                              formatGrams(estimate.grams),
+                          label: tr.recipeEditorDeclaredAlcohol,
+                          value: estimate.isComplete
+                              ? formatGrams(estimate.grams)
+                              : tr.entryAtLeast(formatGrams(estimate.grams)),
                           icon: Icons.science_outlined,
                         ),
                         if (!estimate.isComplete) ...[
                           const SizedBox(height: AppSpace.sm),
                           InfoPill(
-                            'Faltam teor ou quantidade de: '
-                            '${estimate.missing.join(', ')}',
+                            tr.entryMissingParts(estimate.missing.join(', ')),
                             icon: Icons.help_outline_rounded,
                             warning: true,
                           ),
@@ -264,7 +280,8 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
           BottomActionBar(
             child: FilledButton(
               onPressed: _saving ? null : _save,
-              child: Text(editing ? 'Salvar alterações' : 'Salvar receita'),
+              child: Text(
+                  editing ? tr.entrySaveChanges : tr.recipeEditorSaveRecipe),
             ),
           ),
         ],
@@ -302,19 +319,19 @@ class _RowCard extends StatelessWidget {
               child: TextField(
                 controller: row.name,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(labelText: 'Ingrediente'),
+                decoration: InputDecoration(labelText: tr.entryIngredientField),
                 onChanged: (_) => onChanged(),
               ),
             ),
             Column(children: [
               IconButton(
-                tooltip: 'Mover para cima',
+                tooltip: tr.recipeEditorMoveUp,
                 visualDensity: VisualDensity.compact,
                 onPressed: index == 0 ? null : () => onMove(-1),
                 icon: const Icon(Icons.keyboard_arrow_up_rounded),
               ),
               IconButton(
-                tooltip: 'Mover para baixo',
+                tooltip: tr.recipeEditorMoveDown,
                 visualDensity: VisualDensity.compact,
                 onPressed: index == count - 1 ? null : () => onMove(1),
                 icon: const Icon(Icons.keyboard_arrow_down_rounded),
@@ -333,11 +350,13 @@ class _RowCard extends StatelessWidget {
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(
-                      labelText: 'Quantidade',
+                      labelText: tr.entryAmount,
                       suffixText: row.unit.shortLabel,
+                      errorText: numberInputError(row.amount.text),
+                      errorMaxLines: 3,
                       helperText: row.amountText == null
-                          ? 'Em branco = desconhecida.'
-                          : 'Na receita original: ${row.amountText}',
+                          ? tr.entryAmountUnknown
+                          : tr.recipeEditorOriginal(row.amountText!),
                       helperMaxLines: 2,
                     ),
                     onChanged: (_) => onChanged(),
@@ -360,12 +379,12 @@ class _RowCard extends StatelessWidget {
           if (row.unit == RecipeUnit.other && row.amountText != null)
             Padding(
               padding: const EdgeInsets.only(top: AppSpace.xs),
-              child: Text('Na receita original: ${row.amountText}',
+              child: Text(tr.recipeEditorOriginal(row.amountText!),
                   style: AppText.caption),
             ),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
-            title: const Text('Tem álcool'),
+            title: Text(tr.entryHasAlcohol),
             value: row.alcoholic,
             activeThumbColor: AppColors.amber,
             onChanged: (v) {
@@ -378,24 +397,27 @@ class _RowCard extends StatelessWidget {
               controller: row.abv,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              decoration: const InputDecoration(
-                labelText: 'Teor alcoólico (% vol.)',
+              decoration: InputDecoration(
+                labelText: tr.entryComponentAbv,
                 suffixText: '% vol.',
-                helperText: 'Em branco = desconhecido, não conta como zero.',
+                errorText: numberInputError(row.abv.text),
+                errorMaxLines: 3,
+                helperText: tr.customAbvHelper,
               ),
               onChanged: (_) => onChanged(),
             ),
             const SizedBox(height: AppSpace.sm),
             DropdownButtonFormField<String?>(
               initialValue: row.role,
-              decoration: const InputDecoration(
-                labelText: 'Tipo (para escolher a marca ao registrar)',
+              decoration: InputDecoration(
+                labelText: tr.recipeEditorRole,
               ),
               items: [
-                const DropdownMenuItem<String?>(
-                    value: null, child: Text('Sem tipo')),
-                for (final e in ingredientRoleLabels.entries)
-                  DropdownMenuItem<String?>(value: e.key, child: Text(e.value)),
+                DropdownMenuItem<String?>(
+                    value: null, child: Text(tr.recipeEditorNoRole)),
+                for (final role in ingredientRoles)
+                  DropdownMenuItem<String?>(
+                      value: role, child: Text(ingredientRoleLabel(role))),
               ],
               onChanged: (v) {
                 row.role = v;
@@ -409,8 +431,8 @@ class _RowCard extends StatelessWidget {
               onPressed: onRemove,
               icon: const Icon(Icons.delete_outline_rounded,
                   size: 18, color: AppColors.danger),
-              label: const Text('Remover',
-                  style: TextStyle(color: AppColors.danger)),
+              label: Text(tr.recipeEditorRemove,
+                  style: const TextStyle(color: AppColors.danger)),
             ),
           ),
         ],

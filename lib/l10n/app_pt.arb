@@ -1055,5 +1055,609 @@
         "type": "String"
       }
     }
-  }
+  },
+  "originGeneric": "Genérico",
+  "originUser": "Criada por você",
+  "originVerified": "Dados do fabricante",
+  "originMixed": "Fabricante + rótulo (fonte secundária)",
+  "originSecondary": "Rótulo em fonte secundária",
+  "originRecipe": "Receita de referência",
+  "kindCan": "Lata",
+  "kindLongNeck": "Long neck",
+  "kindBottle": "Garrafa",
+  "kindGlass": "Copo/taça",
+  "kindShot": "Dose",
+  "presCan": "Lata",
+  "presBottle": "Garrafa",
+  "presGlass": "Copo",
+  "presMug": "Caneca",
+  "presTulip": "Tulipa",
+  "presWineGlass": "Taça",
+  "presShot": "Dose",
+  "presDoubleShot": "Dose dupla",
+  "unitLiters": "{value} L",
+  "@unitLiters": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "abvVaries": "teor varia",
+  "categoryBeer": "Cerveja",
+  "categoryDraft": "Chopp",
+  "categoryCocktail": "Drink",
+  "categorySpirit": "Destilado/dose",
+  "categoryWine": "Vinho",
+  "categoryNonAlcoholic": "Sem álcool",
+  "categoryWater": "Água",
+  "abvSourceLabel": "Rótulo (foto), conferido por você",
+  "abvSourceMenu": "Cardápio (foto), conferido por você",
+  "abvSourceTyped": "Informado por você",
+  "abvSourceCatalog": "Copiado do catálogo",
+  "styleLagerPilsen": "Lager/Pilsen",
+  "styleDark": "Escura",
+  "styleWhiteRum": "Rum branco",
+  "styleAperitif": "Aperitivo",
+  "styleBitterAperitif": "Aperitivo bitter",
+  "styleSweetVermouth": "Vermute doce",
+  "styleDryVermouth": "Vermute seco",
+  "styleAgaveTequila": "Tequila 100% agave",
+  "roleCachaca": "Cachaça",
+  "roleVodka": "Vodka",
+  "roleGin": "Gin",
+  "roleRum": "Rum",
+  "roleTequila": "Tequila",
+  "roleWhisky": "Whisky",
+  "roleOrangeLiqueur": "Licor de laranja",
+  "roleCampari": "Campari",
+  "roleAperol": "Aperol",
+  "roleSweetVermouth": "Vermute doce",
+  "roleDryVermouth": "Vermute seco",
+  "roleSparklingWine": "Espumante",
+  "roleBitters": "Bitter",
+  "recipeUnitMl": "ml (mililitros)",
+  "recipeUnitG": "g (gramas)",
+  "recipeUnitUnit": "unidade",
+  "recipeUnitTsp": "colher de chá",
+  "recipeUnitTbsp": "colher de sopa",
+  "recipeUnitLeaf": "folha",
+  "recipeUnitDrop": "gota",
+  "recipeUnitToTaste": "a gosto",
+  "recipeUnitOther": "texto da receita",
+  "recipeShortUnit": "un.",
+  "recipeShortTsp": "c. chá",
+  "recipeShortTbsp": "c. sopa",
+  "recipeShortLeaf": "folha(s)",
+  "recipeShortDrop": "gota(s)",
+  "recipeAmountUnknown": "quantidade não informada",
+  "recipeGapAbv": "teor desconhecido",
+  "recipeGapNotMl": "quantidade não está em ml",
+  "recipeGapAmount": "quantidade desconhecida",
+  "addDrinkTitle": "Adicionar bebida",
+  "catalogMyDrinksTooltip": "Minhas bebidas e receitas",
+  "catalogSearchHint": "Buscar marca, produto ou estilo",
+  "catalogMoreFilters": "Mais filtros",
+  "catalogAll": "Todas",
+  "catalogScanLabel": "Ler rótulo",
+  "catalogScanMenu": "Ler cardápio",
+  "catalogCreate": "Cadastrar bebida",
+  "catalogCreateOuting": "Cadastrar bebida deste rolê",
+  "catalogNeedOutingTitle": "Precisa de um rolê em andamento",
+  "catalogNeedOutingBody": "Bebidas lidas de rótulo ou cardápio ficam guardadas no rolê em que foram cadastradas. Quer iniciar um agora?",
+  "catalogSavedToOuting": "Salva em \"Bebidas deste rolê\"",
+  "catalogMenuSaved": "{count, plural, =1{1 item em \"Bebidas deste rolê\". Escolha um para registrar.} other{{count} itens em \"Bebidas deste rolê\". Escolha um para registrar.}}",
+  "@catalogMenuSaved": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "catalogDrinkSaved": "Bebida salva em Minhas bebidas",
+  "catalogRecipeSaved": "Receita salva em Minhas bebidas",
+  "catalogDeleteTitle": "Excluir esta bebida?",
+  "catalogDeleteBody": "Ela sai do catálogo. Os registros que você já fez com ela continuam como estão.",
+  "catalogClearFilters": "Limpar filtros",
+  "catalogRemoveFilter": "Remover filtro",
+  "catalogFilters": "Filtros",
+  "catalogOnlyNoAlcohol": "Só sem álcool",
+  "catalogStyle": "Estilo",
+  "catalogPresentation": "Apresentação",
+  "catalogBrand": "Marca",
+  "catalogSeeCount": "{count, plural, =1{Ver 1 bebida} other{Ver {count} bebidas}}",
+  "@catalogSeeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "catalogRecents": "Recentes",
+  "catalogFavorites": "Favoritas",
+  "catalogAllDrinks": "Todas as bebidas",
+  "catalogResults": "{count, plural, =1{1 resultado} other{{count} resultados}}",
+  "@catalogResults": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "catalogEmptyTitle": "Nenhuma bebida encontrada",
+  "catalogEmptyOuting": "Cadastre uma bebida só deste rolê, ou leia um rótulo ou cardápio.",
+  "catalogEmptyNoFilter": "Cadastre a sua e ela fica salva para os próximos rolês.",
+  "catalogEmptyFilter": "Tente tirar algum filtro ou cadastre a sua.",
+  "catalogSizes": "{count} tamanhos",
+  "@catalogSizes": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "catalogDetails": "Detalhes",
+  "catalogUnfavorite": "Remover dos favoritos",
+  "catalogFavorite": "Favoritar",
+  "entryDeleteTitle": "Excluir registro?",
+  "entryDeleteBody": "Ele sai do rolê e do resumo.",
+  "entryDiscardTitle": "Descartar alterações?",
+  "entryDiscardBody": "O que você preencheu aqui será perdido.",
+  "entryKeepEditing": "Continuar editando",
+  "entryDiscard": "Descartar",
+  "entryFix": "Corrigir registro",
+  "entryLogCocktail": "Registrar drink",
+  "entryLogDrink": "Registrar bebida",
+  "entryDrinkAndSize": "Bebida e tamanho",
+  "entryGenericSpirit": "Doses sugeridas, editáveis: não são medidas oficiais de nenhum estabelecimento. A garrafa é a embalagem, não a sua dose.",
+  "entryGenericSizes": "Tamanhos sugeridos: este produto não tem embalagens verificadas no catálogo. Confira na embalagem.",
+  "entryVolume": "Volume (ml)",
+  "entryOtherSize": "Outro tamanho (ml)",
+  "entryAbvOptional": "Teor alcoólico (opcional)",
+  "entryAbvBlank": "Em branco = desconhecido (não conta como zero).",
+  "entryAbvCheck": "Confira no rótulo se puder.",
+  "entryAbvVariantsIntro": "As fontes divergem. Escolha o que estiver no seu rótulo ou digite:",
+  "entryBottleShared": "Garrafa que está sendo dividida (preenche o volume da garrafa):",
+  "entryBottlesInfo": "Embalagens do produto: {list}. Para dividir uma garrafa, marque \"Compartilhada\" abaixo.",
+  "@entryBottlesInfo": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "entryIndividualOrShared": "Individual ou compartilhada",
+  "entryOnlyMine": "Só minha",
+  "entryShared": "Compartilhada",
+  "entryPriceSection": "Preço (opcional)",
+  "entryTimeSection": "Horário",
+  "entryYourShare": "Sua parte: {amount}",
+  "@entryYourShare": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "entryYourShareUnknown": "Sua parte: —",
+  "entrySaveChanges": "Salvar alterações",
+  "entryIngredients": "Ingredientes: {list}",
+  "@entryIngredients": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "entrySharedLine": "de {total} · {count} pessoas, com você",
+  "@entrySharedLine": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "entryPeople": "Pessoas (incluindo você)",
+  "entryFewerPeople": "Menos uma pessoa",
+  "entryMorePeople": "Mais uma pessoa",
+  "entryAdjustShare": "Ajustar parcela e sobra",
+  "entryYourShareMl": "Sua parte (ml)",
+  "entryEqualSplit": "Divisão igual por padrão.",
+  "entryLeftover": "Sobra na garrafa (ml)",
+  "entryOptionalDot": "Opcional.",
+  "entryOthersEach": "Sobram {amount} {count, plural, =1{para a outra pessoa} other{para cada uma das outras {count} pessoas}}.",
+  "@entryOthersEach": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "entryPriceValue": "Valor",
+  "entryPriceDontKnow": "Não sei",
+  "entryBillTotal": "Total da conta/garrafa (opcional)",
+  "entryPaidHelper": "O que você pagou, não o que bebeu.",
+  "entrySplitEqually": "Dividir igualmente ({count} pessoas)",
+  "@entrySplitEqually": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "entryComplimentaryNote": "Cortesia conta como {amount} informado.",
+  "@entryComplimentaryNote": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "entryNoPriceNote": "Sem preço: aparece como \"sem preço\" no resumo.",
+  "commonAdd": "Adicionar",
+  "entryAddIngredient": "Adicionar ingrediente",
+  "entryIngredientField": "Ingrediente",
+  "entryHasAlcohol": "Tem álcool",
+  "entrySaveRecipeTitle": "Salvar como minha receita",
+  "entryMineSuffix": "{name} (minha)",
+  "@entryMineSuffix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "entryRecipeName": "Nome da receita",
+  "entrySaveRecipeBody": "Guarda ingredientes, quantidades e teores para reutilizar. Registros antigos não mudam.",
+  "entryRecipeSaved": "Receita salva no seu catálogo",
+  "entryCompositionTitle": "Composição",
+  "entryCompositionSimple": "Informe só o que você sabe.",
+  "entryCompositionReference": "Receita de referência ({source}). Ajuste para o que foi realmente servido.",
+  "@entryCompositionReference": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "entryCompositionAdjusted": "Composição ajustada",
+  "entryCompositionView": "Ver e ajustar composição",
+  "entryNoIngredients": "Nenhum ingrediente ainda",
+  "entryDrinkVolumeSection": "Volume do drink (opcional)",
+  "entryServedVolume": "Volume servido (ml)",
+  "entryServedVolumeHelper": "Se não souber, deixe em branco: o resumo mostra como desconhecido. O tamanho do copo e o gelo não contam como volume bebido.",
+  "entryPureAlcohol": "Álcool puro da composição acima",
+  "entryAtLeast": "pelo menos {amount}",
+  "@entryAtLeast": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "entryMissingParts": "Faltam teor ou quantidade de: {list}",
+  "@entryMissingParts": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "entryDeclaredNote": "Vale a composição declarada, assumindo a porção inteira. Não é concentração no sangue.",
+  "entryOptionalMark": "{name} (opcional)",
+  "@entryOptionalMark": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "entryRemoveIngredient": "Remover ingrediente",
+  "entryInRecipe": "Na receita: {text}",
+  "@entryInRecipe": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "entryAmount": "Quantidade",
+  "entryAmountUnknown": "Em branco = desconhecida.",
+  "entryChooseProduct": "Escolher marca/produto",
+  "entryComponentAbv": "Teor alcoólico (% vol.)",
+  "entryComponentAbvUnknown": "Desconhecido: sem ele o álcool total fica incompleto.",
+  "entryComponentAlcoholNone": "Álcool deste ingrediente: não calculado ({reason}).",
+  "@entryComponentAlcoholNone": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "entryComponentAlcohol": "Álcool deste ingrediente: {amount}",
+  "@entryComponentAlcohol": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "entryIncompleteData": "dados incompletos",
+  "entryWhichProduct": "Qual {name}?",
+  "@entryWhichProduct": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "entryNoBrand": "Sem marca: informar o teor",
+  "entryProductAbv": "Teor {abv}",
+  "@entryProductAbv": {
+    "placeholders": {
+      "abv": {
+        "type": "String"
+      }
+    }
+  },
+  "entryProductAbvVaries": "Teor varia conforme a fonte",
+  "entryProductAbvUnknown": "Teor não informado",
+  "entryMenuPrice": "Preço do cardápio",
+  "entryMenuPriceBody": "O cardápio anunciava {price}. É só uma sugestão: confirme o que foi pago de fato, pois pode ter promoção ou outro pedido. Se for garrafa ou jarra dividida, marque \"Compartilhada\": o valor vira o total da conta, não a sua parte.",
+  "@entryMenuPriceBody": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "entryUseAsBillTotal": "Usar como total da conta",
+  "entryUseAsPaid": "Usar como o que paguei",
+  "entryHistory": "Seu histórico",
+  "entryHistoryShare": "Sua parcela foi {price} {scope} em {date}.",
+  "@entryHistoryShare": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "scope": {
+        "type": "String"
+      }
+    }
+  },
+  "entryHistoryPaid": "Você pagou {price} {scope} em {date}.",
+  "@entryHistoryPaid": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "scope": {
+        "type": "String"
+      }
+    }
+  },
+  "entryUseAsShare": "Usar como minha parcela",
+  "entryUseValue": "Usar este valor",
+  "entryHistoryTotal": "O total da garrafa/porção foi {price} em {date}.",
+  "@entryHistoryTotal": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "entryUseAsTotal": "Usar como total",
+  "entryScopeAtPlace": "neste local",
+  "entryScopeAtOuting": "neste rolê",
+  "draftVolumeInvalid": "Volume inválido",
+  "draftAbvRange": "O teor vai de 0 a 100%",
+  "draftAmountInvalid": "Quantidade inválida",
+  "draftVolumeRequired": "Informe o volume em ml",
+  "draftVolumeTooHigh": "Volume alto demais",
+  "draftShareRequired": "Informe a sua parte em ml",
+  "draftShareOver": "Sua parte + sobra passam do volume ({volume})",
+  "@draftShareOver": {
+    "placeholders": {
+      "volume": {
+        "type": "String"
+      }
+    }
+  },
+  "draftBeforeStart": "Antes do início do rolê ({time})",
+  "@draftBeforeStart": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "draftNotFuture": "O horário não pode estar no futuro",
+  "draftAfterEnd": "Depois do fim do rolê ({time})",
+  "@draftAfterEnd": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "draftPaidRequired": "Informe o valor ou escolha outra opção",
+  "formSaveRecipeFailed": "Não foi possível salvar a receita.",
+  "formSaveFailed": "Não foi possível salvar. Nada foi perdido, tente de novo.",
+  "formDeleteFailed": "Não foi possível excluir. Tente de novo.",
+  "detailNotGiven": "Não informado",
+  "detailAbv": "Teor alcoólico",
+  "detailAbvFrom": "Teor: {source}. Não é dado do fabricante.",
+  "@detailAbvFrom": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "detailIngredients": "Ingredientes declarados",
+  "detailIngredientsNone": "Não informados",
+  "detailPresentations": "Apresentações",
+  "detailBottleNotDose": "Tamanho da garrafa não é tamanho da dose. Ao registrar, você escolhe uma dose sugerida (editável) ou compartilha a garrafa.",
+  "detailUnverifiedPackages": "Embalagens não verificadas para este produto. Ao registrar, você pode escolher um tamanho sugerido ou digitar o volume.",
+  "detailPackagesNote": "Embalagens citadas pelo fabricante. O tamanho da embalagem não é o que você bebeu: isso você define ao registrar.",
+  "detailMakeMine": "Criar minha versão",
+  "detailSourceTitle": "Fonte dos dados",
+  "detailSourceLine": "{source} · consultado em {date}",
+  "@detailSourceLine": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "detailCopyAddress": "Copiar endereço",
+  "detailAddressCopied": "Endereço copiado",
+  "detailMayVary": "Os dados podem variar por versão e mercado. Confira sempre o rótulo da embalagem.",
+  "detailAbvVaries": "Varia conforme a fonte, sem um valor único:\n{lines}",
+  "@detailAbvVaries": {
+    "placeholders": {
+      "lines": {
+        "type": "String"
+      }
+    }
+  },
+  "detailRecipeReference": "Receita de referência: mostra como a receita é publicada, não o que um bar serviu.",
+  "detailRecipeMine": "Sua receita salva. Ao registrar, você ajusta o que realmente foi servido.",
+  "detailNoIngredientsYet": "Sem ingredientes ainda: você monta ao registrar.",
+  "detailAlcoholLegend": "Ingredientes com copo ao lado têm álcool. O teor de cada um é informado ao registrar; sem ele o álcool total fica incompleto. Gelo não entra na conta.",
+  "detailMethod": "Preparo",
+  "detailGarnish": "Decoração: {text}",
+  "@detailGarnish": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "customEditTitle": "Editar bebida",
+  "customSaveFailed": "Não foi possível salvar. Seus dados continuam aqui.",
+  "customEditNote": "As mudanças valem para os próximos registros. O que você já registrou continua como estava.",
+  "customNewNote": "Fica salva para você usar de novo nos próximos rolês.",
+  "customType": "Tipo",
+  "customIdentification": "Identificação",
+  "customName": "Nome da bebida",
+  "customNameRequired": "Dê um nome para a bebida",
+  "customBrand": "Marca (opcional)",
+  "customStyle": "Estilo (opcional)",
+  "customSizeAndAbv": "Tamanho e teor",
+  "customSize": "Tamanho (ml)",
+  "customSizeRequired": "Informe o tamanho em ml",
+  "customAbvHelper": "Em branco = desconhecido, não conta como zero.",
+  "customIngredients": "Ingredientes (opcional)",
+  "customIngredientsHelper": "Separe por vírgula. Só o que você sabe.",
+  "customSaveUse": "Salvar e usar",
+  "recipeUnitLabel": "Unidade",
+  "myDrinksNeedOuting": "Inicie um rolê para registrar uma bebida.",
+  "myDrinksLogged": "Bebida registrada",
+  "myDrinksCopied": "Cópia criada",
+  "myDrinksDeleteTitle": "Excluir \"{name}\"?",
+  "@myDrinksDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "myDrinksDeleteBody": "Sai do seu catálogo. Os registros que você já fez continuam como estão.",
+  "myDrinksDeleted": "Excluída",
+  "myDrinksRecipeSubtitle": "{count, plural, =1{Receita · 1 ingrediente} other{Receita · {count} ingredientes}}",
+  "@myDrinksRecipeSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "myDrinksTitle": "Minhas bebidas e receitas",
+  "myDrinksEmptyTitle": "Nada por aqui ainda",
+  "myDrinksEmptyBody": "Bebidas e receitas que você cadastrar ficam aqui para reutilizar nos próximos rolês.",
+  "myDrinksStartFirst": "Para registrar, inicie um rolê primeiro.",
+  "myDrinksActionLog": "Registrar",
+  "myDrinksActionDuplicate": "Duplicar",
+  "myDrinksNewDrink": "Nova bebida",
+  "myDrinksNewRecipe": "Nova receita",
+  "recipeEditorNameCopy": "{name} (minha versão)",
+  "@recipeEditorNameCopy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recipeEditorNeedName": "Dê um nome para a receita.",
+  "recipeEditorNeedIngredient": "Adicione pelo menos um ingrediente.",
+  "recipeEditorIngredientName": "Todo ingrediente precisa de um nome.",
+  "recipeEditorAbvRange": "O teor de \"{name}\" vai de 0 a 100%.",
+  "@recipeEditorAbvRange": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recipeEditorAmountInvalid": "A quantidade de \"{name}\" é inválida.",
+  "@recipeEditorAmountInvalid": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recipeEditorNumberProblem": "\"{name}\": {problem}",
+  "@recipeEditorNumberProblem": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "problem": {
+        "type": "String"
+      }
+    }
+  },
+  "recipeEditorEditTitle": "Editar receita",
+  "recipeEditorNewTitle": "Nova receita",
+  "recipeEditorIntro": "Registre só o que você sabe. Quantidade ou teor em branco ficam como desconhecidos e o álcool total aparece como incompleto.",
+  "recipeEditorNameSection": "Nome",
+  "recipeEditorNameRequired": "Dê um nome para a receita",
+  "recipeEditorIngredients": "Ingredientes",
+  "recipeEditorNoneYet": "Nenhum ingrediente ainda.",
+  "recipeEditorAlcoholSection": "Álcool da composição",
+  "recipeEditorDeclaredAlcohol": "Álcool puro declarado",
+  "recipeEditorSaveRecipe": "Salvar receita",
+  "recipeEditorMoveUp": "Mover para cima",
+  "recipeEditorMoveDown": "Mover para baixo",
+  "recipeEditorOriginal": "Na receita original: {text}",
+  "@recipeEditorOriginal": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "recipeEditorRole": "Tipo (para escolher a marca ao registrar)",
+  "recipeEditorNoRole": "Sem tipo",
+  "recipeEditorRemove": "Remover"
 }

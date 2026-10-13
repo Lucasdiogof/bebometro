@@ -12,6 +12,7 @@ import 'custom_drink_page.dart';
 import 'drink_entry_page.dart';
 import 'my_drinks_cubit.dart';
 import 'recipe_editor_page.dart';
+import '../../l10n/l10n.dart';
 
 /// Manages the user's own drinks and recipes: list, register, edit,
 /// duplicate and delete. Past records are never changed by any of these.
@@ -38,7 +39,7 @@ class _MyDrinksView extends StatelessWidget {
       case _Action.register:
         final outingId = cubit.state.activeOutingId;
         if (outingId == null) {
-          showToast(context, 'Inicie um rolê para registrar uma bebida.');
+          showToast(context, tr.myDrinksNeedOuting);
           return;
         }
         final outcome = await Navigator.of(context).push<EntryOutcome>(
@@ -48,7 +49,7 @@ class _MyDrinksView extends StatelessWidget {
           ),
         );
         if (outcome == EntryOutcome.saved && context.mounted) {
-          showToast(context, 'Bebida registrada');
+          showToast(context, tr.myDrinksLogged);
         }
       case _Action.edit:
         await Navigator.of(context).push<CatalogItem>(
@@ -60,30 +61,27 @@ class _MyDrinksView extends StatelessWidget {
         );
       case _Action.duplicate:
         await cubit.duplicate(item);
-        if (context.mounted) showToast(context, 'Cópia criada');
+        if (context.mounted) showToast(context, tr.myDrinksCopied);
       case _Action.delete:
         final ok = await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text('Excluir "${item.name}"?'),
-            content: const Text(
-              'Sai do seu catálogo. Os registros que você já fez continuam '
-              'como estão.',
-            ),
+            title: Text(tr.myDrinksDeleteTitle(item.name)),
+            content: Text(tr.myDrinksDeleteBody),
             actions: [
               TextButton(
                   onPressed: () => Navigator.pop(ctx, false),
-                  child: const Text('Cancelar')),
+                  child: Text(tr.commonCancel)),
               TextButton(
                   onPressed: () => Navigator.pop(ctx, true),
-                  child: const Text('Excluir',
-                      style: TextStyle(color: AppColors.danger))),
+                  child: Text(tr.commonDelete,
+                      style: const TextStyle(color: AppColors.danger))),
             ],
           ),
         );
         if (ok == true) {
           await cubit.delete(item);
-          if (context.mounted) showToast(context, 'Excluída');
+          if (context.mounted) showToast(context, tr.myDrinksDeleted);
         }
     }
   }
@@ -91,8 +89,7 @@ class _MyDrinksView extends StatelessWidget {
   String _subtitle(CatalogItem item) {
     final recipe = item.recipe;
     if (recipe != null) {
-      final n = recipe.components.length;
-      return 'Receita · $n ${n == 1 ? 'ingrediente' : 'ingredientes'}';
+      return tr.myDrinksRecipeSubtitle(recipe.components.length);
     }
     final parts = <String>[
       item.category.label,
@@ -106,28 +103,28 @@ class _MyDrinksView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Minhas bebidas e receitas')),
+      appBar: AppBar(title: Text(tr.myDrinksTitle)),
       body: BlocBuilder<MyDrinksCubit, MyDrinksState>(
         builder: (context, state) {
           return Column(
             children: [
               Expanded(
                 child: state.items.isEmpty
-                    ? const EmptyView(
+                    ? EmptyView(
                         icon: Icons.bookmark_border_rounded,
-                        title: 'Nada por aqui ainda',
-                        message: 'Bebidas e receitas que você cadastrar ficam '
-                            'aqui para reutilizar nos próximos rolês.',
+                        title: tr.myDrinksEmptyTitle,
+                        message: tr.myDrinksEmptyBody,
                       )
                     : ListView(
                         padding: const EdgeInsets.fromLTRB(AppSpace.gutter, 0,
                             AppSpace.gutter, AppSpace.xl),
                         children: [
                           if (state.activeOutingId == null)
-                            const Padding(
-                              padding: EdgeInsets.only(bottom: AppSpace.md),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: AppSpace.md),
                               child: Text(
-                                'Para registrar, inicie um rolê primeiro.',
+                                tr.myDrinksStartFirst,
                                 style: AppText.caption,
                               ),
                             ),
@@ -167,23 +164,24 @@ class _MyDrinksView extends StatelessWidget {
                                     ),
                                   ),
                                   PopupMenuButton<_Action>(
-                                    tooltip: 'Opções',
+                                    tooltip: tr.commonOptions,
                                     icon: const Icon(Icons.more_vert_rounded,
                                         color: AppColors.textMuted),
                                     onSelected: (a) => _run(context, a, item),
-                                    itemBuilder: (_) => const [
+                                    itemBuilder: (_) => [
                                       PopupMenuItem(
                                           value: _Action.register,
-                                          child: Text('Registrar')),
+                                          child: Text(tr.myDrinksActionLog)),
                                       PopupMenuItem(
                                           value: _Action.edit,
-                                          child: Text('Editar')),
+                                          child: Text(tr.commonEdit)),
                                       PopupMenuItem(
                                           value: _Action.duplicate,
-                                          child: Text('Duplicar')),
+                                          child:
+                                              Text(tr.myDrinksActionDuplicate)),
                                       PopupMenuItem(
                                           value: _Action.delete,
-                                          child: Text('Excluir')),
+                                          child: Text(tr.commonDelete)),
                                     ],
                                   ),
                                 ]),
@@ -201,7 +199,7 @@ class _MyDrinksView extends StatelessWidget {
                             builder: (_) => const CustomDrinkPage()),
                       ),
                       icon: const Icon(Icons.add_rounded),
-                      label: const Text('Nova bebida'),
+                      label: Text(tr.myDrinksNewDrink),
                     ),
                   ),
                   const SizedBox(width: AppSpace.sm),
@@ -212,7 +210,7 @@ class _MyDrinksView extends StatelessWidget {
                             builder: (_) => const RecipeEditorPage()),
                       ),
                       icon: const Icon(Icons.receipt_long_outlined),
-                      label: const Text('Nova receita'),
+                      label: Text(tr.myDrinksNewRecipe),
                     ),
                   ),
                 ]),

@@ -9,6 +9,7 @@ import '../../core/widgets/common.dart';
 import '../domain/catalog_item.dart';
 import '../domain/drink_category.dart';
 import 'catalog_cubit.dart';
+import '../../l10n/l10n.dart';
 
 /// What the user chose in the detail sheet.
 enum DetailAction { register, edit, delete, copyRecipe }
@@ -104,7 +105,7 @@ class _DrinkDetailSheet extends StatelessWidget {
                       builder: (context, state) {
                         final fav = state.favorites.contains(item.id);
                         return IconButton(
-                          tooltip: fav ? 'Remover dos favoritos' : 'Favoritar',
+                          tooltip: fav ? tr.catalogUnfavorite : tr.catalogFavorite,
                           onPressed: () => catalog.toggleFavorite(item.id),
                           icon: Icon(
                             fav
@@ -125,58 +126,44 @@ class _DrinkDetailSheet extends StatelessWidget {
                   if (item.isRecipe)
                     _RecipeBlock(item: item)
                   else ...[
-                    _Row('Estilo', item.style ?? 'Não informado'),
-                    _Row('Teor alcoólico', _abvText(item)),
+                    _Row(tr.catalogStyle, item.displayStyle ?? tr.detailNotGiven),
+                    _Row(tr.detailAbv, _abvText(item)),
                     if (item.abvSource != null)
                       Padding(
                         padding: const EdgeInsets.only(bottom: AppSpace.sm),
                         child: Text(
-                          'Teor: ${item.abvSource!.label}. Não é dado do '
-                          'fabricante.',
+                          tr.detailAbvFrom(item.abvSource!.displayLabel),
                           style: AppText.caption,
                         ),
                       ),
                     _Row(
-                      'Ingredientes declarados',
+                      tr.detailIngredients,
                       item.ingredients == null
-                          ? 'Não informados'
+                          ? tr.detailIngredientsNone
                           : item.ingredients!.join(', '),
                     ),
-                    const SectionTitle('Apresentações'),
+                    SectionTitle(tr.detailPresentations),
                     if (item.category == DrinkCategory.spirit)
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: AppSpace.sm),
-                        child: Text(
-                          'Tamanho da garrafa não é tamanho da dose. Ao '
-                          'registrar, você escolhe uma dose sugerida (editável) '
-                          'ou compartilha a garrafa.',
-                          style: AppText.caption,
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                        child: Text(tr.detailBottleNotDose,
+                            style: AppText.caption),
                       ),
                     if (item.documentedPresentations.isEmpty)
-                      const Text(
-                        'Embalagens não verificadas para este produto. Ao '
-                        'registrar, você pode escolher um tamanho sugerido ou '
-                        'digitar o volume.',
-                        style: AppText.caption,
-                      )
+                      Text(tr.detailUnverifiedPackages, style: AppText.caption)
                     else ...[
                       Wrap(
                         spacing: AppSpace.sm,
                         runSpacing: AppSpace.sm,
                         children: [
                           for (final p in item.documentedPresentations)
-                            Chip(label: Text(p.label)),
+                            Chip(label: Text(p.displayLabel)),
                         ],
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: AppSpace.sm),
-                        child: Text(
-                          'Embalagens citadas pelo fabricante. O tamanho da '
-                          'embalagem não é o que você bebeu: isso você define '
-                          'ao registrar.',
-                          style: AppText.caption,
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppSpace.sm),
+                        child: Text(tr.detailPackagesNote,
+                            style: AppText.caption),
                       ),
                     ],
                   ],
@@ -195,7 +182,7 @@ class _DrinkDetailSheet extends StatelessWidget {
                         onPressed: () =>
                             Navigator.pop(context, DetailAction.copyRecipe),
                         icon: const Icon(Icons.copy_all_outlined, size: 18),
-                        label: const Text('Criar minha versão'),
+                        label: Text(tr.detailMakeMine),
                       ),
                     ),
                   if (item.isCustom) ...[
@@ -206,15 +193,15 @@ class _DrinkDetailSheet extends StatelessWidget {
                           onPressed: () =>
                               Navigator.pop(context, DetailAction.edit),
                           icon: const Icon(Icons.edit_outlined, size: 18),
-                          label: const Text('Editar'),
+                          label: Text(tr.commonEdit),
                         ),
                       TextButton.icon(
                         onPressed: () =>
                             Navigator.pop(context, DetailAction.delete),
                         icon: const Icon(Icons.delete_outline_rounded,
                             size: 18, color: AppColors.danger),
-                        label: const Text('Excluir',
-                            style: TextStyle(color: AppColors.danger)),
+                        label: Text(tr.commonDelete,
+                            style: const TextStyle(color: AppColors.danger)),
                       ),
                     ]),
                   ],
@@ -226,7 +213,7 @@ class _DrinkDetailSheet extends StatelessWidget {
                   AppSpace.xl, AppSpace.sm, AppSpace.xl, AppSpace.sm),
               child: FilledButton(
                 onPressed: () => Navigator.pop(context, DetailAction.register),
-                child: const Text('Registrar bebida'),
+                child: Text(tr.entryLogDrink),
               ),
             ),
           ],
@@ -279,14 +266,16 @@ class _SourceTile extends StatelessWidget {
         childrenPadding: EdgeInsets.zero,
         dense: true,
         title: Text(
-          'Fonte dos dados',
+          tr.detailSourceTitle,
           style: AppText.caption.copyWith(color: AppColors.amber),
         ),
         children: [
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              '${source.label}${_date == null ? '' : ' · consultado em $_date'}',
+              _date == null
+                  ? source.displayLabel
+                  : tr.detailSourceLine(source.displayLabel, _date!),
               style: AppText.caption,
             ),
           ),
@@ -299,19 +288,15 @@ class _SourceTile extends StatelessWidget {
               ),
             ),
             IconButton(
-              tooltip: 'Copiar endereço',
+              tooltip: tr.detailCopyAddress,
               onPressed: () async {
                 await Clipboard.setData(ClipboardData(text: source.url));
-                if (context.mounted) showToast(context, 'Endereço copiado');
+                if (context.mounted) showToast(context, tr.detailAddressCopied);
               },
               icon: const Icon(Icons.copy_rounded, size: 18),
             ),
           ]),
-          const Text(
-            'Os dados podem variar por versão e mercado. Confira sempre o '
-            'rótulo da embalagem.',
-            style: AppText.caption,
-          ),
+          Text(tr.detailMayVary, style: AppText.caption),
         ],
       ),
     );
@@ -323,11 +308,11 @@ String _abvText(CatalogItem item) {
   if (item.abvPercent != null) return formatAbv(item.abvPercent!);
   if (item.abvVariants.isNotEmpty) {
     final lines = item.abvVariants
-        .map((v) => '${formatAbv(v.value)} (${v.scope})')
+        .map((v) => '${formatAbv(v.value)} (${v.displayScope})')
         .join('\n');
-    return 'Varia conforme a fonte, sem um valor único:\n$lines';
+    return tr.detailAbvVaries(lines);
   }
-  return 'Não informado';
+  return tr.detailNotGiven;
 }
 
 /// A reference or personal recipe: components with their amounts, and what the
@@ -345,17 +330,12 @@ class _RecipeBlock extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isReference
-              ? 'Receita de referência: mostra como a receita é publicada, '
-                  'não o que um bar serviu.'
-              : 'Sua receita salva. Ao registrar, você ajusta o que '
-                  'realmente foi servido.',
+          isReference ? tr.detailRecipeReference : tr.detailRecipeMine,
           style: AppText.caption,
         ),
-        const SectionTitle('Composição'),
+        SectionTitle(tr.entryCompositionTitle),
         if (recipe.components.isEmpty)
-          const Text('Sem ingredientes ainda: você monta ao registrar.',
-              style: AppText.caption)
+          Text(tr.detailNoIngredientsYet, style: AppText.caption)
         else
           for (final c in recipe.components)
             Padding(
@@ -363,7 +343,7 @@ class _RecipeBlock extends StatelessWidget {
               child: Row(children: [
                 Expanded(
                   child: Text(
-                    c.name + (c.optional ? ' (opcional)' : ''),
+                    c.optional ? tr.entryOptionalMark(c.name) : c.name,
                     style: AppText.body,
                   ),
                 ),
@@ -377,19 +357,14 @@ class _RecipeBlock extends StatelessWidget {
               ]),
             ),
         const SizedBox(height: AppSpace.sm),
-        const Text(
-          'Ingredientes com copo ao lado têm álcool. O teor de cada um é '
-          'informado ao registrar; sem ele o álcool total fica incompleto. '
-          'Gelo não entra na conta.',
-          style: AppText.caption,
-        ),
+        Text(tr.detailAlcoholLegend, style: AppText.caption),
         if (recipe.method != null) ...[
-          const SectionTitle('Preparo'),
+          SectionTitle(tr.detailMethod),
           Text(recipe.method!, style: AppText.body),
         ],
         if (recipe.garnish != null) ...[
           const SizedBox(height: AppSpace.sm),
-          Text('Decoração: ${recipe.garnish}', style: AppText.caption),
+          Text(tr.detailGarnish(recipe.garnish!), style: AppText.caption),
         ],
       ],
     );

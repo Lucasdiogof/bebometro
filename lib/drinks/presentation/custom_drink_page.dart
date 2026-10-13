@@ -7,6 +7,7 @@ import '../../core/widgets/common.dart';
 import '../data/drink_repository.dart';
 import '../domain/catalog_item.dart';
 import '../domain/drink_category.dart';
+import '../../l10n/l10n.dart';
 
 /// Creates a reusable personal drink, or edits one ([editing]). Pops the
 /// saved [CatalogItem]. Editing never changes records already made.
@@ -80,7 +81,7 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _saving = false);
-      showToast(context, 'Não foi possível salvar. Seus dados continuam aqui.');
+      showToast(context, tr.customSaveFailed);
     }
   }
 
@@ -89,7 +90,7 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
     final editing = widget.editing != null;
     return Scaffold(
       appBar: AppBar(
-        title: Text(editing ? 'Editar bebida' : 'Cadastrar bebida'),
+        title: Text(editing ? tr.customEditTitle : tr.catalogCreate),
       ),
       body: Column(
         children: [
@@ -103,13 +104,10 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
                     AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
                 children: [
                   Text(
-                    editing
-                        ? 'As mudanças valem para os próximos registros. O '
-                            'que você já registrou continua como estava.'
-                        : 'Fica salva para você usar de novo nos próximos rolês.',
+                    editing ? tr.customEditNote : tr.customNewNote,
                     style: AppText.caption,
                   ),
-                  const SectionTitle('Tipo'),
+                  SectionTitle(tr.customType),
                   Wrap(
                     spacing: AppSpace.sm,
                     runSpacing: AppSpace.sm,
@@ -123,15 +121,14 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
                         ),
                     ],
                   ),
-                  const SectionTitle('Identificação'),
+                  SectionTitle(tr.customIdentification),
                   TextFormField(
                     controller: _name,
                     textCapitalization: TextCapitalization.sentences,
                     textInputAction: TextInputAction.next,
-                    decoration:
-                        const InputDecoration(labelText: 'Nome da bebida'),
+                    decoration: InputDecoration(labelText: tr.customName),
                     validator: (v) => (v == null || v.trim().isEmpty)
-                        ? 'Dê um nome para a bebida'
+                        ? tr.customNameRequired
                         : null,
                   ),
                   const SizedBox(height: AppSpace.md),
@@ -139,30 +136,28 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
                     controller: _brand,
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
-                    decoration:
-                        const InputDecoration(labelText: 'Marca (opcional)'),
+                    decoration: InputDecoration(labelText: tr.customBrand),
                   ),
                   const SizedBox(height: AppSpace.md),
                   TextFormField(
                     controller: _style,
                     textCapitalization: TextCapitalization.sentences,
                     textInputAction: TextInputAction.next,
-                    decoration:
-                        const InputDecoration(labelText: 'Estilo (opcional)'),
+                    decoration: InputDecoration(labelText: tr.customStyle),
                   ),
-                  const SectionTitle('Tamanho e teor'),
+                  SectionTitle(tr.customSizeAndAbv),
                   TextFormField(
                     controller: _volume,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Tamanho (ml)',
+                    decoration: InputDecoration(
+                      labelText: tr.customSize,
                       suffixText: 'ml',
                     ),
                     validator: (v) {
                       final ml = parseInteger(v ?? '');
                       return (ml == null || ml <= 0)
-                          ? 'Informe o tamanho em ml'
+                          ? tr.customSizeRequired
                           : null;
                     },
                   ),
@@ -172,17 +167,18 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
                       controller: _abv,
                       keyboardType: const TextInputType.numberWithOptions(
                           decimal: true),
-                      decoration: const InputDecoration(
-                        labelText: 'Teor alcoólico (opcional)',
+                      decoration: InputDecoration(
+                        labelText: tr.entryAbvOptional,
                         suffixText: '% vol.',
-                        helperText:
-                            'Em branco = desconhecido, não conta como zero.',
+                        helperText: tr.customAbvHelper,
                       ),
                       validator: (v) {
                         if (v == null || v.trim().isEmpty) return null;
+                        final problem = numberInputError(v);
+                        if (problem != null) return problem;
                         final abv = parseDecimal(v);
                         return (abv == null || abv < 0 || abv > 100)
-                            ? 'O teor vai de 0 a 100%'
+                            ? tr.draftAbvRange
                             : null;
                       },
                     ),
@@ -193,9 +189,9 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
                     textCapitalization: TextCapitalization.sentences,
                     minLines: 1,
                     maxLines: 3,
-                    decoration: const InputDecoration(
-                      labelText: 'Ingredientes (opcional)',
-                      helperText: 'Separe por vírgula. Só o que você sabe.',
+                    decoration: InputDecoration(
+                      labelText: tr.customIngredients,
+                      helperText: tr.customIngredientsHelper,
                       helperMaxLines: 2,
                     ),
                   ),
@@ -206,7 +202,7 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
           BottomActionBar(
             child: FilledButton(
               onPressed: _saving ? null : _save,
-              child: Text(editing ? 'Salvar alterações' : 'Salvar e usar'),
+              child: Text(editing ? tr.entrySaveChanges : tr.customSaveUse),
             ),
           ),
         ],

@@ -1,22 +1,31 @@
+import '../../l10n/l10n.dart';
+
 /// Where the ABV of an outing item or of a record came from. Kept next to the
 /// value so a corrected ABV is never mistaken for the official one.
 enum AbvSource {
   /// Read from a label photo and confirmed by the user.
-  photoLabel('label', 'Rótulo (foto), conferido por você'),
+  photoLabel('label'),
 
   /// Written in a menu photo and confirmed by the user.
-  menu('menu', 'Cardápio (foto), conferido por você'),
+  menu('menu'),
 
   /// Typed or corrected by the user.
-  typed('typed', 'Informado por você'),
+  typed('typed'),
 
   /// Copied from a catalog product.
-  catalog('catalog', 'Copiado do catálogo');
+  catalog('catalog');
 
-  const AbvSource(this.code, this.label);
+  const AbvSource(this.code);
 
+  /// Stored value; never translated.
   final String code;
-  final String label;
+
+  String get label => switch (this) {
+        AbvSource.photoLabel => tr.abvSourceLabel,
+        AbvSource.menu => tr.abvSourceMenu,
+        AbvSource.typed => tr.abvSourceTyped,
+        AbvSource.catalog => tr.abvSourceCatalog,
+      };
 
   static AbvSource? fromCode(String? code) {
     for (final s in AbvSource.values) {

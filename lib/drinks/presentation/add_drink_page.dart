@@ -22,6 +22,7 @@ import 'custom_drink_page.dart';
 import 'drink_detail_sheet.dart';
 import 'drink_entry_page.dart';
 import 'recipe_editor_page.dart';
+import '../../l10n/l10n.dart';
 
 /// The drink catalog. With an [outingId] it is the "add drink" step of that
 /// outing (pops `true` once a drink was registered). Without one it is the
@@ -106,18 +107,15 @@ class _AddDrinkView extends StatelessWidget {
     final start = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Precisa de um rolê em andamento'),
-        content: const Text(
-          'Bebidas lidas de rótulo ou cardápio ficam guardadas no rolê em que '
-          'foram cadastradas. Quer iniciar um agora?',
-        ),
+        title: Text(tr.catalogNeedOutingTitle),
+        content: Text(tr.catalogNeedOutingBody),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Agora não')),
+              child: Text(tr.commonNotNow)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Iniciar rolê')),
+              child: Text(tr.startTitle)),
         ],
       ),
     );
@@ -136,7 +134,7 @@ class _AddDrinkView extends StatelessWidget {
     if (result.register) {
       await _register(context, id, result.drink.toCatalogItem());
     } else {
-      showToast(context, 'Salva em "Bebidas deste rolê"');
+      showToast(context, tr.catalogSavedToOuting);
     }
   }
 
@@ -163,8 +161,7 @@ class _AddDrinkView extends StatelessWidget {
       MaterialPageRoute(builder: (_) => ScanMenuPage(outingId: id)),
     );
     if (result != null && context.mounted) {
-      showToast(context,
-          '${result.saved} item(ns) em "Bebidas deste rolê". Escolha um para registrar.');
+      showToast(context, tr.catalogMenuSaved(result.saved));
     }
   }
 
@@ -208,7 +205,7 @@ class _AddDrinkView extends StatelessWidget {
     );
     if (item == null || editing != null || !context.mounted) return;
     if (_explore) {
-      showToast(context, 'Bebida salva em Minhas bebidas');
+      showToast(context, tr.catalogDrinkSaved);
     } else {
       await _pick(context, item);
     }
@@ -229,25 +226,22 @@ class _AddDrinkView extends StatelessWidget {
           MaterialPageRoute(builder: (_) => RecipeEditorPage(copyFrom: item)),
         );
         if (saved != null && context.mounted) {
-          showToast(context, 'Receita salva em Minhas bebidas');
+          showToast(context, tr.catalogRecipeSaved);
         }
       case DetailAction.delete:
         final ok = await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: const Text('Excluir esta bebida?'),
-            content: const Text(
-              'Ela sai do catálogo. Os registros que você já fez com ela '
-              'continuam como estão.',
-            ),
+            title: Text(tr.catalogDeleteTitle),
+            content: Text(tr.catalogDeleteBody),
             actions: [
               TextButton(
                   onPressed: () => Navigator.pop(ctx, false),
-                  child: const Text('Cancelar')),
+                  child: Text(tr.commonCancel)),
               TextButton(
                   onPressed: () => Navigator.pop(ctx, true),
-                  child: const Text('Excluir',
-                      style: TextStyle(color: AppColors.danger))),
+                  child: Text(tr.commonDelete,
+                      style: const TextStyle(color: AppColors.danger))),
             ],
           ),
         );
@@ -265,11 +259,11 @@ class _AddDrinkView extends StatelessWidget {
         final f = state.filters;
         return Scaffold(
           appBar: AppBar(
-            title: Text(_explore ? 'Catálogo' : 'Adicionar bebida'),
+            title: Text(_explore ? tr.navCatalog : tr.addDrinkTitle),
             actions: _explore
                 ? [
                     IconButton(
-                      tooltip: 'Minhas bebidas e receitas',
+                      tooltip: tr.catalogMyDrinksTooltip,
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) => const MyDrinksPage()),
                       ),
@@ -289,9 +283,9 @@ class _AddDrinkView extends StatelessWidget {
                     child: TextField(
                       onChanged: cubit.setQuery,
                       textInputAction: TextInputAction.search,
-                      decoration: const InputDecoration(
-                        hintText: 'Buscar marca, produto ou estilo',
-                        prefixIcon: Icon(Icons.search_rounded),
+                      decoration: InputDecoration(
+                        hintText: tr.catalogSearchHint,
+                        prefixIcon: const Icon(Icons.search_rounded),
                       ),
                     ),
                   ),
@@ -300,7 +294,7 @@ class _AddDrinkView extends StatelessWidget {
                     isLabelVisible: f.advancedCount > 0,
                     label: Text('${f.advancedCount}'),
                     child: IconButton(
-                      tooltip: 'Mais filtros',
+                      tooltip: tr.catalogMoreFilters,
                       onPressed: () => _openFilters(context, cubit),
                       icon: const Icon(Icons.tune_rounded),
                     ),
@@ -314,7 +308,7 @@ class _AddDrinkView extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
                   children: [
-                    _chip('Todas', f.category == null,
+                    _chip(tr.catalogAll, f.category == null,
                         () => cubit.setCategory(null)),
                     for (final c in DrinkCategory.values)
                       _chip(
@@ -334,7 +328,7 @@ class _AddDrinkView extends StatelessWidget {
                       child: OutlinedButton.icon(
                         onPressed: () => _scanLabel(context),
                         icon: const Icon(Icons.qr_code_scanner_rounded),
-                        label: const Text('Ler rótulo'),
+                        label: Text(tr.catalogScanLabel),
                       ),
                     ),
                     const SizedBox(width: AppSpace.sm),
@@ -342,7 +336,7 @@ class _AddDrinkView extends StatelessWidget {
                       child: OutlinedButton.icon(
                         onPressed: () => _scanMenu(context),
                         icon: const Icon(Icons.menu_book_outlined),
-                        label: const Text('Ler cardápio'),
+                        label: Text(tr.catalogScanMenu),
                       ),
                     ),
                   ]),
@@ -352,8 +346,8 @@ class _AddDrinkView extends StatelessWidget {
                         _custom(context, suggestedName: state.query.trim()),
                     icon: const Icon(Icons.add_rounded),
                     label: Text(_explore
-                        ? 'Cadastrar bebida'
-                        : 'Cadastrar bebida deste rolê'),
+                        ? tr.catalogCreate
+                        : tr.catalogCreateOuting),
                   ),
                 ]),
               ),
@@ -389,15 +383,13 @@ class _AddDrinkView extends StatelessWidget {
     if (state.items.isEmpty) {
       return EmptyView(
         icon: Icons.search_off_rounded,
-        title: 'Nenhuma bebida encontrada',
+        title: tr.catalogEmptyTitle,
         message: !_explore
-            ? 'Cadastre uma bebida só deste rolê, ou leia um rótulo ou '
-                'cardápio.'
+            ? tr.catalogEmptyOuting
             : (state.filters.isEmpty
-                ? 'Cadastre a sua e ela fica salva para os próximos rolês.'
-                : 'Tente tirar algum filtro ou cadastre a sua.'),
-        actionLabel:
-            _explore ? 'Cadastrar bebida' : 'Cadastrar bebida deste rolê',
+                ? tr.catalogEmptyNoFilter
+                : tr.catalogEmptyFilter),
+        actionLabel: _explore ? tr.catalogCreate : tr.catalogCreateOuting,
         onAction: () => _custom(context, suggestedName: state.query.trim()),
       );
     }
@@ -413,19 +405,20 @@ class _AddDrinkView extends StatelessWidget {
                 () => _register(context, outingId!, d.toCatalogItem())),
           ),
         if (showShortcuts && state.recents.isNotEmpty) ...[
-          const SectionTitle('Recentes'),
+          SectionTitle(tr.catalogRecents),
           _Shortcuts(
               items: state.recents,
               onTap: (i) => _explore ? _details(context, i) : _pick(context, i)),
         ],
         if (showShortcuts && state.favoriteItems.isNotEmpty) ...[
-          const SectionTitle('Favoritas'),
+          SectionTitle(tr.catalogFavorites),
           _Shortcuts(
               items: state.favoriteItems,
               onTap: (i) => _explore ? _details(context, i) : _pick(context, i)),
         ],
-        SectionTitle(
-            showShortcuts ? 'Todas as bebidas' : '${state.items.length} resultados'),
+        SectionTitle(showShortcuts
+            ? tr.catalogAllDrinks
+            : tr.catalogResults(state.items.length)),
         for (final item in state.items)
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpace.sm),
@@ -463,14 +456,15 @@ class _ActiveFilters extends StatelessWidget {
           if (f.brand != null)
             _chip(f.brand!, () => cubit.setBrand(null)),
           if (f.styleGroup != null)
-            _chip(f.styleGroup!, () => cubit.setStyleGroup(null)),
+            _chip(styleLabel(f.styleGroup!), () => cubit.setStyleGroup(null)),
           if (f.kind != null)
             _chip(f.kind!.label, () => cubit.setKind(null)),
           if (f.nonAlcoholic)
-            _chip('Sem álcool', () => cubit.setNonAlcoholic(false)),
+            _chip(tr.categoryNonAlcoholic,
+                () => cubit.setNonAlcoholic(false)),
           TextButton(
             onPressed: cubit.clearFilters,
-            child: const Text('Limpar filtros'),
+            child: Text(tr.catalogClearFilters),
           ),
         ],
       ),
@@ -483,7 +477,7 @@ class _ActiveFilters extends StatelessWidget {
           label: Text(label),
           onDeleted: onRemove,
           deleteIcon: const Icon(Icons.close_rounded, size: 16),
-          deleteButtonTooltipMessage: 'Remover filtro',
+          deleteButtonTooltipMessage: tr.catalogRemoveFilter,
         ),
       );
 }
@@ -541,28 +535,28 @@ class _FilterSheet extends StatelessWidget {
                       AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
                   children: [
                     Row(children: [
-                      const Expanded(
-                          child: Text('Filtros', style: AppText.title)),
+                      Expanded(
+                          child: Text(tr.catalogFilters, style: AppText.title)),
                       TextButton(
                         onPressed: f.advancedCount == 0
                             ? null
                             : cubit.clearFilters,
-                        child: const Text('Limpar filtros'),
+                        child: Text(tr.catalogClearFilters),
                       ),
                     ]),
                     SwitchListTile(
                       contentPadding: EdgeInsets.zero,
-                      title: const Text('Só sem álcool'),
+                      title: Text(tr.catalogOnlyNoAlcohol),
                       value: f.nonAlcoholic,
                       activeThumbColor: AppColors.amber,
                       onChanged: cubit.setNonAlcoholic,
                     ),
-                    group<String>('Estilo', state.styleGroups, f.styleGroup,
-                        (s) => s, cubit.setStyleGroup),
-                    group<PresentationKind>('Apresentação', state.kinds,
+                    group<String>(tr.catalogStyle, state.styleGroups,
+                        f.styleGroup, styleLabel, cubit.setStyleGroup),
+                    group<PresentationKind>(tr.catalogPresentation, state.kinds,
                         f.kind, (k) => k.label, cubit.setKind),
-                    group<String>('Marca', state.brands, f.brand, (s) => s,
-                        cubit.setBrand),
+                    group<String>(tr.catalogBrand, state.brands, f.brand,
+                        (s) => s, cubit.setBrand),
                   ],
                 ),
               ),
@@ -571,7 +565,7 @@ class _FilterSheet extends StatelessWidget {
                     AppSpace.xl, AppSpace.sm, AppSpace.xl, AppSpace.sm),
                 child: FilledButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Ver ${state.items.length} bebidas'),
+                  child: Text(tr.catalogSeeCount(state.items.length)),
                 ),
               ),
             ]),
@@ -657,7 +651,7 @@ class _ItemTile extends StatelessWidget {
                 OriginBadge(item.origin),
                 if (count > 1) ...[
                   const SizedBox(width: AppSpace.sm),
-                  Text('$count tamanhos',
+                  Text(tr.catalogSizes(count),
                       style: AppText.caption.copyWith(fontSize: 12)),
                 ],
               ]),
@@ -665,13 +659,13 @@ class _ItemTile extends StatelessWidget {
           ),
         ),
         IconButton(
-          tooltip: 'Detalhes',
+          tooltip: tr.catalogDetails,
           onPressed: onDetails,
           icon: const Icon(Icons.info_outline_rounded,
               color: AppColors.textMuted),
         ),
         IconButton(
-          tooltip: favorite ? 'Remover dos favoritos' : 'Favoritar',
+          tooltip: favorite ? tr.catalogUnfavorite : tr.catalogFavorite,
           onPressed: onFavorite,
           icon: Icon(
             favorite ? Icons.star_rounded : Icons.star_outline_rounded,

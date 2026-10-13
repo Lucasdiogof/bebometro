@@ -1,5 +1,5 @@
 {
- "version": 2,
+ "version": 3,
  "consultedOn": "2026-10-12",
  "description": "Catálogo inicial do Bebômetro. Campos ausentes são desconhecidos, nunca zero.",
  "products": [
@@ -53,7 +53,17 @@
     "url": "https://www.brahma.com.br/pt-br/produto/chopp-brahma-claro",
     "label": "Brahma (site oficial)"
    },
-   "note": "Os tamanhos vêm da página do produto; ela só distingue lata (350 ml) e garrafas de vidro (600 ml e 1 L)."
+   "note": "Os tamanhos vêm da página do produto; ela só distingue lata (350 ml) e garrafas de vidro (600 ml e 1 L).",
+   "i18n": {
+    "en": {
+     "note": "Sizes come from the product page, which only distinguishes the can (350 ml) and glass bottles (600 ml and 1 L).",
+     "sourceLabel": "Brahma (official website)"
+    },
+    "es": {
+     "note": "Los tamaños provienen de la página del producto, que solo distingue la lata (350 ml) y las botellas de vidrio (600 ml y 1 L).",
+     "sourceLabel": "Brahma (sitio oficial)"
+    }
+   }
   },
   {
    "id": "brahma-duplo-malte",
@@ -100,7 +110,15 @@
     "url": "https://www.brahma.com.br/pt-br/produto/brahma-duplo-malte",
     "label": "Brahma (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Brahma (official website)"
+    },
+    "es": {
+     "sourceLabel": "Brahma (sitio oficial)"
+    }
+   }
   },
   {
    "id": "brahma-duplo-malte-trigo",
@@ -116,7 +134,15 @@
     "url": "https://www.brahma.com.br/pt-br/produto/brahma-duplo-malte-trigo",
     "label": "Brahma (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Brahma (official website)"
+    },
+    "es": {
+     "sourceLabel": "Brahma (sitio oficial)"
+    }
+   }
   },
   {
    "id": "brahma-duplo-malte-tostada",
@@ -132,7 +158,15 @@
     "url": "https://www.brahma.com.br/pt-br/produto/brahma-duplo-malte-tostada",
     "label": "Brahma (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Brahma (official website)"
+    },
+    "es": {
+     "sourceLabel": "Brahma (sitio oficial)"
+    }
+   }
   },
   {
    "id": "brahma-duplo-malte-black",
@@ -148,7 +182,15 @@
     "url": "https://www.brahma.com.br/pt-br/produto/brahma-duplo-malte-black",
     "label": "Brahma (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Brahma (official website)"
+    },
+    "es": {
+     "sourceLabel": "Brahma (sitio oficial)"
+    }
+   }
   },
   {
    "id": "brahma-zero",
@@ -172,7 +214,17 @@
     "url": "https://www.brahma.com.br/pt-br/produto/brahma-zero",
     "label": "Brahma (site oficial)"
    },
-   "note": "Teor declarado: 0,00%."
+   "note": "Teor declarado: 0,00%.",
+   "i18n": {
+    "en": {
+     "note": "Declared ABV: 0.00%.",
+     "sourceLabel": "Brahma (official website)"
+    },
+    "es": {
+     "note": "Graduación declarada: 0,00%.",
+     "sourceLabel": "Brahma (sitio oficial)"
+    }
+   }
   },
   {
    "id": "skol-pilsen",
@@ -227,7 +279,23 @@
      "value": 4.7,
      "scope": "embalagens long neck e lata, segundo o site da Skol"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Skol (official website)",
+     "abvVariants": [
+      "product page on the Skol website",
+      "long neck and can packs, according to the Skol website"
+     ]
+    },
+    "es": {
+     "sourceLabel": "Skol (sitio oficial)",
+     "abvVariants": [
+      "página del producto en el sitio de Skol",
+      "envases long neck y lata, según el sitio de Skol"
+     ]
+    }
+   }
   },
   {
    "id": "skol-puro-malte",
@@ -271,7 +339,15 @@
     "url": "https://www.skol.com.br/produto/skol-puro-malte",
     "label": "Skol (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Skol (official website)"
+    },
+    "es": {
+     "sourceLabel": "Skol (sitio oficial)"
+    }
+   }
   },
   {
    "id": "antarctica-pilsen",
@@ -314,7 +390,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/antarctica/antarctica-pilsen",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "antarctica-original",
@@ -345,7 +429,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/original/original",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "antarctica-subzero",
@@ -385,7 +477,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/antarctica/antarctica-subzero",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "antarctica-chopp",
@@ -409,7 +509,15 @@
     "url": "https://www.ambev.com.br/marcas/chopes/antarctica/chopp-antarctica",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "serrana-serrana",
@@ -425,7 +533,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/serrana/serrana",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "budweiser-budweiser",
@@ -461,7 +577,15 @@
     "url": "https://budweiser.com.br/produto/budweiser",
     "label": "Budweiser Brasil (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Budweiser Brasil (official website)"
+    },
+    "es": {
+     "sourceLabel": "Budweiser Brasil (sitio oficial)"
+    }
+   }
   },
   {
    "id": "corona-corona",
@@ -496,7 +620,17 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/corona/corona",
     "label": "Ambev (site oficial)"
    },
-   "note": "A Coronita (210 ml) aparece na página da Ambev com os mesmos dados."
+   "note": "A Coronita (210 ml) aparece na página da Ambev com os mesmos dados.",
+   "i18n": {
+    "en": {
+     "note": "Coronita (210 ml) appears on the Ambev page with the same data.",
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "note": "La Coronita (210 ml) aparece en la página de Ambev con los mismos datos.",
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "stella-artois-stella-artois",
@@ -544,7 +678,15 @@
     "url": "https://www.stellaartois.com.br/produto/stella-artois",
     "label": "Stella Artois Brasil (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Stella Artois Brasil (official website)"
+    },
+    "es": {
+     "sourceLabel": "Stella Artois Brasil (sitio oficial)"
+    }
+   }
   },
   {
    "id": "spaten-spaten",
@@ -564,7 +706,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/spaten/spaten/",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "beck-s-beck-s",
@@ -586,7 +736,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/becks/becks",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "michelob-ultra",
@@ -606,7 +764,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/michelob-ultra/michelob-ultra",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "bohemia-14-weiss",
@@ -630,7 +796,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/bohemia/bohemia-14-weiss",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "bohemia-imperial",
@@ -650,7 +824,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/bohemia/bohemia-imperial",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "bohemia-magna-pils",
@@ -666,7 +848,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/bohemia/bohemia-magna-pils",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "colorado-ribeirao-lager",
@@ -689,7 +879,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-ribeirao",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "colorado-appia",
@@ -705,7 +903,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-appia",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "colorado-cauim",
@@ -731,7 +937,23 @@
      "value": 4.2,
      "scope": "edição Cauim 016 (página da Ambev)"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)",
+     "abvVariants": [
+      "standard version (Ambev page)",
+      "Cauim 016 edition (Ambev page)"
+     ]
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)",
+     "abvVariants": [
+      "versión estándar (página de Ambev)",
+      "edición Cauim 016 (página de Ambev)"
+     ]
+    }
+   }
   },
   {
    "id": "colorado-indica",
@@ -752,7 +974,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-indica",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "colorado-vixnu",
@@ -775,7 +1005,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-vixnu",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "colorado-demoiselle",
@@ -797,7 +1035,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-demoiselle",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "colorado-indica-chopp",
@@ -815,7 +1061,15 @@
     "url": "https://www.ambev.com.br/marcas/chopes/cervejaria-colorado/colorado-indica-chopp",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "wals-trippel",
@@ -841,7 +1095,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/wals/wals-trippel",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "wals-verano",
@@ -859,7 +1121,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/wals/wals-verano",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "wals-petroleum",
@@ -885,7 +1155,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/wals/wals-petroleum",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "hoegaarden-grand-cru",
@@ -901,7 +1179,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/hoegaarden/hoegaarden-grand-cru/",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "hoegaarden-forbidden-fruit",
@@ -925,7 +1211,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/hoegaarden/hoegaarden-forbidden-fruit",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "patagonia-weisse",
@@ -949,7 +1243,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/patagonia/patagonia-weisse",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "patagonia-amber-lager",
@@ -970,7 +1272,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/patagonia/patagonia-amber-lager",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "patagonia-bohemian-pilsener",
@@ -986,7 +1296,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/patagonia/patagonia-bohemian-pilsener",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "goose-island-ipa",
@@ -1008,7 +1326,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/goose-island/goose-ipa",
     "label": "Ambev (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Ambev (official website)"
+    },
+    "es": {
+     "sourceLabel": "Ambev (sitio oficial)"
+    }
+   }
   },
   {
    "id": "heineken-heineken",
@@ -1038,7 +1364,15 @@
     "url": "https://www.heinekenbrasil.com.br/heineken",
     "label": "Heineken Brasil (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Brasil (official website)"
+    },
+    "es": {
+     "sourceLabel": "Heineken Brasil (sitio oficial)"
+    }
+   }
   },
   {
    "id": "heineken-0-0",
@@ -1058,7 +1392,15 @@
     "url": "https://www.heinekenbrasil.com.br/nossas-marcas",
     "label": "Heineken Brasil (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Brasil (official website)"
+    },
+    "es": {
+     "sourceLabel": "Heineken Brasil (sitio oficial)"
+    }
+   }
   },
   {
    "id": "heineken-ultimate",
@@ -1074,7 +1416,15 @@
     "url": "https://www.heinekenbrasil.com.br/heineken-ultimate",
     "label": "Heineken Brasil (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Brasil (official website)"
+    },
+    "es": {
+     "sourceLabel": "Heineken Brasil (sitio oficial)"
+    }
+   }
   },
   {
    "id": "sol-sol",
@@ -1099,7 +1449,15 @@
     "url": "https://www.cervejasol.com.br/produtos/sol/",
     "label": "Cerveja Sol (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Cerveja Sol (official website)"
+    },
+    "es": {
+     "sourceLabel": "Cerveja Sol (sitio oficial)"
+    }
+   }
   },
   {
    "id": "eisenbahn-pilsen",
@@ -1120,7 +1478,15 @@
     "url": "https://www.eisenbahn.com.br/produtos/pilsen/",
     "label": "Eisenbahn (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Eisenbahn (official website)"
+    },
+    "es": {
+     "sourceLabel": "Eisenbahn (sitio oficial)"
+    }
+   }
   },
   {
    "id": "eisenbahn-unfiltered",
@@ -1141,7 +1507,15 @@
     "url": "https://unfiltered.eisenbahn.com.br/faq.php",
     "label": "Eisenbahn Unfiltered (FAQ oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Eisenbahn Unfiltered (official FAQ)"
+    },
+    "es": {
+     "sourceLabel": "Eisenbahn Unfiltered (preguntas frecuentes oficiales)"
+    }
+   }
   },
   {
    "id": "eisenbahn-weizenbier",
@@ -1159,7 +1533,15 @@
     "url": "https://www.eisenbahn.com.br/nossos-rotulos/",
     "label": "Eisenbahn (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Eisenbahn (official website)"
+    },
+    "es": {
+     "sourceLabel": "Eisenbahn (sitio oficial)"
+    }
+   }
   },
   {
    "id": "eisenbahn-american-ipa",
@@ -1175,7 +1557,15 @@
     "url": "https://www.eisenbahn.com.br/nossos-rotulos/",
     "label": "Eisenbahn (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Eisenbahn (official website)"
+    },
+    "es": {
+     "sourceLabel": "Eisenbahn (sitio oficial)"
+    }
+   }
   },
   {
    "id": "eisenbahn-pale-ale",
@@ -1191,7 +1581,15 @@
     "url": "https://www.eisenbahn.com.br/nossos-rotulos/",
     "label": "Eisenbahn (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Eisenbahn (official website)"
+    },
+    "es": {
+     "sourceLabel": "Eisenbahn (sitio oficial)"
+    }
+   }
   },
   {
    "id": "eisenbahn-session-ipa",
@@ -1207,7 +1605,15 @@
     "url": "https://www.eisenbahn.com.br/nossos-rotulos/",
     "label": "Eisenbahn (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Eisenbahn (official website)"
+    },
+    "es": {
+     "sourceLabel": "Eisenbahn (sitio oficial)"
+    }
+   }
   },
   {
    "id": "kaiser-lager",
@@ -1234,7 +1640,17 @@
     "url": "https://www.kaiser.com.br/produtos/kaiser-350ml/",
     "label": "Kaiser (site oficial)"
    },
-   "note": "A página não informa o teor alcoólico."
+   "note": "A página não informa o teor alcoólico.",
+   "i18n": {
+    "en": {
+     "note": "The page does not state the ABV.",
+     "sourceLabel": "Kaiser (official website)"
+    },
+    "es": {
+     "note": "La página no indica la graduación alcohólica.",
+     "sourceLabel": "Kaiser (sitio oficial)"
+    }
+   }
   },
   {
    "id": "baden-baden-ipa",
@@ -1262,7 +1678,17 @@
     "url": "https://www.badenbaden.com.br/produtos/ipa/",
     "label": "Baden Baden (site oficial)"
    },
-   "note": "A página cita suco de maracujá; lista completa não informada."
+   "note": "A página cita suco de maracujá; lista completa não informada.",
+   "i18n": {
+    "en": {
+     "note": "The page mentions passion fruit juice; no full list is given.",
+     "sourceLabel": "Baden Baden (official website)"
+    },
+    "es": {
+     "note": "La página menciona jugo de maracuyá; no da la lista completa.",
+     "sourceLabel": "Baden Baden (sitio oficial)"
+    }
+   }
   },
   {
    "id": "baden-baden-witbier",
@@ -1287,7 +1713,15 @@
     "url": "https://www.badenbaden.com.br/produtos/witbier/",
     "label": "Baden Baden (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Baden Baden (official website)"
+    },
+    "es": {
+     "sourceLabel": "Baden Baden (sitio oficial)"
+    }
+   }
   },
   {
    "id": "baden-baden-cristal",
@@ -1312,7 +1746,15 @@
     "url": "https://www.badenbaden.com.br/produtos/cristal/",
     "label": "Baden Baden (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Baden Baden (official website)"
+    },
+    "es": {
+     "sourceLabel": "Baden Baden (sitio oficial)"
+    }
+   }
   },
   {
    "id": "baden-baden-golden",
@@ -1337,7 +1779,15 @@
     "url": "https://www.badenbaden.com.br/produtos/golden/",
     "label": "Baden Baden (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Baden Baden (official website)"
+    },
+    "es": {
+     "sourceLabel": "Baden Baden (sitio oficial)"
+    }
+   }
   },
   {
    "id": "itaipava-pilsen",
@@ -1395,6 +1845,18 @@
    "abvSource": {
     "url": "https://world.openfoodfacts.org/product/7897395020101",
     "label": "Rótulo da lata de 350 ml, transcrito no Open Food Facts (fonte secundária)"
+   },
+   "i18n": {
+    "en": {
+     "note": "ABV read from the 350 ml can label (code 7897395020101, via Open Food Facts).",
+     "sourceLabel": "Itaipava (official website) and 350 ml can label",
+     "abvSourceLabel": "350 ml can label, transcribed on Open Food Facts (secondary source)"
+    },
+    "es": {
+     "note": "Graduación leída en la etiqueta de la lata de 350 ml (código 7897395020101, vía Open Food Facts).",
+     "sourceLabel": "Itaipava (sitio oficial) y etiqueta de la lata de 350 ml",
+     "abvSourceLabel": "Etiqueta de la lata de 350 ml, transcrita en Open Food Facts (fuente secundaria)"
+    }
    }
   },
   {
@@ -1432,7 +1894,15 @@
     "url": "https://cervejaitaipava.com.br/produto/premium/",
     "label": "Itaipava (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Itaipava (official website)"
+    },
+    "es": {
+     "sourceLabel": "Itaipava (sitio oficial)"
+    }
+   }
   },
   {
    "id": "itaipava-100-malte",
@@ -1452,7 +1922,15 @@
     "url": "https://www.grupopetropolis.com.br/itaipava-apresenta-a-sua-cerveja-100-malte/",
     "label": "Grupo Petrópolis (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Grupo Petrópolis (official website)"
+    },
+    "es": {
+     "sourceLabel": "Grupo Petrópolis (sitio oficial)"
+    }
+   }
   },
   {
    "id": "itaipava-zero",
@@ -1477,7 +1955,17 @@
     "url": "https://cervejaitaipava.com.br/produto/zero/",
     "label": "Itaipava (site oficial)"
    },
-   "note": "Teor declarado: 0,0%."
+   "note": "Teor declarado: 0,0%.",
+   "i18n": {
+    "en": {
+     "note": "Declared ABV: 0.0%.",
+     "sourceLabel": "Itaipava (official website)"
+    },
+    "es": {
+     "note": "Graduación declarada: 0,0%.",
+     "sourceLabel": "Itaipava (sitio oficial)"
+    }
+   }
   },
   {
    "id": "itaipava-malzbier",
@@ -1502,7 +1990,15 @@
     "url": "https://cervejaitaipava.com.br/produto/malzbier/",
     "label": "Itaipava (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Itaipava (official website)"
+    },
+    "es": {
+     "sourceLabel": "Itaipava (sitio oficial)"
+    }
+   }
   },
   {
    "id": "petra-origem",
@@ -1518,7 +2014,15 @@
     "url": "https://www.cervejapetra.com.br/cerveja/petra-origem-puro-malte/",
     "label": "Petra (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Petra (official website)"
+    },
+    "es": {
+     "sourceLabel": "Petra (sitio oficial)"
+    }
+   }
   },
   {
    "id": "petra-stark-bier",
@@ -1534,7 +2038,15 @@
     "url": "https://www.cervejapetra.com.br/cerveja/petra-stark-bier/",
     "label": "Petra (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Petra (official website)"
+    },
+    "es": {
+     "sourceLabel": "Petra (sitio oficial)"
+    }
+   }
   },
   {
    "id": "black-princess-chopp-gold",
@@ -1553,7 +2065,15 @@
     "url": "https://www.grupopetropolis.com.br/eng/brands/beers/black-princess/",
     "label": "Grupo Petrópolis (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Grupo Petrópolis (official website)"
+    },
+    "es": {
+     "sourceLabel": "Grupo Petrópolis (sitio oficial)"
+    }
+   }
   },
   {
    "id": "black-princess-chopp-dark",
@@ -1572,7 +2092,15 @@
     "url": "https://www.grupopetropolis.com.br/eng/brands/beers/black-princess/",
     "label": "Grupo Petrópolis (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Grupo Petrópolis (official website)"
+    },
+    "es": {
+     "sourceLabel": "Grupo Petrópolis (sitio oficial)"
+    }
+   }
   },
   {
    "id": "black-princess-chopp-red-lager",
@@ -1591,7 +2119,15 @@
     "url": "https://www.grupopetropolis.com.br/eng/brands/beers/black-princess/",
     "label": "Grupo Petrópolis (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Grupo Petrópolis (official website)"
+    },
+    "es": {
+     "sourceLabel": "Grupo Petrópolis (sitio oficial)"
+    }
+   }
   },
   {
    "id": "black-princess-chopp-kristallweizen",
@@ -1610,7 +2146,15 @@
     "url": "https://www.grupopetropolis.com.br/eng/brands/beers/black-princess/",
     "label": "Grupo Petrópolis (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Grupo Petrópolis (official website)"
+    },
+    "es": {
+     "sourceLabel": "Grupo Petrópolis (sitio oficial)"
+    }
+   }
   },
   {
    "id": "black-princess-chopp-english-ipa",
@@ -1629,7 +2173,15 @@
     "url": "https://www.grupopetropolis.com.br/eng/brands/beers/black-princess/",
     "label": "Grupo Petrópolis (site oficial)"
    },
-   "note": null
+   "note": null,
+   "i18n": {
+    "en": {
+     "sourceLabel": "Grupo Petrópolis (official website)"
+    },
+    "es": {
+     "sourceLabel": "Grupo Petrópolis (sitio oficial)"
+    }
+   }
   },
   {
    "id": "absolut-original",
@@ -1650,7 +2202,17 @@
    "note": "Teor informado pela marca para a Original. Confira o rótulo da garrafa vendida no Brasil.",
    "roles": [
     "vodka"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "note": "ABV given by the brand for the Original. Check the label of the bottle sold in Brazil.",
+     "sourceLabel": "Absolut (official website)"
+    },
+    "es": {
+     "note": "Graduación indicada por la marca para la Original. Revisa la etiqueta de la botella vendida en Brasil.",
+     "sourceLabel": "Absolut (sitio oficial)"
+    }
+   }
   },
   {
    "id": "bombay-sapphire-london-dry-gin",
@@ -1680,7 +2242,17 @@
    "note": "Garrafas de 70 cl e 1 L na loja oficial (mercado fora do Brasil). Confira o rótulo local.",
    "roles": [
     "gin"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "note": "70 cl and 1 L bottles in the official store (market outside Brazil). Check the local label.",
+     "sourceLabel": "Bombay Sapphire (official store)"
+    },
+    "es": {
+     "note": "Botellas de 70 cl y 1 L en la tienda oficial (mercado fuera de Brasil). Revisa la etiqueta local.",
+     "sourceLabel": "Bombay Sapphire (tienda oficial)"
+    }
+   }
   },
   {
    "id": "beefeater-london-dry-gin",
@@ -1699,7 +2271,17 @@
    "note": "A marca informa 40% na maioria dos países.",
    "roles": [
     "gin"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "note": "The brand states 40% in most countries.",
+     "sourceLabel": "Beefeater (official website)"
+    },
+    "es": {
+     "note": "La marca indica 40% en la mayoría de los países.",
+     "sourceLabel": "Beefeater (sitio oficial)"
+    }
+   }
   },
   {
    "id": "johnnie-walker-red-label",
@@ -1718,7 +2300,15 @@
    "note": null,
    "roles": [
     "whisky"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Johnnie Walker (official website)"
+    },
+    "es": {
+     "sourceLabel": "Johnnie Walker (sitio oficial)"
+    }
+   }
   },
   {
    "id": "johnnie-walker-black-label",
@@ -1747,7 +2337,23 @@
      "value": 43.0,
      "scope": "página da África do Sul"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Johnnie Walker (official website)",
+     "abvVariants": [
+      "US, Canada and UK pages",
+      "South Africa page"
+     ]
+    },
+    "es": {
+     "sourceLabel": "Johnnie Walker (sitio oficial)",
+     "abvVariants": [
+      "páginas de EE. UU., Canadá y Reino Unido",
+      "página de Sudáfrica"
+     ]
+    }
+   }
   },
   {
    "id": "jack-daniel-s-old-no-7",
@@ -1769,7 +2375,17 @@
    "note": "A ficha informa 80 proof (40% vol.). Edições especiais têm outros teores.",
    "roles": [
     "whisky"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "note": "The spec sheet states 80 proof (40% vol.). Special editions have other strengths.",
+     "sourceLabel": "Jack Daniel's (official spec sheet)"
+    },
+    "es": {
+     "note": "La ficha indica 80 proof (40% vol.). Las ediciones especiales tienen otras graduaciones.",
+     "sourceLabel": "Jack Daniel's (ficha oficial)"
+    }
+   }
   },
   {
    "id": "chivas-regal-12-anos",
@@ -1790,7 +2406,15 @@
    "note": null,
    "roles": [
     "whisky"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Chivas Regal (official website)"
+    },
+    "es": {
+     "sourceLabel": "Chivas Regal (sitio oficial)"
+    }
+   }
   },
   {
    "id": "cachaca-51",
@@ -1812,7 +2436,15 @@
    "note": null,
    "roles": [
     "cachaca"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Cachaça 51 (official website)"
+    },
+    "es": {
+     "sourceLabel": "Cachaça 51 (sitio oficial)"
+    }
+   }
   },
   {
    "id": "velho-barreiro-gold-black-label",
@@ -1832,7 +2464,17 @@
    "roles": [
     "cachaca"
    ],
-   "evidence": "secondary"
+   "evidence": "secondary",
+   "i18n": {
+    "en": {
+     "note": "ABV from a secondary source (drinks guide and distributors), not from the manufacturer.",
+     "sourceLabel": "Difford's Guide (secondary source)"
+    },
+    "es": {
+     "note": "Graduación de una fuente secundaria (guía de bebidas y distribuidores), no del fabricante.",
+     "sourceLabel": "Difford's Guide (fuente secundaria)"
+    }
+   }
   },
   {
    "id": "patron-silver",
@@ -1870,7 +2512,15 @@
    "note": null,
    "roles": [
     "tequila"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Patrón (official website)"
+    },
+    "es": {
+     "sourceLabel": "Patrón (sitio oficial)"
+    }
+   }
   },
   {
    "id": "olmeca-silver",
@@ -1889,7 +2539,17 @@
    "note": "A página não informa o teor alcoólico.",
    "roles": [
     "tequila"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "note": "The page does not state the ABV.",
+     "sourceLabel": "Olmeca (official website)"
+    },
+    "es": {
+     "note": "La página no indica la graduación alcohólica.",
+     "sourceLabel": "Olmeca (sitio oficial)"
+    }
+   }
   },
   {
    "id": "bacardi-superior",
@@ -1911,7 +2571,17 @@
    "note": "Teor da loja oficial; o nome do produto varia por mercado (Superior/Carta Blanca).",
    "roles": [
     "rum"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "note": "ABV from the official store; the product name varies by market (Superior/Carta Blanca).",
+     "sourceLabel": "Bacardí (official store)"
+    },
+    "es": {
+     "note": "Graduación de la tienda oficial; el nombre del producto varía según el mercado (Superior/Carta Blanca).",
+     "sourceLabel": "Bacardí (tienda oficial)"
+    }
+   }
   },
   {
    "id": "havana-club-3-anos",
@@ -1930,7 +2600,17 @@
    "note": "A página não informa o teor alcoólico.",
    "roles": [
     "rum"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "note": "The page does not state the ABV.",
+     "sourceLabel": "Havana Club (official website)"
+    },
+    "es": {
+     "note": "La página no indica la graduación alcohólica.",
+     "sourceLabel": "Havana Club (sitio oficial)"
+    }
+   }
   },
   {
    "id": "aperol-aperol",
@@ -1960,7 +2640,15 @@
    "note": null,
    "roles": [
     "aperol"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Aperol (official website)"
+    },
+    "es": {
+     "sourceLabel": "Aperol (sitio oficial)"
+    }
+   }
   },
   {
    "id": "campari-campari",
@@ -1979,7 +2667,17 @@
    "note": "Teor citado na FAQ da Aperol; a página do produto Campari não o informa.",
    "roles": [
     "campari"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "note": "ABV quoted in the Aperol FAQ; the Campari product page does not state it.",
+     "sourceLabel": "Aperol FAQ (same Campari group)"
+    },
+    "es": {
+     "note": "Graduación citada en las preguntas frecuentes de Aperol; la página del producto Campari no la indica.",
+     "sourceLabel": "Preguntas frecuentes de Aperol (mismo grupo Campari)"
+    }
+   }
   },
   {
    "id": "martini-rosso",
@@ -2001,7 +2699,17 @@
    "note": "A página não informa o teor alcoólico.",
    "roles": [
     "vermouth-sweet"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "note": "The page does not state the ABV.",
+     "sourceLabel": "Martini (official website)"
+    },
+    "es": {
+     "note": "La página no indica la graduación alcohólica.",
+     "sourceLabel": "Martini (sitio oficial)"
+    }
+   }
   },
   {
    "id": "martini-extra-dry",
@@ -2023,7 +2731,17 @@
    "note": "A página não informa o teor alcoólico.",
    "roles": [
     "vermouth-dry"
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "note": "The page does not state the ABV.",
+     "sourceLabel": "Martini (official website)"
+    },
+    "es": {
+     "note": "La página no indica la graduación alcohólica.",
+     "sourceLabel": "Martini (sitio oficial)"
+    }
+   }
   }
  ]
 }

@@ -4,6 +4,7 @@ import 'catalog_item.dart';
 import 'drink_category.dart';
 import 'drink_entry.dart';
 import 'recipe.dart';
+import '../../l10n/l10n.dart';
 
 /// Editable state of the "register drink" form, with all the sharing and
 /// price rules kept out of the widgets.
@@ -59,8 +60,8 @@ class DrinkDraft {
         reference: recipe.components,
         composition: Composition(
           recipeId: recipe.id,
-          recipeName: recipe.name,
-          sourceLabel: recipe.source?.label,
+          recipeName: item.name,
+          sourceLabel: recipe.source?.displayLabel,
           sourceUrl: recipe.source?.url,
           components: recipe.components,
         ),
@@ -398,46 +399,45 @@ class DrinkDraft {
     if (isRecipe) {
       // The final volume of a mixed drink may stay unknown.
       if (container != null && (container <= 0 || container > 20000)) {
-        result['volume'] = 'Volume inválido';
+        result['volume'] = tr.draftVolumeInvalid;
       }
       for (var i = 0; i < components.length; i++) {
         final abv = components[i].abvPercent;
         if (abv != null && (abv < 0 || abv > 100)) {
-          result['component_abv_$i'] = 'O teor vai de 0 a 100%';
+          result['component_abv_$i'] = tr.draftAbvRange;
         }
         final qty = components[i].amount;
-        if (qty != null && qty < 0) result['component_ml_$i'] = 'Quantidade inválida';
+        if (qty != null && qty < 0) result['component_ml_$i'] = tr.draftAmountInvalid;
       }
     } else if (container == null || container <= 0) {
-      result['volume'] = 'Informe o volume em ml';
+      result['volume'] = tr.draftVolumeRequired;
     } else if (container > 20000) {
-      result['volume'] = 'Volume alto demais';
+      result['volume'] = tr.draftVolumeTooHigh;
     }
     final abv = abvPercent;
     if (abv != null && (abv < 0 || abv > 100)) {
-      result['abv'] = 'O teor vai de 0 a 100%';
+      result['abv'] = tr.draftAbvRange;
     }
     if (isShared && container != null && container > 0) {
       final personal = personalMl;
       if (personal == null || personal <= 0) {
-        result['personal'] = 'Informe a sua parte em ml';
+        result['personal'] = tr.draftShareRequired;
       } else if (personal + leftoverMl > container) {
-        result['personal'] =
-            'Sua parte + sobra passam do volume (${container}ml)';
+        result['personal'] = tr.draftShareOver(formatMl(container));
       }
     }
     final before = notBefore;
     if (before != null && consumedAt.isBefore(before)) {
-      result['time'] = 'Antes do início do rolê (${formatTime(before)})';
+      result['time'] = tr.draftBeforeStart(formatTime(before));
     }
     final after = notAfter ?? DateTime.now().add(const Duration(minutes: 5));
     if (consumedAt.isAfter(after)) {
       result['time'] = notAfter == null
-          ? 'O horário não pode estar no futuro'
-          : 'Depois do fim do rolê (${formatTime(notAfter!)})';
+          ? tr.draftNotFuture
+          : tr.draftAfterEnd(formatTime(notAfter!));
     }
     if (priceKind == PriceKind.informed && paidCents == null) {
-      result['paid'] = 'Informe o valor ou escolha outra opção';
+      result['paid'] = tr.draftPaidRequired;
     }
     return result;
   }

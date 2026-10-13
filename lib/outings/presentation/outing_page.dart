@@ -27,6 +27,7 @@ import '../../tracking/presentation/tracking_offer_sheet.dart';
 import 'budget_section.dart';
 import 'outing_cubit.dart';
 import '../../l10n/l10n.dart';
+import '../../drinks/domain/presentation_label.dart';
 
 /// Running outing. Pops with the outing id after it is finished, so the
 /// caller can show the summary.
@@ -660,7 +661,8 @@ class EntryTile extends StatelessWidget {
     final meta = <String>[
       formatTime(entry.consumedAt),
       if (entry.isMixed && entry.composition!.customized) tr.groupRecipeAdjusted,
-      if (entry.presentation != null && !entry.isShared) entry.presentation!,
+      if (entry.presentation != null && !entry.isShared)
+        localizePresentation(entry.presentation!),
       if (entry.isShared && personal != null && container != null)
         tr.entrySharedPart(
             entry.peopleCount, formatMl(personal), formatMl(container))

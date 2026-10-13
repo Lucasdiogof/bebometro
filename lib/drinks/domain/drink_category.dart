@@ -1,19 +1,41 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n.dart';
+
 enum DrinkCategory {
-  beer('beer', 'Cerveja', Icons.sports_bar_rounded),
-  draft('draft', 'Chopp', Icons.local_drink_rounded),
-  cocktail('cocktail', 'Drink', Icons.wine_bar_rounded),
-  spirit('spirit', 'Destilado/dose', Icons.liquor_rounded),
-  wine('wine', 'Vinho', Icons.wine_bar_outlined),
-  nonAlcoholic('non_alcoholic', 'Sem álcool', Icons.emoji_food_beverage_rounded),
-  water('water', 'Água', Icons.water_drop_rounded);
+  beer('beer', Icons.sports_bar_rounded),
+  draft('draft', Icons.local_drink_rounded),
+  cocktail('cocktail', Icons.wine_bar_rounded),
+  spirit('spirit', Icons.liquor_rounded),
+  wine('wine', Icons.wine_bar_outlined),
+  nonAlcoholic('non_alcoholic', Icons.emoji_food_beverage_rounded),
+  water('water', Icons.water_drop_rounded);
 
-  const DrinkCategory(this.code, this.label, this.icon);
+  const DrinkCategory(this.code, this.icon);
 
+  /// Stored value; never translated.
   final String code;
-  final String label;
   final IconData icon;
+
+  /// Name in the language on screen.
+  String get label => _labelIn(tr);
+
+  /// Names in every language of the app, so a search finds the category
+  /// whatever language it is written in.
+  List<String> get searchLabels => [
+        for (final code in const ['pt', 'en', 'es'])
+          _labelIn(lookupAppLocalizations(Locale(code))),
+      ];
+
+  String _labelIn(AppLocalizations t) => switch (this) {
+        DrinkCategory.beer => t.categoryBeer,
+        DrinkCategory.draft => t.categoryDraft,
+        DrinkCategory.cocktail => t.categoryCocktail,
+        DrinkCategory.spirit => t.categorySpirit,
+        DrinkCategory.wine => t.categoryWine,
+        DrinkCategory.nonAlcoholic => t.categoryNonAlcoholic,
+        DrinkCategory.water => t.categoryWater,
+      };
 
   /// Categories whose products may contain alcohol.
   bool get canBeAlcoholic =>

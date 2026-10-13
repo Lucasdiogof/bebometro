@@ -1,6 +1,7 @@
 import '../../core/utils/formatters.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../l10n/l10n.dart';
+import '../../drinks/domain/presentation_label.dart';
 
 /// Entries that are the same drink, size and sharing, shown as "3×".
 class DrinkGroup {
@@ -153,7 +154,8 @@ class _GroupAcc {
     final container = sample.containerMl;
     final parts = <String>[
       if (sample.composition?.customized == true) tr.groupRecipeAdjusted,
-      if (sample.presentation != null) sample.presentation!,
+      if (sample.presentation != null)
+        localizePresentation(sample.presentation!),
       if (personal == null)
         tr.groupVolumeUnknown
       else if (sample.isShared && container != null)

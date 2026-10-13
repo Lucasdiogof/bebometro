@@ -1,3 +1,5 @@
+import 'dart:ui' show Locale;
+
 import 'package:flutter/widgets.dart';
 
 import 'generated/app_localizations.dart';
@@ -12,12 +14,27 @@ AppLocalizations get tr => _current;
 
 AppLocalizations _current = lookupAppLocalizations(const Locale('pt'));
 
+/// Language code on screen ('pt', 'en' or 'es').
+String get trLanguage => _language;
+String _language = 'pt';
+
+/// [original] (the catalog's own wording, in Portuguese) or its editorial
+/// translation for the language on screen. Never used for text the person
+/// wrote.
+String localizedText(String original, Map<String, String> byLanguage) =>
+    byLanguage[_language] ?? original;
+
 /// Locale tag for `intl` formatting ('pt_BR', 'en', 'es').
 String get trLocaleTag => _tag;
 String _tag = 'pt_BR';
 
 void setCurrentLocale(Locale locale) {
   _current = lookupAppLocalizations(locale);
+  _language = switch (locale.languageCode) {
+    'en' => 'en',
+    'es' => 'es',
+    _ => 'pt',
+  };
   _tag = switch (locale.languageCode) {
     'en' => 'en',
     'es' => 'es',

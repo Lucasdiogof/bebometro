@@ -2,6 +2,7 @@ import '../../core/utils/formatters.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../outings/domain/outing.dart';
 import '../../outings/domain/outing_summary.dart';
+import '../../drinks/domain/presentation_label.dart';
 
 /// What the lock screen shows, computed from the persisted records with the
 /// same rules as the app: [alcoholicCount] is the number of alcoholic drink
@@ -58,7 +59,7 @@ class TrackingSnapshot {
 
   static String _labelOf(DrinkEntry e) {
     final size = (e.presentation != null && e.presentation!.trim().isNotEmpty)
-        ? e.presentation!
+        ? localizePresentation(e.presentation!)
         : (e.containerMl == null ? '' : formatMl(e.containerMl!));
     if (size.isEmpty || e.name.toLowerCase().contains(size.toLowerCase())) {
       return e.name;

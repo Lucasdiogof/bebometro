@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../domain/recipe.dart';
+import '../../l10n/l10n.dart';
 
 /// Picks the unit of an ingredient amount. The recipe's original wording
 /// ([RecipeUnit.other]) only shows while it is the current value.
@@ -20,7 +21,7 @@ class UnitDropdown extends StatelessWidget {
       key: ValueKey(value),
       initialValue: value,
       isExpanded: true,
-      decoration: const InputDecoration(labelText: 'Unidade'),
+      decoration: InputDecoration(labelText: tr.recipeUnitLabel),
       items: [
         for (final u in units)
           DropdownMenuItem(

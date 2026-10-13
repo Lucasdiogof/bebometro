@@ -1936,4 +1936,1032 @@ class AppLocalizationsEn extends AppLocalizations {
   String priceFixPreview(String count) {
     return 'Preview ($count)';
   }
+
+  @override
+  String get originGeneric => 'Generic';
+
+  @override
+  String get originUser => 'Created by you';
+
+  @override
+  String get originVerified => 'Manufacturer data';
+
+  @override
+  String get originMixed => 'Manufacturer + label (secondary source)';
+
+  @override
+  String get originSecondary => 'Label from a secondary source';
+
+  @override
+  String get originRecipe => 'Reference recipe';
+
+  @override
+  String get kindCan => 'Can';
+
+  @override
+  String get kindLongNeck => 'Long neck';
+
+  @override
+  String get kindBottle => 'Bottle';
+
+  @override
+  String get kindGlass => 'Glass';
+
+  @override
+  String get kindShot => 'Shot';
+
+  @override
+  String get presCan => 'Can';
+
+  @override
+  String get presBottle => 'Bottle';
+
+  @override
+  String get presGlass => 'Glass';
+
+  @override
+  String get presMug => 'Mug';
+
+  @override
+  String get presTulip => 'Tulip glass';
+
+  @override
+  String get presWineGlass => 'Wine glass';
+
+  @override
+  String get presShot => 'Shot';
+
+  @override
+  String get presDoubleShot => 'Double shot';
+
+  @override
+  String unitLiters(String value) {
+    return '$value L';
+  }
+
+  @override
+  String get abvVaries => 'ABV varies';
+
+  @override
+  String get categoryBeer => 'Beer';
+
+  @override
+  String get categoryDraft => 'Draft beer';
+
+  @override
+  String get categoryCocktail => 'Cocktail';
+
+  @override
+  String get categorySpirit => 'Spirit/shot';
+
+  @override
+  String get categoryWine => 'Wine';
+
+  @override
+  String get categoryNonAlcoholic => 'Non-alcoholic';
+
+  @override
+  String get categoryWater => 'Water';
+
+  @override
+  String get abvSourceLabel => 'Label (photo), checked by you';
+
+  @override
+  String get abvSourceMenu => 'Menu (photo), checked by you';
+
+  @override
+  String get abvSourceTyped => 'Entered by you';
+
+  @override
+  String get abvSourceCatalog => 'Copied from the catalog';
+
+  @override
+  String get styleLagerPilsen => 'Lager/Pilsner';
+
+  @override
+  String get styleDark => 'Dark';
+
+  @override
+  String get styleWhiteRum => 'White rum';
+
+  @override
+  String get styleAperitif => 'Aperitif';
+
+  @override
+  String get styleBitterAperitif => 'Bitter aperitif';
+
+  @override
+  String get styleSweetVermouth => 'Sweet vermouth';
+
+  @override
+  String get styleDryVermouth => 'Dry vermouth';
+
+  @override
+  String get styleAgaveTequila => '100% agave tequila';
+
+  @override
+  String get roleCachaca => 'Cachaça';
+
+  @override
+  String get roleVodka => 'Vodka';
+
+  @override
+  String get roleGin => 'Gin';
+
+  @override
+  String get roleRum => 'Rum';
+
+  @override
+  String get roleTequila => 'Tequila';
+
+  @override
+  String get roleWhisky => 'Whisky';
+
+  @override
+  String get roleOrangeLiqueur => 'Orange liqueur';
+
+  @override
+  String get roleCampari => 'Campari';
+
+  @override
+  String get roleAperol => 'Aperol';
+
+  @override
+  String get roleSweetVermouth => 'Sweet vermouth';
+
+  @override
+  String get roleDryVermouth => 'Dry vermouth';
+
+  @override
+  String get roleSparklingWine => 'Sparkling wine';
+
+  @override
+  String get roleBitters => 'Bitters';
+
+  @override
+  String get recipeUnitMl => 'ml (milliliters)';
+
+  @override
+  String get recipeUnitG => 'g (grams)';
+
+  @override
+  String get recipeUnitUnit => 'unit';
+
+  @override
+  String get recipeUnitTsp => 'teaspoon';
+
+  @override
+  String get recipeUnitTbsp => 'tablespoon';
+
+  @override
+  String get recipeUnitLeaf => 'leaf';
+
+  @override
+  String get recipeUnitDrop => 'drop';
+
+  @override
+  String get recipeUnitToTaste => 'to taste';
+
+  @override
+  String get recipeUnitOther => 'recipe wording';
+
+  @override
+  String get recipeShortUnit => 'unit';
+
+  @override
+  String get recipeShortTsp => 'tsp';
+
+  @override
+  String get recipeShortTbsp => 'tbsp';
+
+  @override
+  String get recipeShortLeaf => 'leaf/leaves';
+
+  @override
+  String get recipeShortDrop => 'drop(s)';
+
+  @override
+  String get recipeAmountUnknown => 'amount not given';
+
+  @override
+  String get recipeGapAbv => 'unknown ABV';
+
+  @override
+  String get recipeGapNotMl => 'amount is not in ml';
+
+  @override
+  String get recipeGapAmount => 'unknown amount';
+
+  @override
+  String get addDrinkTitle => 'Add drink';
+
+  @override
+  String get catalogMyDrinksTooltip => 'My drinks and recipes';
+
+  @override
+  String get catalogSearchHint => 'Search brand, product or style';
+
+  @override
+  String get catalogMoreFilters => 'More filters';
+
+  @override
+  String get catalogAll => 'All';
+
+  @override
+  String get catalogScanLabel => 'Scan label';
+
+  @override
+  String get catalogScanMenu => 'Scan menu';
+
+  @override
+  String get catalogCreate => 'Create a drink';
+
+  @override
+  String get catalogCreateOuting => 'Create a drink for this outing';
+
+  @override
+  String get catalogNeedOutingTitle => 'You need an outing in progress';
+
+  @override
+  String get catalogNeedOutingBody =>
+      'Drinks read from a label or menu are kept in the outing where they were created. Start one now?';
+
+  @override
+  String get catalogSavedToOuting => 'Saved in \"Drinks of this outing\"';
+
+  @override
+  String catalogMenuSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items in \"Drinks of this outing\". Pick one to log.',
+      one: '1 item in \"Drinks of this outing\". Pick one to log.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get catalogDrinkSaved => 'Drink saved in My drinks';
+
+  @override
+  String get catalogRecipeSaved => 'Recipe saved in My drinks';
+
+  @override
+  String get catalogDeleteTitle => 'Delete this drink?';
+
+  @override
+  String get catalogDeleteBody =>
+      'It leaves the catalog. Records you already made with it stay as they are.';
+
+  @override
+  String get catalogClearFilters => 'Clear filters';
+
+  @override
+  String get catalogRemoveFilter => 'Remove filter';
+
+  @override
+  String get catalogFilters => 'Filters';
+
+  @override
+  String get catalogOnlyNoAlcohol => 'Non-alcoholic only';
+
+  @override
+  String get catalogStyle => 'Style';
+
+  @override
+  String get catalogPresentation => 'Package';
+
+  @override
+  String get catalogBrand => 'Brand';
+
+  @override
+  String catalogSeeCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'See $count drinks',
+      one: 'See 1 drink',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get catalogRecents => 'Recent';
+
+  @override
+  String get catalogFavorites => 'Favorites';
+
+  @override
+  String get catalogAllDrinks => 'All drinks';
+
+  @override
+  String catalogResults(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count results',
+      one: '1 result',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get catalogEmptyTitle => 'No drinks found';
+
+  @override
+  String get catalogEmptyOuting =>
+      'Create a drink just for this outing, or scan a label or a menu.';
+
+  @override
+  String get catalogEmptyNoFilter =>
+      'Create yours and it stays saved for future outings.';
+
+  @override
+  String get catalogEmptyFilter => 'Try removing a filter or create yours.';
+
+  @override
+  String catalogSizes(String count) {
+    return '$count sizes';
+  }
+
+  @override
+  String get catalogDetails => 'Details';
+
+  @override
+  String get catalogUnfavorite => 'Remove from favorites';
+
+  @override
+  String get catalogFavorite => 'Add to favorites';
+
+  @override
+  String get entryDeleteTitle => 'Delete record?';
+
+  @override
+  String get entryDeleteBody => 'It leaves the outing and the summary.';
+
+  @override
+  String get entryDiscardTitle => 'Discard changes?';
+
+  @override
+  String get entryDiscardBody => 'What you filled in here will be lost.';
+
+  @override
+  String get entryKeepEditing => 'Keep editing';
+
+  @override
+  String get entryDiscard => 'Discard';
+
+  @override
+  String get entryFix => 'Edit record';
+
+  @override
+  String get entryLogCocktail => 'Log cocktail';
+
+  @override
+  String get entryLogDrink => 'Log drink';
+
+  @override
+  String get entryDrinkAndSize => 'Drink and size';
+
+  @override
+  String get entryGenericSpirit =>
+      'Suggested shots, editable: they are not official measures of any venue. The bottle is the package, not your shot.';
+
+  @override
+  String get entryGenericSizes =>
+      'Suggested sizes: this product has no verified packages in the catalog. Check the package.';
+
+  @override
+  String get entryVolume => 'Volume (ml)';
+
+  @override
+  String get entryOtherSize => 'Other size (ml)';
+
+  @override
+  String get entryAbvOptional => 'Alcohol content (optional)';
+
+  @override
+  String get entryAbvBlank => 'Blank = unknown (not counted as zero).';
+
+  @override
+  String get entryAbvCheck => 'Check the label if you can.';
+
+  @override
+  String get entryAbvVariantsIntro =>
+      'Sources disagree. Pick what is on your label or type it:';
+
+  @override
+  String get entryBottleShared =>
+      'Bottle being shared (fills in the bottle volume):';
+
+  @override
+  String entryBottlesInfo(String list) {
+    return 'Product packages: $list. To split a bottle, choose \"Shared\" below.';
+  }
+
+  @override
+  String get entryIndividualOrShared => 'Individual or shared';
+
+  @override
+  String get entryOnlyMine => 'Just mine';
+
+  @override
+  String get entryShared => 'Shared';
+
+  @override
+  String get entryPriceSection => 'Price (optional)';
+
+  @override
+  String get entryTimeSection => 'Time';
+
+  @override
+  String entryYourShare(String amount) {
+    return 'Your share: $amount';
+  }
+
+  @override
+  String get entryYourShareUnknown => 'Your share: —';
+
+  @override
+  String get entrySaveChanges => 'Save changes';
+
+  @override
+  String entryIngredients(String list) {
+    return 'Ingredients (original wording): $list';
+  }
+
+  @override
+  String entrySharedLine(String count, String total) {
+    return 'of $total · $count people, including you';
+  }
+
+  @override
+  String get entryPeople => 'People (including you)';
+
+  @override
+  String get entryFewerPeople => 'One fewer person';
+
+  @override
+  String get entryMorePeople => 'One more person';
+
+  @override
+  String get entryAdjustShare => 'Adjust share and leftover';
+
+  @override
+  String get entryYourShareMl => 'Your share (ml)';
+
+  @override
+  String get entryEqualSplit => 'Equal split by default.';
+
+  @override
+  String get entryLeftover => 'Left in the bottle (ml)';
+
+  @override
+  String get entryOptionalDot => 'Optional.';
+
+  @override
+  String entryOthersEach(String amount, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'for each of the other $count people',
+      one: 'for the other person',
+    );
+    return '$amount left $_temp0.';
+  }
+
+  @override
+  String get entryPriceValue => 'Amount';
+
+  @override
+  String get entryPriceDontKnow => 'Don\'t know';
+
+  @override
+  String get entryBillTotal => 'Bill/bottle total (optional)';
+
+  @override
+  String get entryPaidHelper => 'What you paid, not what you drank.';
+
+  @override
+  String entrySplitEqually(String count) {
+    return 'Split equally ($count people)';
+  }
+
+  @override
+  String entryComplimentaryNote(String amount) {
+    return 'Complimentary counts as $amount entered.';
+  }
+
+  @override
+  String get entryNoPriceNote =>
+      'No price: shown as \"no price\" in the summary.';
+
+  @override
+  String get commonAdd => 'Add';
+
+  @override
+  String get entryAddIngredient => 'Add ingredient';
+
+  @override
+  String get entryIngredientField => 'Ingredient';
+
+  @override
+  String get entryHasAlcohol => 'Contains alcohol';
+
+  @override
+  String get entrySaveRecipeTitle => 'Save as my recipe';
+
+  @override
+  String entryMineSuffix(String name) {
+    return '$name (mine)';
+  }
+
+  @override
+  String get entryRecipeName => 'Recipe name';
+
+  @override
+  String get entrySaveRecipeBody =>
+      'Keeps ingredients, amounts and ABV for reuse. Old records do not change.';
+
+  @override
+  String get entryRecipeSaved => 'Recipe saved to your catalog';
+
+  @override
+  String get entryCompositionTitle => 'Composition';
+
+  @override
+  String get entryCompositionSimple => 'Enter only what you know.';
+
+  @override
+  String entryCompositionReference(String source) {
+    return 'Reference recipe ($source). Adjust it to what was actually served.';
+  }
+
+  @override
+  String get entryCompositionAdjusted => 'Adjusted composition';
+
+  @override
+  String get entryCompositionView => 'View and adjust composition';
+
+  @override
+  String get entryNoIngredients => 'No ingredients yet';
+
+  @override
+  String get entryDrinkVolumeSection => 'Cocktail volume (optional)';
+
+  @override
+  String get entryServedVolume => 'Served volume (ml)';
+
+  @override
+  String get entryServedVolumeHelper =>
+      'If you do not know, leave it blank: the summary shows it as unknown. Glass size and ice do not count as volume drunk.';
+
+  @override
+  String get entryPureAlcohol => 'Pure alcohol in the composition above';
+
+  @override
+  String entryAtLeast(String amount) {
+    return 'at least $amount';
+  }
+
+  @override
+  String entryMissingParts(String list) {
+    return 'Missing ABV or amount for: $list';
+  }
+
+  @override
+  String get entryDeclaredNote =>
+      'The declared composition counts, assuming the whole serving. It is not blood concentration.';
+
+  @override
+  String entryOptionalMark(String name) {
+    return '$name (optional)';
+  }
+
+  @override
+  String get entryRemoveIngredient => 'Remove ingredient';
+
+  @override
+  String entryInRecipe(String text) {
+    return 'In the recipe: $text';
+  }
+
+  @override
+  String get entryAmount => 'Amount';
+
+  @override
+  String get entryAmountUnknown => 'Blank = unknown.';
+
+  @override
+  String get entryChooseProduct => 'Choose brand/product';
+
+  @override
+  String get entryComponentAbv => 'Alcohol content (% vol.)';
+
+  @override
+  String get entryComponentAbvUnknown =>
+      'Unknown: without it the total alcohol is incomplete.';
+
+  @override
+  String entryComponentAlcoholNone(String reason) {
+    return 'Alcohol in this ingredient: not calculated ($reason).';
+  }
+
+  @override
+  String entryComponentAlcohol(String amount) {
+    return 'Alcohol in this ingredient: $amount';
+  }
+
+  @override
+  String get entryIncompleteData => 'incomplete data';
+
+  @override
+  String entryWhichProduct(String name) {
+    return 'Which $name?';
+  }
+
+  @override
+  String get entryNoBrand => 'No brand: enter the ABV';
+
+  @override
+  String entryProductAbv(String abv) {
+    return 'ABV $abv';
+  }
+
+  @override
+  String get entryProductAbvVaries => 'ABV varies by source';
+
+  @override
+  String get entryProductAbvUnknown => 'ABV not given';
+
+  @override
+  String get entryMenuPrice => 'Menu price';
+
+  @override
+  String entryMenuPriceBody(String price) {
+    return 'The menu advertised $price. It is only a suggestion: confirm what was actually paid, as there may be a promotion or a different order. If it is a shared bottle or pitcher, choose \"Shared\": the amount becomes the bill total, not your share.';
+  }
+
+  @override
+  String get entryUseAsBillTotal => 'Use as the bill total';
+
+  @override
+  String get entryUseAsPaid => 'Use as what I paid';
+
+  @override
+  String get entryHistory => 'Your history';
+
+  @override
+  String entryHistoryShare(String date, String price, String scope) {
+    return 'Your share was $price $scope on $date.';
+  }
+
+  @override
+  String entryHistoryPaid(String date, String price, String scope) {
+    return 'You paid $price $scope on $date.';
+  }
+
+  @override
+  String get entryUseAsShare => 'Use as my share';
+
+  @override
+  String get entryUseValue => 'Use this amount';
+
+  @override
+  String entryHistoryTotal(String date, String price) {
+    return 'The bottle/serving total was $price on $date.';
+  }
+
+  @override
+  String get entryUseAsTotal => 'Use as total';
+
+  @override
+  String get entryScopeAtPlace => 'at this place';
+
+  @override
+  String get entryScopeAtOuting => 'in this outing';
+
+  @override
+  String get draftVolumeInvalid => 'Invalid volume';
+
+  @override
+  String get draftAbvRange => 'ABV must be between 0 and 100%';
+
+  @override
+  String get draftAmountInvalid => 'Invalid amount';
+
+  @override
+  String get draftVolumeRequired => 'Enter the volume in ml';
+
+  @override
+  String get draftVolumeTooHigh => 'Volume too high';
+
+  @override
+  String get draftShareRequired => 'Enter your share in ml';
+
+  @override
+  String draftShareOver(String volume) {
+    return 'Your share + leftover exceed the volume ($volume)';
+  }
+
+  @override
+  String draftBeforeStart(String time) {
+    return 'Before the outing started ($time)';
+  }
+
+  @override
+  String get draftNotFuture => 'The time cannot be in the future';
+
+  @override
+  String draftAfterEnd(String time) {
+    return 'After the outing ended ($time)';
+  }
+
+  @override
+  String get draftPaidRequired => 'Enter the amount or choose another option';
+
+  @override
+  String get formSaveRecipeFailed => 'Could not save the recipe.';
+
+  @override
+  String get formSaveFailed => 'Could not save. Nothing was lost, try again.';
+
+  @override
+  String get formDeleteFailed => 'Could not delete. Try again.';
+
+  @override
+  String get detailNotGiven => 'Not given';
+
+  @override
+  String get detailAbv => 'Alcohol content';
+
+  @override
+  String detailAbvFrom(String source) {
+    return 'ABV: $source. Not manufacturer data.';
+  }
+
+  @override
+  String get detailIngredients => 'Declared ingredients (original wording)';
+
+  @override
+  String get detailIngredientsNone => 'Not given';
+
+  @override
+  String get detailPresentations => 'Packages';
+
+  @override
+  String get detailBottleNotDose =>
+      'Bottle size is not shot size. When logging, you pick a suggested shot (editable) or share the bottle.';
+
+  @override
+  String get detailUnverifiedPackages =>
+      'Packages not verified for this product. When logging, you can pick a suggested size or type the volume.';
+
+  @override
+  String get detailPackagesNote =>
+      'Packages cited by the manufacturer. The package size is not what you drank: you set that when logging.';
+
+  @override
+  String get detailMakeMine => 'Make my own version';
+
+  @override
+  String get detailSourceTitle => 'Data source';
+
+  @override
+  String detailSourceLine(String date, String source) {
+    return '$source · consulted on $date';
+  }
+
+  @override
+  String get detailCopyAddress => 'Copy address';
+
+  @override
+  String get detailAddressCopied => 'Address copied';
+
+  @override
+  String get detailMayVary =>
+      'Data may vary by version and market. Always check the package label.';
+
+  @override
+  String detailAbvVaries(String lines) {
+    return 'Varies by source, with no single value:\n$lines';
+  }
+
+  @override
+  String get detailRecipeReference =>
+      'Reference recipe: shows how the recipe is published, not what a bar served.';
+
+  @override
+  String get detailRecipeMine =>
+      'Your saved recipe. When logging, you adjust what was actually served.';
+
+  @override
+  String get detailNoIngredientsYet =>
+      'No ingredients yet: you build it when logging.';
+
+  @override
+  String get detailAlcoholLegend =>
+      'Ingredients with a glass icon contain alcohol. Each one\'s ABV is entered when logging; without it the total alcohol is incomplete. Ice is not counted.';
+
+  @override
+  String get detailMethod => 'Method';
+
+  @override
+  String detailGarnish(String text) {
+    return 'Garnish: $text';
+  }
+
+  @override
+  String get customEditTitle => 'Edit drink';
+
+  @override
+  String get customSaveFailed => 'Could not save. Your data is still here.';
+
+  @override
+  String get customEditNote =>
+      'Changes apply to future records. What you already logged stays as it was.';
+
+  @override
+  String get customNewNote =>
+      'Saved so you can use it again in future outings.';
+
+  @override
+  String get customType => 'Type';
+
+  @override
+  String get customIdentification => 'Identification';
+
+  @override
+  String get customName => 'Drink name';
+
+  @override
+  String get customNameRequired => 'Give the drink a name';
+
+  @override
+  String get customBrand => 'Brand (optional)';
+
+  @override
+  String get customStyle => 'Style (optional)';
+
+  @override
+  String get customSizeAndAbv => 'Size and ABV';
+
+  @override
+  String get customSize => 'Size (ml)';
+
+  @override
+  String get customSizeRequired => 'Enter the size in ml';
+
+  @override
+  String get customAbvHelper => 'Blank = unknown, not counted as zero.';
+
+  @override
+  String get customIngredients => 'Ingredients (optional)';
+
+  @override
+  String get customIngredientsHelper =>
+      'Separate with commas. Only what you know.';
+
+  @override
+  String get customSaveUse => 'Save and use';
+
+  @override
+  String get recipeUnitLabel => 'Unit';
+
+  @override
+  String get myDrinksNeedOuting => 'Start an outing to log a drink.';
+
+  @override
+  String get myDrinksLogged => 'Drink logged';
+
+  @override
+  String get myDrinksCopied => 'Copy created';
+
+  @override
+  String myDrinksDeleteTitle(String name) {
+    return 'Delete \"$name\"?';
+  }
+
+  @override
+  String get myDrinksDeleteBody =>
+      'It leaves your catalog. Records you already made stay as they are.';
+
+  @override
+  String get myDrinksDeleted => 'Deleted';
+
+  @override
+  String myDrinksRecipeSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Recipe · $count ingredients',
+      one: 'Recipe · 1 ingredient',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get myDrinksTitle => 'My drinks and recipes';
+
+  @override
+  String get myDrinksEmptyTitle => 'Nothing here yet';
+
+  @override
+  String get myDrinksEmptyBody =>
+      'Drinks and recipes you create stay here to reuse in future outings.';
+
+  @override
+  String get myDrinksStartFirst => 'To log, start an outing first.';
+
+  @override
+  String get myDrinksActionLog => 'Log';
+
+  @override
+  String get myDrinksActionDuplicate => 'Duplicate';
+
+  @override
+  String get myDrinksNewDrink => 'New drink';
+
+  @override
+  String get myDrinksNewRecipe => 'New recipe';
+
+  @override
+  String recipeEditorNameCopy(String name) {
+    return '$name (my version)';
+  }
+
+  @override
+  String get recipeEditorNeedName => 'Give the recipe a name.';
+
+  @override
+  String get recipeEditorNeedIngredient => 'Add at least one ingredient.';
+
+  @override
+  String get recipeEditorIngredientName => 'Every ingredient needs a name.';
+
+  @override
+  String recipeEditorAbvRange(String name) {
+    return 'The ABV of \"$name\" must be between 0 and 100%.';
+  }
+
+  @override
+  String recipeEditorAmountInvalid(String name) {
+    return 'The amount of \"$name\" is invalid.';
+  }
+
+  @override
+  String recipeEditorNumberProblem(String name, String problem) {
+    return '\"$name\": $problem';
+  }
+
+  @override
+  String get recipeEditorEditTitle => 'Edit recipe';
+
+  @override
+  String get recipeEditorNewTitle => 'New recipe';
+
+  @override
+  String get recipeEditorIntro =>
+      'Enter only what you know. A blank amount or ABV stays unknown and the total alcohol is shown as incomplete.';
+
+  @override
+  String get recipeEditorNameSection => 'Name';
+
+  @override
+  String get recipeEditorNameRequired => 'Give the recipe a name';
+
+  @override
+  String get recipeEditorIngredients => 'Ingredients';
+
+  @override
+  String get recipeEditorNoneYet => 'No ingredients yet.';
+
+  @override
+  String get recipeEditorAlcoholSection => 'Alcohol in the composition';
+
+  @override
+  String get recipeEditorDeclaredAlcohol => 'Declared pure alcohol';
+
+  @override
+  String get recipeEditorSaveRecipe => 'Save recipe';
+
+  @override
+  String get recipeEditorMoveUp => 'Move up';
+
+  @override
+  String get recipeEditorMoveDown => 'Move down';
+
+  @override
+  String recipeEditorOriginal(String text) {
+    return 'In the original recipe: $text';
+  }
+
+  @override
+  String get recipeEditorRole => 'Type (to pick the brand when logging)';
+
+  @override
+  String get recipeEditorNoRole => 'No type';
+
+  @override
+  String get recipeEditorRemove => 'Remove';
 }

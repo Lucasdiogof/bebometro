@@ -39,7 +39,49 @@
      "amount": 4,
      "text": "4 colheres de chá"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Gently muddle the lime with the sugar, fill the glass with crushed ice, add the cachaça and stir gently.",
+     "note": "Ice is not counted in the volume. The IBA publishes 60 ml of cachaça; bars vary.",
+     "components": [
+      {
+       "name": "Cachaça"
+      },
+      {
+       "name": "Lime",
+       "text": "1 lime cut into small wedges"
+      },
+      {
+       "name": "White sugar",
+       "text": "4 teaspoons"
+      }
+     ],
+     "aliases": [
+      "lime cachaça",
+      "caipiriña"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Machaca suavemente el limón con el azúcar, llena el vaso con hielo picado, agrega la cachaça y mezcla con delicadeza.",
+     "note": "El hielo no entra en el cálculo del volumen. La IBA publica 60 ml de cachaça; los bares varían.",
+     "components": [
+      {
+       "name": "Cachaça"
+      },
+      {
+       "name": "Limón",
+       "text": "1 limón cortado en gajos pequeños"
+      },
+      {
+       "name": "Azúcar blanca",
+       "text": "4 cucharaditas"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "caipiroska",
@@ -78,7 +120,49 @@
      "amount": 4,
      "text": "4 colheres de chá"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, Caipirinha page (Contemporary Classics)",
+     "method": "Same as the Caipirinha, swapping the cachaça for vodka.",
+     "note": "The IBA does not publish the Caipiroska as its own recipe: the Caipirinha page says to swap the cachaça for vodka. Amounts are those of the Caipirinha.",
+     "components": [
+      {
+       "name": "Vodka"
+      },
+      {
+       "name": "Lime",
+       "text": "1 lime cut into small wedges"
+      },
+      {
+       "name": "White sugar",
+       "text": "4 teaspoons"
+      }
+     ],
+     "aliases": [
+      "caipirovka",
+      "vodka lime"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, página de la Caipirinha (Contemporary Classics)",
+     "method": "Igual que la Caipirinha, cambiando la cachaça por vodka.",
+     "note": "La IBA no publica la Caipiroska como receta propia: la página de la Caipirinha indica cambiar la cachaça por vodka. Las cantidades son las de la Caipirinha.",
+     "components": [
+      {
+       "name": "Vodka"
+      },
+      {
+       "name": "Limón",
+       "text": "1 limón cortado en gajos pequeños"
+      },
+      {
+       "name": "Azúcar blanca",
+       "text": "4 cucharaditas"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "gin-tonica",
@@ -116,7 +200,49 @@
      "amount": 1,
      "text": "1 gomo de limão"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Bombay Sapphire (brand recipe)",
+     "method": "Fill a balloon glass with large ice cubes, add the gin, squeeze the lime, top with tonic water and stir.",
+     "note": "The IBA does not publish the Gin and Tonic. Other brands use different proportions (Beefeater: 50 ml of gin and 125 ml of tonic; Hendrick's: 50 ml and 150 ml).",
+     "components": [
+      {
+       "name": "Gin"
+      },
+      {
+       "name": "Premium tonic water"
+      },
+      {
+       "name": "Lime",
+       "text": "1 lime wedge"
+      }
+     ],
+     "aliases": [
+      "gin and tonic",
+      "gin & tonic",
+      "gin tónico",
+      "gintonic"
+     ]
+    },
+    "es": {
+     "sourceLabel": "Bombay Sapphire (receta de la marca)",
+     "method": "Llena una copa balón con cubos de hielo grandes, agrega la ginebra, exprime el limón, completa con agua tónica y mezcla.",
+     "note": "La IBA no publica el Gin Tonic. Otras marcas usan proporciones distintas (Beefeater: 50 ml de ginebra y 125 ml de tónica; Hendrick's: 50 ml y 150 ml).",
+     "components": [
+      {
+       "name": "Ginebra"
+      },
+      {
+       "name": "Agua tónica premium"
+      },
+      {
+       "name": "Limón",
+       "text": "1 gajo de limón"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "mojito",
@@ -164,7 +290,59 @@
      "unit": "topup",
      "text": "completar"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Mix the mint with the sugar and lime juice, add a little sparkling water and ice, pour in the rum and top with sparkling water.",
+     "garnish": "Mint sprigs and a lime slice.",
+     "components": [
+      {
+       "name": "White rum"
+      },
+      {
+       "name": "Fresh lime juice"
+      },
+      {
+       "name": "Mint",
+       "text": "6 mint sprigs"
+      },
+      {
+       "name": "White sugar",
+       "text": "2 teaspoons"
+      },
+      {
+       "name": "Sparkling water",
+       "text": "top up"
+      }
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Mezcla la menta con el azúcar y el jugo de limón, agrega un poco de agua con gas y hielo, añade el ron y completa con agua con gas.",
+     "garnish": "Ramitas de menta y una rodaja de limón.",
+     "components": [
+      {
+       "name": "Ron blanco"
+      },
+      {
+       "name": "Jugo de limón fresco"
+      },
+      {
+       "name": "Menta",
+       "text": "6 ramitas de menta"
+      },
+      {
+       "name": "Azúcar blanca",
+       "text": "2 cucharaditas"
+      },
+      {
+       "name": "Agua con gas",
+       "text": "completar"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "negroni",
@@ -200,7 +378,41 @@
      "amount": 30,
      "role": "vermouth-sweet"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, The Unforgettables",
+     "method": "Pour everything straight into a chilled old fashioned glass with ice and stir gently.",
+     "garnish": "Half an orange slice.",
+     "components": [
+      {
+       "name": "Gin"
+      },
+      {
+       "name": "Campari"
+      },
+      {
+       "name": "Sweet vermouth"
+      }
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, The Unforgettables",
+     "method": "Vierte todo directamente en un vaso old fashioned frío con hielo y mezcla con delicadeza.",
+     "garnish": "Media rodaja de naranja.",
+     "components": [
+      {
+       "name": "Ginebra"
+      },
+      {
+       "name": "Campari"
+      },
+      {
+       "name": "Vermut dulce"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "aperol-spritz",
@@ -237,7 +449,48 @@
      "unit": "splash",
      "text": "um toque"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, New Era (\"Spritz\" recipe)",
+     "method": "Build everything in a wine glass with ice and stir gently.",
+     "garnish": "Orange slice.",
+     "note": "The IBA lists the recipe as \"Spritz\" with Aperol and notes that there are versions with Campari, Cynar or Select.",
+     "components": [
+      {
+       "name": "Prosecco"
+      },
+      {
+       "name": "Aperol"
+      },
+      {
+       "name": "Sparkling water",
+       "text": "a splash"
+      }
+     ],
+     "aliases": [
+      "aperol"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, New Era (receta \"Spritz\")",
+     "method": "Prepara todo en una copa de vino con hielo y mezcla con delicadeza.",
+     "garnish": "Rodaja de naranja.",
+     "note": "La IBA lista la receta como \"Spritz\" con Aperol y comenta que hay versiones con Campari, Cynar o Select.",
+     "components": [
+      {
+       "name": "Prosecco"
+      },
+      {
+       "name": "Aperol"
+      },
+      {
+       "name": "Agua con gas",
+       "text": "un toque"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "moscow-mule",
@@ -273,7 +526,46 @@
      "unit": "ml",
      "amount": 10
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "In the mug (or a short glass), mix the vodka and ginger beer, add the lime juice and stir gently.",
+     "garnish": "Lime slice.",
+     "note": "The IBA page mentions the Smirnoff brand for the vodka.",
+     "components": [
+      {
+       "name": "Vodka"
+      },
+      {
+       "name": "Ginger beer"
+      },
+      {
+       "name": "Fresh lime juice"
+      }
+     ],
+     "aliases": [
+      "mule"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "En la taza (o un vaso bajo), mezcla el vodka y la ginger beer, agrega el jugo de limón y revuelve con delicadeza.",
+     "garnish": "Rodaja de limón.",
+     "note": "La página de la IBA menciona la marca Smirnoff para el vodka.",
+     "components": [
+      {
+       "name": "Vodka"
+      },
+      {
+       "name": "Ginger beer"
+      },
+      {
+       "name": "Jugo de limón fresco"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "margarita",
@@ -308,7 +600,44 @@
      "unit": "ml",
      "amount": 15
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Shake everything with ice in a cocktail shaker and strain into a chilled glass.",
+     "garnish": "Half salt rim (optional).",
+     "components": [
+      {
+       "name": "100% agave tequila"
+      },
+      {
+       "name": "Triple sec"
+      },
+      {
+       "name": "Freshly squeezed lime juice"
+      }
+     ],
+     "aliases": [
+      "margarita cocktail"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Agita todo con hielo en una coctelera y cuela en una copa fría.",
+     "garnish": "Media escarcha de sal (opcional).",
+     "components": [
+      {
+       "name": "Tequila 100% agave"
+      },
+      {
+       "name": "Triple sec"
+      },
+      {
+       "name": "Jugo de limón recién exprimido"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "cuba-libre",
@@ -345,7 +674,46 @@
      "unit": "ml",
      "amount": 10
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Build everything in a tall glass with ice.",
+     "garnish": "Lime wedge.",
+     "components": [
+      {
+       "name": "White rum"
+      },
+      {
+       "name": "Cola soda"
+      },
+      {
+       "name": "Fresh lime juice"
+      }
+     ],
+     "aliases": [
+      "rum and coke",
+      "rum e coca",
+      "ron con cola"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Prepara todo en un vaso alto con hielo.",
+     "garnish": "Gajo de limón.",
+     "components": [
+      {
+       "name": "Ron blanco"
+      },
+      {
+       "name": "Refresco de cola"
+      },
+      {
+       "name": "Jugo de limón fresco"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "pina-colada",
@@ -381,7 +749,46 @@
      "unit": "ml",
      "amount": 50
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Blend everything with ice and serve in a large glass with a straw.",
+     "garnish": "Pineapple slice with a cherry.",
+     "note": "The IBA notes that a few drops of lime were historically added and that 4 pineapple slices can replace the juice.",
+     "components": [
+      {
+       "name": "White rum"
+      },
+      {
+       "name": "Cream of coconut"
+      },
+      {
+       "name": "Fresh pineapple juice"
+      }
+     ],
+     "aliases": [
+      "pina colada cocktail"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Licúa todo con hielo y sirve en un vaso grande con pajita.",
+     "garnish": "Rodaja de piña con una cereza.",
+     "note": "La IBA comenta que históricamente se agregaban gotas de limón y que 4 rodajas de piña pueden sustituir el jugo.",
+     "components": [
+      {
+       "name": "Ron blanco"
+      },
+      {
+       "name": "Crema de coco"
+      },
+      {
+       "name": "Jugo de piña fresco"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "daiquiri",
@@ -416,7 +823,44 @@
      "amount": 2,
      "text": "2 colheres de bar"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, The Unforgettables",
+     "method": "Stir everything in a shaker until the sugar dissolves, add ice, shake and strain into a chilled glass.",
+     "components": [
+      {
+       "name": "White rum"
+      },
+      {
+       "name": "Fresh lime juice"
+      },
+      {
+       "name": "Superfine sugar",
+       "text": "2 bar spoons"
+      }
+     ],
+     "aliases": [
+      "daiquirí"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, The Unforgettables",
+     "method": "Mezcla todo en la coctelera hasta disolver el azúcar, agrega hielo, agita y cuela en una copa fría.",
+     "components": [
+      {
+       "name": "Ron blanco"
+      },
+      {
+       "name": "Jugo de limón fresco"
+      },
+      {
+       "name": "Azúcar extrafina",
+       "text": "2 cucharas de bar"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "cosmopolitan",
@@ -457,7 +901,52 @@
      "unit": "ml",
      "amount": 30
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Shake everything with ice in a cocktail shaker and strain into a large cocktail glass.",
+     "garnish": "Lime peel (twist).",
+     "note": "The IBA specifies citrus vodka and the Cointreau brand.",
+     "components": [
+      {
+       "name": "Citrus vodka"
+      },
+      {
+       "name": "Cointreau"
+      },
+      {
+       "name": "Fresh lime juice"
+      },
+      {
+       "name": "Cranberry juice"
+      }
+     ],
+     "aliases": [
+      "cosmo"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, Contemporary Classics",
+     "method": "Agita todo con hielo en una coctelera y cuela en una copa de cóctel grande.",
+     "garnish": "Cáscara de limón (twist).",
+     "note": "La IBA especifica vodka cítrico y la marca Cointreau.",
+     "components": [
+      {
+       "name": "Vodka cítrico"
+      },
+      {
+       "name": "Cointreau"
+      },
+      {
+       "name": "Jugo de limón fresco"
+      },
+      {
+       "name": "Jugo de arándano rojo (cranberry)"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "old-fashioned",
@@ -499,7 +988,58 @@
      "unit": "dash",
      "text": "algumas gotas"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, The Unforgettables",
+     "method": "In an old fashioned glass, wet the sugar cube with the bitters and a little water, muddle until dissolved, add ice and the whisky and stir gently.",
+     "garnish": "Orange slice or peel and a cherry.",
+     "note": "The IBA indicates bourbon or rye. The bitters and the water come in dashes, with no volume in ml.",
+     "components": [
+      {
+       "name": "Bourbon or rye"
+      },
+      {
+       "name": "Sugar cube",
+       "text": "1 cube"
+      },
+      {
+       "name": "Angostura bitters",
+       "text": "a few dashes"
+      },
+      {
+       "name": "Water",
+       "text": "a few drops"
+      }
+     ],
+     "aliases": [
+      "oldfashioned"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, The Unforgettables",
+     "method": "En un vaso old fashioned, moja el terrón de azúcar con el bitter y un poco de agua, machaca hasta disolver, agrega hielo y el whisky y mezcla con delicadeza.",
+     "garnish": "Rodaja o cáscara de naranja y una cereza.",
+     "note": "La IBA indica bourbon o rye. El bitter y el agua van en gotas, sin volumen en ml.",
+     "components": [
+      {
+       "name": "Bourbon o rye"
+      },
+      {
+       "name": "Terrón de azúcar",
+       "text": "1 terrón"
+      },
+      {
+       "name": "Angostura bitters",
+       "text": "unas gotas"
+      },
+      {
+       "name": "Agua",
+       "text": "unas gotas"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "dry-martini",
@@ -530,7 +1070,39 @@
      "amount": 10,
      "role": "vermouth-dry"
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, The Unforgettables",
+     "method": "Stir with ice in a mixing glass and strain into a chilled martini glass.",
+     "garnish": "Lemon peel squeezed over the drink, or a green olive if requested.",
+     "components": [
+      {
+       "name": "Gin"
+      },
+      {
+       "name": "Dry vermouth"
+      }
+     ],
+     "aliases": [
+      "martini",
+      "martini dry"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, The Unforgettables",
+     "method": "Mezcla con hielo en un vaso mezclador, revuelve bien y cuela en una copa de martini fría.",
+     "garnish": "Cáscara de limón exprimida sobre la bebida, o aceituna verde si la piden.",
+     "components": [
+      {
+       "name": "Ginebra"
+      },
+      {
+       "name": "Vermut seco"
+      }
+     ]
+    }
+   }
   },
   {
    "id": "whiskey-sour",
@@ -573,7 +1145,54 @@
      "text": "poucas gotas (opcional)",
      "optional": true
     }
-   ]
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, The Unforgettables",
+     "method": "Shake everything with ice in a cocktail shaker and strain into a cobbler glass (or over ice in a glass, if \"on the rocks\").",
+     "garnish": "Half an orange slice and a maraschino cherry.",
+     "note": "If you use egg white, shake harder to build the foam.",
+     "components": [
+      {
+       "name": "Bourbon"
+      },
+      {
+       "name": "Fresh lemon juice"
+      },
+      {
+       "name": "Sugar syrup"
+      },
+      {
+       "name": "Egg white",
+       "text": "a few drops (optional)"
+      }
+     ],
+     "aliases": [
+      "bourbon sour"
+     ]
+    },
+    "es": {
+     "sourceLabel": "IBA, The Unforgettables",
+     "method": "Agita todo con hielo en una coctelera y cuela en una copa cobbler (o en un vaso con hielo, si es \"on the rocks\").",
+     "garnish": "Media rodaja de naranja y una cereza marrasquino.",
+     "note": "Si usas clara de huevo, agita con más fuerza para formar la espuma.",
+     "components": [
+      {
+       "name": "Bourbon"
+      },
+      {
+       "name": "Jugo de limón amarillo fresco"
+      },
+      {
+       "name": "Almíbar (jarabe de azúcar)"
+      },
+      {
+       "name": "Clara de huevo",
+       "text": "unas gotas (opcional)"
+      }
+     ]
+    }
+   }
   }
  ]
 }

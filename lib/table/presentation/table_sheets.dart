@@ -6,6 +6,7 @@ import '../../core/utils/formatters.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../domain/drink_vessel.dart';
 import '../domain/table_scenario.dart';
+import '../../drinks/domain/presentation_label.dart';
 
 /// Details of one record, with the existing edit and delete actions.
 Future<void> showEntryDetailSheet(
@@ -117,7 +118,7 @@ class _EntryDetail extends StatelessWidget {
             Text(
               [
                 kind.label,
-                if (e.presentation != null) e.presentation!,
+                if (e.presentation != null) localizePresentation(e.presentation!),
               ].join(' · '),
               style: AppText.caption,
             ),

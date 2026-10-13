@@ -1,45 +1,87 @@
 import '../../core/utils/formatters.dart';
 import 'catalog_item.dart';
+import '../../l10n/l10n.dart';
 
-/// Ingredient roles a spirit product can fill in a recipe, with the label the
-/// editor shows. A role lets the user pick a brand when registering.
-const Map<String, String> ingredientRoleLabels = {
-  'cachaca': 'Cachaça',
-  'vodka': 'Vodka',
-  'gin': 'Gin',
-  'rum': 'Rum',
-  'tequila': 'Tequila',
-  'whisky': 'Whisky',
-  'orange-liqueur': 'Licor de laranja',
-  'campari': 'Campari',
-  'aperol': 'Aperol',
-  'vermouth-sweet': 'Vermute doce',
-  'vermouth-dry': 'Vermute seco',
-  'sparkling-wine': 'Espumante',
-  'bitters': 'Bitter',
-};
+/// Ingredient roles a spirit product can fill in a recipe. A role lets the
+/// user pick a brand when registering. The codes are stored and never change.
+const ingredientRoles = [
+  'cachaca',
+  'vodka',
+  'gin',
+  'rum',
+  'tequila',
+  'whisky',
+  'orange-liqueur',
+  'campari',
+  'aperol',
+  'vermouth-sweet',
+  'vermouth-dry',
+  'sparkling-wine',
+  'bitters',
+];
+
+/// Name of a role in the language on screen (the code itself when unknown).
+String ingredientRoleLabel(String role) => switch (role) {
+      'cachaca' => tr.roleCachaca,
+      'vodka' => tr.roleVodka,
+      'gin' => tr.roleGin,
+      'rum' => tr.roleRum,
+      'tequila' => tr.roleTequila,
+      'whisky' => tr.roleWhisky,
+      'orange-liqueur' => tr.roleOrangeLiqueur,
+      'campari' => tr.roleCampari,
+      'aperol' => tr.roleAperol,
+      'vermouth-sweet' => tr.roleSweetVermouth,
+      'vermouth-dry' => tr.roleDryVermouth,
+      'sparkling-wine' => tr.roleSparklingWine,
+      'bitters' => tr.roleBitters,
+      _ => role,
+    };
 
 /// Unit of an ingredient amount. Only [ml] is a liquid volume: the others are
 /// never converted into ml, so they never enter the alcohol calculation.
 enum RecipeUnit {
-  ml('ml', 'ml (mililitros)', 'ml'),
-  g('g', 'g (gramas)', 'g'),
-  unit('unit', 'unidade', 'un.'),
-  tsp('tsp', 'colher de chá', 'c. chá'),
-  tbsp('tbsp', 'colher de sopa', 'c. sopa'),
-  leaf('leaf', 'folha', 'folha(s)'),
-  drop('drop', 'gota', 'gota(s)'),
-  toTaste('to_taste', 'a gosto', 'a gosto'),
+  ml('ml'),
+  g('g'),
+  unit('unit'),
+  tsp('tsp'),
+  tbsp('tbsp'),
+  leaf('leaf'),
+  drop('drop'),
+  toTaste('to_taste'),
 
   /// The recipe's own wording (e.g. "6 ramos de hortelã", "completar"),
   /// kept as written when it does not fit the units above.
-  other('other', 'texto da receita', '');
+  other('other');
 
-  const RecipeUnit(this.code, this.label, this.shortLabel);
+  const RecipeUnit(this.code);
 
+  /// Stored value; never translated.
   final String code;
-  final String label;
-  final String shortLabel;
+
+  String get label => switch (this) {
+        RecipeUnit.ml => tr.recipeUnitMl,
+        RecipeUnit.g => tr.recipeUnitG,
+        RecipeUnit.unit => tr.recipeUnitUnit,
+        RecipeUnit.tsp => tr.recipeUnitTsp,
+        RecipeUnit.tbsp => tr.recipeUnitTbsp,
+        RecipeUnit.leaf => tr.recipeUnitLeaf,
+        RecipeUnit.drop => tr.recipeUnitDrop,
+        RecipeUnit.toTaste => tr.recipeUnitToTaste,
+        RecipeUnit.other => tr.recipeUnitOther,
+      };
+
+  String get shortLabel => switch (this) {
+        RecipeUnit.ml => 'ml',
+        RecipeUnit.g => 'g',
+        RecipeUnit.unit => tr.recipeShortUnit,
+        RecipeUnit.tsp => tr.recipeShortTsp,
+        RecipeUnit.tbsp => tr.recipeShortTbsp,
+        RecipeUnit.leaf => tr.recipeShortLeaf,
+        RecipeUnit.drop => tr.recipeShortDrop,
+        RecipeUnit.toTaste => tr.recipeUnitToTaste,
+        RecipeUnit.other => '',
+      };
 
   /// Units the editor offers (the original wording is not selectable).
   static const editable = [ml, g, unit, tsp, tbsp, leaf, drop, toTaste];
@@ -97,11 +139,11 @@ class EntryComponent {
   String get amountLabel {
     switch (unit) {
       case RecipeUnit.toTaste:
-        return 'a gosto';
+        return tr.recipeUnitToTaste;
       case RecipeUnit.other:
-        return amountText ?? 'quantidade não informada';
+        return amountText ?? tr.recipeAmountUnknown;
       default:
-        if (amount == null) return amountText ?? 'quantidade não informada';
+        if (amount == null) return amountText ?? tr.recipeAmountUnknown;
         return '${_trim(amount!)} ${unit.shortLabel}';
     }
   }
@@ -109,9 +151,9 @@ class EntryComponent {
   /// Why the alcohol of this ingredient cannot be counted, or null if it can.
   String? get alcoholGap {
     if (!alcoholic) return null;
-    if (abvPercent == null) return 'teor desconhecido';
-    if (unit != RecipeUnit.ml) return 'quantidade não está em ml';
-    if (amount == null) return 'quantidade desconhecida';
+    if (abvPercent == null) return tr.recipeGapAbv;
+    if (unit != RecipeUnit.ml) return tr.recipeGapNotMl;
+    if (amount == null) return tr.recipeGapAmount;
     return null;
   }
 
@@ -187,26 +229,80 @@ class EntryComponent {
       v == v.roundToDouble() ? v.toStringAsFixed(0) : decimalToInput(v);
 }
 
+/// Editorial translation of a reference recipe into one language. Lists are
+/// aligned with the recipe's components (same order); a null entry keeps the
+/// original wording.
+class RecipeTexts {
+  const RecipeTexts({
+    this.method,
+    this.garnish,
+    this.note,
+    this.componentNames = const [],
+    this.componentTexts = const [],
+  });
+
+  final String? method;
+  final String? garnish;
+  final String? note;
+  final List<String?> componentNames;
+  final List<String?> componentTexts;
+}
+
 /// A reference recipe (e.g. from the IBA). It documents a recipe; it is not a
-/// statement about what any bar served.
+/// statement about what any bar served. Texts are written in Portuguese and
+/// translated through [translations]; the user's own recipes have none, so
+/// they always show exactly what was typed.
 class Recipe {
   const Recipe({
     required this.id,
     required this.name,
-    required this.components,
+    required List<EntryComponent> components,
     this.source,
-    this.method,
-    this.garnish,
-    this.note,
-  });
+    String? method,
+    String? garnish,
+    String? note,
+    this.translations = const {},
+  })  : _components = components,
+        _method = method,
+        _garnish = garnish,
+        _note = note;
 
   final String id;
   final String name;
-  final List<EntryComponent> components;
   final SourceRef? source;
-  final String? method;
-  final String? garnish;
-  final String? note;
+  final Map<String, RecipeTexts> translations;
+  final List<EntryComponent> _components;
+  final String? _method;
+  final String? _garnish;
+  final String? _note;
+
+  RecipeTexts? get _texts => translations[trLanguage];
+
+  /// Components in the language on screen.
+  List<EntryComponent> get components {
+    final t = _texts;
+    if (t == null) return _components;
+    return [
+      for (var i = 0; i < _components.length; i++)
+        _components[i].copyWith(
+          name: i < t.componentNames.length ? t.componentNames[i] : null,
+          amountText: i < t.componentTexts.length && t.componentTexts[i] != null
+              ? () => t.componentTexts[i]
+              : null,
+        ),
+    ];
+  }
+
+  String? get method => _texts?.method ?? _method;
+  String? get garnish => _texts?.garnish ?? _garnish;
+  String? get note => _texts?.note ?? _note;
+
+  /// Component names in every language, for search.
+  List<String> get searchComponents => [
+        for (final c in _components) c.name,
+        for (final t in translations.values)
+          for (final n in t.componentNames) ?n,
+      ];
 }
 
 /// Snapshot of what was registered for a mixed drink. It lives in the record,

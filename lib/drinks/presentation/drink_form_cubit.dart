@@ -10,6 +10,7 @@ import '../domain/drink_category.dart';
 import '../domain/drink_entry.dart';
 import '../domain/price_history.dart';
 import '../domain/recipe.dart';
+import '../../l10n/l10n.dart';
 
 class DrinkFormState {
   const DrinkFormState({
@@ -19,7 +20,7 @@ class DrinkFormState {
     this.abvVariants = const [],
     this.bottles = const [],
     this.suggestion = const PriceSuggestion(),
-    this.suggestionScope = 'neste rolê',
+    this.suggestionAtPlace = false,
     this.advertisedCents,
     this.showErrors = false,
     this.saving = false,
@@ -49,8 +50,9 @@ class DrinkFormState {
   /// average). It only becomes the price when the user confirms it.
   final PriceSuggestion suggestion;
 
-  /// "neste local" or "neste rolê".
-  final String suggestionScope;
+  /// The suggestion comes from records at this place (otherwise, from this
+  /// outing).
+  final bool suggestionAtPlace;
 
   /// Price a menu advertised for this outing-only item. It only becomes the
   /// price when the user taps to confirm it; it is not history.
@@ -83,7 +85,7 @@ class DrinkFormState {
         abvVariants: abvVariants,
         bottles: bottles,
         suggestion: suggestion ?? this.suggestion,
-        suggestionScope: suggestionScope,
+        suggestionAtPlace: suggestionAtPlace,
         advertisedCents: advertisedCents,
         showErrors: showErrors ?? this.showErrors,
         saving: saving ?? this.saving,
@@ -130,7 +132,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
         candidates,
         DrinkFormState(
           draft: draft,
-          suggestionScope: outing.placeId != null ? 'neste local' : 'neste rolê',
+          suggestionAtPlace: outing.placeId != null,
           suggestion: suggestPrice(candidates, _keyOf(draft)),
           advertisedCents: item.advertisedCents,
           presentations: _sizesFor(item).list,
@@ -287,7 +289,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     } on ArgumentError catch (e) {
       return '${e.message}';
     } catch (_) {
-      return 'Não foi possível salvar a receita.';
+      return tr.formSaveRecipeFailed;
     }
   }
 
@@ -310,7 +312,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       if (kDebugMode) debugPrint('[drink form] save failed: $e');
       emit(state.copyWith(
         saving: false,
-        error: 'Não foi possível salvar. Nada foi perdido, tente de novo.',
+        error: tr.formSaveFailed,
       ));
     }
   }
@@ -326,7 +328,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       if (kDebugMode) debugPrint('[drink form] delete failed: $e');
       emit(state.copyWith(
         saving: false,
-        error: 'Não foi possível excluir. Tente de novo.',
+        error: tr.formDeleteFailed,
       ));
     }
   }

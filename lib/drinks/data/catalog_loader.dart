@@ -66,18 +66,46 @@ class CatalogLoader {
     return items;
   }
 
-  static SourceRef? _source(Map<String, dynamic>? s, String? consultedOn) =>
+  static SourceRef? _source(Map<String, dynamic>? s, String? consultedOn,
+          [Map<String, String> labelI18n = const {}]) =>
       s == null
           ? null
           : SourceRef(
               url: s['url'] as String,
               label: s['label'] as String,
               consultedOn: consultedOn,
+              labelI18n: labelI18n,
             );
 
+  // ---- Editorial translations ("i18n" next to each product or recipe) ------
+  //
+  // The files are written in Portuguese. `i18n` holds, per language code, the
+  // editorial texts that were translated (notes, source names, recipe methods
+  // and ingredient names) and extra search names. Manufacturer-declared
+  // ingredient lists and product names are not translated.
+
+  static Map<String, Map<String, dynamic>> _i18n(Map<String, dynamic> j) => {
+        for (final e in ((j['i18n'] as Map?) ?? const {}).entries)
+          e.key as String: Map<String, dynamic>.from(e.value as Map),
+      };
+
+  /// One text field of every language that has it.
+  static Map<String, String> _texts(
+          Map<String, Map<String, dynamic>> i18n, String field) =>
+      {
+        for (final e in i18n.entries)
+          if (e.value[field] is String) e.key: e.value[field] as String,
+      };
+
+  static List<String> _extraAliases(Map<String, Map<String, dynamic>> i18n) => [
+        for (final t in i18n.values)
+          ...((t['aliases'] as List?) ?? const []).cast<String>(),
+      ];
+
   static CatalogItem _product(Map<String, dynamic> j, String? consultedOn) {
-    final abvSource =
-        _source(j['abvSource'] as Map<String, dynamic>?, consultedOn);
+    final abvSource = _source(j['abvSource'] as Map<String, dynamic>?,
+        consultedOn, _texts(_i18n(j), 'abvSourceLabel'));
+    final i18n = _i18n(j);
     final secondaryProduct = j['evidence'] == 'secondary';
     final origin = secondaryProduct
         ? InfoOrigin.secondary
@@ -92,19 +120,29 @@ class CatalogLoader {
       style: j['style'] as String?,
       abvPercent: (j['abv'] as num?)?.toDouble(),
       abvVariants: [
-        for (final v in ((j['abvVariants'] as List?) ?? const []))
+        for (final (i, v) in ((j['abvVariants'] as List?) ?? const []).indexed)
           AbvVariant(
             ((v as Map)['value'] as num).toDouble(),
             v['scope'] as String,
+            scopeI18n: {
+              for (final e in i18n.entries)
+                if (((e.value['abvVariants'] as List?) ?? const []).length > i)
+                  e.key: e.value['abvVariants'][i] as String,
+            },
           ),
       ],
       abvSource: abvSource,
       ingredients: (j['ingredients'] as List?)?.cast<String>(),
       origin: origin,
       note: j['note'] as String?,
-      aliases: ((j['aliases'] as List?) ?? const []).cast<String>(),
+      noteI18n: _texts(i18n, 'note'),
+      aliases: [
+        ...((j['aliases'] as List?) ?? const []).cast<String>(),
+        ..._extraAliases(i18n),
+      ],
       roles: ((j['roles'] as List?) ?? const []).cast<String>(),
-      source: _source(j['source'] as Map<String, dynamic>?, consultedOn),
+      source: _source(j['source'] as Map<String, dynamic>?, consultedOn,
+          _texts(i18n, 'sourceLabel')),
       presentations: [
         for (final p in ((j['presentations'] as List?) ?? const []))
           Presentation.of(
@@ -118,7 +156,9 @@ class CatalogLoader {
 
   static CatalogItem _recipe(Map<String, dynamic> j, String? consultedOn) {
     final id = 'recipe:${j['id']}';
-    final source = _source(j['source'] as Map<String, dynamic>?, consultedOn);
+    final i18n = _i18n(j);
+    final source = _source(j['source'] as Map<String, dynamic>?, consultedOn,
+        _texts(i18n, 'sourceLabel'));
     final components = [
       for (final c in (j['components'] as List)) _component(c as Map<String, dynamic>),
     ];
@@ -131,7 +171,11 @@ class CatalogLoader {
       presentations: const [],
       origin: InfoOrigin.recipe,
       note: j['note'] as String?,
-      aliases: ((j['aliases'] as List?) ?? const []).cast<String>(),
+      noteI18n: _texts(i18n, 'note'),
+      aliases: [
+        ...((j['aliases'] as List?) ?? const []).cast<String>(),
+        ..._extraAliases(i18n),
+      ],
       source: source,
       recipe: Recipe(
         id: id,
@@ -141,6 +185,22 @@ class CatalogLoader {
         method: method,
         garnish: garnish,
         note: j['note'] as String?,
+        translations: {
+          for (final e in i18n.entries)
+            e.key: RecipeTexts(
+              method: e.value['method'] as String?,
+              garnish: e.value['garnish'] as String?,
+              note: e.value['note'] as String?,
+              componentNames: [
+                for (final c in ((e.value['components'] as List?) ?? const []))
+                  (c as Map)['name'] as String?,
+              ],
+              componentTexts: [
+                for (final c in ((e.value['components'] as List?) ?? const []))
+                  (c as Map)['text'] as String?,
+              ],
+            ),
+        },
       ),
     );
   }

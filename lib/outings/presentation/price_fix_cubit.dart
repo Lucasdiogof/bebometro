@@ -7,6 +7,7 @@ import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/domain/price_history.dart';
 import '../../l10n/l10n.dart';
 import '../../core/utils/formatters.dart';
+import '../../drinks/domain/presentation_label.dart';
 
 /// Records that are the same drink and size, listed together.
 class PriceFixGroup {
@@ -113,7 +114,9 @@ class PriceFixCubit extends Cubit<PriceFixState> {
   }
 
   static String _label(DrinkEntry e) {
-    final size = e.presentation ??
+    final size = (e.presentation == null
+            ? null
+            : localizePresentation(e.presentation!)) ??
         (e.containerMl == null ? null : formatMl(e.containerMl!));
     return [e.name, ?size, if (e.isShared) tr.drinkShared].join(' · ');
   }

@@ -1,5 +1,6 @@
 import 'catalog_item.dart';
 import 'drink_entry.dart';
+import '../../core/utils/formatters.dart';
 
 /// What is needed to decide that two records are "the same drink in the same
 /// size": product (or name), package volume, presentation and whether it was
@@ -137,8 +138,10 @@ List<PriceGroupStats> priceStatsFor(List<DrinkEntry> entries) {
     g.sort((a, b) => a.consumedAt.compareTo(b.consumedAt));
     final prices = [for (final e in g) _packageCents(e)!];
     final last = g.last;
-    final size = last.presentation ??
-        (last.containerMl == null ? null : '${last.containerMl} ml');
+    final size = (last.presentation == null
+            ? null
+            : localizePresentation(last.presentation!)) ??
+        (last.containerMl == null ? null : formatMl(last.containerMl!));
     result.add(PriceGroupStats(
       label: [last.name, ?size].join(' · '),
       count: g.length,

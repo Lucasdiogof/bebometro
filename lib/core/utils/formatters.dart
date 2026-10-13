@@ -159,7 +159,7 @@ const _accents = {
   'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i',
   'ó': 'o', 'ò': 'o', 'ô': 'o', 'õ': 'o', 'ö': 'o',
   'ú': 'u', 'ù': 'u', 'û': 'u', 'ü': 'u',
-  'ç': 'c',
+  'ç': 'c', 'ñ': 'n',
 };
 
 /// Lower-cases and strips accents so searches match "cachaça" with "cachaca".
