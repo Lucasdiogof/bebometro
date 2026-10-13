@@ -1659,5 +1659,330 @@
   },
   "recipeEditorRole": "Tipo (para escolher a marca ao registrar)",
   "recipeEditorNoRole": "Sem tipo",
-  "recipeEditorRemove": "Remover"
+  "recipeEditorRemove": "Remover",
+  "scanLabelPhotoGone": "A foto desta leitura não está mais disponível neste aparelho. O texto foi mantido: tire outra foto ou continue sem ela.",
+  "scanPhotoSaveFailed": "Não foi possível guardar a foto no aparelho.",
+  "scanRotateFailed": "Não foi possível girar a imagem.",
+  "scanPhotoUnavailableToRead": "A foto não está disponível para leitura. Tire outra.",
+  "scanNoTextFound": "Nenhum texto foi encontrado. Tente outra foto mais de perto, com boa luz, ou digite o texto.",
+  "scanLabelTip": "Enquadre o rótulo inteiro, de frente, com boa luz e sem reflexo. Volume e teor costumam ficar em outro lado da embalagem: fotografe esse lado ou complete na revisão. Você confere tudo antes de salvar.",
+  "scanLabelEnded": "Este rolê já foi encerrado. O que você ler fica salvo nele.",
+  "scanWebPhotoSession": "No navegador a foto só fica guardada durante esta sessão.",
+  "scanPhoto": "Foto",
+  "scanTakePhoto": "Tirar foto",
+  "scanChooseGallery": "Escolher da galeria",
+  "scanRotateLeft": "Girar para a esquerda",
+  "scanRotateRight": "Girar para a direita",
+  "scanNewPhoto": "Nova foto",
+  "scanReplacePhoto": "Trocar",
+  "scanDiscardReading": "Descartar leitura",
+  "scanReadingOnDevice": "Lendo o texto da foto neste aparelho…",
+  "scanCancelReading": "Cancelar leitura",
+  "scanReadAgain": "Ler de novo",
+  "scanOcrUnavailable": "A leitura automática não está disponível aqui (só no app para Android e iOS). Veja a foto e digite ou cole o texto do rótulo, ou preencha direto.",
+  "scanLabelText": "Texto do rótulo",
+  "scanTextHintCanRead": "O texto lido aparece aqui. Você pode corrigir.",
+  "scanTextHintManual": "Digite ou cole o texto do rótulo (opcional)",
+  "scanInterpret": "Interpretar texto",
+  "scanFillManually": "Preencher manualmente",
+  "photoUnavailable": "Foto indisponível agora: ainda não enviada pelo outro aparelho, ou sem conexão. O registro continua salvo.",
+  "photoDelete": "Excluir foto",
+  "photoDeleteTitle": "Excluir esta foto?",
+  "photoDeleteBody": "Só a foto sai. As bebidas e os dados que você confirmou continuam no rolê.",
+  "captureCameraUnavailable": "A câmera não está disponível aqui. Escolha uma foto da galeria.",
+  "captureGalleryUnavailable": "A galeria não está disponível aqui.",
+  "capturePermissionCamera": "Sem permissão para usar a câmera. Libere nas configurações do aparelho ou escolha outra opção.",
+  "capturePermissionGallery": "Sem permissão para usar a galeria. Libere nas configurações do aparelho ou escolha outra opção.",
+  "captureOpenCameraFailed": "Não foi possível abrir a câmera.",
+  "captureOpenGalleryFailed": "Não foi possível abrir a galeria.",
+  "captureFailed": "Não foi possível abrir a captura de imagem.",
+  "captureUnreadable": "Não foi possível ler essa imagem.",
+  "captureTooBig": "A imagem é muito grande. Tente uma foto menor.",
+  "captureNotImage": "Esse arquivo não parece ser uma imagem válida.",
+  "ocrUnavailable": "A leitura automática não está disponível neste dispositivo.",
+  "ocrReadFailed": "Não foi possível ler o texto desta foto.",
+  "matchOtherCategory": "Categoria diferente (catálogo: {category})",
+  "@matchOtherCategory": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "matchSameSize": "Mesmo tamanho ({size})",
+  "@matchSameSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "matchOtherSize": "Outro tamanho (catálogo: {sizes})",
+  "@matchOtherSize": {
+    "placeholders": {
+      "sizes": {
+        "type": "String"
+      }
+    }
+  },
+  "matchSameAbv": "Mesmo teor ({abv})",
+  "@matchSameAbv": {
+    "placeholders": {
+      "abv": {
+        "type": "String"
+      }
+    }
+  },
+  "matchOtherAbv": "Teor diferente (catálogo: {catalog}, seu: {yours})",
+  "@matchOtherAbv": {
+    "placeholders": {
+      "catalog": {
+        "type": "String"
+      },
+      "yours": {
+        "type": "String"
+      }
+    }
+  },
+  "matchAbvVaries": "O teor do catálogo varia por fonte",
+  "matchNoAbv": "Catálogo sem teor para comparar",
+  "matchOtherBrand": "Outra marca ({brand})",
+  "@matchOtherBrand": {
+    "placeholders": {
+      "brand": {
+        "type": "String"
+      }
+    }
+  },
+  "matchRecipe": "Receita de referência: o drink servido pode ser diferente",
+  "matchSimilar": "Parecida pelo nome: confirme se é o mesmo produto",
+  "parseManyVolumes": "Mais de um volume no texto ({list}). Escolha o da embalagem.",
+  "@parseManyVolumes": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "parseManyAbvs": "Mais de um teor no texto ({list}). Confira no rótulo.",
+  "@parseManyAbvs": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "parseCheckName": "Confira o nome e a marca. Toque nas sugestões para trocar.",
+  "menuNoteColumns": "O cardápio parece ter {count} colunas. Confira se cada preço ficou no item certo.",
+  "@menuNoteColumns": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "menuNoteOrphans": "{count, plural, =1{1 preço sem item claro foi ignorado. Adicione o item manualmente se precisar.} other{{count} preços sem item claro foram ignorados. Adicione o item manualmente se precisar.}}",
+  "@menuNoteOrphans": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "menuNoteNone": "Nenhum item foi identificado. Cole ou digite o texto, ou adicione os itens manualmente.",
+  "scanMenuReviewTitle": "Itens do cardápio",
+  "scanMenuLostPhotos": "{count, plural, =1{Uma foto desta leitura não está mais disponível. Os itens dela foram mantidos para você conferir.} other{{count} fotos desta leitura não estão mais disponíveis. Os itens delas foram mantidos para você conferir.}}",
+  "@scanMenuLostPhotos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanMenuNoItemsRead": "Nenhum item foi identificado. Gire a foto, tente de perto ou cole o texto do cardápio.",
+  "scanMenuNoItems": "Nenhum item foi identificado.",
+  "scanMenuNoneSelected": "Nenhum item selecionado.",
+  "scanMenuUnnamed": "Há item sem nome. Corrija ou descarte.",
+  "scanMenuNeedType": "Escolha o tipo dos itens marcados com \"Tipo?\".",
+  "scanMenuSaveFailed": "Não foi possível salvar. Seus itens continuam aqui.",
+  "scanMenuDiscardTitle": "Descartar esta leitura?",
+  "scanMenuDiscardBody": "As fotos e os itens ainda não confirmados serão apagados.",
+  "scanMenuTip": "Fotografe uma página por vez, de frente e com boa luz, sem cortar os preços. Pode adicionar várias fotos. Você confere e corrige cada item antes de salvar.",
+  "scanMenuEnded": "Este rolê já foi encerrado. Os itens ficam salvos nele.",
+  "scanMenuWebPhotos": "No navegador as fotos só ficam guardadas durante esta sessão.",
+  "scanMenuPhotos": "Fotos ({count})",
+  "@scanMenuPhotos": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "scanMenuPhotoN": "Foto {number}",
+  "@scanMenuPhotoN": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "scanMenuRead": "Lida",
+  "scanMenuUnread": "Ainda não lida",
+  "scanRemovePhoto": "Remover foto",
+  "scanAnotherPhoto": "Mais uma foto",
+  "scanMenuReadingMany": "Lendo o texto das fotos neste aparelho…",
+  "scanMenuSeeRead": "Ver itens lidos",
+  "scanMenuOcrUnavailable": "A leitura automática não está disponível aqui (só no app para Android e iOS). Veja as fotos e digite ou cole o texto do cardápio, ou adicione os itens à mão.",
+  "scanMenuPastedSection": "Texto do cardápio (opcional)",
+  "scanMenuPastedHint": "Um item por linha, com o preço na mesma linha ou na seguinte. Ex.: Caipirinha R$ 18,00",
+  "scanMenuAddManual": "Adicionar item à mão",
+  "scanMenuSeeCount": "{count, plural, =1{Ver 1 item} other{Ver {count} itens}}",
+  "@scanMenuSeeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanMenuReviewIntro": "Marque os itens que quer deixar disponíveis neste rolê. Nada é registrado como consumo agora: você escolhe a bebida e confirma o preço quando for pedir.",
+  "scanMenuPhotosAndReading": "Fotos e leitura",
+  "scanMenuAddItem": "Adicionar item",
+  "scanMenuSave": "{count, plural, =1{Salvar 1 item neste rolê} other{Salvar {count} itens neste rolê}}",
+  "@scanMenuSave": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanMenuNoName": "(sem nome)",
+  "scanMenuSize": "Tamanho no cardápio: {size}",
+  "@scanMenuSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "scanMenuIngredientsCited": "Ingredientes citados: {list}",
+  "@scanMenuIngredientsCited": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "scanMenuEditItem": "Editar item",
+  "scanMenuTypeHint": "Tipo?",
+  "scanMenuDuplicate": "Repetido em outra foto",
+  "scanMenuPromo": "Possível promoção: confirme o valor",
+  "scanMenuPriceOnMenu": "{price} no cardápio",
+  "@scanMenuPriceOnMenu": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "scanMenuNoPriceRead": "Sem preço lido",
+  "scanMenuPriceUnsure": "Não deu para ter certeza do preço. Escolha o certo ou deixe sem preço:",
+  "scanMenuChangePrice": "Trocar preço",
+  "scanMenuNewItem": "Novo item",
+  "scanMenuName": "Nome",
+  "scanMenuDescription": "Descrição (opcional)",
+  "scanMenuSizeOptional": "Tamanho (opcional)",
+  "scanMenuPriceOptional": "Preço (opcional)",
+  "scanMenuCitedOptional": "Ingredientes citados (opcional)",
+  "scanMenuCitedHelper": "Separe por vírgula. Sem quantidades.",
+  "scanMenuNeedName": "Dê um nome ao item.",
+  "scanMenuInvalidSize": "Tamanho inválido.",
+  "scanMenuInvalidPrice": "Preço inválido.",
+  "commonApply": "Aplicar",
+  "originManual": "Cadastro neste rolê",
+  "originPhotoLabel": "Foto do rótulo",
+  "originMenu": "Foto do cardápio",
+  "outingReviewEditTitle": "Editar bebida do rolê",
+  "outingReviewTitle": "Bebida deste rolê",
+  "outingReviewIsolation": "Esta bebida existe só neste rolê. Ela não entra no catálogo, nem em Minhas bebidas, nem em outros rolês.",
+  "outingReviewEnded": "Este rolê já foi encerrado. O item fica salvo nele.",
+  "outingReviewDrinkSection": "Bebida",
+  "outingReviewNeedName": "Dê um nome para a bebida.",
+  "outingReviewNeedType": "Escolha o tipo da bebida.",
+  "outingReviewVolumePositive": "O volume precisa ser maior que zero.",
+  "outingReviewAbvRange": "O teor vai de 0 a 100%.",
+  "outingReviewOtherLines": "Outras linhas lidas (toque para usar):",
+  "outingReviewPickType": "Escolha o tipo da bebida",
+  "outingReviewTypeUnknown": "Tipo não identificado: escolha um.",
+  "outingReviewDescription": "Descrição do cardápio (opcional)",
+  "outingReviewPackageVolume": "Volume da embalagem (opcional)",
+  "outingReviewVolumeHelper": "É o tamanho do produto, não o quanto você bebeu. Em branco = desconhecido.",
+  "outingReviewAbvSource": "Origem: {source}",
+  "@outingReviewAbvSource": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "outingReviewIngredientsIntro": "Só o que o cardápio ou você informaram. As quantidades ficam desconhecidas até você completar ao registrar; o álcool só é calculado com volume e teor conhecidos.",
+  "outingReviewAlcoholChip": "Álcool",
+  "outingReviewDeclaredOptional": "Ingredientes declarados (opcional)",
+  "outingReviewDeclaredHelper": "Separe por vírgula. Só o que está escrito.",
+  "outingReviewAdvertisedSection": "Preço anunciado",
+  "outingReviewMenuPriceOptional": "Preço do cardápio (opcional)",
+  "outingReviewMenuPriceHelper": "Só uma sugestão: ao registrar você confirma o que pagou. Valores em reais (R$).",
+  "outingReviewSimilar": "Parecidas no catálogo",
+  "outingReviewSearch": "Buscar",
+  "outingReviewSimilarNote": "Opcional. Escolher uma é só uma referência: o produto do catálogo nunca é alterado e nada é ligado sozinho.",
+  "outingReviewNothingSimilar": "Nada parecido encontrado. Este item fica só no rolê.",
+  "outingReviewReferenceChosen": "Referência escolhida",
+  "outingReviewUseReference": "Usar como referência",
+  "outingReviewFillEmpty": "Preencher campos vazios",
+  "outingReviewCopyIngredients": "Copiar ingredientes (sem quantidades)",
+  "outingReviewOriginSection": "Origem dos dados",
+  "outingReviewOriginManual": "Preenchido por você.",
+  "outingReviewOriginPhoto": "Lido da foto e conferido por você. Leitura automática pode errar: confira cada campo.",
+  "outingReviewReferenceNote": "Com referência do catálogo (não é o mesmo registro).",
+  "outingReviewSourceText": "Texto lido na foto",
+  "outingReviewConfirmContinue": "Confirmar e continuar",
+  "outingReviewSaveOnly": "Salvar só neste rolê",
+  "outingDrinksSectionTitle": "Bebidas deste rolê",
+  "outingDrinksTapToLog": "Só existem neste rolê. Toque para registrar uma.",
+  "outingDrinksRemoveTitle": "Tirar da lista do rolê?",
+  "outingDrinksRemoveBody": "Ela sai de \"Bebidas deste rolê\". Os registros que você já fez continuam no histórico.",
+  "outingDrinksRemove": "Tirar",
+  "outingDrinksMoreActions": "Mais ações",
+  "outingDrinksRemoveFromList": "Tirar da lista",
+  "outingDrinksMenuPrice": "cardápio {price}",
+  "@outingDrinksMenuPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "outingScanUnfinishedMenu": "Leitura de cardápio não concluída",
+  "outingScanUnfinishedLabel": "Leitura de rótulo não concluída",
+  "outingScanUnfinishedNote": "Ela continua ligada a este rolê. Se você concluir agora, o resultado fica salvo nele, não em outro.",
+  "outingScanOnlyHere": "Existem só neste rolê.",
+  "outingScanPhotosTitle": "Fotos do rolê",
+  "outingScanAllUploaded": "Fotos guardadas também na nuvem, em arquivo privado.",
+  "outingScanPending": "{count, plural, =1{1 foto ainda só neste aparelho; o envio é tentado de novo sozinho.} other{{count} fotos ainda só neste aparelho; o envio é tentado de novo sozinho.}}",
+  "@outingScanPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "outingScanLocalOnly": "{count, plural, =1{1 foto só neste aparelho.} other{{count} fotos só neste aparelho.}}",
+  "@outingScanLocalOnly": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoKindLabel": "Rótulo",
+  "photoKindMenu": "Cardápio"
 }

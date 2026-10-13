@@ -5,6 +5,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 
 import '../domain/ocr_models.dart';
 import 'text_recognizer.dart';
+import '../../l10n/l10n.dart';
 
 TextRecognizer createTextRecognizer() => _MlKitRecognizer();
 
@@ -18,8 +19,7 @@ class _MlKitRecognizer implements TextRecognizer {
   @override
   Future<OcrResult> recognizeFile(String path) async {
     if (!isSupported) {
-      throw const OcrFailure(
-          'A leitura automática não está disponível neste dispositivo.');
+      throw OcrFailure(tr.ocrUnavailable);
     }
     final recognizer =
         mlkit.TextRecognizer(script: mlkit.TextRecognitionScript.latin);
@@ -42,7 +42,7 @@ class _MlKitRecognizer implements TextRecognizer {
       }
       return OcrResult(lines);
     } catch (_) {
-      throw const OcrFailure('Não foi possível ler o texto desta foto.');
+      throw OcrFailure(tr.ocrReadFailed);
     } finally {
       await recognizer.close();
     }

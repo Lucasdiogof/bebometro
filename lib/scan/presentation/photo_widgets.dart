@@ -6,6 +6,7 @@ import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../outing_drinks/data/outing_drink_repository.dart';
+import '../../l10n/l10n.dart';
 
 /// Square thumbnail of an outing photo. When the file is gone (or the web
 /// session ended) it shows a quiet placeholder: the text history is intact.
@@ -26,7 +27,7 @@ class PhotoThumb extends StatelessWidget {
     final repo = getIt<OutingDrinkRepository>();
     return Semantics(
       button: onTap != null,
-      label: 'Foto',
+      label: tr.scanPhoto,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.sm),
@@ -84,12 +85,10 @@ Future<void> showPhotoViewer(
             builder: (context, snap) {
               final bytes = snap.data;
               if (bytes == null) {
-                return const Center(
-                  child: Text(
-                      'Foto indisponível agora: ainda não enviada pelo outro '
-                      'aparelho, ou sem conexão. O registro continua salvo.',
+                return Center(
+                  child: Text(tr.photoUnavailable,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: AppColors.textMuted)),
+                      style: const TextStyle(color: AppColors.textMuted)),
                 );
               }
               return InteractiveViewer(
@@ -105,23 +104,22 @@ Future<void> showPhotoViewer(
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               if (onDelete != null)
                 IconButton(
-                  tooltip: 'Excluir foto',
+                  tooltip: tr.photoDelete,
                   onPressed: () async {
                     final ok = await showDialog<bool>(
                       context: ctx,
                       builder: (c) => AlertDialog(
-                        title: const Text('Excluir esta foto?'),
-                        content: const Text(
-                            'Só a foto sai. As bebidas e os dados que você '
-                            'confirmou continuam no rolê.'),
+                        title: Text(tr.photoDeleteTitle),
+                        content: Text(tr.photoDeleteBody),
                         actions: [
                           TextButton(
                               onPressed: () => Navigator.pop(c, false),
-                              child: const Text('Cancelar')),
+                              child: Text(tr.commonCancel)),
                           TextButton(
                               onPressed: () => Navigator.pop(c, true),
-                              child: const Text('Excluir',
-                                  style: TextStyle(color: AppColors.danger))),
+                              child: Text(tr.commonDelete,
+                                  style:
+                                      const TextStyle(color: AppColors.danger))),
                         ],
                       ),
                     );
@@ -134,7 +132,7 @@ Future<void> showPhotoViewer(
                       color: AppColors.danger),
                 ),
               IconButton(
-                tooltip: 'Fechar',
+                tooltip: tr.commonClose,
                 onPressed: () => Navigator.pop(ctx),
                 icon: const Icon(Icons.close_rounded, color: Colors.white),
               ),

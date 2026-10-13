@@ -5,6 +5,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
+import '../../core/widgets/money_field.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/abv_source.dart';
 import '../../drinks/domain/catalog_item.dart';
@@ -16,6 +17,7 @@ import '../../scan/domain/menu_parser.dart';
 import '../../scan/presentation/photo_widgets.dart';
 import '../data/outing_drink_repository.dart';
 import '../domain/outing_drink.dart';
+import '../../l10n/l10n.dart';
 
 /// Values the review screen starts from (what was read, or nothing for a
 /// manual sign-up). Anything null stays unknown and empty on screen.
@@ -248,20 +250,22 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
   }
 
   String? _validate() {
-    if (_name.text.trim().isEmpty) return 'Dê um nome para a bebida.';
-    if (_category == null) return 'Escolha o tipo da bebida.';
+    if (_name.text.trim().isEmpty) return tr.outingReviewNeedName;
+    if (_category == null) return tr.outingReviewNeedType;
     final vol = _volume.text.trim();
     if (vol.isNotEmpty && (parseInteger(vol) ?? 0) <= 0) {
-      return 'O volume precisa ser maior que zero.';
+      return tr.outingReviewVolumePositive;
     }
     final abv = _abv.text.trim();
     if (abv.isNotEmpty) {
+      final problem = numberInputError(abv);
+      if (problem != null) return problem;
       final v = parseDecimal(abv);
-      if (v == null || v < 0 || v > 100) return 'O teor vai de 0 a 100%.';
+      if (v == null || v < 0 || v > 100) return tr.outingReviewAbvRange;
     }
     final price = _price.text.trim();
     if (price.isNotEmpty && parseCents(price) == null) {
-      return 'Preço inválido.';
+      return numberInputError(price) ?? tr.scanMenuInvalidPrice;
     }
     return null;
   }
@@ -330,7 +334,7 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _saving = false);
-      showToast(context, 'Não foi possível salvar. Seus dados continuam aqui.');
+      showToast(context, tr.customSaveFailed);
     }
   }
 
@@ -338,16 +342,16 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
     final leave = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Descartar alterações?'),
-        content: const Text('O que você preencheu aqui será perdido.'),
+        title: Text(tr.entryDiscardTitle),
+        content: Text(tr.entryDiscardBody),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Continuar editando')),
+              child: Text(tr.entryKeepEditing)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Descartar',
-                  style: TextStyle(color: AppColors.danger))),
+              child: Text(tr.entryDiscard,
+                  style: const TextStyle(color: AppColors.danger))),
         ],
       ),
     );
@@ -369,7 +373,8 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(editing ? 'Editar bebida do rolê' : 'Bebida deste rolê'),
+          title: Text(
+              editing ? tr.outingReviewEditTitle : tr.outingReviewTitle),
         ),
         body: Column(
           children: [
@@ -379,21 +384,17 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                 padding: const EdgeInsets.fromLTRB(
                     AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
                 children: [
-                  const Text(
-                    'Esta bebida existe só neste rolê. Ela não entra no '
-                    'catálogo, nem em Minhas bebidas, nem em outros rolês.',
-                    style: AppText.caption,
-                  ),
+                  Text(tr.outingReviewIsolation, style: AppText.caption),
                   if (ended) ...[
                     const SizedBox(height: AppSpace.sm),
-                    const InfoPill(
-                      'Este rolê já foi encerrado. O item fica salvo nele.',
+                    InfoPill(
+                      tr.outingReviewEnded,
                       icon: Icons.info_outline_rounded,
                       warning: true,
                     ),
                   ],
                   if (_photoIds.isNotEmpty) ...[
-                    const SectionTitle('Foto'),
+                    SectionTitle(tr.scanPhoto),
                     SizedBox(
                       height: 88,
                       child: ListView(
@@ -422,23 +423,22 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                             icon: Icons.help_outline_rounded, warning: true),
                       ),
                   ],
-                  const SectionTitle('Bebida'),
+                  SectionTitle(tr.outingReviewDrinkSection),
                   TextField(
                     controller: _name,
                     textCapitalization: TextCapitalization.sentences,
                     textInputAction: TextInputAction.next,
                     onChanged: (_) => _touch(),
                     decoration: InputDecoration(
-                      labelText: 'Nome da bebida',
+                      labelText: tr.customName,
                       errorText: _showErrors && _name.text.trim().isEmpty
-                          ? 'Dê um nome para a bebida'
+                          ? tr.customNameRequired
                           : null,
                     ),
                   ),
                   if (widget.prefill.nameCandidates.length > 1) ...[
                     const SizedBox(height: AppSpace.sm),
-                    const Text('Outras linhas lidas (toque para usar):',
-                        style: AppText.caption),
+                    Text(tr.outingReviewOtherLines, style: AppText.caption),
                     const SizedBox(height: AppSpace.xs),
                     Wrap(
                       spacing: AppSpace.sm,
@@ -473,15 +473,16 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                     ],
                   ),
                   if (_showErrors && _category == null)
-                    const Padding(
-                      padding: EdgeInsets.only(top: AppSpace.xs),
-                      child: Text('Escolha o tipo da bebida',
-                          style: TextStyle(color: AppColors.danger, fontSize: 12)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: AppSpace.xs),
+                      child: Text(tr.outingReviewPickType,
+                          style: const TextStyle(
+                              color: AppColors.danger, fontSize: 12)),
                     )
                   else if (_category == null)
-                    const Padding(
-                      padding: EdgeInsets.only(top: AppSpace.xs),
-                      child: Text('Tipo não identificado: escolha um.',
+                    Padding(
+                      padding: const EdgeInsets.only(top: AppSpace.xs),
+                      child: Text(tr.outingReviewTypeUnknown,
                           style: AppText.caption),
                     ),
                   const SizedBox(height: AppSpace.md),
@@ -490,8 +491,7 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
                     onChanged: (_) => _touch(),
-                    decoration:
-                        const InputDecoration(labelText: 'Marca (opcional)'),
+                    decoration: InputDecoration(labelText: tr.customBrand),
                   ),
                   const SizedBox(height: AppSpace.md),
                   TextField(
@@ -499,8 +499,7 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                     textCapitalization: TextCapitalization.sentences,
                     textInputAction: TextInputAction.next,
                     onChanged: (_) => _touch(),
-                    decoration:
-                        const InputDecoration(labelText: 'Estilo (opcional)'),
+                    decoration: InputDecoration(labelText: tr.customStyle),
                   ),
                   if (_origin == OutingDrinkOrigin.menu ||
                       _description.text.isNotEmpty) ...[
@@ -511,21 +510,19 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                       maxLines: 3,
                       textCapitalization: TextCapitalization.sentences,
                       onChanged: (_) => _touch(),
-                      decoration: const InputDecoration(
-                          labelText: 'Descrição do cardápio (opcional)'),
+                      decoration: InputDecoration(
+                          labelText: tr.outingReviewDescription),
                     ),
                   ],
-                  const SectionTitle('Tamanho e teor'),
+                  SectionTitle(tr.customSizeAndAbv),
                   TextField(
                     controller: _volume,
                     keyboardType: TextInputType.number,
                     onChanged: (_) => _touch(),
-                    decoration: const InputDecoration(
-                      labelText: 'Volume da embalagem (opcional)',
+                    decoration: InputDecoration(
+                      labelText: tr.outingReviewPackageVolume,
                       suffixText: 'ml',
-                      helperText:
-                          'É o tamanho do produto, não o quanto você bebeu. '
-                          'Em branco = desconhecido.',
+                      helperText: tr.outingReviewVolumeHelper,
                       helperMaxLines: 2,
                     ),
                   ),
@@ -540,23 +537,22 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                         _dirty = true;
                       }),
                       decoration: InputDecoration(
-                        labelText: 'Teor alcoólico (opcional)',
+                        labelText: tr.entryAbvOptional,
                         suffixText: '% vol.',
+                        errorText: numberInputError(_abv.text),
+                        errorMaxLines: 3,
                         helperText: _abv.text.trim().isEmpty
-                            ? 'Em branco = desconhecido, não conta como zero.'
-                            : 'Origem: ${(_abvSource ?? AbvSource.typed).label}',
+                            ? tr.customAbvHelper
+                            : tr.outingReviewAbvSource(
+                                (_abvSource ?? AbvSource.typed).label),
                         helperMaxLines: 2,
                       ),
                     ),
                   ],
                   if (cocktail) ...[
-                    const SectionTitle('Ingredientes'),
-                    const Text(
-                      'Só o que o cardápio ou você informaram. As quantidades '
-                      'ficam desconhecidas até você completar ao registrar; '
-                      'o álcool só é calculado com volume e teor conhecidos.',
-                      style: AppText.caption,
-                    ),
+                    SectionTitle(tr.recipeEditorIngredients),
+                    Text(tr.outingReviewIngredientsIntro,
+                        style: AppText.caption),
                     const SizedBox(height: AppSpace.sm),
                     for (var i = 0; i < _rows.length; i++)
                       Padding(
@@ -566,13 +562,13 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                             child: TextField(
                               controller: _rows[i].name,
                               onChanged: (_) => _touch(),
-                              decoration:
-                                  const InputDecoration(labelText: 'Ingrediente'),
+                              decoration: InputDecoration(
+                                  labelText: tr.entryIngredientField),
                             ),
                           ),
                           const SizedBox(width: AppSpace.sm),
                           FilterChip(
-                            label: const Text('Álcool'),
+                            label: Text(tr.outingReviewAlcoholChip),
                             selected: _rows[i].alcoholic,
                             showCheckmark: false,
                             onSelected: (v) => setState(() {
@@ -581,7 +577,7 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                             }),
                           ),
                           IconButton(
-                            tooltip: 'Remover ingrediente',
+                            tooltip: tr.entryRemoveIngredient,
                             onPressed: () => setState(() {
                               _rows.removeAt(i).name.dispose();
                               _dirty = true;
@@ -599,7 +595,7 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                           _dirty = true;
                         }),
                         icon: const Icon(Icons.add_rounded),
-                        label: const Text('Adicionar ingrediente'),
+                        label: Text(tr.entryAddIngredient),
                       ),
                     ),
                   ] else ...[
@@ -610,43 +606,32 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                       maxLines: 3,
                       textCapitalization: TextCapitalization.sentences,
                       onChanged: (_) => _touch(),
-                      decoration: const InputDecoration(
-                        labelText: 'Ingredientes declarados (opcional)',
-                        helperText: 'Separe por vírgula. Só o que está escrito.',
+                      decoration: InputDecoration(
+                        labelText: tr.outingReviewDeclaredOptional,
+                        helperText: tr.outingReviewDeclaredHelper,
                         helperMaxLines: 2,
                       ),
                     ),
                   ],
                   if (_origin == OutingDrinkOrigin.menu ||
                       _existing?.advertisedCents != null) ...[
-                    const SectionTitle('Preço anunciado'),
-                    TextField(
+                    SectionTitle(tr.outingReviewAdvertisedSection),
+                    MoneyField(
                       controller: _price,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
+                      label: tr.outingReviewMenuPriceOptional,
+                      helper: tr.outingReviewMenuPriceHelper,
                       onChanged: (_) => _touch(),
-                      decoration: const InputDecoration(
-                        labelText: 'Preço do cardápio (opcional)',
-                        prefixText: r'R$ ',
-                        helperText:
-                            'Só uma sugestão: ao registrar você confirma o que pagou.',
-                        helperMaxLines: 2,
-                      ),
                     ),
                   ],
-                  SectionTitle('Parecidas no catálogo',
+                  SectionTitle(tr.outingReviewSimilar,
                       trailing: TextButton(
                         onPressed: _name.text.trim().isEmpty ? null : _search,
-                        child: const Text('Buscar'),
+                        child: Text(tr.outingReviewSearch),
                       )),
-                  const Text(
-                    'Opcional. Escolher uma é só uma referência: o produto do '
-                    'catálogo nunca é alterado e nada é ligado sozinho.',
-                    style: AppText.caption,
-                  ),
+                  Text(tr.outingReviewSimilarNote, style: AppText.caption),
                   const SizedBox(height: AppSpace.sm),
                   if (_searched && _matches.isEmpty)
-                    const Text('Nada parecido encontrado. Este item fica só no rolê.',
+                    Text(tr.outingReviewNothingSimilar,
                         style: AppText.caption),
                   for (final m in _matches)
                     Padding(
@@ -689,25 +674,24 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                                   _dirty = true;
                                 }),
                                 child: Text(_referenceId == m.item.id
-                                    ? 'Referência escolhida'
-                                    : 'Usar como referência'),
+                                    ? tr.outingReviewReferenceChosen
+                                    : tr.outingReviewUseReference),
                               ),
                               TextButton(
                                 onPressed: () => _fillEmptyFrom(m.item),
-                                child: const Text('Preencher campos vazios'),
+                                child: Text(tr.outingReviewFillEmpty),
                               ),
                               if (m.item.isRecipe)
                                 TextButton(
                                   onPressed: () => _fillIngredientsFrom(m.item),
-                                  child: const Text(
-                                      'Copiar ingredientes (sem quantidades)'),
+                                  child: Text(tr.outingReviewCopyIngredients),
                                 ),
                             ]),
                           ],
                         ),
                       ),
                     ),
-                  const SectionTitle('Origem dos dados'),
+                  SectionTitle(tr.outingReviewOriginSection),
                   SurfaceCard(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -716,16 +700,14 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                         const SizedBox(height: AppSpace.xs),
                         Text(
                           _origin == OutingDrinkOrigin.manual
-                              ? 'Preenchido por você.'
-                              : 'Lido da foto e conferido por você. Leitura '
-                                  'automática pode errar: confira cada campo.',
+                              ? tr.outingReviewOriginManual
+                              : tr.outingReviewOriginPhoto,
                           style: AppText.caption,
                         ),
                         if (_referenceId != null)
-                          const Padding(
-                            padding: EdgeInsets.only(top: AppSpace.xs),
-                            child: Text('Com referência do catálogo (não é o '
-                                'mesmo registro).',
+                          Padding(
+                            padding: const EdgeInsets.only(top: AppSpace.xs),
+                            child: Text(tr.outingReviewReferenceNote,
                                 style: AppText.caption),
                           ),
                       ],
@@ -737,7 +719,7 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                           .copyWith(dividerColor: Colors.transparent),
                       child: ExpansionTile(
                         tilePadding: EdgeInsets.zero,
-                        title: const Text('Texto lido na foto',
+                        title: Text(tr.outingReviewSourceText,
                             style: AppText.subtitle),
                         children: [
                           Align(
@@ -755,19 +737,19 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
               child: editing
                   ? FilledButton(
                       onPressed: _saving ? null : () => _save(register: false),
-                      child: const Text('Salvar alterações'),
+                      child: Text(tr.entrySaveChanges),
                     )
                   : Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         FilledButton(
                           onPressed: _saving ? null : () => _save(register: true),
-                          child: const Text('Confirmar e continuar'),
+                          child: Text(tr.outingReviewConfirmContinue),
                         ),
                         const SizedBox(height: AppSpace.sm),
                         OutlinedButton(
                           onPressed: _saving ? null : () => _save(register: false),
-                          child: const Text('Salvar só neste rolê'),
+                          child: Text(tr.outingReviewSaveOnly),
                         ),
                       ],
                     ),

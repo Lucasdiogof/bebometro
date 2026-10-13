@@ -18,6 +18,7 @@ import '../data/scan_draft_store.dart';
 import '../data/text_recognizer.dart';
 import '../domain/label_parser.dart';
 import '../domain/ocr_models.dart';
+import '../../l10n/l10n.dart';
 
 /// Reads a label from a photo: capture or import, view/rotate/replace, read
 /// the text on the device, then review. Pops a [ReviewResult] once the user
@@ -83,9 +84,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
         } else {
           // Web session ended or file removed: the text stays, the photo is
           // gone and the person is told instead of seeing a blank screen.
-          _error = 'A foto desta leitura não está mais disponível neste '
-              'aparelho. O texto foi mantido: tire outra foto ou continue '
-              'sem ela.';
+          _error = tr.scanLabelPhotoGone;
         }
       }
       if (mounted) setState(() {});
@@ -128,7 +127,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
       await _repo.files.write(id, bytes);
     } catch (_) {
       if (mounted) {
-        setState(() => _error = 'Não foi possível guardar a foto no aparelho.');
+        setState(() => _error = tr.scanPhotoSaveFailed);
       }
       return;
     }
@@ -162,7 +161,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
         _ocr = null; // positions changed: read again
       });
     } catch (_) {
-      if (mounted) setState(() => _error = 'Não foi possível girar a imagem.');
+      if (mounted) setState(() => _error = tr.scanRotateFailed);
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -188,8 +187,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
     if (id == null || _reading) return;
     final path = await _repo.files.pathOf(id);
     if (path == null) {
-      setState(() =>
-          _error = 'A foto não está disponível para leitura. Tire outra.');
+      setState(() => _error = tr.scanPhotoUnavailableToRead);
       return;
     }
     final run = ++_runId;
@@ -201,8 +199,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
       final result = await _recognizer.recognizeFile(path);
       if (run != _runId || !mounted) return; // cancelled
       if (result.isEmpty) {
-        setState(() => _error = 'Nenhum texto foi encontrado. Tente outra foto '
-            'mais de perto, com boa luz, ou digite o texto.');
+        setState(() => _error = tr.scanNoTextFound);
         return;
       }
       _ocr = result;
@@ -283,55 +280,46 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
     final hasPhoto = _bytes != null;
     final canRead = _recognizer.isSupported;
     return Scaffold(
-      appBar: AppBar(title: const Text('Ler rótulo')),
+      appBar: AppBar(title: Text(tr.catalogScanLabel)),
       body: ListView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.fromLTRB(
             AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
         children: [
-          const SurfaceCard(
-            child: Text(
-              'Enquadre o rótulo inteiro, de frente, com boa luz e sem reflexo. '
-              'Volume e teor costumam ficar em outro lado da embalagem: '
-              'fotografe esse lado ou complete na revisão. Você confere tudo '
-              'antes de salvar.',
-              style: AppText.body,
-            ),
+          SurfaceCard(
+            child: Text(tr.scanLabelTip, style: AppText.body),
           ),
           if (getIt<OutingRepository>().byId(widget.outingId)?.endedAt !=
               null) ...[
             const SizedBox(height: AppSpace.sm),
-            const InfoPill(
-              'Este rolê já foi encerrado. O que você ler fica salvo nele.',
+            InfoPill(
+              tr.scanLabelEnded,
               icon: Icons.info_outline_rounded,
               warning: true,
             ),
           ],
           if (!_repo.files.isDurable) ...[
             const SizedBox(height: AppSpace.sm),
-            const Text(
-              'No navegador a foto só fica guardada durante esta sessão.',
-              style: AppText.caption,
-            ),
+            Text(tr.scanWebPhotoSession, style: AppText.caption),
           ],
           if (_error != null) ...[
             const SizedBox(height: AppSpace.md),
             InfoPill(_error!, icon: Icons.error_outline_rounded, warning: true),
           ],
-          const SectionTitle('Foto'),
+          SectionTitle(tr.scanPhoto),
           if (!hasPhoto)
             Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
               if (_capture.supports(CaptureSource.camera))
                 FilledButton.icon(
                   onPressed: () => _pick(CaptureSource.camera),
                   icon: const Icon(Icons.photo_camera_outlined),
-                  label: const Text('Tirar foto'),
+                  label: Text(tr.scanTakePhoto),
                 ),
               if (_capture.supports(CaptureSource.gallery))
                 OutlinedButton.icon(
                   onPressed: () => _pick(CaptureSource.gallery),
                   icon: const Icon(Icons.photo_library_outlined),
-                  label: const Text('Escolher da galeria'),
+                  label: Text(tr.scanChooseGallery),
                 ),
             ])
           else ...[
@@ -353,12 +341,12 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
             const SizedBox(height: AppSpace.sm),
             Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.xs, children: [
               IconButton.outlined(
-                tooltip: 'Girar para a esquerda',
+                tooltip: tr.scanRotateLeft,
                 onPressed: _busy || _reading ? null : () => _rotate(270),
                 icon: const Icon(Icons.rotate_left_rounded),
               ),
               IconButton.outlined(
-                tooltip: 'Girar para a direita',
+                tooltip: tr.scanRotateRight,
                 onPressed: _busy || _reading ? null : () => _rotate(90),
                 icon: const Icon(Icons.rotate_right_rounded),
               ),
@@ -367,21 +355,21 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
                   onPressed:
                       _reading ? null : () => _pick(CaptureSource.camera),
                   icon: const Icon(Icons.photo_camera_outlined),
-                  label: const Text('Nova foto'),
+                  label: Text(tr.scanNewPhoto),
                 ),
               if (_capture.supports(CaptureSource.gallery))
                 OutlinedButton.icon(
                   onPressed:
                       _reading ? null : () => _pick(CaptureSource.gallery),
                   icon: const Icon(Icons.photo_library_outlined),
-                  label: const Text('Trocar'),
+                  label: Text(tr.scanReplacePhoto),
                 ),
               TextButton.icon(
                 onPressed: _reading ? null : _discard,
                 icon: const Icon(Icons.delete_outline_rounded,
                     color: AppColors.danger),
-                label: const Text('Descartar leitura',
-                    style: TextStyle(color: AppColors.danger)),
+                label: Text(tr.scanDiscardReading,
+                    style: const TextStyle(color: AppColors.danger)),
               ),
             ]),
           ],
@@ -390,29 +378,26 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
             if (_reading) ...[
               const LinearProgressIndicator(),
               const SizedBox(height: AppSpace.sm),
-              const Text('Lendo o texto da foto neste aparelho…',
-                  style: AppText.caption),
+              Text(tr.scanReadingOnDevice, style: AppText.caption),
               TextButton(
-                  onPressed: _cancelReading, child: const Text('Cancelar leitura')),
+                  onPressed: _cancelReading, child: Text(tr.scanCancelReading)),
             ] else
               FilledButton.icon(
                 onPressed: _read,
                 icon: const Icon(Icons.text_snippet_outlined),
                 label: Text(_text.text.trim().isEmpty
-                    ? 'Ler rótulo'
-                    : 'Ler de novo'),
+                    ? tr.catalogScanLabel
+                    : tr.scanReadAgain),
               ),
           ],
           if (!canRead) ...[
             const SizedBox(height: AppSpace.md),
-            const InfoPill(
-              'A leitura automática não está disponível aqui (só no app para '
-              'Android e iOS). Veja a foto e digite ou cole o texto do rótulo, '
-              'ou preencha direto.',
+            InfoPill(
+              tr.scanOcrUnavailable,
               icon: Icons.info_outline_rounded,
             ),
           ],
-          const SectionTitle('Texto do rótulo'),
+          SectionTitle(tr.scanLabelText),
           TextField(
             controller: _text,
             minLines: 3,
@@ -422,9 +407,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
               _saveDraftSoon();
             },
             decoration: InputDecoration(
-              hintText: canRead
-                  ? 'O texto lido aparece aqui. Você pode corrigir.'
-                  : 'Digite ou cole o texto do rótulo (opcional)',
+              hintText: canRead ? tr.scanTextHintCanRead : tr.scanTextHintManual,
             ),
           ),
           const SizedBox(height: AppSpace.md),
@@ -432,11 +415,11 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
             if (_text.text.trim().isNotEmpty)
               FilledButton(
                 onPressed: _reading ? null : () => _review(parse: true),
-                child: const Text('Interpretar texto'),
+                child: Text(tr.scanInterpret),
               ),
             OutlinedButton(
               onPressed: _reading ? null : () => _review(parse: false),
-              child: const Text('Preencher manualmente'),
+              child: Text(tr.scanFillManually),
             ),
           ]),
         ],

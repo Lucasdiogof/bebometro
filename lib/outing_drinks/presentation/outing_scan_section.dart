@@ -16,6 +16,7 @@ import '../../scan/presentation/scan_menu_page.dart';
 import '../data/outing_drink_repository.dart';
 import '../domain/outing_drink.dart';
 import 'outing_drink_review_page.dart';
+import '../../l10n/l10n.dart';
 
 /// What this outing keeps from photos: its own drinks, the photos themselves
 /// and readings left unfinished. Everything here belongs to this outing and is
@@ -95,17 +96,16 @@ class _OutingScanSectionState extends State<OutingScanSection> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Descartar esta leitura?'),
-        content: const Text('As fotos e os itens ainda não confirmados serão '
-            'apagados.'),
+        title: Text(tr.scanMenuDiscardTitle),
+        content: Text(tr.scanMenuDiscardBody),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancelar')),
+              child: Text(tr.commonCancel)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Descartar',
-                  style: TextStyle(color: AppColors.danger))),
+              child: Text(tr.entryDiscard,
+                  style: const TextStyle(color: AppColors.danger))),
         ],
       ),
     );
@@ -137,24 +137,20 @@ class _OutingScanSectionState extends State<OutingScanSection> {
                 children: [
                   Text(
                     d.kind == OutingPhotoKind.menu
-                        ? 'Leitura de cardápio não concluída'
-                        : 'Leitura de rótulo não concluída',
+                        ? tr.outingScanUnfinishedMenu
+                        : tr.outingScanUnfinishedLabel,
                     style: AppText.subtitle,
                   ),
                   const SizedBox(height: AppSpace.xs),
-                  const Text(
-                    'Ela continua ligada a este rolê. Se você concluir agora, '
-                    'o resultado fica salvo nele, não em outro.',
-                    style: AppText.caption,
-                  ),
+                  Text(tr.outingScanUnfinishedNote, style: AppText.caption),
                   Wrap(spacing: AppSpace.sm, children: [
                     TextButton(
                         onPressed: () => _resume(d),
-                        child: const Text('Continuar')),
+                        child: Text(tr.commonContinue)),
                     TextButton(
                       onPressed: () => _dropDraft(d),
-                      child: const Text('Descartar',
-                          style: TextStyle(color: AppColors.danger)),
+                      child: Text(tr.entryDiscard,
+                          style: const TextStyle(color: AppColors.danger)),
                     ),
                   ]),
                 ],
@@ -162,8 +158,8 @@ class _OutingScanSectionState extends State<OutingScanSection> {
             ),
           ),
         if (_drinks.isNotEmpty) ...[
-          const SectionTitle('Bebidas deste rolê'),
-          const Text('Existem só neste rolê.', style: AppText.caption),
+          SectionTitle(tr.outingDrinksSectionTitle),
+          Text(tr.outingScanOnlyHere, style: AppText.caption),
           const SizedBox(height: AppSpace.sm),
           for (final d in _drinks)
             Padding(
@@ -192,7 +188,8 @@ class _OutingScanSectionState extends State<OutingScanSection> {
                             if (d.volumeMl != null) formatMl(d.volumeMl!),
                             if (d.abvPercent != null) formatAbv(d.abvPercent!),
                             if (d.advertisedCents != null)
-                              'cardápio ${formatCents(d.advertisedCents!)}',
+                              tr.outingDrinksMenuPrice(
+                                  formatCents(d.advertisedCents!)),
                           ].join(' · '),
                           style: AppText.caption,
                         ),
@@ -204,7 +201,7 @@ class _OutingScanSectionState extends State<OutingScanSection> {
             ),
         ],
         if (_photos.isNotEmpty) ...[
-          const SectionTitle('Fotos do rolê'),
+          SectionTitle(tr.outingScanPhotosTitle),
           Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
             for (final p in _photos)
               PhotoThumb(
@@ -220,11 +217,10 @@ class _OutingScanSectionState extends State<OutingScanSection> {
           const SizedBox(height: AppSpace.xs),
           Text(
             localOnly == 0
-                ? 'Fotos guardadas também na nuvem, em arquivo privado.'
+                ? tr.outingScanAllUploaded
                 : cloudSync
-                    ? '$localOnly foto(s) ainda só neste aparelho; o envio '
-                        'é tentado de novo sozinho.'
-                    : '$localOnly foto(s) só neste aparelho.',
+                    ? tr.outingScanPending(localOnly)
+                    : tr.outingScanLocalOnly(localOnly),
             style: AppText.caption,
           ),
         ],

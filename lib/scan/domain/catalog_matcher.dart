@@ -1,6 +1,7 @@
 import '../../core/utils/formatters.dart';
 import '../../drinks/domain/catalog_item.dart';
 import '../../drinks/domain/drink_category.dart';
+import '../../l10n/l10n.dart';
 
 /// What was read or typed, to be compared with the catalog.
 class MatchQuery {
@@ -95,18 +96,18 @@ List<CatalogMatch> matchCatalog(
 List<MatchNote> _notesFor(CatalogItem item, MatchQuery q) {
   final notes = <MatchNote>[];
   if (q.category != null && q.category != item.category) {
-    notes.add(MatchNote(
-        'Categoria diferente (catálogo: ${item.category.label})',
+    notes.add(MatchNote(tr.matchOtherCategory(item.category.label),
         difference: true));
   }
   final volume = q.volumeMl;
   final documented = item.documentedPresentations;
   if (volume != null && documented.isNotEmpty) {
     if (documented.any((p) => p.volumeMl == volume)) {
-      notes.add(MatchNote('Mesmo tamanho (${formatMl(volume)})'));
+      notes.add(MatchNote(tr.matchSameSize(formatMl(volume))));
     } else {
       notes.add(MatchNote(
-          'Outro tamanho (catálogo: ${documented.map((p) => formatMl(p.volumeMl)).join(', ')})',
+          tr.matchOtherSize(
+              documented.map((p) => formatMl(p.volumeMl)).join(', ')),
           difference: true));
     }
   }
@@ -114,32 +115,27 @@ List<MatchNote> _notesFor(CatalogItem item, MatchQuery q) {
   if (abv != null) {
     if (item.abvPercent != null) {
       if ((item.abvPercent! - abv).abs() < 0.05) {
-        notes.add(MatchNote('Mesmo teor (${formatAbv(abv)})'));
+        notes.add(MatchNote(tr.matchSameAbv(formatAbv(abv))));
       } else {
         notes.add(MatchNote(
-            'Teor diferente (catálogo: ${formatAbv(item.abvPercent!)}, '
-            'seu: ${formatAbv(abv)})',
+            tr.matchOtherAbv(formatAbv(item.abvPercent!), formatAbv(abv)),
             difference: true));
       }
     } else if (item.abvVariants.isNotEmpty) {
-      notes.add(const MatchNote('O teor do catálogo varia por fonte',
-          difference: true));
+      notes.add(MatchNote(tr.matchAbvVaries, difference: true));
     } else {
-      notes.add(const MatchNote('Catálogo sem teor para comparar'));
+      notes.add(MatchNote(tr.matchNoAbv));
     }
   }
   final brand = q.brand;
   if (brand != null &&
       item.brand != null &&
       normalizeText(brand) != normalizeText(item.brand!)) {
-    notes.add(MatchNote('Outra marca (${item.brand})', difference: true));
+    notes.add(MatchNote(tr.matchOtherBrand(item.brand!), difference: true));
   }
   if (item.isRecipe) {
-    notes.add(const MatchNote(
-        'Receita de referência: o drink servido pode ser diferente',
-        difference: true));
+    notes.add(MatchNote(tr.matchRecipe, difference: true));
   }
-  notes.add(const MatchNote('Parecida pelo nome: confirme se é o mesmo produto',
-      difference: true));
+  notes.add(MatchNote(tr.matchSimilar, difference: true));
   return notes;
 }

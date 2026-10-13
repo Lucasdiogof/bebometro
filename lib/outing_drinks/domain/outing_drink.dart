@@ -2,17 +2,24 @@ import '../../drinks/domain/abv_source.dart';
 import '../../drinks/domain/catalog_item.dart';
 import '../../drinks/domain/drink_category.dart';
 import '../../drinks/domain/recipe.dart';
+import '../../l10n/l10n.dart';
 
 /// How an outing drink was created.
 enum OutingDrinkOrigin {
-  manual('manual', 'Cadastro neste rolê'),
-  photoLabel('label', 'Foto do rótulo'),
-  menu('menu', 'Foto do cardápio');
+  manual('manual'),
+  photoLabel('label'),
+  menu('menu');
 
-  const OutingDrinkOrigin(this.code, this.label);
+  const OutingDrinkOrigin(this.code);
 
+  /// Stored value; never translated.
   final String code;
-  final String label;
+
+  String get label => switch (this) {
+        OutingDrinkOrigin.manual => tr.originManual,
+        OutingDrinkOrigin.photoLabel => tr.originPhotoLabel,
+        OutingDrinkOrigin.menu => tr.originMenu,
+      };
 
   static OutingDrinkOrigin fromCode(String? code) =>
       OutingDrinkOrigin.values.firstWhere((o) => o.code == code,
@@ -224,13 +231,18 @@ class OutingDrink {
 
 /// What a photo shows. Photos belong to the outing they were taken in.
 enum OutingPhotoKind {
-  photoLabel('label', 'Rótulo'),
-  menu('menu', 'Cardápio');
+  photoLabel('label'),
+  menu('menu');
 
-  const OutingPhotoKind(this.code, this.label);
+  const OutingPhotoKind(this.code);
 
+  /// Stored value; never translated.
   final String code;
-  final String label;
+
+  String get label => switch (this) {
+        OutingPhotoKind.photoLabel => tr.photoKindLabel,
+        OutingPhotoKind.menu => tr.photoKindMenu,
+      };
 
   static OutingPhotoKind fromCode(String? code) =>
       OutingPhotoKind.values.firstWhere((k) => k.code == code,

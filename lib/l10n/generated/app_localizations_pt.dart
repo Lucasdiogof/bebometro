@@ -2970,4 +2970,640 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get recipeEditorRemove => 'Remover';
+
+  @override
+  String get scanLabelPhotoGone =>
+      'A foto desta leitura não está mais disponível neste aparelho. O texto foi mantido: tire outra foto ou continue sem ela.';
+
+  @override
+  String get scanPhotoSaveFailed =>
+      'Não foi possível guardar a foto no aparelho.';
+
+  @override
+  String get scanRotateFailed => 'Não foi possível girar a imagem.';
+
+  @override
+  String get scanPhotoUnavailableToRead =>
+      'A foto não está disponível para leitura. Tire outra.';
+
+  @override
+  String get scanNoTextFound =>
+      'Nenhum texto foi encontrado. Tente outra foto mais de perto, com boa luz, ou digite o texto.';
+
+  @override
+  String get scanLabelTip =>
+      'Enquadre o rótulo inteiro, de frente, com boa luz e sem reflexo. Volume e teor costumam ficar em outro lado da embalagem: fotografe esse lado ou complete na revisão. Você confere tudo antes de salvar.';
+
+  @override
+  String get scanLabelEnded =>
+      'Este rolê já foi encerrado. O que você ler fica salvo nele.';
+
+  @override
+  String get scanWebPhotoSession =>
+      'No navegador a foto só fica guardada durante esta sessão.';
+
+  @override
+  String get scanPhoto => 'Foto';
+
+  @override
+  String get scanTakePhoto => 'Tirar foto';
+
+  @override
+  String get scanChooseGallery => 'Escolher da galeria';
+
+  @override
+  String get scanRotateLeft => 'Girar para a esquerda';
+
+  @override
+  String get scanRotateRight => 'Girar para a direita';
+
+  @override
+  String get scanNewPhoto => 'Nova foto';
+
+  @override
+  String get scanReplacePhoto => 'Trocar';
+
+  @override
+  String get scanDiscardReading => 'Descartar leitura';
+
+  @override
+  String get scanReadingOnDevice => 'Lendo o texto da foto neste aparelho…';
+
+  @override
+  String get scanCancelReading => 'Cancelar leitura';
+
+  @override
+  String get scanReadAgain => 'Ler de novo';
+
+  @override
+  String get scanOcrUnavailable =>
+      'A leitura automática não está disponível aqui (só no app para Android e iOS). Veja a foto e digite ou cole o texto do rótulo, ou preencha direto.';
+
+  @override
+  String get scanLabelText => 'Texto do rótulo';
+
+  @override
+  String get scanTextHintCanRead =>
+      'O texto lido aparece aqui. Você pode corrigir.';
+
+  @override
+  String get scanTextHintManual =>
+      'Digite ou cole o texto do rótulo (opcional)';
+
+  @override
+  String get scanInterpret => 'Interpretar texto';
+
+  @override
+  String get scanFillManually => 'Preencher manualmente';
+
+  @override
+  String get photoUnavailable =>
+      'Foto indisponível agora: ainda não enviada pelo outro aparelho, ou sem conexão. O registro continua salvo.';
+
+  @override
+  String get photoDelete => 'Excluir foto';
+
+  @override
+  String get photoDeleteTitle => 'Excluir esta foto?';
+
+  @override
+  String get photoDeleteBody =>
+      'Só a foto sai. As bebidas e os dados que você confirmou continuam no rolê.';
+
+  @override
+  String get captureCameraUnavailable =>
+      'A câmera não está disponível aqui. Escolha uma foto da galeria.';
+
+  @override
+  String get captureGalleryUnavailable => 'A galeria não está disponível aqui.';
+
+  @override
+  String get capturePermissionCamera =>
+      'Sem permissão para usar a câmera. Libere nas configurações do aparelho ou escolha outra opção.';
+
+  @override
+  String get capturePermissionGallery =>
+      'Sem permissão para usar a galeria. Libere nas configurações do aparelho ou escolha outra opção.';
+
+  @override
+  String get captureOpenCameraFailed => 'Não foi possível abrir a câmera.';
+
+  @override
+  String get captureOpenGalleryFailed => 'Não foi possível abrir a galeria.';
+
+  @override
+  String get captureFailed => 'Não foi possível abrir a captura de imagem.';
+
+  @override
+  String get captureUnreadable => 'Não foi possível ler essa imagem.';
+
+  @override
+  String get captureTooBig => 'A imagem é muito grande. Tente uma foto menor.';
+
+  @override
+  String get captureNotImage =>
+      'Esse arquivo não parece ser uma imagem válida.';
+
+  @override
+  String get ocrUnavailable =>
+      'A leitura automática não está disponível neste dispositivo.';
+
+  @override
+  String get ocrReadFailed => 'Não foi possível ler o texto desta foto.';
+
+  @override
+  String matchOtherCategory(String category) {
+    return 'Categoria diferente (catálogo: $category)';
+  }
+
+  @override
+  String matchSameSize(String size) {
+    return 'Mesmo tamanho ($size)';
+  }
+
+  @override
+  String matchOtherSize(String sizes) {
+    return 'Outro tamanho (catálogo: $sizes)';
+  }
+
+  @override
+  String matchSameAbv(String abv) {
+    return 'Mesmo teor ($abv)';
+  }
+
+  @override
+  String matchOtherAbv(String catalog, String yours) {
+    return 'Teor diferente (catálogo: $catalog, seu: $yours)';
+  }
+
+  @override
+  String get matchAbvVaries => 'O teor do catálogo varia por fonte';
+
+  @override
+  String get matchNoAbv => 'Catálogo sem teor para comparar';
+
+  @override
+  String matchOtherBrand(String brand) {
+    return 'Outra marca ($brand)';
+  }
+
+  @override
+  String get matchRecipe =>
+      'Receita de referência: o drink servido pode ser diferente';
+
+  @override
+  String get matchSimilar =>
+      'Parecida pelo nome: confirme se é o mesmo produto';
+
+  @override
+  String parseManyVolumes(String list) {
+    return 'Mais de um volume no texto ($list). Escolha o da embalagem.';
+  }
+
+  @override
+  String parseManyAbvs(String list) {
+    return 'Mais de um teor no texto ($list). Confira no rótulo.';
+  }
+
+  @override
+  String get parseCheckName =>
+      'Confira o nome e a marca. Toque nas sugestões para trocar.';
+
+  @override
+  String menuNoteColumns(String count) {
+    return 'O cardápio parece ter $count colunas. Confira se cada preço ficou no item certo.';
+  }
+
+  @override
+  String menuNoteOrphans(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count preços sem item claro foram ignorados. Adicione o item manualmente se precisar.',
+      one: '1 preço sem item claro foi ignorado. Adicione o item manualmente se precisar.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get menuNoteNone =>
+      'Nenhum item foi identificado. Cole ou digite o texto, ou adicione os itens manualmente.';
+
+  @override
+  String get scanMenuReviewTitle => 'Itens do cardápio';
+
+  @override
+  String scanMenuLostPhotos(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count fotos desta leitura não estão mais disponíveis. Os itens delas foram mantidos para você conferir.',
+      one: 'Uma foto desta leitura não está mais disponível. Os itens dela foram mantidos para você conferir.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scanMenuNoItemsRead =>
+      'Nenhum item foi identificado. Gire a foto, tente de perto ou cole o texto do cardápio.';
+
+  @override
+  String get scanMenuNoItems => 'Nenhum item foi identificado.';
+
+  @override
+  String get scanMenuNoneSelected => 'Nenhum item selecionado.';
+
+  @override
+  String get scanMenuUnnamed => 'Há item sem nome. Corrija ou descarte.';
+
+  @override
+  String get scanMenuNeedType =>
+      'Escolha o tipo dos itens marcados com \"Tipo?\".';
+
+  @override
+  String get scanMenuSaveFailed =>
+      'Não foi possível salvar. Seus itens continuam aqui.';
+
+  @override
+  String get scanMenuDiscardTitle => 'Descartar esta leitura?';
+
+  @override
+  String get scanMenuDiscardBody =>
+      'As fotos e os itens ainda não confirmados serão apagados.';
+
+  @override
+  String get scanMenuTip =>
+      'Fotografe uma página por vez, de frente e com boa luz, sem cortar os preços. Pode adicionar várias fotos. Você confere e corrige cada item antes de salvar.';
+
+  @override
+  String get scanMenuEnded =>
+      'Este rolê já foi encerrado. Os itens ficam salvos nele.';
+
+  @override
+  String get scanMenuWebPhotos =>
+      'No navegador as fotos só ficam guardadas durante esta sessão.';
+
+  @override
+  String scanMenuPhotos(String count) {
+    return 'Fotos ($count)';
+  }
+
+  @override
+  String scanMenuPhotoN(String number) {
+    return 'Foto $number';
+  }
+
+  @override
+  String get scanMenuRead => 'Lida';
+
+  @override
+  String get scanMenuUnread => 'Ainda não lida';
+
+  @override
+  String get scanRemovePhoto => 'Remover foto';
+
+  @override
+  String get scanAnotherPhoto => 'Mais uma foto';
+
+  @override
+  String get scanMenuReadingMany => 'Lendo o texto das fotos neste aparelho…';
+
+  @override
+  String get scanMenuSeeRead => 'Ver itens lidos';
+
+  @override
+  String get scanMenuOcrUnavailable =>
+      'A leitura automática não está disponível aqui (só no app para Android e iOS). Veja as fotos e digite ou cole o texto do cardápio, ou adicione os itens à mão.';
+
+  @override
+  String get scanMenuPastedSection => 'Texto do cardápio (opcional)';
+
+  @override
+  String get scanMenuPastedHint =>
+      'Um item por linha, com o preço na mesma linha ou na seguinte. Ex.: Caipirinha R\$ 18,00';
+
+  @override
+  String get scanMenuAddManual => 'Adicionar item à mão';
+
+  @override
+  String scanMenuSeeCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ver $count itens',
+      one: 'Ver 1 item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scanMenuReviewIntro =>
+      'Marque os itens que quer deixar disponíveis neste rolê. Nada é registrado como consumo agora: você escolhe a bebida e confirma o preço quando for pedir.';
+
+  @override
+  String get scanMenuPhotosAndReading => 'Fotos e leitura';
+
+  @override
+  String get scanMenuAddItem => 'Adicionar item';
+
+  @override
+  String scanMenuSave(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Salvar $count itens neste rolê',
+      one: 'Salvar 1 item neste rolê',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scanMenuNoName => '(sem nome)';
+
+  @override
+  String scanMenuSize(String size) {
+    return 'Tamanho no cardápio: $size';
+  }
+
+  @override
+  String scanMenuIngredientsCited(String list) {
+    return 'Ingredientes citados: $list';
+  }
+
+  @override
+  String get scanMenuEditItem => 'Editar item';
+
+  @override
+  String get scanMenuTypeHint => 'Tipo?';
+
+  @override
+  String get scanMenuDuplicate => 'Repetido em outra foto';
+
+  @override
+  String get scanMenuPromo => 'Possível promoção: confirme o valor';
+
+  @override
+  String scanMenuPriceOnMenu(String price) {
+    return '$price no cardápio';
+  }
+
+  @override
+  String get scanMenuNoPriceRead => 'Sem preço lido';
+
+  @override
+  String get scanMenuPriceUnsure =>
+      'Não deu para ter certeza do preço. Escolha o certo ou deixe sem preço:';
+
+  @override
+  String get scanMenuChangePrice => 'Trocar preço';
+
+  @override
+  String get scanMenuNewItem => 'Novo item';
+
+  @override
+  String get scanMenuName => 'Nome';
+
+  @override
+  String get scanMenuDescription => 'Descrição (opcional)';
+
+  @override
+  String get scanMenuSizeOptional => 'Tamanho (opcional)';
+
+  @override
+  String get scanMenuPriceOptional => 'Preço (opcional)';
+
+  @override
+  String get scanMenuCitedOptional => 'Ingredientes citados (opcional)';
+
+  @override
+  String get scanMenuCitedHelper => 'Separe por vírgula. Sem quantidades.';
+
+  @override
+  String get scanMenuNeedName => 'Dê um nome ao item.';
+
+  @override
+  String get scanMenuInvalidSize => 'Tamanho inválido.';
+
+  @override
+  String get scanMenuInvalidPrice => 'Preço inválido.';
+
+  @override
+  String get commonApply => 'Aplicar';
+
+  @override
+  String get originManual => 'Cadastro neste rolê';
+
+  @override
+  String get originPhotoLabel => 'Foto do rótulo';
+
+  @override
+  String get originMenu => 'Foto do cardápio';
+
+  @override
+  String get outingReviewEditTitle => 'Editar bebida do rolê';
+
+  @override
+  String get outingReviewTitle => 'Bebida deste rolê';
+
+  @override
+  String get outingReviewIsolation =>
+      'Esta bebida existe só neste rolê. Ela não entra no catálogo, nem em Minhas bebidas, nem em outros rolês.';
+
+  @override
+  String get outingReviewEnded =>
+      'Este rolê já foi encerrado. O item fica salvo nele.';
+
+  @override
+  String get outingReviewDrinkSection => 'Bebida';
+
+  @override
+  String get outingReviewNeedName => 'Dê um nome para a bebida.';
+
+  @override
+  String get outingReviewNeedType => 'Escolha o tipo da bebida.';
+
+  @override
+  String get outingReviewVolumePositive =>
+      'O volume precisa ser maior que zero.';
+
+  @override
+  String get outingReviewAbvRange => 'O teor vai de 0 a 100%.';
+
+  @override
+  String get outingReviewOtherLines => 'Outras linhas lidas (toque para usar):';
+
+  @override
+  String get outingReviewPickType => 'Escolha o tipo da bebida';
+
+  @override
+  String get outingReviewTypeUnknown => 'Tipo não identificado: escolha um.';
+
+  @override
+  String get outingReviewDescription => 'Descrição do cardápio (opcional)';
+
+  @override
+  String get outingReviewPackageVolume => 'Volume da embalagem (opcional)';
+
+  @override
+  String get outingReviewVolumeHelper =>
+      'É o tamanho do produto, não o quanto você bebeu. Em branco = desconhecido.';
+
+  @override
+  String outingReviewAbvSource(String source) {
+    return 'Origem: $source';
+  }
+
+  @override
+  String get outingReviewIngredientsIntro =>
+      'Só o que o cardápio ou você informaram. As quantidades ficam desconhecidas até você completar ao registrar; o álcool só é calculado com volume e teor conhecidos.';
+
+  @override
+  String get outingReviewAlcoholChip => 'Álcool';
+
+  @override
+  String get outingReviewDeclaredOptional =>
+      'Ingredientes declarados (opcional)';
+
+  @override
+  String get outingReviewDeclaredHelper =>
+      'Separe por vírgula. Só o que está escrito.';
+
+  @override
+  String get outingReviewAdvertisedSection => 'Preço anunciado';
+
+  @override
+  String get outingReviewMenuPriceOptional => 'Preço do cardápio (opcional)';
+
+  @override
+  String get outingReviewMenuPriceHelper =>
+      'Só uma sugestão: ao registrar você confirma o que pagou. Valores em reais (R\$).';
+
+  @override
+  String get outingReviewSimilar => 'Parecidas no catálogo';
+
+  @override
+  String get outingReviewSearch => 'Buscar';
+
+  @override
+  String get outingReviewSimilarNote =>
+      'Opcional. Escolher uma é só uma referência: o produto do catálogo nunca é alterado e nada é ligado sozinho.';
+
+  @override
+  String get outingReviewNothingSimilar =>
+      'Nada parecido encontrado. Este item fica só no rolê.';
+
+  @override
+  String get outingReviewReferenceChosen => 'Referência escolhida';
+
+  @override
+  String get outingReviewUseReference => 'Usar como referência';
+
+  @override
+  String get outingReviewFillEmpty => 'Preencher campos vazios';
+
+  @override
+  String get outingReviewCopyIngredients =>
+      'Copiar ingredientes (sem quantidades)';
+
+  @override
+  String get outingReviewOriginSection => 'Origem dos dados';
+
+  @override
+  String get outingReviewOriginManual => 'Preenchido por você.';
+
+  @override
+  String get outingReviewOriginPhoto =>
+      'Lido da foto e conferido por você. Leitura automática pode errar: confira cada campo.';
+
+  @override
+  String get outingReviewReferenceNote =>
+      'Com referência do catálogo (não é o mesmo registro).';
+
+  @override
+  String get outingReviewSourceText => 'Texto lido na foto';
+
+  @override
+  String get outingReviewConfirmContinue => 'Confirmar e continuar';
+
+  @override
+  String get outingReviewSaveOnly => 'Salvar só neste rolê';
+
+  @override
+  String get outingDrinksSectionTitle => 'Bebidas deste rolê';
+
+  @override
+  String get outingDrinksTapToLog =>
+      'Só existem neste rolê. Toque para registrar uma.';
+
+  @override
+  String get outingDrinksRemoveTitle => 'Tirar da lista do rolê?';
+
+  @override
+  String get outingDrinksRemoveBody =>
+      'Ela sai de \"Bebidas deste rolê\". Os registros que você já fez continuam no histórico.';
+
+  @override
+  String get outingDrinksRemove => 'Tirar';
+
+  @override
+  String get outingDrinksMoreActions => 'Mais ações';
+
+  @override
+  String get outingDrinksRemoveFromList => 'Tirar da lista';
+
+  @override
+  String outingDrinksMenuPrice(String price) {
+    return 'cardápio $price';
+  }
+
+  @override
+  String get outingScanUnfinishedMenu => 'Leitura de cardápio não concluída';
+
+  @override
+  String get outingScanUnfinishedLabel => 'Leitura de rótulo não concluída';
+
+  @override
+  String get outingScanUnfinishedNote =>
+      'Ela continua ligada a este rolê. Se você concluir agora, o resultado fica salvo nele, não em outro.';
+
+  @override
+  String get outingScanOnlyHere => 'Existem só neste rolê.';
+
+  @override
+  String get outingScanPhotosTitle => 'Fotos do rolê';
+
+  @override
+  String get outingScanAllUploaded =>
+      'Fotos guardadas também na nuvem, em arquivo privado.';
+
+  @override
+  String outingScanPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count fotos ainda só neste aparelho; o envio é tentado de novo sozinho.',
+      one: '1 foto ainda só neste aparelho; o envio é tentado de novo sozinho.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String outingScanLocalOnly(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fotos só neste aparelho.',
+      one: '1 foto só neste aparelho.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get photoKindLabel => 'Rótulo';
+
+  @override
+  String get photoKindMenu => 'Cardápio';
 }

@@ -2,6 +2,7 @@ import '../../core/utils/formatters.dart';
 import '../../drinks/domain/drink_category.dart';
 import 'label_parser.dart';
 import 'ocr_models.dart';
+import '../../l10n/l10n.dart';
 
 /// A price found in the menu text, with the line it came from so the user can
 /// check what it was attached to.
@@ -131,6 +132,20 @@ class MenuCandidate {
         duplicate: j['duplicate'] as bool? ?? false,
         discarded: j['discarded'] as bool? ?? false,
       );
+}
+
+/// Text of a menu note. Notes are saved with the draft as codes ("columns:2",
+/// "orphans:1", "none") so they show in the language on screen; anything
+/// else is shown as it is.
+String menuNoteText(String note) {
+  if (note.startsWith('columns:')) {
+    return tr.menuNoteColumns(int.tryParse(note.substring(8)) ?? 0);
+  }
+  if (note.startsWith('orphans:')) {
+    return tr.menuNoteOrphans(int.tryParse(note.substring(8)) ?? 0);
+  }
+  if (note == 'none') return tr.menuNoteNone;
+  return note;
 }
 
 class MenuReading {
@@ -263,8 +278,7 @@ MenuReading parseMenu(
   final notes = <String>[];
   final columns = _splitColumns(lines);
   if (columns.length > 1) {
-    notes.add('O cardápio parece ter ${columns.length} colunas. Confira se '
-        'cada preço ficou no item certo.');
+    notes.add('columns:${columns.length}');
   }
 
   final items = <_Item>[];
@@ -371,8 +385,7 @@ MenuReading parseMenu(
   }
 
   if (orphanPrices > 0) {
-    notes.add('$orphanPrices preço(s) sem item claro foram ignorados. '
-        'Adicione o item manualmente se precisar.');
+    notes.add('orphans:$orphanPrices');
   }
 
   final candidates = <MenuCandidate>[];
@@ -411,8 +424,7 @@ MenuReading parseMenu(
     }
   }
   if (candidates.isEmpty) {
-    notes.add('Nenhum item foi identificado. Cole ou digite o texto, ou '
-        'adicione os itens manualmente.');
+    notes.add('none');
   }
   return MenuReading(candidates, notes);
 }

@@ -4905,6 +4905,1014 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Remover'**
   String get recipeEditorRemove;
+
+  /// No description provided for @scanLabelPhotoGone.
+  ///
+  /// In pt, this message translates to:
+  /// **'A foto desta leitura não está mais disponível neste aparelho. O texto foi mantido: tire outra foto ou continue sem ela.'**
+  String get scanLabelPhotoGone;
+
+  /// No description provided for @scanPhotoSaveFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível guardar a foto no aparelho.'**
+  String get scanPhotoSaveFailed;
+
+  /// No description provided for @scanRotateFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível girar a imagem.'**
+  String get scanRotateFailed;
+
+  /// No description provided for @scanPhotoUnavailableToRead.
+  ///
+  /// In pt, this message translates to:
+  /// **'A foto não está disponível para leitura. Tire outra.'**
+  String get scanPhotoUnavailableToRead;
+
+  /// No description provided for @scanNoTextFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum texto foi encontrado. Tente outra foto mais de perto, com boa luz, ou digite o texto.'**
+  String get scanNoTextFound;
+
+  /// No description provided for @scanLabelTip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enquadre o rótulo inteiro, de frente, com boa luz e sem reflexo. Volume e teor costumam ficar em outro lado da embalagem: fotografe esse lado ou complete na revisão. Você confere tudo antes de salvar.'**
+  String get scanLabelTip;
+
+  /// No description provided for @scanLabelEnded.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este rolê já foi encerrado. O que você ler fica salvo nele.'**
+  String get scanLabelEnded;
+
+  /// No description provided for @scanWebPhotoSession.
+  ///
+  /// In pt, this message translates to:
+  /// **'No navegador a foto só fica guardada durante esta sessão.'**
+  String get scanWebPhotoSession;
+
+  /// No description provided for @scanPhoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Foto'**
+  String get scanPhoto;
+
+  /// No description provided for @scanTakePhoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar foto'**
+  String get scanTakePhoto;
+
+  /// No description provided for @scanChooseGallery.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolher da galeria'**
+  String get scanChooseGallery;
+
+  /// No description provided for @scanRotateLeft.
+  ///
+  /// In pt, this message translates to:
+  /// **'Girar para a esquerda'**
+  String get scanRotateLeft;
+
+  /// No description provided for @scanRotateRight.
+  ///
+  /// In pt, this message translates to:
+  /// **'Girar para a direita'**
+  String get scanRotateRight;
+
+  /// No description provided for @scanNewPhoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova foto'**
+  String get scanNewPhoto;
+
+  /// No description provided for @scanReplacePhoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar'**
+  String get scanReplacePhoto;
+
+  /// No description provided for @scanDiscardReading.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descartar leitura'**
+  String get scanDiscardReading;
+
+  /// No description provided for @scanReadingOnDevice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lendo o texto da foto neste aparelho…'**
+  String get scanReadingOnDevice;
+
+  /// No description provided for @scanCancelReading.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar leitura'**
+  String get scanCancelReading;
+
+  /// No description provided for @scanReadAgain.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ler de novo'**
+  String get scanReadAgain;
+
+  /// No description provided for @scanOcrUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'A leitura automática não está disponível aqui (só no app para Android e iOS). Veja a foto e digite ou cole o texto do rótulo, ou preencha direto.'**
+  String get scanOcrUnavailable;
+
+  /// No description provided for @scanLabelText.
+  ///
+  /// In pt, this message translates to:
+  /// **'Texto do rótulo'**
+  String get scanLabelText;
+
+  /// No description provided for @scanTextHintCanRead.
+  ///
+  /// In pt, this message translates to:
+  /// **'O texto lido aparece aqui. Você pode corrigir.'**
+  String get scanTextHintCanRead;
+
+  /// No description provided for @scanTextHintManual.
+  ///
+  /// In pt, this message translates to:
+  /// **'Digite ou cole o texto do rótulo (opcional)'**
+  String get scanTextHintManual;
+
+  /// No description provided for @scanInterpret.
+  ///
+  /// In pt, this message translates to:
+  /// **'Interpretar texto'**
+  String get scanInterpret;
+
+  /// No description provided for @scanFillManually.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preencher manualmente'**
+  String get scanFillManually;
+
+  /// No description provided for @photoUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'Foto indisponível agora: ainda não enviada pelo outro aparelho, ou sem conexão. O registro continua salvo.'**
+  String get photoUnavailable;
+
+  /// No description provided for @photoDelete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir foto'**
+  String get photoDelete;
+
+  /// No description provided for @photoDeleteTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir esta foto?'**
+  String get photoDeleteTitle;
+
+  /// No description provided for @photoDeleteBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só a foto sai. As bebidas e os dados que você confirmou continuam no rolê.'**
+  String get photoDeleteBody;
+
+  /// No description provided for @captureCameraUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'A câmera não está disponível aqui. Escolha uma foto da galeria.'**
+  String get captureCameraUnavailable;
+
+  /// No description provided for @captureGalleryUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'A galeria não está disponível aqui.'**
+  String get captureGalleryUnavailable;
+
+  /// No description provided for @capturePermissionCamera.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem permissão para usar a câmera. Libere nas configurações do aparelho ou escolha outra opção.'**
+  String get capturePermissionCamera;
+
+  /// No description provided for @capturePermissionGallery.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem permissão para usar a galeria. Libere nas configurações do aparelho ou escolha outra opção.'**
+  String get capturePermissionGallery;
+
+  /// No description provided for @captureOpenCameraFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível abrir a câmera.'**
+  String get captureOpenCameraFailed;
+
+  /// No description provided for @captureOpenGalleryFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível abrir a galeria.'**
+  String get captureOpenGalleryFailed;
+
+  /// No description provided for @captureFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível abrir a captura de imagem.'**
+  String get captureFailed;
+
+  /// No description provided for @captureUnreadable.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível ler essa imagem.'**
+  String get captureUnreadable;
+
+  /// No description provided for @captureTooBig.
+  ///
+  /// In pt, this message translates to:
+  /// **'A imagem é muito grande. Tente uma foto menor.'**
+  String get captureTooBig;
+
+  /// No description provided for @captureNotImage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse arquivo não parece ser uma imagem válida.'**
+  String get captureNotImage;
+
+  /// No description provided for @ocrUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'A leitura automática não está disponível neste dispositivo.'**
+  String get ocrUnavailable;
+
+  /// No description provided for @ocrReadFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível ler o texto desta foto.'**
+  String get ocrReadFailed;
+
+  /// No description provided for @matchOtherCategory.
+  ///
+  /// In pt, this message translates to:
+  /// **'Categoria diferente (catálogo: {category})'**
+  String matchOtherCategory(String category);
+
+  /// No description provided for @matchSameSize.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mesmo tamanho ({size})'**
+  String matchSameSize(String size);
+
+  /// No description provided for @matchOtherSize.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outro tamanho (catálogo: {sizes})'**
+  String matchOtherSize(String sizes);
+
+  /// No description provided for @matchSameAbv.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mesmo teor ({abv})'**
+  String matchSameAbv(String abv);
+
+  /// No description provided for @matchOtherAbv.
+  ///
+  /// In pt, this message translates to:
+  /// **'Teor diferente (catálogo: {catalog}, seu: {yours})'**
+  String matchOtherAbv(String catalog, String yours);
+
+  /// No description provided for @matchAbvVaries.
+  ///
+  /// In pt, this message translates to:
+  /// **'O teor do catálogo varia por fonte'**
+  String get matchAbvVaries;
+
+  /// No description provided for @matchNoAbv.
+  ///
+  /// In pt, this message translates to:
+  /// **'Catálogo sem teor para comparar'**
+  String get matchNoAbv;
+
+  /// No description provided for @matchOtherBrand.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outra marca ({brand})'**
+  String matchOtherBrand(String brand);
+
+  /// No description provided for @matchRecipe.
+  ///
+  /// In pt, this message translates to:
+  /// **'Receita de referência: o drink servido pode ser diferente'**
+  String get matchRecipe;
+
+  /// No description provided for @matchSimilar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Parecida pelo nome: confirme se é o mesmo produto'**
+  String get matchSimilar;
+
+  /// No description provided for @parseManyVolumes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais de um volume no texto ({list}). Escolha o da embalagem.'**
+  String parseManyVolumes(String list);
+
+  /// No description provided for @parseManyAbvs.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais de um teor no texto ({list}). Confira no rótulo.'**
+  String parseManyAbvs(String list);
+
+  /// No description provided for @parseCheckName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confira o nome e a marca. Toque nas sugestões para trocar.'**
+  String get parseCheckName;
+
+  /// No description provided for @menuNoteColumns.
+  ///
+  /// In pt, this message translates to:
+  /// **'O cardápio parece ter {count} colunas. Confira se cada preço ficou no item certo.'**
+  String menuNoteColumns(String count);
+
+  /// No description provided for @menuNoteOrphans.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 preço sem item claro foi ignorado. Adicione o item manualmente se precisar.} other{{count} preços sem item claro foram ignorados. Adicione o item manualmente se precisar.}}'**
+  String menuNoteOrphans(int count);
+
+  /// No description provided for @menuNoteNone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum item foi identificado. Cole ou digite o texto, ou adicione os itens manualmente.'**
+  String get menuNoteNone;
+
+  /// No description provided for @scanMenuReviewTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Itens do cardápio'**
+  String get scanMenuReviewTitle;
+
+  /// No description provided for @scanMenuLostPhotos.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Uma foto desta leitura não está mais disponível. Os itens dela foram mantidos para você conferir.} other{{count} fotos desta leitura não estão mais disponíveis. Os itens delas foram mantidos para você conferir.}}'**
+  String scanMenuLostPhotos(int count);
+
+  /// No description provided for @scanMenuNoItemsRead.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum item foi identificado. Gire a foto, tente de perto ou cole o texto do cardápio.'**
+  String get scanMenuNoItemsRead;
+
+  /// No description provided for @scanMenuNoItems.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum item foi identificado.'**
+  String get scanMenuNoItems;
+
+  /// No description provided for @scanMenuNoneSelected.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum item selecionado.'**
+  String get scanMenuNoneSelected;
+
+  /// No description provided for @scanMenuUnnamed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Há item sem nome. Corrija ou descarte.'**
+  String get scanMenuUnnamed;
+
+  /// No description provided for @scanMenuNeedType.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha o tipo dos itens marcados com \"Tipo?\".'**
+  String get scanMenuNeedType;
+
+  /// No description provided for @scanMenuSaveFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível salvar. Seus itens continuam aqui.'**
+  String get scanMenuSaveFailed;
+
+  /// No description provided for @scanMenuDiscardTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descartar esta leitura?'**
+  String get scanMenuDiscardTitle;
+
+  /// No description provided for @scanMenuDiscardBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'As fotos e os itens ainda não confirmados serão apagados.'**
+  String get scanMenuDiscardBody;
+
+  /// No description provided for @scanMenuTip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fotografe uma página por vez, de frente e com boa luz, sem cortar os preços. Pode adicionar várias fotos. Você confere e corrige cada item antes de salvar.'**
+  String get scanMenuTip;
+
+  /// No description provided for @scanMenuEnded.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este rolê já foi encerrado. Os itens ficam salvos nele.'**
+  String get scanMenuEnded;
+
+  /// No description provided for @scanMenuWebPhotos.
+  ///
+  /// In pt, this message translates to:
+  /// **'No navegador as fotos só ficam guardadas durante esta sessão.'**
+  String get scanMenuWebPhotos;
+
+  /// No description provided for @scanMenuPhotos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fotos ({count})'**
+  String scanMenuPhotos(String count);
+
+  /// No description provided for @scanMenuPhotoN.
+  ///
+  /// In pt, this message translates to:
+  /// **'Foto {number}'**
+  String scanMenuPhotoN(String number);
+
+  /// No description provided for @scanMenuRead.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lida'**
+  String get scanMenuRead;
+
+  /// No description provided for @scanMenuUnread.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não lida'**
+  String get scanMenuUnread;
+
+  /// No description provided for @scanRemovePhoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover foto'**
+  String get scanRemovePhoto;
+
+  /// No description provided for @scanAnotherPhoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais uma foto'**
+  String get scanAnotherPhoto;
+
+  /// No description provided for @scanMenuReadingMany.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lendo o texto das fotos neste aparelho…'**
+  String get scanMenuReadingMany;
+
+  /// No description provided for @scanMenuSeeRead.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver itens lidos'**
+  String get scanMenuSeeRead;
+
+  /// No description provided for @scanMenuOcrUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'A leitura automática não está disponível aqui (só no app para Android e iOS). Veja as fotos e digite ou cole o texto do cardápio, ou adicione os itens à mão.'**
+  String get scanMenuOcrUnavailable;
+
+  /// No description provided for @scanMenuPastedSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Texto do cardápio (opcional)'**
+  String get scanMenuPastedSection;
+
+  /// No description provided for @scanMenuPastedHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Um item por linha, com o preço na mesma linha ou na seguinte. Ex.: Caipirinha R\$ 18,00'**
+  String get scanMenuPastedHint;
+
+  /// No description provided for @scanMenuAddManual.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar item à mão'**
+  String get scanMenuAddManual;
+
+  /// No description provided for @scanMenuSeeCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Ver 1 item} other{Ver {count} itens}}'**
+  String scanMenuSeeCount(int count);
+
+  /// No description provided for @scanMenuReviewIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marque os itens que quer deixar disponíveis neste rolê. Nada é registrado como consumo agora: você escolhe a bebida e confirma o preço quando for pedir.'**
+  String get scanMenuReviewIntro;
+
+  /// No description provided for @scanMenuPhotosAndReading.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fotos e leitura'**
+  String get scanMenuPhotosAndReading;
+
+  /// No description provided for @scanMenuAddItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar item'**
+  String get scanMenuAddItem;
+
+  /// No description provided for @scanMenuSave.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Salvar 1 item neste rolê} other{Salvar {count} itens neste rolê}}'**
+  String scanMenuSave(int count);
+
+  /// No description provided for @scanMenuNoName.
+  ///
+  /// In pt, this message translates to:
+  /// **'(sem nome)'**
+  String get scanMenuNoName;
+
+  /// No description provided for @scanMenuSize.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tamanho no cardápio: {size}'**
+  String scanMenuSize(String size);
+
+  /// No description provided for @scanMenuIngredientsCited.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ingredientes citados: {list}'**
+  String scanMenuIngredientsCited(String list);
+
+  /// No description provided for @scanMenuEditItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar item'**
+  String get scanMenuEditItem;
+
+  /// No description provided for @scanMenuTypeHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo?'**
+  String get scanMenuTypeHint;
+
+  /// No description provided for @scanMenuDuplicate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Repetido em outra foto'**
+  String get scanMenuDuplicate;
+
+  /// No description provided for @scanMenuPromo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Possível promoção: confirme o valor'**
+  String get scanMenuPromo;
+
+  /// No description provided for @scanMenuPriceOnMenu.
+  ///
+  /// In pt, this message translates to:
+  /// **'{price} no cardápio'**
+  String scanMenuPriceOnMenu(String price);
+
+  /// No description provided for @scanMenuNoPriceRead.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem preço lido'**
+  String get scanMenuNoPriceRead;
+
+  /// No description provided for @scanMenuPriceUnsure.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não deu para ter certeza do preço. Escolha o certo ou deixe sem preço:'**
+  String get scanMenuPriceUnsure;
+
+  /// No description provided for @scanMenuChangePrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar preço'**
+  String get scanMenuChangePrice;
+
+  /// No description provided for @scanMenuNewItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo item'**
+  String get scanMenuNewItem;
+
+  /// No description provided for @scanMenuName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome'**
+  String get scanMenuName;
+
+  /// No description provided for @scanMenuDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descrição (opcional)'**
+  String get scanMenuDescription;
+
+  /// No description provided for @scanMenuSizeOptional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tamanho (opcional)'**
+  String get scanMenuSizeOptional;
+
+  /// No description provided for @scanMenuPriceOptional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço (opcional)'**
+  String get scanMenuPriceOptional;
+
+  /// No description provided for @scanMenuCitedOptional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ingredientes citados (opcional)'**
+  String get scanMenuCitedOptional;
+
+  /// No description provided for @scanMenuCitedHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Separe por vírgula. Sem quantidades.'**
+  String get scanMenuCitedHelper;
+
+  /// No description provided for @scanMenuNeedName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dê um nome ao item.'**
+  String get scanMenuNeedName;
+
+  /// No description provided for @scanMenuInvalidSize.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tamanho inválido.'**
+  String get scanMenuInvalidSize;
+
+  /// No description provided for @scanMenuInvalidPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço inválido.'**
+  String get scanMenuInvalidPrice;
+
+  /// No description provided for @commonApply.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aplicar'**
+  String get commonApply;
+
+  /// No description provided for @originManual.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cadastro neste rolê'**
+  String get originManual;
+
+  /// No description provided for @originPhotoLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Foto do rótulo'**
+  String get originPhotoLabel;
+
+  /// No description provided for @originMenu.
+  ///
+  /// In pt, this message translates to:
+  /// **'Foto do cardápio'**
+  String get originMenu;
+
+  /// No description provided for @outingReviewEditTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar bebida do rolê'**
+  String get outingReviewEditTitle;
+
+  /// No description provided for @outingReviewTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebida deste rolê'**
+  String get outingReviewTitle;
+
+  /// No description provided for @outingReviewIsolation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esta bebida existe só neste rolê. Ela não entra no catálogo, nem em Minhas bebidas, nem em outros rolês.'**
+  String get outingReviewIsolation;
+
+  /// No description provided for @outingReviewEnded.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este rolê já foi encerrado. O item fica salvo nele.'**
+  String get outingReviewEnded;
+
+  /// No description provided for @outingReviewDrinkSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebida'**
+  String get outingReviewDrinkSection;
+
+  /// No description provided for @outingReviewNeedName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dê um nome para a bebida.'**
+  String get outingReviewNeedName;
+
+  /// No description provided for @outingReviewNeedType.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha o tipo da bebida.'**
+  String get outingReviewNeedType;
+
+  /// No description provided for @outingReviewVolumePositive.
+  ///
+  /// In pt, this message translates to:
+  /// **'O volume precisa ser maior que zero.'**
+  String get outingReviewVolumePositive;
+
+  /// No description provided for @outingReviewAbvRange.
+  ///
+  /// In pt, this message translates to:
+  /// **'O teor vai de 0 a 100%.'**
+  String get outingReviewAbvRange;
+
+  /// No description provided for @outingReviewOtherLines.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outras linhas lidas (toque para usar):'**
+  String get outingReviewOtherLines;
+
+  /// No description provided for @outingReviewPickType.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha o tipo da bebida'**
+  String get outingReviewPickType;
+
+  /// No description provided for @outingReviewTypeUnknown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo não identificado: escolha um.'**
+  String get outingReviewTypeUnknown;
+
+  /// No description provided for @outingReviewDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descrição do cardápio (opcional)'**
+  String get outingReviewDescription;
+
+  /// No description provided for @outingReviewPackageVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume da embalagem (opcional)'**
+  String get outingReviewPackageVolume;
+
+  /// No description provided for @outingReviewVolumeHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'É o tamanho do produto, não o quanto você bebeu. Em branco = desconhecido.'**
+  String get outingReviewVolumeHelper;
+
+  /// No description provided for @outingReviewAbvSource.
+  ///
+  /// In pt, this message translates to:
+  /// **'Origem: {source}'**
+  String outingReviewAbvSource(String source);
+
+  /// No description provided for @outingReviewIngredientsIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só o que o cardápio ou você informaram. As quantidades ficam desconhecidas até você completar ao registrar; o álcool só é calculado com volume e teor conhecidos.'**
+  String get outingReviewIngredientsIntro;
+
+  /// No description provided for @outingReviewAlcoholChip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Álcool'**
+  String get outingReviewAlcoholChip;
+
+  /// No description provided for @outingReviewDeclaredOptional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ingredientes declarados (opcional)'**
+  String get outingReviewDeclaredOptional;
+
+  /// No description provided for @outingReviewDeclaredHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Separe por vírgula. Só o que está escrito.'**
+  String get outingReviewDeclaredHelper;
+
+  /// No description provided for @outingReviewAdvertisedSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço anunciado'**
+  String get outingReviewAdvertisedSection;
+
+  /// No description provided for @outingReviewMenuPriceOptional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço do cardápio (opcional)'**
+  String get outingReviewMenuPriceOptional;
+
+  /// No description provided for @outingReviewMenuPriceHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só uma sugestão: ao registrar você confirma o que pagou. Valores em reais (R\$).'**
+  String get outingReviewMenuPriceHelper;
+
+  /// No description provided for @outingReviewSimilar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Parecidas no catálogo'**
+  String get outingReviewSimilar;
+
+  /// No description provided for @outingReviewSearch.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar'**
+  String get outingReviewSearch;
+
+  /// No description provided for @outingReviewSimilarNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Opcional. Escolher uma é só uma referência: o produto do catálogo nunca é alterado e nada é ligado sozinho.'**
+  String get outingReviewSimilarNote;
+
+  /// No description provided for @outingReviewNothingSimilar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nada parecido encontrado. Este item fica só no rolê.'**
+  String get outingReviewNothingSimilar;
+
+  /// No description provided for @outingReviewReferenceChosen.
+  ///
+  /// In pt, this message translates to:
+  /// **'Referência escolhida'**
+  String get outingReviewReferenceChosen;
+
+  /// No description provided for @outingReviewUseReference.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar como referência'**
+  String get outingReviewUseReference;
+
+  /// No description provided for @outingReviewFillEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preencher campos vazios'**
+  String get outingReviewFillEmpty;
+
+  /// No description provided for @outingReviewCopyIngredients.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copiar ingredientes (sem quantidades)'**
+  String get outingReviewCopyIngredients;
+
+  /// No description provided for @outingReviewOriginSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Origem dos dados'**
+  String get outingReviewOriginSection;
+
+  /// No description provided for @outingReviewOriginManual.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preenchido por você.'**
+  String get outingReviewOriginManual;
+
+  /// No description provided for @outingReviewOriginPhoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lido da foto e conferido por você. Leitura automática pode errar: confira cada campo.'**
+  String get outingReviewOriginPhoto;
+
+  /// No description provided for @outingReviewReferenceNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Com referência do catálogo (não é o mesmo registro).'**
+  String get outingReviewReferenceNote;
+
+  /// No description provided for @outingReviewSourceText.
+  ///
+  /// In pt, this message translates to:
+  /// **'Texto lido na foto'**
+  String get outingReviewSourceText;
+
+  /// No description provided for @outingReviewConfirmContinue.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar e continuar'**
+  String get outingReviewConfirmContinue;
+
+  /// No description provided for @outingReviewSaveOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar só neste rolê'**
+  String get outingReviewSaveOnly;
+
+  /// No description provided for @outingDrinksSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebidas deste rolê'**
+  String get outingDrinksSectionTitle;
+
+  /// No description provided for @outingDrinksTapToLog.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só existem neste rolê. Toque para registrar uma.'**
+  String get outingDrinksTapToLog;
+
+  /// No description provided for @outingDrinksRemoveTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar da lista do rolê?'**
+  String get outingDrinksRemoveTitle;
+
+  /// No description provided for @outingDrinksRemoveBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ela sai de \"Bebidas deste rolê\". Os registros que você já fez continuam no histórico.'**
+  String get outingDrinksRemoveBody;
+
+  /// No description provided for @outingDrinksRemove.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar'**
+  String get outingDrinksRemove;
+
+  /// No description provided for @outingDrinksMoreActions.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais ações'**
+  String get outingDrinksMoreActions;
+
+  /// No description provided for @outingDrinksRemoveFromList.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar da lista'**
+  String get outingDrinksRemoveFromList;
+
+  /// No description provided for @outingDrinksMenuPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'cardápio {price}'**
+  String outingDrinksMenuPrice(String price);
+
+  /// No description provided for @outingScanUnfinishedMenu.
+  ///
+  /// In pt, this message translates to:
+  /// **'Leitura de cardápio não concluída'**
+  String get outingScanUnfinishedMenu;
+
+  /// No description provided for @outingScanUnfinishedLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Leitura de rótulo não concluída'**
+  String get outingScanUnfinishedLabel;
+
+  /// No description provided for @outingScanUnfinishedNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ela continua ligada a este rolê. Se você concluir agora, o resultado fica salvo nele, não em outro.'**
+  String get outingScanUnfinishedNote;
+
+  /// No description provided for @outingScanOnlyHere.
+  ///
+  /// In pt, this message translates to:
+  /// **'Existem só neste rolê.'**
+  String get outingScanOnlyHere;
+
+  /// No description provided for @outingScanPhotosTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fotos do rolê'**
+  String get outingScanPhotosTitle;
+
+  /// No description provided for @outingScanAllUploaded.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fotos guardadas também na nuvem, em arquivo privado.'**
+  String get outingScanAllUploaded;
+
+  /// No description provided for @outingScanPending.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 foto ainda só neste aparelho; o envio é tentado de novo sozinho.} other{{count} fotos ainda só neste aparelho; o envio é tentado de novo sozinho.}}'**
+  String outingScanPending(int count);
+
+  /// No description provided for @outingScanLocalOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 foto só neste aparelho.} other{{count} fotos só neste aparelho.}}'**
+  String outingScanLocalOnly(int count);
+
+  /// No description provided for @photoKindLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rótulo'**
+  String get photoKindLabel;
+
+  /// No description provided for @photoKindMenu.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cardápio'**
+  String get photoKindMenu;
 }
 
 class _AppLocalizationsDelegate

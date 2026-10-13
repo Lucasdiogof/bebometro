@@ -11,6 +11,7 @@ import '../../scan/presentation/photo_widgets.dart';
 import '../data/outing_drink_repository.dart';
 import '../domain/outing_drink.dart';
 import 'outing_drink_review_page.dart';
+import '../../l10n/l10n.dart';
 
 /// "Bebidas deste rolê": items that exist only in this outing (manual, label
 /// or menu). Choosing one opens the usual registration form; picking it here
@@ -62,18 +63,16 @@ class _OutingDrinksSectionState extends State<OutingDrinksSection> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Tirar da lista do rolê?'),
-        content: const Text(
-            'Ela sai de "Bebidas deste rolê". Os registros que você já fez '
-            'continuam no histórico.'),
+        title: Text(tr.outingDrinksRemoveTitle),
+        content: Text(tr.outingDrinksRemoveBody),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancelar')),
+              child: Text(tr.commonCancel)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Tirar',
-                  style: TextStyle(color: AppColors.danger))),
+              child: Text(tr.outingDrinksRemove,
+                  style: const TextStyle(color: AppColors.danger))),
         ],
       ),
     );
@@ -86,9 +85,8 @@ class _OutingDrinksSectionState extends State<OutingDrinksSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionTitle('Bebidas deste rolê'),
-        const Text('Só existem neste rolê. Toque para registrar uma.',
-            style: AppText.caption),
+        SectionTitle(tr.outingDrinksSectionTitle),
+        Text(tr.outingDrinksTapToLog, style: AppText.caption),
         const SizedBox(height: AppSpace.sm),
         for (final d in _items)
           Padding(
@@ -124,15 +122,16 @@ class _OutingDrinksSectionState extends State<OutingDrinksSection> {
                   ),
                 ),
                 PopupMenuButton<String>(
-                  tooltip: 'Mais ações',
+                  tooltip: tr.outingDrinksMoreActions,
                   onSelected: (v) {
                     if (v == 'edit') _edit(d);
                     if (v == 'remove') _remove(d);
                   },
-                  itemBuilder: (_) => const [
-                    PopupMenuItem(value: 'edit', child: Text('Editar')),
+                  itemBuilder: (_) => [
+                    PopupMenuItem(value: 'edit', child: Text(tr.commonEdit)),
                     PopupMenuItem(
-                        value: 'remove', child: Text('Tirar da lista')),
+                        value: 'remove',
+                        child: Text(tr.outingDrinksRemoveFromList)),
                   ],
                 ),
               ]),
@@ -148,7 +147,7 @@ class _OutingDrinksSectionState extends State<OutingDrinksSection> {
       if (d.volumeMl != null) formatMl(d.volumeMl!),
       if (d.abvPercent != null) formatAbv(d.abvPercent!),
       if (d.advertisedCents != null)
-        'cardápio ${formatCents(d.advertisedCents!)}',
+        tr.outingDrinksMenuPrice(formatCents(d.advertisedCents!)),
     ];
     return parts.join(' · ');
   }

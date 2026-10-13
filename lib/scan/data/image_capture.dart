@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'image_tools.dart';
+import '../../l10n/l10n.dart';
 
 enum CaptureSource { camera, gallery }
 
@@ -43,8 +44,8 @@ class ImageCaptureService {
   Future<Uint8List?> pick(CaptureSource source) async {
     if (!supports(source)) {
       throw CaptureException(source == CaptureSource.camera
-          ? 'A câmera não está disponível aqui. Escolha uma foto da galeria.'
-          : 'A galeria não está disponível aqui.');
+          ? tr.captureCameraUnavailable
+          : tr.captureGalleryUnavailable);
     }
     final XFile? file;
     try {
@@ -60,12 +61,12 @@ class ImageCaptureService {
     } on PlatformException catch (e) {
       final denied = e.code.contains('access_denied') ||
           e.code.contains('permission');
+      final camera = source == CaptureSource.camera;
       throw CaptureException(denied
-          ? 'Sem permissão para usar a ${source == CaptureSource.camera ? 'câmera' : 'galeria'}. '
-              'Libere nas configurações do aparelho ou escolha outra opção.'
-          : 'Não foi possível abrir a ${source == CaptureSource.camera ? 'câmera' : 'galeria'}.');
+          ? (camera ? tr.capturePermissionCamera : tr.capturePermissionGallery)
+          : (camera ? tr.captureOpenCameraFailed : tr.captureOpenGalleryFailed));
     } catch (_) {
-      throw const CaptureException('Não foi possível abrir a captura de imagem.');
+      throw CaptureException(tr.captureFailed);
     }
     if (file == null) return null;
     return _validated(file);
@@ -90,23 +91,21 @@ class ImageCaptureService {
     try {
       bytes = await file.readAsBytes();
     } catch (_) {
-      throw const CaptureException('Não foi possível ler essa imagem.');
+      throw CaptureException(tr.captureUnreadable);
     }
     if (bytes.isEmpty) {
-      throw const CaptureException('Não foi possível ler essa imagem.');
+      throw CaptureException(tr.captureUnreadable);
     }
     if (bytes.length > maxBytes) {
-      throw const CaptureException(
-          'A imagem é muito grande. Tente uma foto menor.');
+      throw CaptureException(tr.captureTooBig);
     }
     if (!looksLikeImage(bytes)) {
-      throw const CaptureException(
-          'Esse arquivo não parece ser uma imagem válida.');
+      throw CaptureException(tr.captureNotImage);
     }
     try {
       return await ensureJpeg(bytes);
     } catch (_) {
-      throw const CaptureException('Não foi possível ler essa imagem.');
+      throw CaptureException(tr.captureUnreadable);
     }
   }
 }

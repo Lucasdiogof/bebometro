@@ -1,6 +1,7 @@
 import '../../core/utils/formatters.dart';
 import '../../drinks/domain/drink_category.dart';
 import 'ocr_models.dart';
+import '../../l10n/l10n.dart';
 
 /// What could be read from a label. Every field is optional: what was not
 /// found stays null (unknown), and doubts are listed in [notes] instead of
@@ -36,22 +37,23 @@ class LabelReading {
 }
 
 final _nutritionStart = RegExp(
-    r'informacao nutricional|informacoes nutricionais|valor energetico|valores diarios|% ?vd');
-final _servingWord = RegExp(r'porcao|por 100|serving');
+    r'informacao nutricional|informacoes nutricionais|valor energetico|valores diarios|% ?vd|nutrition facts|nutritional information|nutrition information|informacion nutricional|daily value');
+final _ingredientsWord = RegExp(r'ingredient(?:es|s)');
+final _servingWord = RegExp(r'porcao|por 100|serving|per 100|racion');
 final _volumeRx = RegExp(
   r'(?<![\d.,])(\d{1,4}(?:[.,]\d{1,3})?)\s*(ml|cl|lt|l|litros?)(?![a-zA-ZÀ-ú])',
   caseSensitive: false,
 );
 final _abvRx = RegExp(
-  r'(\d{1,2}(?:[.,]\d{1,2})?)\s*(?:%|°|º)?\s*(vol|v/v|alc|gl|g\.l)',
+  r'(\d{1,2}(?:[.,]\d{1,2})?)\s*(?:%|°|º)?\s*(vol|v/v|alc|gl|g\.l|abv)',
   caseSensitive: false,
 );
 final _abvPercentRx = RegExp(r'(\d{1,2}(?:[.,]\d{1,2})?)\s*%');
 final _noiseRx = RegExp(
-  r'ingredientes|industria|cnpj|validade|lote|fabricad|conservar|alergic|contem|sac\b|www\.|http|@|\bval\b|\bfab\b|reciclav|retorn|consumo|beba com|venda proibida|proibid|menores|dirija|gravidas|nutricional|codigo|\bean\b|\bkcal\b',
+  r'ingredientes|ingredients|industria|cnpj|validade|lote|fabricad|conservar|alergic|contem|sac\b|www\.|http|@|\bval\b|\bfab\b|reciclav|retorn|consumo|beba com|venda proibida|proibid|menores|dirija|gravidas|nutricional|codigo|\bean\b|\bkcal\b|contains|best before|drink responsibly|manufactured|distributed|recycl|caducidad|consumir|contiene|beba con moderacion|elaborado|fabricado',
 );
 final _stopIngredients = RegExp(
-  r'^(contem|nao contem|informa|industria|validade|lote|conservar|alergic|fabricad|sac|cnpj|venda|beba|valores)',
+  r'^(contem|nao contem|informa|industria|validade|lote|conservar|alergic|fabricad|sac|cnpj|venda|beba|valores|contains|may contain|allergen|best before|manufactured|distributed|nutrition|caducidad|contiene|puede contener|elaborado|fabricado)',
 );
 
 LabelReading parseLabel(OcrResult ocr) {
@@ -102,7 +104,7 @@ LabelReading parseLabel(OcrResult ocr) {
       }
     }
     // A bare "4,5%" counts only on a line that talks about alcohol.
-    if (!found && RegExp(r'alc|teor').hasMatch(lower)) {
+    if (!found && RegExp(r'alc|teor|abv|gradua').hasMatch(lower)) {
       for (final m in _abvPercentRx.allMatches(text)) {
         final v = parseDecimal(m.group(1)!);
         if (v != null && v >= 0 && v <= 100 && !abvs.contains(v)) abvs.add(v);
@@ -114,25 +116,23 @@ LabelReading parseLabel(OcrResult ocr) {
   if (volumes.length == 1) {
     volume = volumes.first;
   } else if (volumes.length > 1) {
-    notes.add('Mais de um volume no texto (${volumes.map(formatMl).join(', ')}). '
-        'Escolha o da embalagem.');
+    notes.add(tr.parseManyVolumes(volumes.map(formatMl).join(', ')));
   }
   double? abv;
   if (abvs.length == 1) {
     abv = abvs.first;
   } else if (abvs.length > 1) {
-    notes.add('Mais de um teor no texto (${abvs.map(formatAbv).join(', ')}). '
-        'Confira no rótulo.');
+    notes.add(tr.parseManyAbvs(abvs.map(formatAbv).join(', ')));
   }
 
   // Declared ingredients only.
   List<String>? ingredients;
   for (var i = 0; i < lines.length; i++) {
     final lower = normalizeText(lines[i].text);
-    final idx = lower.indexOf('ingredientes');
-    if (idx < 0) continue;
+    final found = _ingredientsWord.firstMatch(lower);
+    if (found == null) continue;
     final raw = lines[i].text;
-    final start = (idx + 'ingredientes'.length).clamp(0, raw.length);
+    final start = found.end.clamp(0, raw.length);
     final buffer = StringBuffer(raw.substring(start));
     for (var j = i + 1; j < lines.length && j <= i + 4; j++) {
       final next = normalizeText(lines[j].text);
@@ -144,7 +144,7 @@ LabelReading parseLabel(OcrResult ocr) {
     final items = buffer
         .toString()
         .replaceFirst(RegExp(r'^[\s:.\-]+'), '')
-        .split(RegExp(r'[,;]|\se\s'))
+        .split(RegExp(r'[,;]|\s(?:e|and|y)\s'))
         .map((s) => s.trim().replaceAll(RegExp(r'[.\s]+$'), ''))
         .where((s) => s.length > 1 && s.length < 80)
         .toList();
@@ -176,7 +176,7 @@ LabelReading parseLabel(OcrResult ocr) {
 
   final all = normalizeText(lines.map((l) => l.text).join(' '));
   if (nameCandidates.length > 1) {
-    notes.add('Confira o nome e a marca. Toque nas sugestões para trocar.');
+    notes.add(tr.parseCheckName);
   }
 
   return LabelReading(
@@ -217,20 +217,20 @@ DrinkCategory? guessCategory(String text) {
   final normalized = normalizeText(text);
   bool has(String pattern) => RegExp(pattern).hasMatch(normalized);
   if (has(r'chopp|chope')) return DrinkCategory.draft;
-  if (has(r'cerveja|pilsen|lager|\bipa\b|stout|weiss|witbier')) {
+  if (has(r'cerveja|cerveza|beer|pilsen|lager|\bipa\b|stout|weiss|witbier')) {
     return DrinkCategory.beer;
   }
-  if (has(r'vinho|espumante|prosecco|cabernet|merlot|malbec')) {
+  if (has(r'vinho|vino|wine|espumante|prosecco|cabernet|merlot|malbec')) {
     return DrinkCategory.wine;
   }
-  if (has(r'caipirinha|caipiroska|mojito|margarita|negroni|gin tonica|drink|drinque|sour|spritz|moscow|cosmopolitan')) {
+  if (has(r'caipirinha|caipiroska|mojito|margarita|negroni|gin tonica|drink|drinque|sour|spritz|moscow|cosmopolitan|cocktail|coctel')) {
     return DrinkCategory.cocktail;
   }
-  if (has(r'vodka|\bgin\b|whisk|\brum\b|cachaca|tequila|licor|conhaque|aguardente|dose')) {
+  if (has(r'vodka|\bgin\b|ginebra|whisk|\brum\b|\bron\b|cachaca|tequila|licor|liqueur|conhaque|brandy|aguardente|dose')) {
     return DrinkCategory.spirit;
   }
-  if (has(r'agua mineral|agua sem gas|agua com gas')) return DrinkCategory.water;
-  if (has(r'refrigerante|suco|guarana|energetico|sem alcool')) {
+  if (has(r'agua mineral|agua sem gas|agua com gas|agua sin gas|mineral water|sparkling water')) return DrinkCategory.water;
+  if (has(r'refrigerante|refresco|gaseosa|soda|suco|jugo|juice|guarana|energetico|sem alcool|sin alcohol|alcohol free')) {
     return DrinkCategory.nonAlcoholic;
   }
   return null;

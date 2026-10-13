@@ -20,6 +20,7 @@ import '../data/scan_draft_store.dart';
 import '../data/text_recognizer.dart';
 import '../domain/menu_parser.dart';
 import '../domain/ocr_models.dart';
+import '../../l10n/l10n.dart';
 
 /// How many menu items were saved into the outing.
 class MenuResult {
@@ -108,11 +109,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
       }
       final lostPhotos = draft.photoIds.length - _photoIds.length;
       if (lostPhotos > 0) {
-        _error = lostPhotos == 1
-            ? 'Uma foto desta leitura não está mais disponível. Os itens '
-                'dela foram mantidos para você conferir.'
-            : '$lostPhotos fotos desta leitura não estão mais disponíveis. '
-                'Os itens delas foram mantidos para você conferir.';
+        _error = tr.scanMenuLostPhotos(lostPhotos);
       }
       final ocr = p['ocr'];
       if (ocr is Map) {
@@ -190,7 +187,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
       await _repo.files.write(id, bytes);
     } catch (_) {
       if (mounted) {
-        setState(() => _error = 'Não foi possível guardar a foto no aparelho.');
+        setState(() => _error = tr.scanPhotoSaveFailed);
       }
       return;
     }
@@ -216,7 +213,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
         _ocr.remove(id); // read this image again
       });
     } catch (_) {
-      if (mounted) setState(() => _error = 'Não foi possível girar a imagem.');
+      if (mounted) setState(() => _error = tr.scanRotateFailed);
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -261,8 +258,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
         _merge(_photoIds.indexOf(id), id, result);
       }
       if (_candidates.isEmpty) {
-        _error = 'Nenhum item foi identificado. Gire a foto, tente de perto '
-            'ou cole o texto do cardápio.';
+        _error = tr.scanMenuNoItemsRead;
       } else {
         _reviewing = true;
       }
@@ -301,7 +297,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
       _candidates = [...others, ...markDuplicates(others, parsed.candidates)];
       _notes = {..._notes, ...parsed.notes}.toList();
       _reviewing = true;
-      _error = _candidates.isEmpty ? 'Nenhum item foi identificado.' : null;
+      _error = _candidates.isEmpty ? tr.scanMenuNoItems : null;
     });
   }
 
@@ -346,15 +342,15 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     if (_saving) return;
     final kept = _kept;
     if (kept.isEmpty) {
-      showToast(context, 'Nenhum item selecionado.');
+      showToast(context, tr.scanMenuNoneSelected);
       return;
     }
     if (kept.any((c) => c.name.trim().isEmpty)) {
-      showToast(context, 'Há item sem nome. Corrija ou descarte.');
+      showToast(context, tr.scanMenuUnnamed);
       return;
     }
     if (kept.any((c) => c.category == null)) {
-      showToast(context, 'Escolha o tipo dos itens marcados com "Tipo?".');
+      showToast(context, tr.scanMenuNeedType);
       return;
     }
     setState(() => _saving = true);
@@ -404,7 +400,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _saving = false);
-      showToast(context, 'Não foi possível salvar. Seus itens continuam aqui.');
+      showToast(context, tr.scanMenuSaveFailed);
     }
   }
 
@@ -412,17 +408,16 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Descartar esta leitura?'),
-        content: const Text('As fotos e os itens ainda não confirmados serão '
-            'apagados.'),
+        title: Text(tr.scanMenuDiscardTitle),
+        content: Text(tr.scanMenuDiscardBody),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancelar')),
+              child: Text(tr.commonCancel)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Descartar',
-                  style: TextStyle(color: AppColors.danger))),
+              child: Text(tr.entryDiscard,
+                  style: const TextStyle(color: AppColors.danger))),
         ],
       ),
     );
@@ -442,11 +437,11 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_reviewing ? 'Itens do cardápio' : 'Ler cardápio'),
+        title: Text(_reviewing ? tr.scanMenuReviewTitle : tr.catalogScanMenu),
         actions: [
           if (_photoIds.isNotEmpty || _candidates.isNotEmpty)
             IconButton(
-              tooltip: 'Descartar leitura',
+              tooltip: tr.scanDiscardReading,
               onPressed: _saving ? null : _discardAll,
               icon: const Icon(Icons.delete_outline_rounded),
             ),
@@ -464,33 +459,27 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
       padding: const EdgeInsets.fromLTRB(
           AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
       children: [
-        const SurfaceCard(
-          child: Text(
-            'Fotografe uma página por vez, de frente e com boa luz, sem cortar '
-            'os preços. Pode adicionar várias fotos. Você confere e corrige '
-            'cada item antes de salvar.',
-            style: AppText.body,
-          ),
+        SurfaceCard(
+          child: Text(tr.scanMenuTip, style: AppText.body),
         ),
         if (getIt<OutingRepository>().byId(widget.outingId)?.endedAt !=
             null) ...[
           const SizedBox(height: AppSpace.sm),
-          const InfoPill(
-            'Este rolê já foi encerrado. Os itens ficam salvos nele.',
+          InfoPill(
+            tr.scanMenuEnded,
             icon: Icons.info_outline_rounded,
             warning: true,
           ),
         ],
         if (!_repo.files.isDurable) ...[
           const SizedBox(height: AppSpace.sm),
-          const Text('No navegador as fotos só ficam guardadas durante esta sessão.',
-              style: AppText.caption),
+          Text(tr.scanMenuWebPhotos, style: AppText.caption),
         ],
         if (_error != null) ...[
           const SizedBox(height: AppSpace.md),
           InfoPill(_error!, icon: Icons.error_outline_rounded, warning: true),
         ],
-        SectionTitle('Fotos (${_photoIds.length})'),
+        SectionTitle(tr.scanMenuPhotos(_photoIds.length)),
         for (var i = 0; i < _photoIds.length; i++)
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpace.sm),
@@ -513,28 +502,28 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Foto ${i + 1}', style: AppText.subtitle),
+                      Text(tr.scanMenuPhotoN(i + 1), style: AppText.subtitle),
                       Text(
                         _ocr.containsKey(_photoIds[i])
-                            ? 'Lida'
-                            : 'Ainda não lida',
+                            ? tr.scanMenuRead
+                            : tr.scanMenuUnread,
                         style: AppText.caption,
                       ),
                     ],
                   ),
                 ),
                 IconButton(
-                  tooltip: 'Girar para a esquerda',
+                  tooltip: tr.scanRotateLeft,
                   onPressed: () => _rotate(_photoIds[i], 270),
                   icon: const Icon(Icons.rotate_left_rounded),
                 ),
                 IconButton(
-                  tooltip: 'Girar para a direita',
+                  tooltip: tr.scanRotateRight,
                   onPressed: () => _rotate(_photoIds[i], 90),
                   icon: const Icon(Icons.rotate_right_rounded),
                 ),
                 IconButton(
-                  tooltip: 'Remover foto',
+                  tooltip: tr.scanRemovePhoto,
                   onPressed: _reading ? null : () => _removePhoto(_photoIds[i]),
                   icon: const Icon(Icons.close_rounded,
                       color: AppColors.danger),
@@ -547,13 +536,14 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
             OutlinedButton.icon(
               onPressed: _reading ? null : () => _pick(CaptureSource.camera),
               icon: const Icon(Icons.photo_camera_outlined),
-              label: Text(_photoIds.isEmpty ? 'Tirar foto' : 'Mais uma foto'),
+              label: Text(
+                  _photoIds.isEmpty ? tr.scanTakePhoto : tr.scanAnotherPhoto),
             ),
           if (_capture.supports(CaptureSource.gallery))
             OutlinedButton.icon(
               onPressed: _reading ? null : () => _pick(CaptureSource.gallery),
               icon: const Icon(Icons.photo_library_outlined),
-              label: const Text('Escolher da galeria'),
+              label: Text(tr.scanChooseGallery),
             ),
         ]),
         if (_photoIds.isNotEmpty && canRead) ...[
@@ -561,28 +551,25 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
           if (_reading) ...[
             const LinearProgressIndicator(),
             const SizedBox(height: AppSpace.sm),
-            const Text('Lendo o texto das fotos neste aparelho…',
-                style: AppText.caption),
+            Text(tr.scanMenuReadingMany, style: AppText.caption),
             TextButton(
                 onPressed: _cancelReading,
-                child: const Text('Cancelar leitura')),
+                child: Text(tr.scanCancelReading)),
           ] else
             FilledButton.icon(
               onPressed: unread ? _read : () => setState(() => _reviewing = true),
               icon: const Icon(Icons.text_snippet_outlined),
-              label: Text(unread ? 'Ler cardápio' : 'Ver itens lidos'),
+              label: Text(unread ? tr.catalogScanMenu : tr.scanMenuSeeRead),
             ),
         ],
         if (!canRead) ...[
           const SizedBox(height: AppSpace.md),
-          const InfoPill(
-            'A leitura automática não está disponível aqui (só no app para '
-            'Android e iOS). Veja as fotos e digite ou cole o texto do '
-            'cardápio, ou adicione os itens à mão.',
+          InfoPill(
+            tr.scanMenuOcrUnavailable,
             icon: Icons.info_outline_rounded,
           ),
         ],
-        const SectionTitle('Texto do cardápio (opcional)'),
+        SectionTitle(tr.scanMenuPastedSection),
         TextField(
           controller: _pasted,
           minLines: 3,
@@ -591,9 +578,8 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
             setState(() {});
             _saveDraftSoon();
           },
-          decoration: const InputDecoration(
-            hintText: 'Um item por linha, com o preço na mesma linha ou na '
-                'seguinte. Ex.: Caipirinha R\$ 18,00',
+          decoration: InputDecoration(
+            hintText: tr.scanMenuPastedHint,
           ),
         ),
         const SizedBox(height: AppSpace.md),
@@ -601,16 +587,16 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
           if (_pasted.text.trim().isNotEmpty)
             FilledButton(
               onPressed: _reading ? null : _interpretPasted,
-              child: const Text('Interpretar texto'),
+              child: Text(tr.scanInterpret),
             ),
           OutlinedButton(
             onPressed: _reading ? null : _addManual,
-            child: const Text('Adicionar item à mão'),
+            child: Text(tr.scanMenuAddManual),
           ),
           if (_candidates.isNotEmpty)
             TextButton(
               onPressed: () => setState(() => _reviewing = true),
-              child: Text('Ver ${_candidates.length} item(ns)'),
+              child: Text(tr.scanMenuSeeCount(_candidates.length)),
             ),
         ]),
       ],
@@ -625,16 +611,11 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
           padding: const EdgeInsets.fromLTRB(
               AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
           children: [
-            const Text(
-              'Marque os itens que quer deixar disponíveis neste rolê. Nada '
-              'é registrado como consumo agora: você escolhe a bebida e '
-              'confirma o preço quando for pedir.',
-              style: AppText.caption,
-            ),
+            Text(tr.scanMenuReviewIntro, style: AppText.caption),
             for (final n in _notes)
               Padding(
                 padding: const EdgeInsets.only(top: AppSpace.sm),
-                child: InfoPill(n,
+                child: InfoPill(menuNoteText(n),
                     icon: Icons.help_outline_rounded, warning: true),
               ),
             const SizedBox(height: AppSpace.md),
@@ -642,12 +623,12 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
               TextButton.icon(
                 onPressed: () => setState(() => _reviewing = false),
                 icon: const Icon(Icons.photo_outlined),
-                label: const Text('Fotos e leitura'),
+                label: Text(tr.scanMenuPhotosAndReading),
               ),
               TextButton.icon(
                 onPressed: _addManual,
                 icon: const Icon(Icons.add_rounded),
-                label: const Text('Adicionar item'),
+                label: Text(tr.scanMenuAddItem),
               ),
             ]),
             for (final c in _candidates)
@@ -668,9 +649,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
       BottomActionBar(
         child: FilledButton(
           onPressed: _saving || kept == 0 ? null : _confirm,
-          child: Text(kept == 1
-              ? 'Salvar 1 item neste rolê'
-              : 'Salvar $kept itens neste rolê'),
+          child: Text(tr.scanMenuSave(kept)),
         ),
       ),
     ]);
@@ -716,22 +695,22 @@ class _CandidateCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(c.name.isEmpty ? '(sem nome)' : c.name,
+                      Text(c.name.isEmpty ? tr.scanMenuNoName : c.name,
                           style: AppText.subtitle),
                       if (c.description != null)
                         Text(c.description!, style: AppText.caption),
                       if (c.volumeMl != null)
-                        Text('Tamanho no cardápio: ${formatMl(c.volumeMl!)}',
+                        Text(tr.scanMenuSize(formatMl(c.volumeMl!)),
                             style: AppText.caption),
                       if (c.ingredients.isNotEmpty)
-                        Text('Ingredientes citados: ${c.ingredients.join(', ')}',
+                        Text(tr.scanMenuIngredientsCited(c.ingredients.join(', ')),
                             style: AppText.caption),
                     ],
                   ),
                 ),
               ),
               IconButton(
-                tooltip: 'Editar item',
+                tooltip: tr.scanMenuEditItem,
                 onPressed: onEdit,
                 icon: const Icon(Icons.edit_outlined),
               ),
@@ -745,7 +724,7 @@ class _CandidateCard extends StatelessWidget {
                 children: [
                   DropdownButton<DrinkCategory>(
                     value: c.category,
-                    hint: const Text('Tipo?'),
+                    hint: Text(tr.scanMenuTypeHint),
                     isDense: true,
                     underline: const SizedBox.shrink(),
                     items: [
@@ -755,28 +734,23 @@ class _CandidateCard extends StatelessWidget {
                     onChanged: onCategory,
                   ),
                   if (c.duplicate)
-                    const InfoPill('Repetido em outra foto',
-                        icon: Icons.copy_rounded),
+                    InfoPill(tr.scanMenuDuplicate, icon: Icons.copy_rounded),
                   if (c.promo)
-                    const InfoPill('Possível promoção: confirme o valor',
+                    InfoPill(tr.scanMenuPromo,
                         icon: Icons.local_offer_outlined, warning: true),
                   if (c.priceCents != null)
-                    InfoPill('${formatCents(c.priceCents!)} no cardápio',
+                    InfoPill(tr.scanMenuPriceOnMenu(formatCents(c.priceCents!)),
                         icon: Icons.sell_outlined)
                   else if (c.priceOptions.isEmpty)
-                    const InfoPill('Sem preço lido', icon: Icons.sell_outlined),
+                    InfoPill(tr.scanMenuNoPriceRead, icon: Icons.sell_outlined),
                 ],
               ),
             ),
             if (c.needsPriceChoice) ...[
               const SizedBox(height: AppSpace.sm),
-              const Padding(
-                padding: EdgeInsets.only(left: AppSpace.md),
-                child: Text(
-                  'Não deu para ter certeza do preço. Escolha o certo ou '
-                  'deixe sem preço:',
-                  style: AppText.caption,
-                ),
+              Padding(
+                padding: const EdgeInsets.only(left: AppSpace.md),
+                child: Text(tr.scanMenuPriceUnsure, style: AppText.caption),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: AppSpace.md),
@@ -796,7 +770,7 @@ class _CandidateCard extends StatelessWidget {
                 padding: const EdgeInsets.only(left: AppSpace.md),
                 child: TextButton(
                   onPressed: () => onPrice(null),
-                  child: const Text('Trocar preço'),
+                  child: Text(tr.scanMenuChangePrice),
                 ),
               ),
             ],
@@ -852,19 +826,20 @@ class _CandidateEditorState extends State<_CandidateEditor> {
   void _apply() {
     final name = _name.text.trim();
     if (name.isEmpty) {
-      setState(() => _problem = 'Dê um nome ao item.');
+      setState(() => _problem = tr.scanMenuNeedName);
       return;
     }
     final volumeText = _volume.text.trim();
     final volume = parseInteger(volumeText);
     if (volumeText.isNotEmpty && (volume == null || volume <= 0)) {
-      setState(() => _problem = 'Tamanho inválido.');
+      setState(() => _problem = tr.scanMenuInvalidSize);
       return;
     }
     final priceText = _price.text.trim();
     final price = parseCents(priceText);
     if (priceText.isNotEmpty && price == null) {
-      setState(() => _problem = 'Preço inválido.');
+      setState(() => _problem =
+          numberInputError(priceText) ?? tr.scanMenuInvalidPrice);
       return;
     }
     final description = _description.text.trim();
@@ -894,13 +869,13 @@ class _CandidateEditorState extends State<_CandidateEditor> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.isNew ? 'Novo item' : 'Editar item',
+              Text(widget.isNew ? tr.scanMenuNewItem : tr.scanMenuEditItem,
                   style: AppText.title),
               const SizedBox(height: AppSpace.md),
               TextField(
                 controller: _name,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(labelText: 'Nome'),
+                decoration: InputDecoration(labelText: tr.scanMenuName),
               ),
               const SizedBox(height: AppSpace.md),
               TextField(
@@ -909,7 +884,7 @@ class _CandidateEditorState extends State<_CandidateEditor> {
                 maxLines: 3,
                 textCapitalization: TextCapitalization.sentences,
                 decoration:
-                    const InputDecoration(labelText: 'Descrição (opcional)'),
+                    InputDecoration(labelText: tr.scanMenuDescription),
               ),
               const SizedBox(height: AppSpace.md),
               Wrap(
@@ -931,8 +906,8 @@ class _CandidateEditorState extends State<_CandidateEditor> {
                   child: TextField(
                     controller: _volume,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        labelText: 'Tamanho (opcional)', suffixText: 'ml'),
+                    decoration: InputDecoration(
+                        labelText: tr.scanMenuSizeOptional, suffixText: 'ml'),
                   ),
                 ),
                 const SizedBox(width: AppSpace.md),
@@ -941,8 +916,8 @@ class _CandidateEditorState extends State<_CandidateEditor> {
                     controller: _price,
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
-                    decoration: const InputDecoration(
-                        labelText: 'Preço (opcional)', prefixText: r'R$ '),
+                    decoration: InputDecoration(
+                        labelText: tr.scanMenuPriceOptional, prefixText: r'R$ '),
                   ),
                 ),
               ]),
@@ -951,9 +926,9 @@ class _CandidateEditorState extends State<_CandidateEditor> {
                 controller: _ingredients,
                 minLines: 1,
                 maxLines: 3,
-                decoration: const InputDecoration(
-                  labelText: 'Ingredientes citados (opcional)',
-                  helperText: 'Separe por vírgula. Sem quantidades.',
+                decoration: InputDecoration(
+                  labelText: tr.scanMenuCitedOptional,
+                  helperText: tr.scanMenuCitedHelper,
                 ),
               ),
               if (_problem != null) ...[
@@ -962,7 +937,7 @@ class _CandidateEditorState extends State<_CandidateEditor> {
                     style: const TextStyle(color: AppColors.danger)),
               ],
               const SizedBox(height: AppSpace.lg),
-              FilledButton(onPressed: _apply, child: const Text('Aplicar')),
+              FilledButton(onPressed: _apply, child: Text(tr.commonApply)),
             ],
           ),
         ),
