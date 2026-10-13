@@ -53,7 +53,7 @@ class _ShareCardPageState extends State<ShareCardPage> {
       if (_showDrinks)
         for (final g in s.groups.take(8)) '${g.count}× ${g.name}',
       if (_showDrinks && s.groups.length > 8)
-        tr.shareCardOthers(s.groups.length - 8),
+        tr.shareCardOthers('${s.groups.length - 8}'),
       if (_showSpending)
         s.unpricedCount > 0
             ? tr.shareCardSpendTextPartial(formatCents(s.informedCents))
@@ -276,7 +276,7 @@ class _Card extends StatelessWidget {
                 style: const TextStyle(color: AppColors.text, fontSize: 15),
               ),
             if (summary.groups.length > 5)
-              Text(tr.shareCardOthers(summary.groups.length - 5),
+              Text(tr.shareCardOthers('${summary.groups.length - 5}'),
                   style: const TextStyle(color: AppColors.textMuted)),
           ],
           const Spacer(),

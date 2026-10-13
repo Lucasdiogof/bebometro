@@ -85,13 +85,13 @@ class _LinkFormState extends State<_LinkForm> {
         builder: (ctx) => AlertDialog(
           title: Text(tr.tabLinkSameBottleTitle),
           content: Text(
-            tr.tabLinkSameBottleBody(g.length, g.first.name,
+            tr.tabLinkSameBottleBody('${g.length}', g.first.name,
                 formatCents(g.first.billTotalCents!)),
           ),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: Text(tr.tabLinkSeparate(g.length))),
+                child: Text(tr.tabLinkSeparate('${g.length}'))),
             TextButton(
                 onPressed: () => Navigator.pop(ctx, true),
                 child: Text(tr.tabLinkSame)),
@@ -179,7 +179,7 @@ class _LinkFormState extends State<_LinkForm> {
                             Navigator.of(context).pop(choice);
                           }
                         },
-                  child: Text(tr.tabLinkInclude(_picked.length)),
+                  child: Text(tr.tabLinkInclude('${_picked.length}')),
                 ),
               ),
             ),

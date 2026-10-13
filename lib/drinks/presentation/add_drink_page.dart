@@ -651,7 +651,7 @@ class _ItemTile extends StatelessWidget {
                 OriginBadge(item.origin),
                 if (count > 1) ...[
                   const SizedBox(width: AppSpace.sm),
-                  Text(tr.catalogSizes(count),
+                  Text(tr.catalogSizes('$count'),
                       style: AppText.caption.copyWith(fontSize: 12)),
                 ],
               ]),

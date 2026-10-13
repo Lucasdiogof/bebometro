@@ -68,7 +68,7 @@ class AccumulatedGlass extends StatelessWidget {
                 if (unknownVolumeCount > 0) ...[
                   const SizedBox(height: AppSpace.md),
                   InfoPill(
-                    tr.glassNoVolume(unknownVolumeCount),
+                    tr.glassNoVolume('$unknownVolumeCount'),
                     icon: Icons.opacity_outlined,
                     warning: true,
                   ),

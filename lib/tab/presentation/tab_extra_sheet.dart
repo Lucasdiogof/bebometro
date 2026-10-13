@@ -213,7 +213,7 @@ class _ExtraFormState extends State<_ExtraForm> {
                           label: Text(tr.tabBasisUnit)),
                       ButtonSegment(
                           value: PriceBasis.total,
-                          label: Text(tr.tabBasisTotal(qty))),
+                          label: Text(tr.tabBasisTotal('$qty'))),
                     ],
                     selected: {_basis},
                     onSelectionChanged: (s) => setState(() => _basis = s.first),
@@ -224,7 +224,7 @@ class _ExtraFormState extends State<_ExtraForm> {
                   onChanged: (_) => setState(() {}),
                   label: qty > 1 && _basis == PriceBasis.unit
                       ? tr.tabValueEach
-                      : (qty > 1 ? tr.tabValueTotalQty(qty) : tr.entryPriceValue),
+                      : (qty > 1 ? tr.tabValueTotalQty('$qty') : tr.entryPriceValue),
                   helper: _helper(qty),
                 ),
               ] else
@@ -255,7 +255,7 @@ class _ExtraFormState extends State<_ExtraForm> {
                   subtitle: Text(
                     _who.length == widget.participants.length
                         ? tr.tabExtraAll
-                        : tr.tabExtraSome(_who.length, widget.participants.length),
+                        : tr.tabExtraSome('${_who.length}', '${widget.participants.length}'),
                     style: AppText.caption,
                   ),
                   children: [
@@ -301,7 +301,7 @@ class _ExtraFormState extends State<_ExtraForm> {
     if (cents == null || qty <= 1) return null;
     return _basis == PriceBasis.unit
         ? tr.tabExtraHelperUnit(
-            qty, formatCents(cents), formatCents(cents * qty))
+            '$qty', formatCents(cents), formatCents(cents * qty))
         : tr.tabExtraHelperLine(formatCents(cents));
   }
 }

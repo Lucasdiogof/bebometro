@@ -124,8 +124,8 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
       showEntryGroupSheet(
         context,
         item.isOverflow
-            ? tr.tableOthersTitle(item.count)
-            : tr.tableGroupTitle(item.count, item.lead.name),
+            ? tr.tableOthersTitle('${item.count}')
+            : tr.tableGroupTitle('${item.count}', item.lead.name),
         item.entries,
         onEdit: _edit,
         onDelete: _delete,
@@ -246,7 +246,7 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
     }
 
     final label = item.isOverflow
-        ? tr.tableOverflowSemantics(item.count)
+        ? tr.tableOverflowSemantics('${item.count}')
         : vesselSemantics(lead, kind, count: item.count);
 
     Widget content = SizedBox(

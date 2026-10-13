@@ -139,7 +139,7 @@ class MenuCandidate {
 /// else is shown as it is.
 String menuNoteText(String note) {
   if (note.startsWith('columns:')) {
-    return tr.menuNoteColumns(int.tryParse(note.substring(8)) ?? 0);
+    return tr.menuNoteColumns('${int.tryParse(note.substring(8)) ?? 0}');
   }
   if (note.startsWith('orphans:')) {
     return tr.menuNoteOrphans(int.tryParse(note.substring(8)) ?? 0);

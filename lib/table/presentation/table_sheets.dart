@@ -139,7 +139,7 @@ class _EntryDetail extends StatelessWidget {
                 Icons.groups_outlined,
                 tr.entryShared,
                 tr.tableSharedLine(formatMl(personal), formatMl(container),
-                    e.peopleCount),
+                    '${e.peopleCount}'),
               ),
             _Line(Icons.payments_outlined, tr.tabFillPriceTitle, _price(e)),
             if (e.isMixed && e.composition!.customized)

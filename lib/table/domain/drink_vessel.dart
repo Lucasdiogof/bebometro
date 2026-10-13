@@ -130,7 +130,7 @@ double _restingFill(DrinkEntry e) {
 /// Spoken description of a vessel (for screen readers and tooltips).
 String vesselSemantics(DrinkEntry e, VesselKind kind, {int count = 1}) {
   final parts = <String>[
-    count > 1 ? tr.tableSemanticsMany(count, e.name) : e.name,
+    count > 1 ? tr.tableSemanticsMany('$count', e.name) : e.name,
     kind.label,
     if (count == 1) formatTime(e.consumedAt),
     if (count == 1 && e.personalMl != null) formatMl(e.personalMl!),

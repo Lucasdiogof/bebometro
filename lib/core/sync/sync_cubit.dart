@@ -164,7 +164,7 @@ class SyncCubit extends Cubit<SyncState> {
   bool _again = false;
   int _failures = 0;
   DateTime? _lastSyncAt;
-  String? _lastMessage;
+  SyncNotice? _lastMessage;
   SyncStatus? _lastProblem;
 
   /// Rows waiting plus photos waiting to be sent or removed on the server.

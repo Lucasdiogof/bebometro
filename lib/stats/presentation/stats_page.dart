@@ -226,7 +226,7 @@ class _StatsView extends StatelessWidget {
                           label: c.category.label,
                           value: c.count,
                           note: c.unknownVolumeCount > 0
-                              ? tr.statsNoVolumeNote(c.unknownVolumeCount)
+                              ? tr.statsNoVolumeNote('${c.unknownVolumeCount}')
                               : null,
                           onTap: () => _openEntries(
                               context, c.category.label, c.entries),
@@ -281,7 +281,7 @@ class _StatsView extends StatelessWidget {
                 if (report.withoutMood > 0)
                   Padding(
                     padding: const EdgeInsets.only(top: AppSpace.sm),
-                    child: Text(tr.statsWithoutMood(report.withoutMood),
+                    child: Text(tr.statsWithoutMood('${report.withoutMood}'),
                         style: AppText.caption),
                   ),
                 Padding(

@@ -185,7 +185,7 @@ class _PlaceDetailView extends StatelessWidget {
                   child: Text(tr.placePriceHistoryNote, style: AppText.caption),
                 ),
               ],
-              SectionTitle(tr.placeVisits(state.visits.length)),
+              SectionTitle(tr.placeVisits('${state.visits.length}')),
               if (state.visits.isEmpty)
                 Text(tr.placeNoVisits, style: AppText.caption)
               else

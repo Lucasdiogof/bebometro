@@ -35,13 +35,13 @@ class TabShareText {
       for (final g in result.groups) {
         final l = g.first;
         if (g.count > 1 && g.isPriced) {
-          b.writeln(tr.tabShareLineGroup(l.title, g.count,
+          b.writeln(tr.tabShareLineGroup(l.title, '${g.count}',
               formatCents(g.unitCents!), formatCents(g.sumCents!)));
         } else if (l.quantity > 1 && l.totalCents != null) {
           b.writeln(tr.tabShareLineQty(
-              l.title, l.quantity, formatCents(l.totalCents!)));
+              l.title, '${l.quantity}', formatCents(l.totalCents!)));
         } else if (g.count > 1) {
-          b.writeln(tr.tabShareLineGroupNoPrice(l.title, g.count));
+          b.writeln(tr.tabShareLineGroupNoPrice(l.title, '${g.count}'));
         } else if (l.totalCents != null) {
           b.writeln(tr.tabShareLine(l.title, formatCents(l.totalCents!)));
         } else {

@@ -68,7 +68,7 @@ class TrackingSnapshot {
         'spend': spendCents == null
             ? null
             : (unpriced > 0
-                ? tr.trackingSpendUnpriced(formatCents(spendCents), unpriced)
+                ? tr.trackingSpendUnpriced(formatCents(spendCents), '$unpriced')
                 : tr.trackingSpend(formatCents(spendCents))),
         'open': tr.trackingOpen,
         'another': tr.trackingAnother,

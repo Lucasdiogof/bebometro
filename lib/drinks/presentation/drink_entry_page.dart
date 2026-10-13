@@ -447,7 +447,7 @@ class _SharingCard extends StatelessWidget {
           if (draft.containerMl != null)
             Text(
               tr.entrySharedLine(
-                  formatMl(draft.containerMl!), draft.peopleCount),
+                  formatMl(draft.containerMl!), '${draft.peopleCount}'),
               style: AppText.caption,
             ),
           const SizedBox(height: AppSpace.md),
@@ -613,7 +613,7 @@ class _PriceCard extends StatelessWidget {
                 child: TextButton.icon(
                   onPressed: cubit.suggestPayment,
                   icon: const Icon(Icons.call_split_rounded, size: 18),
-                  label: Text(tr.entrySplitEqually(draft.peopleCount)),
+                  label: Text(tr.entrySplitEqually('${draft.peopleCount}')),
                 ),
               ),
           ] else

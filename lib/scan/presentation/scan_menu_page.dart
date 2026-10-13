@@ -479,7 +479,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
           const SizedBox(height: AppSpace.md),
           InfoPill(_error!, icon: Icons.error_outline_rounded, warning: true),
         ],
-        SectionTitle(tr.scanMenuPhotos(_photoIds.length)),
+        SectionTitle(tr.scanMenuPhotos('${_photoIds.length}')),
         for (var i = 0; i < _photoIds.length; i++)
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpace.sm),
@@ -502,7 +502,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(tr.scanMenuPhotoN(i + 1), style: AppText.subtitle),
+                      Text(tr.scanMenuPhotoN('${i + 1}'), style: AppText.subtitle),
                       Text(
                         _ocr.containsKey(_photoIds[i])
                             ? tr.scanMenuRead

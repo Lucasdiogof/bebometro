@@ -8,6 +8,7 @@ import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../drinks/data/drink_repository.dart';
+import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/drink_entry_page.dart';
 import '../../outings/data/outing_repository.dart';
 import '../data/tab_repository.dart';
@@ -111,7 +112,7 @@ class _TabView extends StatelessWidget {
                   const SizedBox(height: AppSpace.md),
                   _ServiceDiscountCard(state: state),
                   SectionTitle(
-                    tr.tabItemsTitle(r.results.length),
+                    tr.tabItemsTitle('${r.results.length}'),
                     trailing: TextButton.icon(
                       onPressed: () => _addExtra(context, cubit),
                       icon: const Icon(Icons.add_rounded, size: 18),
@@ -138,7 +139,7 @@ class _TabView extends StatelessWidget {
                     icon: const Icon(Icons.local_bar_outlined),
                     label: Text(state.available.isEmpty
                         ? tr.tabNoDrinksToLink
-                        : tr.tabLinkDrinks(state.available.length)),
+                        : tr.tabLinkDrinks('${state.available.length}')),
                   ),
                 ],
               ),
@@ -420,14 +421,14 @@ class _GroupTile extends StatelessWidget {
   String _header() {
     final l = group.first;
     if (group.count > 1 && group.isPriced) {
-      return tr.tabGroupHeaderMulti(l.title, group.count,
+      return tr.tabGroupHeaderMulti(l.title, '${group.count}',
           formatCents(group.unitCents!), formatCents(group.sumCents!));
     }
-    if (group.count > 1) return tr.tabGroupHeaderNoPrice(l.title, group.count);
+    if (group.count > 1) return tr.tabGroupHeaderNoPrice(l.title, '${group.count}');
     if (l.quantity > 1) {
       return l.totalCents == null
-          ? tr.tabGroupQtyNoPrice(l.title, l.quantity)
-          : tr.tabGroupQtyTotal(l.title, l.quantity, formatCents(l.totalCents!));
+          ? tr.tabGroupQtyNoPrice(l.title, '${l.quantity}')
+          : tr.tabGroupQtyTotal(l.title, '${l.quantity}', formatCents(l.totalCents!));
     }
     return l.title;
   }

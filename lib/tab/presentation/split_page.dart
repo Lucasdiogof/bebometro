@@ -629,7 +629,7 @@ class _AssignDialogState extends State<_AssignDialog> {
                     underline: const SizedBox.shrink(),
                     items: [
                       for (var i = 1; i <= 9; i++)
-                        DropdownMenuItem(value: i, child: Text(tr.splitWeight(i))),
+                        DropdownMenuItem(value: i, child: Text(tr.splitWeight('$i'))),
                     ],
                     onChanged: (v) => setState(() => _w[p.id] = v ?? 1),
                   ),

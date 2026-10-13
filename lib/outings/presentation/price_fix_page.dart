@@ -208,7 +208,7 @@ class _PriceFixView extends StatelessWidget {
                             Row(children: [
                               TextButton(
                                 onPressed: () => cubit.selectGroup(g, true),
-                                child: Text(tr.priceFixSelectAll(g.entries.length)),
+                                child: Text(tr.priceFixSelectAll('${g.entries.length}')),
                               ),
                               TextButton(
                                 onPressed: () => cubit.selectGroup(g, false),
@@ -247,7 +247,7 @@ class _PriceFixView extends StatelessWidget {
                   onPressed: state.canApply ? () => _applyBatch(context) : null,
                   child: Text(state.selected.isEmpty
                       ? tr.priceFixSelectRecords
-                      : tr.priceFixPreview(state.selected.length)),
+                      : tr.priceFixPreview('${state.selected.length}')),
                 ),
               ),
             ],

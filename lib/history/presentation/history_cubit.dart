@@ -24,7 +24,7 @@ enum HistoryPeriod {
   String get label => switch (this) {
         HistoryPeriod.all => tr.historyPeriodAll,
         HistoryPeriod.thisMonth => tr.historyPeriodMonth,
-        HistoryPeriod.last90Days => tr.statsPresetDays(90),
+        HistoryPeriod.last90Days => tr.statsPresetDays('${90}'),
       };
 }
 

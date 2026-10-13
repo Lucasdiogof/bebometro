@@ -20,7 +20,7 @@ enum StatsPreset {
   final int? days;
 
   String get label =>
-      days == null ? tr.statsPresetCustom : tr.statsPresetDays(days!);
+      days == null ? tr.statsPresetCustom : tr.statsPresetDays('${days!}');
 }
 
 class StatsState {
