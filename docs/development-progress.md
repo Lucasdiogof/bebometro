@@ -15,7 +15,7 @@ implementado.
 | 4 | Orçamento e gastos, edição rápida de preços ausentes | Implementado, ainda não executado (`budget_cents` na migration `20261014000000`, não aplicada) |
 | 5 | Preços do próprio histórico | Implementado, ainda não executado |
 | 6 | Estatísticas pessoais | Pendente |
-| 7 | Feedback detalhado e "rolê esquecido" | Pendente |
+| 7 | Feedback detalhado e "rolê esquecido" | Implementado, ainda não executado (campos novos na migration `20261014000000`, não aplicada) |
 | 8 | Resenha: jogos locais (Eu nunca, Quem é mais provável, Verdade ou desafio) | Implementado, ainda não executado (falta ligar a aba Resenha na navegação, bloco 2) |
 | 9 | Copão e "virar o copo" | Pendente |
 | 10 | Cartão compartilhável e exportação JSON/CSV | Pendente |

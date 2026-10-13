@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/injector.dart';
+import '../../core/navigation/outing_flow.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
@@ -9,11 +10,11 @@ import '../../core/widgets/brand.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../history/presentation/history_page.dart';
-import '../../outings/presentation/outing_page.dart';
 import '../../outings/presentation/outing_summary_page.dart';
-import '../../outings/presentation/start_outing_page.dart';
 import '../../settings/presentation/settings_page.dart';
+import 'feedback_details_sheet.dart';
 import 'feedback_sheet.dart';
+import '../../outings/domain/outing.dart';
 import 'home_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -39,27 +40,47 @@ class _HomeViewState extends State<_HomeView> {
   @override
   void initState() {
     super.initState();
-    // Once per app opening: the feedback sheet for a finished outing.
+    // Once per app opening: the feedback sheet for a finished outing, or the
+    // "still happening?" question for an outing left running for a long time.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) context.read<HomeCubit>().checkFeedback();
+      if (!mounted) return;
+      final cubit = context.read<HomeCubit>();
+      cubit.checkFeedback();
+      cubit.checkStale();
     });
   }
 
   Future<T?> _push<T>(Widget page) =>
       Navigator.of(context).push<T>(MaterialPageRoute(builder: (_) => page));
 
-  Future<void> _openOuting(String id) async {
-    final finishedId = await _push<String>(OutingPage(outingId: id));
-    if (finishedId != null && mounted) {
-      // The feedback prompt is deliberately not shown after the summary; it
-      // waits for the next time the app is opened.
-      await _push<void>(OutingSummaryPage(outingId: finishedId));
-    }
-  }
+  Future<void> _openOuting(String id) => OutingFlow.open(context, id);
 
-  Future<void> _startOuting() async {
-    final id = await _push<String>(const StartOutingPage());
-    if (id != null && mounted) await _openOuting(id);
+  Future<void> _startOuting() => OutingFlow.start(context);
+
+  Future<void> _showStale(HomeState state) async {
+    final outing = state.staleOuting!;
+    final suggested = state.staleEnd!;
+    final cubit = context.read<HomeCubit>();
+    final action = await showModalBottomSheet<_StaleAction>(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => _StaleSheet(outing: outing),
+    );
+    if (!mounted) return;
+    if (action == _StaleAction.keep) {
+      await cubit.keepOutingRunning(outing.id);
+    } else if (action == _StaleAction.end) {
+      final picked = await pickDateTime(context, suggested);
+      if (picked == null || !mounted) return;
+      try {
+        await cubit.endOuting(outing.id, picked);
+        if (mounted) {
+          await _push<void>(OutingSummaryPage(outingId: outing.id));
+        }
+      } on ArgumentError catch (e) {
+        if (mounted) showToast(context, '${e.message}');
+      }
+    }
   }
 
   Future<void> _showFeedback(HomeState state) async {
@@ -73,6 +94,12 @@ class _HomeViewState extends State<_HomeView> {
     switch (result) {
       case FeedbackAnswered(:final mood):
         await cubit.answerFeedback(outing.id, mood);
+        if (!mounted) return;
+        // Optional follow-up; skipping it is always fine.
+        final more = await showFeedbackDetails(context, outing.id);
+        if (more == FeedbackDetailsResult.review && mounted) {
+          await _push<void>(OutingSummaryPage(outingId: outing.id));
+        }
       case FeedbackDismissed():
         await cubit.dismissFeedback(outing.id);
       case FeedbackSnoozed():
@@ -86,8 +113,14 @@ class _HomeViewState extends State<_HomeView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<HomeCubit, HomeState>(
-      listenWhen: (p, c) => c.feedbackOuting != null,
-      listener: (context, state) => _showFeedback(state),
+      listenWhen: (p, c) => c.feedbackOuting != null || c.staleOuting != null,
+      listener: (context, state) {
+        if (state.staleOuting != null) {
+          _showStale(state);
+        } else {
+          _showFeedback(state);
+        }
+      },
       child: Scaffold(
         body: SafeArea(
           child: BlocBuilder<HomeCubit, HomeState>(
@@ -373,6 +406,57 @@ class _MonthCard extends StatelessWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+
+enum _StaleAction { keep, end }
+
+/// "Esse rolê ainda está acontecendo?" Never ends the outing by itself.
+class _StaleSheet extends StatelessWidget {
+  const _StaleSheet({required this.outing});
+
+  final Outing outing;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(
+            AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Esse rolê ainda está acontecendo?',
+                style: AppText.title),
+            const SizedBox(height: AppSpace.sm),
+            Text(
+              '${outing.displayName} começou em '
+              '${formatDateTime(outing.startedAt)} e está aberto há '
+              '${formatDuration(outing.durationAt(DateTime.now()))}.',
+              style: AppText.caption,
+            ),
+            const SizedBox(height: AppSpace.xl),
+            FilledButton(
+              onPressed: () => Navigator.pop(context, _StaleAction.keep),
+              child: const Text('Continuar'),
+            ),
+            const SizedBox(height: AppSpace.sm),
+            OutlinedButton(
+              onPressed: () => Navigator.pop(context, _StaleAction.end),
+              child: const Text('Encerrar com outro horário'),
+            ),
+            const SizedBox(height: AppSpace.xs),
+            const Text(
+              'Ao encerrar você escolhe o horário final. Nada é encerrado '
+              'automaticamente.',
+              style: AppText.caption,
+            ),
+          ],
+        ),
       ),
     );
   }

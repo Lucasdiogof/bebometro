@@ -109,9 +109,12 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     CatalogItem item,
     List<DrinkEntry> candidates,
   ) {
+    final now = DateTime.now();
+    final end = outing.endedAt;
     final draft = DrinkDraft.fromItem(
       item,
-      now: DateTime.now(),
+      // A drink added to a finished outing defaults to its end time.
+      now: (end != null && now.isAfter(end)) ? end : now,
       notBefore: outing.startedAt,
       notAfter: outing.endedAt,
     );

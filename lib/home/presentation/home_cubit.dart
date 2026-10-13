@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/data/app_prefs.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/domain/outing.dart';
 import '../../outings/domain/outing_summary.dart';
+import '../../outings/domain/stale_outing.dart';
 
 class HomeState {
   const HomeState({
@@ -20,6 +22,8 @@ class HomeState {
     this.monthInformedCents = 0,
     this.monthUnpriced = 0,
     this.feedbackOuting,
+    this.staleOuting,
+    this.staleEnd,
   });
 
   final bool loading;
@@ -42,7 +46,27 @@ class HomeState {
   /// Set only by [HomeCubit.checkFeedback] when the sheet should be shown.
   final Outing? feedbackOuting;
 
+  /// Set only by [HomeCubit.checkStale] when "Esse rolê ainda está
+  /// acontecendo?" should be asked, with a suggested end time.
+  final Outing? staleOuting;
+  final DateTime? staleEnd;
+
   bool get hasHistory => totalOutings > 0;
+
+  HomeState withStale(Outing outing, DateTime end) => HomeState(
+        loading: false,
+        active: active,
+        activeSummary: activeSummary,
+        lastOuting: lastOuting,
+        lastSummary: lastSummary,
+        totalOutings: totalOutings,
+        monthOutings: monthOutings,
+        monthDrinks: monthDrinks,
+        monthInformedCents: monthInformedCents,
+        monthUnpriced: monthUnpriced,
+        staleOuting: outing,
+        staleEnd: end,
+      );
 
   HomeState withFeedback(Outing outing) => HomeState(
         loading: false,
@@ -60,7 +84,8 @@ class HomeState {
 }
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this._outings, this._drinks) : super(const HomeState()) {
+  HomeCubit(this._outings, this._drinks, this._prefs)
+      : super(const HomeState()) {
     _subs = [
       _outings.changes.listen((_) => load()),
       _drinks.changes.listen((_) => load()),
@@ -70,7 +95,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   final OutingRepository _outings;
   final DrinkRepository _drinks;
+  final AppPrefs _prefs;
   late final List<StreamSubscription<void>> _subs;
+  final _stalePrompted = <String>{};
 
   /// Outings whose sheet was already shown in this app session.
   final _promptedOutings = <String>{};
@@ -133,6 +160,30 @@ class HomeCubit extends Cubit<HomeState> {
     _promptedOutings.add(pending.id);
     emit(state.withFeedback(pending));
   }
+
+  /// Called with [checkFeedback] when the home screen opens. If the running
+  /// outing has been idle for a long time, asks (once per opening, and never
+  /// again for a day after the person chose to continue).
+  void checkStale() {
+    final outing = _outings.active;
+    if (outing == null || _stalePrompted.contains(outing.id)) return;
+    final now = DateTime.now();
+    final until = _prefs.staleSnoozedUntil(outing.id);
+    if (until != null && until.isAfter(now)) return;
+    final entries = _drinks.entriesFor(outing.id);
+    final last = entries.isEmpty ? null : entries.last.consumedAt;
+    if (!isStaleOuting(outing, last, now)) return;
+    _stalePrompted.add(outing.id);
+    emit(state.withStale(outing, suggestedEnd(outing, last, now)));
+  }
+
+  /// "Continuar": keeps the outing running and stops asking for a day.
+  Future<void> keepOutingRunning(String outingId) =>
+      _prefs.snoozeStale(outingId, DateTime.now().add(kStaleSnooze));
+
+  /// "Encerrar" with the (adjustable) end time the person confirmed.
+  Future<void> endOuting(String outingId, DateTime endedAt) =>
+      _outings.finish(outingId, endedAt);
 
   Future<void> answerFeedback(String outingId, FeedbackMood mood) =>
       _outings.answerFeedback(outingId, mood);

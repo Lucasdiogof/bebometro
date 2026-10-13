@@ -71,7 +71,11 @@ Future<void> configureDependencies() async {
     ..registerSingleton<GameRepository>(GameRepository(store, bundledCards))
     ..registerFactory<GameCubit>(() => GameCubit(getIt<GameRepository>()))
     ..registerFactory<HomeCubit>(
-      () => HomeCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
+      () => HomeCubit(
+        getIt<OutingRepository>(),
+        getIt<DrinkRepository>(),
+        getIt<AppPrefs>(),
+      ),
     )
     ..registerFactory<HistoryCubit>(
       () => HistoryCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),

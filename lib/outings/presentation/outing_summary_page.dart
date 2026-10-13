@@ -15,6 +15,8 @@ import '../domain/outing_summary.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../table/presentation/table_scene.dart';
 import 'budget_section.dart';
+import '../../drinks/presentation/add_drink_page.dart';
+import '../../home/presentation/feedback_details_sheet.dart';
 import 'outing_cubit.dart';
 import 'price_fix_page.dart';
 import 'outing_page.dart' show EntryTile;
@@ -258,20 +260,66 @@ class _SummaryViewState extends State<_SummaryView> {
                         ],
                       ),
                     ),
-                    if (outing.feedbackMood != null) ...[
-                      const SectionTitle('Como foi'),
-                      SurfaceCard(
-                        child: Row(children: [
-                          Icon(outing.feedbackMood!.icon,
-                              color: AppColors.amber, size: 28),
-                          const SizedBox(width: AppSpace.md),
-                          Text(outing.feedbackMood!.label,
-                              style: AppText.title),
-                          const Spacer(),
-                          const Text('seu relato', style: AppText.caption),
-                        ]),
+                    const SectionTitle('Seu relato'),
+                    SurfaceCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (outing.feedbackMood != null)
+                            Row(children: [
+                              Icon(outing.feedbackMood!.icon,
+                                  color: AppColors.amber, size: 28),
+                              const SizedBox(width: AppSpace.md),
+                              Text(outing.feedbackMood!.label,
+                                  style: AppText.title),
+                              const Spacer(),
+                              const Text('seu relato', style: AppText.caption),
+                            ])
+                          else
+                            const Text('Sem relato ainda.',
+                                style: AppText.caption),
+                          if (outing.wakeFeeling != null ||
+                              outing.hangover != null) ...[
+                            const SizedBox(height: AppSpace.md),
+                            Wrap(
+                              spacing: AppSpace.sm,
+                              runSpacing: AppSpace.sm,
+                              children: [
+                                if (outing.wakeFeeling != null)
+                                  InfoPill(
+                                      'Acordou: ${outing.wakeFeeling!.label.toLowerCase()}'),
+                                if (outing.hangover != null)
+                                  InfoPill(
+                                      'Ressaca: ${outing.hangover!.label.toLowerCase()}'),
+                              ],
+                            ),
+                          ],
+                          if (outing.feedbackNote != null) ...[
+                            const SizedBox(height: AppSpace.md),
+                            Text(outing.feedbackNote!, style: AppText.body),
+                          ],
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton.icon(
+                              onPressed: () => showFeedbackDetails(
+                                context,
+                                outing.id,
+                                editMood: true,
+                              ),
+                              icon: const Icon(Icons.edit_outlined, size: 18),
+                              label: Text(outing.feedbackMood == null
+                                  ? 'Adicionar relato'
+                                  : 'Editar relato'),
+                            ),
+                          ),
+                          const Text(
+                            'Relato pessoal: não mede nada e não indica um '
+                            'limite de consumo.',
+                            style: AppText.caption,
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                     SectionTitle('Registros (${state.entries.length})'),
                     if (state.entries.isEmpty)
                       const EmptyView(
@@ -301,9 +349,24 @@ class _SummaryViewState extends State<_SummaryView> {
                 ),
               ),
               BottomActionBar(
-                child: FilledButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Concluir'),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    OutlinedButton.icon(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => AddDrinkPage(outingId: outing.id),
+                        ),
+                      ),
+                      icon: const Icon(Icons.add_rounded),
+                      label: const Text('Adicionar bebida esquecida'),
+                    ),
+                    const SizedBox(height: AppSpace.sm),
+                    FilledButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Concluir'),
+                    ),
+                  ],
                 ),
               ),
             ],
