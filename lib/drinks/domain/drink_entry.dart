@@ -179,6 +179,39 @@ class DrinkEntry {
         deletedAt: clearDeleted ? null : (deletedAt ?? this.deletedAt),
       );
 
+  /// Same record with the bottle/jug total of a shared drink filled in or
+  /// corrected. Consumption and what the user paid stay untouched.
+  DrinkEntry copyWithBillTotal({
+    required int? billTotalCents,
+    required DateTime updatedAt,
+  }) =>
+      DrinkEntry(
+        id: id,
+        outingId: outingId,
+        consumedAt: consumedAt,
+        name: name,
+        category: category,
+        brand: brand,
+        style: style,
+        presentation: presentation,
+        catalogItemId: catalogItemId,
+        abvPercent: abvPercent,
+        abvSource: abvSource,
+        ingredients: ingredients,
+        composition: composition,
+        containerMl: containerMl,
+        isShared: isShared,
+        peopleCount: peopleCount,
+        personalMl: personalMl,
+        leftoverMl: leftoverMl,
+        priceKind: priceKind,
+        paidCents: paidCents,
+        billTotalCents: billTotalCents,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        deletedAt: deletedAt,
+      );
+
   /// Same record with a new payment. Consumption (volumes) is untouched, and
   /// for shared drinks only what the user paid changes, never the bill total.
   DrinkEntry copyWithPrice({

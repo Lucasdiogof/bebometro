@@ -41,6 +41,9 @@ class LocalStore {
   static const outingDrinks = 'outing_drinks';
   static const outingPhotos = 'outing_photos';
 
+  /// The tab (comanda) of an outing: one document per outing, id = outing id.
+  static const outingTabs = 'outing_tabs';
+
   /// Upload order: parents before children.
   static const collections = [
     places,
@@ -48,11 +51,17 @@ class LocalStore {
     customDrinks,
     outingDrinks,
     outingPhotos,
+    outingTabs,
     drinkEntries,
   ];
 
   /// Collections whose rows point to an outing (`outing_id`).
-  static const outingChildren = {outingDrinks, outingPhotos, drinkEntries};
+  static const outingChildren = {
+    outingDrinks,
+    outingPhotos,
+    outingTabs,
+    drinkEntries,
+  };
 
   static const _pendingKey = 'sync.pending';
 

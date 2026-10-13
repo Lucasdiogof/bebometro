@@ -21,6 +21,7 @@ class ExportBuilder {
     required List<Map<String, dynamic>> customDrinks,
     List<Map<String, dynamic>> outingDrinks = const [],
     List<Map<String, dynamic>> outingPhotos = const [],
+    List<Map<String, dynamic>> outingTabs = const [],
   }) {
     const encoder = JsonEncoder.withIndent('  ');
     return encoder.convert({
@@ -38,6 +39,8 @@ class ExportBuilder {
       // files are not included, only their metadata.
       'outing_drinks': outingDrinks,
       'outing_photos': outingPhotos,
+      // The tab (comanda) of each outing: participants are nicknames only.
+      'outing_tabs': outingTabs,
     });
   }
 

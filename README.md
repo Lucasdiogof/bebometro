@@ -78,6 +78,15 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 - Price suggestions from comparable entries in the user's own history, accepted explicitly. These are not public market averages.
 - Paid amount, complimentary drinks and unknown prices remain distinct.
 
+**Tab and bill splitting (optional)**
+
+- A “Comanda” inside the outing and its summary (no extra navigation tab): equivalent orders grouped (“Draft 400 ml · 12 × R$ 15 = R$ 180”), extras such as snacks, cover, transport or a drink that exists only on the tab.
+- Registered drinks are linked by id, never copied: correcting the record corrects the tab. A shared bottle counts once; if only the personal share is known, the table total stays unknown.
+- Optional service (10% shortcut, editable) and discount (R$ or %), always in the same order: subtotal → discount → service on eligible items → total. Missing prices make the bill and the split partial.
+- Nickname-only participants, split equally, by item (with weights) or with custom amounts; cents are distributed deterministically and always add up to the total.
+- Payments are recorded per person and only affect the balance. There is no Pix, bank or charge, and the app never says who should transfer to whom. A text summary can be previewed, copied or shared on request.
+- Consumption, assigned cost and payment stay separate: the tab never creates drink records or alcohol statistics for anyone.
+
 **History and personal statistics**
 
 - Monthly history with place, period and outing-type filters.
@@ -139,6 +148,7 @@ lib/
   home/  outings/        home and outing lifecycle
   drinks/                catalog, recipes, portions and entries
   scan/  outing_drinks/  label/menu reading, photos and outing-only drinks
+  tab/                   tab (comanda), bill splitting and payments
   places/  history/      saved places and past outings
   stats/  settings/      statistics and preferences
   table/  glass/         scenes, vessels and glass interactions
@@ -170,6 +180,7 @@ For web, add `-d chrome` to the run command. These are setup instructions, not e
 ## Roadmap and current limits
 
 - **Implemented in code, not yet validated in execution:** label and menu photos with on-device text reading (Android/iOS only), manual review, outing-only drinks and photos, private photo upload and the manual alternative used on the web. The web has no automatic reading and keeps photos only for the current session. There is no barcode reader.
+- **Tab (comanda):** written in code, not executed or analyzed after this feature; the `20261016000000` migration is delivered but **not applied**, so the tab stays on the device until then. No unit tests cover the calculation yet.
 - **Not verified:** the label and menu parsers are heuristic and were not tested on real photos, so no accuracy is claimed. The `20261015000000` migration was applied by the maintainer; synchronization of these tables and photos from the app has not been observed.
 - **Scope rule (implemented):** custom items, photos and menu prices belong to the outing ID, even across midnight. They do not enter the global catalog, do not automatically become reusable personal items and do not feed future-visit price suggestions.
 - **Later:** map/place search, opt-in lock-screen activities, regional prices backed by real observations and additional catalog coverage.

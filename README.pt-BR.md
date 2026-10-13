@@ -78,6 +78,15 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 - Sugestões de preços com base em registros comparáveis do próprio usuário, confirmadas antes de usar. Não são médias públicas de mercado.
 - Valor pago, cortesia e preço desconhecido tratados separadamente.
 
+**Comanda e divisão da conta (opcional)**
+
+- Uma “Comanda” dentro do rolê e do resumo (sem nova aba): pedidos equivalentes agrupados (“Chopp 400 ml · 12 × R$ 15 = R$ 180”), extras como petiscos, couvert, transporte ou uma bebida que existe só na comanda.
+- Bebidas registradas são ligadas por id, nunca copiadas: corrigir o registro corrige a comanda. Garrafa compartilhada conta uma vez; se só a parcela pessoal é conhecida, o total da mesa continua desconhecido.
+- Serviço opcional (atalho de 10%, editável) e desconto (R$ ou %), sempre na mesma ordem: subtotal → desconto → serviço sobre itens elegíveis → total. Preços ausentes deixam a conta e a divisão parciais.
+- Participantes só por apelido, divisão igual, por item (com pesos) ou com valores personalizados; os centavos são distribuídos de forma determinística e sempre somam o total.
+- Pagamentos são registrados por pessoa e só afetam o saldo. Não há Pix, banco nem cobrança, e o app nunca diz quem deve transferir para quem. Um resumo em texto pode ser visto, copiado ou compartilhado a pedido.
+- Consumo, custo atribuído e pagamento ficam separados: a comanda nunca cria registros de bebida nem estatísticas de álcool de ninguém.
+
 **Histórico e estatísticas pessoais**
 
 - Histórico agrupado por mês, com filtros por local, período e tipo de rolê.
@@ -139,6 +148,7 @@ lib/
   home/  outings/        início e ciclo do rolê
   drinks/                catálogo, receitas, porções e registros
   scan/  outing_drinks/  leitura de rótulo/cardápio, fotos e bebidas só do rolê
+  tab/                   comanda, divisão da conta e pagamentos
   places/  history/      locais salvos e rolês anteriores
   stats/  settings/      estatísticas e preferências
   table/  glass/         cenários, recipientes e interações com o copo
@@ -170,6 +180,7 @@ Na web, acrescente `-d chrome` ao comando de execução. São instruções de co
 ## Roadmap e limitações atuais
 
 - **Implementado no código, ainda não validado em execução:** fotos de rótulo e cardápio com leitura de texto no aparelho (só Android/iOS), revisão manual, bebidas e fotos só do rolê, envio privado das fotos e a alternativa manual usada na web. A web não tem leitura automática e guarda as fotos só durante a sessão. Não há leitor de código de barras.
+- **Comanda:** escrita no código, não executada nem analisada depois desta funcionalidade; a migration `20261016000000` foi entregue, mas **não aplicada**, então a comanda fica no aparelho até lá. Ainda não há testes unitários do cálculo.
 - **Não verificado:** os interpretadores de rótulo e cardápio são heurísticos e não foram testados com fotos reais, então não se promete precisão. A migration `20261015000000` foi aplicada pelo responsável; a sincronização dessas tabelas e fotos pelo app ainda não foi observada.
 - **Regra de escopo (implementada):** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras.
 - **Depois:** busca de locais/mapas, atividades opcionais na tela bloqueada, preços regionais sustentados por observações reais e ampliação do catálogo.

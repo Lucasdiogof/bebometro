@@ -78,6 +78,15 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 - Sugerencias de precios a partir de registros comparables del propio usuario, aceptadas explícitamente. No son promedios públicos del mercado.
 - Importe pagado, cortesía y precio desconocido diferenciados.
 
+**Cuenta y división (opcional)**
+
+- Una “Comanda” dentro de la salida y de su resumen (sin pestaña nueva): pedidos equivalentes agrupados (“Caña 400 ml · 12 × R$ 15 = R$ 180”), extras como tapas, cubierto, transporte o una bebida que existe solo en la cuenta.
+- Las bebidas registradas se vinculan por id, nunca se copian: corregir el registro corrige la cuenta. Una botella compartida cuenta una vez; si solo se conoce la parte personal, el total de la mesa sigue desconocido.
+- Servicio opcional (atajo del 10%, editable) y descuento (R$ o %), siempre en el mismo orden: subtotal → descuento → servicio sobre los ítems elegibles → total. Los precios ausentes dejan la cuenta y la división como parciales.
+- Participantes solo por apodo, división igual, por ítem (con pesos) o con importes personalizados; los centavos se reparten de forma determinista y siempre suman el total.
+- Los pagos se registran por persona y solo afectan al saldo. No hay Pix, banco ni cobro, y la app nunca dice quién debe transferir a quién. Un resumen en texto se puede ver, copiar o compartir a petición.
+- Consumo, coste asignado y pago permanecen separados: la cuenta nunca crea registros de bebida ni estadísticas de alcohol de nadie.
+
 **Historial y estadísticas personales**
 
 - Historial mensual con filtros por lugar, período y tipo de salida.
@@ -139,6 +148,7 @@ lib/
   home/  outings/        inicio y ciclo de las salidas
   drinks/                catálogo, recetas, porciones y registros
   scan/  outing_drinks/  lectura de etiqueta/carta, fotos y bebidas solo de la salida
+  tab/                   cuenta, división y pagos
   places/  history/      lugares guardados e historial
   stats/  settings/      estadísticas y preferencias
   table/  glass/         ambientes, recipientes e interacciones con el vaso
@@ -170,6 +180,7 @@ Para web, añade `-d chrome` al comando de ejecución. Son instrucciones de conf
 ## Hoja de ruta y límites actuales
 
 - **Implementado en el código, aún no validado en ejecución:** fotos de etiqueta y carta con lectura de texto en el dispositivo (solo Android/iOS), revisión manual, bebidas y fotos solo de la salida, envío privado de fotos y la alternativa manual usada en la web. La web no tiene lectura automática y conserva las fotos solo durante la sesión. No hay lector de códigos de barras.
+- **Cuenta:** escrita en el código, sin ejecutar ni analizar tras esta función; la migración `20261016000000` se entregó pero **no está aplicada**, por lo que la cuenta queda en el dispositivo hasta entonces. Aún no hay pruebas unitarias del cálculo.
 - **No verificado:** los intérpretes de etiqueta y carta son heurísticos y no se probaron con fotos reales, por lo que no se promete precisión. La migración `20261015000000` fue aplicada por el responsable; la sincronización de esas tablas y fotos desde la app aún no se observó.
 - **Regla de alcance (implementada):** los artículos personalizados, fotos y precios de la carta pertenecen al ID de la salida, incluso después de medianoche. No entran al catálogo global, no se convierten automáticamente en artículos personales reutilizables ni alimentan sugerencias para visitas futuras.
 - **Más adelante:** búsqueda de lugares/mapas, actividades opcionales en pantalla bloqueada, precios regionales basados en observaciones reales y ampliación del catálogo.

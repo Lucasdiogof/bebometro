@@ -20,6 +20,7 @@ import '../../home/presentation/feedback_details_sheet.dart';
 import '../../share/presentation/share_card_page.dart';
 import '../../outing_drinks/presentation/outing_scan_section.dart';
 import 'outing_cubit.dart';
+import '../../tab/presentation/tab_entry_card.dart';
 import 'price_fix_page.dart';
 import 'outing_page.dart' show EntryTile;
 
@@ -231,7 +232,7 @@ class _SummaryViewState extends State<_SummaryView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           StatTile(
-                            label: 'Gasto informado',
+                            label: 'Gastos registrados em bebidas',
                             value: formatCents(s.informedCents),
                             icon: Icons.payments_outlined,
                           ),
@@ -333,6 +334,8 @@ class _SummaryViewState extends State<_SummaryView> {
                         ],
                       ),
                     ),
+                    const SectionTitle('Comanda'),
+                    TabEntryCard(outingId: outing.id, detailed: true),
                     OutingScanSection(outingId: outing.id),
                     SectionTitle('Registros (${state.entries.length})'),
                     if (state.entries.isEmpty)

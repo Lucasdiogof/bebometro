@@ -91,6 +91,14 @@ class DrinkRepository {
     }
   }
 
+  /// Fills in the bottle/jug total of a shared, priced record (from the tab).
+  Future<void> setBillTotal(String id, int? cents) async {
+    final entry = entryById(id);
+    if (entry == null || entry.isDeleted || !entry.isShared) return;
+    await save(entry.copyWithBillTotal(
+        billTotalCents: cents, updatedAt: DateTime.now()));
+  }
+
   Future<void> delete(String id) async {
     final entry = entryById(id);
     if (entry == null || entry.isDeleted) return;

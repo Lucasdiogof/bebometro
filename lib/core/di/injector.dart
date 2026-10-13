@@ -29,6 +29,7 @@ import '../../outings/presentation/start_outing_cubit.dart';
 import '../../settings/presentation/settings_cubit.dart';
 import '../../shell/active_outing_cubit.dart';
 import '../../stats/presentation/stats_cubit.dart';
+import '../../tab/data/tab_repository.dart';
 import '../config/env.dart';
 import '../data/app_prefs.dart';
 import '../data/local_store.dart';
@@ -84,6 +85,9 @@ Future<void> configureDependencies() async {
     )
     ..registerSingleton<DrinkRepository>(
       DrinkRepository(store, bundledCatalog),
+    )
+    ..registerLazySingleton<TabRepository>(
+      () => TabRepository(store, getIt<DrinkRepository>()),
     )
     ..registerSingleton<AppPrefs>(AppPrefs(store))
     ..registerSingleton<TablePrefsCubit>(TablePrefsCubit(store))

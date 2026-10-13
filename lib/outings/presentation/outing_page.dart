@@ -19,6 +19,7 @@ import '../../table/presentation/table_scene.dart';
 import '../../table/presentation/table_sheets.dart';
 import '../../glass/presentation/accumulated_glass.dart';
 import '../../glass/presentation/tip_glass_page.dart';
+import '../../tab/presentation/tab_entry_card.dart';
 import 'budget_section.dart';
 import 'outing_cubit.dart';
 
@@ -397,6 +398,8 @@ class _OutingViewState extends State<_OutingView> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: AppSpace.md),
+                    TabEntryCard(outingId: outing.id),
                     const SizedBox(height: AppSpace.lg),
                     Center(
                       child: TextButton.icon(

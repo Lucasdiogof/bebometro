@@ -370,6 +370,57 @@ Camadas:
   gota/fio visível (a borda do copo é a borda da tela, o líquido apenas recua); comportamento do modo imersivo e de restauração
   das barras em cada versão do sistema.
 
+## Comanda e divisão da conta (bloco 13, 13/10/2026)
+
+Escrito por leitura; **não** foi rodado `pub get`/analyze/teste/build depois deste bloco, então podem existir erros de compilação.
+Regra: **consumo, custo atribuído e pagamento são conceitos separados**. Adicionar algo à comanda não cria consumo; dividir não
+altera volume de álcool; pagar uma garrafa não é beber; registrar pagamento não soma aos gastos nem ao orçamento.
+
+- **Acesso:** cartão "Comanda" (`TabEntryCard`) na tela do rolê e no resumo (sem nova aba). No resumo ele mostra "Total da comanda" e
+  "Sua parte da comanda" separados do indicador antigo, agora rotulado "Gastos registrados em bebidas" (semântica e orçamento
+  inalterados). Nada é obrigatório; encerrar o rolê não marca a conta como paga e a comanda segue editável depois.
+- **Modelo** (`lib/tab/domain/tab_models.dart`): a comanda inteira é **um documento** por rolê (`TabDoc`: participantes, extras, vínculos,
+  serviço/desconto, modo de divisão, valores personalizados, pagamentos), gravado numa só escrita na coleção `outing_tabs`
+  (id = id do rolê; no máximo uma por rolê). Entra na fila durável existente (`LocalStore.collections`, depois de `outings`, filho de
+  rolê; tabela ausente no servidor cai no caminho já existente de "aguarda atualização do servidor", sem bloquear). Valores em centavos
+  inteiros; percentuais em pontos-base (10% = 1000).
+- **Cálculo** (`tab_calc.dart`, sem Flutter): regra única exibida na tela: **subtotal → desconto → serviço só sobre itens elegíveis já
+  descontados → total**. Desconto (R$ ou %) nunca passa do subtotal conhecido; é rateado entre os itens por maiores restos
+  (determinístico, desempate pela ordem), o serviço idem. Parcelas por `allocate()`: sempre somam exatamente o total.
+  Sem médias nem preços de cardápio preenchidos sozinhos: item sem preço entra em "pendências" e a conta/divisão ficam **parciais**
+  ("Subtotal/Total conhecido", saldos provisórios).
+- **Bebidas já registradas:** só um vínculo por id (`TabLink`); nome e preço são lidos do `DrinkEntry` a cada cálculo, sem cópia. Editar
+  ou excluir o registro muda/retira a linha (e desfazer a exclusão a traz de volta). Um registro entra uma vez (`coveredEntryIds`).
+  Compartilhada: usa o total da garrafa uma única vez; se só a parcela pessoal é conhecida, a linha fica **pendente** ("só a sua parte
+  é conhecida") e o total da mesa não é inventado nem multiplicado. Registros compartilhados com mesmo item/tamanho/total pedem confirmação
+  ("mesma garrafa" ou "separadas"), nada é deduplicado por nome/horário. Preencher preço pela comanda grava no registro (preço pago, ou
+  `bill_total_cents` de uma compartilhada já com preço); compartilhada sem preço é corrigida abrindo o registro.
+- **Agrupamento:** apresentação ("Chopp 400 ml · 12 × R$ 15,00 = R$ 180,00"), só quando produto, tamanho, compartilhamento e preço
+  coincidem; preços diferentes ficam em grupos distintos; expandir mostra cada lançamento (corrigir, informar preço, tirar da comanda).
+- **Extras** (`TabExtra`): petisco/comida, água/refrigerante, couvert, entrada, transporte, outros e "bebida só da comanda". Descrição,
+  quantidade, preço por unidade ou total da linha (explícito), valor/cortesia/não sei, serviço por item (entrada e transporte começam
+  sem) e quem divide. Só existem no rolê; não entram em catálogo nem histórico de preços; não criam consumo.
+- **Divisão** (`split_page.dart`): participantes por apelido, ids estáveis, "Você" criado só ao abrir a divisão. Modos: igual entre os
+  marcados; por item (quem participa + pesos, serviço e desconto acompanham o item); valores personalizados (mostra o que falta
+  distribuir e só fecha quando soma o total). O modo ativo é descrito na tela. Remover quem tem parcela/pagamento exige escolher: passar
+  tudo a outra pessoa, ou redistribuir os itens e apagar os pagamentos dela.
+- **Pagamentos:** por pessoa, parciais, editáveis e excluíveis; mostram atribuído × pago × saldo (falta pagar / pagou a mais),
+  provisório se a conta está parcial. Sem Pix, banco, cobrança nem "quem transfere para quem". O preço de um consumo não vira pagamento.
+- **Compartilhar** (`tab_share_page.dart`, `tab_share.dart`): prévia em texto com itens, subtotal, desconto, serviço, total, parcelas e
+  aviso de conta parcial; pagamentos só se o usuário ligar; sem endereço, fotos, notas ou relato; compartilhar só após toque, com
+  copiar texto como alternativa. A exportação JSON ganhou `outing_tabs`.
+- **Migration:** `supabase/migrations/20261016000000_outing_tabs.sql` (tabela `outing_tabs`, RLS por dono, gatilho de mesmo dono
+  reaproveitando `outing_child_same_owner()` da migration anterior). **Não aplicada**: sem acesso administrativo ao projeto
+  `jiisoqkryhmtopaojyyu`; o SQL foi entregue ao responsável.
+- **Cenários conferidos só por leitura:** 12 chopps de R$ 15 (subtotal R$ 180); garrafa 600 ml de R$ 18 para três (consumo pessoal intacto,
+  total entra uma vez); parcela pessoal sozinha (total da mesa desconhecido); R$ 100 por três (3.334 + 3.333 + 3.333); petisco para duas de
+  quatro (por item); transporte sem serviço; item sem preço (parcial); mudar o preço do consumo (uma cobrança); item novo (nenhum
+  consumo); pagamento parcial (total igual); editar/excluir pagamento (saldo recalculado); reabrir o app (documento persistido).
+- **Limitações:** nada executado; não há testes unitários do cálculo; "Você" só existe depois de abrir a divisão; no modo por item itens
+  sem preço ficam fora das parcelas até serem preenchidos; a mesma garrafa lançada duas vezes só é detectada pela confirmação acima;
+  sem pull da nuvem (a comanda não volta em outro aparelho); a edição de pesos é por diálogo, sem arrastar; a leitura do código não
+  validou layouts, teclado nem acessibilidade em aparelho.
+
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
 executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de
