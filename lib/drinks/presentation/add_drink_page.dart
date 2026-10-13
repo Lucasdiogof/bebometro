@@ -8,17 +8,25 @@ import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../domain/catalog_item.dart';
 import '../domain/drink_category.dart';
+import '../../core/navigation/app_routes.dart';
+import '../../core/navigation/outing_flow.dart';
+import '../../outings/data/outing_repository.dart';
+import '../../outings/presentation/start_outing_page.dart';
 import 'catalog_cubit.dart';
+import 'my_drinks_page.dart';
 import 'custom_drink_page.dart';
 import 'drink_detail_sheet.dart';
 import 'drink_entry_page.dart';
 import 'recipe_editor_page.dart';
 
-/// Pops `true` once a drink was registered.
+/// The drink catalog. With an [outingId] it is the "add drink" step of that
+/// outing (pops `true` once a drink was registered). Without one it is the
+/// Catálogo tab: explore, search, filter, favourite and manage own drinks with
+/// no running outing; registering from there starts (or reuses) an outing.
 class AddDrinkPage extends StatelessWidget {
-  const AddDrinkPage({super.key, required this.outingId});
+  const AddDrinkPage({super.key, this.outingId});
 
-  final String outingId;
+  final String? outingId;
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +40,29 @@ class AddDrinkPage extends StatelessWidget {
 class _AddDrinkView extends StatelessWidget {
   const _AddDrinkView({required this.outingId});
 
-  final String outingId;
+  final String? outingId;
+
+  bool get _explore => outingId == null;
 
   Future<void> _pick(BuildContext context, CatalogItem item) async {
+    var id = outingId ?? getIt<OutingRepository>().active?.id;
+    if (id == null) {
+      // Exploring with no outing: registering starts one when the person
+      // decides to.
+      id = await Navigator.of(context).push<String>(
+        MaterialPageRoute(builder: (_) => const StartOutingPage()),
+      );
+      if (id == null || !context.mounted) return;
+    }
     final outcome = await Navigator.of(context).push<EntryOutcome>(
       MaterialPageRoute(
-        builder: (_) => DrinkEntryPage.create(outingId: outingId, item: item),
+        builder: (_) => DrinkEntryPage.create(outingId: id!, item: item),
       ),
     );
-    if (outcome == EntryOutcome.saved && context.mounted) {
+    if (!context.mounted) return;
+    if (_explore) {
+      if (outcome == EntryOutcome.saved) await OutingFlow.open(context, id);
+    } else if (outcome == EntryOutcome.saved) {
       Navigator.of(context).pop(true);
     }
   }
@@ -58,7 +80,10 @@ class _AddDrinkView extends StatelessWidget {
             CustomDrinkPage(initialName: suggestedName, editing: editing),
       ),
     );
-    if (item != null && editing == null && context.mounted) {
+    if (item == null || editing != null || !context.mounted) return;
+    if (_explore) {
+      showToast(context, 'Bebida salva em Minhas bebidas');
+    } else {
       await _pick(context, item);
     }
   }
@@ -113,7 +138,21 @@ class _AddDrinkView extends StatelessWidget {
       builder: (context, state) {
         final f = state.filters;
         return Scaffold(
-          appBar: AppBar(title: const Text('Adicionar bebida')),
+          appBar: AppBar(
+            title: Text(_explore ? 'Catálogo' : 'Adicionar bebida'),
+            actions: _explore
+                ? [
+                    IconButton(
+                      tooltip: 'Minhas bebidas e receitas',
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const MyDrinksPage()),
+                      ),
+                      icon: const Icon(Icons.bookmark_border_rounded),
+                    ),
+                    const SettingsAction(),
+                  ]
+                : null,
+          ),
           body: Column(
             children: [
               Padding(
@@ -217,12 +256,15 @@ class _AddDrinkView extends StatelessWidget {
       children: [
         if (showShortcuts && state.recents.isNotEmpty) ...[
           const SectionTitle('Recentes'),
-          _Shortcuts(items: state.recents, onTap: (i) => _pick(context, i)),
+          _Shortcuts(
+              items: state.recents,
+              onTap: (i) => _explore ? _details(context, i) : _pick(context, i)),
         ],
         if (showShortcuts && state.favoriteItems.isNotEmpty) ...[
           const SectionTitle('Favoritas'),
           _Shortcuts(
-              items: state.favoriteItems, onTap: (i) => _pick(context, i)),
+              items: state.favoriteItems,
+              onTap: (i) => _explore ? _details(context, i) : _pick(context, i)),
         ],
         SectionTitle(
             showShortcuts ? 'Todas as bebidas' : '${state.items.length} resultados'),
@@ -232,7 +274,8 @@ class _AddDrinkView extends StatelessWidget {
             child: _ItemTile(
               item: item,
               favorite: state.favorites.contains(item.id),
-              onTap: () => _pick(context, item),
+              onTap: () =>
+                  _explore ? _details(context, item) : _pick(context, item),
               onDetails: () => _details(context, item),
               onFavorite: () => cubit.toggleFavorite(item.id),
             ),

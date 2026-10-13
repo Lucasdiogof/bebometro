@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/injector.dart';
+import '../../core/navigation/app_routes.dart';
 import '../../core/navigation/outing_flow.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
@@ -9,9 +10,7 @@ import '../../core/utils/formatters.dart';
 import '../../core/widgets/brand.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
-import '../../history/presentation/history_page.dart';
 import '../../outings/presentation/outing_summary_page.dart';
-import '../../settings/presentation/settings_page.dart';
 import 'feedback_details_sheet.dart';
 import 'feedback_sheet.dart';
 import '../../outings/domain/outing.dart';
@@ -131,8 +130,7 @@ class _HomeViewState extends State<_HomeView> {
                     AppSpace.gutter, AppSpace.sm, AppSpace.gutter, AppSpace.xxl),
                 children: [
                   _Header(
-                    onHistory: () => _push<void>(const HistoryPage()),
-                    onSettings: () => _push<void>(const SettingsPage()),
+                    onSettings: () => AppRoutes.openSettings(context),
                   ),
                   const SizedBox(height: AppSpace.lg),
                   if (state.active != null)
@@ -164,9 +162,8 @@ class _HomeViewState extends State<_HomeView> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.onHistory, required this.onSettings});
+  const _Header({required this.onSettings});
 
-  final VoidCallback onHistory;
   final VoidCallback onSettings;
 
   @override
@@ -177,11 +174,6 @@ class _Header extends StatelessWidget {
         child: BrandWordmark(height: 30),
       ),
       const Spacer(),
-      IconButton(
-        tooltip: 'Histórico',
-        onPressed: onHistory,
-        icon: const Icon(Icons.history_rounded),
-      ),
       IconButton(
         tooltip: 'Configurações',
         onPressed: onSettings,

@@ -21,6 +21,8 @@ import '../../outings/presentation/outing_cubit.dart';
 import '../../outings/presentation/price_fix_cubit.dart';
 import '../../outings/presentation/start_outing_cubit.dart';
 import '../../settings/presentation/settings_cubit.dart';
+import '../../shell/active_outing_cubit.dart';
+import '../../stats/presentation/stats_cubit.dart';
 import '../config/env.dart';
 import '../data/app_prefs.dart';
 import '../data/local_store.dart';
@@ -70,6 +72,16 @@ Future<void> configureDependencies() async {
     ..registerSingleton<TablePrefsCubit>(TablePrefsCubit(store))
     ..registerSingleton<GameRepository>(GameRepository(store, bundledCards))
     ..registerFactory<GameCubit>(() => GameCubit(getIt<GameRepository>()))
+    ..registerFactory<StatsCubit>(
+      () => StatsCubit(
+        getIt<OutingRepository>(),
+        getIt<DrinkRepository>(),
+        getIt<PlaceRepository>(),
+      ),
+    )
+    ..registerFactory<ActiveOutingCubit>(
+      () => ActiveOutingCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
+    )
     ..registerFactory<HomeCubit>(
       () => HomeCubit(
         getIt<OutingRepository>(),

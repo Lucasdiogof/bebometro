@@ -10,13 +10,13 @@ implementado.
 |---|-------|--------|
 | 1a | Unidades dos ingredientes (ml, g, unidade, colher de chá/sopa, folha, gota, a gosto) | Implementado, ainda não executado |
 | 1b | Mesa do rolê: mesa/lista, cenários, recipientes, animação ilustrativa, muitos registros, preferências, retrospectiva | Implementado, ainda não executado |
-| 2 | Navegação principal (Início, Catálogo, Histórico, Resenha) + catálogo sem rolê ativo | Pendente |
+| 2 | Navegação principal (Início, Catálogo, Histórico, Resenha) + catálogo sem rolê ativo | Implementado, ainda não executado |
 | 3 | Locais salvos (+ migration de `places`/`place_id`) | Implementado, ainda não executado; migration `20261014000000` **não aplicada** (sem acesso administrativo) |
 | 4 | Orçamento e gastos, edição rápida de preços ausentes | Implementado, ainda não executado (`budget_cents` na migration `20261014000000`, não aplicada) |
 | 5 | Preços do próprio histórico | Implementado, ainda não executado |
-| 6 | Estatísticas pessoais | Pendente |
+| 6 | Estatísticas pessoais | Implementado, ainda não executado |
 | 7 | Feedback detalhado e "rolê esquecido" | Implementado, ainda não executado (campos novos na migration `20261014000000`, não aplicada) |
-| 8 | Resenha: jogos locais (Eu nunca, Quem é mais provável, Verdade ou desafio) | Implementado, ainda não executado (falta ligar a aba Resenha na navegação, bloco 2) |
+| 8 | Resenha: jogos locais (Eu nunca, Quem é mais provável, Verdade ou desafio) | Implementado, ainda não executado |
 | 9 | Copão e "virar o copo" | Pendente |
 | 10 | Cartão compartilhável e exportação JSON/CSV | Pendente |
 | 11 | Revisão dirigida e acabamento | Pendente |

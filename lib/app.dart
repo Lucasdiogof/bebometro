@@ -6,7 +6,7 @@ import 'core/di/injector.dart';
 import 'core/sync/sync_cubit.dart';
 import 'core/theme/app_colors.dart';
 import 'core/theme/app_theme.dart';
-import 'home/presentation/home_page.dart';
+import 'shell/main_shell.dart';
 import 'table/data/table_prefs_cubit.dart';
 
 class BebometroApp extends StatefulWidget {
@@ -70,7 +70,7 @@ class _BebometroAppState extends State<BebometroApp>
             ),
           ),
         ),
-        home: const HomePage(),
+        home: const MainShell(),
       ),
     );
   }

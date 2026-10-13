@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/injector.dart';
+import '../../core/navigation/app_routes.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../outings/domain/outing.dart';
+import '../../places/presentation/places_page.dart';
+import '../../stats/presentation/stats_page.dart';
 import '../../outings/presentation/outing_summary_page.dart';
 import 'history_cubit.dart';
 
@@ -30,7 +33,26 @@ class _HistoryView extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<HistoryCubit>();
     return Scaffold(
-      appBar: AppBar(title: const Text('Histórico')),
+      appBar: AppBar(
+        title: const Text('Histórico'),
+        actions: [
+          IconButton(
+            tooltip: 'Estatísticas',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const StatsPage()),
+            ),
+            icon: const Icon(Icons.insights_outlined),
+          ),
+          IconButton(
+            tooltip: 'Locais salvos',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const PlacesPage()),
+            ),
+            icon: const Icon(Icons.place_outlined),
+          ),
+          const SettingsAction(),
+        ],
+      ),
       body: BlocBuilder<HistoryCubit, HistoryState>(
         builder: (context, state) {
           if (state.loading) return const LoadingView();

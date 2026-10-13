@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../core/di/injector.dart';
+import '../../core/navigation/app_routes.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/common.dart';
@@ -48,7 +49,10 @@ class _ResenhaPageState extends State<ResenhaPage> {
   Widget build(BuildContext context) {
     final saved = _repo.savedSession;
     return Scaffold(
-      appBar: AppBar(title: const Text('Resenha')),
+      appBar: AppBar(
+        title: const Text('Resenha'),
+        actions: const [SettingsAction()],
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(
