@@ -15,6 +15,7 @@ import 'feedback_details_sheet.dart';
 import 'feedback_sheet.dart';
 import '../../outings/domain/outing.dart';
 import 'home_cubit.dart';
+import '../../l10n/l10n.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -141,7 +142,7 @@ class _HomeViewState extends State<_HomeView> {
                   else
                     _IdleCard(onStart: _startOuting),
                   if (state.lastOuting != null && state.active == null) ...[
-                    const SectionTitle('Último rolê'),
+                    SectionTitle(tr.homeLastOuting),
                     _LastOutingCard(
                       state: state,
                       onTap: () => _push<void>(
@@ -149,7 +150,7 @@ class _HomeViewState extends State<_HomeView> {
                       ),
                     ),
                   ],
-                  const SectionTitle('Este mês'),
+                  SectionTitle(tr.homeThisMonth),
                   _MonthCard(state: state),
                 ],
               );
@@ -175,7 +176,7 @@ class _Header extends StatelessWidget {
       ),
       const Spacer(),
       IconButton(
-        tooltip: 'Configurações',
+        tooltip: tr.settingsTitle,
         onPressed: onSettings,
         icon: const Icon(Icons.settings_outlined),
       ),
@@ -199,17 +200,14 @@ class _IdleCard extends StatelessWidget {
         children: [
           Text(formatWeekdayDate(DateTime.now()), style: AppText.caption),
           const SizedBox(height: AppSpace.sm),
-          const Text('Bora de rolê?', style: AppText.headline),
+          Text(tr.homeIdleTitle, style: AppText.headline),
           const SizedBox(height: AppSpace.sm),
-          const Text(
-            'Anote o que bebeu e quanto gastou, sem complicação.',
-            style: AppText.caption,
-          ),
+          Text(tr.homeIdleBody, style: AppText.caption),
           const SizedBox(height: AppSpace.xl),
           FilledButton.icon(
             onPressed: onStart,
             icon: const Icon(Icons.play_arrow_rounded, size: 26),
-            label: const Text('Iniciar rolê'),
+            label: Text(tr.homeStartOuting),
           ),
         ],
       ),
@@ -241,7 +239,7 @@ class _ActiveCard extends StatelessWidget {
                   color: AppColors.success, shape: BoxShape.circle),
             ),
             const SizedBox(width: AppSpace.sm),
-            const Text('Rolê em andamento', style: AppText.caption),
+            Text(tr.homeOutingRunning, style: AppText.caption),
           ]),
           const SizedBox(height: AppSpace.sm),
           Row(children: [
@@ -262,18 +260,18 @@ class _ActiveCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Tempo', style: AppText.caption),
+                  Text(tr.homeTime, style: AppText.caption),
                   const SizedBox(height: AppSpace.xs),
                   ElapsedText(since: outing.startedAt, style: AppText.value),
                 ],
               ),
             ),
             Expanded(
-              child: StatTile(label: 'Bebidas', value: '${s.entryCount}'),
+              child: StatTile(label: tr.homeDrinks, value: '${s.entryCount}'),
             ),
             Expanded(
               child: StatTile(
-                label: 'Gasto',
+                label: tr.homeSpent,
                 value: formatCents(s.informedCents),
               ),
             ),
@@ -281,7 +279,7 @@ class _ActiveCard extends StatelessWidget {
           if (s.unpricedCount > 0) ...[
             const SizedBox(height: AppSpace.md),
             InfoPill(
-              '${s.unpricedCount} sem preço',
+              tr.homeUnpriced(s.unpricedCount),
               icon: Icons.sell_outlined,
               warning: true,
             ),
@@ -290,7 +288,7 @@ class _ActiveCard extends StatelessWidget {
           FilledButton.icon(
             onPressed: onContinue,
             icon: const Icon(Icons.sports_bar_rounded),
-            label: const Text('Continuar rolê'),
+            label: Text(tr.homeContinueOuting),
           ),
         ],
       ),
@@ -331,9 +329,11 @@ class _LastOutingCard extends StatelessWidget {
                   style: AppText.subtitle),
               const SizedBox(height: 2),
               Text(
-                '${formatDate(o.startedAt)} · '
-                '${s.entryCount} ${s.entryCount == 1 ? 'bebida' : 'bebidas'}'
-                '${s.pricedCount > 0 ? ' · ${formatCents(s.informedCents)}' : ''}',
+                [
+                  formatDate(o.startedAt),
+                  tr.drinkCount(s.entryCount),
+                  if (s.pricedCount > 0) formatCents(s.informedCents),
+                ].join(' · '),
                 style: AppText.caption,
               ),
             ],
@@ -353,18 +353,17 @@ class _MonthCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!state.hasHistory) {
-      return const SurfaceCard(
+      return SurfaceCard(
         child: EmptyView(
           icon: Icons.sports_bar_outlined,
-          title: 'Seu primeiro rolê começa aqui',
-          message: 'Quando você encerrar um rolê, o resumo do mês aparece '
-              'aqui, só com o que você registrou.',
+          title: tr.homeFirstTitle,
+          message: tr.homeFirstBody,
         ),
       );
     }
     if (state.monthOutings == 0) {
-      return const SurfaceCard(
-        child: Text('Nenhum rolê encerrado neste mês ainda.',
+      return SurfaceCard(
+        child: Text(tr.homeNoneThisMonth,
             style: AppText.caption),
       );
     }
@@ -376,15 +375,15 @@ class _MonthCard extends StatelessWidget {
           Row(children: [
             Expanded(
               child:
-                  StatTile(label: 'Rolês', value: '${state.monthOutings}'),
+                  StatTile(label: tr.homeOutings, value: '${state.monthOutings}'),
             ),
             Expanded(
               child:
-                  StatTile(label: 'Bebidas', value: '${state.monthDrinks}'),
+                  StatTile(label: tr.homeDrinks, value: '${state.monthDrinks}'),
             ),
             Expanded(
               child: StatTile(
-                label: 'Gasto informado',
+                label: tr.homeInformedSpent,
                 value: formatCents(state.monthInformedCents),
               ),
             ),
@@ -392,7 +391,7 @@ class _MonthCard extends StatelessWidget {
           if (unpriced > 0) ...[
             const SizedBox(height: AppSpace.md),
             InfoPill(
-              '$unpriced ${unpriced == 1 ? 'bebida' : 'bebidas'} sem preço',
+              tr.financeUnpriced(unpriced),
               icon: Icons.sell_outlined,
               warning: true,
             ),
@@ -422,31 +421,28 @@ class _StaleSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Esse rolê ainda está acontecendo?',
-                style: AppText.title),
+            Text(tr.staleTitle, style: AppText.title),
             const SizedBox(height: AppSpace.sm),
             Text(
-              '${outing.displayName} começou em '
-              '${formatDateTime(outing.startedAt)} e está aberto há '
-              '${formatDuration(outing.durationAt(DateTime.now()))}.',
+              tr.staleBody(
+                outing.displayName,
+                formatDateTime(outing.startedAt),
+                formatDuration(outing.durationAt(DateTime.now())),
+              ),
               style: AppText.caption,
             ),
             const SizedBox(height: AppSpace.xl),
             FilledButton(
               onPressed: () => Navigator.pop(context, _StaleAction.keep),
-              child: const Text('Continuar'),
+              child: Text(tr.commonContinue),
             ),
             const SizedBox(height: AppSpace.sm),
             OutlinedButton(
               onPressed: () => Navigator.pop(context, _StaleAction.end),
-              child: const Text('Encerrar com outro horário'),
+              child: Text(tr.staleEndOtherTime),
             ),
             const SizedBox(height: AppSpace.xs),
-            const Text(
-              'Ao encerrar você escolhe o horário final. Nada é encerrado '
-              'automaticamente.',
-              style: AppText.caption,
-            ),
+            Text(tr.staleNote, style: AppText.caption),
           ],
         ),
       ),

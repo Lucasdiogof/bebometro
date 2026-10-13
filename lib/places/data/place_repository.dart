@@ -5,6 +5,7 @@ import '../../outings/domain/outing.dart';
 import '../domain/geo_point.dart';
 import '../domain/place.dart';
 import '../domain/place_draft.dart';
+import '../../l10n/l10n.dart';
 
 class PlaceRepository {
   PlaceRepository(this._store);
@@ -91,12 +92,12 @@ class PlaceRepository {
     final name = clean(providerName);
     if (nick == null && addr == null && name == null) {
       throw ArgumentError(point != null
-          ? 'Dê um apelido para salvar este ponto.'
-          : 'Informe um apelido ou um endereço.');
+          ? tr.repoPointNeedsName
+          : tr.repoNicknameOrAddress);
     }
     final uf = clean(state)?.toUpperCase();
     if (uf != null && !RegExp(r'^[A-Z]{2}$').hasMatch(uf)) {
-      throw ArgumentError('A UF tem 2 letras (ex.: SP).');
+      throw ArgumentError(tr.repoStateFormat);
     }
     final now = DateTime.now();
     final existing = byId(id);

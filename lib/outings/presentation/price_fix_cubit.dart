@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/domain/price_history.dart';
+import '../../l10n/l10n.dart';
+import '../../core/utils/formatters.dart';
 
 /// Records that are the same drink and size, listed together.
 class PriceFixGroup {
@@ -112,8 +114,8 @@ class PriceFixCubit extends Cubit<PriceFixState> {
 
   static String _label(DrinkEntry e) {
     final size = e.presentation ??
-        (e.containerMl == null ? null : '${e.containerMl} ml');
-    return [e.name, ?size, if (e.isShared) 'compartilhada'].join(' · ');
+        (e.containerMl == null ? null : formatMl(e.containerMl!));
+    return [e.name, ?size, if (e.isShared) tr.drinkShared].join(' · ');
   }
 
   void setIncludePriced(bool v) {
@@ -144,19 +146,15 @@ class PriceFixCubit extends Cubit<PriceFixState> {
 
   String _priceText(DrinkEntry e) => switch (e.priceKind) {
         PriceKind.informed => _money(e.paidCents ?? 0),
-        PriceKind.complimentary => 'Cortesia',
-        PriceKind.unknown => 'Sem preço',
+        PriceKind.complimentary => tr.priceComplimentary,
+        PriceKind.unknown => tr.priceNone,
       };
 
-  static String _money(int cents) {
-    final reais = cents ~/ 100;
-    final rest = (cents % 100).toString().padLeft(2, '0');
-    return 'R\$ $reais,$rest';
-  }
+  static String _money(int cents) => formatCents(cents);
 
   /// What would change, to show before saving.
   List<PricePreviewRow> preview() {
-    final after = state.complimentary ? 'Cortesia' : _money(state.priceCents ?? 0);
+    final after = state.complimentary ? tr.priceComplimentary : _money(state.priceCents ?? 0);
     return [
       for (final g in state.groups)
         for (final e in g.entries)

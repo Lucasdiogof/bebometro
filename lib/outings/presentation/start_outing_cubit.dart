@@ -5,6 +5,7 @@ import '../../places/domain/place.dart';
 import '../../places/domain/place_draft.dart';
 import '../data/outing_repository.dart';
 import '../domain/outing.dart';
+import '../../l10n/l10n.dart';
 
 class StartOutingState {
   const StartOutingState({
@@ -48,13 +49,13 @@ class StartOutingState {
   String? get placeError => (place == null &&
           nickname.trim().isEmpty &&
           address.trim().isEmpty)
-      ? 'Informe um apelido (ex.: Casa da Samara) ou um endereço'
+      ? tr.startPlaceError
       : null;
 
   String? get stateError {
     final uf = state.trim();
     if (uf.isEmpty) return null;
-    return RegExp(r'^[A-Za-z]{2}$').hasMatch(uf) ? null : 'A UF tem 2 letras';
+    return RegExp(r'^[A-Za-z]{2}$').hasMatch(uf) ? null : tr.stateTwoLetters;
   }
 
   StartOutingState copyWith({
@@ -140,7 +141,7 @@ class StartOutingCubit extends Cubit<StartOutingState> {
     if (state.startedAt.isAfter(DateTime.now().add(const Duration(minutes: 5)))) {
       emit(state.copyWith(
         showErrors: true,
-        error: 'O início não pode estar no futuro.',
+        error: tr.startFuture,
       ));
       return;
     }
@@ -174,7 +175,7 @@ class StartOutingCubit extends Cubit<StartOutingState> {
       emit(state.copyWith(
         submitting: false,
         showErrors: true,
-        error: 'Não foi possível iniciar o rolê. Tente de novo.',
+        error: tr.startFailed,
       ));
     }
   }

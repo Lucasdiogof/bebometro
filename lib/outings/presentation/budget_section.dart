@@ -5,6 +5,7 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../domain/budget.dart';
 import '../domain/outing_summary.dart';
+import '../../l10n/l10n.dart';
 
 /// Optional drinks budget of an outing: informed spending against the budget,
 /// honest about records that have no price.
@@ -33,7 +34,7 @@ class BudgetSection extends StatelessWidget {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setState) => AlertDialog(
-          title: const Text('Orçamento para bebidas'),
+          title: Text(tr.budgetDialogTitle),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,38 +45,39 @@ class BudgetSection extends StatelessWidget {
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
-                  labelText: 'Valor',
+                  labelText: tr.budgetValue,
                   prefixText: r'R$ ',
+                  helperText: tr.moneyFieldHelper,
+                  helperMaxLines: 2,
                   errorText: error,
+                  errorMaxLines: 3,
                 ),
               ),
               const SizedBox(height: AppSpace.sm),
-              const Text(
-                'Opcional. Compara só com os gastos que você informou.',
-                style: AppText.caption,
-              ),
+              Text(tr.budgetOptionalNote, style: AppText.caption),
             ],
           ),
           actions: [
             if (budgetCents != null)
               TextButton(
                 onPressed: () => Navigator.pop(ctx, const _BudgetResult(null)),
-                child: const Text('Remover',
-                    style: TextStyle(color: AppColors.danger)),
+                child: Text(tr.commonRemove,
+                    style: const TextStyle(color: AppColors.danger)),
               ),
             TextButton(
                 onPressed: () => Navigator.pop(ctx),
-                child: const Text('Cancelar')),
+                child: Text(tr.commonCancel)),
             TextButton(
               onPressed: () {
                 final cents = parseCents(controller.text);
                 if (cents == null || cents <= 0) {
-                  setState(() => error = 'Informe um valor maior que zero');
+                  setState(() => error = numberInputError(controller.text) ??
+                      tr.budgetMustBePositive);
                   return;
                 }
                 Navigator.pop(ctx, _BudgetResult(cents));
               },
-              child: const Text('Salvar'),
+              child: Text(tr.commonSave),
             ),
           ],
         ),
@@ -95,7 +97,7 @@ class BudgetSection extends StatelessWidget {
         child: TextButton.icon(
           onPressed: () => _edit(context),
           icon: const Icon(Icons.savings_outlined, size: 18),
-          label: const Text('Definir orçamento'),
+          label: Text(tr.budgetSet),
         ),
       );
     }
@@ -107,14 +109,14 @@ class BudgetSection extends StatelessWidget {
         Row(children: [
           Expanded(
             child: Text(
-              'Orçamento ${formatCents(budget)} · gasto informado '
-              '${formatCents(status.informedCents)}',
+              tr.budgetLine(
+                  formatCents(budget), formatCents(status.informedCents)),
               style: AppText.subtitle,
             ),
           ),
           if (editable)
             IconButton(
-              tooltip: 'Editar orçamento',
+              tooltip: tr.budgetEdit,
               onPressed: () => _edit(context),
               icon: const Icon(Icons.edit_outlined, size: 18),
             ),

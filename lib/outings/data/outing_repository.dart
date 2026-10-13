@@ -3,12 +3,13 @@ import 'package:uuid/uuid.dart';
 import '../../core/data/local_store.dart';
 import '../../places/domain/place_draft.dart';
 import '../domain/outing.dart';
+import '../../l10n/l10n.dart';
 
 class ActiveOutingExistsException implements Exception {
   const ActiveOutingExistsException();
 
   @override
-  String toString() => 'Já existe um rolê em andamento.';
+  String toString() => tr.repoActiveExists;
 }
 
 class OutingRepository {
@@ -73,7 +74,7 @@ class OutingRepository {
         _clean(p.address) == null &&
         _clean(p.placeName) == null &&
         p.point == null) {
-      throw ArgumentError('Informe um apelido ou um endereço para o local.');
+      throw ArgumentError(tr.repoPlaceMissing);
     }
   }
 
@@ -128,10 +129,10 @@ class OutingRepository {
     final outing = byId(id);
     if (outing == null || !outing.isActive) return;
     if (endedAt.isBefore(outing.startedAt)) {
-      throw ArgumentError('O fim não pode ser antes do início.');
+      throw ArgumentError(tr.repoEndBeforeStart);
     }
     if (endedAt.isAfter(DateTime.now().add(const Duration(minutes: 5)))) {
-      throw ArgumentError('O fim não pode estar no futuro.');
+      throw ArgumentError(tr.repoEndFuture);
     }
     await _save(outing.copyWith(endedAt: endedAt, updatedAt: DateTime.now()));
   }

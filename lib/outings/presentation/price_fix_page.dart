@@ -6,9 +6,11 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
+import '../../core/widgets/money_field.dart';
 import '../../core/widgets/state_views.dart';
 import '../../drinks/domain/drink_entry.dart';
 import 'price_fix_cubit.dart';
+import '../../l10n/l10n.dart';
 
 /// Fill in missing prices of an outing: one by one, or one price for several
 /// equivalent records after a preview.
@@ -36,8 +38,7 @@ class _PriceFixView extends StatelessWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Aplicar a ${rows.length} '
-            '${rows.length == 1 ? 'registro' : 'registros'}?'),
+        title: Text(tr.priceFixApplyTitle(rows.length)),
         content: SizedBox(
           width: double.maxFinite,
           child: ListView(
@@ -47,8 +48,7 @@ class _PriceFixView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: AppSpace.sm),
                   child: Text(
-                    '$replaced já tinha${replaced == 1 ? '' : 'm'} preço e '
-                    'será substituído${replaced == 1 ? '' : 's'}.',
+                    tr.priceFixReplaced(replaced),
                     style: const TextStyle(color: AppColors.amber),
                   ),
                 ),
@@ -60,7 +60,7 @@ class _PriceFixView extends StatelessWidget {
                       maxLines: 1, overflow: TextOverflow.ellipsis),
                   subtitle: Text(
                     '${formatTime(r.entry.consumedAt)}'
-                    '${r.entry.isShared ? ' · sua parcela' : ''}',
+                    '${r.entry.isShared ? ' · ${tr.priceFixYourShare}' : ''}',
                     style: AppText.caption,
                   ),
                   trailing: Text('${r.before} → ${r.after}',
@@ -75,16 +75,16 @@ class _PriceFixView extends StatelessWidget {
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancelar')),
+              child: Text(tr.commonCancel)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Salvar')),
+              child: Text(tr.commonSave)),
         ],
       ),
     );
     if (ok == true) {
       await cubit.apply();
-      if (context.mounted) showToast(context, 'Preços atualizados');
+      if (context.mounted) showToast(context, tr.priceFixUpdated);
     }
   }
 
@@ -105,46 +105,40 @@ class _PriceFixView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
+              MoneyField(
                 controller: controller,
                 autofocus: true,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                  labelText:
-                      e.isShared ? 'Quanto você pagou' : 'Preço pago',
-                  prefixText: r'R$ ',
-                  errorText: error,
-                ),
+                label: e.isShared ? tr.priceFixPaidShared : tr.priceFixPaidLabel,
+                errorText: error,
+                onChanged: (_) {
+                  if (error != null) setState(() => error = null);
+                },
               ),
               if (e.isShared)
-                const Padding(
-                  padding: EdgeInsets.only(top: AppSpace.sm),
-                  child: Text(
-                    'Bebida compartilhada: informe a sua parcela, não o '
-                    'preço da garrafa. O consumo não muda.',
-                    style: AppText.caption,
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpace.sm),
+                  child: Text(tr.priceFixSharedNote, style: AppText.caption),
                 ),
             ],
           ),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(ctx),
-                child: const Text('Cancelar')),
+                child: Text(tr.commonCancel)),
             TextButton(
                 onPressed: () => Navigator.pop(ctx, const _One.complimentary()),
-                child: const Text('Cortesia')),
+                child: Text(tr.priceComplimentary)),
             TextButton(
               onPressed: () {
                 final cents = parseCents(controller.text);
                 if (cents == null) {
-                  setState(() => error = 'Informe um valor');
+                  setState(() => error = numberInputError(controller.text) ??
+                      tr.priceFixEnterValue);
                   return;
                 }
                 Navigator.pop(ctx, _One(cents));
               },
-              child: const Text('Salvar'),
+              child: Text(tr.commonSave),
             ),
           ],
         ),
@@ -160,82 +154,65 @@ class _PriceFixView extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<PriceFixCubit>();
     return Scaffold(
-      appBar: AppBar(title: const Text('Preços ausentes')),
+      appBar: AppBar(title: Text(tr.priceFixTitle)),
       body: BlocBuilder<PriceFixCubit, PriceFixState>(
         builder: (context, state) {
           return Column(
             children: [
               Expanded(
                 child: state.groups.isEmpty
-                    ? const EmptyView(
+                    ? EmptyView(
                         icon: Icons.check_circle_outline_rounded,
-                        title: 'Nenhum preço ausente',
-                        message: 'Todos os registros deste rolê têm preço ou '
-                            'cortesia informados.',
+                        title: tr.priceFixNoneTitle,
+                        message: tr.priceFixNoneBody,
                       )
                     : ListView(
                         padding: const EdgeInsets.fromLTRB(AppSpace.gutter, 0,
                             AppSpace.gutter, AppSpace.xl),
                         children: [
-                          const Text(
-                            'Preencha um por um, ou escolha vários registros '
-                            'iguais e aplique o mesmo preço depois de ver a '
-                            'prévia. Preços já informados não mudam, a menos '
-                            'que você os inclua e selecione de propósito.',
-                            style: AppText.caption,
-                          ),
+                          Text(tr.priceFixIntro, style: AppText.caption),
                           SwitchListTile(
                             contentPadding: EdgeInsets.zero,
-                            title: const Text(
-                                'Incluir também registros que já têm preço'),
+                            title: Text(tr.priceFixIncludePriced),
                             value: state.includePriced,
                             activeThumbColor: AppColors.amber,
                             onChanged: cubit.setIncludePriced,
                           ),
-                          const SectionTitle('Preço para os selecionados'),
+                          SectionTitle(tr.priceFixForSelected),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                child: TextField(
+                                child: MoneyField(
                                   enabled: !state.complimentary,
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          decimal: true),
-                                  decoration: const InputDecoration(
-                                    labelText: 'Preço pago',
-                                    prefixText: r'R$ ',
-                                  ),
-                                  onChanged: (v) => cubit.setPrice(parseCents(v)),
+                                  label: tr.priceFixPaidLabel,
+                                  onChanged: cubit.setPrice,
                                 ),
                               ),
                               const SizedBox(width: AppSpace.sm),
                               FilterChip(
-                                label: const Text('Cortesia'),
+                                label: Text(tr.priceComplimentary),
                                 selected: state.complimentary,
                                 showCheckmark: false,
                                 onSelected: cubit.setComplimentary,
                               ),
                             ],
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: AppSpace.xs),
-                            child: Text(
-                              'Em bebida compartilhada vale o que você pagou '
-                              '(sua parcela), nunca o preço da garrafa.',
-                              style: AppText.caption,
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: AppSpace.xs),
+                            child: Text(tr.priceFixSharedHint,
+                                style: AppText.caption),
                           ),
                           for (final g in state.groups) ...[
                             SectionTitle(g.label),
                             Row(children: [
                               TextButton(
                                 onPressed: () => cubit.selectGroup(g, true),
-                                child: Text('Selecionar os ${g.entries.length}'),
+                                child: Text(tr.priceFixSelectAll(g.entries.length)),
                               ),
                               TextButton(
                                 onPressed: () => cubit.selectGroup(g, false),
-                                child: const Text('Limpar'),
+                                child: Text(tr.priceFixClear),
                               ),
                             ]),
                             for (final e in g.entries)
@@ -248,14 +225,15 @@ class _PriceFixView extends StatelessWidget {
                                 subtitle: Text(
                                   switch (e.priceKind) {
                                     PriceKind.informed =>
-                                      'Preço atual: ${formatCents(e.paidCents ?? 0)}',
-                                    PriceKind.complimentary => 'Cortesia',
-                                    PriceKind.unknown => 'Sem preço',
+                                      tr.priceFixCurrent(formatCents(e.paidCents ?? 0)),
+                                    PriceKind.complimentary =>
+                                      tr.priceComplimentary,
+                                    PriceKind.unknown => tr.priceNone,
                                   },
                                   style: AppText.caption,
                                 ),
                                 secondary: IconButton(
-                                  tooltip: 'Informar só este preço',
+                                  tooltip: tr.priceFixOnlyThis,
                                   onPressed: () => _editOne(context, e),
                                   icon: const Icon(Icons.edit_outlined),
                                 ),
@@ -268,8 +246,8 @@ class _PriceFixView extends StatelessWidget {
                 child: FilledButton(
                   onPressed: state.canApply ? () => _applyBatch(context) : null,
                   child: Text(state.selected.isEmpty
-                      ? 'Selecione registros'
-                      : 'Ver prévia (${state.selected.length})'),
+                      ? tr.priceFixSelectRecords
+                      : tr.priceFixPreview(state.selected.length)),
                 ),
               ),
             ],

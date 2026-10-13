@@ -11,9 +11,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "1": {
-        "type": "String"
       }
     }
   },
@@ -42,9 +39,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "Também": {
-        "type": "String"
       }
     }
   },
@@ -53,9 +47,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "Salvo": {
-        "type": "String"
       }
     }
   },
@@ -71,9 +62,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "Também": {
-        "type": "String"
       }
     }
   },
@@ -82,9 +70,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "Há": {
-        "type": "String"
       }
     }
   },
@@ -93,6 +78,32 @@
   "accountSyncFirst": "Sincronizar antes",
   "accountYourData": "Seus dados",
   "accountYourName": "Seu nome",
+  "alcoholAtLeast": "pelo menos {amount}",
+  "@alcoholAtLeast": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "alcoholDeclared": "Álcool puro declarado",
+  "alcoholExplain": "Calculado só com o que foi informado: volume × teor nas bebidas simples e quantidade × teor de cada componente nos drinks. Em drinks vale a receita declarada, não o que o bar serviu. Não é a concentração de álcool no sangue e não indica se você pode dirigir.",
+  "alcoholIncompletePill": "{count, plural, =1{1 registro com teor ou quantidade desconhecidos: o total é um mínimo} other{{count} registros com teor ou quantidade desconhecidos: o total é um mínimo}}",
+  "@alcoholIncompletePill": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "alcoholNoVolumePill": "{count, plural, =1{1 registro sem volume informado (não entra no volume)} other{{count} registros sem volume informado (não entram no volume)}}",
+  "@alcoholNoVolumePill": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "appName": "Bebômetro",
   "authAlreadyConfirmed": "Já confirmei: entrar",
   "authCancelAndLeave": "Cancelar e sair",
@@ -189,6 +200,74 @@
   "authWrongCredentials": "E-mail ou senha incorretos.",
   "authYourAccount": "sua conta",
   "authYourEmail": "o seu e-mail",
+  "budgetDialogTitle": "Orçamento para bebidas",
+  "budgetEdit": "Editar orçamento",
+  "budgetLeft": "Sobram {amount} do orçamento.",
+  "@budgetLeft": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetLeftIncomplete": "{count, plural, =1{Dos gastos informados, sobram {amount} do orçamento (parcial: falta o preço de 1 bebida).} other{Dos gastos informados, sobram {amount} do orçamento (parcial: faltam preços de {count} bebidas).}}",
+  "@budgetLeftIncomplete": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "budgetLine": "Orçamento {budget} · gasto informado {spent}",
+  "@budgetLine": {
+    "placeholders": {
+      "budget": {
+        "type": "String"
+      },
+      "spent": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetMustBePositive": "Informe um valor maior que zero",
+  "budgetOptionalNote": "Opcional. Compara só com os gastos que você informou.",
+  "budgetOver": "Passou {amount} do orçamento.",
+  "@budgetOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetOverIncomplete": "Os gastos informados já passaram {amount} do orçamento e ainda faltam preços.",
+  "@budgetOverIncomplete": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetReached": "Os gastos informados chegaram a {percent}% do orçamento ({spent} de {budget}).",
+  "@budgetReached": {
+    "placeholders": {
+      "budget": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      },
+      "spent": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetReachedIncomplete": "Há bebidas sem preço: o total real pode ser maior.",
+  "budgetSet": "Definir orçamento",
+  "budgetValue": "Valor",
+  "commonAdjust": "Ajustar",
   "commonBack": "Voltar",
   "commonCancel": "Cancelar",
   "commonClose": "Fechar",
@@ -200,8 +279,10 @@
   "commonError": "Algo deu errado",
   "commonLater": "Depois",
   "commonMoreOptions": "Mais opções",
+  "commonNotNow": "Agora não",
   "commonOptional": "(opcional)",
   "commonOptions": "Opções",
+  "commonRemove": "Remover",
   "commonRetry": "Tentar de novo",
   "commonSave": "Salvar",
   "commonUndo": "Desfazer",
@@ -283,34 +364,22 @@
   "conflictTabPayments": "{count, plural, =0{Nenhum pagamento registrado} =1{1 pagamento registrado: {amount}} other{{count} pagamentos registrados: {amount}}}",
   "@conflictTabPayments": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      },
-      "Nenhum": {
-        "type": "String"
-      },
-      "1": {
-        "type": "String"
-      },
       "amount": {
         "type": "String"
+      },
+      "count": {
+        "type": "int"
       }
     }
   },
   "conflictTabPeople": "{people, plural, =1{1 participante} other{{people} participantes}} · {extras, plural, =0{nenhum item extra} =1{1 item extra} other{{extras} itens extras}}",
   "@conflictTabPeople": {
     "placeholders": {
-      "people": {
-        "type": "int"
-      },
-      "1": {
-        "type": "String"
-      },
       "extras": {
         "type": "int"
       },
-      "nenhum": {
-        "type": "String"
+      "people": {
+        "type": "int"
       }
     }
   },
@@ -344,13 +413,12 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "1": {
-        "type": "String"
       }
     }
   },
   "drinkFallbackName": "Bebida",
+  "drinkShared": "compartilhada",
+  "drinkWater": "Água",
   "durationHours": "{hours} h",
   "@durationHours": {
     "placeholders": {
@@ -378,7 +446,126 @@
       }
     }
   },
+  "entryAlcoholIncomplete": "álcool incompleto",
+  "entryCorrect": "Corrigir",
+  "entryOptions": "Opções do registro",
+  "entrySharedPart": "{count, plural, =1{sua parte {mine} de {total} (1 pessoa)} other{sua parte {mine} de {total} ({count} pessoas)}}",
+  "@entrySharedPart": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "mine": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "feedbackDontAsk": "Não perguntar",
+  "feedbackFreeNote": "Nota livre",
+  "feedbackFreeNoteHint": "Algo que você queira lembrar desse rolê",
+  "feedbackHangover": "Ressaca",
+  "feedbackHowItWent": "Como foi",
+  "feedbackNote": "É só o seu relato de como foi a noite. Não mede nada e não indica quanto é seguro beber.",
+  "feedbackOptional": "Tudo opcional. É só um registro pessoal, sem nota e sem comparação.",
+  "feedbackReviewForgotten": "Revisar bebidas esquecidas",
+  "feedbackSave": "Salvar relato",
+  "feedbackTellMore": "Quer contar mais?",
+  "feedbackTitle": "Como foi o último rolê?",
+  "feedbackWake": "Como acordou",
+  "feedbackYourAccount": "Seu relato",
   "fileGenerationFailed": "Não foi possível gerar o arquivo.",
+  "financeInformed": "{amount} informados",
+  "@financeInformed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "financeNoRecords": "Sem registros ainda",
+  "financeNoValue": "Nenhum valor informado",
+  "financeUnpriced": "{count, plural, =1{1 bebida sem preço} other{{count} bebidas sem preço}}",
+  "@financeUnpriced": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "finishAndSummary": "Encerrar e ver resumo",
+  "finishBody": "{count, plural, =0{Nenhum registro.} =1{1 registro.} other{{count} registros.}} Você ainda poderá corrigir registros depois, pelo histórico.",
+  "@finishBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "finishEnd": "Fim: {when}",
+  "@finishEnd": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "finishKeepGoing": "Continuar o rolê",
+  "finishTitle": "Encerrar rolê?",
+  "glassBigSubtitle": "O volume informado, somado, num copo.",
+  "glassBigTitle": "Copão (opcional)",
+  "glassTipPlay": "Brincar de virar o copo",
+  "groupRecipeAdjusted": "receita ajustada",
+  "groupSharedPart": "{mine} seus de {total}",
+  "@groupSharedPart": {
+    "placeholders": {
+      "mine": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "groupTimes": "{count}×",
+  "@groupTimes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupVolumeUnknown": "volume desconhecido",
+  "groupVolumeUnknownShort": "volume ?",
+  "hangoverMild": "Leve",
+  "hangoverModerate": "Moderada",
+  "hangoverNone": "Nenhuma",
+  "hangoverStrong": "Forte",
+  "homeContinueOuting": "Continuar rolê",
+  "homeDrinks": "Bebidas",
+  "homeFirstBody": "Quando você encerrar um rolê, o resumo do mês aparece aqui, só com o que você registrou.",
+  "homeFirstTitle": "Seu primeiro rolê começa aqui",
+  "homeIdleBody": "Anote o que bebeu e quanto gastou, sem complicação.",
+  "homeIdleTitle": "Bora de rolê?",
+  "homeInformedSpent": "Gasto informado",
+  "homeLastOuting": "Último rolê",
+  "homeNoneThisMonth": "Nenhum rolê encerrado neste mês ainda.",
+  "homeOutingRunning": "Rolê em andamento",
+  "homeOutings": "Rolês",
+  "homeSpent": "Gasto",
+  "homeStartOuting": "Iniciar rolê",
+  "homeThisMonth": "Este mês",
+  "homeTime": "Tempo",
+  "homeUnpriced": "{count, plural, =1{1 sem preço} other{{count} sem preço}}",
+  "@homeUnpriced": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "itemFallbackName": "Item",
   "languageEn": "English",
   "languageEs": "Español",
@@ -403,9 +590,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "Importação": {
-        "type": "String"
       }
     }
   },
@@ -419,9 +603,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "Há": {
-        "type": "String"
       }
     }
   },
@@ -436,15 +617,148 @@
   "legacyTwoActiveBody": "Sua conta já tem um rolê em andamento e os registros antigos também. Para importar, o rolê antigo entra como encerrado agora. As bebidas dele continuam nele, sem se misturar.",
   "legacyTwoActiveTitle": "Dois rolês em andamento",
   "moneyFieldHelper": "Valores em reais (R$). Ex.: 15 ou 15,50.",
+  "moodCheerful": "Alegre",
+  "moodDrunk": "Bêbado",
+  "moodSmooth": "Suave",
+  "moodWasted": "Bebaço",
   "navCatalog": "Catálogo",
   "navGames": "Resenha",
   "navHistory": "Histórico",
   "navHome": "Início",
+  "noticeAnotherOne": "Mais uma: {name}",
+  "@noticeAnotherOne": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "noticeEntryDeleted": "Registro excluído",
+  "noticeWater": "Água registrada",
   "numberAmbiguous": "Formato ambíguo. Use vírgula ou ponto só para os centavos (ex.: 1500 ou 15,50).",
   "numberInvalid": "Número inválido.",
+  "outingAddDrink": "Adicionar bebida",
+  "outingAlcoholIncomplete": "{count, plural, =1{1 com álcool incompleto} other{{count} com álcool incompleto}}",
+  "@outingAlcoholIncomplete": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "outingAlreadyEnded": "Esse rolê já foi encerrado.",
+  "outingConfirmAnother": "Registrar mais uma: {drink}?",
+  "@outingConfirmAnother": {
+    "placeholders": {
+      "drink": {
+        "type": "String"
+      }
+    }
+  },
+  "outingConfirmWater": "Registrar um copo de água?",
+  "outingDrinkLogged": "Bebida registrada",
+  "outingEntryUpdated": "Registro atualizado",
   "outingFallbackName": "Rolê",
+  "outingFinish": "Encerrar rolê",
+  "outingFirstDrinkHint": "Registre a primeira bebida e o botão \"Mais uma\" aparece aqui embaixo.",
+  "outingHideHere": "Ocultar neste rolê",
   "outingInProgress": "Em andamento",
+  "outingLockScreenRequest": "Pedido da tela bloqueada",
+  "outingLog": "Registrar",
+  "outingNoDrinks": "Nenhuma bebida ainda",
+  "outingNoDrinksBody": "Registre a primeira e o botão \"Mais uma\" aparece aqui embaixo.",
+  "outingNoVolume": "{count, plural, =1{1 sem volume} other{{count} sem volume}}",
+  "@outingNoVolume": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "outingNotFound": "Esse rolê não foi encontrado.",
+  "outingNothingToRepeat": "Não há bebida para repetir neste rolê.",
+  "outingOpenScan": "Há uma leitura de rótulo ou cardápio em aberto. Ela continua ligada a este rolê e aparece no resumo dele.",
+  "outingRecords": "Registros ({count})",
+  "@outingRecords": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "outingRunningFor": "Rolando há",
+  "outingShowOnLock": "Mostrar na tela bloqueada",
+  "outingTrackingBack": "Acompanhamento na tela bloqueada de volta.",
+  "outingTrackingHidden": "Oculto da tela bloqueada neste rolê.",
+  "outingTypeBar": "Bar",
+  "outingTypeBarbecue": "Churrasco",
+  "outingTypeBeach": "Praia",
+  "outingTypeClub": "Balada",
+  "outingTypeHome": "Casa",
+  "outingTypeOther": "Outro",
+  "outingTypeRestaurant": "Restaurante",
+  "outingTypeSince": "{type} · desde {time}",
+  "@outingTypeSince": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "outingYourVolume": "Seu volume",
+  "placeCorrect": "Corrigir local",
+  "placeOpenInMaps": "Abrir no mapa",
+  "priceComplimentary": "Cortesia",
+  "priceNone": "Sem preço",
   "priceUnknown": "sem preço",
+  "repeatAdjusted": "{name} (ajustada)",
+  "@repeatAdjusted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "repeatButton": "Mais uma",
+  "repeatSemantics": "Mais uma: {drink}",
+  "@repeatSemantics": {
+    "placeholders": {
+      "drink": {
+        "type": "String"
+      }
+    }
+  },
+  "repeatYourPart": "sua parte {amount}",
+  "@repeatYourPart": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "repoAbvRange": "O teor vai de 0 a 100%.",
+  "repoActiveExists": "Já existe um rolê em andamento.",
+  "repoCopyName": "{name} (cópia)",
+  "@repoCopyName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "repoDrinkName": "Dê um nome para a bebida.",
+  "repoDrinkVolume": "Informe o volume em ml.",
+  "repoEndBeforeStart": "O fim não pode ser antes do início.",
+  "repoEndFuture": "O fim não pode estar no futuro.",
+  "repoNicknameOrAddress": "Informe um apelido ou um endereço.",
+  "repoPlaceMissing": "Informe um apelido ou um endereço para o local.",
+  "repoPointNeedsName": "Dê um apelido para salvar este ponto.",
+  "repoRecipeIngredient": "Adicione pelo menos um ingrediente.",
+  "repoRecipeName": "Dê um nome para a receita.",
+  "repoStateFormat": "A UF tem 2 letras (ex.: SP).",
   "restoreBody": "Trazendo seus rolês, bebidas, locais e comandas da nuvem.",
   "restoreConnecting": "Conectando…",
   "restoreFailedBody": "Sem conexão com a nuvem. Nada foi perdido: tente de novo quando estiver com internet.",
@@ -454,9 +768,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "1": {
-        "type": "String"
       }
     }
   },
@@ -490,9 +801,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "1": {
-        "type": "String"
       }
     }
   },
@@ -505,9 +813,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "Enviado": {
-        "type": "String"
       }
     }
   },
@@ -519,9 +824,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "Ainda": {
-        "type": "String"
       }
     }
   },
@@ -541,14 +843,78 @@
       }
     }
   },
+  "staleBody": "{name} começou em {start} e está aberto há {duration}.",
+  "@staleBody": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "start": {
+        "type": "String"
+      }
+    }
+  },
+  "staleEndOtherTime": "Encerrar com outro horário",
+  "staleNote": "Ao encerrar você escolhe o horário final. Nada é encerrado automaticamente.",
+  "staleTitle": "Esse rolê ainda está acontecendo?",
+  "startFailed": "Não foi possível iniciar o rolê. Tente de novo.",
+  "startFuture": "O início não pode estar no futuro.",
+  "startPlaceError": "Informe um apelido (ex.: Casa da Samara) ou um endereço",
+  "stateTwoLetters": "A UF tem 2 letras",
+  "summaryAccountNote": "Relato pessoal: não mede nada e não indica um limite de consumo.",
+  "summaryAddAccount": "Adicionar relato",
+  "summaryAddForgotten": "Adicionar bebida esquecida",
+  "summaryConsumption": "Consumo",
+  "summaryDone": "Concluir",
+  "summaryDuration": "Duração",
+  "summaryEditAccount": "Editar relato",
+  "summaryEnd": "Fim",
+  "summaryFillPrices": "Preencher preços ausentes",
+  "summaryHangover": "Ressaca: {level}",
+  "@summaryHangover": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryNoAccount": "Sem relato ainda.",
+  "summaryNoRecords": "Nenhum registro neste rolê",
+  "summaryRetro": "Retrospectiva ilustrativa dos registros. Os números reais estão abaixo.",
+  "summaryShare": "Compartilhar resumo",
+  "summarySpending": "Gastos",
+  "summarySpentOnDrinks": "Gastos registrados em bebidas",
+  "summaryStart": "Início",
+  "summaryTab": "Comanda",
+  "summaryTapToCorrect": "Toque em um registro para corrigir; o resumo se recalcula.",
+  "summaryTitle": "Resumo do rolê",
+  "summaryUnpricedPill": "{count, plural, =1{1 bebida sem preço: o total pode estar maior} other{{count} bebidas sem preço: o total pode estar maior}}",
+  "@summaryUnpricedPill": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryUpdated": "Registro atualizado, resumo recalculado",
+  "summaryWoke": "Acordou: {feeling}",
+  "@summaryWoke": {
+    "placeholders": {
+      "feeling": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryYourAccount": "Seu relato",
+  "summaryYourAccountTag": "seu relato",
   "syncLabelConflicts": "{count, plural, =1{1 para resolver} other{{count} para resolver}}",
   "@syncLabelConflicts": {
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "1": {
-        "type": "String"
       }
     }
   },
@@ -559,9 +925,6 @@
     "placeholders": {
       "count": {
         "type": "int"
-      },
-      "1": {
-        "type": "String"
       }
     }
   },
@@ -576,6 +939,11 @@
   "syncNoticeSchemaGap": "Parte dos dados novos aguarda uma atualização do servidor. O restante já foi enviado e nada foi perdido.",
   "syncNoticeSignInAgain": "Entre novamente na sua conta para enviar e receber os dados. Tudo continua salvo neste aparelho.",
   "syncNoticeWaitingPlace": "Alguns rolês aguardam o envio do local salvo. Nada foi perdido.",
+  "tableAboutMenu": "Animação ilustrativa das bebidas registradas",
+  "tableChangeScene": "Trocar cenário",
+  "tableOptions": "Opções da mesa",
+  "tableViewList": "Lista",
+  "tableViewTable": "Mesa",
   "unitGrams": "{value} g",
   "@unitGrams": {
     "placeholders": {
@@ -588,6 +956,102 @@
   "@unitMl": {
     "placeholders": {
       "value": {
+        "type": "String"
+      }
+    }
+  },
+  "volumeKnownPlusUnknown": "{known} (+{count} sem volume)",
+  "@volumeKnownPlusUnknown": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "known": {
+        "type": "String"
+      }
+    }
+  },
+  "volumeUnknown": "desconhecido",
+  "wakeBad": "Mal",
+  "wakeGreat": "Bem",
+  "wakeOk": "Normal",
+  "wakeTired": "Cansado",
+  "startTitle": "Iniciar rolê",
+  "startWhatKind": "Que tipo de rolê?",
+  "startWhere": "Onde?",
+  "startSearchPlace": "Buscar bar ou endereço",
+  "startSearchPlaceHint": "Ou usar sua localização e conferir no mapa",
+  "startSavedPlaces": "Locais salvos",
+  "startOrNickname": "Ou só um apelido",
+  "startNicknameLabel": "Apelido do local",
+  "startNicknameHint": "Ex.: Bar MELT, Casa da Samara",
+  "startAddAddress": "Digitar endereço (opcional)",
+  "startAddressLabel": "Endereço (opcional)",
+  "startAddressHint": "Rua, número, bairro",
+  "startAddressHelper": "Apelido ou endereço já bastam.",
+  "startCityLabel": "Cidade (opcional)",
+  "startStateLabel": "UF",
+  "startSavePlace": "Salvar este local",
+  "startSavePlaceHint": "Para escolher de novo nos próximos rolês. Fica privado no seu perfil.",
+  "startWhen": "Quando começou?",
+  "startBudgetSection": "Orçamento (opcional)",
+  "startBudgetLabel": "Orçamento para bebidas",
+  "startBudgetHelper": "Você pode definir ou mudar depois, durante o rolê. Valores em reais (R$).",
+  "startBegin": "Começar o rolê",
+  "startWillSavePlace": "Será salvo nos seus locais",
+  "startChangePlace": "Trocar",
+  "priceFixApplyTitle": "{count, plural, =1{Aplicar a 1 registro?} other{Aplicar a {count} registros?}}",
+  "@priceFixApplyTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "priceFixReplaced": "{count, plural, =1{1 já tinha preço e será substituído.} other{{count} já tinham preço e serão substituídos.}}",
+  "@priceFixReplaced": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "priceFixYourShare": "sua parcela",
+  "priceFixUpdated": "Preços atualizados",
+  "priceFixPaidLabel": "Preço pago",
+  "priceFixPaidShared": "Quanto você pagou",
+  "priceFixSharedNote": "Bebida compartilhada: informe a sua parcela, não o preço da garrafa. O consumo não muda.",
+  "priceFixEnterValue": "Informe um valor",
+  "priceFixTitle": "Preços ausentes",
+  "priceFixNoneTitle": "Nenhum preço ausente",
+  "priceFixNoneBody": "Todos os registros deste rolê têm preço ou cortesia informados.",
+  "priceFixIntro": "Preencha um por um, ou escolha vários registros iguais e aplique o mesmo preço depois de ver a prévia. Preços já informados não mudam, a menos que você os inclua e selecione de propósito.",
+  "priceFixIncludePriced": "Incluir também registros que já têm preço",
+  "priceFixForSelected": "Preço para os selecionados",
+  "priceFixSharedHint": "Em bebida compartilhada vale o que você pagou (sua parcela), nunca o preço da garrafa.",
+  "priceFixSelectAll": "Selecionar os {count}",
+  "@priceFixSelectAll": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "priceFixClear": "Limpar",
+  "priceFixCurrent": "Preço atual: {price}",
+  "@priceFixCurrent": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "priceFixOnlyThis": "Informar só este preço",
+  "priceFixSelectRecords": "Selecione registros",
+  "priceFixPreview": "Ver prévia ({count})",
+  "@priceFixPreview": {
+    "placeholders": {
+      "count": {
         "type": "String"
       }
     }

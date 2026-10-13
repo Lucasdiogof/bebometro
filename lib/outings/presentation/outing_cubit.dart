@@ -12,6 +12,7 @@ import '../data/outing_repository.dart';
 import '../domain/budget.dart';
 import '../domain/outing.dart';
 import '../domain/outing_summary.dart';
+import '../../l10n/l10n.dart';
 
 class OutingState {
   const OutingState({
@@ -96,9 +97,11 @@ class OutingCubit extends Cubit<OutingState> {
       if (!_prefs.budgetAlerts || _notices.isClosed) return;
       final top = fresh.reduce((a, b) => a > b ? a : b);
       _notices.add(OutingNotice(
-        'Os gastos informados chegaram a $top% do orçamento '
-        '(${formatCents(status.informedCents)} de ${formatCents(budget)}).'
-        '${status.incomplete ? ' Há bebidas sem preço: o total real pode ser maior.' : ''}',
+        [
+          tr.budgetReached(
+              top, formatCents(status.informedCents), formatCents(budget)),
+          if (status.incomplete) tr.budgetReachedIncomplete,
+        ].join(' '),
       ));
     } finally {
       _checkingBudget = false;
@@ -135,9 +138,11 @@ class OutingCubit extends Cubit<OutingState> {
       final entry = last.repeated(newId: _drinks.newId(), at: DateTime.now());
       await _drinks.save(entry);
       _notices.add(OutingNotice(
-        'Mais uma: ${entry.name}'
-        '${entry.personalMl == null ? '' : ' · ${formatMl(entry.personalMl!)}'}',
-        undoLabel: 'Desfazer',
+        [
+          tr.noticeAnotherOne(entry.name),
+          if (entry.personalMl != null) formatMl(entry.personalMl!),
+        ].join(' · '),
+        undoLabel: tr.commonUndo,
         undo: () => _drinks.delete(entry.id),
       ));
     } finally {
@@ -157,9 +162,11 @@ class OutingCubit extends Cubit<OutingState> {
       );
       await _drinks.save(entry);
       _notices.add(OutingNotice(
-        'Água registrada'
-        '${entry.personalMl == null ? '' : ' · ${formatMl(entry.personalMl!)}'}',
-        undoLabel: 'Desfazer',
+        [
+          tr.noticeWater,
+          if (entry.personalMl != null) formatMl(entry.personalMl!),
+        ].join(' · '),
+        undoLabel: tr.commonUndo,
         undo: () => _drinks.delete(entry.id),
       ));
     } finally {
@@ -170,8 +177,8 @@ class OutingCubit extends Cubit<OutingState> {
   Future<void> deleteEntry(DrinkEntry entry) async {
     await _drinks.delete(entry.id);
     _notices.add(OutingNotice(
-      'Registro excluído',
-      undoLabel: 'Desfazer',
+      tr.noticeEntryDeleted,
+      undoLabel: tr.commonUndo,
       undo: () => _drinks.restore(entry.id),
     ));
   }

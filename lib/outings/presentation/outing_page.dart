@@ -26,6 +26,7 @@ import '../../tracking/application/tracking_links.dart';
 import '../../tracking/presentation/tracking_offer_sheet.dart';
 import 'budget_section.dart';
 import 'outing_cubit.dart';
+import '../../l10n/l10n.dart';
 
 /// Running outing. Pops with the outing id after it is finished, so the
 /// caller can show the summary.
@@ -96,33 +97,35 @@ class _OutingViewState extends State<_OutingView> {
   Future<void> _confirmQuick(String action) async {
     final cubit = context.read<OutingCubit>();
     if (cubit.state.outing?.isActive != true) {
-      showToast(context, 'Esse rolê já foi encerrado.');
+      showToast(context, tr.outingAlreadyEnded);
       return;
     }
     final String question;
     if (action == 'another') {
       final last = cubit.state.lastAlcoholic;
       if (last == null) {
-        showToast(context, 'Não há bebida para repetir neste rolê.');
+        showToast(context, tr.outingNothingToRepeat);
         return;
       }
-      question = 'Registrar mais uma: ${last.name}'
-          '${last.containerMl == null ? '' : ' ${formatMl(last.containerMl!)}'}?';
+      question = tr.outingConfirmAnother([
+        last.name,
+        if (last.containerMl != null) formatMl(last.containerMl!),
+      ].join(' '));
     } else {
-      question = 'Registrar um copo de água?';
+      question = tr.outingConfirmWater;
     }
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Pedido da tela bloqueada'),
+        title: Text(tr.outingLockScreenRequest),
         content: Text(question),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Agora não')),
+              child: Text(tr.commonNotNow)),
           TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Registrar')),
+              child: Text(tr.outingLog)),
         ],
       ),
     );
@@ -142,8 +145,8 @@ class _OutingViewState extends State<_OutingView> {
     showToast(
         context,
         suppressed
-            ? 'Acompanhamento na tela bloqueada de volta.'
-            : 'Oculto da tela bloqueada neste rolê.');
+            ? tr.outingTrackingBack
+            : tr.outingTrackingHidden);
   }
 
   void _showNotice(OutingNotice notice) {
@@ -156,7 +159,7 @@ class _OutingViewState extends State<_OutingView> {
       action: notice.undo == null
           ? null
           : SnackBarAction(
-              label: notice.undoLabel ?? 'Desfazer',
+              label: notice.undoLabel ?? tr.commonUndo,
               onPressed: () => notice.undo!(),
             ),
     ));
@@ -167,7 +170,7 @@ class _OutingViewState extends State<_OutingView> {
     final saved = await Navigator.of(context).push<bool>(
       MaterialPageRoute(builder: (_) => AddDrinkPage(outingId: id)),
     );
-    if (saved == true && mounted) showToast(context, 'Bebida registrada');
+    if (saved == true && mounted) showToast(context, tr.outingDrinkLogged);
   }
 
   Future<void> _edit(DrinkEntry entry) async {
@@ -178,8 +181,8 @@ class _OutingViewState extends State<_OutingView> {
     showToast(
       context,
       outcome == EntryOutcome.deleted
-          ? 'Registro excluído'
-          : 'Registro atualizado',
+          ? tr.noticeEntryDeleted
+          : tr.outingEntryUpdated,
     );
   }
 
@@ -205,8 +208,7 @@ class _OutingViewState extends State<_OutingView> {
         // An unfinished label/menu reading stays tied to this outing.
         showToast(
           context,
-          'Há uma leitura de rótulo ou cardápio em aberto. Ela continua '
-          'ligada a este rolê e aparece no resumo dele.',
+          tr.outingOpenScan,
         );
       }
       if (mounted) Navigator.of(context).pop(outing.id);
@@ -229,7 +231,7 @@ class _OutingViewState extends State<_OutingView> {
         if (outing == null) {
           return Scaffold(
             appBar: AppBar(),
-            body: const ErrorView(message: 'Esse rolê não foi encontrado.'),
+            body: ErrorView(message: tr.outingNotFound),
           );
         }
         final summary = state.summary!;
@@ -249,7 +251,7 @@ class _OutingViewState extends State<_OutingView> {
                     overflow: TextOverflow.ellipsis,
                     style: AppText.title),
                 Text(
-                  '${outing.type.label} · desde ${formatTime(outing.startedAt)}',
+                  tr.outingTypeSince(outing.type.label, formatTime(outing.startedAt)),
                   style: AppText.caption,
                 ),
               ],
@@ -257,7 +259,7 @@ class _OutingViewState extends State<_OutingView> {
             actions: [
               const SyncBadge(),
               PopupMenuButton<String>(
-                tooltip: 'Mais opções',
+                tooltip: tr.commonMoreOptions,
                 onSelected: (v) {
                   if (v == 'finish') _finish();
                   if (v == 'tracking') _toggleTracking();
@@ -273,16 +275,16 @@ class _OutingViewState extends State<_OutingView> {
                       PopupMenuItem(
                         value: 'tracking',
                         child: Text(tracking.isSuppressed(_outingId)
-                            ? 'Mostrar na tela bloqueada'
-                            : 'Ocultar neste rolê'),
+                            ? tr.outingShowOnLock
+                            : tr.outingHideHere),
                       ),
                     if (outingHasMapTarget(outing))
-                      const PopupMenuItem(
-                          value: 'map', child: Text('Abrir no mapa')),
-                    const PopupMenuItem(
-                        value: 'place', child: Text('Corrigir local')),
-                    const PopupMenuItem(
-                        value: 'finish', child: Text('Encerrar rolê')),
+                      PopupMenuItem(
+                          value: 'map', child: Text(tr.placeOpenInMaps)),
+                    PopupMenuItem(
+                        value: 'place', child: Text(tr.placeCorrect)),
+                    PopupMenuItem(
+                        value: 'finish', child: Text(tr.outingFinish)),
                   ];
                 },
               ),
@@ -309,7 +311,7 @@ class _OutingViewState extends State<_OutingView> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Rolando há', style: AppText.caption),
+                                Text(tr.outingRunningFor, style: AppText.caption),
                                 ElapsedText(
                                   since: outing.startedAt,
                                   style: AppText.headline,
@@ -322,19 +324,19 @@ class _OutingViewState extends State<_OutingView> {
                         Row(children: [
                           Expanded(
                             child: StatTile(
-                              label: 'Bebidas',
+                              label: tr.homeDrinks,
                               value: '${summary.entryCount}',
                             ),
                           ),
                           Expanded(
                             child: StatTile(
-                              label: 'Seu volume',
+                              label: tr.outingYourVolume,
                               value: summary.volumeLabel,
                             ),
                           ),
                           Expanded(
                             child: StatTile(
-                              label: 'Gasto informado',
+                              label: tr.homeInformedSpent,
                               value: formatCents(summary.informedCents),
                             ),
                           ),
@@ -351,19 +353,19 @@ class _OutingViewState extends State<_OutingView> {
                               children: [
                                 if (summary.unpricedCount > 0)
                                   InfoPill(
-                                    '${summary.unpricedCount} sem preço',
+                                    tr.homeUnpriced(summary.unpricedCount),
                                     icon: Icons.sell_outlined,
                                     warning: true,
                                   ),
                                 if (summary.unknownVolumeCount > 0)
                                   InfoPill(
-                                    '${summary.unknownVolumeCount} sem volume',
+                                    tr.outingNoVolume(summary.unknownVolumeCount),
                                     icon: Icons.opacity_outlined,
                                     warning: true,
                                   ),
                                 if (summary.incompleteAlcoholCount > 0)
                                   InfoPill(
-                                    '${summary.incompleteAlcoholCount} com álcool incompleto',
+                                    tr.outingAlcoholIncomplete(summary.incompleteAlcoholCount),
                                     icon: Icons.help_outline_rounded,
                                     warning: true,
                                   ),
@@ -384,16 +386,16 @@ class _OutingViewState extends State<_OutingView> {
                       Expanded(
                         child: SegmentedButton<TableView>(
                           showSelectedIcon: false,
-                          segments: const [
+                          segments: [
                             ButtonSegment(
                               value: TableView.table,
                               icon: Icon(Icons.table_restaurant_outlined),
-                              label: Text('Mesa'),
+                              label: Text(tr.tableViewTable),
                             ),
                             ButtonSegment(
                               value: TableView.list,
                               icon: Icon(Icons.view_list_rounded),
-                              label: Text('Lista'),
+                              label: Text(tr.tableViewList),
                             ),
                           ],
                           selected: {prefs.view},
@@ -402,7 +404,7 @@ class _OutingViewState extends State<_OutingView> {
                         ),
                       ),
                       PopupMenuButton<String>(
-                        tooltip: 'Opções da mesa',
+                        tooltip: tr.tableOptions,
                         onSelected: (v) {
                           if (v == 'scenario') {
                             showScenarioPicker(
@@ -415,13 +417,12 @@ class _OutingViewState extends State<_OutingView> {
                             showTableAbout(context);
                           }
                         },
-                        itemBuilder: (_) => const [
+                        itemBuilder: (_) => [
                           PopupMenuItem(
-                              value: 'scenario', child: Text('Trocar cenário')),
+                              value: 'scenario', child: Text(tr.tableChangeScene)),
                           PopupMenuItem(
                               value: 'about',
-                              child: Text('Animação ilustrativa das bebidas '
-                                  'registradas')),
+                              child: Text(tr.tableAboutMenu)),
                         ],
                       ),
                     ]),
@@ -435,24 +436,20 @@ class _OutingViewState extends State<_OutingView> {
                         onDelete: cubit.deleteEntry,
                       ),
                       if (state.entries.isEmpty)
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(top: AppSpace.sm),
-                          child: Text(
-                            'Registre a primeira bebida e o botão "Mais uma" '
-                            'aparece aqui embaixo.',
-                            style: AppText.caption,
-                          ),
+                          child: Text(tr.outingFirstDrinkHint,
+                              style: AppText.caption),
                         ),
                     ] else ...[
-                      SectionTitle('Registros (${entries.length})'),
+                      SectionTitle(tr.outingRecords(entries.length)),
                       if (entries.isEmpty)
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: AppSpace.xl),
                           child: EmptyView(
                             icon: Icons.sports_bar_outlined,
-                            title: 'Nenhuma bebida ainda',
-                            message: 'Registre a primeira e o botão '
-                                '"Mais uma" aparece aqui embaixo.',
+                            title: tr.outingNoDrinks,
+                            message: tr.outingNoDrinksBody,
                           ),
                         )
                       else
@@ -476,10 +473,9 @@ class _OutingViewState extends State<_OutingView> {
                           tilePadding: EdgeInsets.zero,
                           childrenPadding:
                               const EdgeInsets.only(bottom: AppSpace.md),
-                          title: const Text('Copão (opcional)',
+                          title: Text(tr.glassBigTitle,
                               style: AppText.subtitle),
-                          subtitle: const Text(
-                              'O volume informado, somado, num copo.',
+                          subtitle: Text(tr.glassBigSubtitle,
                               style: AppText.caption),
                           children: [
                             AccumulatedGlass(
@@ -496,7 +492,7 @@ class _OutingViewState extends State<_OutingView> {
                                 ),
                                 icon: const Icon(Icons.rotate_right_rounded,
                                     size: 18),
-                                label: const Text('Brincar de virar o copo'),
+                                label: Text(tr.glassTipPlay),
                               ),
                             ),
                           ],
@@ -510,7 +506,7 @@ class _OutingViewState extends State<_OutingView> {
                       child: TextButton.icon(
                         onPressed: _finishing ? null : _finish,
                         icon: const Icon(Icons.flag_outlined),
-                        label: const Text('Encerrar rolê'),
+                        label: Text(tr.outingFinish),
                       ),
                     ),
                   ],
@@ -530,12 +526,12 @@ class _OutingViewState extends State<_OutingView> {
                             ? FilledButton.icon(
                                 onPressed: _addDrink,
                                 icon: const Icon(Icons.add_rounded),
-                                label: const Text('Adicionar bebida'),
+                                label: Text(tr.outingAddDrink),
                               )
                             : OutlinedButton.icon(
                                 onPressed: _addDrink,
                                 icon: const Icon(Icons.add_rounded),
-                                label: const Text('Adicionar bebida'),
+                                label: Text(tr.outingAddDrink),
                               ),
                       ),
                       const SizedBox(width: AppSpace.sm),
@@ -546,7 +542,7 @@ class _OutingViewState extends State<_OutingView> {
                         onPressed: cubit.addWater,
                         icon: const Icon(Icons.water_drop_outlined,
                             color: Color(0xFF6EC1E4)),
-                        label: const Text('Água'),
+                        label: Text(tr.drinkWater),
                       ),
                     ]),
                   ],
@@ -571,12 +567,12 @@ class _RepeatButton extends StatelessWidget {
     final personal = entry.personalMl;
     if (entry.isMixed) {
       return entry.composition!.customized
-          ? '${entry.name} (ajustada)'
+          ? tr.repeatAdjusted(entry.name)
           : entry.name;
     }
     final size = container == null ? '' : ' ${formatMl(container)}';
     return entry.isShared && personal != null
-        ? '${entry.name}$size · sua parte ${formatMl(personal)}'
+        ? '${entry.name}$size · ${tr.repeatYourPart(formatMl(personal))}'
         : '${entry.name}$size';
   }
 
@@ -584,7 +580,7 @@ class _RepeatButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: 'Mais uma: $_what',
+      label: tr.repeatSemantics(_what),
       child: Material(
         color: AppColors.amber,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -605,9 +601,9 @@ class _RepeatButton extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        'Mais uma',
-                        style: TextStyle(
+                      Text(
+                        tr.repeatButton,
+                        style: const TextStyle(
                           color: Color(0xFF241800),
                           fontSize: 18,
                           fontWeight: FontWeight.w900,
@@ -652,8 +648,8 @@ class EntryTile extends StatelessWidget {
 
   String get _priceText => switch (entry.priceKind) {
         PriceKind.informed => formatCents(entry.paidCents ?? 0),
-        PriceKind.complimentary => 'Cortesia',
-        PriceKind.unknown => 'Sem preço',
+        PriceKind.complimentary => tr.priceComplimentary,
+        PriceKind.unknown => tr.priceNone,
       };
 
   @override
@@ -663,17 +659,17 @@ class EntryTile extends StatelessWidget {
     final alcohol = entry.alcohol;
     final meta = <String>[
       formatTime(entry.consumedAt),
-      if (entry.isMixed && entry.composition!.customized) 'receita ajustada',
+      if (entry.isMixed && entry.composition!.customized) tr.groupRecipeAdjusted,
       if (entry.presentation != null && !entry.isShared) entry.presentation!,
       if (entry.isShared && personal != null && container != null)
-        'sua parte ${formatMl(personal)} de ${formatMl(container)} '
-            '(${entry.peopleCount} pessoas)'
+        tr.entrySharedPart(
+            entry.peopleCount, formatMl(personal), formatMl(container))
       else if (personal == null)
-        'volume desconhecido'
+        tr.groupVolumeUnknown
       else if (entry.presentation == null)
         formatMl(personal),
       if (entry.isMixed && alcohol != null && !alcohol.isComplete)
-        'álcool incompleto',
+        tr.entryAlcoholIncomplete,
     ];
     return SurfaceCard(
       onTap: onTap,
@@ -704,7 +700,7 @@ class EntryTile extends StatelessWidget {
           ),
         ),
         PopupMenuButton<String>(
-          tooltip: 'Opções do registro',
+          tooltip: tr.entryOptions,
           icon: const Icon(Icons.more_vert_rounded,
               color: AppColors.textMuted),
           onSelected: (v) {
@@ -712,9 +708,9 @@ class EntryTile extends StatelessWidget {
             if (v == 'delete') onDelete?.call();
           },
           itemBuilder: (_) => [
-            const PopupMenuItem(value: 'edit', child: Text('Corrigir')),
+            PopupMenuItem(value: 'edit', child: Text(tr.entryCorrect)),
             if (onDelete != null)
-              const PopupMenuItem(value: 'delete', child: Text('Excluir')),
+              PopupMenuItem(value: 'delete', child: Text(tr.commonDelete)),
           ],
         ),
       ]),
@@ -747,13 +743,9 @@ class _FinishSheetState extends State<_FinishSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Encerrar rolê?', style: AppText.title),
+            Text(tr.finishTitle, style: AppText.title),
             const SizedBox(height: AppSpace.xs),
-            Text(
-              '${widget.entryCount} registro(s). Você ainda poderá corrigir '
-              'registros depois, pelo histórico.',
-              style: AppText.caption,
-            ),
+            Text(tr.finishBody(widget.entryCount), style: AppText.caption),
             const SizedBox(height: AppSpace.lg),
             SurfaceCard(
               onTap: () async {
@@ -764,30 +756,30 @@ class _FinishSheetState extends State<_FinishSheet> {
                 const Icon(Icons.flag_rounded, color: AppColors.amber),
                 const SizedBox(width: AppSpace.md),
                 Expanded(
-                  child: Text('Fim: ${formatDateTime(_endedAt)}',
+                  child: Text(tr.finishEnd(formatDateTime(_endedAt)),
                       style: AppText.subtitle),
                 ),
-                const Text('Ajustar',
-                    style: TextStyle(color: AppColors.amber)),
+                Text(tr.commonAdjust,
+                    style: const TextStyle(color: AppColors.amber)),
               ]),
             ),
             if (!_valid)
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: AppSpace.sm),
-                child: Text('O fim não pode ser antes do início.',
-                    style: TextStyle(color: AppColors.danger)),
+                child: Text(tr.repoEndBeforeStart,
+                    style: const TextStyle(color: AppColors.danger)),
               ),
             const SizedBox(height: AppSpace.xl),
             FilledButton(
               onPressed:
                   _valid ? () => Navigator.pop(context, _endedAt) : null,
-              child: const Text('Encerrar e ver resumo'),
+              child: Text(tr.finishAndSummary),
             ),
             const SizedBox(height: AppSpace.xs),
             Center(
               child: TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Continuar o rolê'),
+                child: Text(tr.finishKeepGoing),
               ),
             ),
           ],

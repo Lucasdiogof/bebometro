@@ -5,6 +5,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/domain/outing.dart';
+import '../../l10n/l10n.dart';
 
 /// What the person chose in the details sheet.
 enum FeedbackDetailsResult { saved, review, skipped }
@@ -106,28 +107,24 @@ class _FeedbackDetailsState extends State<_FeedbackDetails> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.editMood ? 'Seu relato' : 'Quer contar mais?',
+            Text(widget.editMood ? tr.feedbackYourAccount : tr.feedbackTellMore,
                 style: AppText.title),
             const SizedBox(height: AppSpace.xs),
-            const Text(
-              'Tudo opcional. É só um registro pessoal, sem nota e sem '
-              'comparação.',
-              style: AppText.caption,
-            ),
+            Text(tr.feedbackOptional, style: AppText.caption),
             if (widget.editMood) ...[
               const SizedBox(height: AppSpace.lg),
-              const Text('Como foi', style: AppText.overline),
+              Text(tr.feedbackHowItWent, style: AppText.overline),
               const SizedBox(height: AppSpace.sm),
               _chips<FeedbackMood>(FeedbackMood.values, _mood, (m) => m.label,
                   (v) => setState(() => _mood = v)),
             ],
             const SizedBox(height: AppSpace.lg),
-            const Text('Como acordou', style: AppText.overline),
+            Text(tr.feedbackWake, style: AppText.overline),
             const SizedBox(height: AppSpace.sm),
             _chips<WakeFeeling>(WakeFeeling.values, _wake, (w) => w.label,
                 (v) => setState(() => _wake = v)),
             const SizedBox(height: AppSpace.lg),
-            const Text('Ressaca', style: AppText.overline),
+            Text(tr.feedbackHangover, style: AppText.overline),
             const SizedBox(height: AppSpace.sm),
             _chips<Hangover>(Hangover.values, _hangover, (h) => h.label,
                 (v) => setState(() => _hangover = v)),
@@ -138,9 +135,9 @@ class _FeedbackDetailsState extends State<_FeedbackDetails> {
               minLines: 2,
               maxLines: 4,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(
-                labelText: 'Nota livre',
-                hintText: 'Algo que você queira lembrar desse rolê',
+              decoration: InputDecoration(
+                labelText: tr.feedbackFreeNote,
+                hintText: tr.feedbackFreeNoteHint,
               ),
             ),
             if (!widget.editMood)
@@ -150,20 +147,20 @@ class _FeedbackDetailsState extends State<_FeedbackDetails> {
                   onPressed: () =>
                       Navigator.pop(context, FeedbackDetailsResult.review),
                   icon: const Icon(Icons.history_edu_outlined, size: 18),
-                  label: const Text('Revisar bebidas esquecidas'),
+                  label: Text(tr.feedbackReviewForgotten),
                 ),
               ),
             const SizedBox(height: AppSpace.sm),
             FilledButton(
               onPressed: _saving ? null : _save,
-              child: const Text('Salvar'),
+              child: Text(tr.commonSave),
             ),
             const SizedBox(height: AppSpace.xs),
             Center(
               child: TextButton(
                 onPressed: () =>
                     Navigator.pop(context, FeedbackDetailsResult.skipped),
-                child: Text(widget.editMood ? 'Cancelar' : 'Agora não',
+                child: Text(widget.editMood ? tr.commonCancel : tr.commonNotNow,
                     style: const TextStyle(color: AppColors.textMuted)),
               ),
             ),

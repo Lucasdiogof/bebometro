@@ -5,6 +5,7 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../outings/domain/outing.dart';
+import '../../l10n/l10n.dart';
 
 sealed class FeedbackResult {
   const FeedbackResult();
@@ -48,7 +49,7 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Como foi o último rolê?', style: AppText.title),
+            Text(tr.feedbackTitle, style: AppText.title),
             const SizedBox(height: AppSpace.sm),
             SurfaceCard(
               padding: const EdgeInsets.all(AppSpace.md),
@@ -91,17 +92,13 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
               ],
             ),
             const SizedBox(height: AppSpace.md),
-            const Text(
-              'É só o seu relato de como foi a noite. Não mede nada e não '
-              'indica quanto é seguro beber.',
-              style: AppText.caption,
-            ),
+            Text(tr.feedbackNote, style: AppText.caption),
             const SizedBox(height: AppSpace.lg),
             FilledButton(
               onPressed: _selected == null
                   ? null
                   : () => Navigator.pop(context, FeedbackAnswered(_selected!)),
-              child: const Text('Salvar relato'),
+              child: Text(tr.feedbackSave),
             ),
             const SizedBox(height: AppSpace.xs),
             Row(children: [
@@ -109,14 +106,14 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
                 child: TextButton(
                   onPressed: () =>
                       Navigator.pop(context, const FeedbackSnoozed()),
-                  child: const Text('Depois'),
+                  child: Text(tr.commonLater),
                 ),
               ),
               Expanded(
                 child: TextButton(
                   onPressed: () =>
                       Navigator.pop(context, const FeedbackDismissed()),
-                  child: const Text('Não perguntar',
+                  child: Text(tr.feedbackDontAsk,
                       style: TextStyle(color: AppColors.textMuted)),
                 ),
               ),

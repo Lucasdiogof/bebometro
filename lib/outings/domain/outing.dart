@@ -2,37 +2,55 @@ import 'package:flutter/material.dart';
 
 import '../../places/domain/geo_point.dart';
 import '../../places/domain/place.dart' show placeTitle;
+import '../../l10n/l10n.dart';
 
 enum OutingType {
-  bar('bar', 'Bar', Icons.sports_bar_rounded),
-  club('club', 'Balada', Icons.nightlife_rounded),
-  barbecue('barbecue', 'Churrasco', Icons.outdoor_grill_rounded),
-  home('home', 'Casa', Icons.home_rounded),
-  restaurant('restaurant', 'Restaurante', Icons.restaurant_rounded),
-  beach('beach', 'Praia', Icons.beach_access_rounded),
-  other('other', 'Outro', Icons.celebration_rounded);
+  bar('bar', Icons.sports_bar_rounded),
+  club('club', Icons.nightlife_rounded),
+  barbecue('barbecue', Icons.outdoor_grill_rounded),
+  home('home', Icons.home_rounded),
+  restaurant('restaurant', Icons.restaurant_rounded),
+  beach('beach', Icons.beach_access_rounded),
+  other('other', Icons.celebration_rounded);
 
-  const OutingType(this.code, this.label, this.icon);
+  const OutingType(this.code, this.icon);
 
+  /// Stored value; never translated.
   final String code;
-  final String label;
   final IconData icon;
+
+  /// Name in the language on screen.
+  String get label => switch (this) {
+        OutingType.bar => tr.outingTypeBar,
+        OutingType.club => tr.outingTypeClub,
+        OutingType.barbecue => tr.outingTypeBarbecue,
+        OutingType.home => tr.outingTypeHome,
+        OutingType.restaurant => tr.outingTypeRestaurant,
+        OutingType.beach => tr.outingTypeBeach,
+        OutingType.other => tr.outingTypeOther,
+      };
 
   static OutingType fromCode(String code) => OutingType.values
       .firstWhere((t) => t.code == code, orElse: () => OutingType.other);
 }
 
 enum FeedbackMood {
-  smooth('smooth', 'Suave', Icons.sentiment_satisfied_rounded),
-  cheerful('cheerful', 'Alegre', Icons.sentiment_very_satisfied_rounded),
-  drunk('drunk', 'Bêbado', Icons.sentiment_neutral_rounded),
-  wasted('wasted', 'Bebaço', Icons.sentiment_very_dissatisfied_rounded);
+  smooth('smooth', Icons.sentiment_satisfied_rounded),
+  cheerful('cheerful', Icons.sentiment_very_satisfied_rounded),
+  drunk('drunk', Icons.sentiment_neutral_rounded),
+  wasted('wasted', Icons.sentiment_very_dissatisfied_rounded);
 
-  const FeedbackMood(this.code, this.label, this.icon);
+  const FeedbackMood(this.code, this.icon);
 
   final String code;
-  final String label;
   final IconData icon;
+
+  String get label => switch (this) {
+        FeedbackMood.smooth => tr.moodSmooth,
+        FeedbackMood.cheerful => tr.moodCheerful,
+        FeedbackMood.drunk => tr.moodDrunk,
+        FeedbackMood.wasted => tr.moodWasted,
+      };
 
   static FeedbackMood? fromCode(String? code) {
     for (final m in FeedbackMood.values) {
@@ -58,15 +76,21 @@ enum FeedbackStatus {
 
 /// How the person woke up the day after. A personal account, not a measure.
 enum WakeFeeling {
-  great('great', 'Bem'),
-  ok('ok', 'Normal'),
-  tired('tired', 'Cansado'),
-  bad('bad', 'Mal');
+  great('great'),
+  ok('ok'),
+  tired('tired'),
+  bad('bad');
 
-  const WakeFeeling(this.code, this.label);
+  const WakeFeeling(this.code);
 
   final String code;
-  final String label;
+
+  String get label => switch (this) {
+        WakeFeeling.great => tr.wakeGreat,
+        WakeFeeling.ok => tr.wakeOk,
+        WakeFeeling.tired => tr.wakeTired,
+        WakeFeeling.bad => tr.wakeBad,
+      };
 
   static WakeFeeling? fromCode(String? code) {
     for (final w in WakeFeeling.values) {
@@ -77,15 +101,21 @@ enum WakeFeeling {
 }
 
 enum Hangover {
-  none('none', 'Nenhuma'),
-  mild('mild', 'Leve'),
-  moderate('moderate', 'Moderada'),
-  strong('strong', 'Forte');
+  none('none'),
+  mild('mild'),
+  moderate('moderate'),
+  strong('strong');
 
-  const Hangover(this.code, this.label);
+  const Hangover(this.code);
 
   final String code;
-  final String label;
+
+  String get label => switch (this) {
+        Hangover.none => tr.hangoverNone,
+        Hangover.mild => tr.hangoverMild,
+        Hangover.moderate => tr.hangoverModerate,
+        Hangover.strong => tr.hangoverStrong,
+      };
 
   static Hangover? fromCode(String? code) {
     for (final h in Hangover.values) {
@@ -162,7 +192,7 @@ class Outing {
 
   String get displayName => placeTitle(
       nickname: nickname, providerName: placeName, address: address,
-      point: point, fallback: 'Rolê');
+      point: point, fallback: tr.outingFallbackName);
 
   /// The address is only a subtitle when a name already titles the place.
   String? get subtitleAddress =>

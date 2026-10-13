@@ -1,5 +1,6 @@
 import '../../core/utils/formatters.dart';
 import 'outing_summary.dart';
+import '../../l10n/l10n.dart';
 
 /// Where the informed spending stands against the optional budget.
 ///
@@ -41,16 +42,13 @@ class BudgetStatus {
     final diff = differenceCents.abs();
     if (over) {
       return incomplete
-          ? 'Os gastos informados já passaram ${formatCents(diff)} do orçamento '
-              'e ainda faltam preços.'
-          : 'Passou ${formatCents(diff)} do orçamento.';
+          ? tr.budgetOverIncomplete(formatCents(diff))
+          : tr.budgetOver(formatCents(diff));
     }
     if (incomplete) {
-      return 'Dos gastos informados, sobram ${formatCents(diff)} do orçamento '
-          '(parcial: faltam preços de $unpricedCount '
-          '${unpricedCount == 1 ? 'bebida' : 'bebidas'}).';
+      return tr.budgetLeftIncomplete(unpricedCount, formatCents(diff));
     }
-    return 'Sobram ${formatCents(diff)} do orçamento.';
+    return tr.budgetLeft(formatCents(diff));
   }
 
   /// Percent thresholds already reached (80 and 100).

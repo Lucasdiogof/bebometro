@@ -1,5 +1,6 @@
 import '../../core/utils/formatters.dart';
 import '../../drinks/domain/drink_entry.dart';
+import '../../l10n/l10n.dart';
 
 /// Entries that are the same drink, size and sharing, shown as "3×".
 class DrinkGroup {
@@ -125,19 +126,18 @@ class OutingSummary {
     final known = formatMl(personalMl);
     if (unknownVolumeCount == 0) return known;
     return personalMl == 0
-        ? 'desconhecido'
-        : '$known (+$unknownVolumeCount sem volume)';
+        ? tr.volumeUnknown
+        : tr.volumeKnownPlusUnknown(known, unknownVolumeCount);
   }
 
   /// E.g. "R$ 90,00 informados · 2 bebidas sem preço".
   String get financeLine {
-    if (entryCount == 0) return 'Sem registros ainda';
-    final unpricedText = unpricedCount == 0
-        ? null
-        : '$unpricedCount ${unpricedCount == 1 ? 'bebida sem preço' : 'bebidas sem preço'}';
+    if (entryCount == 0) return tr.financeNoRecords;
+    final unpricedText =
+        unpricedCount == 0 ? null : tr.financeUnpriced(unpricedCount);
     final informedText = pricedCount == 0
-        ? 'Nenhum valor informado'
-        : '${formatCents(informedCents)} informados';
+        ? tr.financeNoValue
+        : tr.financeInformed(formatCents(informedCents));
     return [informedText, ?unpricedText].join(' · ');
   }
 }
@@ -152,12 +152,12 @@ class _GroupAcc {
     final personal = sample.personalMl;
     final container = sample.containerMl;
     final parts = <String>[
-      if (sample.composition?.customized == true) 'receita ajustada',
+      if (sample.composition?.customized == true) tr.groupRecipeAdjusted,
       if (sample.presentation != null) sample.presentation!,
       if (personal == null)
-        'volume desconhecido'
+        tr.groupVolumeUnknown
       else if (sample.isShared && container != null)
-        '${formatMl(personal)} seus de ${formatMl(container)}'
+        tr.groupSharedPart(formatMl(personal), formatMl(container))
       else
         formatMl(personal),
     ];

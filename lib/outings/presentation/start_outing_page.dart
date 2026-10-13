@@ -6,11 +6,13 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
+import '../../core/widgets/money_field.dart';
 import '../../places/domain/place.dart';
 import '../../places/domain/place_draft.dart';
 import '../../places/presentation/place_picker_page.dart';
 import 'outing_type_picker.dart';
 import 'start_outing_cubit.dart';
+import '../../l10n/l10n.dart';
 
 /// Pops with the id of the created (or already running) outing.
 class StartOutingPage extends StatelessWidget {
@@ -55,7 +57,7 @@ class _StartOutingViewState extends State<_StartOutingView> {
       listenWhen: (p, c) => p.createdId != c.createdId && c.createdId != null,
       listener: (context, state) => Navigator.of(context).pop(state.createdId),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Iniciar rolê')),
+        appBar: AppBar(title: Text(tr.startTitle)),
         body: SafeArea(
           bottom: false,
           child: BlocBuilder<StartOutingCubit, StartOutingState>(
@@ -71,12 +73,12 @@ class _StartOutingViewState extends State<_StartOutingView> {
                       padding: const EdgeInsets.fromLTRB(
                           AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
                       children: [
-                        const SectionTitle('Que tipo de rolê?'),
+                        SectionTitle(tr.startWhatKind),
                         OutingTypePicker(
                           selected: state.type,
                           onSelected: cubit.setType,
                         ),
-                        const SectionTitle('Onde?'),
+                        SectionTitle(tr.startWhere),
                         if (state.place != null)
                           _ChosenPlace(
                             place: state.place!,
@@ -85,29 +87,28 @@ class _StartOutingViewState extends State<_StartOutingView> {
                         else ...[
                           SurfaceCard(
                             onTap: () => _pick(cubit),
-                            child: const Row(children: [
-                              Icon(Icons.search_rounded,
+                            child: Row(children: [
+                              const Icon(Icons.search_rounded,
                                   color: AppColors.amber),
-                              SizedBox(width: AppSpace.md),
+                              const SizedBox(width: AppSpace.md),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Buscar bar ou endereço',
+                                    Text(tr.startSearchPlace,
                                         style: AppText.subtitle),
-                                    Text(
-                                        'Ou usar sua localização e conferir no mapa',
+                                    Text(tr.startSearchPlaceHint,
                                         style: AppText.caption),
                                   ],
                                 ),
                               ),
-                              Icon(Icons.chevron_right_rounded,
+                              const Icon(Icons.chevron_right_rounded,
                                   color: AppColors.textMuted),
                             ]),
                           ),
                           const SizedBox(height: AppSpace.md),
                           if (shortcuts.isNotEmpty) ...[
-                            const Text('Locais salvos', style: AppText.caption),
+                            Text(tr.startSavedPlaces, style: AppText.caption),
                             const SizedBox(height: AppSpace.sm),
                             SizedBox(
                               height: 44,
@@ -139,15 +140,15 @@ class _StartOutingViewState extends State<_StartOutingView> {
                               ),
                             ),
                             const SizedBox(height: AppSpace.md),
-                            const Text('Ou só um apelido', style: AppText.caption),
+                            Text(tr.startOrNickname, style: AppText.caption),
                             const SizedBox(height: AppSpace.sm),
                           ],
                           TextField(
                             textCapitalization: TextCapitalization.words,
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
-                              labelText: 'Apelido do local',
-                              hintText: 'Ex.: Bar MELT, Casa da Samara',
+                              labelText: tr.startNicknameLabel,
+                              hintText: tr.startNicknameHint,
                               errorText: placeError,
                             ),
                             onChanged: cubit.setNickname,
@@ -159,7 +160,7 @@ class _StartOutingViewState extends State<_StartOutingView> {
                                 onPressed: () =>
                                     setState(() => _showAddress = true),
                                 icon: const Icon(Icons.add_rounded),
-                                label: const Text('Digitar endereço (opcional)'),
+                                label: Text(tr.startAddAddress),
                               ),
                             )
                           else ...[
@@ -168,9 +169,9 @@ class _StartOutingViewState extends State<_StartOutingView> {
                             textCapitalization: TextCapitalization.words,
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
-                              labelText: 'Endereço (opcional)',
-                              hintText: 'Rua, número, bairro',
-                              helperText: 'Apelido ou endereço já bastam.',
+                              labelText: tr.startAddressLabel,
+                              hintText: tr.startAddressHint,
+                              helperText: tr.startAddressHelper,
                               errorText: placeError == null ? null : ' ',
                             ),
                             onChanged: cubit.setAddress,
@@ -184,8 +185,8 @@ class _StartOutingViewState extends State<_StartOutingView> {
                                 child: TextField(
                                   textCapitalization: TextCapitalization.words,
                                   textInputAction: TextInputAction.next,
-                                  decoration: const InputDecoration(
-                                      labelText: 'Cidade (opcional)'),
+                                  decoration: InputDecoration(
+                                      labelText: tr.startCityLabel),
                                   onChanged: cubit.setCity,
                                 ),
                               ),
@@ -197,7 +198,7 @@ class _StartOutingViewState extends State<_StartOutingView> {
                                       TextCapitalization.characters,
                                   maxLength: 2,
                                   decoration: InputDecoration(
-                                    labelText: 'UF',
+                                    labelText: tr.startStateLabel,
                                     counterText: '',
                                     errorText: state.showErrors
                                         ? state.stateError
@@ -211,16 +212,14 @@ class _StartOutingViewState extends State<_StartOutingView> {
                           ],
                           SwitchListTile(
                             contentPadding: EdgeInsets.zero,
-                            title: const Text('Salvar este local'),
-                            subtitle: const Text(
-                                'Para escolher de novo nos próximos rolês. '
-                                'Fica privado no seu perfil.'),
+                            title: Text(tr.startSavePlace),
+                            subtitle: Text(tr.startSavePlaceHint),
                             value: state.saveAsPlace,
                             activeThumbColor: AppColors.amber,
                             onChanged: cubit.setSaveAsPlace,
                           ),
                         ],
-                        const SectionTitle('Quando começou?'),
+                        SectionTitle(tr.startWhen),
                         SurfaceCard(
                           onTap: () async {
                             final picked =
@@ -235,21 +234,16 @@ class _StartOutingViewState extends State<_StartOutingView> {
                               child: Text(formatDateTime(state.startedAt),
                                   style: AppText.subtitle),
                             ),
-                            const Text('Editar',
-                                style: TextStyle(color: AppColors.amber)),
+                            Text(tr.commonEdit,
+                                style:
+                                    const TextStyle(color: AppColors.amber)),
                           ]),
                         ),
-                        const SectionTitle('Orçamento (opcional)'),
-                        TextField(
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: const InputDecoration(
-                            labelText: 'Orçamento para bebidas',
-                            prefixText: r'R$ ',
-                            helperText:
-                                'Você pode definir ou mudar depois, durante o rolê.',
-                          ),
-                          onChanged: (v) => cubit.setBudgetCents(parseCents(v)),
+                        SectionTitle(tr.startBudgetSection),
+                        MoneyField(
+                          label: tr.startBudgetLabel,
+                          helper: tr.startBudgetHelper,
+                          onChanged: cubit.setBudgetCents,
                         ),
                         if (state.error != null)
                           Padding(
@@ -271,7 +265,7 @@ class _StartOutingViewState extends State<_StartOutingView> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : const Icon(Icons.play_arrow_rounded),
-                      label: const Text('Começar o rolê'),
+                      label: Text(tr.startBegin),
                     ),
                   ),
                 ],
@@ -320,12 +314,11 @@ class _ChosenPlace extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: AppText.caption),
               if (willSave)
-                const Text('Será salvo nos seus locais',
-                    style: AppText.caption),
+                Text(tr.startWillSavePlace, style: AppText.caption),
             ],
           ),
         ),
-        TextButton(onPressed: onClear, child: const Text('Trocar')),
+        TextButton(onPressed: onClear, child: Text(tr.startChangePlace)),
       ]),
     );
   }

@@ -8,6 +8,7 @@ import '../domain/drink_category.dart';
 import '../domain/drink_entry.dart';
 import '../domain/recipe.dart';
 import 'catalog_source.dart';
+import '../../l10n/l10n.dart';
 
 class DrinkRepository {
   /// [bundled] is the catalog shipped with the app (see [CatalogLoader]).
@@ -147,10 +148,10 @@ class DrinkRepository {
     List<String>? ingredients,
   }) async {
     final trimmed = name.trim();
-    if (trimmed.isEmpty) throw ArgumentError('Dê um nome para a bebida.');
-    if (volumeMl <= 0) throw ArgumentError('Informe o volume em ml.');
+    if (trimmed.isEmpty) throw ArgumentError(tr.repoDrinkName);
+    if (volumeMl <= 0) throw ArgumentError(tr.repoDrinkVolume);
     if (abvPercent != null && (abvPercent < 0 || abvPercent > 100)) {
-      throw ArgumentError('O teor vai de 0 a 100%.');
+      throw ArgumentError(tr.repoAbvRange);
     }
     final nowIso = DateTime.now().toUtc().toIso8601String();
     final rawId = itemId == null
@@ -183,7 +184,7 @@ class DrinkRepository {
   /// Makes an editable copy of a personal drink or recipe (also used to turn
   /// a reference recipe into the user's own version).
   Future<CatalogItem> duplicateCustom(CatalogItem item, {String? name}) async {
-    final copyName = name ?? '${item.name} (cópia)';
+    final copyName = name ?? tr.repoCopyName(item.name);
     final recipe = item.recipe;
     if (recipe != null) {
       return saveCustomRecipe(name: copyName, components: recipe.components);
@@ -222,9 +223,9 @@ class DrinkRepository {
     required List<EntryComponent> components,
   }) async {
     final trimmed = name.trim();
-    if (trimmed.isEmpty) throw ArgumentError('Dê um nome para a receita.');
+    if (trimmed.isEmpty) throw ArgumentError(tr.repoRecipeName);
     if (components.isEmpty) {
-      throw ArgumentError('Adicione pelo menos um ingrediente.');
+      throw ArgumentError(tr.repoRecipeIngredient);
     }
     final nowIso = DateTime.now().toUtc().toIso8601String();
     final rawId = itemId == null

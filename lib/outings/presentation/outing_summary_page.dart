@@ -24,6 +24,7 @@ import '../../tab/presentation/tab_entry_card.dart';
 import 'price_fix_page.dart';
 import '../../places/presentation/change_outing_place.dart';
 import 'outing_page.dart' show EntryTile;
+import '../../l10n/l10n.dart';
 
 /// Summary of a finished outing. Records can still be corrected here, and the
 /// totals are recalculated from the records.
@@ -63,7 +64,7 @@ class _SummaryViewState extends State<_SummaryView> {
         action: n.undo == null
             ? null
             : SnackBarAction(
-                label: n.undoLabel ?? 'Desfazer', onPressed: () => n.undo!()),
+                label: n.undoLabel ?? tr.commonUndo, onPressed: () => n.undo!()),
       ));
     });
   }
@@ -82,8 +83,8 @@ class _SummaryViewState extends State<_SummaryView> {
     showToast(
       context,
       outcome == EntryOutcome.deleted
-          ? 'Registro excluído'
-          : 'Registro atualizado, resumo recalculado',
+          ? tr.noticeEntryDeleted
+          : tr.summaryUpdated,
     );
   }
 
@@ -97,17 +98,17 @@ class _SummaryViewState extends State<_SummaryView> {
         if (outing == null) {
           return Scaffold(
             appBar: AppBar(),
-            body: const ErrorView(message: 'Esse rolê não foi encontrado.'),
+            body: ErrorView(message: tr.outingNotFound),
           );
         }
         final s = state.summary!;
         final endedAt = outing.endedAt ?? DateTime.now();
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Resumo do rolê'),
+            title: Text(tr.summaryTitle),
             actions: [
               IconButton(
-                tooltip: 'Compartilhar resumo',
+                tooltip: tr.summaryShare,
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => ShareCardPage(outingId: outing.id),
@@ -161,14 +162,14 @@ class _SummaryViewState extends State<_SummaryView> {
                                   onPressed: () =>
                                       openOutingInMaps(context, outing),
                                   icon: const Icon(Icons.map_outlined, size: 18),
-                                  label: const Text('Abrir no mapa'),
+                                  label: Text(tr.placeOpenInMaps),
                                 ),
                               TextButton.icon(
                                 onPressed: () =>
                                     changeOutingPlace(context, outing),
                                 icon: const Icon(Icons.edit_location_alt_outlined,
                                     size: 18),
-                                label: const Text('Corrigir local'),
+                                label: Text(tr.placeCorrect),
                               ),
                             ],
                           ),
@@ -176,19 +177,19 @@ class _SummaryViewState extends State<_SummaryView> {
                           Row(children: [
                             Expanded(
                               child: StatTile(
-                                label: 'Início',
+                                label: tr.summaryStart,
                                 value: formatTime(outing.startedAt),
                               ),
                             ),
                             Expanded(
                               child: StatTile(
-                                label: 'Fim',
+                                label: tr.summaryEnd,
                                 value: formatTime(endedAt),
                               ),
                             ),
                             Expanded(
                               child: StatTile(
-                                label: 'Duração',
+                                label: tr.summaryDuration,
                                 value: formatDuration(
                                     outing.durationAt(endedAt)),
                               ),
@@ -198,7 +199,7 @@ class _SummaryViewState extends State<_SummaryView> {
                       ),
                     ),
                     if (state.entries.isNotEmpty) ...[
-                      const SectionTitle('Mesa do rolê'),
+                      SectionTitle(tr.settingsTable),
                       TableScene(
                         entries: state.entries,
                         scenario: context
@@ -209,16 +210,12 @@ class _SummaryViewState extends State<_SummaryView> {
                         retrospective: true,
                         compact: true,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: AppSpace.sm),
-                        child: Text(
-                          'Retrospectiva ilustrativa dos registros. Os '
-                          'números reais estão abaixo.',
-                          style: AppText.caption,
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppSpace.sm),
+                        child: Text(tr.summaryRetro, style: AppText.caption),
                       ),
                     ],
-                    const SectionTitle('Consumo'),
+                    SectionTitle(tr.summaryConsumption),
                     SurfaceCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,14 +223,14 @@ class _SummaryViewState extends State<_SummaryView> {
                           Row(children: [
                             Expanded(
                               child: StatTile(
-                                label: 'Bebidas',
+                                label: tr.homeDrinks,
                                 value: '${s.entryCount}',
                                 icon: Icons.local_bar_rounded,
                               ),
                             ),
                             Expanded(
                               child: StatTile(
-                                label: 'Seu volume',
+                                label: tr.outingYourVolume,
                                 value: s.volumeLabel,
                                 icon: Icons.opacity_rounded,
                               ),
@@ -250,13 +247,13 @@ class _SummaryViewState extends State<_SummaryView> {
                         ],
                       ),
                     ),
-                    const SectionTitle('Gastos'),
+                    SectionTitle(tr.summarySpending),
                     SurfaceCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           StatTile(
-                            label: 'Gastos registrados em bebidas',
+                            label: tr.summarySpentOnDrinks,
                             value: formatCents(s.informedCents),
                             icon: Icons.payments_outlined,
                           ),
@@ -274,9 +271,7 @@ class _SummaryViewState extends State<_SummaryView> {
                           if (s.unpricedCount > 0) ...[
                             const SizedBox(height: AppSpace.md),
                             InfoPill(
-                              '${s.unpricedCount} '
-                              '${s.unpricedCount == 1 ? 'bebida' : 'bebidas'} '
-                              'sem preço: o total pode estar maior',
+                              tr.summaryUnpricedPill(s.unpricedCount),
                               icon: Icons.sell_outlined,
                               warning: true,
                             ),
@@ -291,14 +286,14 @@ class _SummaryViewState extends State<_SummaryView> {
                                 ),
                                 icon: const Icon(Icons.edit_note_rounded,
                                     size: 18),
-                                label: const Text('Preencher preços ausentes'),
+                                label: Text(tr.summaryFillPrices),
                               ),
                             ),
                           ],
                         ],
                       ),
                     ),
-                    const SectionTitle('Seu relato'),
+                    SectionTitle(tr.summaryYourAccount),
                     SurfaceCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,10 +306,10 @@ class _SummaryViewState extends State<_SummaryView> {
                               Text(outing.feedbackMood!.label,
                                   style: AppText.title),
                               const Spacer(),
-                              const Text('seu relato', style: AppText.caption),
+                              Text(tr.summaryYourAccountTag, style: AppText.caption),
                             ])
                           else
-                            const Text('Sem relato ainda.',
+                            Text(tr.summaryNoAccount,
                                 style: AppText.caption),
                           if (outing.wakeFeeling != null ||
                               outing.hangover != null) ...[
@@ -325,10 +320,10 @@ class _SummaryViewState extends State<_SummaryView> {
                               children: [
                                 if (outing.wakeFeeling != null)
                                   InfoPill(
-                                      'Acordou: ${outing.wakeFeeling!.label.toLowerCase()}'),
+                                      tr.summaryWoke(outing.wakeFeeling!.label.toLowerCase())),
                                 if (outing.hangover != null)
                                   InfoPill(
-                                      'Ressaca: ${outing.hangover!.label.toLowerCase()}'),
+                                      tr.summaryHangover(outing.hangover!.label.toLowerCase())),
                               ],
                             ),
                           ],
@@ -346,35 +341,28 @@ class _SummaryViewState extends State<_SummaryView> {
                               ),
                               icon: const Icon(Icons.edit_outlined, size: 18),
                               label: Text(outing.feedbackMood == null
-                                  ? 'Adicionar relato'
-                                  : 'Editar relato'),
+                                  ? tr.summaryAddAccount
+                                  : tr.summaryEditAccount),
                             ),
                           ),
-                          const Text(
-                            'Relato pessoal: não mede nada e não indica um '
-                            'limite de consumo.',
-                            style: AppText.caption,
-                          ),
+                          Text(tr.summaryAccountNote, style: AppText.caption),
                         ],
                       ),
                     ),
-                    const SectionTitle('Comanda'),
+                    SectionTitle(tr.summaryTab),
                     TabEntryCard(outingId: outing.id, detailed: true),
                     OutingScanSection(outingId: outing.id),
-                    SectionTitle('Registros (${state.entries.length})'),
+                    SectionTitle(tr.outingRecords(state.entries.length)),
                     if (state.entries.isEmpty)
-                      const EmptyView(
+                      EmptyView(
                         icon: Icons.sports_bar_outlined,
-                        title: 'Nenhum registro neste rolê',
+                        title: tr.summaryNoRecords,
                       )
                     else ...[
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: AppSpace.sm),
-                        child: Text(
-                          'Toque em um registro para corrigir; o resumo '
-                          'se recalcula.',
-                          style: AppText.caption,
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                        child: Text(tr.summaryTapToCorrect,
+                            style: AppText.caption),
                       ),
                       for (final e in state.entries)
                         Padding(
@@ -400,12 +388,12 @@ class _SummaryViewState extends State<_SummaryView> {
                         ),
                       ),
                       icon: const Icon(Icons.add_rounded),
-                      label: const Text('Adicionar bebida esquecida'),
+                      label: Text(tr.summaryAddForgotten),
                     ),
                     const SizedBox(height: AppSpace.sm),
                     FilledButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Concluir'),
+                      child: Text(tr.summaryDone),
                     ),
                   ],
                 ),
@@ -430,7 +418,7 @@ class _GroupRow extends StatelessWidget {
       child: Row(children: [
         SizedBox(
           width: 44,
-          child: Text('${group.count}×',
+          child: Text(tr.groupTimes(group.count),
               style: const TextStyle(
                   color: AppColors.amber,
                   fontWeight: FontWeight.w800,
@@ -451,7 +439,7 @@ class _GroupRow extends StatelessWidget {
         ),
         const SizedBox(width: AppSpace.sm),
         Text(
-          group.personalMl == null ? 'volume ?' : formatMl(group.personalMl!),
+          group.personalMl == null ? tr.groupVolumeUnknownShort : formatMl(group.personalMl!),
           style: AppText.caption,
         ),
       ]),
@@ -470,17 +458,16 @@ class _AlcoholInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         StatTile(
-          label: 'Álcool puro declarado',
-          value: (summary.alcoholIncomplete ? 'pelo menos ' : '') +
-              formatGrams(summary.pureAlcoholGrams),
+          label: tr.alcoholDeclared,
+          value: summary.alcoholIncomplete
+              ? tr.alcoholAtLeast(formatGrams(summary.pureAlcoholGrams))
+              : formatGrams(summary.pureAlcoholGrams),
           icon: Icons.science_outlined,
         ),
         const SizedBox(height: AppSpace.sm),
         if (summary.incompleteAlcoholCount > 0) ...[
           InfoPill(
-            '${summary.incompleteAlcoholCount} '
-            '${summary.incompleteAlcoholCount == 1 ? 'registro' : 'registros'} '
-            'com teor ou quantidade desconhecidos: o total é um mínimo',
+            tr.alcoholIncompletePill(summary.incompleteAlcoholCount),
             icon: Icons.help_outline_rounded,
             warning: true,
           ),
@@ -488,21 +475,13 @@ class _AlcoholInfo extends StatelessWidget {
         ],
         if (summary.unknownVolumeCount > 0) ...[
           InfoPill(
-            '${summary.unknownVolumeCount} '
-            '${summary.unknownVolumeCount == 1 ? 'registro' : 'registros'} '
-            'sem volume informado (não entram no volume)',
+            tr.alcoholNoVolumePill(summary.unknownVolumeCount),
             icon: Icons.opacity_outlined,
             warning: true,
           ),
           const SizedBox(height: AppSpace.sm),
         ],
-        const Text(
-          'Calculado só com o que foi informado: volume × teor nas bebidas '
-          'simples e quantidade × teor de cada componente nos drinks. Em '
-          'drinks vale a receita declarada, não o que o bar serviu. Não é a '
-          'concentração de álcool no sangue e não indica se você pode dirigir.',
-          style: AppText.caption,
-        ),
+        Text(tr.alcoholExplain, style: AppText.caption),
       ],
     );
   }
