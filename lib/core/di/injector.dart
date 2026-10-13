@@ -30,6 +30,10 @@ import '../../settings/presentation/settings_cubit.dart';
 import '../../shell/active_outing_cubit.dart';
 import '../../stats/presentation/stats_cubit.dart';
 import '../../tab/data/tab_repository.dart';
+import '../../tracking/application/tracking_coordinator.dart';
+import '../../tracking/application/tracking_links.dart';
+import '../../tracking/data/tracking_platform.dart';
+import '../../tracking/data/tracking_prefs.dart';
 import '../config/env.dart';
 import '../data/app_prefs.dart';
 import '../data/local_store.dart';
@@ -85,6 +89,23 @@ Future<void> configureDependencies() async {
     )
     ..registerSingleton<DrinkRepository>(
       DrinkRepository(store, bundledCatalog),
+    )
+    ..registerLazySingleton<TrackingPlatform>(() => TrackingPlatform())
+    ..registerLazySingleton<TrackingPrefs>(() => TrackingPrefs(store))
+    ..registerLazySingleton<TrackingCoordinator>(
+      () => TrackingCoordinator(
+        getIt<TrackingPlatform>(),
+        getIt<TrackingPrefs>(),
+        getIt<OutingRepository>(),
+        getIt<DrinkRepository>(),
+      ),
+    )
+    ..registerLazySingleton<TrackingLinks>(
+      () => TrackingLinks(
+        getIt<TrackingPlatform>(),
+        getIt<OutingRepository>(),
+        getIt<TrackingCoordinator>(),
+      ),
     )
     ..registerLazySingleton<TabRepository>(
       () => TabRepository(store, getIt<DrinkRepository>()),

@@ -409,9 +409,7 @@ altera volume de álcool; pagar uma garrafa não é beber; registrar pagamento n
 - **Compartilhar** (`tab_share_page.dart`, `tab_share.dart`): prévia em texto com itens, subtotal, desconto, serviço, total, parcelas e
   aviso de conta parcial; pagamentos só se o usuário ligar; sem endereço, fotos, notas ou relato; compartilhar só após toque, com
   copiar texto como alternativa. A exportação JSON ganhou `outing_tabs`.
-- **Migration:** `supabase/migrations/20261016000000_outing_tabs.sql` (tabela `outing_tabs`, RLS por dono, gatilho de mesmo dono
-  reaproveitando `outing_child_same_owner()` da migration anterior). **Não aplicada**: sem acesso administrativo ao projeto
-  `jiisoqkryhmtopaojyyu`; o SQL foi entregue ao responsável.
+- **Migration:** `supabase/migrations/20261016000000_outing_tabs.sql` (tabela `outing_tabs`, RLS por dono, gatilho de mesmo dono reaproveitando `outing_child_same_owner()`) **aplicada pelo responsável**. Isso não foi verificado daqui (sem acesso administrativo) nem pela sincronização rodando no Flutter.
 - **Cenários conferidos só por leitura:** 12 chopps de R$ 15 (subtotal R$ 180); garrafa 600 ml de R$ 18 para três (consumo pessoal intacto,
   total entra uma vez); parcela pessoal sozinha (total da mesa desconhecido); R$ 100 por três (3.334 + 3.333 + 3.333); petisco para duas de
   quatro (por item); transporte sem serviço; item sem preço (parcial); mudar o preço do consumo (uma cobrança); item novo (nenhum
@@ -420,6 +418,83 @@ altera volume de álcool; pagar uma garrafa não é beber; registrar pagamento n
   sem preço ficam fora das parcelas até serem preenchidos; a mesma garrafa lançada duas vezes só é detectada pela confirmação acima;
   sem pull da nuvem (a comanda não volta em outro aparelho); a edição de pesos é por diálogo, sem arrastar; a leitura do código não
   validou layouts, teclado nem acessibilidade em aparelho.
+
+## Rolê na tela bloqueada (bloco 14, 13/10/2026)
+
+Escrito por leitura de documentação oficial (ActivityKit/WidgetKit, notificações Android) e do código; **nada foi compilado, analisado,
+executado em aparelho nem aberto no Xcode/Android Studio**. Pode haver erros de compilação, principalmente no Swift e no Kotlin.
+
+**Suporte real e versões mínimas**
+- **iOS:** Live Activity + Dynamic Island a partir do **iOS 16.2** (ActivityKit existe desde o 16.1; o código usa 16.2). O app continua em
+  iOS 15.5: tudo de ActivityKit fica atrás de `#available(iOS 16.2, *)`/`@available` e o framework é *weak-linked*
+  (`OTHER_LDFLAGS = -weak_framework ActivityKit` no Runner); abaixo do 16.2 o recurso aparece como "não disponível nesta versão". A
+  Dynamic Island só existe em iPhones compatíveis (14 Pro em diante); nos demais aparece só na tela bloqueada.
+- **Android:** notificação comum (`Notification.Builder`, canal `outing_tracking`, importância baixa, sem som/vibração, id fixo 4101 que
+  substitui a anterior, cronômetro nativo `setUsesChronometer`). Funciona nas versões suportadas pelo app (API do canal a partir da 26, com
+  ramo para anteriores). **Sem foreground service.** Android 13+ exige a permissão `POST_NOTIFICATIONS`, pedida só quando a pessoa ativa o
+  recurso. Não é `ongoing`: a pessoa pode remover; o sistema pode agrupar/ocultar conforme as configurações dela.
+- **Web:** sem superfície nativa e sem fingir suporte: as Configurações dizem que o acompanhamento fica só dentro do app.
+
+**Arquitetura (nenhum segundo mecanismo de escrita)**
+- O Flutter é a única fonte da verdade. `TrackingCoordinator` (`lib/tracking/application/`) lê o rolê ativo, os registros e as preferências já
+  persistidos, monta um `TrackingSnapshot` e manda ao nativo pelo canal `bebometro/tracking`. O código nativo **só exibe**; não lê nem grava
+  `LocalStore`/SharedPreferences do Flutter. Funciona offline (a sincronização com o Supabase não é requisito).
+- O coordenador atualiza (com *debounce* de 600 ms) após iniciar/encerrar rolê, registrar/editar/excluir/desfazer bebida, mudar início, nome,
+  preços e preferências, e reconcilia ao abrir/retomar o app: rolê ativo correspondente, preferências, atividade/notificação existente,
+  dispensa e estado encerrado. Cada execução confere o rolê de novo após cada `await` e uma execução mais nova cancela a anterior; se o rolê
+  terminou durante uma chamada, a superfície é derrubada. Atividade de outro rolê é encerrada.
+- O tempo é do sistema (`Text(date, style: .timer)` no iOS, cronômetro da notificação no Android): não há timer Dart em segundo plano.
+- **Preferências** (`TrackingPrefs`, só no aparelho, sem migration): ativar (desligado até a pessoa ativar), mostrar gastos (desligado),
+  mostrar nome do local (desligado: aparece "Rolê em andamento"; só o apelido, nunca o endereço), oferta do primeiro rolê já tratada, e
+  conjuntos por rolê de "oculto" e "removido pela pessoa" (persistidos, não em memória).
+- **Contagem:** "N registros de bebida alcoólica" = registros alcoólicos do rolê pela mesma regra do app (`OutingSummary.alcoholicCount`).
+  Água/refrigerante não contam; garrafa compartilhada é **um registro**, não a garrafa inteira bebida; não são doses-padrão nem
+  alcoolemia. Gastos = gasto informado em bebidas (o que a pessoa pagou; sua parte nas compartilhadas), com "· N sem preço"; nunca o total
+  da mesa nem da comanda. Nada de endereço, fotos, notas, feedback, teor ou jogos.
+- **Ações:** "Abrir", "Mais uma · <bebida e tamanho>" (só existe quando há bebida alcoólica elegível) e "Água". **Todas abrem o app**: o
+  toque vira um link `bebometro://outing/<id>?action=open|another|water`; `TrackingLinks` valida (rolê existe, está ativo, é o mesmo id) e,
+  para "mais uma"/água, abre o rolê e mostra **uma pergunta de confirmação** (`OutingPage._confirmQuick`); só ao confirmar chama
+  `OutingCubit.repeatLast()`/`addWater()`, que reaproveitam snapshot, porção compartilhada, preço, origem, item exclusivo do rolê, a trava
+  contra toque duplo e o "Desfazer" do app (água não substitui a última bebida). Abrir o link nunca registra nada; o link só leva o id do
+  rolê e o tipo de ação (preço, teor e bebida vêm dos registros locais). Eventos repetidos em 3 s são ignorados; um toque num rolê já
+  encerrado só abre o resumo (sem consumo) e a superfície obsoleta é removida. Registro sem abrir o app **não foi implementado** de
+  propósito (exigiria App Intents no iOS 17+ rodando fora do processo Flutter e uma fila durável de operações).
+- **iOS (arquivos):** extensão `ios/BebometroLiveActivity/` (WidgetKit + SwiftUI: `OutingLiveActivity.swift`, `BebometroLiveActivityBundle.swift`,
+  `Info.plist`, `Assets.xcassets/LogoCap` com a tampinha recortada do logo existente, `OutingActivityAttributes.swift` compartilhado com o
+  Runner); bundle id `com.lucksrei.bebometro.BebometroLiveActivity`; deployment target 16.2; ponte nativa `ios/Runner/TrackingChannel.swift`
+  (início/atualização/fim serializados; um por rolê; reconhece atividades já existentes ao reabrir; detecta dispensa pelo usuário via
+  `activityStateUpdates` e **não** recria a atividade daquele rolê, exceto "Mostrar novamente"); `SceneDelegate` guarda os links;
+  `Info.plist` ganhou `NSSupportsLiveActivities`, esquema `bebometro` e `FlutterDeepLinkingEnabled=false` (o Flutter não transforma o link em
+  rota). Sem push remoto, sem App Group (a extensão só desenha o que o app manda) e sem alterar certificados.
+  O `project.pbxproj` foi **editado à mão** (alvo da extensão, fase "Embed Foundation Extensions", dependência, configurações Debug/Release/Profile,
+  `OTHER_LDFLAGS` do Runner). Precisa ser aberto no Xcode para conferir.
+- **Android (arquivos):** `MainActivity.kt` (canal, permissão, link), `TrackingNotifier.kt`, `TrackingDismissReceiver.kt` (remoção pela pessoa via
+  `deleteIntent`: lembrada por rolê e **não repostada**), `res/drawable/ic_stat_bebometro.xml` (ícone monocromático), manifesto com
+  `POST_NOTIFICATIONS`, o receiver e `flutter_deeplinking_enabled=false`. Corpo detalhado só com a tela desbloqueada: a versão pública da
+  notificação mostra apenas "Rolê em andamento" e o cronômetro.
+- **Telas:** Configurações > "Rolê na tela bloqueada" (ativar, mostrar gastos, mostrar nome do local, estado confirmado com o nativo:
+  desativado por você / permissão indisponível / desligado no sistema / disponível durante um rolê / oculto ou removido neste rolê / não
+  disponível nesta plataforma ou versão / ativo / aguardando); oferta de uma vez só no primeiro rolê ("Ativar" / "Agora não"); no menu do rolê
+  "Ocultar neste rolê" e "Mostrar na tela bloqueada" (não desliga a preferência global; desligar globalmente encerra a atual).
+
+**Limites impostos pelo sistema (da documentação; não observados)**
+- iOS: a atividade só pode ser iniciada com o app em primeiro plano (se falhar fica "aguardando" e é retentada ao voltar ao app); dura até
+  8 h e pode ficar até 4 h a mais na tela bloqueada antes de o sistema removê-la, e o usuário pode removê-la ou desligar Atividades ao Vivo
+  por app. Isso não encerra o rolê. Se o sistema a tirou do ar pelo limite de tempo (não conta como remoção pela pessoa), a próxima
+  reconciliação com o app aberto inicia outra; se a pessoa a removeu, só "Mostrar novamente" a traz de volta. Botões que executam sem abrir o
+  app exigiriam App Intents (iOS 17+); aqui são `Link`, que funcionam desde o 16.2.
+- Android: o sistema pode limitar atualizações muito rápidas; sem foreground service o processo pode ser encerrado, mas a notificação e o
+  cronômetro continuam (o conteúdo só muda quando o app roda).
+
+**Configuração manual que depende do ambiente**
+- Abrir `ios/Runner.xcworkspace` no Xcode, conferir o alvo `BebometroLiveActivity` e escolher o **Team** da assinatura para o Runner **e** para a
+  extensão (nenhum Team ID foi inventado); os dois precisam do mesmo Team e o *provisioning profile* da extensão (`...BebometroLiveActivity`)
+  precisa existir. Se a extensão for usada em *archive*, conferir que `FLUTTER_BUILD_NAME/NUMBER` chegam ao Info.plist dela.
+- `flutter pub get` não é necessário para este bloco (nenhuma dependência Dart nova).
+
+**Não observado em execução:** compilação do Swift/Kotlin e do `.pbxproj`; Live Activity na tela bloqueada e na Dynamic Island; dispensa pelo
+usuário; notificação, permissão do Android 13+, remoção e reposição; abertura por toque a frio e com o app aberto; confirmação das ações;
+nenhum efeito sobre a sincronização foi testado.
 
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem

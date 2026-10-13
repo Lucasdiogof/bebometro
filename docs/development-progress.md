@@ -20,7 +20,8 @@ implementado.
 | 9 | Copão e "virar o copo" | Copão: implementado, ainda não executado. "Virar o copo" refeito em 13/10/2026 como cerveja em tela cheia com acelerômetro (`sensors_plus`), arrasto na web/sem sensor; implementado, **não executado** (física, cores, sinal dos eixos no iOS e desempenho por observar em aparelho; ver HANDOFF) |
 | 10 | Cartão compartilhável e exportação JSON/CSV | Implementado, ainda não executado (depende de `share_plus`, declarado no pubspec e ainda não resolvido; falta `pub get`) |
 | 11 | Revisão dirigida e acabamento | Implementado (revisão por leitura; nada executado) |
-| 13 | Comanda e divisão da conta (itens agrupados, extras, serviço/desconto, participantes, 3 modos de divisão, pagamentos, compartilhamento em texto) | Implementado, **não executado nem analisado**; migration `20261016000000` **não aplicada** (SQL entregue ao responsável) |
+| 14 | Rolê na tela bloqueada (Live Activity/Dynamic Island no iOS 16.2+, notificação silenciosa no Android, só dentro do app na web; ativação e preferências, ocultar por rolê, ações que abrem o app e pedem confirmação) | Implementado em Dart, Swift e Kotlin, **não executado, não compilado nem analisado**; a extensão iOS foi adicionada ao `project.pbxproj` à mão (ver HANDOFF) |
+| 13 | Comanda e divisão da conta (itens agrupados, extras, serviço/desconto, participantes, 3 modos de divisão, pagamentos, compartilhamento em texto) | Implementado, **não executado nem analisado**; migration `20261016000000` aplicada pelo responsável |
 | 12 | Bebida por foto: rótulo, cardápio e cadastro do rolê (OCR local, revisão, "Bebidas deste rolê", fotos privadas) | Implementado, ainda não executado; migration `20261015000000` aplicada pelo responsável. Revisão de integração por leitura feita em 13/10/2026 (ver HANDOFF) |
 
 **Regra central do bloco 12:** Bebidas, fotos e itens de cardápio criados neste fluxo pertencem exclusivamente ao rolê de origem.
@@ -33,7 +34,7 @@ implementado.
 | `20261013000000_recipes_and_unknown_volume.sql` | Aplicada pelo dono (campos confirmados pela API) |
 | `20261014000000_places_budget_feedback_details.sql` | Aplicada pelo dono (13/10/2026); `places` e colunas novas de `outings` confirmadas pela API. Envio pelo Flutter ainda não observado |
 | `20261015000000_outing_drinks_and_photos.sql` | Aplicada pelo responsável (tabelas `outing_drinks`/`outing_photos`, `drink_entries.abv_source`, bucket privado `outing-photos`). Não verificada daqui nem pela sincronização rodando no Flutter |
-| `20261016000000_outing_tabs.sql` | **Pendente**: tabela `outing_tabs` (comanda inteira como um documento jsonb por rolê). Sem acesso administrativo daqui; entregue ao responsável. O app guarda a comanda no aparelho enquanto isso |
+| `20261016000000_outing_tabs.sql` | Aplicada pelo responsável (tabela `outing_tabs`: a comanda inteira como um documento jsonb por rolê). Não verificada daqui nem pela sincronização rodando no Flutter |
 
 ## Revisão de integração do bloco 12 (13/10/2026)
 

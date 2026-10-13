@@ -12,5 +12,7 @@ import UIKit
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+    // Lock-screen tracking (Live Activity): channel "bebometro/tracking".
+    TrackingChannel.shared.register(messenger: engineBridge.applicationRegistrar.messenger())
   }
 }

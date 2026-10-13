@@ -12,6 +12,7 @@ import '../../drinks/presentation/my_drinks_page.dart';
 import '../../export/presentation/export_page.dart';
 import '../../places/presentation/places_page.dart';
 import '../../table/data/table_prefs_cubit.dart';
+import '../../tracking/presentation/tracking_settings_section.dart';
 import 'settings_cubit.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -72,6 +73,8 @@ class _SettingsViewState extends State<_SettingsView> {
               padding: const EdgeInsets.fromLTRB(
                   AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
               children: [
+                const SectionTitle('Rolê na tela bloqueada'),
+                const TrackingSettingsSection(),
                 const SectionTitle('Mesa do rolê'),
                 BlocBuilder<TablePrefsCubit, TablePrefs>(
                   builder: (context, prefs) {

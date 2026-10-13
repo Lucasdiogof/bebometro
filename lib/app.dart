@@ -8,6 +8,8 @@ import 'core/theme/app_colors.dart';
 import 'core/theme/app_theme.dart';
 import 'shell/main_shell.dart';
 import 'table/data/table_prefs_cubit.dart';
+import 'tracking/application/tracking_coordinator.dart';
+import 'tracking/application/tracking_links.dart';
 
 class BebometroApp extends StatefulWidget {
   const BebometroApp({super.key});
@@ -22,6 +24,11 @@ class _BebometroAppState extends State<BebometroApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // After the first frame the navigator exists and the stores are open.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getIt<TrackingCoordinator>().start();
+      getIt<TrackingLinks>().start();
+    });
   }
 
   @override
@@ -36,6 +43,10 @@ class _BebometroAppState extends State<BebometroApp>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       getIt<SyncCubit>().schedule(immediate: true);
+      // Reconcile the lock-screen surface with the stored state and pick up a
+      // tap that arrived while the app was in the background.
+      getIt<TrackingCoordinator>().schedule(immediate: true);
+      getIt<TrackingLinks>().poll();
     }
   }
 
@@ -48,6 +59,7 @@ class _BebometroAppState extends State<BebometroApp>
       ],
       child: MaterialApp(
         title: 'Bebômetro',
+        navigatorKey: getIt<TrackingLinks>().navigatorKey,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.dark(),
         darkTheme: AppTheme.dark(),

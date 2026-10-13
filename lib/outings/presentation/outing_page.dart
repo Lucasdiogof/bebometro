@@ -20,6 +20,9 @@ import '../../table/presentation/table_sheets.dart';
 import '../../glass/presentation/accumulated_glass.dart';
 import '../../glass/presentation/tip_glass_page.dart';
 import '../../tab/presentation/tab_entry_card.dart';
+import '../../tracking/application/tracking_coordinator.dart';
+import '../../tracking/application/tracking_links.dart';
+import '../../tracking/presentation/tracking_offer_sheet.dart';
 import 'budget_section.dart';
 import 'outing_cubit.dart';
 
@@ -50,16 +53,96 @@ class _OutingViewState extends State<_OutingView> {
   StreamSubscription<OutingNotice>? _sub;
   bool _finishing = false;
 
+  late final String _outingId;
+
   @override
   void initState() {
     super.initState();
-    _sub = context.read<OutingCubit>().notices.listen(_showNotice);
+    final cubit = context.read<OutingCubit>();
+    _outingId = cubit.outingId;
+    _sub = cubit.notices.listen(_showNotice);
+    TrackingActions.visibleOuting.value = _outingId;
+    TrackingActions.pending.addListener(_onPending);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _onPending();
+      // One-time explanation of the lock-screen tracking, first outing only.
+      if (cubit.state.outing?.isActive == true) {
+        unawaited(offerTrackingIfNeeded(context));
+      }
+    });
   }
 
   @override
   void dispose() {
+    TrackingActions.pending.removeListener(_onPending);
+    if (TrackingActions.visibleOuting.value == _outingId) {
+      TrackingActions.visibleOuting.value = null;
+    }
     _sub?.cancel();
     super.dispose();
+  }
+
+  /// A quick action asked from the lock screen. It only opens a question:
+  /// nothing is registered until the person confirms here.
+  void _onPending() {
+    final p = TrackingActions.pending.value;
+    if (p == null || !mounted || p.outingId != _outingId) return;
+    TrackingActions.pending.value = null; // consumed once
+    unawaited(_confirmQuick(p.action));
+  }
+
+  Future<void> _confirmQuick(String action) async {
+    final cubit = context.read<OutingCubit>();
+    if (cubit.state.outing?.isActive != true) {
+      showToast(context, 'Esse rolê já foi encerrado.');
+      return;
+    }
+    final String question;
+    if (action == 'another') {
+      final last = cubit.state.lastAlcoholic;
+      if (last == null) {
+        showToast(context, 'Não há bebida para repetir neste rolê.');
+        return;
+      }
+      question = 'Registrar mais uma: ${last.name}'
+          '${last.containerMl == null ? '' : ' ${formatMl(last.containerMl!)}'}?';
+    } else {
+      question = 'Registrar um copo de água?';
+    }
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Pedido da tela bloqueada'),
+        content: Text(question),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Agora não')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('Registrar')),
+        ],
+      ),
+    );
+    if (ok != true || !mounted) return;
+    if (action == 'another') {
+      await cubit.repeatLast();
+    } else {
+      await cubit.addWater();
+    }
+  }
+
+  Future<void> _toggleTracking() async {
+    final coordinator = getIt<TrackingCoordinator>();
+    final suppressed = coordinator.isSuppressed(_outingId);
+    await coordinator.setHiddenFor(_outingId, !suppressed);
+    if (!mounted) return;
+    showToast(
+        context,
+        suppressed
+            ? 'Acompanhamento na tela bloqueada de volta.'
+            : 'Oculto da tela bloqueada neste rolê.');
   }
 
   void _showNotice(OutingNotice notice) {
@@ -176,10 +259,24 @@ class _OutingViewState extends State<_OutingView> {
                 tooltip: 'Mais opções',
                 onSelected: (v) {
                   if (v == 'finish') _finish();
+                  if (v == 'tracking') _toggleTracking();
                 },
-                itemBuilder: (_) => const [
-                  PopupMenuItem(value: 'finish', child: Text('Encerrar rolê')),
-                ],
+                itemBuilder: (_) {
+                  final tracking = getIt<TrackingCoordinator>();
+                  final offer = tracking.prefs.enabled &&
+                      tracking.status.value != TrackingStatus.unsupported;
+                  return [
+                    if (offer)
+                      PopupMenuItem(
+                        value: 'tracking',
+                        child: Text(tracking.isSuppressed(_outingId)
+                            ? 'Mostrar na tela bloqueada'
+                            : 'Ocultar neste rolê'),
+                      ),
+                    const PopupMenuItem(
+                        value: 'finish', child: Text('Encerrar rolê')),
+                  ];
+                },
               ),
             ],
           ),

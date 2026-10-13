@@ -94,6 +94,12 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 - Optional post-outing feedback, morning-after notes and hangover report; an unfinished-outing reminder never ends a session automatically.
 - Missing information stays visible. A day without records does not mean an alcohol-free day.
 
+**Outing on the lock screen (optional)**
+
+- iOS 16.2+: a Live Activity on the lock screen and, on compatible iPhones, in the Dynamic Island, showing elapsed time and the number of alcoholic drink records. Android: one silent, low-importance notification updated in place with a native chronometer (no foreground service). Web: no native surface; tracking stays inside the app.
+- Off until you turn it on (offered once, on the first outing, and in Settings). Spending and the place nickname are hidden by default; the address is never shown. It can be hidden per outing and removed by you at any time, and a removed surface is not brought back for that outing.
+- “Abrir”, “Mais uma” and “Água” open the app on the right outing and ask for confirmation; nothing is registered just by tapping. The counter counts records, not standard doses, and a shared bottle is one record.
+
 **Resenha: offline party games**
 
 - Never Have I Ever, Most Likely To and Truth or Dare.
@@ -149,6 +155,7 @@ lib/
   drinks/                catalog, recipes, portions and entries
   scan/  outing_drinks/  label/menu reading, photos and outing-only drinks
   tab/                   tab (comanda), bill splitting and payments
+  tracking/              lock-screen tracking (Live Activity / notification)
   places/  history/      saved places and past outings
   stats/  settings/      statistics and preferences
   table/  glass/         scenes, vessels and glass interactions
@@ -180,7 +187,8 @@ For web, add `-d chrome` to the run command. These are setup instructions, not e
 ## Roadmap and current limits
 
 - **Implemented in code, not yet validated in execution:** label and menu photos with on-device text reading (Android/iOS only), manual review, outing-only drinks and photos, private photo upload and the manual alternative used on the web. The web has no automatic reading and keeps photos only for the current session. There is no barcode reader.
-- **Tab (comanda):** written in code, not executed or analyzed after this feature; the `20261016000000` migration is delivered but **not applied**, so the tab stays on the device until then. No unit tests cover the calculation yet.
+- **Tab (comanda):** written in code, not executed or analyzed after this feature; the `20261016000000` migration was applied by the maintainer, but syncing the tab from the app has not been observed. No unit tests cover the calculation yet.
+- **Lock-screen tracking:** written in Dart, Swift and Kotlin, not compiled or run on a device. The iOS widget extension was added to the Xcode project by hand and needs the signing Team chosen in Xcode. Quick actions open the app for confirmation; they do not register in the background. The system limits Live Activities (about 8 hours plus up to 4 on the lock screen).
 - **Not verified:** the label and menu parsers are heuristic and were not tested on real photos, so no accuracy is claimed. The `20261015000000` migration was applied by the maintainer; synchronization of these tables and photos from the app has not been observed.
 - **Scope rule (implemented):** custom items, photos and menu prices belong to the outing ID, even across midnight. They do not enter the global catalog, do not automatically become reusable personal items and do not feed future-visit price suggestions.
 - **Later:** map/place search, opt-in lock-screen activities, regional prices backed by real observations and additional catalog coverage.

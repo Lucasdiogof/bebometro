@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Monochrome status-bar icon: a bottle cap (scalloped disc) with a "B" cut-out look. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M12,2 L14,3.2 L16.4,2.9 L17.6,5 L19.8,6 L19.6,8.4 L21,10.4 L19.8,12.4 L21,14.4 L19.6,16.4 L19.8,18.8 L17.6,19.8 L16.4,21.9 L14,21.6 L12,22.8 L10,21.6 L7.6,21.9 L6.4,19.8 L4.2,18.8 L4.4,16.4 L3,14.4 L4.2,12.4 L3,10.4 L4.4,8.4 L4.2,6 L6.4,5 L7.6,2.9 L10,3.2 Z
+                     M9.5,7 L9.5,17 L13,17 C15,17 16,15.9 16,14.5 C16,13.4 15.4,12.7 14.5,12.4 C15.2,12.1 15.7,11.4 15.7,10.5 C15.7,8.2 14,7 12.5,7 Z
+                     M11.2,8.6 L12.2,8.6 C13,8.6 13.6,9 13.6,9.9 C13.6,10.8 13,11.2 12.2,11.2 L11.2,11.2 Z
+                     M11.2,12.8 L12.6,12.8 C13.5,12.8 14.1,13.2 14.1,14 C14.1,14.8 13.5,15.4 12.6,15.4 L11.2,15.4 Z" />
+</vector>

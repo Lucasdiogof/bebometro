@@ -94,6 +94,12 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 - Relato pós-rolê opcional, informações de como acordou e ressaca; lembrete de rolê aberto sem encerramento automático.
 - Dados ausentes continuam identificados. Dia sem registro não significa dia sem beber.
 
+**Rolê na tela bloqueada (opcional)**
+
+- iOS 16.2+: uma Live Activity na tela bloqueada e, nos iPhones compatíveis, na Dynamic Island, com o tempo e a quantidade de registros de bebida alcoólica. Android: uma notificação silenciosa, de baixa importância, atualizada no lugar, com cronômetro nativo (sem foreground service). Web: sem superfície nativa; o acompanhamento fica dentro do app.
+- Desligado até você ativar (oferecido uma vez, no primeiro rolê, e em Configurações). Gastos e apelido do local ficam ocultos por padrão; o endereço nunca aparece. Dá para ocultar por rolê e remover a qualquer momento, e o que você removeu não volta naquele rolê.
+- “Abrir”, “Mais uma” e “Água” abrem o app no rolê certo e pedem confirmação; nada é registrado só por tocar. O contador conta registros, não doses-padrão, e uma garrafa compartilhada é um registro.
+
 **Resenha: jogos offline**
 
 - Eu nunca, Quem é mais provável e Verdade ou desafio.
@@ -149,6 +155,7 @@ lib/
   drinks/                catálogo, receitas, porções e registros
   scan/  outing_drinks/  leitura de rótulo/cardápio, fotos e bebidas só do rolê
   tab/                   comanda, divisão da conta e pagamentos
+  tracking/              acompanhamento na tela bloqueada (Live Activity / notificação)
   places/  history/      locais salvos e rolês anteriores
   stats/  settings/      estatísticas e preferências
   table/  glass/         cenários, recipientes e interações com o copo
@@ -180,7 +187,8 @@ Na web, acrescente `-d chrome` ao comando de execução. São instruções de co
 ## Roadmap e limitações atuais
 
 - **Implementado no código, ainda não validado em execução:** fotos de rótulo e cardápio com leitura de texto no aparelho (só Android/iOS), revisão manual, bebidas e fotos só do rolê, envio privado das fotos e a alternativa manual usada na web. A web não tem leitura automática e guarda as fotos só durante a sessão. Não há leitor de código de barras.
-- **Comanda:** escrita no código, não executada nem analisada depois desta funcionalidade; a migration `20261016000000` foi entregue, mas **não aplicada**, então a comanda fica no aparelho até lá. Ainda não há testes unitários do cálculo.
+- **Comanda:** escrita no código, não executada nem analisada depois desta funcionalidade; a migration `20261016000000` foi aplicada pelo responsável, mas a sincronização da comanda pelo app ainda não foi observada. Ainda não há testes unitários do cálculo.
+- **Tela bloqueada:** escrita em Dart, Swift e Kotlin, não compilada nem executada em aparelho. A extensão de widget do iOS foi adicionada ao projeto Xcode à mão e precisa do Team de assinatura escolhido no Xcode. As ações rápidas abrem o app para confirmação; não registram em segundo plano. O sistema limita Live Activities (cerca de 8 horas, mais até 4 na tela bloqueada).
 - **Não verificado:** os interpretadores de rótulo e cardápio são heurísticos e não foram testados com fotos reais, então não se promete precisão. A migration `20261015000000` foi aplicada pelo responsável; a sincronização dessas tabelas e fotos pelo app ainda não foi observada.
 - **Regra de escopo (implementada):** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras.
 - **Depois:** busca de locais/mapas, atividades opcionais na tela bloqueada, preços regionais sustentados por observações reais e ampliação do catálogo.

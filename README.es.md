@@ -94,6 +94,12 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 - Valoración opcional posterior, notas sobre la mañana siguiente y resaca; un recordatorio de sesión abierta nunca la finaliza automáticamente.
 - La información ausente se identifica. Un día sin registros no equivale a un día sin beber.
 
+**Salida en la pantalla de bloqueo (opcional)**
+
+- iOS 16.2+: una Live Activity en la pantalla de bloqueo y, en los iPhone compatibles, en la Dynamic Island, con el tiempo y la cantidad de registros de bebida alcohólica. Android: una notificación silenciosa, de baja importancia, actualizada en su lugar, con cronómetro nativo (sin servicio en primer plano). Web: sin superficie nativa; el seguimiento queda dentro de la app.
+- Desactivado hasta que lo actives (se ofrece una vez, en la primera salida, y en Ajustes). Los gastos y el apodo del lugar están ocultos por defecto; la dirección nunca aparece. Se puede ocultar por salida y quitar en cualquier momento, y lo que quitaste no vuelve en esa salida.
+- “Abrir”, “Otra más” y “Agua” abren la app en la salida correcta y piden confirmación; nada se registra solo por tocar. El contador cuenta registros, no dosis estándar, y una botella compartida es un registro.
+
 **Resenha: juegos sin conexión**
 
 - Yo nunca, Quién es más probable y Verdad o reto.
@@ -149,6 +155,7 @@ lib/
   drinks/                catálogo, recetas, porciones y registros
   scan/  outing_drinks/  lectura de etiqueta/carta, fotos y bebidas solo de la salida
   tab/                   cuenta, división y pagos
+  tracking/              seguimiento en pantalla de bloqueo (Live Activity / notificación)
   places/  history/      lugares guardados e historial
   stats/  settings/      estadísticas y preferencias
   table/  glass/         ambientes, recipientes e interacciones con el vaso
@@ -180,7 +187,8 @@ Para web, añade `-d chrome` al comando de ejecución. Son instrucciones de conf
 ## Hoja de ruta y límites actuales
 
 - **Implementado en el código, aún no validado en ejecución:** fotos de etiqueta y carta con lectura de texto en el dispositivo (solo Android/iOS), revisión manual, bebidas y fotos solo de la salida, envío privado de fotos y la alternativa manual usada en la web. La web no tiene lectura automática y conserva las fotos solo durante la sesión. No hay lector de códigos de barras.
-- **Cuenta:** escrita en el código, sin ejecutar ni analizar tras esta función; la migración `20261016000000` se entregó pero **no está aplicada**, por lo que la cuenta queda en el dispositivo hasta entonces. Aún no hay pruebas unitarias del cálculo.
+- **Cuenta:** escrita en el código, sin ejecutar ni analizar tras esta función; la migración `20261016000000` fue aplicada por el responsable, pero la sincronización de la cuenta desde la app aún no se observó. Aún no hay pruebas unitarias del cálculo.
+- **Pantalla de bloqueo:** escrita en Dart, Swift y Kotlin, sin compilar ni ejecutar en un dispositivo. La extensión de widget de iOS se añadió al proyecto Xcode a mano y necesita el Team de firma elegido en Xcode. Las acciones rápidas abren la app para confirmar; no registran en segundo plano. El sistema limita las Live Activities (unas 8 horas, más hasta 4 en la pantalla de bloqueo).
 - **No verificado:** los intérpretes de etiqueta y carta son heurísticos y no se probaron con fotos reales, por lo que no se promete precisión. La migración `20261015000000` fue aplicada por el responsable; la sincronización de esas tablas y fotos desde la app aún no se observó.
 - **Regla de alcance (implementada):** los artículos personalizados, fotos y precios de la carta pertenecen al ID de la salida, incluso después de medianoche. No entran al catálogo global, no se convierten automáticamente en artículos personales reutilizables ni alimentan sugerencias para visitas futuras.
 - **Más adelante:** búsqueda de lugares/mapas, actividades opcionales en pantalla bloqueada, precios regionales basados en observaciones reales y ampliación del catálogo.

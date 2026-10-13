@@ -28,6 +28,22 @@
 	<string>A câmera é usada só para fotografar rótulos e cardápios do rolê. As fotos ficam no seu aparelho.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>A galeria é usada só para você escolher fotos de rótulos e cardápios do rolê.</string>
+	<!-- Links are handled by the app (TrackingChannel), not turned into routes. -->
+	<key>FlutterDeepLinkingEnabled</key>
+	<false/>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.lucksrei.bebometro.link</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>bebometro</string>
+			</array>
+		</dict>
+	</array>
 	<key>NSMotionUsageDescription</key>
 	<string>O movimento do aparelho é usado só para inclinar a cerveja no "Virar o copo". Nada é gravado.</string>
 	<key>LSRequiresIPhoneOS</key>
