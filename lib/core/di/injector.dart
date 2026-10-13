@@ -8,6 +8,7 @@ import '../../drinks/data/catalog_loader.dart';
 import '../../games/data/game_repository.dart';
 import '../../games/domain/game_models.dart';
 import '../../games/presentation/game_cubit.dart';
+import '../../l10n/locale_controller.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/catalog_item.dart';
 import '../../drinks/domain/drink_entry.dart';
@@ -99,6 +100,8 @@ Future<void> configureDependencies() async {
   final legacy = LegacyData(device);
   getIt
     ..registerSingleton<DeviceStore>(device)
+    // Language: a device preference, read before anything is shown.
+    ..registerSingleton<LocaleController>(LocaleController(device))
     ..registerSingleton<LegacyData>(legacy)
     ..registerSingleton<AuthController>(
         AuthController(device, legacy, cloudEnabled: _cloudEnabled))

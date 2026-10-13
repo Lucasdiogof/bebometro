@@ -1,0 +1,199 @@
+{
+  "@@locale": "pt",
+  "appName": "Bebômetro",
+  "commonBack": "Voltar",
+  "commonCancel": "Cancelar",
+  "commonClose": "Fechar",
+  "commonConfirm": "Confirmar",
+  "commonContinue": "Continuar",
+  "commonCopied": "Copiado",
+  "commonDelete": "Excluir",
+  "commonEdit": "Editar",
+  "commonError": "Algo deu errado",
+  "commonLater": "Depois",
+  "commonMoreOptions": "Mais opções",
+  "commonOptional": "(opcional)",
+  "commonOptions": "Opções",
+  "commonRetry": "Tentar de novo",
+  "commonSave": "Salvar",
+  "commonUndo": "Desfazer",
+  "dateAtTime": "{date} às {time}",
+  "@dateAtTime": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "durationHours": "{hours} h",
+  "@durationHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "durationHoursMinutes": "{hours} h {minutes} min",
+  "@durationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "durationMinutes": "{minutes} min",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "languageEn": "English",
+  "languageEs": "Español",
+  "languageMoneyNote": "Valores continuam em reais (R$) em qualquer idioma.",
+  "languagePt": "Português (Brasil)",
+  "languageSystem": "Idioma do sistema",
+  "languageSystemHint": "Português, inglês ou espanhol conforme o aparelho; outros idiomas usam português.",
+  "moneyFieldHelper": "Valores em reais (R$). Ex.: 15 ou 15,50.",
+  "navCatalog": "Catálogo",
+  "navGames": "Resenha",
+  "navHistory": "Histórico",
+  "navHome": "Início",
+  "numberAmbiguous": "Formato ambíguo. Use vírgula ou ponto só para os centavos (ex.: 1500 ou 15,50).",
+  "numberInvalid": "Número inválido.",
+  "settingsAccount": "Minha conta",
+  "settingsBudget": "Orçamento",
+  "settingsBudgetAlerts": "Avisos de orçamento",
+  "settingsBudgetAlertsHint": "Um aviso ao chegar a 80% e a 100% do orçamento do rolê, uma vez por patamar.",
+  "settingsDrinkRecords": "Registros de bebida",
+  "settingsExport": "Exportar meus dados",
+  "settingsLanguage": "Idioma",
+  "settingsLastSync": "Última sincronização: {when}",
+  "@settingsLastSync": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsLastSyncNever": "Última sincronização: ainda não houve.",
+  "settingsLocalRisk": "Enquanto isso, se você desinstalar o app ou limpar os dados do navegador, o que está só neste aparelho será perdido.",
+  "settingsLockScreen": "Rolê na tela bloqueada",
+  "settingsMyDrinks": "Minhas bebidas",
+  "settingsMyDrinksAndRecipes": "Minhas bebidas e receitas",
+  "settingsNotYetInCloud": "Alguns dados ainda não chegaram à nuvem.",
+  "settingsOutingsHere": "Rolês neste aparelho",
+  "settingsPendingChanges": "{count, plural, =1{1 alteração aguardando envio.} other{{count} alterações aguardando envio.}}",
+  "@settingsPendingChanges": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "1": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsSavedPlaces": "Locais salvos",
+  "settingsStorage": "ARMAZENAMENTO",
+  "settingsSync": "SINCRONIZAÇÃO",
+  "settingsSyncDone": "Tudo sincronizado.",
+  "settingsSyncDoneConflicts": "{count, plural, =1{Enviado, mas há 1 alteração para resolver em Minha conta.} other{Enviado, mas há {count} alterações para resolver em Minha conta.}}",
+  "@settingsSyncDoneConflicts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "Enviado": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsSyncFailed": "Não foi possível sincronizar agora.",
+  "settingsSyncNow": "Sincronizar agora",
+  "settingsSyncState": "Estado",
+  "settingsSyncStillPending": "{count, plural, =1{Ainda há 1 alteração para enviar.} other{Ainda há {count} alterações para enviar.}}",
+  "@settingsSyncStillPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "Ainda": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsTable": "Mesa do rolê",
+  "settingsTableAnimations": "Animações da mesa",
+  "settingsTableAnimationsHint": "Os recipientes esvaziam como ilustração. Desligado, a mesa fica estática.",
+  "settingsTableDefault": "Mostrar mesa como padrão",
+  "settingsTableDefaultHint": "Na tela do rolê, a mesa ilustrada abre antes da lista.",
+  "settingsTitle": "Configurações",
+  "shellBackToOuting": "Voltar ao rolê",
+  "shellOutingRunning": "Rolê em andamento · {name}",
+  "@shellOutingRunning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "syncLabelConflicts": "{count, plural, =1{1 para resolver} other{{count} para resolver}}",
+  "@syncLabelConflicts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "1": {
+        "type": "String"
+      }
+    }
+  },
+  "syncLabelFailed": "Falha ao sincronizar",
+  "syncLabelLocalOnly": "Só neste aparelho",
+  "syncLabelPending": "{count, plural, =1{1 aguardando envio} other{{count} aguardando envio}}",
+  "@syncLabelPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "1": {
+        "type": "String"
+      }
+    }
+  },
+  "syncLabelSynced": "Sincronizado",
+  "syncLabelSyncing": "Sincronizando…",
+  "syncNoticeActiveConflict": "O servidor já tem outro rolê em andamento. Nada foi apagado: os dados continuam salvos no aparelho.",
+  "syncNoticeLocalOnly": "A nuvem ainda não está disponível. Seus registros estão salvos só neste aparelho e serão enviados quando for possível.",
+  "syncNoticeOffline": "Sem conexão. Vamos tentar de novo.",
+  "syncNoticePhotos": "Algumas fotos ainda não foram enviadas. Elas continuam salvas no aparelho e o envio será tentado de novo.",
+  "syncNoticePlaceLink": "O servidor não aceitou o vínculo de um rolê com o local salvo. Nada foi alterado: os dados continuam salvos no aparelho.",
+  "syncNoticeRejected": "O servidor recusou algumas alterações. Seus dados continuam salvos no aparelho.",
+  "syncNoticeSchemaGap": "Parte dos dados novos aguarda uma atualização do servidor. O restante já foi enviado e nada foi perdido.",
+  "syncNoticeSignInAgain": "Entre novamente na sua conta para enviar e receber os dados. Tudo continua salvo neste aparelho.",
+  "syncNoticeWaitingPlace": "Alguns rolês aguardam o envio do local salvo. Nada foi perdido.",
+  "unitGrams": "{value} g",
+  "@unitGrams": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitMl": "{value} ml",
+  "@unitMl": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  }
+}

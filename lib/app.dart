@@ -8,6 +8,8 @@ import 'core/theme/app_colors.dart';
 import 'core/theme/app_theme.dart';
 import 'account/application/auth_controller.dart';
 import 'account/presentation/access_gate.dart';
+import 'l10n/l10n.dart';
+import 'l10n/locale_controller.dart';
 import 'table/data/table_prefs_cubit.dart';
 import 'tracking/application/tracking_coordinator.dart';
 import 'tracking/application/tracking_links.dart';
@@ -28,12 +30,25 @@ class _BebometroAppState extends State<BebometroApp>
     // Restores the session from disk (no network needed) and starts
     // listening to auth events, e-mail links included.
     getIt<AuthController>().start();
+    getIt<LocaleController>().addListener(_onLocale);
   }
 
   @override
   void dispose() {
+    getIt<LocaleController>().removeListener(_onLocale);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  /// New language: [tr] is already switched; rebuild every element in place
+  /// (state, forms, the running outing and a game in progress are kept) and
+  /// refresh the lock-screen texts of the running outing.
+  void _onLocale() {
+    setState(() {});
+    rebuildAllChildren(context);
+    if (AccountScope.isOpen) {
+      getIt<TrackingCoordinator>().refreshTexts();
+    }
   }
 
   /// Anything still pending (e.g. records the server refused before it was
@@ -57,15 +72,17 @@ class _BebometroAppState extends State<BebometroApp>
         BlocProvider.value(value: getIt<TablePrefsCubit>()),
       ],
       child: MaterialApp(
-        title: 'Bebômetro',
+        onGenerateTitle: (_) => tr.appName,
         navigatorKey: AppNavigator.key,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.dark(),
         darkTheme: AppTheme.dark(),
         themeMode: ThemeMode.dark,
-        locale: const Locale('pt', 'BR'),
-        supportedLocales: const [Locale('pt', 'BR')],
+        // Device preference (Settings > Idioma); pt-BR is the final fallback.
+        locale: getIt<LocaleController>().locale,
+        supportedLocales: const [Locale('pt', 'BR'), Locale('en'), Locale('es')],
         localizationsDelegates: const [
+          AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
 import 'brand.dart';
+import '../../l10n/l10n.dart';
 
 class LoadingView extends StatelessWidget {
   const LoadingView({super.key});
@@ -72,9 +73,9 @@ class ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => EmptyView(
         icon: Icons.error_outline_rounded,
-        title: 'Algo deu errado',
+        title: tr.commonError,
         message: message,
-        actionLabel: onRetry == null ? null : 'Tentar de novo',
+        actionLabel: onRetry == null ? null : tr.commonRetry,
         onAction: onRetry,
       );
 }

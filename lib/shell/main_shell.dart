@@ -11,6 +11,7 @@ import '../games/presentation/resenha_page.dart';
 import '../history/presentation/history_page.dart';
 import '../home/presentation/home_page.dart';
 import 'active_outing_cubit.dart';
+import '../l10n/l10n.dart';
 
 /// The main navigation: Início, Catálogo, Histórico and Resenha. Each tab keeps
 /// its state (filters, scroll) while the others are open. Back from another tab
@@ -50,26 +51,26 @@ class _MainShellState extends State<MainShell> {
               NavigationBar(
                 selectedIndex: _index,
                 onDestinationSelected: (i) => setState(() => _index = i),
-                destinations: const [
+                destinations: [
                   NavigationDestination(
                     icon: Icon(Icons.home_outlined),
                     selectedIcon: Icon(Icons.home_rounded),
-                    label: 'Início',
+                    label: tr.navHome,
                   ),
                   NavigationDestination(
                     icon: Icon(Icons.menu_book_outlined),
                     selectedIcon: Icon(Icons.menu_book_rounded),
-                    label: 'Catálogo',
+                    label: tr.navCatalog,
                   ),
                   NavigationDestination(
                     icon: Icon(Icons.history_rounded),
                     selectedIcon: Icon(Icons.history_toggle_off_rounded),
-                    label: 'Histórico',
+                    label: tr.navHistory,
                   ),
                   NavigationDestination(
                     icon: Icon(Icons.celebration_outlined),
                     selectedIcon: Icon(Icons.celebration_rounded),
-                    label: 'Resenha',
+                    label: tr.navGames,
                   ),
                 ],
               ),
@@ -110,7 +111,7 @@ class _ActiveOutingBar extends StatelessWidget {
                   child: Row(children: [
                     Flexible(
                       child: Text(
-                        'Rolê em andamento · ${outing.displayName}',
+                        tr.shellOutingRunning(outing.displayName),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: AppText.caption.copyWith(color: AppColors.text),
@@ -120,7 +121,7 @@ class _ActiveOutingBar extends StatelessWidget {
                     ElapsedText(since: outing.startedAt, style: AppText.caption),
                   ]),
                 ),
-                const Text('Voltar ao rolê',
+                Text(tr.shellBackToOuting,
                     style: TextStyle(
                         color: AppColors.amber, fontWeight: FontWeight.w700)),
               ]),

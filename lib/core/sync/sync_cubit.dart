@@ -8,6 +8,7 @@ import '../data/local_store.dart';
 import 'cloud_pull.dart';
 import 'pending_uploads.dart';
 import 'sync_conflicts.dart';
+import '../../l10n/l10n.dart';
 
 enum SyncStatus {
   /// Everything saved on the device was confirmed by the server.
@@ -25,12 +26,38 @@ enum SyncStatus {
   localOnly,
 }
 
+/// Why the sync is not "all saved", as a code. [text] is in the language on
+/// screen.
+enum SyncNotice {
+  localOnly,
+  signInAgain,
+  activeConflict,
+  placeLink,
+  rejected,
+  waitingPlace,
+  schemaGap,
+  offline,
+  photosPending;
+
+  String get text => switch (this) {
+        SyncNotice.localOnly => tr.syncNoticeLocalOnly,
+        SyncNotice.signInAgain => tr.syncNoticeSignInAgain,
+        SyncNotice.activeConflict => tr.syncNoticeActiveConflict,
+        SyncNotice.placeLink => tr.syncNoticePlaceLink,
+        SyncNotice.rejected => tr.syncNoticeRejected,
+        SyncNotice.waitingPlace => tr.syncNoticeWaitingPlace,
+        SyncNotice.schemaGap => tr.syncNoticeSchemaGap,
+        SyncNotice.offline => tr.syncNoticeOffline,
+        SyncNotice.photosPending => tr.syncNoticePhotos,
+      };
+}
+
 class SyncState {
   const SyncState(
     this.status, {
     this.pending = 0,
     this.lastSyncAt,
-    this.message,
+    this.notice,
     this.conflicts = 0,
     this.restoring = false,
     this.restoredRows = 0,
@@ -61,21 +88,24 @@ class SyncState {
       status == SyncStatus.synced && pending == 0 && conflicts == 0;
   final DateTime? lastSyncAt;
 
-  /// Short, user-facing explanation. Technical details go to the debug log.
-  final String? message;
+  /// Short, user-facing explanation (a code; the text is produced in the
+  /// language on screen). Technical details go to the debug log.
+  final SyncNotice? notice;
+
+  String? get message => notice?.text;
 
   String get label {
     switch (status) {
       case SyncStatus.synced:
-        return conflicts > 0 ? '$conflicts para resolver' : 'Sincronizado';
+        return conflicts > 0 ? tr.syncLabelConflicts(conflicts) : tr.syncLabelSynced;
       case SyncStatus.pending:
-        return '$pending aguardando envio';
+        return tr.syncLabelPending(pending);
       case SyncStatus.syncing:
-        return 'Sincronizando…';
+        return tr.syncLabelSyncing;
       case SyncStatus.failed:
-        return 'Falha ao sincronizar';
+        return tr.syncLabelFailed;
       case SyncStatus.localOnly:
-        return 'Só neste aparelho';
+        return tr.syncLabelLocalOnly;
     }
   }
 }
@@ -190,7 +220,7 @@ class SyncCubit extends Cubit<SyncState> {
       state.status,
       pending: state.pending,
       lastSyncAt: state.lastSyncAt,
-      message: state.message,
+      notice: state.notice,
       conflicts: conflicts.count,
       restoring: _restoring,
       restoredRows: _restoredRows,
@@ -208,7 +238,7 @@ class SyncCubit extends Cubit<SyncState> {
         SyncStatus.localOnly,
         pending: pending,
         lastSyncAt: _lastSyncAt,
-        message: _localOnlyMessage,
+        notice: SyncNotice.localOnly,
       ));
     } else if (_lastProblem != null &&
         (pending > 0 || _lastProblem == SyncStatus.localOnly)) {
@@ -216,7 +246,7 @@ class SyncCubit extends Cubit<SyncState> {
         _lastProblem!,
         pending: pending,
         lastSyncAt: _lastSyncAt,
-        message: _lastMessage,
+        notice: _lastMessage,
       ));
     } else {
       emit(SyncState(
@@ -227,18 +257,15 @@ class SyncCubit extends Cubit<SyncState> {
     }
   }
 
-  static const _localOnlyMessage =
-      'A nuvem ainda não está disponível. Seus registros estão salvos só '
-      'neste aparelho e serão enviados quando for possível.';
-
-  void _problem(SyncStatus status, String message, {required Duration retryIn}) {
+  void _problem(SyncStatus status, SyncNotice notice,
+      {required Duration retryIn}) {
     _lastProblem = status;
-    _lastMessage = message;
+    _lastMessage = notice;
     emit(SyncState(
       status,
       pending: _pendingTotal,
       lastSyncAt: _lastSyncAt,
-      message: message,
+      notice: notice,
     ));
     _retry?.cancel();
     _retry = Timer(retryIn, () => flush());
@@ -261,9 +288,7 @@ class SyncCubit extends Cubit<SyncState> {
       // Never signs in by itself (no anonymous fallback). No session for THIS
       // account means: keep everything local until the person signs in again.
       if (user == null || user.id != userId || user.isAnonymous) {
-        _problem(SyncStatus.localOnly,
-            'Entre novamente na sua conta para enviar e receber os dados. '
-            'Tudo continua salvo neste aparelho.',
+        _problem(SyncStatus.localOnly, SyncNotice.signInAgain,
             retryIn: const Duration(minutes: 5));
         return;
       }
@@ -430,14 +455,10 @@ class SyncCubit extends Cubit<SyncState> {
         _problem(
           SyncStatus.failed,
           activeConflict
-              ? 'O servidor já tem outro rolê em andamento. Nada foi apagado: '
-                  'os dados continuam salvos no aparelho.'
+              ? SyncNotice.activeConflict
               : placeLinkError
-                  ? 'O servidor não aceitou o vínculo de um rolê com o local '
-                      'salvo. Nada foi alterado: os dados continuam salvos no '
-                      'aparelho.'
-                  : 'O servidor recusou algumas alterações. Seus dados continuam '
-                  'salvos no aparelho.',
+                  ? SyncNotice.placeLink
+                  : SyncNotice.rejected,
           retryIn: _backoff,
         );
         return;
@@ -446,7 +467,7 @@ class SyncCubit extends Cubit<SyncState> {
       if (held > 0 && schemaGaps == 0) {
         _problem(
           SyncStatus.pending,
-          'Alguns rolês aguardam o envio do local salvo. Nada foi perdido.',
+          SyncNotice.waitingPlace,
           retryIn: _backoff,
         );
         return;
@@ -458,8 +479,7 @@ class SyncCubit extends Cubit<SyncState> {
       if (schemaGaps > 0) {
         _problem(
           SyncStatus.pending,
-          'Parte dos dados novos aguarda uma atualização do servidor. O '
-          'restante já foi enviado e nada foi perdido.',
+          SyncNotice.schemaGap,
           retryIn: const Duration(minutes: 5),
         );
         return;
@@ -469,12 +489,12 @@ class SyncCubit extends Cubit<SyncState> {
     } on AuthException catch (e) {
       _log('auth/network error: ${e.message}');
       _failures++;
-      _problem(SyncStatus.failed, 'Sem conexão. Vamos tentar de novo.',
+      _problem(SyncStatus.failed, SyncNotice.offline,
           retryIn: _backoff);
     } catch (e, st) {
       _log('sync error: $e\n$st');
       _failures++;
-      _problem(SyncStatus.failed, 'Sem conexão. Vamos tentar de novo.',
+      _problem(SyncStatus.failed, SyncNotice.offline,
           retryIn: _backoff);
     }
   }
@@ -492,8 +512,7 @@ class SyncCubit extends Cubit<SyncState> {
       _failures++;
       _problem(
         SyncStatus.pending,
-        'Algumas fotos ainda não foram enviadas. Elas continuam salvas no '
-        'aparelho e o envio será tentado de novo.',
+        SyncNotice.photosPending,
         retryIn: _backoff,
       );
       return;

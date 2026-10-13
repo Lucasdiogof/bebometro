@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../settings/presentation/settings_page.dart';
+import '../../l10n/l10n.dart';
 
 /// Shared entry points that must never stack twice (e.g. tapping the settings
 /// icon repeatedly).
@@ -28,7 +29,7 @@ class SettingsAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconButton(
-        tooltip: 'Configurações',
+        tooltip: tr.settingsTitle,
         onPressed: () => AppRoutes.openSettings(context),
         icon: const Icon(Icons.settings_outlined),
       );

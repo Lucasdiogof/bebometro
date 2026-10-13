@@ -1,53 +1,119 @@
 import 'package:intl/intl.dart';
 
-const _locale = 'pt_BR';
+import '../../l10n/l10n.dart';
 
-final _money = NumberFormat.currency(locale: _locale, symbol: r'R$');
-final _integer = NumberFormat.decimalPattern(_locale);
+// Every format follows the language on screen ([trLocaleTag]); none of them
+// changes stored values. Money is always Brazilian reais (BRL), in cents: a
+// different language never converts or relabels the currency.
 
-String formatCents(int cents) => _money.format(cents / 100).replaceAll(' ', ' ');
+String formatCents(int cents) => NumberFormat.currency(
+      locale: trLocaleTag,
+      name: 'BRL',
+      symbol: r'R$',
+      decimalDigits: 2,
+    ).format(cents / 100).replaceAll(' ', ' ');
 
-String formatMl(int ml) => '${_integer.format(ml)} ml';
+String formatNumber(num value) =>
+    NumberFormat.decimalPattern(trLocaleTag).format(value);
+
+String formatMl(int ml) => tr.unitMl(formatNumber(ml));
 
 String formatGrams(double grams) =>
-    '${NumberFormat('#,##0.#', _locale).format(grams)} g';
+    tr.unitGrams(NumberFormat('#,##0.#', trLocaleTag).format(grams));
 
 String formatAbv(double abv) =>
-    '${NumberFormat('#,##0.0#', _locale).format(abv)}%';
+    '${NumberFormat('#,##0.0#', trLocaleTag).format(abv)}%';
+
+String formatPercent(double fraction) =>
+    NumberFormat.percentPattern(trLocaleTag).format(fraction);
 
 String formatDuration(Duration d) {
   if (d.isNegative) d = Duration.zero;
   final hours = d.inHours;
   final minutes = d.inMinutes.remainder(60);
-  if (hours == 0) return '${minutes}min';
-  if (minutes == 0) return '${hours}h';
-  return '${hours}h ${minutes.toString().padLeft(2, '0')}min';
+  if (hours == 0) return tr.durationMinutes(minutes);
+  if (minutes == 0) return tr.durationHours(hours);
+  return tr.durationHoursMinutes(hours, minutes.toString().padLeft(2, '0'));
 }
 
-String formatTime(DateTime dt) => DateFormat.Hm(_locale).format(dt);
+String formatTime(DateTime dt) => DateFormat.Hm(trLocaleTag).format(dt);
 
-String formatDate(DateTime dt) => DateFormat("d 'de' MMM", _locale).format(dt);
+/// "13 de out.", "Oct 13", "13 oct".
+String formatDate(DateTime dt) => DateFormat.MMMd(trLocaleTag).format(dt);
 
-String formatMonthYear(DateTime dt) {
-  final text = DateFormat("MMMM 'de' yyyy", _locale).format(dt);
-  return text[0].toUpperCase() + text.substring(1);
+String formatMonthYear(DateTime dt) =>
+    _capitalized(DateFormat.yMMMM(trLocaleTag).format(dt));
+
+String formatDateTime(DateTime dt) => tr.dateAtTime(
+    DateFormat.Md(trLocaleTag).format(dt), DateFormat.Hm(trLocaleTag).format(dt));
+
+String formatWeekdayDate(DateTime dt) =>
+    _capitalized(DateFormat.MMMMEEEEd(trLocaleTag).format(dt));
+
+String _capitalized(String text) =>
+    text.isEmpty ? text : text[0].toUpperCase() + text.substring(1);
+
+// ---------------------------------------------------------------- parsing
+//
+// One parser for every numeric field. Accepted: digits with ONE decimal mark,
+// comma or dot ("15", "15,5", "15.50"), optionally with thousands groups when
+// both marks appear ("1.500,00", "1,500.00"). A lone mark followed by exactly
+// three digits ("1.500", "1,500") is ambiguous (thousand or decimal?) and is
+// refused, so the field asks for a correction instead of guessing.
+
+/// Why a numeric text was refused.
+enum NumberInputProblem { invalid, ambiguous }
+
+class _Parsed {
+  const _Parsed(this.value, this.problem);
+  final double? value;
+  final NumberInputProblem? problem;
 }
 
-String formatDateTime(DateTime dt) =>
-    DateFormat("d/MM 'às' HH:mm", _locale).format(dt);
-
-String formatWeekdayDate(DateTime dt) {
-  final text = DateFormat("EEEE, d 'de' MMMM", _locale).format(dt);
-  return text[0].toUpperCase() + text.substring(1);
-}
-
-/// Parses "15", "15,5", "15.50" or "R$ 15,00" into cents. Null when invalid.
-int? parseCents(String input) {
+_Parsed _parse(String input) {
   final cleaned = input.replaceAll(RegExp(r'[^0-9,.]'), '');
-  if (cleaned.isEmpty) return null;
-  final value = _parseNumber(cleaned);
-  if (value == null) return null;
-  return (value * 100).round();
+  if (cleaned.isEmpty) return const _Parsed(null, NumberInputProblem.invalid);
+  final lastComma = cleaned.lastIndexOf(',');
+  final lastDot = cleaned.lastIndexOf('.');
+  String text;
+  if (lastComma >= 0 && lastDot >= 0) {
+    final decimal = lastComma > lastDot ? ',' : '.';
+    final group = decimal == ',' ? '.' : ',';
+    final cut = cleaned.lastIndexOf(decimal);
+    final intPart = cleaned.substring(0, cut);
+    if (intPart.contains(decimal) ||
+        !RegExp(r'^\d{1,3}(' + RegExp.escape(group) + r'\d{3})*$').hasMatch(intPart)) {
+      return const _Parsed(null, NumberInputProblem.invalid);
+    }
+    text = '${intPart.replaceAll(group, '')}.${cleaned.substring(cut + 1)}';
+  } else if (lastComma >= 0 || lastDot >= 0) {
+    final mark = lastComma >= 0 ? ',' : '.';
+    final parts = cleaned.split(mark);
+    if (parts.length > 2) {
+      // "1.500.000": only valid as thousands groups.
+      if (!RegExp(r'^\d{1,3}(' + RegExp.escape(mark) + r'\d{3})+$').hasMatch(cleaned)) {
+        return const _Parsed(null, NumberInputProblem.invalid);
+      }
+      text = parts.join();
+    } else if (parts[1].length == 3 && parts[0].isNotEmpty) {
+      return const _Parsed(null, NumberInputProblem.ambiguous);
+    } else {
+      text = '${parts[0].isEmpty ? '0' : parts[0]}.${parts[1]}';
+    }
+  } else {
+    text = cleaned;
+  }
+  final v = double.tryParse(text);
+  return v == null
+      ? const _Parsed(null, NumberInputProblem.invalid)
+      : _Parsed(v, null);
+}
+
+/// Cents from "15", "15,5", "15.50" or "R\$ 15,00". Null when empty, invalid
+/// or ambiguous (see [numberInputError]).
+int? parseCents(String input) {
+  final p = _parse(input);
+  return p.value == null ? null : (p.value! * 100).round();
 }
 
 int? parseInteger(String input) {
@@ -56,43 +122,35 @@ int? parseInteger(String input) {
   return int.tryParse(cleaned);
 }
 
-double? parseDecimal(String input) {
-  final cleaned = input.replaceAll(RegExp(r'[^0-9,.]'), '');
-  if (cleaned.isEmpty) return null;
-  return _parseNumber(cleaned);
+double? parseDecimal(String input) => _parse(input).value;
+
+/// Localized error for a non-empty numeric field, or null when it is fine.
+String? numberInputError(String input) {
+  if (input.trim().isEmpty) return null;
+  return switch (_parse(input).problem) {
+    NumberInputProblem.ambiguous => tr.numberAmbiguous,
+    NumberInputProblem.invalid => tr.numberInvalid,
+    null => null,
+  };
 }
 
-double? _parseNumber(String cleaned) {
-  var text = cleaned;
-  final lastComma = text.lastIndexOf(',');
-  final lastDot = text.lastIndexOf('.');
-  if (lastComma >= 0 && lastDot >= 0) {
-    // Both present: the right-most one is the decimal separator.
-    if (lastComma > lastDot) {
-      text = text.replaceAll('.', '').replaceAll(',', '.');
-    } else {
-      text = text.replaceAll(',', '');
-    }
-  } else if (lastComma >= 0) {
-    text = text.replaceAll(',', '.');
-  } else if (RegExp(r'^\d{1,3}(\.\d{3})+$').hasMatch(text)) {
-    // "1.500" is one thousand five hundred in pt-BR, not 1.5.
-    text = text.replaceAll('.', '');
-  }
-  return double.tryParse(text);
-}
+String get _decimalMark =>
+    NumberFormat.decimalPattern(trLocaleTag).symbols.DECIMAL_SEP;
 
+/// Prefills a money field in the format of the language on screen.
 String centsToInput(int cents) {
   final reais = cents ~/ 100;
   final rest = cents % 100;
-  return rest == 0 ? '$reais' : '$reais,${rest.toString().padLeft(2, '0')}';
+  return rest == 0
+      ? '$reais'
+      : '$reais$_decimalMark${rest.toString().padLeft(2, '0')}';
 }
 
 String decimalToInput(double value) {
   final text = value == value.roundToDouble()
       ? value.toStringAsFixed(0)
       : value.toString();
-  return text.replaceAll('.', ',');
+  return text.replaceAll('.', _decimalMark);
 }
 
 const _accents = {

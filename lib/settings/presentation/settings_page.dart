@@ -15,7 +15,9 @@ import '../../export/presentation/export_page.dart';
 import '../../places/presentation/places_page.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../tracking/presentation/tracking_settings_section.dart';
+import 'language_settings_section.dart';
 import 'settings_cubit.dart';
+import '../../l10n/l10n.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -49,13 +51,13 @@ class _SettingsViewState extends State<_SettingsView> {
     final s = sync.state;
     final text = switch (s.status) {
       SyncStatus.synced => s.conflicts > 0
-          ? 'Enviado, mas há ${s.conflicts} alteração(ões) para resolver em Minha conta.'
-          : 'Tudo sincronizado.',
-      SyncStatus.pending => 'Ainda há ${s.pending} alteração(ões) para enviar.',
-      SyncStatus.syncing => 'Sincronizando…',
+          ? tr.settingsSyncDoneConflicts(s.conflicts)
+          : tr.settingsSyncDone,
+      SyncStatus.pending => tr.settingsSyncStillPending(s.pending),
+      SyncStatus.syncing => tr.syncLabelSyncing,
       SyncStatus.failed ||
       SyncStatus.localOnly =>
-        s.message ?? 'Não foi possível sincronizar agora.',
+        s.message ?? tr.settingsSyncFailed,
     };
     messenger
       ..hideCurrentSnackBar()
@@ -65,7 +67,7 @@ class _SettingsViewState extends State<_SettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Configurações')),
+      appBar: AppBar(title: Text(tr.settingsTitle)),
       body: SafeArea(
         child: BlocBuilder<SyncCubit, SyncState>(
           builder: (context, sync) {
@@ -77,7 +79,7 @@ class _SettingsViewState extends State<_SettingsView> {
               padding: const EdgeInsets.fromLTRB(
                   AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
               children: [
-                const SectionTitle('Minha conta'),
+                SectionTitle(tr.settingsAccount),
                 SurfaceCard(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const AccountPage()),
@@ -92,7 +94,7 @@ class _SettingsViewState extends State<_SettingsView> {
                         children: [
                           Text(
                             context.watch<AuthController>().state.displayName ??
-                                'Minha conta',
+                                tr.settingsAccount,
                             style: AppText.subtitle,
                           ),
                           Text(
@@ -106,9 +108,11 @@ class _SettingsViewState extends State<_SettingsView> {
                         color: AppColors.textMuted),
                   ]),
                 ),
-                const SectionTitle('Rolê na tela bloqueada'),
+                SectionTitle(tr.settingsLanguage),
+                const LanguageSettingsSection(),
+                SectionTitle(tr.settingsLockScreen),
                 const TrackingSettingsSection(),
-                const SectionTitle('Mesa do rolê'),
+                SectionTitle(tr.settingsTable),
                 BlocBuilder<TablePrefsCubit, TablePrefs>(
                   builder: (context, prefs) {
                     final cubit = context.read<TablePrefsCubit>();
@@ -119,9 +123,8 @@ class _SettingsViewState extends State<_SettingsView> {
                         SwitchListTile(
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: AppSpace.sm),
-                          title: const Text('Mostrar mesa como padrão'),
-                          subtitle: const Text(
-                              'Na tela do rolê, a mesa ilustrada abre antes da lista.'),
+                          title: Text(tr.settingsTableDefault),
+                          subtitle: Text(tr.settingsTableDefaultHint),
                           value: prefs.view == TableView.table,
                           activeThumbColor: AppColors.amber,
                           onChanged: (v) => cubit
@@ -130,9 +133,8 @@ class _SettingsViewState extends State<_SettingsView> {
                         SwitchListTile(
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: AppSpace.sm),
-                          title: const Text('Animações da mesa'),
-                          subtitle: const Text(
-                              'Os recipientes esvaziam como ilustração. Desligado, a mesa fica estática.'),
+                          title: Text(tr.settingsTableAnimations),
+                          subtitle: Text(tr.settingsTableAnimationsHint),
                           value: prefs.animations,
                           activeThumbColor: AppColors.amber,
                           onChanged: cubit.setAnimations,
@@ -141,18 +143,18 @@ class _SettingsViewState extends State<_SettingsView> {
                     );
                   },
                 ),
-                const SectionTitle('Orçamento'),
+                SectionTitle(tr.settingsBudget),
                 const _BudgetAlertsTile(),
-                const SectionTitle('Minhas bebidas'),
+                SectionTitle(tr.settingsMyDrinks),
                 SurfaceCard(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const MyDrinksPage()),
                   ),
-                  child: const Row(children: [
+                  child: Row(children: [
                     Icon(Icons.bookmark_border_rounded, color: AppColors.amber),
                     SizedBox(width: AppSpace.md),
                     Expanded(
-                      child: Text('Minhas bebidas e receitas',
+                      child: Text(tr.settingsMyDrinksAndRecipes,
                           style: AppText.subtitle),
                     ),
                     Icon(Icons.chevron_right_rounded,
@@ -164,11 +166,11 @@ class _SettingsViewState extends State<_SettingsView> {
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const PlacesPage()),
                   ),
-                  child: const Row(children: [
+                  child: Row(children: [
                     Icon(Icons.place_outlined, color: AppColors.amber),
                     SizedBox(width: AppSpace.md),
                     Expanded(
-                      child: Text('Locais salvos', style: AppText.subtitle),
+                      child: Text(tr.settingsSavedPlaces, style: AppText.subtitle),
                     ),
                     Icon(Icons.chevron_right_rounded,
                         color: AppColors.textMuted),
@@ -179,30 +181,30 @@ class _SettingsViewState extends State<_SettingsView> {
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const ExportPage()),
                   ),
-                  child: const Row(children: [
+                  child: Row(children: [
                     Icon(Icons.download_outlined, color: AppColors.amber),
                     SizedBox(width: AppSpace.md),
                     Expanded(
-                      child: Text('Exportar meus dados', style: AppText.subtitle),
+                      child: Text(tr.settingsExport, style: AppText.subtitle),
                     ),
                     Icon(Icons.chevron_right_rounded,
                         color: AppColors.textMuted),
                   ]),
                 ),
-                const SectionTitle('ARMAZENAMENTO'),
+                SectionTitle(tr.settingsStorage),
                 BlocBuilder<SettingsCubit, SettingsState>(
                   builder: (context, s) => SurfaceCard(
                     child: Row(children: [
                       Expanded(
                         child: StatTile(
-                          label: 'Rolês neste aparelho',
+                          label: tr.settingsOutingsHere,
                           value: '${s.outings}',
                           icon: Icons.nightlife_rounded,
                         ),
                       ),
                       Expanded(
                         child: StatTile(
-                          label: 'Registros de bebida',
+                          label: tr.settingsDrinkRecords,
                           value: '${s.drinks}',
                           icon: Icons.local_bar_rounded,
                         ),
@@ -210,29 +212,29 @@ class _SettingsViewState extends State<_SettingsView> {
                     ]),
                   ),
                 ),
-                const SectionTitle('SINCRONIZAÇÃO'),
+                SectionTitle(tr.settingsSync),
                 SurfaceCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       StatTile(
-                        label: 'Estado',
+                        label: tr.settingsSyncState,
                         value: sync.label,
                         icon: Icons.cloud_sync_rounded,
                       ),
                       const SizedBox(height: AppSpace.md),
                       Text(
                         sync.lastSyncAt == null
-                            ? 'Última sincronização: ainda não houve.'
-                            : 'Última sincronização: '
-                                '${formatDateTime(sync.lastSyncAt!)}',
+                            ? tr.settingsLastSyncNever
+                            : tr.settingsLastSync(
+                                formatDateTime(sync.lastSyncAt!)),
                         style: AppText.caption,
                       ),
                       if (sync.pending > 0)
                         Padding(
                           padding: const EdgeInsets.only(top: AppSpace.xs),
                           child: Text(
-                            '${sync.pending} alteração(ões) aguardando envio.',
+                            tr.settingsPendingChanges(sync.pending),
                             style: AppText.caption,
                           ),
                         ),
@@ -248,7 +250,7 @@ class _SettingsViewState extends State<_SettingsView> {
                               )
                             : const Icon(Icons.sync_rounded),
                         label: Text(
-                            busy ? 'Sincronizando…' : 'Sincronizar agora'),
+                            busy ? tr.syncLabelSyncing : tr.settingsSyncNow),
                       ),
                     ],
                   ),
@@ -265,10 +267,8 @@ class _SettingsViewState extends State<_SettingsView> {
                         const SizedBox(width: AppSpace.md),
                         Expanded(
                           child: Text(
-                            '${sync.message ?? 'Alguns dados ainda não chegaram à nuvem.'}\n\n'
-                            'Enquanto isso, se você desinstalar o app ou '
-                            'limpar os dados do navegador, o que está só '
-                            'neste aparelho será perdido.',
+                            '${sync.message ?? tr.settingsNotYetInCloud}\n\n'
+                            '${tr.settingsLocalRisk}',
                             style: AppText.body,
                           ),
                         ),
@@ -304,10 +304,8 @@ class _BudgetAlertsTileState extends State<_BudgetAlertsTile> {
           horizontal: AppSpace.sm, vertical: AppSpace.xs),
       child: SwitchListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: AppSpace.sm),
-        title: const Text('Avisos de orçamento'),
-        subtitle: const Text(
-            'Um aviso ao chegar a 80% e a 100% do orçamento do rolê, uma vez '
-            'por patamar.'),
+        title: Text(tr.settingsBudgetAlerts),
+        subtitle: Text(tr.settingsBudgetAlertsHint),
         value: _prefs.budgetAlerts,
         activeThumbColor: AppColors.amber,
         onChanged: (v) async {

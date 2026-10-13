@@ -37,6 +37,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  # gen-l10n (l10n.yaml): pt-BR, en, es.
+  generate: true
 
   assets:
     - assets/branding/
