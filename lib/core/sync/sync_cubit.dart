@@ -436,6 +436,18 @@ class SyncCubit extends Cubit<SyncState> {
       'feedback_wake',
       'feedback_hangover',
       'feedback_note',
+      'place_name',
+      'latitude',
+      'longitude',
+    ],
+    // Map/search fields of saved places (migration 20261017000000).
+    'places': [
+      'provider_name',
+      'latitude',
+      'longitude',
+      'location_source',
+      'provider',
+      'provider_place_id',
     ],
     'drink_entries': ['composition', 'abv_source'],
     'custom_drinks': ['components'],

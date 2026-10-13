@@ -1,6 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 import '../../core/data/local_store.dart';
+import '../../places/domain/place_draft.dart';
 import '../domain/outing.dart';
 
 class ActiveOutingExistsException implements Exception {
@@ -57,33 +58,37 @@ class OutingRepository {
     return null;
   }
 
+  static String? _clean(String? v) =>
+      (v == null || v.trim().isEmpty) ? null : v.trim();
+
+  static void _checkPlace(PlaceSnapshot p) {
+    if (_clean(p.nickname) == null &&
+        _clean(p.address) == null &&
+        _clean(p.placeName) == null &&
+        p.point == null) {
+      throw ArgumentError('Informe um apelido ou um endereço para o local.');
+    }
+  }
+
   Future<Outing> start({
     required OutingType type,
-    String? nickname,
-    String? address,
-    String? city,
-    String? state,
-    String? placeId,
+    required PlaceSnapshot place,
     int? budgetCents,
     required DateTime startedAt,
   }) async {
     if (active != null) throw const ActiveOutingExistsException();
-    final nick = nickname?.trim();
-    final addr = address?.trim();
-    if ((nick == null || nick.isEmpty) && (addr == null || addr.isEmpty)) {
-      throw ArgumentError('Informe um apelido ou um endereço para o local.');
-    }
+    _checkPlace(place);
     final now = DateTime.now();
     final outing = Outing(
       id: _uuid.v4(),
       type: type,
-      nickname: (nick == null || nick.isEmpty) ? null : nick,
-      address: (addr == null || addr.isEmpty) ? null : addr,
-      city: (city == null || city.trim().isEmpty) ? null : city.trim(),
-      state: (state == null || state.trim().isEmpty)
-          ? null
-          : state.trim().toUpperCase(),
-      placeId: placeId,
+      nickname: _clean(place.nickname),
+      address: _clean(place.address),
+      city: _clean(place.city),
+      state: _clean(place.state)?.toUpperCase(),
+      placeId: place.placeId,
+      placeName: _clean(place.placeName),
+      point: place.point,
       budgetCents: budgetCents != null && budgetCents > 0 ? budgetCents : null,
       startedAt: startedAt,
       createdAt: now,
@@ -91,6 +96,25 @@ class OutingRepository {
     );
     await _save(outing);
     return outing;
+  }
+
+  /// Explicit correction of the place of ONE outing: only its own copy
+  /// changes. Same id, so drinks, photos, outing-only items and the tab stay
+  /// with it; other outings and the saved place are untouched.
+  Future<void> changePlace(String id, PlaceSnapshot place) async {
+    final outing = byId(id);
+    if (outing == null) return;
+    _checkPlace(place);
+    await _save(outing.withPlace(
+      placeId: place.placeId,
+      nickname: _clean(place.nickname),
+      placeName: _clean(place.placeName),
+      address: _clean(place.address),
+      city: _clean(place.city),
+      state: _clean(place.state)?.toUpperCase(),
+      point: place.point,
+      updatedAt: DateTime.now(),
+    ));
   }
 
   Future<void> finish(String id, DateTime endedAt) async {

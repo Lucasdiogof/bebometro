@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../places/domain/geo_point.dart';
+import '../../places/domain/place.dart' show placeTitle;
+
 enum OutingType {
   bar('bar', 'Bar', Icons.sports_bar_rounded),
   club('club', 'Balada', Icons.nightlife_rounded),
@@ -112,6 +115,8 @@ class Outing {
     this.wakeFeeling,
     this.hangover,
     this.feedbackNote,
+    this.placeName,
+    this.point,
   });
 
   final String id;
@@ -141,6 +146,12 @@ class Outing {
   final String? city;
   final String? state;
 
+  /// This outing's copy of the name given by the map data ("Bar MELT").
+  final String? placeName;
+
+  /// This outing's copy of the confirmed coordinates; null when unknown.
+  final GeoPoint? point;
+
   /// Optional drinks budget in cents. Null = none set.
   final int? budgetCents;
 
@@ -149,13 +160,51 @@ class Outing {
 
   bool get isActive => endedAt == null;
 
-  String get displayName => (nickname != null && nickname!.isNotEmpty)
-      ? nickname!
-      : (address ?? 'Rolê');
+  String get displayName => placeTitle(
+      nickname: nickname, providerName: placeName, address: address,
+      point: point, fallback: 'Rolê');
 
-  /// The address is only a subtitle when a nickname already names the place.
+  /// The address is only a subtitle when a name already titles the place.
   String? get subtitleAddress =>
-      (nickname != null && nickname!.isNotEmpty) ? address : null;
+      ((nickname?.trim().isNotEmpty ?? false) ||
+              (placeName?.trim().isNotEmpty ?? false))
+          ? address
+          : null;
+
+  /// Replaces only this outing's own copy of the place (explicit correction).
+  /// Drinks, photos, tab and everything else stay on the same outing id.
+  Outing withPlace({
+    required String? placeId,
+    required String? nickname,
+    required String? placeName,
+    required String? address,
+    required String? city,
+    required String? state,
+    required GeoPoint? point,
+    required DateTime updatedAt,
+  }) =>
+      Outing(
+        id: id,
+        type: type,
+        nickname: nickname,
+        address: address,
+        placeId: placeId,
+        city: city,
+        state: state,
+        placeName: placeName,
+        point: point,
+        startedAt: startedAt,
+        endedAt: endedAt,
+        feedbackMood: feedbackMood,
+        feedbackStatus: feedbackStatus,
+        feedbackSnoozedUntil: feedbackSnoozedUntil,
+        budgetCents: budgetCents,
+        wakeFeeling: wakeFeeling,
+        hangover: hangover,
+        feedbackNote: feedbackNote,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
 
   Duration durationAt(DateTime now) => (endedAt ?? now).difference(startedAt);
 
@@ -193,6 +242,8 @@ class Outing {
         placeId: placeId,
         city: city,
         state: state,
+        placeName: placeName,
+        point: point,
         startedAt: startedAt,
         endedAt: endedAt ?? this.endedAt,
         feedbackMood: feedbackMood ?? this.feedbackMood,
@@ -232,6 +283,9 @@ class Outing {
         if (wakeFeeling != null) 'feedback_wake': wakeFeeling!.code,
         if (hangover != null) 'feedback_hangover': hangover!.code,
         if (feedbackNote != null) 'feedback_note': feedbackNote,
+        if (placeName != null) 'place_name': placeName,
+        if (point != null) 'latitude': point!.lat,
+        if (point != null) 'longitude': point!.lng,
       };
 
   factory Outing.fromJson(Map<String, dynamic> json) => Outing(
@@ -259,5 +313,7 @@ class Outing {
         wakeFeeling: WakeFeeling.fromCode(json['feedback_wake'] as String?),
         hangover: Hangover.fromCode(json['feedback_hangover'] as String?),
         feedbackNote: json['feedback_note'] as String?,
+        placeName: json['place_name'] as String?,
+        point: GeoPoint.tryCreate(json['latitude'], json['longitude']),
       );
 }

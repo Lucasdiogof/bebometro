@@ -1,4 +1,5 @@
 import '../../outings/domain/outing.dart';
+import 'geo_point.dart';
 
 /// A personal, reusable place. Private to the user. Rolês keep their own
 /// copy of the name/address, so editing a place never rewrites old outings.
@@ -14,6 +15,11 @@ class Place {
     this.state,
     this.favorite = false,
     this.archivedAt,
+    this.providerName,
+    this.point,
+    this.source,
+    this.provider,
+    this.providerPlaceId,
   });
 
   final String id;
@@ -31,15 +37,41 @@ class Place {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  /// Name given by the search provider ("Bar MELT"). Not the nickname: it is
+  /// what the map data calls the place.
+  final String? providerName;
+
+  /// Confirmed coordinates, or null when unknown (never 0,0).
+  final GeoPoint? point;
+
+  /// How [point]/[address] were obtained; null = typed by hand.
+  final LocationSource? source;
+
+  /// Search provider of [providerPlaceId] (e.g. "geoapify").
+  final String? provider;
+
+  /// The provider's identifier, used only to avoid duplicates.
+  final String? providerPlaceId;
+
   bool get isArchived => archivedAt != null;
 
-  String get displayName => (nickname != null && nickname!.isNotEmpty)
-      ? nickname!
-      : (address ?? 'Local');
+  static bool _has(String? v) => v != null && v.trim().isNotEmpty;
 
-  /// The address is a subtitle only when a nickname already names the place.
+  /// Nickname first, then the provider name, then the address.
+  String get displayName => placeTitle(
+      nickname: nickname, providerName: providerName, address: address,
+      point: point, fallback: 'Local');
+
+  /// The address is a subtitle only when a name already titles the place.
   String? get subtitleAddress =>
-      (nickname != null && nickname!.isNotEmpty) ? address : null;
+      (_has(nickname) || _has(providerName)) ? address : null;
+
+  /// The provider name, when the nickname hides it ("Bar MELT" under
+  /// "Casa da Samara").
+  String? get providerSubtitle =>
+      _has(nickname) && _has(providerName) && providerName != nickname
+          ? providerName
+          : null;
 
   /// "São Paulo, SP", "SP", "São Paulo" or null.
   String? get cityState {
@@ -58,6 +90,11 @@ class Place {
     String? Function()? state,
     bool? favorite,
     DateTime? Function()? archivedAt,
+    String? Function()? providerName,
+    GeoPoint? Function()? point,
+    LocationSource? Function()? source,
+    String? Function()? provider,
+    String? Function()? providerPlaceId,
     required DateTime updatedAt,
   }) =>
       Place(
@@ -69,6 +106,13 @@ class Place {
         state: state != null ? state() : this.state,
         favorite: favorite ?? this.favorite,
         archivedAt: archivedAt != null ? archivedAt() : this.archivedAt,
+        providerName:
+            providerName != null ? providerName() : this.providerName,
+        point: point != null ? point() : this.point,
+        source: source != null ? source() : this.source,
+        provider: provider != null ? provider() : this.provider,
+        providerPlaceId:
+            providerPlaceId != null ? providerPlaceId() : this.providerPlaceId,
         createdAt: createdAt,
         updatedAt: updatedAt,
       );
@@ -84,6 +128,14 @@ class Place {
         'archived_at': archivedAt?.toUtc().toIso8601String(),
         'created_at': createdAt.toUtc().toIso8601String(),
         'updated_at': updatedAt.toUtc().toIso8601String(),
+        // Newer, optional columns: only sent when set, so places keep syncing
+        // to a database that does not have them yet.
+        if (providerName != null) 'provider_name': providerName,
+        if (point != null) 'latitude': point!.lat,
+        if (point != null) 'longitude': point!.lng,
+        if (source != null) 'location_source': source!.code,
+        if (provider != null) 'provider': provider,
+        if (providerPlaceId != null) 'provider_place_id': providerPlaceId,
       };
 
   factory Place.fromJson(Map<String, dynamic> j) => Place(
@@ -99,5 +151,28 @@ class Place {
             : DateTime.parse(j['archived_at'] as String).toLocal(),
         createdAt: DateTime.parse(j['created_at'] as String).toLocal(),
         updatedAt: DateTime.parse(j['updated_at'] as String).toLocal(),
+        providerName: j['provider_name'] as String?,
+        point: GeoPoint.tryCreate(j['latitude'], j['longitude']),
+        source: LocationSource.fromCode(j['location_source'] as String?),
+        provider: j['provider'] as String?,
+        providerPlaceId: j['provider_place_id'] as String?,
       );
+}
+
+/// Shared title rule for places and outings: the personal nickname wins, then
+/// the name from the map data, then the address. A bare point is "Ponto no
+/// mapa" until the person names it; an address is never invented.
+String placeTitle({
+  String? nickname,
+  String? providerName,
+  String? address,
+  GeoPoint? point,
+  required String fallback,
+}) {
+  bool has(String? v) => v != null && v.trim().isNotEmpty;
+  if (has(nickname)) return nickname!.trim();
+  if (has(providerName)) return providerName!.trim();
+  if (has(address)) return address!.trim();
+  if (point != null) return 'Ponto no mapa';
+  return fallback;
 }

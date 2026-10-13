@@ -28,15 +28,17 @@ class TrackingSnapshot {
     required bool showPlace,
   }) {
     final summary = OutingSummary.of(entries);
-    final nick = outing.nickname?.trim();
+    // Nickname first, then the name from the map data; never the address.
+    final nick = [outing.nickname, outing.placeName]
+        .map((v) => v?.trim())
+        .firstWhere((v) => v != null && v.isNotEmpty, orElse: () => null);
     return TrackingSnapshot(
       outingId: outing.id,
       startedAt: outing.startedAt,
       alcoholicCount: summary.alcoholicCount,
       unpricedCount: summary.unpricedCount,
       spendCents: showSpend ? summary.informedCents : null,
-      // Only the nickname, never the address.
-      place: showPlace && nick != null && nick.isNotEmpty ? nick : null,
+      place: showPlace ? nick : null,
       nextLabel: lastAlcoholic == null ? null : _labelOf(lastAlcoholic),
     );
   }

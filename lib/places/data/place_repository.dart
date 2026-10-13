@@ -2,7 +2,9 @@ import 'package:uuid/uuid.dart';
 
 import '../../core/data/local_store.dart';
 import '../../outings/domain/outing.dart';
+import '../domain/geo_point.dart';
 import '../domain/place.dart';
+import '../domain/place_draft.dart';
 
 class PlaceRepository {
   PlaceRepository(this._store);
@@ -50,7 +52,22 @@ class PlaceRepository {
     return list.take(limit).toList();
   }
 
-  /// Creates a place, or updates [id]. Nickname OR address is enough.
+  /// The saved place (active or archived) that already holds this provider
+  /// result. Places are only matched by the provider id: never by name, and
+  /// nearby houses or addresses are never merged.
+  Place? findByProvider(String? provider, String? providerPlaceId) {
+    if (provider == null || providerPlaceId == null) return null;
+    for (final p in _all()) {
+      if (p.provider == provider && p.providerPlaceId == providerPlaceId) {
+        return p;
+      }
+    }
+    return null;
+  }
+
+  /// Creates a place, or updates [id]. A nickname, a name from the map data
+  /// or an address is enough; a bare point needs a nickname to be saved.
+  /// Location fields are written exactly as given (null clears them).
   Future<Place> save({
     String? id,
     required OutingType type,
@@ -58,12 +75,20 @@ class PlaceRepository {
     String? address,
     String? city,
     String? state,
+    String? providerName,
+    GeoPoint? point,
+    LocationSource? source,
+    String? provider,
+    String? providerPlaceId,
   }) async {
     String? clean(String? v) => (v == null || v.trim().isEmpty) ? null : v.trim();
     final nick = clean(nickname);
     final addr = clean(address);
-    if (nick == null && addr == null) {
-      throw ArgumentError('Informe um apelido ou um endereço.');
+    final name = clean(providerName);
+    if (nick == null && addr == null && name == null) {
+      throw ArgumentError(point != null
+          ? 'Dê um apelido para salvar este ponto.'
+          : 'Informe um apelido ou um endereço.');
     }
     final uf = clean(state)?.toUpperCase();
     if (uf != null && !RegExp(r'^[A-Z]{2}$').hasMatch(uf)) {
@@ -71,6 +96,7 @@ class PlaceRepository {
     }
     final now = DateTime.now();
     final existing = byId(id);
+    final linked = point != null && clean(provider) != null && clean(providerPlaceId) != null;
     final place = Place(
       id: existing?.id ?? _uuid.v4(),
       type: type,
@@ -78,6 +104,11 @@ class PlaceRepository {
       address: addr,
       city: clean(city),
       state: uf,
+      providerName: name,
+      point: point,
+      source: point == null && addr == null ? null : source,
+      provider: linked ? clean(provider) : null,
+      providerPlaceId: linked ? clean(providerPlaceId) : null,
       favorite: existing?.favorite ?? false,
       archivedAt: existing?.archivedAt,
       createdAt: existing?.createdAt ?? now,
@@ -85,6 +116,37 @@ class PlaceRepository {
     );
     await _store.put(LocalStore.places, place.toJson());
     return place;
+  }
+
+  /// Turns what the picker returned into the outing's own copy of the place,
+  /// saving or updating the saved place first when the person asked for it.
+  ///
+  /// * A saved place chosen as it is: linked as it is.
+  /// * New data for a saved place (or a search result that already is one):
+  ///   the saved place gets the confirmed location, and keeps its nickname
+  ///   unless the person typed a new one. An archived match is reactivated.
+  /// * New data with "save" on: a new saved place.
+  /// * Otherwise: a one-off copy, no saved place.
+  Future<PlaceSnapshot> resolve(PlaceDraft d, OutingType type) async {
+    if (d.isSavedAsIs) return PlaceSnapshot.ofPlace(d.saved!);
+    final existing = d.saved ?? findByProvider(d.provider, d.providerPlaceId);
+    if (existing == null && !d.save) return PlaceSnapshot.ofDraft(d);
+    final typed = d.nickname?.trim();
+    final saved = await save(
+      id: existing?.id,
+      type: existing?.type ?? type,
+      nickname: (typed != null && typed.isNotEmpty) ? typed : existing?.nickname,
+      address: d.address,
+      city: d.city,
+      state: d.state,
+      providerName: d.providerName,
+      point: d.point,
+      source: d.source,
+      provider: d.provider,
+      providerPlaceId: d.providerPlaceId,
+    );
+    if (saved.isArchived) await setArchived(saved.id, false);
+    return PlaceSnapshot.ofPlace(byId(saved.id) ?? saved);
   }
 
   Future<void> toggleFavorite(String id) async {
