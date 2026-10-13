@@ -126,8 +126,9 @@ O app registra consumo; **não** mede álcool no sangue ou no sopro, certifica s
 Organização por funcionalidade com separação entre domínio, dados e apresentação, Cubits para estado e `get_it` para injeção de dependências.
 
 - **Gravação local primeiro:** SharedPreferences mantém os registros e uma fila durável de envios pendentes, com versões.
-- **Supabase:** autenticação anônima e PostgreSQL com migrations de RLS versionadas.
-- **Envios:** UUIDs estáveis no cliente, upserts, novas tentativas e sincronização manual. Uma pendência só sai após confirmação do servidor para aquela versão.
+- **Conta:** obrigatória, com e-mail e senha (Supabase Auth, links por PKCE). Os dados ficam separados por conta no aparelho e funcionam offline para quem já entrou. Registros de versões antigas (sessão anônima) são preservados e podem ser convertidos, importados ou exportados.
+- **Supabase:** PostgreSQL com migrations de RLS versionadas.
+- **Envios e leitura:** UUIDs estáveis no cliente, upserts, novas tentativas e sincronização manual. Uma pendência só sai após confirmação do servidor para aquela versão. A leitura da nuvem recupera o histórico em outro aparelho (paginada, retomável); edições concorrentes são detectadas pela revisão do servidor e vão para "Alterações para resolver".
 - **Dependências:** locais sobem antes dos rolês vinculados; rolês antes das bebidas. Vínculos recusados ficam pendentes, sem remoção silenciosa.
 - **Limitação atual:** não há leitura de recuperação da nuvem nem conta permanente para restaurar dados em outro aparelho. Enviar dados ainda não equivale a oferecer restauração. Algumas preferências ficam locais.
 
@@ -176,7 +177,7 @@ docs/                    checklist de desenvolvimento
 
 Use um SDK Flutter cujo Dart atenda à restrição do [`pubspec.yaml`](pubspec.yaml), atualmente `^3.13.3`. Android e iOS precisam das ferramentas das respectivas plataformas; iOS exige macOS/Xcode.
 
-Para um projeto Supabase próprio, aplique as [migrations](supabase/migrations/) em ordem e habilite login anônimo. A configuração vem de [`Env`](lib/core/config/env.dart); sobrescreva os valores de desenvolvimento embarcados para usar seu projeto.
+Para um projeto Supabase próprio, aplique as [migrations](supabase/migrations/) em ordem, publique a função `supabase/functions/delete-account` e configure o Auth por e-mail (redirect `bebometro://auth-callback`, SMTP próprio para usuários reais; ver `docs/accounts-sync-checklist.md`). A configuração vem de [`Env`](lib/core/config/env.dart); sobrescreva os valores de desenvolvimento embarcados para usar seu projeto.
 
 ```bash
 git clone https://github.com/Lucasdiogof/bebometro.git
@@ -196,7 +197,8 @@ Na web, acrescente `-d chrome` ao comando de execução. São instruções de co
 - **Tela bloqueada:** escrita em Dart, Swift e Kotlin, não compilada nem executada em aparelho. A extensão de widget do iOS foi adicionada ao projeto Xcode à mão e precisa do Team de assinatura escolhido no Xcode. As ações rápidas abrem o app para confirmação; não registram em segundo plano. O sistema limita Live Activities (cerca de 8 horas, mais até 4 na tela bloqueada).
 - **Não verificado:** os interpretadores de rótulo e cardápio são heurísticos e não foram testados com fotos reais, então não se promete precisão. A migration `20261015000000` foi aplicada pelo responsável; a sincronização dessas tabelas e fotos pelo app ainda não foi observada.
 - **Regra de escopo (implementada):** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras.
-- **Locais e mapa:** escritos no código, não executados; busca, mapa e GPS nunca foram observados funcionando. Dependem da chave Geoapify (ainda não configurada) e de `flutter pub get` (pacotes novos). A migration `20261017000000` ainda precisa ser aplicada; até lá, os campos novos não sobem e o resto sincroniza normalmente.
+- **Locais e mapa:** escritos no código, não executados; busca, mapa e GPS nunca foram observados funcionando. Dependem da chave Geoapify (ainda não configurada) e de `flutter pub get` (pacotes novos). A migration `20261017000000` foi aplicada pelo responsável.
+- **Conta e sincronização:** escritas no código, não executadas. Dependem da migration `20261018000000` (leitura da nuvem e conflitos), da função `delete-account` publicada e da configuração de e-mail no Supabase; nada disso foi observado funcionando.
 - **Depois:** preços regionais sustentados por observações reais e ampliação do catálogo.
 - **Validação pendente:** resolução de dependências, compilação, fluxos em aparelho/navegador, revisão visual e sincronização ponta a ponta. A física da cerveja em tela cheia e os eixos do sensor estão implementados no código, mas nunca foram observados em aparelho.
 

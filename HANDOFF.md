@@ -14,18 +14,16 @@ Persistência: `LocalStore` (SharedPreferences, funciona em Android/iOS/web) gra
 marca de "pendente de envio" (com versão) no mesmo passo. `SyncCubit` esvazia essa fila.
 
 ## Sincronização (como funciona)
-- Uma execução por vez; chamadas simultâneas compartilham a execução em andamento.
-- Autentica com `signInAnonymously` quando não há sessão; registros feitos antes disso ficam
-  pendentes e vão com o `owner_id` do usuário anônimo quando a conexão existir.
-- Ordem: `outings` (encerrados antes do ativo) → `custom_drinks` → `drink_entries`. Upsert por UUID
-  do cliente (repetir não duplica). Exclusão é soft (`deleted_at`) e sincroniza igual.
-- A marca de pendência só sai após confirmação do servidor **e** se a linha não foi editada de novo
-  (comparação de versão), então uma resposta antiga nunca esconde uma edição mais nova.
-- "Sincronizado" só aparece com a fila vazia. Falhas: backoff (30 s a 5 min); `localOnly` quando o
-  login anônimo é recusado (nova tentativa a cada 5 min ou por "Sincronizar agora").
-- Linha recusada pelo servidor (ex.: conflito de rolê ativo, código 23505) não apaga nada: fica
-  pendente, as demais seguem, e as bebidas dela esperam o rolê.
-- Não há leitura da nuvem (pull): cada instalação é um usuário anônimo próprio.
+Desde o bloco 16 (conta obrigatória): ver a seção "Conta obrigatória e sincronização (bloco 16)" abaixo e
+`docs/accounts-sync-checklist.md`. Resumo:
+- Uma execução por vez, presa ao usuário da conta aberta; **nunca** chama `signInAnonymously`. Sem sessão dessa conta,
+  fica em `localOnly` e nada sai do aparelho.
+- Envio: ordem `places` → `outings` (encerrados antes do ativo) → `custom_drinks` → `outing_drinks` → `outing_photos`
+  → `outing_tabs` → `drink_entries`; upsert por UUID do cliente; exclusão é soft (`deleted_at`). A pendência só sai
+  após confirmação do servidor e se a linha não mudou de novo. Com a migration `20261018000000`, cada envio leva
+  `base_revision` e o servidor recusa (`PT409`) edição baseada em versão velha → "Alterações para resolver".
+- Leitura (pull) depois do envio, paginada por `(server_updated_at, id)`, com cursor por coleção; não reenfileira nada.
+- "Sincronizado"/"Tudo confirmado na nuvem" só com fila vazia, fotos enviadas e nada para resolver.
 
 ## Design system (core/theme + core/widgets)
 - Tokens em `app_tokens.dart`: `AppSpace`, `AppRadius`, `AppText` (headline > title > subtitle > body >
@@ -69,11 +67,11 @@ marca de "pendente de envio" (com versão) no mesmo passo. `SyncCubit` esvazia e
 
 ## Limitações conhecidas
 - Nada compilado, analisado ou testado (restrição da etapa): podem existir erros de compilação.
-- Se a sessão anônima mudar (reinstalação com dados locais preservados é impossível; limpar só a
-  sessão é raro), linhas já enviadas ficam presas ao usuário antigo e seriam recusadas pelo RLS.
+- Registros enviados por uma sessão anônima antiga e não convertida ficam no servidor presos a esse usuário (a
+  importação do bloco 16 copia o que está no aparelho, com IDs novos; não transfere linhas no servidor).
 - Catálogo só embutido; nada de marcas oficiais, OCR, Maps, estimativas de preço ou alcoolemia.
-- Sem pull da nuvem, sem login permanente, sem recuperar dados em outro aparelho.
-- Favoritos e a data da última sincronização ficam só no aparelho.
+- Favoritos, rascunhos de leitura, jogos e a data da última sincronização ficam no espaço da conta neste aparelho,
+  mas não vão para a nuvem.
 
 ## Identidade (logos)
 `assets/branding/logo_cap.png` (tampinha "B": ícone do app, splash, loadings via `BrandLoader`) e
@@ -519,7 +517,7 @@ se o plano mudar.
    restrição reduz uso por terceiros, não o impede.
 3. Rodar/buildar com `--dart-define=GEOAPIFY_KEY=...` (ou no `env.json` de `--dart-define-from-file`). Sem a chave,
    `GeoSearch.configured` é falso: busca e mapa somem, o seletor explica isso, e apelido, endereço digitado e locais salvos funcionam.
-4. Aplicar `supabase/migrations/20261017000000_places_map.sql` (abaixo).
+4. ~~Aplicar `supabase/migrations/20261017000000_places_map.sql`~~ (aplicada pelo responsável).
 
 **O que foi entregue (código)**
 - `lib/places/domain/`: `GeoPoint` (valida faixa e finitude; ausência é `null`, nunca 0,0), `LocationSource` (busca, localização atual,
@@ -569,7 +567,7 @@ se o plano mudar.
   participa da sincronização. **Caso de borda:** um local salvo só com nome do provedor (sem apelido nem endereço) é recusado pela regra
   antiga `places_name_present` até a migration ser aplicada.
 
-**Migration `20261017000000_places_map.sql`: pendente.** Este ambiente não tem acesso administrativo ao `jiisoqkryhmtopaojyyu` (o MCP do
+**Migration `20261017000000_places_map.sql`: aplicada pelo responsável** (informado na rodada do bloco 16; não verificada daqui). Este ambiente não tem acesso administrativo ao `jiisoqkryhmtopaojyyu` (o MCP do
 Supabase daqui é de outro projeto e não foi tocado). Idempotente: colunas opcionais, coordenadas válidas (ambas ou nenhuma),
 `location_source` com valores fixos, `places_name_present` passando a aceitar `provider_name`, índice não único por
 `(owner_id, provider, provider_place_id)`.
@@ -582,6 +580,77 @@ paginação além de 8 resultados no autocomplete e 20 por perto.
 **Não observado em execução:** resolução dos pacotes (`flutter_map` 8, `latlong2`, `geolocator` 14, `http`, `url_launcher`) e
 compatibilidade com o Gradle/Kotlin do projeto; respostas reais da Geoapify; tiles; permissão de localização no Android/iOS/web; abrir
 mapas em cada plataforma; layout com teclado aberto; envio dos campos novos ao Supabase.
+
+## Conta obrigatória e sincronização (bloco 16, 13/10/2026)
+
+Checklist, decisões e pendências: `docs/accounts-sync-checklist.md`. **Nada foi compilado, analisado, testado nem
+executado.** As chamadas do SDK foram conferidas no código-fonte das versões instaladas (`supabase_flutter 2.18.3`,
+`gotrue 2.27.3`, `functions_client 2.7.1`, `get_it 8.3.0`), não em execução. Nenhum e-mail foi enviado, nenhuma conta
+foi criada ou apagada.
+
+**Sessão e navegação**
+- `lib/account/application/auth_controller.dart` (`AuthController`/`AccessState`): estados `initializing`, `signedOut`,
+  `legacyAnonymous`, `emailPending`, `needsPassword`, `authenticated`, `passwordRecovery`, `reauthRequired`, mais
+  `cloudUnavailable` (falha de conexão/inicialização: quem já entrou segue local). Eventos tratados em fila (o stream do
+  SDK é um `ReplaySubject`, então o `passwordRecovery` de um link que abriu o app frio não se perde). Erro de rede no
+  refresh é ignorado; só `signedOut` sem `userInitiated` vira "entre de novo", sem apagar nada.
+- `lib/account/presentation/access_gate.dart` é o **único** ponto que decide o que abre: sem conta permanente só existem
+  login, cadastro, conferir e-mail, recuperar senha, dados antigos (com exportação). Ao mudar de estado/conta a navegação
+  volta à raiz. Primeiro login num aparelho: tela "Recuperando seu histórico" (progresso, "Tentar de novo", "Usar o app
+  enquanto isso"); nunca um histórico vazio enquanto carrega.
+- Telas (`auth_pages.dart`): entrar, criar conta (nome, e-mail, senha, confirmação), conferir e-mail com reenvio (60 s
+  locais + limite do servidor), esqueci a senha, nova senha, "Agora o Bebômetro usa conta" para a sessão anônima.
+  Autofill, mostrar/ocultar senha, mensagens por campo. Nenhum termo jurídico ou link inventado.
+
+**Links (PKCE)**: `Supabase.initialize` com `AuthFlowType.pkce` e `detectSessionInUriPredicate` restrito ao host
+`auth-callback` (os toques `bebometro://outing/...` da tela bloqueada continuam com o app). Android: intent-filter `VIEW`
+`bebometro://auth-callback`; iOS: o esquema `bebometro` já existia; web: a origem da página. Redirect usado em
+`emailRedirectTo`/`redirectTo`: `Env.authRedirectUrl` (padrão `bebometro://auth-callback`, `--dart-define=AUTH_REDIRECT_URL`).
+Link aberto em outro aparelho falha por PKCE: a mensagem manda entrar com e-mail e senha (o e-mail já fica confirmado).
+Nenhuma URL ou token é registrado em log.
+
+**Dados antigos** (`lib/account/data/legacy_data.dart`, `legacy_data_page.dart`): no primeiro início desta versão,
+anota o dono (sessão anônima restaurada) ou "desconhecido"; as chaves antigas sem prefixo **nunca são apagadas**
+(são a cópia recuperável). Caso A: conversão `updateUser(email)` → link → `updateUser(password)` (regra do Supabase:
+senha só depois de confirmar), mesmo user ID, e o espaço antigo é adotado pela conta. Casos B/C: oferta explícita ao
+entrar ("Ver e decidir"/"Depois"), importar (IDs novos com mapa salvo antes da primeira linha, vínculos remapeados em
+todos os campos, fotos copiadas e reenviadas, origem em `import.legacy`; rolê antigo em andamento só entra como
+encerrado se a pessoa aceitar), manter separados ou exportar JSON. Sem transferência de dono no servidor.
+
+**Armazenamento por conta**: `LocalStore` com namespace `acct.<uid>.` (registros, fila, revisões, cursores, conflitos,
+favoritos, rascunhos, jogos, marcas de orçamento); `DeviceStore` para preferências do aparelho (tela bloqueada, mesa,
+dica do copo, alerta de orçamento, marcas de sessão). Escopo `account` no get_it (`AccountScope` em `injector.dart`):
+abrir carrega só aquela conta; fechar encerra Live Activity/notificação, descarta toque pendente da tela bloqueada,
+para a sync e o store passa a recusar gravações (resposta atrasada não repovoa nada). Export usa só o store da conta.
+
+**Sincronização** (`sync_cubit.dart`, `cloud_pull.dart`, `sync_conflicts.dart`, migration `20261018000000`): envio +
+leitura; revisão e `server_updated_at` só pelo servidor; leitura paginada (500, até página curta) por
+`(server_updated_at, id)` com janela de 2 min e cursor gravado depois da página; tombstones por `deleted_at` (rolês e
+locais ganharam a coluna; os repositórios ignoram lápides); linha local pendente nunca é sobrescrita; o que vem da nuvem
+não volta para a fila. Conflitos: `PT409` → "Alterações para resolver" com as duas versões (bebida, comanda com
+participantes e pagamentos das duas, rolê, local); exclusão remota × edição local = "Restaurar" ou "Aceitar a
+exclusão"; dois rolês ativos (`23505`) = os dois ficam e a pessoa escolhe qual encerrar. Sem a migration o app detecta
+a ausência das colunas e envia como antes, sem leitura. Fotos: metadados vêm pela leitura; o arquivo é baixado sob
+demanda do bucket privado com a sessão da pessoa e guardado; sem arquivo, aparece "indisponível agora" e o registro
+continua.
+
+**Minha conta** (`account_page.dart`, entrada no topo das Configurações): nome (editar), e-mail e confirmação, alterar
+senha (pede o código por e-mail se o projeto exigir "secure password change"), nuvem (confirmado × só neste aparelho,
+registros e fotos pendentes, última sincronização concluída), "Sincronizar agora", conflitos, registros antigos, sair
+(avisa pendências; elas ficam presas à conta e só voltam ao entrar nela) e excluir conta.
+
+**Excluir conta**: confirmação explícita + senha (login fresco) → Edge Function `supabase/functions/delete-account`
+(usuário do JWT, login de até 10 min, progresso em `account_deletions`, arquivos → linhas → identidade, nova chamada
+continua). Só depois da confirmação do servidor: sai, fecha o escopo e apaga o espaço da conta e as fotos dela no
+aparelho. Função não publicada → aviso "ainda não disponível", nada apagado.
+
+**Limites conhecidos**: importação dos casos B/C usa o que está no aparelho (dados só no servidor de uma sessão anônima
+perdida não voltam); edição feita antes da migration (sem revisão conhecida) não é checada (última gravação vence uma
+vez); app_links no iOS com `SceneDelegate` não foi conferido em aparelho; `count()` de rolês inclui lápides.
+
+**Não observado em execução**: compilação; login, cadastro, confirmação, reenvio, recuperação e links em
+Android/iOS/web; conversão do anônimo; importação; leitura da nuvem e conflitos; exclusão; tela bloqueada na troca de
+conta.
 
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem

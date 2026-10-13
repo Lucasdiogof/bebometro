@@ -126,8 +126,9 @@ The app records consumption; it does **not** measure blood or breath alcohol, ce
 Feature-based organization separates domain, data and presentation, with Cubits for UI state and `get_it` for dependency injection.
 
 - **Local first:** SharedPreferences stores records and a durable, versioned pending-upload queue.
-- **Supabase:** anonymous authentication and PostgreSQL with versioned RLS migrations.
-- **Uploads:** stable client UUIDs, upserts, retries and a manual synchronization action. A pending marker is cleared only after server confirmation for that version.
+- **Account:** required, with e-mail and password (Supabase Auth, PKCE links). Data is kept per account on the device and works offline once signed in. Records from older versions (anonymous session) are preserved and can be converted, imported or exported.
+- **Supabase:** PostgreSQL with versioned RLS migrations.
+- **Uploads and reads:** stable client UUIDs, upserts, retries and a manual synchronization action. A pending marker is cleared only after server confirmation for that version. Reading from the cloud restores the history on another device (paged, resumable); concurrent edits are detected by a server revision and listed under "Changes to resolve".
 - **Dependencies:** saved places upload before dependent outings, and outings before their drink entries. Rejected links remain pending rather than being silently removed.
 - **Current limitation:** there is no cloud pull or permanent-account recovery flow. Uploading data does not yet provide restoration on another device. Some preferences remain local.
 
@@ -176,7 +177,7 @@ docs/                    development checklist
 
 Use a Flutter SDK whose bundled Dart satisfies the constraint in [`pubspec.yaml`](pubspec.yaml), currently `^3.13.3`. Android and iOS require their respective platform toolchains; iOS requires macOS/Xcode.
 
-For your own Supabase project, apply the [migrations](supabase/migrations/) in order and enable anonymous sign-ins. Configuration is read from [`Env`](lib/core/config/env.dart); override the bundled development defaults to point to your own project.
+For your own Supabase project, apply the [migrations](supabase/migrations/) in order, deploy the `supabase/functions/delete-account` function and configure e-mail auth (redirect `bebometro://auth-callback`, custom SMTP for real users; see `docs/accounts-sync-checklist.md`). Configuration is read from [`Env`](lib/core/config/env.dart); override the bundled development defaults to point to your own project.
 
 ```bash
 git clone https://github.com/Lucasdiogof/bebometro.git
@@ -196,7 +197,8 @@ For web, add `-d chrome` to the run command. These are setup instructions, not e
 - **Lock-screen tracking:** written in Dart, Swift and Kotlin, not compiled or run on a device. The iOS widget extension was added to the Xcode project by hand and needs the signing Team chosen in Xcode. Quick actions open the app for confirmation; they do not register in the background. The system limits Live Activities (about 8 hours plus up to 4 on the lock screen).
 - **Not verified:** the label and menu parsers are heuristic and were not tested on real photos, so no accuracy is claimed. The `20261015000000` migration was applied by the maintainer; synchronization of these tables and photos from the app has not been observed.
 - **Scope rule (implemented):** custom items, photos and menu prices belong to the outing ID, even across midnight. They do not enter the global catalog, do not automatically become reusable personal items and do not feed future-visit price suggestions.
-- **Places and map:** written in code, not executed; search, map and GPS have never been observed working. They need the Geoapify key (not configured yet) and `flutter pub get` (new packages). Migration `20261017000000` still has to be applied; until then the new fields are not uploaded and everything else syncs normally.
+- **Places and map:** written in code, not executed; search, map and GPS have never been observed working. They need the Geoapify key (not configured yet) and `flutter pub get` (new packages). Migration `20261017000000` was applied by the maintainer.
+- **Account and sync:** written in code, not executed. They need migration `20261018000000` (cloud reads and conflicts), the deployed `delete-account` function and the e-mail settings in Supabase; none of this has been observed working.
 - **Later:** regional prices backed by real observations and additional catalog coverage.
 - **Pending validation:** dependency resolution, compilation, device/browser flows, visual review and end-to-end synchronization. The full-screen beer physics and sensor axes are implemented in code but have not been observed on a device.
 
