@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../drinks/data/catalog_loader.dart';
+import '../../games/data/game_repository.dart';
+import '../../games/presentation/game_cubit.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/catalog_item.dart';
 import '../../drinks/domain/drink_entry.dart';
@@ -24,6 +26,7 @@ final getIt = GetIt.instance;
 Future<void> configureDependencies() async {
   final store = await LocalStore.open();
   final bundledCatalog = await CatalogLoader.load();
+  final bundledCards = await GameRepository.loadBundled();
 
   var cloudEnabled = true;
   try {
@@ -45,6 +48,8 @@ Future<void> configureDependencies() async {
       DrinkRepository(store, bundledCatalog),
     )
     ..registerSingleton<TablePrefsCubit>(TablePrefsCubit(store))
+    ..registerSingleton<GameRepository>(GameRepository(store, bundledCards))
+    ..registerFactory<GameCubit>(() => GameCubit(getIt<GameRepository>()))
     ..registerFactory<HomeCubit>(
       () => HomeCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
     )

@@ -16,7 +16,7 @@ implementado.
 | 5 | Preços do próprio histórico | Pendente |
 | 6 | Estatísticas pessoais | Pendente |
 | 7 | Feedback detalhado e "rolê esquecido" | Pendente |
-| 8 | Resenha: jogos locais (Eu nunca, Quem é mais provável, Verdade ou desafio) | Pendente |
+| 8 | Resenha: jogos locais (Eu nunca, Quem é mais provável, Verdade ou desafio) | Implementado, ainda não executado (falta ligar a aba Resenha na navegação, bloco 2) |
 | 9 | Copão e "virar o copo" | Pendente |
 | 10 | Cartão compartilhável e exportação JSON/CSV | Pendente |
 | 11 | Revisão dirigida e acabamento | Pendente |

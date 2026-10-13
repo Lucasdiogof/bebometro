@@ -1,0 +1,1077 @@
+{
+ "version": 1,
+ "cards": [
+  {
+   "id": "ni-l-01",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca fingi que estava ouvindo uma conversa sem entender nada.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-02",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca mandei mensagem para a pessoa errada.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-03",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca chorei vendo comercial.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-04",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca perdi o ônibus por estar distraído no celular.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-05",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca cantei no chuveiro como se fosse um show.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-06",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca esqueci o nome de alguém logo depois de me apresentar.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-07",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca fingi que sabia dançar numa festa.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-08",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca comi escondido para não dividir.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-09",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca li uma mensagem e esqueci de responder por dias.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-10",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca dormi no meio de uma série que eu mesmo escolhi.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-11",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca cheguei adiantado em um compromisso.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-12",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca me perdi em um lugar que eu já conhecia.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-13",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca disse \"já estou chegando\" ainda dentro de casa.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-14",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca troquei de canal para fugir de um programa vergonhoso.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-15",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca ri na hora errada.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-16",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca guardei um segredo por tempo demais.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-17",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca fiz cara de paisagem para um elogio que não entendi.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-18",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca postei algo e apaguei logo depois.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-19",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca inventei uma desculpa para sair de um rolê mais cedo.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-20",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca fiquei o dia inteiro com uma música grudada na cabeça.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-21",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca ganhei um presente e fingi que amei.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-22",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca pesquisei meu próprio nome na internet.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-23",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca derrubei comida na roupa num dia importante.",
+   "optional": false
+  },
+  {
+   "id": "ni-l-24",
+   "game": "neverHaveIEver",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Eu nunca me emocionei com música de novela.",
+   "optional": false
+  },
+  {
+   "id": "ni-a-01",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca troquei mensagens com alguém só para chamar atenção.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-02",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca dei em cima de alguém e levei um fora.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-03",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca fingi que não vi a mensagem de alguém que me interessava.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-04",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca fucei o perfil de um crush até o último post.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-05",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca fiquei sem graça depois de um flerte.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-06",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca mandei um \"oi, sumido\" com segundas intenções.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-07",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca me arrumei demais só para encontrar uma pessoa específica.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-08",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca terminei um relacionamento por mensagem.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-09",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca me apaixonei por alguém do meu grupo de amigos.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-10",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca dei um beijo logo no primeiro encontro.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-11",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca fingi não lembrar de alguém no dia seguinte a uma festa.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-12",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca voltei com um ex.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-13",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca passei meu número de propósito para quem eu queria que ligasse.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-14",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca senti ciúme sem ter direito nenhum.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-15",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca fui a um encontro às cegas.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-16",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca levei um fora de um jeito engraçado.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-17",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca escrevi uma mensagem enorme para alguém e não enviei.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-18",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca usei aplicativo de relacionamento.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-19",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca pedi conselho amoroso para a pessoa errada.",
+   "optional": true
+  },
+  {
+   "id": "ni-a-20",
+   "game": "neverHaveIEver",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Eu nunca fingi estar ocupado para não responder alguém interessado demais.",
+   "optional": true
+  },
+  {
+   "id": "qmp-l-01",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de chegar atrasado ao próprio aniversário?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-02",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de esquecer onde deixou o celular enquanto fala nele?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-03",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de virar celebridade na internet sem querer?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-04",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de pedir comida mesmo depois de ter jantado?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-05",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de chorar em filme de animação?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-06",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de perder a chave de casa toda semana?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-07",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de dar o melhor conselho do grupo?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-08",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de sobreviver a um reality de aventura?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-09",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de ganhar um concurso de dança?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-10",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de ficar famoso por causa de um vídeo engraçado?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-11",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de se meter numa confusão por causa de um mal-entendido?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-12",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de mudar de cidade de uma hora para outra?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-13",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de ser o primeiro a dormir na festa?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-14",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de passar horas no telefone com um amigo?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-15",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de comprar algo inútil só porque estava em promoção?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-16",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de conseguir mesa em restaurante lotado só na lábia?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-17",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de esquecer uma data importante?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-18",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de ser o último a ir embora da festa?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-19",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de virar chef de cozinha?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-20",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de ser o mais calmo numa situação de emergência?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-21",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de adotar mais um bicho de estimação?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-22",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de se perder mesmo usando o GPS?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-23",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de contar a mesma história pela terceira vez?",
+   "optional": false
+  },
+  {
+   "id": "qmp-l-24",
+   "game": "mostLikely",
+   "mode": "light",
+   "kind": "statement",
+   "text": "Quem é mais provável de passar mais tempo escolhendo a série do que assistindo?",
+   "optional": false
+  },
+  {
+   "id": "qmp-a-01",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de mandar mensagem para o ex de madrugada?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-02",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de ter mais crushes ao mesmo tempo?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-03",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de conquistar alguém só no olhar?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-04",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de ser o mais ciumento?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-05",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de casar primeiro?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-06",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de chegar a um encontro com a roupa totalmente errada?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-07",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de se apaixonar durante uma viagem?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-08",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de ter o pior histórico de encontros?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-09",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de flertar para conseguir um brinde?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-10",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de terminar um namoro por um motivo bobo?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-11",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de fazer um pedido de namoro cheio de drama?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-12",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de ser o mais romântico?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-13",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de viver um romance de verão?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-14",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de esquecer o aniversário de namoro?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-15",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de sumir depois de um encontro que foi ótimo?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-16",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de mandar a melhor cantada?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-17",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de ter mais histórias de balada?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-18",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de chorar num término e montar uma playlist sobre isso?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-19",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de voltar com o ex mais uma vez?",
+   "optional": true
+  },
+  {
+   "id": "qmp-a-20",
+   "game": "mostLikely",
+   "mode": "adult",
+   "kind": "statement",
+   "text": "Quem é mais provável de ser fiel até o fim do mundo?",
+   "optional": true
+  },
+  {
+   "id": "vod-lt-01",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Qual foi o momento mais engraçado que você passou em público?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-02",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Qual é a música que você mais gosta e tem vergonha de admitir?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-03",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Qual foi a maior mentira inofensiva que você já contou?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-04",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Qual talento escondido você tem?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-05",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "O que você faria se ganhasse uma semana de folga?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-06",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Qual foi o pior presente que você já recebeu?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-07",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Qual hábito seu mais irrita quem mora com você?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-08",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Qual foi a coisa mais corajosa que você já fez?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-09",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Qual filme você já viu mais de cinco vezes?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-10",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Qual apelido de infância você tinha?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-11",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Qual foi o maior mico da sua vida escolar?",
+   "optional": false
+  },
+  {
+   "id": "vod-lt-12",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "truth",
+   "text": "Se pudesse morar em qualquer lugar do Brasil, onde seria?",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-01",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Imite alguém do grupo por 20 segundos, com carinho e sem ofender.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-02",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Conte uma piada. Se ninguém rir, vale mais uma tentativa.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-03",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Faça a sua melhor pose de capa de revista.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-04",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Fale uma frase inteira com sotaque de outro estado.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-05",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Cante o refrão de uma música que todo mundo conhece.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-06",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Faça um elogio sincero a cada pessoa da mesa.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-07",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Invente um slogan para o seu prato favorito.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-08",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Dance uma música imaginária por 15 segundos.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-09",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Narre a próxima ação de alguém como um locutor de futebol.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-10",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Conte uma história de 30 segundos usando só palavras que começam com a letra M.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-11",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Descreva alguém do grupo sem dizer o nome e deixe todo mundo adivinhar.",
+   "optional": false
+  },
+  {
+   "id": "vod-ld-12",
+   "game": "truthOrDare",
+   "mode": "light",
+   "kind": "dare",
+   "text": "Faça uma careta engraçada e segure por 10 segundos.",
+   "optional": false
+  },
+  {
+   "id": "vod-at-01",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "Qual foi o seu melhor encontro e o que o tornou especial?",
+   "optional": true
+  },
+  {
+   "id": "vod-at-02",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "Qual é a pior cantada que você já recebeu?",
+   "optional": true
+  },
+  {
+   "id": "vod-at-03",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "Qual foi a sua paixão mais improvável?",
+   "optional": true
+  },
+  {
+   "id": "vod-at-04",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "Você já sentiu atração por alguém do grupo de amigos? Responda só se quiser.",
+   "optional": true
+  },
+  {
+   "id": "vod-at-05",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "Qual foi o maior fora que você já levou?",
+   "optional": true
+  },
+  {
+   "id": "vod-at-06",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "O que mais te atrai em uma pessoa logo de cara?",
+   "optional": true
+  },
+  {
+   "id": "vod-at-07",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "Qual foi a mensagem mais constrangedora que você já mandou para alguém de quem gostava?",
+   "optional": true
+  },
+  {
+   "id": "vod-at-08",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "O que você nunca perdoaria em um relacionamento?",
+   "optional": true
+  },
+  {
+   "id": "vod-at-09",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "Qual é o seu maior defeito em um relacionamento?",
+   "optional": true
+  },
+  {
+   "id": "vod-at-10",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "Qual é o seu sinal mais óbvio de que está interessado em alguém?",
+   "optional": true
+  },
+  {
+   "id": "vod-at-11",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "truth",
+   "text": "Qual foi o lugar mais inusitado em que você conheceu alguém?",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-01",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Faça a sua melhor cantada (bem boba) para a pessoa ao seu lado, só se ela topar.",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-02",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Faça um elogio carinhoso para alguém do grupo, olhando nos olhos.",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-03",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Descreva o seu crush ideal em três palavras.",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-04",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Imite o jeito de flertar de um personagem famoso.",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-05",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Escolha alguém do grupo e diga uma qualidade que você admira nessa pessoa.",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-06",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Conte o seu segredo de paquera mais inocente.",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-07",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Faça uma declaração de amor dramática para um alimento.",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-08",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Convide alguém da roda para uma dança leve de dois passos, se a pessoa quiser.",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-09",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Dê uma nota de 0 a 10 para a sua última cantada e conte qual foi.",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-10",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Dedique uma música a alguém do grupo, de forma divertida, e diga o motivo.",
+   "optional": true
+  },
+  {
+   "id": "vod-ad-11",
+   "game": "truthOrDare",
+   "mode": "adult",
+   "kind": "dare",
+   "text": "Faça uma pose de capa de novela com alguém que topar.",
+   "optional": true
+  }
+ ]
+}
