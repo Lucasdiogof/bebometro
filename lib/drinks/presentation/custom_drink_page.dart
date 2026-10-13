@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../core/di/injector.dart';
-import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';

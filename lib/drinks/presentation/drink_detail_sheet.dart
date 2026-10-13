@@ -8,7 +8,6 @@ import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../domain/catalog_item.dart';
 import '../domain/drink_category.dart';
-import '../domain/recipe.dart';
 import 'catalog_cubit.dart';
 
 /// What the user chose in the detail sheet.
@@ -323,10 +322,10 @@ class _SourceTile extends StatelessWidget {
 String _abvText(CatalogItem item) {
   if (item.abvPercent != null) return formatAbv(item.abvPercent!);
   if (item.abvVariants.isNotEmpty) {
-    return 'Varia conforme a fonte, sem um valor único:\n' +
-        item.abvVariants
-            .map((v) => '${formatAbv(v.value)} (${v.scope})')
-            .join('\n');
+    final lines = item.abvVariants
+        .map((v) => '${formatAbv(v.value)} (${v.scope})')
+        .join('\n');
+    return 'Varia conforme a fonte, sem um valor único:\n$lines';
   }
   return 'Não informado';
 }

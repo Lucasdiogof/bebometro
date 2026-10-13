@@ -9,7 +9,6 @@ import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../outings/domain/outing.dart';
 import '../../places/presentation/place_detail_page.dart';
-import '../domain/stats_report.dart';
 import 'records_page.dart';
 import 'stats_cubit.dart';
 

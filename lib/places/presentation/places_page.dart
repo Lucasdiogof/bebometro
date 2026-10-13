@@ -6,7 +6,6 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
-import '../domain/place.dart';
 import 'place_detail_page.dart';
 import 'place_editor_page.dart';
 import 'places_cubit.dart';

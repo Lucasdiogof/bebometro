@@ -94,7 +94,7 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
       widget.animate &&
       !widget.retrospective &&
       _resumed &&
-      TickerMode.of(context) &&
+      TickerMode.valuesOf(context).enabled &&
       !reduceMotion(context);
 
   /// Runs the clock only while it can be seen; coming back it jumps straight

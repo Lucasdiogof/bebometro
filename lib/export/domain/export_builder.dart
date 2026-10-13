@@ -143,7 +143,7 @@ class ExportBuilder {
             },
             e.paidCents,
             e.billTotalCents,
-            alcohol == null ? null : alcohol.pureMl,
+            alcohol?.pureMl,
             alcohol?.isComplete,
             e.composition == null ? null : jsonEncode(e.composition!.toJson()),
           ];

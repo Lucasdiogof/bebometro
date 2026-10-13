@@ -59,7 +59,7 @@ Future<void> configureDependencies() async {
   try {
     await Supabase.initialize(
       url: Env.supabaseUrl,
-      anonKey: Env.supabasePublishableKey,
+      publishableKey: Env.supabasePublishableKey,
     );
   } catch (_) {
     cloudEnabled = false;

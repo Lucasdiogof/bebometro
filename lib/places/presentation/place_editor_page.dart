@@ -66,10 +66,12 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
       );
       if (mounted) Navigator.of(context).pop(place);
     } on ArgumentError catch (e) {
-      if (mounted) setState(() {
-        _saving = false;
-        _error = '${e.message}';
-      });
+      if (mounted) {
+        setState(() {
+          _saving = false;
+          _error = '${e.message}';
+        });
+      }
     } catch (_) {
       if (mounted) {
         setState(() => _saving = false);

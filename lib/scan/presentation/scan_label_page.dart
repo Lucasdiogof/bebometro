@@ -106,7 +106,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
     await _drafts.save(ScanDraft(
         outingId: widget.outingId,
         kind: OutingPhotoKind.photoLabel,
-        photoIds: [if (_photoId != null) _photoId!],
+        photoIds: [?_photoId],
         text: _text.text,
       ));
   }
@@ -241,7 +241,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
         abvSource: r.abvPercent == null ? null : AbvSource.photoLabel,
         ingredients: r.ingredients,
         origin: OutingDrinkOrigin.photoLabel,
-        photoIds: [if (_photoId != null) _photoId!],
+        photoIds: [?_photoId],
         sourceText: text,
         notes: r.notes,
         nameCandidates: r.nameCandidates,
@@ -251,7 +251,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
         origin: _photoId == null
             ? OutingDrinkOrigin.manual
             : OutingDrinkOrigin.photoLabel,
-        photoIds: [if (_photoId != null) _photoId!],
+        photoIds: [?_photoId],
         sourceText: text.isEmpty ? null : text,
       );
     }

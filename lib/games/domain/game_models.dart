@@ -68,7 +68,7 @@ class GameCard {
     this.isCustom = false,
   });
 
-  /// Stable id ("ni-l-01"; custom cards are "custom:<uuid>").
+  /// Stable id ("ni-l-01"; custom cards are "custom:`<uuid>`").
   final String id;
   final GameType game;
   final GameMode mode;
