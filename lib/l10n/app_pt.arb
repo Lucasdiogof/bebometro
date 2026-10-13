@@ -3011,5 +3011,275 @@
         "type": "String"
       }
     }
-  }
+  },
+  "statsTitle": "Estatísticas",
+  "statsPresetDays": "{days} dias",
+  "@statsPresetDays": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "statsPresetCustom": "Personalizado",
+  "statsRangeLine": "{from} a {to} · {days, plural, =1{1 dia} other{{days} dias}}",
+  "@statsRangeLine": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "statsEmptyTitle": "Nada registrado neste período",
+  "statsEmptyBody": "Isso só quer dizer que não há registros aqui, não que não houve rolê.",
+  "statsSummary": "Resumo",
+  "statsOutingsOfPeriod": "Rolês do período",
+  "statsDrinksLogged": "Bebidas registradas",
+  "statsDrinksOfPeriod": "Bebidas do período",
+  "statsPricedRecords": "Registros com preço",
+  "statsVolumeSection": "Volume pessoal informado",
+  "statsAlcoholicVolume": "Bebidas com álcool",
+  "statsNonAlcoholicVolume": "Água e sem álcool",
+  "statsUnknownVolume": "{count, plural, =1{1 registro sem volume: não entra nas somas} other{{count} registros sem volume: não entram nas somas}}",
+  "@statsUnknownVolume": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsAlcoholSection": "Álcool calculado",
+  "statsPureAlcohol": "Álcool puro dos dados conhecidos",
+  "statsIncompleteAlcohol": "{count, plural, =1{1 registro com teor ou quantidade desconhecidos} other{{count} registros com teor ou quantidade desconhecidos}}",
+  "@statsIncompleteAlcohol": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsAlcoholNote": "Volume × teor (ou quantidade × teor dos componentes dos drinks). Não é concentração no sangue.",
+  "statsAlcoholByCategory": "Com álcool, por categoria",
+  "statsNoVolumeNote": "{count} sem volume",
+  "@statsNoVolumeNote": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "statsNonAlcoholicSection": "Água e sem álcool, à parte",
+  "statsTopPlaces": "Locais mais visitados",
+  "statsPlacesNote": "Locais só são agrupados quando são o mesmo local salvo; nomes parecidos não são unidos.",
+  "statsMoods": "Relatos pós-rolê",
+  "statsNoMoods": "Nenhum relato neste período.",
+  "statsWithoutMood": "{count} sem relato.",
+  "@statsWithoutMood": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "statsMoodsNote": "Relatos são pessoais: não medem tolerância e não indicam um limite seguro.",
+  "statsPrevious": "Período anterior",
+  "statsFootnote": "Dia sem registro não significa dia sem beber: os números refletem só o que foi registrado.",
+  "statsNoBaseline": "{days, plural, =1{Sem base de comparação: não há rolês registrados no dia anterior a este período.} other{Sem base de comparação: não há rolês registrados nos {days} dias anteriores a este período.}}",
+  "@statsNoBaseline": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "statsComparedTo": "{days, plural, =1{Comparado ao dia imediatamente antes ({from} a {to}).} other{Comparado aos {days} dias imediatamente antes ({from} a {to}).}}",
+  "@statsComparedTo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "statsIncompleteCompare": "Há bebidas sem preço em um dos períodos: o gasto real pode ser maior que o informado.",
+  "statsLineBefore": "{now}  (antes: {before})",
+  "@statsLineBefore": {
+    "placeholders": {
+      "now": {
+        "type": "String"
+      },
+      "before": {
+        "type": "String"
+      }
+    }
+  },
+  "statsNoSavedPlace": "Sem local salvo",
+  "statsSavedPlaceFallback": "Local salvo",
+  "recordsUnknownVolume": "volume desconhecido",
+  "historyEmptyTitle": "Nenhum rolê encerrado",
+  "historyEmptyBody": "Quando você encerrar um rolê, ele aparece aqui.",
+  "historySearchHint": "Buscar pelo nome do local",
+  "historyNoMatchTitle": "Nenhum rolê com esses filtros",
+  "historyNoMatchBody": "Tente outro nome, período ou tipo.",
+  "historyPeriodAll": "Tudo",
+  "historyPeriodMonth": "Este mês",
+  "historyAllTypes": "Todos os tipos",
+  "historyNoValues": "Sem valores",
+  "exportTitle": "Exportar meus dados",
+  "exportIntro": "Seus registros, do jeito que estão no aparelho. Nada é enviado a ninguém: você escolhe onde guardar. Nenhum dado de acesso ou sessão entra nos arquivos.",
+  "exportJsonTitle": "Tudo em JSON",
+  "exportJsonBody": "Locais, rolês, bebidas, composições, comandas e suas bebidas próprias, com todos os detalhes. Chaves e códigos fixos, independentes do idioma do app.",
+  "exportOutingsCsvTitle": "Rolês em CSV",
+  "exportOutingsCsvBody": "Um resumo por rolê. Separador \";\", decimal com vírgula, UTF-8. Colunas e códigos fixos, independentes do idioma do app.",
+  "exportDrinksCsvTitle": "Bebidas em CSV",
+  "exportDrinksCsvBody": "Uma linha por registro. Campo vazio = desconhecido, nunca zero. Colunas e códigos fixos, independentes do idioma do app.",
+  "exportButton": "Exportar",
+  "exportCopy": "Copiar",
+  "exportCopied": "Copiado",
+  "exportShareUnavailable": "Compartilhar não está disponível aqui. O conteúdo foi copiado: cole em um arquivo para guardar.",
+  "exportFailed": "Não foi possível gerar o arquivo.",
+  "exportJsonNote": "Dados pessoais exportados pela própria pessoa. Valores em centavos, volumes em ml, horários em UTC. Campos nulos são desconhecidos, não zero.",
+  "shareCardTitle": "Compartilhar resumo",
+  "shareCardIntro": "Escolha o que aparece. O endereço e o seu relato nunca entram, e nada é publicado sozinho.",
+  "shareCardWhat": "O que mostrar",
+  "shareCardPlaceName": "Nome do local",
+  "shareCardPlaceNameHint": "Só o nome, nunca o endereço.",
+  "shareCardSpendHint": "Há bebidas sem preço: o total é parcial.",
+  "shareCardFailed": "Não foi possível abrir o compartilhamento. O texto do resumo foi copiado.",
+  "shareCardMyOuting": "Meu rolê",
+  "shareCardOthers": "+ {count} outros",
+  "@shareCardOthers": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "shareCardSpendText": "Gasto informado: {amount}",
+  "@shareCardSpendText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "shareCardSpendTextPartial": "Gasto informado: {amount} (há bebidas sem preço)",
+  "@shareCardSpendTextPartial": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "shareCardSpendCard": "Gasto informado {amount}",
+  "@shareCardSpendCard": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "shareCardSpendCardPartial": "Gasto informado {amount} (parcial)",
+  "@shareCardSpendCardPartial": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingWeb": "Não disponível no navegador: o acompanhamento fica só dentro do app.",
+  "trackingIosOld": "Não disponível nesta versão do iOS (precisa do iOS 16.2 ou mais novo).",
+  "trackingUnsupported": "Não disponível neste aparelho.",
+  "trackingDisabled": "Desativado por você.",
+  "trackingPermission": "Permissão do sistema indisponível. Libere as notificações do Bebômetro nas configurações do aparelho.",
+  "trackingSystemOffIos": "Desligado nos ajustes do iPhone (Atividades ao Vivo).",
+  "trackingSystemOffAndroid": "Notificações desligadas nas configurações do aparelho.",
+  "trackingNoOuting": "Disponível durante um rolê.",
+  "trackingHidden": "Oculto neste rolê. Use \"{action}\" na tela do rolê.",
+  "@trackingHidden": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingDismissed": "Você removeu da tela bloqueada neste rolê. Use \"{action}\" na tela do rolê.",
+  "@trackingDismissed": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingActive": "Ativo agora.",
+  "trackingPending": "Ligado, mas ainda não apareceu. No iPhone ele só começa com o app aberto; abra o rolê.",
+  "trackingNoPermissionToast": "Sem permissão de notificações. Dá para liberar nas configurações do aparelho.",
+  "trackingEnable": "Ativar acompanhamento",
+  "trackingEnableHint": "Mostra o tempo e a contagem do rolê em andamento na tela bloqueada. Sem som nem vibração.",
+  "trackingShowSpend": "Mostrar gastos",
+  "trackingShowSpendHint": "Quanto você informou ter gasto em bebidas, não o total da mesa.",
+  "trackingShowPlace": "Mostrar nome do local",
+  "trackingShowPlaceHint": "Desligado, aparece só \"Rolê em andamento\". O endereço nunca aparece.",
+  "trackingCountNote": "O contador mostra quantos registros de bebida alcoólica você fez (água não conta; uma garrafa dividida é um registro). Não são doses nem medem alcoolemia. O sistema pode encerrar a exibição sozinho depois de algumas horas, sem encerrar o rolê.",
+  "trackingOfferBody": "Veja o tempo e a contagem de bebidas do rolê sem abrir o app. Por padrão não mostra gastos nem o nome do local. Sem som nem vibração, e dá para ocultar em cada rolê ou desligar quando quiser em Configurações.",
+  "trackingOfferActivate": "Ativar",
+  "trackingTitleFallback": "Rolê em andamento",
+  "trackingCount": "{count, plural, =0{Nenhum registro de bebida alcoólica} =1{1 registro de bebida alcoólica} other{{count} registros de bebida alcoólica}}",
+  "@trackingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "trackingSpend": "{amount} informados",
+  "@trackingSpend": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingSpendUnpriced": "{amount} informados · {count} sem preço",
+  "@trackingSpendUnpriced": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingOpen": "Abrir",
+  "trackingAnother": "Mais uma",
+  "trackingAnotherWith": "Mais uma · {next}",
+  "@trackingAnotherWith": {
+    "placeholders": {
+      "next": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingAnotherA11y": "Mais uma, {next}",
+  "@trackingAnotherA11y": {
+    "placeholders": {
+      "next": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingWater": "Água",
+  "trackingChannelDescription": "Tempo e contagem do rolê na tela bloqueada. Sem som nem vibração."
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import '../../drinks/domain/drink_entry.dart';
 import '../../outings/domain/outing.dart';
 import '../../outings/domain/outing_summary.dart';
+import '../../l10n/l10n.dart';
 
 /// Builds the user's own exports. Nothing here reads credentials, tokens or
 /// session identifiers: only the records the person created.
@@ -28,9 +29,10 @@ class ExportBuilder {
       'app': 'Bebômetro',
       'format_version': 1,
       'exported_at': exportedAt.toUtc().toIso8601String(),
-      'note': 'Dados pessoais exportados pela própria pessoa. Valores em '
-          'centavos, volumes em ml, horários em UTC. Campos nulos são '
-          'desconhecidos, não zero.',
+      // Keys and codes never depend on the language; only this note and
+      // "language" follow the app language at the moment of the export.
+      'language': trLanguage,
+      'note': tr.exportJsonNote,
       'places': places,
       'outings': outings,
       'drink_entries': drinkEntries,
@@ -45,7 +47,10 @@ class ExportBuilder {
   }
 
   /// One row per outing. Separator ";" (the default of pt-BR spreadsheets),
-  /// every text quoted, empty cell = unknown.
+  /// every text quoted, empty cell = unknown. Columns and values are
+  /// machine codes ("tipo" is an outing type code, "relato" a mood code...):
+  /// they do not change with the app language, so a file exported in one
+  /// language reads exactly like one exported in another.
   static String outingsCsv(
     List<Outing> outings,
     List<DrinkEntry> Function(String outingId) entriesOf,
@@ -78,7 +83,7 @@ class ExportBuilder {
             o.startedAt.toUtc().toIso8601String(),
             o.endedAt?.toUtc().toIso8601String(),
             o.endedAt == null ? null : o.durationAt(o.endedAt!).inMinutes,
-            o.type.label,
+            o.type.code,
             o.nickname,
             o.address,
             o.city,
@@ -87,9 +92,9 @@ class ExportBuilder {
             s.entryCount,
             s.informedCents,
             s.unpricedCount,
-            o.feedbackMood?.label,
-            o.wakeFeeling?.label,
-            o.hangover?.label,
+            o.feedbackMood?.code,
+            o.wakeFeeling?.code,
+            o.hangover?.code,
             o.feedbackNote,
           ];
         }(),
@@ -130,7 +135,7 @@ class ExportBuilder {
             e.outingId,
             e.consumedAt.toUtc().toIso8601String(),
             e.name,
-            e.category.label,
+            e.category.code,
             e.brand,
             e.style,
             e.presentation,

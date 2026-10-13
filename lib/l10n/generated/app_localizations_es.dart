@@ -4857,4 +4857,428 @@ class AppLocalizationsEs extends AppLocalizations {
   String tabCardLineKnownShare(String amount, String mine) {
     return 'Total conocido $amount · tu parte $mine';
   }
+
+  @override
+  String get statsTitle => 'Estadísticas';
+
+  @override
+  String statsPresetDays(String days) {
+    return '$days días';
+  }
+
+  @override
+  String get statsPresetCustom => 'Personalizado';
+
+  @override
+  String statsRangeLine(String from, String to, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days días',
+      one: '1 día',
+    );
+    return '$from a $to · $_temp0';
+  }
+
+  @override
+  String get statsEmptyTitle => 'Nada registrado en este período';
+
+  @override
+  String get statsEmptyBody =>
+      'Solo significa que aquí no hay registros, no que no hubo salida.';
+
+  @override
+  String get statsSummary => 'Resumen';
+
+  @override
+  String get statsOutingsOfPeriod => 'Salidas del período';
+
+  @override
+  String get statsDrinksLogged => 'Bebidas registradas';
+
+  @override
+  String get statsDrinksOfPeriod => 'Bebidas del período';
+
+  @override
+  String get statsPricedRecords => 'Registros con precio';
+
+  @override
+  String get statsVolumeSection => 'Volumen personal informado';
+
+  @override
+  String get statsAlcoholicVolume => 'Bebidas con alcohol';
+
+  @override
+  String get statsNonAlcoholicVolume => 'Agua y sin alcohol';
+
+  @override
+  String statsUnknownVolume(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count registros sin volumen: no entran en las sumas',
+      one: '1 registro sin volumen: no entra en las sumas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get statsAlcoholSection => 'Alcohol calculado';
+
+  @override
+  String get statsPureAlcohol => 'Alcohol puro de los datos conocidos';
+
+  @override
+  String statsIncompleteAlcohol(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count registros con graduación o cantidad desconocidas',
+      one: '1 registro con graduación o cantidad desconocidas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get statsAlcoholNote =>
+      'Volumen × graduación (o cantidad × graduación de los componentes de los cócteles). No es concentración en sangre.';
+
+  @override
+  String get statsAlcoholByCategory => 'Con alcohol, por categoría';
+
+  @override
+  String statsNoVolumeNote(String count) {
+    return '$count sin volumen';
+  }
+
+  @override
+  String get statsNonAlcoholicSection => 'Agua y sin alcohol, aparte';
+
+  @override
+  String get statsTopPlaces => 'Lugares más visitados';
+
+  @override
+  String get statsPlacesNote =>
+      'Los lugares solo se agrupan cuando son el mismo lugar guardado; los nombres parecidos no se unen.';
+
+  @override
+  String get statsMoods => 'Relatos tras la salida';
+
+  @override
+  String get statsNoMoods => 'Ningún relato en este período.';
+
+  @override
+  String statsWithoutMood(String count) {
+    return '$count sin relato.';
+  }
+
+  @override
+  String get statsMoodsNote =>
+      'Los relatos son personales: no miden tolerancia y no indican un límite seguro.';
+
+  @override
+  String get statsPrevious => 'Período anterior';
+
+  @override
+  String get statsFootnote =>
+      'Un día sin registro no significa un día sin beber: los números reflejan solo lo registrado.';
+
+  @override
+  String statsNoBaseline(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other:
+          'Sin base de comparación: no hay salidas registradas en los $days días anteriores a este período.',
+      one: 'Sin base de comparación: no hay salidas registradas el día anterior a este período.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statsComparedTo(int days, String from, String to) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other:
+          'Comparado con los $days días inmediatamente anteriores ($from a $to).',
+      one: 'Comparado con el día inmediatamente anterior ($from a $to).',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get statsIncompleteCompare =>
+      'Hay bebidas sin precio en uno de los períodos: el gasto real puede ser mayor que el informado.';
+
+  @override
+  String statsLineBefore(String now, String before) {
+    return '$now  (antes: $before)';
+  }
+
+  @override
+  String get statsNoSavedPlace => 'Sin lugar guardado';
+
+  @override
+  String get statsSavedPlaceFallback => 'Lugar guardado';
+
+  @override
+  String get recordsUnknownVolume => 'volumen desconocido';
+
+  @override
+  String get historyEmptyTitle => 'Ninguna salida terminada';
+
+  @override
+  String get historyEmptyBody => 'Cuando termines una salida, aparece aquí.';
+
+  @override
+  String get historySearchHint => 'Buscar por el nombre del lugar';
+
+  @override
+  String get historyNoMatchTitle => 'Ninguna salida con estos filtros';
+
+  @override
+  String get historyNoMatchBody => 'Prueba con otro nombre, período o tipo.';
+
+  @override
+  String get historyPeriodAll => 'Todo';
+
+  @override
+  String get historyPeriodMonth => 'Este mes';
+
+  @override
+  String get historyAllTypes => 'Todos los tipos';
+
+  @override
+  String get historyNoValues => 'Sin valores';
+
+  @override
+  String get exportTitle => 'Exportar mis datos';
+
+  @override
+  String get exportIntro =>
+      'Tus registros, tal como están en el dispositivo. No se envía nada a nadie: tú eliges dónde guardarlo. Ningún dato de acceso o sesión entra en los archivos.';
+
+  @override
+  String get exportJsonTitle => 'Todo en JSON';
+
+  @override
+  String get exportJsonBody =>
+      'Lugares, salidas, bebidas, composiciones, cuentas y tus bebidas propias, con todos los detalles. Claves y códigos fijos, independientes del idioma de la app.';
+
+  @override
+  String get exportOutingsCsvTitle => 'Salidas en CSV';
+
+  @override
+  String get exportOutingsCsvBody =>
+      'Un resumen por salida. Separador \";\", decimal con coma, UTF-8. Columnas y códigos fijos, independientes del idioma de la app.';
+
+  @override
+  String get exportDrinksCsvTitle => 'Bebidas en CSV';
+
+  @override
+  String get exportDrinksCsvBody =>
+      'Una fila por registro. Campo vacío = desconocido, nunca cero. Columnas y códigos fijos, independientes del idioma de la app.';
+
+  @override
+  String get exportButton => 'Exportar';
+
+  @override
+  String get exportCopy => 'Copiar';
+
+  @override
+  String get exportCopied => 'Copiado';
+
+  @override
+  String get exportShareUnavailable =>
+      'Compartir no está disponible aquí. El contenido se copió: pégalo en un archivo para guardarlo.';
+
+  @override
+  String get exportFailed => 'No se pudo generar el archivo.';
+
+  @override
+  String get exportJsonNote =>
+      'Datos personales exportados por la propia persona. Valores en centavos (BRL), volúmenes en ml, horas en UTC. Los campos nulos son desconocidos, no cero.';
+
+  @override
+  String get shareCardTitle => 'Compartir resumen';
+
+  @override
+  String get shareCardIntro =>
+      'Elige qué aparece. La dirección y tu relato nunca entran, y nada se publica solo.';
+
+  @override
+  String get shareCardWhat => 'Qué mostrar';
+
+  @override
+  String get shareCardPlaceName => 'Nombre del lugar';
+
+  @override
+  String get shareCardPlaceNameHint => 'Solo el nombre, nunca la dirección.';
+
+  @override
+  String get shareCardSpendHint =>
+      'Hay bebidas sin precio: el total es parcial.';
+
+  @override
+  String get shareCardFailed =>
+      'No se pudo abrir el menú de compartir. Se copió el texto del resumen.';
+
+  @override
+  String get shareCardMyOuting => 'Mi salida';
+
+  @override
+  String shareCardOthers(String count) {
+    return '+ $count más';
+  }
+
+  @override
+  String shareCardSpendText(String amount) {
+    return 'Gasto informado: $amount';
+  }
+
+  @override
+  String shareCardSpendTextPartial(String amount) {
+    return 'Gasto informado: $amount (hay bebidas sin precio)';
+  }
+
+  @override
+  String shareCardSpendCard(String amount) {
+    return 'Gasto informado $amount';
+  }
+
+  @override
+  String shareCardSpendCardPartial(String amount) {
+    return 'Gasto informado $amount (parcial)';
+  }
+
+  @override
+  String get trackingWeb =>
+      'No disponible en el navegador: el seguimiento solo funciona dentro de la app.';
+
+  @override
+  String get trackingIosOld =>
+      'No disponible en esta versión de iOS (necesita iOS 16.2 o más reciente).';
+
+  @override
+  String get trackingUnsupported => 'No disponible en este dispositivo.';
+
+  @override
+  String get trackingDisabled => 'Desactivado por ti.';
+
+  @override
+  String get trackingPermission =>
+      'Permiso del sistema no disponible. Activa las notificaciones de Bebômetro en los ajustes del dispositivo.';
+
+  @override
+  String get trackingSystemOffIos =>
+      'Desactivado en los ajustes del iPhone (Actividades en vivo).';
+
+  @override
+  String get trackingSystemOffAndroid =>
+      'Notificaciones desactivadas en los ajustes del dispositivo.';
+
+  @override
+  String get trackingNoOuting => 'Disponible durante una salida.';
+
+  @override
+  String trackingHidden(String action) {
+    return 'Oculto en esta salida. Usa \"$action\" en la pantalla de la salida.';
+  }
+
+  @override
+  String trackingDismissed(String action) {
+    return 'Lo quitaste de la pantalla de bloqueo en esta salida. Usa \"$action\" en la pantalla de la salida.';
+  }
+
+  @override
+  String get trackingActive => 'Activo ahora.';
+
+  @override
+  String get trackingPending =>
+      'Activado, pero aún no apareció. En iPhone solo empieza con la app abierta; abre la salida.';
+
+  @override
+  String get trackingNoPermissionToast =>
+      'Sin permiso de notificaciones. Puedes activarlo en los ajustes del dispositivo.';
+
+  @override
+  String get trackingEnable => 'Activar seguimiento';
+
+  @override
+  String get trackingEnableHint =>
+      'Muestra el tiempo y el recuento de la salida en curso en la pantalla de bloqueo. Sin sonido ni vibración.';
+
+  @override
+  String get trackingShowSpend => 'Mostrar gastos';
+
+  @override
+  String get trackingShowSpendHint =>
+      'Cuánto indicaste haber gastado en bebidas, no el total de la mesa.';
+
+  @override
+  String get trackingShowPlace => 'Mostrar nombre del lugar';
+
+  @override
+  String get trackingShowPlaceHint =>
+      'Desactivado, solo aparece \"Salida en curso\". La dirección nunca aparece.';
+
+  @override
+  String get trackingCountNote =>
+      'El contador muestra cuántos registros de bebida alcohólica hiciste (el agua no cuenta; una botella compartida es un registro). No son dosis ni miden la alcoholemia. El sistema puede terminar la visualización por su cuenta pasadas unas horas, sin terminar la salida.';
+
+  @override
+  String get trackingOfferBody =>
+      'Mira el tiempo y el recuento de bebidas de la salida sin abrir la app. Por defecto no muestra gastos ni el nombre del lugar. Sin sonido ni vibración, y puedes ocultarlo en cada salida o desactivarlo cuando quieras en Ajustes.';
+
+  @override
+  String get trackingOfferActivate => 'Activar';
+
+  @override
+  String get trackingTitleFallback => 'Salida en curso';
+
+  @override
+  String trackingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count registros de bebida alcohólica',
+      one: '1 registro de bebida alcohólica',
+      zero: 'Ningún registro de bebida alcohólica',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String trackingSpend(String amount) {
+    return '$amount informados';
+  }
+
+  @override
+  String trackingSpendUnpriced(String amount, String count) {
+    return '$amount informados · $count sin precio';
+  }
+
+  @override
+  String get trackingOpen => 'Abrir';
+
+  @override
+  String get trackingAnother => 'Otra más';
+
+  @override
+  String trackingAnotherWith(String next) {
+    return 'Otra más · $next';
+  }
+
+  @override
+  String trackingAnotherA11y(String next) {
+    return 'Otra más, $next';
+  }
+
+  @override
+  String get trackingWater => 'Agua';
+
+  @override
+  String get trackingChannelDescription =>
+      'Tiempo y recuento de la salida en la pantalla de bloqueo. Sin sonido ni vibración.';
 }

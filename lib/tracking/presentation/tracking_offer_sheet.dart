@@ -4,6 +4,7 @@ import '../../core/di/injector.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/common.dart';
 import '../application/tracking_coordinator.dart';
+import '../../l10n/l10n.dart';
 
 /// The one-time explanation offered during the first outing. Whatever the
 /// answer, it is not shown again; "Agora não" leaves the switch in Settings.
@@ -25,21 +26,15 @@ Future<void> offerTrackingIfNeeded(BuildContext context) async {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Rolê na tela bloqueada', style: AppText.title),
+            Text(tr.settingsLockScreen, style: AppText.title),
             const SizedBox(height: AppSpace.sm),
-            const Text(
-              'Veja o tempo e a contagem de bebidas do rolê sem abrir o app. '
-              'Por padrão não mostra gastos nem o nome do local. Sem som nem '
-              'vibração, e dá para ocultar em cada rolê ou desligar quando '
-              'quiser em Configurações.',
-              style: AppText.body,
-            ),
+            Text(tr.trackingOfferBody, style: AppText.body),
             const SizedBox(height: AppSpace.lg),
             SizedBox(
               width: double.infinity,
               child: FilledButton(
                 onPressed: () => Navigator.pop(ctx, true),
-                child: const Text('Ativar'),
+                child: Text(tr.trackingOfferActivate),
               ),
             ),
             const SizedBox(height: AppSpace.sm),
@@ -47,7 +42,7 @@ Future<void> offerTrackingIfNeeded(BuildContext context) async {
               width: double.infinity,
               child: TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: const Text('Agora não'),
+                child: Text(tr.commonNotNow),
               ),
             ),
           ],
@@ -58,7 +53,6 @@ Future<void> offerTrackingIfNeeded(BuildContext context) async {
   if (yes != true) return;
   final status = await coordinator.enable();
   if (context.mounted && status == TrackingStatus.permissionDenied) {
-    showToast(context,
-        'Sem permissão de notificações. Dá para liberar nas configurações do aparelho.');
+    showToast(context, tr.trackingNoPermissionToast);
   }
 }

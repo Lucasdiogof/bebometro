@@ -18,21 +18,30 @@ private func money(_ cents: Int) -> String {
         .replacingOccurrences(of: "\u{00a0}", with: " ")
 }
 
+/// The texts come ready-made from the app (in the language chosen there). The
+/// Portuguese wording below only covers an activity started by an older build.
 @available(iOS 16.2, *)
-private func countText(_ n: Int) -> String {
-    switch n {
+private func countText(_ s: OutingActivityAttributes.ContentState) -> String {
+    if let t = s.texts?.count { return t }
+    switch s.alcoholicCount {
     case 0: return "Nenhum registro de bebida alcoólica"
     case 1: return "1 registro de bebida alcoólica"
-    default: return "\(n) registros de bebida alcoólica"
+    default: return "\(s.alcoholicCount) registros de bebida alcoólica"
     }
 }
 
 @available(iOS 16.2, *)
 private func spendText(_ s: OutingActivityAttributes.ContentState) -> String? {
     guard let cents = s.spendCents else { return nil }
+    if let t = s.texts?.spend { return t }
     return s.unpricedCount > 0
         ? "\(money(cents)) informados · \(s.unpricedCount) sem preço"
         : "\(money(cents)) informados"
+}
+
+@available(iOS 16.2, *)
+private func titleText(_ s: OutingActivityAttributes.ContentState) -> String {
+    s.place ?? s.texts?.title ?? "Rolê em andamento"
 }
 
 @available(iOS 16.2, *)
@@ -83,11 +92,11 @@ private struct LockScreenView: View {
                     .scaledToFit()
                     .frame(width: 38, height: 38)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(s.place ?? "Rolê em andamento")
+                    Text(titleText(s))
                         .font(.headline)
                         .foregroundColor(Palette.text)
                         .lineLimit(1)
-                    Text(countText(s.alcoholicCount))
+                    Text(countText(s))
                         .font(.subheadline)
                         .foregroundColor(Palette.muted)
                         .lineLimit(1)
@@ -107,11 +116,11 @@ private struct LockScreenView: View {
                     .minimumScaleFactor(0.8)
             }
             HStack(spacing: 8) {
-                Chip(title: "Abrir", url: link(id, "open"))
+                Chip(title: s.texts?.open ?? "Abrir", url: link(id, "open"))
                 if let next = s.nextLabel {
-                    Chip(title: "Mais uma · \(next)", url: link(id, "another"))
+                    Chip(title: s.texts?.anotherWith ?? "Mais uma · \(next)", url: link(id, "another"))
                 }
-                Chip(title: "Água", url: link(id, "water"))
+                Chip(title: s.texts?.water ?? "Água", url: link(id, "water"))
             }
         }
         .padding(16)
@@ -143,13 +152,13 @@ struct OutingLiveActivity: Widget {
                         .frame(maxWidth: 90, alignment: .trailing)
                 }
                 DynamicIslandExpandedRegion(.center) {
-                    Text(s.place ?? "Rolê em andamento")
+                    Text(titleText(s))
                         .font(.headline)
                         .lineLimit(1)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(countText(s.alcoholicCount))
+                        Text(countText(s))
                             .font(.subheadline)
                             .lineLimit(1)
                             .minimumScaleFactor(0.8)
@@ -160,12 +169,12 @@ struct OutingLiveActivity: Widget {
                                 .minimumScaleFactor(0.8)
                         }
                         HStack(spacing: 8) {
-                            Chip(title: "Abrir", url: link(id, "open"))
+                            Chip(title: s.texts?.open ?? "Abrir", url: link(id, "open"))
                             if let next = s.nextLabel {
-                                Chip(title: "Mais uma", url: link(id, "another"))
-                                    .accessibilityLabel("Mais uma, \(next)")
+                                Chip(title: s.texts?.another ?? "Mais uma", url: link(id, "another"))
+                                    .accessibilityLabel(s.texts?.anotherA11y ?? "Mais uma, \(next)")
                             }
-                            Chip(title: "Água", url: link(id, "water"))
+                            Chip(title: s.texts?.water ?? "Água", url: link(id, "water"))
                         }
                     }
                 }

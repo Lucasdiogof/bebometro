@@ -1,6 +1,7 @@
 import '../../drinks/domain/drink_category.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../outings/domain/outing.dart';
+import '../../l10n/l10n.dart';
 
 /// A period of days (start inclusive, end exclusive), in local time.
 class StatsRange {
@@ -50,12 +51,19 @@ class CategoryStat {
 }
 
 class PlaceStat {
-  const PlaceStat({required this.placeId, required this.label, required this.visits});
+  const PlaceStat({required this.placeId, this.name, required this.visits});
 
   /// Null = outings without a saved place (never merged by similar names).
   final String? placeId;
-  final String label;
+
+  /// Name of the saved place, when it is known.
+  final String? name;
   final int visits;
+
+  /// Text shown for the place, in the language on screen.
+  String get label => placeId == null
+      ? tr.statsNoSavedPlace
+      : (name ?? tr.statsSavedPlaceFallback);
 }
 
 /// Honest personal statistics for a period. No score, ranking or limit: only
@@ -181,9 +189,7 @@ StatsReport buildStats({
     for (final e in visits.entries)
       PlaceStat(
         placeId: e.key,
-        label: e.key == null
-            ? 'Sem local salvo'
-            : (placeName(e.key!) ?? 'Local salvo'),
+        name: e.key == null ? null : placeName(e.key!),
         visits: e.value,
       ),
   ]..sort((a, b) => b.visits.compareTo(a.visits));

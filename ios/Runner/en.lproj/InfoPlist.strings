@@ -1,0 +1,6 @@
+/* Permission descriptions. iOS shows them in the SYSTEM language: the app language
+   chosen in Settings cannot change them. */
+"NSLocationWhenInUseUsageDescription" = "Only when you tap \"Use my location\": to suggest nearby places and mark the point on the map. Bebômetro does not track your movements.";
+"NSCameraUsageDescription" = "The camera is only used to photograph labels and menus of the outing. Photos stay on your device.";
+"NSPhotoLibraryUsageDescription" = "The photo library is only used so you can pick photos of labels and menus of the outing.";
+"NSMotionUsageDescription" = "Device motion is only used to tilt the beer in \"Tilt the glass\". Nothing is recorded.";

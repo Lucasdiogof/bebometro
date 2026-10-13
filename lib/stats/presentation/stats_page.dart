@@ -11,6 +11,7 @@ import '../../outings/domain/outing.dart';
 import '../../places/presentation/place_detail_page.dart';
 import 'records_page.dart';
 import 'stats_cubit.dart';
+import '../../l10n/l10n.dart';
 
 /// Personal statistics for a period. Everything is derived from the user's own
 /// records; unknown values stay unknown and incomplete totals are labelled.
@@ -60,7 +61,7 @@ class _StatsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<StatsCubit>();
     return Scaffold(
-      appBar: AppBar(title: const Text('Estatísticas')),
+      appBar: AppBar(title: Text(tr.statsTitle)),
       body: BlocBuilder<StatsCubit, StatsState>(
         builder: (context, state) {
           final report = state.report;
@@ -90,23 +91,24 @@ class _StatsView extends StatelessWidget {
                 ),
               ),
               Text(
-                '${formatDate(report.range.start)} a '
-                '${formatDate(report.range.end.subtract(const Duration(days: 1)))}'
-                ' · ${report.range.days} dias',
+                tr.statsRangeLine(
+                    formatDate(report.range.start),
+                    formatDate(
+                        report.range.end.subtract(const Duration(days: 1))),
+                    report.range.days),
                 style: AppText.caption,
               ),
               if (report.isEmpty)
-                const Padding(
-                  padding: EdgeInsets.only(top: AppSpace.xl),
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpace.xl),
                   child: EmptyView(
                     icon: Icons.insights_outlined,
-                    title: 'Nada registrado neste período',
-                    message: 'Isso só quer dizer que não há registros aqui, '
-                        'não que não houve rolê.',
+                    title: tr.statsEmptyTitle,
+                    message: tr.statsEmptyBody,
                   ),
                 )
               else ...[
-                const SectionTitle('Resumo'),
+                SectionTitle(tr.statsSummary),
                 SurfaceCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,30 +119,31 @@ class _StatsView extends StatelessWidget {
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => RecordsPage.outings(
-                                    title: 'Rolês do período',
+                                    title: tr.statsOutingsOfPeriod,
                                     outings: report.outings),
                               ),
                             ),
                             child: StatTile(
-                                label: 'Rolês', value: '${report.outings.length}'),
+                                label: tr.placeStatOutings,
+                                value: '${report.outings.length}'),
                           ),
                         ),
                         Expanded(
                           child: InkWell(
                             onTap: () => _openEntries(
-                                context, 'Bebidas do período', report.entries),
+                                context, tr.statsDrinksOfPeriod, report.entries),
                             child: StatTile(
-                                label: 'Bebidas registradas',
+                                label: tr.statsDrinksLogged,
                                 value: '${report.entries.length}'),
                           ),
                         ),
                       ]),
                       const SizedBox(height: AppSpace.lg),
                       InkWell(
-                        onTap: () => _openEntries(context, 'Registros com preço',
+                        onTap: () => _openEntries(context, tr.statsPricedRecords,
                             [for (final e in report.entries) if (e.hasPrice) e]),
                         child: StatTile(
-                          label: 'Gasto informado',
+                          label: tr.placeStatSpent,
                           value: formatCents(report.informedCents),
                           icon: Icons.payments_outlined,
                         ),
@@ -148,9 +151,7 @@ class _StatsView extends StatelessWidget {
                       if (report.unpricedCount > 0) ...[
                         const SizedBox(height: AppSpace.sm),
                         InfoPill(
-                          '${report.unpricedCount} '
-                          '${report.unpricedCount == 1 ? 'bebida' : 'bebidas'} '
-                          'sem preço: o total pode estar maior',
+                          tr.summaryUnpricedPill(report.unpricedCount),
                           icon: Icons.sell_outlined,
                           warning: true,
                         ),
@@ -158,7 +159,7 @@ class _StatsView extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SectionTitle('Volume pessoal informado'),
+                SectionTitle(tr.statsVolumeSection),
                 SurfaceCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,14 +167,14 @@ class _StatsView extends StatelessWidget {
                       Row(children: [
                         Expanded(
                           child: StatTile(
-                            label: 'Bebidas com álcool',
+                            label: tr.statsAlcoholicVolume,
                             value: formatMl(report.alcoholicMl),
                             icon: Icons.local_bar_outlined,
                           ),
                         ),
                         Expanded(
                           child: StatTile(
-                            label: 'Água e sem álcool',
+                            label: tr.statsNonAlcoholicVolume,
                             value: formatMl(report.nonAlcoholicMl),
                             icon: Icons.water_drop_outlined,
                           ),
@@ -182,9 +183,7 @@ class _StatsView extends StatelessWidget {
                       if (report.unknownVolumeCount > 0) ...[
                         const SizedBox(height: AppSpace.sm),
                         InfoPill(
-                          '${report.unknownVolumeCount} '
-                          '${report.unknownVolumeCount == 1 ? 'registro' : 'registros'} '
-                          'sem volume: não entram nas somas',
+                          tr.statsUnknownVolume(report.unknownVolumeCount),
                           icon: Icons.opacity_outlined,
                           warning: true,
                         ),
@@ -192,38 +191,34 @@ class _StatsView extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SectionTitle('Álcool calculado'),
+                SectionTitle(tr.statsAlcoholSection),
                 SurfaceCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       StatTile(
-                        label: 'Álcool puro dos dados conhecidos',
-                        value: (report.alcoholIncomplete ? 'pelo menos ' : '') +
-                            formatGrams(report.pureAlcoholGrams),
+                        label: tr.statsPureAlcohol,
+                        value: report.alcoholIncomplete
+                            ? tr.entryAtLeast(formatGrams(report.pureAlcoholGrams))
+                            : formatGrams(report.pureAlcoholGrams),
                         icon: Icons.science_outlined,
                       ),
                       if (report.alcoholIncomplete) ...[
                         const SizedBox(height: AppSpace.sm),
                         InfoPill(
-                          '${report.incompleteAlcoholCount} '
-                          '${report.incompleteAlcoholCount == 1 ? 'registro' : 'registros'} '
-                          'com teor ou quantidade desconhecidos',
+                          tr.statsIncompleteAlcohol(
+                              report.incompleteAlcoholCount),
                           icon: Icons.help_outline_rounded,
                           warning: true,
                         ),
                       ],
                       const SizedBox(height: AppSpace.sm),
-                      const Text(
-                        'Volume × teor (ou quantidade × teor dos componentes '
-                        'dos drinks). Não é concentração no sangue.',
-                        style: AppText.caption,
-                      ),
+                      Text(tr.statsAlcoholNote, style: AppText.caption),
                     ],
                   ),
                 ),
                 if (report.alcoholic.isNotEmpty) ...[
-                  const SectionTitle('Com álcool, por categoria'),
+                  SectionTitle(tr.statsAlcoholByCategory),
                   _Bars(
                     items: [
                       for (final c in report.alcoholic)
@@ -231,7 +226,7 @@ class _StatsView extends StatelessWidget {
                           label: c.category.label,
                           value: c.count,
                           note: c.unknownVolumeCount > 0
-                              ? '${c.unknownVolumeCount} sem volume'
+                              ? tr.statsNoVolumeNote(c.unknownVolumeCount)
                               : null,
                           onTap: () => _openEntries(
                               context, c.category.label, c.entries),
@@ -240,7 +235,7 @@ class _StatsView extends StatelessWidget {
                   ),
                 ],
                 if (report.nonAlcoholic.isNotEmpty) ...[
-                  const SectionTitle('Água e sem álcool, à parte'),
+                  SectionTitle(tr.statsNonAlcoholicSection),
                   _Bars(
                     items: [
                       for (final c in report.nonAlcoholic)
@@ -254,7 +249,7 @@ class _StatsView extends StatelessWidget {
                     ],
                   ),
                 ],
-                const SectionTitle('Locais mais visitados'),
+                SectionTitle(tr.statsTopPlaces),
                 for (final p in report.places.take(5))
                   Padding(
                     padding: const EdgeInsets.only(bottom: AppSpace.sm),
@@ -267,20 +262,14 @@ class _StatsView extends StatelessWidget {
                       child: Row(children: [
                         Expanded(
                             child: Text(p.label, style: AppText.subtitle)),
-                        Text('${p.visits} ${p.visits == 1 ? 'rolê' : 'rolês'}',
-                            style: AppText.caption),
+                        Text(tr.placesVisits(p.visits), style: AppText.caption),
                       ]),
                     ),
                   ),
-                const Text(
-                  'Locais só são agrupados quando são o mesmo local salvo; '
-                  'nomes parecidos não são unidos.',
-                  style: AppText.caption,
-                ),
-                const SectionTitle('Relatos pós-rolê'),
+                Text(tr.statsPlacesNote, style: AppText.caption),
+                SectionTitle(tr.statsMoods),
                 if (report.moods.isEmpty)
-                  const Text('Nenhum relato neste período.',
-                      style: AppText.caption)
+                  Text(tr.statsNoMoods, style: AppText.caption)
                 else
                   _Bars(
                     items: [
@@ -292,25 +281,17 @@ class _StatsView extends StatelessWidget {
                 if (report.withoutMood > 0)
                   Padding(
                     padding: const EdgeInsets.only(top: AppSpace.sm),
-                    child: Text('${report.withoutMood} sem relato.',
+                    child: Text(tr.statsWithoutMood(report.withoutMood),
                         style: AppText.caption),
                   ),
-                const Padding(
-                  padding: EdgeInsets.only(top: AppSpace.xs),
-                  child: Text(
-                    'Relatos são pessoais: não medem tolerância e não indicam '
-                    'um limite seguro.',
-                    style: AppText.caption,
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpace.xs),
+                  child: Text(tr.statsMoodsNote, style: AppText.caption),
                 ),
-                const SectionTitle('Período anterior'),
+                SectionTitle(tr.statsPrevious),
                 _Comparison(state: state),
                 const SizedBox(height: AppSpace.xl),
-                const Text(
-                  'Dia sem registro não significa dia sem beber: os números '
-                  'refletem só o que foi registrado.',
-                  style: AppText.caption,
-                ),
+                Text(tr.statsFootnote, style: AppText.caption),
               ],
             ],
           );
@@ -422,8 +403,7 @@ class _Comparison extends StatelessWidget {
     if (!state.hasComparison || prev == null) {
       return SurfaceCard(
         child: Text(
-          'Sem base de comparação: não há rolês registrados nos '
-          '${report.range.days} dias anteriores a este período.',
+          tr.statsNoBaseline(report.range.days),
           style: AppText.caption,
         ),
       );
@@ -434,25 +414,23 @@ class _Comparison extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Comparado aos ${report.range.days} dias imediatamente antes '
-            '(${formatDate(prev.range.start)} a '
-            '${formatDate(prev.range.end.subtract(const Duration(days: 1)))}).',
+            tr.statsComparedTo(
+                report.range.days,
+                formatDate(prev.range.start),
+                formatDate(prev.range.end.subtract(const Duration(days: 1)))),
             style: AppText.caption,
           ),
           const SizedBox(height: AppSpace.md),
-          _line('Rolês', '${report.outings.length}', '${prev.outings.length}'),
-          _line('Bebidas registradas', '${report.entries.length}',
+          _line(tr.placeStatOutings, '${report.outings.length}',
+              '${prev.outings.length}'),
+          _line(tr.statsDrinksLogged, '${report.entries.length}',
               '${prev.entries.length}'),
-          _line('Gasto informado', formatCents(report.informedCents),
+          _line(tr.placeStatSpent, formatCents(report.informedCents),
               formatCents(prev.informedCents)),
           if (incomplete)
-            const Padding(
-              padding: EdgeInsets.only(top: AppSpace.sm),
-              child: Text(
-                'Há bebidas sem preço em um dos períodos: o gasto real pode '
-                'ser maior que o informado.',
-                style: AppText.caption,
-              ),
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpace.sm),
+              child: Text(tr.statsIncompleteCompare, style: AppText.caption),
             ),
         ],
       ),
@@ -463,7 +441,7 @@ class _Comparison extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Row(children: [
           Expanded(child: Text(label, style: AppText.body)),
-          Text('$now  (antes: $before)', style: AppText.subtitle),
+          Text(tr.statsLineBefore(now, before), style: AppText.subtitle),
         ]),
       );
 }

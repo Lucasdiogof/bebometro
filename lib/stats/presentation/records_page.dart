@@ -9,6 +9,7 @@ import '../../drinks/domain/drink_entry.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/domain/outing.dart';
 import '../../outings/presentation/outing_summary_page.dart';
+import '../../l10n/l10n.dart';
 
 /// The records (or outings) that make up a number shown in the statistics.
 class RecordsPage extends StatelessWidget {
@@ -38,7 +39,7 @@ class RecordsPage extends StatelessWidget {
           context,
           title: o.displayName,
           subtitle: '${formatDate(o.startedAt)} · ${formatTime(o.startedAt)}'
-              '${o.isActive ? ' · em andamento' : ''}',
+              '${o.isActive ? ' · ${tr.placeVisitInProgress}' : ''}',
           outingId: o.id,
         ));
       }
@@ -51,12 +52,12 @@ class RecordsPage extends StatelessWidget {
           context,
           title: e.name,
           subtitle: '${formatDateTime(e.consumedAt)}'
-              '${e.personalMl == null ? ' · volume desconhecido' : ' · ${formatMl(e.personalMl!)}'}'
+              '${e.personalMl == null ? ' · ${tr.recordsUnknownVolume}' : ' · ${formatMl(e.personalMl!)}'}'
               '${outing == null ? '' : ' · ${outing.displayName}'}',
           trailing: switch (e.priceKind) {
             PriceKind.informed => formatCents(e.paidCents ?? 0),
-            PriceKind.complimentary => 'Cortesia',
-            PriceKind.unknown => 'Sem preço',
+            PriceKind.complimentary => tr.priceComplimentary,
+            PriceKind.unknown => tr.priceNone,
           },
           outingId: e.outingId,
         ));

@@ -13,6 +13,7 @@ import '../../places/presentation/places_page.dart';
 import '../../stats/presentation/stats_page.dart';
 import '../../outings/presentation/outing_summary_page.dart';
 import 'history_cubit.dart';
+import '../../l10n/l10n.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
@@ -34,17 +35,17 @@ class _HistoryView extends StatelessWidget {
     final cubit = context.read<HistoryCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Histórico'),
+        title: Text(tr.navHistory),
         actions: [
           IconButton(
-            tooltip: 'Estatísticas',
+            tooltip: tr.statsTitle,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const StatsPage()),
             ),
             icon: const Icon(Icons.insights_outlined),
           ),
           IconButton(
-            tooltip: 'Locais salvos',
+            tooltip: tr.settingsSavedPlaces,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const PlacesPage()),
             ),
@@ -57,10 +58,10 @@ class _HistoryView extends StatelessWidget {
         builder: (context, state) {
           if (state.loading) return const LoadingView();
           if (state.total == 0) {
-            return const EmptyView(
+            return EmptyView(
               icon: Icons.history_rounded,
-              title: 'Nenhum rolê encerrado',
-              message: 'Quando você encerrar um rolê, ele aparece aqui.',
+              title: tr.historyEmptyTitle,
+              message: tr.historyEmptyBody,
             );
           }
           return Column(
@@ -71,9 +72,9 @@ class _HistoryView extends StatelessWidget {
                 child: TextField(
                   onChanged: cubit.setQuery,
                   textInputAction: TextInputAction.search,
-                  decoration: const InputDecoration(
-                    hintText: 'Buscar pelo nome do local',
-                    prefixIcon: Icon(Icons.search_rounded),
+                  decoration: InputDecoration(
+                    hintText: tr.historySearchHint,
+                    prefixIcon: const Icon(Icons.search_rounded),
                   ),
                 ),
               ),
@@ -82,9 +83,9 @@ class _HistoryView extends StatelessWidget {
                 child: state.items.isEmpty
                     ? EmptyView(
                         icon: Icons.filter_alt_off_outlined,
-                        title: 'Nenhum rolê com esses filtros',
-                        message: 'Tente outro nome, período ou tipo.',
-                        actionLabel: 'Limpar filtros',
+                        title: tr.historyNoMatchTitle,
+                        message: tr.historyNoMatchBody,
+                        actionLabel: tr.catalogClearFilters,
                         onAction: cubit.clearFilters,
                       )
                     : _List(items: state.items),
@@ -123,7 +124,7 @@ class _Filters extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
           children: [
-            _chip('Todos os tipos', state.type == null,
+            _chip(tr.historyAllTypes, state.type == null,
                 () => cubit.setType(null)),
             for (final t in OutingType.values)
               _chip(t.label, state.type == t,
@@ -219,7 +220,7 @@ class _OutingCard extends StatelessWidget {
               ),
               const SizedBox(height: AppSpace.xs),
               Text(
-                '${s.entryCount} ${s.entryCount == 1 ? 'bebida' : 'bebidas'}'
+                '${tr.drinkCount(s.entryCount)}'
                 ' · ${s.volumeLabel}',
                 style: AppText.caption.copyWith(color: AppColors.text),
               ),
@@ -232,12 +233,12 @@ class _OutingCard extends StatelessWidget {
           children: [
             Text(
               s.pricedCount == 0
-                  ? 'Sem valores'
+                  ? tr.historyNoValues
                   : formatCents(s.informedCents),
               style: AppText.subtitle,
             ),
             if (s.unpricedCount > 0)
-              Text('${s.unpricedCount} sem preço',
+              Text(tr.homeUnpriced(s.unpricedCount),
                   style: AppText.caption.copyWith(fontSize: 12)),
           ],
         ),

@@ -69,6 +69,13 @@ class TrackingCoordinator {
     schedule(immediate: true);
   }
 
+  /// The language of the app changed: the texts on the lock screen are
+  /// resent right away (the snapshot differs by its texts).
+  void refreshTexts() {
+    _last = null;
+    schedule(immediate: true);
+  }
+
   /// Merges rapid changes into one native update.
   void schedule({bool immediate = false}) {
     _debounce?.cancel();

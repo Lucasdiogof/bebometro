@@ -6,18 +6,21 @@ import '../../drinks/data/drink_repository.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../places/data/place_repository.dart';
 import '../domain/stats_report.dart';
+import '../../l10n/l10n.dart';
 
 /// Quick periods; null days means a custom range.
 enum StatsPreset {
-  days7(7, '7 dias'),
-  days30(30, '30 dias'),
-  days90(90, '90 dias'),
-  custom(null, 'Personalizado');
+  days7(7),
+  days30(30),
+  days90(90),
+  custom(null);
 
-  const StatsPreset(this.days, this.label);
+  const StatsPreset(this.days);
 
   final int? days;
-  final String label;
+
+  String get label =>
+      days == null ? tr.statsPresetCustom : tr.statsPresetDays(days!);
 }
 
 class StatsState {

@@ -49,15 +49,21 @@ object TrackingNotifier {
         return true
     }
 
-    private fun ensureChannel(ctx: Context) {
+    /**
+     * Creates the channel, or renames it: creating a channel again with the same
+     * id only updates its name and description (the importance the person chose
+     * is kept by the system). The texts come from Flutter, in the language
+     * chosen in the app; the Portuguese ones are the fallback.
+     */
+    private fun ensureChannel(ctx: Context, name: String?, text: String?) {
         if (Build.VERSION.SDK_INT < 26) return
         val nm = ctx.getSystemService(NotificationManager::class.java)
         val channel = NotificationChannel(
             CHANNEL_ID,
-            "Rolê em andamento",
+            name ?: "Rolê em andamento",
             NotificationManager.IMPORTANCE_LOW,
         ).apply {
-            description = "Tempo e contagem do rolê na tela bloqueada. Sem som nem vibração."
+            description = text ?: "Tempo e contagem do rolê na tela bloqueada. Sem som nem vibração."
             setSound(null, null)
             enableVibration(false)
             enableLights(false)
@@ -120,7 +126,11 @@ object TrackingNotifier {
         if (!hasPermission(ctx)) return "permissionDenied"
         if (!enabledInSystem(ctx)) return "systemOff"
         if (dismissed(ctx).contains(outingId)) return "dismissed"
-        ensureChannel(ctx)
+
+        // Ready-made texts in the app's language (never the system's).
+        val texts = a["texts"] as? Map<*, *>
+        fun text(key: String): String? = (texts?.get(key) as? String)?.takeIf { it.isNotBlank() }
+        ensureChannel(ctx, text("channelName"), text("channelDescription"))
 
         val startedAt = (a["startedAtMs"] as? Number)?.toLong() ?: System.currentTimeMillis()
         val count = (a["alcoholicCount"] as? Number)?.toInt() ?: 0
@@ -129,8 +139,9 @@ object TrackingNotifier {
         val place = (a["place"] as? String)?.takeIf { it.isNotBlank() }
         val next = (a["nextLabel"] as? String)?.takeIf { it.isNotBlank() }
 
-        val title = place ?: "Rolê em andamento"
-        val countText = when (count) {
+        val fallbackTitle = text("title") ?: "Rolê em andamento"
+        val title = place ?: fallbackTitle
+        val countText = text("count") ?: when (count) {
             0 -> "Nenhum registro de bebida alcoólica"
             1 -> "1 registro de bebida alcoólica"
             else -> "$count registros de bebida alcoólica"
@@ -138,7 +149,7 @@ object TrackingNotifier {
         val lines = mutableListOf(countText)
         if (spend != null) {
             lines.add(
-                if (unpriced > 0) "${money(spend)} informados · $unpriced sem preço"
+                text("spend") ?: if (unpriced > 0) "${money(spend)} informados · $unpriced sem preço"
                 else "${money(spend)} informados",
             )
         }
@@ -146,7 +157,7 @@ object TrackingNotifier {
         // What the lock screen shows when the phone hides sensitive content.
         val public = builder(ctx)
             .setSmallIcon(R.drawable.ic_stat_bebometro)
-            .setContentTitle("Rolê em andamento")
+            .setContentTitle(fallbackTitle)
             .setWhen(startedAt)
             .setUsesChronometer(true)
             .setShowWhen(true)
@@ -190,7 +201,7 @@ object TrackingNotifier {
             b.addAction(
                 Notification.Action.Builder(
                     Icon.createWithResource(ctx, R.drawable.ic_stat_bebometro),
-                    "Mais uma · $next",
+                    text("anotherWith") ?: "Mais uma · $next",
                     linkIntent(ctx, outingId, "another", 11),
                 ).build(),
             )
@@ -198,7 +209,7 @@ object TrackingNotifier {
         b.addAction(
             Notification.Action.Builder(
                 Icon.createWithResource(ctx, R.drawable.ic_stat_bebometro),
-                "Água",
+                text("water") ?: "Água",
                 linkIntent(ctx, outingId, "water", 12),
             ).build(),
         )

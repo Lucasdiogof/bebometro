@@ -7,6 +7,7 @@ import '../../drinks/data/drink_repository.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/domain/outing.dart';
 import '../../outings/domain/outing_summary.dart';
+import '../../l10n/l10n.dart';
 
 class HistoryItem {
   const HistoryItem(this.outing, this.summary);
@@ -16,13 +17,15 @@ class HistoryItem {
 }
 
 enum HistoryPeriod {
-  all('Tudo'),
-  thisMonth('Este mês'),
-  last90Days('90 dias');
+  all,
+  thisMonth,
+  last90Days;
 
-  const HistoryPeriod(this.label);
-
-  final String label;
+  String get label => switch (this) {
+        HistoryPeriod.all => tr.historyPeriodAll,
+        HistoryPeriod.thisMonth => tr.historyPeriodMonth,
+        HistoryPeriod.last90Days => tr.statsPresetDays(90),
+      };
 }
 
 class HistoryState {

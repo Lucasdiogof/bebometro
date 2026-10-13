@@ -17,6 +17,7 @@ import '../../table/data/table_prefs_cubit.dart';
 import '../../table/domain/table_scenario.dart';
 import '../../table/presentation/table_scene.dart';
 import '../data/share_service.dart';
+import '../../l10n/l10n.dart';
 
 /// A shareable summary card of an outing. The person chooses what appears;
 /// the address and the personal account are never included, and nothing is
@@ -51,10 +52,12 @@ class _ShareCardPageState extends State<ShareCardPage> {
       if (_showPlace) o.displayName,
       if (_showDrinks)
         for (final g in s.groups.take(8)) '${g.count}× ${g.name}',
-      if (_showDrinks && s.groups.length > 8) '+ ${s.groups.length - 8} outros',
+      if (_showDrinks && s.groups.length > 8)
+        tr.shareCardOthers(s.groups.length - 8),
       if (_showSpending)
-        'Gasto informado: ${formatCents(s.informedCents)}'
-            '${s.unpricedCount > 0 ? ' (há bebidas sem preço)' : ''}',
+        s.unpricedCount > 0
+            ? tr.shareCardSpendTextPartial(formatCents(s.informedCents))
+            : tr.shareCardSpendText(formatCents(s.informedCents)),
     ];
     return lines.join('\n');
   }
@@ -78,10 +81,8 @@ class _ShareCardPageState extends State<ShareCardPage> {
         await Clipboard.setData(ClipboardData(text: _summaryText()));
         messenger
           ..hideCurrentSnackBar()
-          ..showSnackBar(const SnackBar(
-            content: Text(
-                'Não foi possível abrir o compartilhamento. O texto do resumo '
-                'foi copiado.'),
+          ..showSnackBar(SnackBar(
+            content: Text(tr.shareCardFailed),
           ));
       }
     } finally {
@@ -91,7 +92,7 @@ class _ShareCardPageState extends State<ShareCardPage> {
 
   Future<void> _copy() async {
     await Clipboard.setData(ClipboardData(text: _summaryText()));
-    if (mounted) showToast(context, 'Texto copiado');
+    if (mounted) showToast(context, tr.tabTextCopied);
   }
 
   @override
@@ -106,7 +107,7 @@ class _ShareCardPageState extends State<ShareCardPage> {
         .state
         .scenarioFor(outing.id, outing.type);
     return Scaffold(
-      appBar: AppBar(title: const Text('Compartilhar resumo')),
+      appBar: AppBar(title: Text(tr.shareCardTitle)),
       body: Column(
         children: [
           Expanded(
@@ -114,11 +115,7 @@ class _ShareCardPageState extends State<ShareCardPage> {
               padding: const EdgeInsets.fromLTRB(
                   AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
               children: [
-                const Text(
-                  'Escolha o que aparece. O endereço e o seu relato nunca '
-                  'entram, e nada é publicado sozinho.',
-                  style: AppText.caption,
-                ),
+                Text(tr.shareCardIntro, style: AppText.caption),
                 const SizedBox(height: AppSpace.md),
                 Center(
                   child: FittedBox(
@@ -137,34 +134,34 @@ class _ShareCardPageState extends State<ShareCardPage> {
                     ),
                   ),
                 ),
-                const SectionTitle('O que mostrar'),
+                SectionTitle(tr.shareCardWhat),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('Nome do local'),
-                  subtitle: const Text('Só o nome, nunca o endereço.'),
+                  title: Text(tr.shareCardPlaceName),
+                  subtitle: Text(tr.shareCardPlaceNameHint),
                   value: _showPlace,
                   activeThumbColor: AppColors.amber,
                   onChanged: (v) => setState(() => _showPlace = v),
                 ),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('Mesa'),
+                  title: Text(tr.tableViewTable),
                   value: _showTable,
                   activeThumbColor: AppColors.amber,
                   onChanged: (v) => setState(() => _showTable = v),
                 ),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('Bebidas registradas'),
+                  title: Text(tr.statsDrinksLogged),
                   value: _showDrinks,
                   activeThumbColor: AppColors.amber,
                   onChanged: (v) => setState(() => _showDrinks = v),
                 ),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('Gasto informado'),
+                  title: Text(tr.placeStatSpent),
                   subtitle: summary.unpricedCount > 0
-                      ? const Text('Há bebidas sem preço: o total é parcial.')
+                      ? Text(tr.shareCardSpendHint)
                       : null,
                   value: _showSpending,
                   activeThumbColor: AppColors.amber,
@@ -179,7 +176,7 @@ class _ShareCardPageState extends State<ShareCardPage> {
                 child: OutlinedButton.icon(
                   onPressed: _copy,
                   icon: const Icon(Icons.copy_rounded),
-                  label: const Text('Copiar texto'),
+                  label: Text(tr.tabCopyText),
                 ),
               ),
               const SizedBox(width: AppSpace.sm),
@@ -187,7 +184,7 @@ class _ShareCardPageState extends State<ShareCardPage> {
                 child: FilledButton.icon(
                   onPressed: _busy ? null : _share,
                   icon: const Icon(Icons.ios_share_rounded),
-                  label: const Text('Compartilhar'),
+                  label: Text(tr.tabShareButton),
                 ),
               ),
             ]),
@@ -251,7 +248,7 @@ class _Card extends StatelessWidget {
           ]),
           const SizedBox(height: 10),
           Text(
-            showPlace ? outing.displayName : 'Meu rolê',
+            showPlace ? outing.displayName : tr.shareCardMyOuting,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -279,14 +276,16 @@ class _Card extends StatelessWidget {
                 style: const TextStyle(color: AppColors.text, fontSize: 15),
               ),
             if (summary.groups.length > 5)
-              Text('+ ${summary.groups.length - 5} outros',
+              Text(tr.shareCardOthers(summary.groups.length - 5),
                   style: const TextStyle(color: AppColors.textMuted)),
           ],
           const Spacer(),
           if (showSpending)
             Text(
-              'Gasto informado ${formatCents(summary.informedCents)}'
-              '${summary.unpricedCount > 0 ? ' (parcial)' : ''}',
+              summary.unpricedCount > 0
+                  ? tr.shareCardSpendCardPartial(
+                      formatCents(summary.informedCents))
+                  : tr.shareCardSpendCard(formatCents(summary.informedCents)),
               style: const TextStyle(
                   color: AppColors.amber, fontWeight: FontWeight.w800),
             ),

@@ -173,7 +173,8 @@ final class TrackingChannel {
             spendCents: (a["spendCents"] as? NSNumber)?.intValue,
             unpricedCount: (a["unpricedCount"] as? NSNumber)?.intValue ?? 0,
             place: (a["place"] as? String).flatMap { $0.isEmpty ? nil : $0 },
-            nextLabel: (a["nextLabel"] as? String).flatMap { $0.isEmpty ? nil : $0 }
+            nextLabel: (a["nextLabel"] as? String).flatMap { $0.isEmpty ? nil : $0 },
+            texts: Self.texts(from: a["texts"])
         )
         let content = ActivityContent(state: state, staleDate: nil)
 
@@ -202,6 +203,27 @@ final class TrackingChannel {
             // refused (limit of activities, user setting).
             return "error"
         }
+    }
+
+    /// The texts Flutter sent, in the app's language. Empty strings count as
+    /// missing, so the widget falls back to its own wording.
+    @available(iOS 16.2, *)
+    private static func texts(from raw: Any?) -> OutingActivityAttributes.ContentState.Texts? {
+        guard let map = raw as? [String: Any] else { return nil }
+        func s(_ key: String) -> String? {
+            guard let v = map[key] as? String, !v.isEmpty else { return nil }
+            return v
+        }
+        return OutingActivityAttributes.ContentState.Texts(
+            title: s("title"),
+            count: s("count"),
+            spend: s("spend"),
+            open: s("open"),
+            another: s("another"),
+            anotherWith: s("anotherWith"),
+            anotherA11y: s("anotherA11y"),
+            water: s("water")
+        )
     }
 
     private func end(outingId: String?) async {

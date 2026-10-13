@@ -7826,6 +7826,636 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Total conhecido {amount} · sua parte {mine}'**
   String tabCardLineKnownShare(String amount, String mine);
+
+  /// No description provided for @statsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estatísticas'**
+  String get statsTitle;
+
+  /// No description provided for @statsPresetDays.
+  ///
+  /// In pt, this message translates to:
+  /// **'{days} dias'**
+  String statsPresetDays(String days);
+
+  /// No description provided for @statsPresetCustom.
+  ///
+  /// In pt, this message translates to:
+  /// **'Personalizado'**
+  String get statsPresetCustom;
+
+  /// No description provided for @statsRangeLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'{from} a {to} · {days, plural, =1{1 dia} other{{days} dias}}'**
+  String statsRangeLine(String from, String to, int days);
+
+  /// No description provided for @statsEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nada registrado neste período'**
+  String get statsEmptyTitle;
+
+  /// No description provided for @statsEmptyBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Isso só quer dizer que não há registros aqui, não que não houve rolê.'**
+  String get statsEmptyBody;
+
+  /// No description provided for @statsSummary.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resumo'**
+  String get statsSummary;
+
+  /// No description provided for @statsOutingsOfPeriod.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rolês do período'**
+  String get statsOutingsOfPeriod;
+
+  /// No description provided for @statsDrinksLogged.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebidas registradas'**
+  String get statsDrinksLogged;
+
+  /// No description provided for @statsDrinksOfPeriod.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebidas do período'**
+  String get statsDrinksOfPeriod;
+
+  /// No description provided for @statsPricedRecords.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registros com preço'**
+  String get statsPricedRecords;
+
+  /// No description provided for @statsVolumeSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume pessoal informado'**
+  String get statsVolumeSection;
+
+  /// No description provided for @statsAlcoholicVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebidas com álcool'**
+  String get statsAlcoholicVolume;
+
+  /// No description provided for @statsNonAlcoholicVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Água e sem álcool'**
+  String get statsNonAlcoholicVolume;
+
+  /// No description provided for @statsUnknownVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 registro sem volume: não entra nas somas} other{{count} registros sem volume: não entram nas somas}}'**
+  String statsUnknownVolume(int count);
+
+  /// No description provided for @statsAlcoholSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Álcool calculado'**
+  String get statsAlcoholSection;
+
+  /// No description provided for @statsPureAlcohol.
+  ///
+  /// In pt, this message translates to:
+  /// **'Álcool puro dos dados conhecidos'**
+  String get statsPureAlcohol;
+
+  /// No description provided for @statsIncompleteAlcohol.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 registro com teor ou quantidade desconhecidos} other{{count} registros com teor ou quantidade desconhecidos}}'**
+  String statsIncompleteAlcohol(int count);
+
+  /// No description provided for @statsAlcoholNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume × teor (ou quantidade × teor dos componentes dos drinks). Não é concentração no sangue.'**
+  String get statsAlcoholNote;
+
+  /// No description provided for @statsAlcoholByCategory.
+  ///
+  /// In pt, this message translates to:
+  /// **'Com álcool, por categoria'**
+  String get statsAlcoholByCategory;
+
+  /// No description provided for @statsNoVolumeNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count} sem volume'**
+  String statsNoVolumeNote(String count);
+
+  /// No description provided for @statsNonAlcoholicSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Água e sem álcool, à parte'**
+  String get statsNonAlcoholicSection;
+
+  /// No description provided for @statsTopPlaces.
+  ///
+  /// In pt, this message translates to:
+  /// **'Locais mais visitados'**
+  String get statsTopPlaces;
+
+  /// No description provided for @statsPlacesNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Locais só são agrupados quando são o mesmo local salvo; nomes parecidos não são unidos.'**
+  String get statsPlacesNote;
+
+  /// No description provided for @statsMoods.
+  ///
+  /// In pt, this message translates to:
+  /// **'Relatos pós-rolê'**
+  String get statsMoods;
+
+  /// No description provided for @statsNoMoods.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum relato neste período.'**
+  String get statsNoMoods;
+
+  /// No description provided for @statsWithoutMood.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count} sem relato.'**
+  String statsWithoutMood(String count);
+
+  /// No description provided for @statsMoodsNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Relatos são pessoais: não medem tolerância e não indicam um limite seguro.'**
+  String get statsMoodsNote;
+
+  /// No description provided for @statsPrevious.
+  ///
+  /// In pt, this message translates to:
+  /// **'Período anterior'**
+  String get statsPrevious;
+
+  /// No description provided for @statsFootnote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dia sem registro não significa dia sem beber: os números refletem só o que foi registrado.'**
+  String get statsFootnote;
+
+  /// No description provided for @statsNoBaseline.
+  ///
+  /// In pt, this message translates to:
+  /// **'{days, plural, =1{Sem base de comparação: não há rolês registrados no dia anterior a este período.} other{Sem base de comparação: não há rolês registrados nos {days} dias anteriores a este período.}}'**
+  String statsNoBaseline(int days);
+
+  /// No description provided for @statsComparedTo.
+  ///
+  /// In pt, this message translates to:
+  /// **'{days, plural, =1{Comparado ao dia imediatamente antes ({from} a {to}).} other{Comparado aos {days} dias imediatamente antes ({from} a {to}).}}'**
+  String statsComparedTo(int days, String from, String to);
+
+  /// No description provided for @statsIncompleteCompare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Há bebidas sem preço em um dos períodos: o gasto real pode ser maior que o informado.'**
+  String get statsIncompleteCompare;
+
+  /// No description provided for @statsLineBefore.
+  ///
+  /// In pt, this message translates to:
+  /// **'{now}  (antes: {before})'**
+  String statsLineBefore(String now, String before);
+
+  /// No description provided for @statsNoSavedPlace.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem local salvo'**
+  String get statsNoSavedPlace;
+
+  /// No description provided for @statsSavedPlaceFallback.
+  ///
+  /// In pt, this message translates to:
+  /// **'Local salvo'**
+  String get statsSavedPlaceFallback;
+
+  /// No description provided for @recordsUnknownVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'volume desconhecido'**
+  String get recordsUnknownVolume;
+
+  /// No description provided for @historyEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum rolê encerrado'**
+  String get historyEmptyTitle;
+
+  /// No description provided for @historyEmptyBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quando você encerrar um rolê, ele aparece aqui.'**
+  String get historyEmptyBody;
+
+  /// No description provided for @historySearchHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar pelo nome do local'**
+  String get historySearchHint;
+
+  /// No description provided for @historyNoMatchTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum rolê com esses filtros'**
+  String get historyNoMatchTitle;
+
+  /// No description provided for @historyNoMatchBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tente outro nome, período ou tipo.'**
+  String get historyNoMatchBody;
+
+  /// No description provided for @historyPeriodAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tudo'**
+  String get historyPeriodAll;
+
+  /// No description provided for @historyPeriodMonth.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este mês'**
+  String get historyPeriodMonth;
+
+  /// No description provided for @historyAllTypes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos os tipos'**
+  String get historyAllTypes;
+
+  /// No description provided for @historyNoValues.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem valores'**
+  String get historyNoValues;
+
+  /// No description provided for @exportTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Exportar meus dados'**
+  String get exportTitle;
+
+  /// No description provided for @exportIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seus registros, do jeito que estão no aparelho. Nada é enviado a ninguém: você escolhe onde guardar. Nenhum dado de acesso ou sessão entra nos arquivos.'**
+  String get exportIntro;
+
+  /// No description provided for @exportJsonTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tudo em JSON'**
+  String get exportJsonTitle;
+
+  /// No description provided for @exportJsonBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Locais, rolês, bebidas, composições, comandas e suas bebidas próprias, com todos os detalhes. Chaves e códigos fixos, independentes do idioma do app.'**
+  String get exportJsonBody;
+
+  /// No description provided for @exportOutingsCsvTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rolês em CSV'**
+  String get exportOutingsCsvTitle;
+
+  /// No description provided for @exportOutingsCsvBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Um resumo por rolê. Separador \";\", decimal com vírgula, UTF-8. Colunas e códigos fixos, independentes do idioma do app.'**
+  String get exportOutingsCsvBody;
+
+  /// No description provided for @exportDrinksCsvTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebidas em CSV'**
+  String get exportDrinksCsvTitle;
+
+  /// No description provided for @exportDrinksCsvBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Uma linha por registro. Campo vazio = desconhecido, nunca zero. Colunas e códigos fixos, independentes do idioma do app.'**
+  String get exportDrinksCsvBody;
+
+  /// No description provided for @exportButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Exportar'**
+  String get exportButton;
+
+  /// No description provided for @exportCopy.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copiar'**
+  String get exportCopy;
+
+  /// No description provided for @exportCopied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copiado'**
+  String get exportCopied;
+
+  /// No description provided for @exportShareUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar não está disponível aqui. O conteúdo foi copiado: cole em um arquivo para guardar.'**
+  String get exportShareUnavailable;
+
+  /// No description provided for @exportFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível gerar o arquivo.'**
+  String get exportFailed;
+
+  /// No description provided for @exportJsonNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dados pessoais exportados pela própria pessoa. Valores em centavos, volumes em ml, horários em UTC. Campos nulos são desconhecidos, não zero.'**
+  String get exportJsonNote;
+
+  /// No description provided for @shareCardTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar resumo'**
+  String get shareCardTitle;
+
+  /// No description provided for @shareCardIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha o que aparece. O endereço e o seu relato nunca entram, e nada é publicado sozinho.'**
+  String get shareCardIntro;
+
+  /// No description provided for @shareCardWhat.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que mostrar'**
+  String get shareCardWhat;
+
+  /// No description provided for @shareCardPlaceName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do local'**
+  String get shareCardPlaceName;
+
+  /// No description provided for @shareCardPlaceNameHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só o nome, nunca o endereço.'**
+  String get shareCardPlaceNameHint;
+
+  /// No description provided for @shareCardSpendHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Há bebidas sem preço: o total é parcial.'**
+  String get shareCardSpendHint;
+
+  /// No description provided for @shareCardFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível abrir o compartilhamento. O texto do resumo foi copiado.'**
+  String get shareCardFailed;
+
+  /// No description provided for @shareCardMyOuting.
+  ///
+  /// In pt, this message translates to:
+  /// **'Meu rolê'**
+  String get shareCardMyOuting;
+
+  /// No description provided for @shareCardOthers.
+  ///
+  /// In pt, this message translates to:
+  /// **'+ {count} outros'**
+  String shareCardOthers(String count);
+
+  /// No description provided for @shareCardSpendText.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gasto informado: {amount}'**
+  String shareCardSpendText(String amount);
+
+  /// No description provided for @shareCardSpendTextPartial.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gasto informado: {amount} (há bebidas sem preço)'**
+  String shareCardSpendTextPartial(String amount);
+
+  /// No description provided for @shareCardSpendCard.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gasto informado {amount}'**
+  String shareCardSpendCard(String amount);
+
+  /// No description provided for @shareCardSpendCardPartial.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gasto informado {amount} (parcial)'**
+  String shareCardSpendCardPartial(String amount);
+
+  /// No description provided for @trackingWeb.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não disponível no navegador: o acompanhamento fica só dentro do app.'**
+  String get trackingWeb;
+
+  /// No description provided for @trackingIosOld.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não disponível nesta versão do iOS (precisa do iOS 16.2 ou mais novo).'**
+  String get trackingIosOld;
+
+  /// No description provided for @trackingUnsupported.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não disponível neste aparelho.'**
+  String get trackingUnsupported;
+
+  /// No description provided for @trackingDisabled.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desativado por você.'**
+  String get trackingDisabled;
+
+  /// No description provided for @trackingPermission.
+  ///
+  /// In pt, this message translates to:
+  /// **'Permissão do sistema indisponível. Libere as notificações do Bebômetro nas configurações do aparelho.'**
+  String get trackingPermission;
+
+  /// No description provided for @trackingSystemOffIos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desligado nos ajustes do iPhone (Atividades ao Vivo).'**
+  String get trackingSystemOffIos;
+
+  /// No description provided for @trackingSystemOffAndroid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notificações desligadas nas configurações do aparelho.'**
+  String get trackingSystemOffAndroid;
+
+  /// No description provided for @trackingNoOuting.
+  ///
+  /// In pt, this message translates to:
+  /// **'Disponível durante um rolê.'**
+  String get trackingNoOuting;
+
+  /// No description provided for @trackingHidden.
+  ///
+  /// In pt, this message translates to:
+  /// **'Oculto neste rolê. Use \"{action}\" na tela do rolê.'**
+  String trackingHidden(String action);
+
+  /// No description provided for @trackingDismissed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você removeu da tela bloqueada neste rolê. Use \"{action}\" na tela do rolê.'**
+  String trackingDismissed(String action);
+
+  /// No description provided for @trackingActive.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ativo agora.'**
+  String get trackingActive;
+
+  /// No description provided for @trackingPending.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ligado, mas ainda não apareceu. No iPhone ele só começa com o app aberto; abra o rolê.'**
+  String get trackingPending;
+
+  /// No description provided for @trackingNoPermissionToast.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem permissão de notificações. Dá para liberar nas configurações do aparelho.'**
+  String get trackingNoPermissionToast;
+
+  /// No description provided for @trackingEnable.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ativar acompanhamento'**
+  String get trackingEnable;
+
+  /// No description provided for @trackingEnableHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mostra o tempo e a contagem do rolê em andamento na tela bloqueada. Sem som nem vibração.'**
+  String get trackingEnableHint;
+
+  /// No description provided for @trackingShowSpend.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mostrar gastos'**
+  String get trackingShowSpend;
+
+  /// No description provided for @trackingShowSpendHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quanto você informou ter gasto em bebidas, não o total da mesa.'**
+  String get trackingShowSpendHint;
+
+  /// No description provided for @trackingShowPlace.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mostrar nome do local'**
+  String get trackingShowPlace;
+
+  /// No description provided for @trackingShowPlaceHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desligado, aparece só \"Rolê em andamento\". O endereço nunca aparece.'**
+  String get trackingShowPlaceHint;
+
+  /// No description provided for @trackingCountNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'O contador mostra quantos registros de bebida alcoólica você fez (água não conta; uma garrafa dividida é um registro). Não são doses nem medem alcoolemia. O sistema pode encerrar a exibição sozinho depois de algumas horas, sem encerrar o rolê.'**
+  String get trackingCountNote;
+
+  /// No description provided for @trackingOfferBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Veja o tempo e a contagem de bebidas do rolê sem abrir o app. Por padrão não mostra gastos nem o nome do local. Sem som nem vibração, e dá para ocultar em cada rolê ou desligar quando quiser em Configurações.'**
+  String get trackingOfferBody;
+
+  /// No description provided for @trackingOfferActivate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ativar'**
+  String get trackingOfferActivate;
+
+  /// No description provided for @trackingTitleFallback.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rolê em andamento'**
+  String get trackingTitleFallback;
+
+  /// No description provided for @trackingCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Nenhum registro de bebida alcoólica} =1{1 registro de bebida alcoólica} other{{count} registros de bebida alcoólica}}'**
+  String trackingCount(int count);
+
+  /// No description provided for @trackingSpend.
+  ///
+  /// In pt, this message translates to:
+  /// **'{amount} informados'**
+  String trackingSpend(String amount);
+
+  /// No description provided for @trackingSpendUnpriced.
+  ///
+  /// In pt, this message translates to:
+  /// **'{amount} informados · {count} sem preço'**
+  String trackingSpendUnpriced(String amount, String count);
+
+  /// No description provided for @trackingOpen.
+  ///
+  /// In pt, this message translates to:
+  /// **'Abrir'**
+  String get trackingOpen;
+
+  /// No description provided for @trackingAnother.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais uma'**
+  String get trackingAnother;
+
+  /// No description provided for @trackingAnotherWith.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais uma · {next}'**
+  String trackingAnotherWith(String next);
+
+  /// No description provided for @trackingAnotherA11y.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais uma, {next}'**
+  String trackingAnotherA11y(String next);
+
+  /// No description provided for @trackingWater.
+  ///
+  /// In pt, this message translates to:
+  /// **'Água'**
+  String get trackingWater;
+
+  /// No description provided for @trackingChannelDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tempo e contagem do rolê na tela bloqueada. Sem som nem vibração.'**
+  String get trackingChannelDescription;
 }
 
 class _AppLocalizationsDelegate

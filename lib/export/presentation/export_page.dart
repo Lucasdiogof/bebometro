@@ -11,6 +11,7 @@ import '../../drinks/data/drink_repository.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../share/data/share_service.dart';
 import '../domain/export_builder.dart';
+import '../../l10n/l10n.dart';
 
 /// Export of the person's own records (JSON with every detail, CSV for
 /// spreadsheets). Nothing leaves the device unless they share or copy it, and
@@ -74,16 +75,14 @@ class _ExportPageState extends State<ExportPage> {
         await Clipboard.setData(ClipboardData(text: text));
         messenger
           ..hideCurrentSnackBar()
-          ..showSnackBar(const SnackBar(
-            content: Text('Compartilhar não está disponível aqui. O conteúdo '
-                'foi copiado: cole em um arquivo para guardar.'),
+          ..showSnackBar(SnackBar(
+            content: Text(tr.exportShareUnavailable),
           ));
       }
     } catch (_) {
       messenger
         ..hideCurrentSnackBar()
-        ..showSnackBar(
-            const SnackBar(content: Text('Não foi possível gerar o arquivo.')));
+        ..showSnackBar(SnackBar(content: Text(tr.exportFailed)));
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -91,7 +90,7 @@ class _ExportPageState extends State<ExportPage> {
 
   Future<void> _copy(String Function() build) async {
     await Clipboard.setData(ClipboardData(text: build()));
-    if (mounted) showToast(context, 'Copiado');
+    if (mounted) showToast(context, tr.exportCopied);
   }
 
   Widget _tile({
@@ -123,14 +122,14 @@ class _ExportPageState extends State<ExportPage> {
                       ? null
                       : () => _export(name: fileName, mime: mime, build: build),
                   icon: const Icon(Icons.ios_share_rounded),
-                  label: const Text('Exportar'),
+                  label: Text(tr.exportButton),
                 ),
               ),
               const SizedBox(width: AppSpace.sm),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(minimumSize: const Size(0, 52)),
                 onPressed: () => _copy(build),
-                child: const Text('Copiar'),
+                child: Text(tr.exportCopy),
               ),
             ]),
           ],
@@ -142,40 +141,33 @@ class _ExportPageState extends State<ExportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Exportar meus dados')),
+      appBar: AppBar(title: Text(tr.exportTitle)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
             AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
         children: [
-          const Text(
-            'Seus registros, do jeito que estão no aparelho. Nada é enviado '
-            'a ninguém: você escolhe onde guardar. Nenhum dado de acesso ou '
-            'sessão entra nos arquivos.',
-            style: AppText.caption,
-          ),
+          Text(tr.exportIntro, style: AppText.caption),
           const SizedBox(height: AppSpace.lg),
           _tile(
             icon: Icons.data_object_rounded,
-            title: 'Tudo em JSON',
-            subtitle: 'Locais, rolês, bebidas, composições e suas bebidas '
-                'próprias, com todos os detalhes.',
+            title: tr.exportJsonTitle,
+            subtitle: tr.exportJsonBody,
             fileName: 'bebometro-dados.json',
             mime: 'application/json',
             build: _json,
           ),
           _tile(
             icon: Icons.table_chart_outlined,
-            title: 'Rolês em CSV',
-            subtitle: 'Um resumo por rolê (separador ";", acentos em UTF-8).',
+            title: tr.exportOutingsCsvTitle,
+            subtitle: tr.exportOutingsCsvBody,
             fileName: 'bebometro-roles.csv',
             mime: 'text/csv',
             build: _outingsCsv,
           ),
           _tile(
             icon: Icons.local_bar_outlined,
-            title: 'Bebidas em CSV',
-            subtitle: 'Uma linha por registro. Campo vazio = desconhecido, '
-                'nunca zero.',
+            title: tr.exportDrinksCsvTitle,
+            subtitle: tr.exportDrinksCsvBody,
             fileName: 'bebometro-bebidas.csv',
             mime: 'text/csv',
             build: _drinksCsv,
