@@ -9,6 +9,13 @@ import '../../outings/presentation/outing_summary_page.dart';
 import '../data/tracking_platform.dart';
 import 'tracking_coordinator.dart';
 
+/// Navigator shared by the whole app (auth screens and every account).
+class AppNavigator {
+  const AppNavigator._();
+
+  static final key = GlobalKey<NavigatorState>();
+}
+
 /// A quick action asked from the lock screen, waiting for the person to
 /// confirm it inside the app. Nothing is registered by opening a link.
 class PendingTrackingAction {
@@ -43,20 +50,29 @@ class TrackingLinks {
   final OutingRepository _outings;
   final TrackingCoordinator _coordinator;
 
-  final navigatorKey = GlobalKey<NavigatorState>();
+  /// The app's single navigator (it outlives accounts).
+  GlobalKey<NavigatorState> get navigatorKey => AppNavigator.key;
   String? _lastKey;
   DateTime? _lastAt;
   bool _polling = false;
+
+  bool _stopped = false;
 
   void start() {
     _platform.onLink = () => unawaited(poll());
     unawaited(poll());
   }
 
+  /// Account closed: taps from now on belong to the next account.
+  void stop() {
+    _stopped = true;
+    _platform.onLink = null;
+  }
+
   /// Asks the native side for a tap that arrived while the app was closed or
   /// in the background. Safe to call often: a tap is delivered once.
   Future<void> poll() async {
-    if (_polling) return;
+    if (_polling || _stopped) return;
     _polling = true;
     try {
       final link = await _platform.consumeLink();
@@ -79,7 +95,8 @@ class TrackingLinks {
     _lastAt = now;
 
     final navigator = await _readyNavigator();
-    if (navigator == null) return;
+    // The account may have closed while waiting: the tap was for it.
+    if (navigator == null || _stopped) return;
     final context = navigator.context;
 
     final outing = _outings.byId(link.outingId);

@@ -6,7 +6,8 @@ import 'core/di/injector.dart';
 import 'core/sync/sync_cubit.dart';
 import 'core/theme/app_colors.dart';
 import 'core/theme/app_theme.dart';
-import 'shell/main_shell.dart';
+import 'account/application/auth_controller.dart';
+import 'account/presentation/access_gate.dart';
 import 'table/data/table_prefs_cubit.dart';
 import 'tracking/application/tracking_coordinator.dart';
 import 'tracking/application/tracking_links.dart';
@@ -24,11 +25,9 @@ class _BebometroAppState extends State<BebometroApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // After the first frame the navigator exists and the stores are open.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      getIt<TrackingCoordinator>().start();
-      getIt<TrackingLinks>().start();
-    });
+    // Restores the session from disk (no network needed) and starts
+    // listening to auth events, e-mail links included.
+    getIt<AuthController>().start();
   }
 
   @override
@@ -41,7 +40,7 @@ class _BebometroAppState extends State<BebometroApp>
   /// ready for them) is retried whenever the app comes back to the foreground.
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.resumed && AccountScope.isOpen) {
       getIt<SyncCubit>().schedule(immediate: true);
       // Reconcile the lock-screen surface with the stored state and pick up a
       // tap that arrived while the app was in the background.
@@ -54,12 +53,12 @@ class _BebometroAppState extends State<BebometroApp>
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: getIt<SyncCubit>()),
+        BlocProvider.value(value: getIt<AuthController>()),
         BlocProvider.value(value: getIt<TablePrefsCubit>()),
       ],
       child: MaterialApp(
         title: 'Bebômetro',
-        navigatorKey: getIt<TrackingLinks>().navigatorKey,
+        navigatorKey: AppNavigator.key,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.dark(),
         darkTheme: AppTheme.dark(),
@@ -78,11 +77,22 @@ class _BebometroAppState extends State<BebometroApp>
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 520),
-              child: child,
+              // Every route of an account sees that account's sync state.
+              child: ValueListenableBuilder<String?>(
+                valueListenable: AccountScope.current,
+                builder: (context, uid, _) => uid == null
+                    ? child!
+                    : BlocProvider.value(
+                        key: ValueKey(uid),
+                        value: getIt<SyncCubit>(),
+                        child: child!,
+                      ),
+              ),
             ),
           ),
         ),
-        home: const MainShell(),
+        // Sign-in, old records and the product itself: decided in one place.
+        home: const AccessGate(),
       ),
     );
   }

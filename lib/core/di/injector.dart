@@ -1,8 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../account/application/auth_controller.dart';
+import '../../account/data/legacy_data.dart';
 import '../../drinks/data/catalog_loader.dart';
 import '../../games/data/game_repository.dart';
+import '../../games/domain/game_models.dart';
 import '../../games/presentation/game_cubit.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/catalog_item.dart';
@@ -38,7 +42,9 @@ import '../../tracking/data/tracking_platform.dart';
 import '../../tracking/data/tracking_prefs.dart';
 import '../config/env.dart';
 import '../data/app_prefs.dart';
+import '../data/device_store.dart';
 import '../data/local_store.dart';
+import '../sync/sync_conflicts.dart';
 import '../sync/sync_cubit.dart';
 
 final getIt = GetIt.instance;
@@ -57,146 +63,241 @@ List<DrinkEntry> _priceCandidates(Outing outing) {
   ];
 }
 
-Future<void> configureDependencies() async {
-  final store = await LocalStore.open();
-  final bundledCatalog = await CatalogLoader.load();
-  final bundledCards = await GameRepository.loadBundled();
+late List<CatalogItem> _bundledCatalog;
+late List<GameCard> _bundledCards;
+var _cloudEnabled = false;
 
-  var cloudEnabled = true;
+/// Device level: everything that does not belong to an account (preferences
+/// of the device, bundled assets, camera/OCR, map search, the native
+/// lock-screen channel) plus the session controller. Account data is only
+/// reachable after [AccountScope.open].
+Future<void> configureDependencies() async {
+  final device = await DeviceStore.open();
+  _bundledCatalog = await CatalogLoader.load();
+  _bundledCards = await GameRepository.loadBundled();
+
   try {
     await Supabase.initialize(
       url: Env.supabaseUrl,
       publishableKey: Env.supabasePublishableKey,
+      // PKCE: e-mail links are exchanged for a session by the device that
+      // asked for them; the SDK listens for the links (app_links) itself.
+      authOptions: FlutterAuthClientOptions(
+        authFlowType: AuthFlowType.pkce,
+        detectSessionInUri: true,
+        // Only the auth callback is an auth link; bebometro://outing/... taps
+        // from the lock screen are handled by the app itself.
+        detectSessionInUriPredicate: (uri) =>
+            kIsWeb || uri.host == Uri.parse(Env.authRedirectUrl).host,
+      ),
     );
+    _cloudEnabled = true;
   } catch (_) {
-    cloudEnabled = false;
+    _cloudEnabled = false;
   }
 
-  final photoFiles = PhotoFiles();
-  final outingDrinks = OutingDrinkRepository(store, photoFiles);
-
+  final legacy = LegacyData(device);
   getIt
-    ..registerSingleton<LocalStore>(store)
-    ..registerSingleton<OutingDrinkRepository>(outingDrinks)
-    ..registerSingleton<ScanDraftStore>(ScanDraftStore(store))
+    ..registerSingleton<DeviceStore>(device)
+    ..registerSingleton<LegacyData>(legacy)
+    ..registerSingleton<AuthController>(
+        AuthController(device, legacy, cloudEnabled: _cloudEnabled))
+    ..registerSingleton<PhotoFiles>(PhotoFiles())
     ..registerSingleton<ImageCaptureService>(ImageCaptureService())
     ..registerSingleton<TextRecognizer>(TextRecognizer())
-    ..registerSingleton<SyncCubit>(SyncCubit(
-      store,
-      cloudEnabled: cloudEnabled,
-      uploads: PhotoUploader(store, outingDrinks),
-    ))
-    ..registerSingleton<OutingRepository>(
-      OutingRepository(store),
-    )
-    ..registerSingleton<DrinkRepository>(
-      DrinkRepository(store, bundledCatalog),
-    )
     ..registerLazySingleton<TrackingPlatform>(() => TrackingPlatform())
-    ..registerLazySingleton<TrackingPrefs>(() => TrackingPrefs(store))
-    ..registerLazySingleton<TrackingCoordinator>(
-      () => TrackingCoordinator(
-        getIt<TrackingPlatform>(),
-        getIt<TrackingPrefs>(),
-        getIt<OutingRepository>(),
-        getIt<DrinkRepository>(),
-      ),
-    )
-    ..registerLazySingleton<TrackingLinks>(
-      () => TrackingLinks(
-        getIt<TrackingPlatform>(),
-        getIt<OutingRepository>(),
-        getIt<TrackingCoordinator>(),
-      ),
-    )
-    ..registerLazySingleton<TabRepository>(
-      () => TabRepository(store, getIt<DrinkRepository>()),
-    )
-    ..registerSingleton<AppPrefs>(AppPrefs(store))
-    ..registerSingleton<TablePrefsCubit>(TablePrefsCubit(store))
-    ..registerSingleton<GameRepository>(GameRepository(store, bundledCards))
-    ..registerFactory<GameCubit>(() => GameCubit(getIt<GameRepository>()))
-    ..registerFactory<StatsCubit>(
-      () => StatsCubit(
-        getIt<OutingRepository>(),
-        getIt<DrinkRepository>(),
-        getIt<PlaceRepository>(),
-      ),
-    )
-    ..registerFactory<ActiveOutingCubit>(
-      () => ActiveOutingCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
-    )
-    ..registerFactory<HomeCubit>(
-      () => HomeCubit(
-        getIt<OutingRepository>(),
-        getIt<DrinkRepository>(),
-        getIt<AppPrefs>(),
-      ),
-    )
-    ..registerFactory<HistoryCubit>(
-      () => HistoryCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
-    )
-    ..registerFactory<SettingsCubit>(
-      () => SettingsCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
-    )
-    ..registerFactory<MyDrinksCubit>(
-      () => MyDrinksCubit(getIt<DrinkRepository>(), getIt<OutingRepository>()),
-    )
-    ..registerSingleton<PlaceRepository>(PlaceRepository(store))
+    ..registerLazySingleton<TrackingPrefs>(() => TrackingPrefs(device))
+    ..registerSingleton<TablePrefsCubit>(TablePrefsCubit(device))
     // Search and location are only called on demand (never at app start).
     ..registerLazySingleton<GeoSearch>(GeoSearch.new)
-    ..registerLazySingleton<DeviceLocation>(DeviceLocation.new)
-    ..registerFactory<PlacesCubit>(
-      () => PlacesCubit(getIt<PlaceRepository>(), getIt<OutingRepository>()),
-    )
-    ..registerFactoryParam<PlaceDetailCubit, String, void>(
-      (placeId, _) => PlaceDetailCubit(
-        placeId,
-        getIt<PlaceRepository>(),
-        getIt<OutingRepository>(),
-        getIt<DrinkRepository>(),
-      ),
-    )
-    ..registerFactory<StartOutingCubit>(
-      () => StartOutingCubit(getIt<OutingRepository>(), getIt<PlaceRepository>()),
-    )
-    ..registerFactory<CatalogCubit>(() => CatalogCubit(getIt<DrinkRepository>()))
-    ..registerFactoryParam<PriceFixCubit, String, void>(
-      (outingId, _) => PriceFixCubit(outingId, getIt<DrinkRepository>()),
-    )
-    ..registerFactoryParam<OutingCubit, String, void>(
-      (outingId, _) => OutingCubit(
-        outingId,
-        getIt<OutingRepository>(),
-        getIt<DrinkRepository>(),
-        getIt<AppPrefs>(),
-      ),
-    )
-    ..registerFactoryParam<DrinkFormCubit, ({String outingId, CatalogItem item}),
-        void>(
-      (args, _) {
-        final outing = getIt<OutingRepository>().byId(args.outingId)!;
-        return DrinkFormCubit.forItem(
-          getIt<DrinkRepository>(),
-          outing,
-          args.item,
-          _priceCandidates(outing),
-        );
-      },
-      instanceName: 'new',
-    )
-    ..registerFactoryParam<DrinkFormCubit, DrinkEntry, void>(
-      (entry, _) {
-        final outing = getIt<OutingRepository>().byId(entry.outingId)!;
-        return DrinkFormCubit.forEntry(
-          getIt<DrinkRepository>(),
-          outing,
-          entry,
-          _priceCandidates(outing),
-        );
-      },
-      instanceName: 'edit',
-    );
+    ..registerLazySingleton<DeviceLocation>(DeviceLocation.new);
+}
 
-  getIt<SyncCubit>().start();
+/// The data space of one signed-in account, as a get_it scope. Opening it
+/// loads only that account's records; closing it stops the sync (late answers
+/// are ignored because the store refuses writes once closed), ends the
+/// lock-screen surface and drops a pending lock-screen tap.
+class AccountScope {
+  const AccountScope._();
+
+  static const name = 'account';
+  static String? _userId;
+
+  /// Open account (null = none). Widgets above the navigator listen to it to
+  /// provide the account's cubits to every route.
+  static final current = ValueNotifier<String?>(null);
+
+  static String? get userId => _userId;
+
+  static bool get isOpen => getIt.hasScope(name);
+
+  static Future<void> open(String userId) async {
+    if (_userId == userId && isOpen) return;
+    await close();
+    final closing = _closing;
+    if (closing != null) await closing;
+
+    // Old records written by this same user (converted anonymous session)
+    // become the account space; anything else waits for an explicit import.
+    final legacy = getIt<LegacyData>();
+    if (legacy.owner == userId) await legacy.adopt(userId);
+
+    final store = await LocalStore.openAccount(userId);
+    _userId = userId;
+    getIt.pushNewScope(
+      scopeName: name,
+      init: (g) => _register(g, store, userId),
+    );
+    getIt<SyncCubit>().start();
+    current.value = userId;
+  }
+
+  static Future<void>? _closing;
+
+  /// Safe to call from several places at once (gate, sign-out, deletion).
+  static Future<void> close() =>
+      _closing ??= _close().whenComplete(() => _closing = null);
+
+  static Future<void> _close() async {
+    current.value = null;
+    if (!isOpen) {
+      _userId = null;
+      return;
+    }
+    try {
+      // Native surfaces and taps belong to the account being closed.
+      await getIt<TrackingCoordinator>().shutdown();
+      await getIt<TrackingPlatform>().consumeLink();
+    } catch (_) {}
+    await getIt.dropScope(name);
+    _userId = null;
+  }
+
+  static void _register(GetIt g, LocalStore store, String userId) {
+    final files = getIt<PhotoFiles>();
+    final outingDrinks = OutingDrinkRepository(store, files);
+    final conflicts = SyncConflicts(store);
+    g
+      ..registerSingleton<LocalStore>(store, dispose: (s) => s.close())
+      ..registerSingleton<SyncConflicts>(conflicts, dispose: (c) => c.dispose())
+      ..registerSingleton<OutingDrinkRepository>(outingDrinks)
+      ..registerSingleton<ScanDraftStore>(ScanDraftStore(store))
+      ..registerSingleton<SyncCubit>(
+        SyncCubit(
+          store,
+          cloudEnabled: _cloudEnabled,
+          userId: userId,
+          conflicts: conflicts,
+          uploads: PhotoUploader(store, outingDrinks),
+        ),
+        dispose: (c) => c.close(),
+      )
+      ..registerSingleton<OutingRepository>(OutingRepository(store))
+      ..registerSingleton<DrinkRepository>(
+          DrinkRepository(store, _bundledCatalog))
+      ..registerSingleton<TrackingCoordinator>(
+        TrackingCoordinator(
+          getIt<TrackingPlatform>(),
+          getIt<TrackingPrefs>(),
+          getIt<OutingRepository>(),
+          getIt<DrinkRepository>(),
+        ),
+        dispose: (c) => c.dispose(),
+      )
+      ..registerSingleton<TrackingLinks>(
+        TrackingLinks(
+          getIt<TrackingPlatform>(),
+          getIt<OutingRepository>(),
+          getIt<TrackingCoordinator>(),
+        ),
+        dispose: (l) => l.stop(),
+      )
+      ..registerLazySingleton<TabRepository>(
+        () => TabRepository(store, getIt<DrinkRepository>()),
+      )
+      ..registerSingleton<AppPrefs>(AppPrefs(getIt<DeviceStore>(), store))
+      ..registerSingleton<GameRepository>(GameRepository(store, _bundledCards))
+      ..registerSingleton<PlaceRepository>(PlaceRepository(store))
+      ..registerFactory<GameCubit>(() => GameCubit(getIt<GameRepository>()))
+      ..registerFactory<StatsCubit>(
+        () => StatsCubit(
+          getIt<OutingRepository>(),
+          getIt<DrinkRepository>(),
+          getIt<PlaceRepository>(),
+        ),
+      )
+      ..registerFactory<ActiveOutingCubit>(
+        () => ActiveOutingCubit(
+            getIt<OutingRepository>(), getIt<DrinkRepository>()),
+      )
+      ..registerFactory<HomeCubit>(
+        () => HomeCubit(
+          getIt<OutingRepository>(),
+          getIt<DrinkRepository>(),
+          getIt<AppPrefs>(),
+        ),
+      )
+      ..registerFactory<HistoryCubit>(
+        () => HistoryCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
+      )
+      ..registerFactory<SettingsCubit>(
+        () => SettingsCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
+      )
+      ..registerFactory<MyDrinksCubit>(
+        () => MyDrinksCubit(getIt<DrinkRepository>(), getIt<OutingRepository>()),
+      )
+      ..registerFactory<PlacesCubit>(
+        () => PlacesCubit(getIt<PlaceRepository>(), getIt<OutingRepository>()),
+      )
+      ..registerFactoryParam<PlaceDetailCubit, String, void>(
+        (placeId, _) => PlaceDetailCubit(
+          placeId,
+          getIt<PlaceRepository>(),
+          getIt<OutingRepository>(),
+          getIt<DrinkRepository>(),
+        ),
+      )
+      ..registerFactory<StartOutingCubit>(
+        () => StartOutingCubit(
+            getIt<OutingRepository>(), getIt<PlaceRepository>()),
+      )
+      ..registerFactory<CatalogCubit>(
+          () => CatalogCubit(getIt<DrinkRepository>()))
+      ..registerFactoryParam<PriceFixCubit, String, void>(
+        (outingId, _) => PriceFixCubit(outingId, getIt<DrinkRepository>()),
+      )
+      ..registerFactoryParam<OutingCubit, String, void>(
+        (outingId, _) => OutingCubit(
+          outingId,
+          getIt<OutingRepository>(),
+          getIt<DrinkRepository>(),
+          getIt<AppPrefs>(),
+        ),
+      )
+      ..registerFactoryParam<DrinkFormCubit,
+          ({String outingId, CatalogItem item}), void>(
+        (args, _) {
+          final outing = getIt<OutingRepository>().byId(args.outingId)!;
+          return DrinkFormCubit.forItem(
+            getIt<DrinkRepository>(),
+            outing,
+            args.item,
+            _priceCandidates(outing),
+          );
+        },
+        instanceName: 'new',
+      )
+      ..registerFactoryParam<DrinkFormCubit, DrinkEntry, void>(
+        (entry, _) {
+          final outing = getIt<OutingRepository>().byId(entry.outingId)!;
+          return DrinkFormCubit.forEntry(
+            getIt<DrinkRepository>(),
+            outing,
+            entry,
+            _priceCandidates(outing),
+          );
+        },
+        instanceName: 'edit',
+      );
+  }
 }

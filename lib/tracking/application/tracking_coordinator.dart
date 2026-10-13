@@ -234,7 +234,23 @@ class TrackingCoordinator {
     }
   }
 
+  /// Account closing (sign out or switch): takes this account's surfaces off
+  /// the lock screen and stops reacting. A run already in flight sees a new
+  /// generation and gives up.
+  Future<void> shutdown() async {
+    _generation++;
+    _debounce?.cancel();
+    for (final s in _subs) {
+      await s.cancel();
+    }
+    _subs.clear();
+    _started = false;
+    _last = null;
+    await _platform.end();
+  }
+
   void dispose() {
+    _generation++;
     _debounce?.cancel();
     for (final s in _subs) {
       s.cancel();

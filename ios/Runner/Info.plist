@@ -30,7 +30,8 @@
 	<string>A câmera é usada só para fotografar rótulos e cardápios do rolê. As fotos ficam no seu aparelho.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>A galeria é usada só para você escolher fotos de rótulos e cardápios do rolê.</string>
-	<!-- Links are handled by the app (TrackingChannel), not turned into routes. -->
+	<!-- Links are handled by the app, not turned into routes: bebometro://outing/... by
+	     TrackingChannel, bebometro://auth-callback by supabase_flutter (app_links). -->
 	<key>FlutterDeepLinkingEnabled</key>
 	<false/>
 	<key>NSSupportsLiveActivities</key>

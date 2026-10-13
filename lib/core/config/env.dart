@@ -18,4 +18,12 @@ class Env {
   /// address and saved places keep working. Pass with
   /// --dart-define=GEOAPIFY_KEY=... (or env.json via --dart-define-from-file).
   static const geoapifyKey = String.fromEnvironment('GEOAPIFY_KEY');
+
+  /// Where e-mail links (confirmation, password reset, e-mail change) bring
+  /// the person back on Android/iOS. Must be listed in Supabase > Auth > URL
+  /// Configuration > Redirect URLs. On the web the page origin is used.
+  static const authRedirectUrl = String.fromEnvironment(
+    'AUTH_REDIRECT_URL',
+    defaultValue: 'bebometro://auth-callback',
+  );
 }

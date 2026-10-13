@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../account/application/auth_controller.dart';
+import '../../account/presentation/account_page.dart';
 import '../../core/data/app_prefs.dart';
 import '../../core/di/injector.dart';
 import '../../core/sync/sync_cubit.dart';
@@ -46,7 +48,9 @@ class _SettingsViewState extends State<_SettingsView> {
     setState(() => _running = false);
     final s = sync.state;
     final text = switch (s.status) {
-      SyncStatus.synced => 'Tudo sincronizado.',
+      SyncStatus.synced => s.conflicts > 0
+          ? 'Enviado, mas há ${s.conflicts} alteração(ões) para resolver em Minha conta.'
+          : 'Tudo sincronizado.',
       SyncStatus.pending => 'Ainda há ${s.pending} alteração(ões) para enviar.',
       SyncStatus.syncing => 'Sincronizando…',
       SyncStatus.failed ||
@@ -73,6 +77,35 @@ class _SettingsViewState extends State<_SettingsView> {
               padding: const EdgeInsets.fromLTRB(
                   AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
               children: [
+                const SectionTitle('Minha conta'),
+                SurfaceCard(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const AccountPage()),
+                  ),
+                  child: Row(children: [
+                    const Icon(Icons.account_circle_outlined,
+                        color: AppColors.amber),
+                    const SizedBox(width: AppSpace.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            context.watch<AuthController>().state.displayName ??
+                                'Minha conta',
+                            style: AppText.subtitle,
+                          ),
+                          Text(
+                            context.watch<AuthController>().state.email ?? '',
+                            style: AppText.caption,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.chevron_right_rounded,
+                        color: AppColors.textMuted),
+                  ]),
+                ),
                 const SectionTitle('Rolê na tela bloqueada'),
                 const TrackingSettingsSection(),
                 const SectionTitle('Mesa do rolê'),
