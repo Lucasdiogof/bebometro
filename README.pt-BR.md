@@ -1,0 +1,182 @@
+<p align="center">
+  <img src="assets/branding/logo_cap.png" width="112" alt="Bebômetro">
+</p>
+
+<h1 align="center">Bebômetro</h1>
+
+<p align="center">Suas bebidas, seus gastos e seus rolês — com uma mesa que conta a história.</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white" alt="Flutter">
+  <img src="https://img.shields.io/badge/Dart-0175C2?logo=dart&logoColor=white" alt="Dart">
+  <img src="https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white" alt="Supabase">
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/platforms-Android_·_iOS_·_Web-555555" alt="Android · iOS · Web">
+</p>
+
+<p align="center"><a href="README.md">English</a> · <b>Português</b> · <a href="README.es.md">Español</a></p>
+
+---
+
+O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, festa ou uma noite com amigos. Inicie a sessão, registre as bebidas, repita o pedido com **Mais uma** e encerre com um resumo do que registrou e gastou.
+
+## Disponibilidade
+
+- **Plataformas:** Android e iOS são prioridade; o projeto também contempla Flutter web.
+- **Idioma do app:** português do Brasil. Os READMEs têm versões em português, inglês e espanhol; isso não significa que a interface esteja traduzida.
+- **Aparência:** tema escuro, destaques âmbar, ícone com **B** na tampinha e marca escrita separada.
+- **Estágio:** desenvolvimento ativo; não há lançamento em lojas documentado neste repositório.
+
+> **Estado da validação — 13/10/2026:** os recursos abaixo estão implementados em código. O handoff registra que esta entrega não foi compilada, executada no Flutter nem validada visualmente. Consultas à API do Supabase não comprovam a sincronização ponta a ponta pelo app. Consulte o [checklist](docs/development-progress.md).
+
+## Como funciona o rolê
+
+1. Inicie com apelido ou endereço e um tipo de ambiente.
+2. Escolha um produto, receita ou bebida própria; informe sua porção e, opcionalmente, o preço.
+3. Repita o pedido com **Mais uma** ou registre água separadamente.
+4. Acompanhe a lista ou a mesa ilustrada, com gastos e orçamento.
+5. Encerre, confira o resumo e consulte depois no histórico.
+6. Em outra abertura do app, conte como foi, se quiser.
+
+## Funcionalidades
+
+**Rolês e registro rápido**
+
+- Um rolê ativo por vez, recuperado do armazenamento local; horários e registros editáveis.
+- Repetição com um toque e opção de desfazer, preservando receita e porção. Água não substitui o atalho da última bebida alcoólica.
+- Garrafas compartilhadas com divisão igual ou personalizada e sobras. Uma garrafa de 600 ml dividida igualmente entre três pessoas registra 200 ml para o usuário.
+- Consumo separado de pagamento: pagar a garrafa não significa beber tudo.
+
+**Catálogo e receitas**
+
+- Catálogo embarcado e versionado de cervejas, chopps, produtos sem álcool, destilados e aperitivos, além de receitas de referência.
+- Busca por produto, marca, estilo e apelidos; filtros por categoria, marca, estilo e apresentação, favoritos e recentes.
+- Detalhes com apresentações, ingredientes declarados, teor alcoólico e fontes, quando conhecidos.
+- Componentes e unidades editáveis; bebidas e receitas pessoais atualmente podem ser editadas, duplicadas e excluídas sem modificar registros passados.
+- Cada consumo guarda uma cópia dos dados. Atualizações do catálogo ou da receita não reescrevem o histórico.
+
+**Mesa do rolê**
+
+- Alternância Mesa/Lista e seis cenários: bar, balada, churrasco, casa, praia e restaurante.
+- Latas, garrafas, copos e outros recipientes ilustrados, com agrupamento quando há muitos registros.
+- Esvaziamento decorativo opcional, redução de movimento e retrospectiva com recipientes vazios.
+- Copão de volume acumulado e brincadeira separada de “virar o copo” por arrastar ou slider. Nenhuma delas altera os consumos.
+
+**Locais e gastos**
+
+- Locais salvos com apelido ou endereço, cidade/UF opcionais, favoritos e arquivamento.
+- Orçamento opcional, avisos configuráveis e preenchimento de preços ausentes individualmente ou em lote.
+- Sugestões de preços com base em registros comparáveis do próprio usuário, confirmadas antes de usar. Não são médias públicas de mercado.
+- Valor pago, cortesia e preço desconhecido tratados separadamente.
+
+**Histórico e estatísticas pessoais**
+
+- Histórico agrupado por mês, com filtros por local, período e tipo de rolê.
+- Estatísticas de 7, 30 ou 90 dias ou período personalizado: rolês, categorias, volumes conhecidos, álcool calculado, gastos informados e locais.
+- Relato pós-rolê opcional, informações de como acordou e ressaca; lembrete de rolê aberto sem encerramento automático.
+- Dados ausentes continuam identificados. Dia sem registro não significa dia sem beber.
+
+**Resenha: jogos offline**
+
+- Eu nunca, Quem é mais provável e Verdade ou desafio.
+- Apelidos dos participantes, modos Leve/+18, pontos opcionais, cartas próprias e retomada da partida.
+- Pular não gera punição. Os jogos não exigem consumo nem registram bebidas automaticamente.
+
+**Compartilhamento e exportação**
+
+- Cartão de resumo configurável; endereço completo e relato de embriaguez não entram no cartão.
+- Exportação dos registros pessoais em JSON e dos rolês e bebidas em CSV.
+- Compartilhamento do sistema quando disponível, com alternativas de copiar texto. O suporte na web depende do navegador.
+
+## Regras dos dados e cálculos
+
+Volume, preço ou teor desconhecido não é zero. O cálculo de álcool usa somente componentes com dados declarados suficientes e indica registros incompletos; folhas, colheres e outras unidades não suportadas não são convertidas silenciosamente em ml.
+
+O app registra consumo; **não** mede álcool no sangue ou no sopro, certifica sobriedade ou estabelece um limite pessoal seguro. A animação da mesa é ilustrativa e não mede ritmo de consumo ou eliminação de álcool.
+
+## Arquitetura e sincronização
+
+Organização por funcionalidade com separação entre domínio, dados e apresentação, Cubits para estado e `get_it` para injeção de dependências.
+
+- **Gravação local primeiro:** SharedPreferences mantém os registros e uma fila durável de envios pendentes, com versões.
+- **Supabase:** autenticação anônima e PostgreSQL com migrations de RLS versionadas.
+- **Envios:** UUIDs estáveis no cliente, upserts, novas tentativas e sincronização manual. Uma pendência só sai após confirmação do servidor para aquela versão.
+- **Dependências:** locais sobem antes dos rolês vinculados; rolês antes das bebidas. Vínculos recusados ficam pendentes, sem remoção silenciosa.
+- **Limitação atual:** não há leitura de recuperação da nuvem nem conta permanente para restaurar dados em outro aparelho. Enviar dados ainda não equivale a oferecer restauração. Algumas preferências ficam locais.
+
+## Stack
+
+| Camada | Tecnologia |
+| --- | --- |
+| App | Flutter / Dart |
+| Estado | `flutter_bloc` / Cubit |
+| Injeção de dependências | `get_it` |
+| Persistência local | `shared_preferences` |
+| Backend | Supabase Auth, PostgreSQL, RLS |
+| Gráficos | Widgets Flutter e custom painters |
+| Compartilhamento | `share_plus` |
+| Formatação / IDs | `intl`, `uuid` |
+
+Cloudflare faz parte da infraestrutura planejada, não de uma dependência implantada do app atual.
+
+## Estrutura do projeto
+
+```text
+lib/
+  core/                  configuração, DI, tema, armazenamento local, sync
+  shell/                 navegação principal
+  home/  outings/        início e ciclo do rolê
+  drinks/                catálogo, receitas, porções e registros
+  places/  history/      locais salvos e rolês anteriores
+  stats/  settings/      estatísticas e preferências
+  table/  glass/         cenários, recipientes e interações com o copo
+  games/                 jogos offline
+  share/  export/        cartões de resumo e exportação pessoal
+assets/
+  branding/              tampinha e marca escrita
+  catalog/               produtos e receitas de referência
+  games/                 cartas dos jogos
+supabase/migrations/     esquema versionado do banco
+docs/                    checklist de desenvolvimento
+```
+
+## Executar localmente
+
+Use um SDK Flutter cujo Dart atenda à restrição do [`pubspec.yaml`](pubspec.yaml), atualmente `^3.13.3`. Android e iOS precisam das ferramentas das respectivas plataformas; iOS exige macOS/Xcode.
+
+Para um projeto Supabase próprio, aplique as [migrations](supabase/migrations/) em ordem e habilite login anônimo. A configuração vem de [`Env`](lib/core/config/env.dart); sobrescreva os valores de desenvolvimento embarcados para usar seu projeto.
+
+```bash
+git clone https://github.com/Lucasdiogof/bebometro.git
+cd bebometro
+flutter pub get
+flutter run --dart-define=SUPABASE_URL=https://SEU_PROJETO.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=SUA_CHAVE_PUBLICAVEL
+```
+
+Na web, acrescente `-d chrome` ao comando de execução. São instruções de configuração, não evidência de comandos executados nesta atualização da documentação. Quando o backend falha, o fluxo implementado mantém os registros locais e mostra a sincronização pendente.
+
+## Roadmap e limitações atuais
+
+- **Em andamento:** fotos de rótulos/cardápios, OCR com revisão manual e cadastro restrito ao rolê de origem. O commit mais recente adiciona a base de dados, serviços de OCR, parsers e uma migration; o fluxo completo de telas ainda não está documentado como entregue.
+- **Regra dessa entrega:** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras. Permanecem no histórico daquele rolê.
+- **Depois:** busca de locais/mapas, atividades opcionais na tela bloqueada, preços regionais sustentados por observações reais e ampliação do catálogo.
+- **Validação pendente:** resolução de dependências, compilação, fluxos em aparelho/navegador, revisão visual e sincronização ponta a ponta. Inclinação do copo por sensor ainda não está implementada.
+
+O recurso existente de bebidas pessoais reutilizáveis é anterior ao escopo de captura por rolê. A nova regra deve ser implementada preservando os registros existentes.
+
+## Documentação
+
+- [Handoff técnico](HANDOFF.md)
+- [Progresso do desenvolvimento](docs/development-progress.md)
+- [Dados do catálogo e receitas](assets/catalog/)
+- [Migrations do banco](supabase/migrations/)
+
+Ainda não há screenshots nesta apresentação: a entrega não tem capturas verificadas do app em execução. Os assets de marca não são apresentados como telas do aplicativo.
+
+## Licença
+
+Não é concedida licença de código aberto. A visibilidade do código não concede autorização de reutilização. Todos os direitos reservados. As marcas de bebidas pertencem aos respectivos titulares; o app não é afiliado a elas.
+
+## Sobre
+
+Um produto **Lucksrei**, desenvolvido por **Lucas Diogo França**. [lucksrei.com](https://lucksrei.com/)
