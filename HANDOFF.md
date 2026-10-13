@@ -154,14 +154,29 @@ máscara, então vale conferir as bordas em aparelho.
 - **Persistência:** `DrinkEntry.containerMl/personalMl` agora são anuláveis; `composition` (jsonb) só vai na
   sincronização quando há composição, e `custom_drinks.components` só em receitas próprias, então bebidas
   simples seguem sincronizando mesmo sem a migration. Registros antigos leem normalmente.
-- **Migration pendente (não aplicada, sem acesso administrativo):**
-  `supabase/migrations/20261013000000_recipes_and_unknown_volume.sql` (idempotente: torna `container_ml`,
-  `personal_ml` e `custom_drinks.volume_ml` anuláveis e cria `composition`/`components`). Até ser aplicada,
-  drinks/receitas ficam salvos no aparelho e a sincronização deles fica pendente/recusada (aviso na tela).
-- **Pendências reais:** nada disso foi compilado/executado; marcas de destilados com teor de fonte do
-  fabricante no Brasil (Smirnoff, Tanqueray, Gordon's, Ypióca, Sagatiba, Cointreau, Jameson, Cuervo) não
-  foram incluídas por falta de fonte confiável; editor de receita própria do zero só via "Drink
-  personalizado" (sem tela de edição de receita salva); catálogo de licores e vinhos de marca ainda vazio.
+- **Migration `20261013000000_recipes_and_unknown_volume.sql`: APLICADA pelo dono** (confirmado por leitura/escrita
+  de teste pela API: registro com volume nulo + `composition` e receita própria com `components` aceitos).
+  Registros de drinks/receitas que ficaram pendentes no aparelho são reenviados automaticamente: a fila
+  guarda a linha enquanto o servidor não confirma, tenta de novo com espera crescente, ao abrir/voltar ao app
+  (`didChangeAppLifecycleState`) e em "Sincronizar agora". Ainda não foi observado no app rodando.
+- **Minhas bebidas e receitas** (Configurações → Minhas bebidas e receitas): lista as bebidas e receitas do
+  usuário e permite registrar (no rolê ativo), editar, duplicar e excluir (soft). Edição de bebida simples usa
+  `CustomDrinkPage`; receitas usam o **editor completo** (`RecipeEditorPage`): nome, ingredientes
+  (adicionar/remover/reordenar), quantidade em ml, "tem álcool", teor, tipo do ingrediente (para escolher marca
+  ao registrar) e prévia do álcool com o que falta. "Criar minha versão" no detalhe de uma receita de
+  referência abre o editor já preenchido. Nada disso altera registros antigos (cada um guarda o snapshot).
+- **Destilado: garrafa x dose.** O formulário de destilado só oferece doses sugeridas (30/50/100 ml, editáveis);
+  as garrafas documentadas aparecem como informação e só viram chips (para preencher o volume da garrafa)
+  depois que o usuário marca "Compartilhada". Nada marca compartilhamento automaticamente.
+- **Totais incompletos:** além do resumo, o card do rolê em andamento mostra pílulas "N sem preço", "N sem
+  volume" e "N com álcool incompleto"; o volume aparece como "120 ml (+2 sem volume)" ou "desconhecido".
+- **Arquivos temporários:** scripts auxiliares ficam fora do repositório (pasta de scratch da sessão). O
+  `pubspec.lock`, `.dart_tool/` e `build/` apareceram no diretório sem ter sido gerados por esta sessão
+  (alguém rodou `pub get`/build); `pubspec.lock` foi deixado **intocado e não commitado**: se for o lock
+  oficial, commite-o à parte.
+- **Pendências reais:** nada foi compilado/executado por esta sessão; marcas de destilados sem fonte confiável
+  no Brasil (Smirnoff, Tanqueray, Gordon's, Ypióca, Sagatiba, Cointreau, Jameson, Cuervo) não entraram; licores
+  e vinhos de marca ainda vazios; o editor de bebida simples não tem ingredientes por componente (use receita).
 
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem

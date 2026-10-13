@@ -109,7 +109,9 @@ class OutingSummary {
   String get volumeLabel {
     final known = formatMl(personalMl);
     if (unknownVolumeCount == 0) return known;
-    return personalMl == 0 ? 'desconhecido' : '$known+';
+    return personalMl == 0
+        ? 'desconhecido'
+        : '$known (+$unknownVolumeCount sem volume)';
   }
 
   /// E.g. "R$ 90,00 informados · 2 bebidas sem preço".

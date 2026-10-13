@@ -12,6 +12,7 @@ import 'catalog_cubit.dart';
 import 'custom_drink_page.dart';
 import 'drink_detail_sheet.dart';
 import 'drink_entry_page.dart';
+import 'recipe_editor_page.dart';
 
 /// Pops `true` once a drink was registered.
 class AddDrinkPage extends StatelessWidget {
@@ -72,6 +73,13 @@ class _AddDrinkView extends StatelessWidget {
         await _pick(context, item);
       case DetailAction.edit:
         await _custom(context, editing: item);
+      case DetailAction.copyRecipe:
+        final saved = await Navigator.of(context).push<CatalogItem>(
+          MaterialPageRoute(builder: (_) => RecipeEditorPage(copyFrom: item)),
+        );
+        if (saved != null && context.mounted) {
+          showToast(context, 'Receita salva em Minhas bebidas');
+        }
       case DetailAction.delete:
         final ok = await showDialog<bool>(
           context: context,

@@ -214,14 +214,35 @@ class _OutingViewState extends State<_OutingView> {
                             ),
                           ),
                         ]),
-                        if (summary.unpricedCount > 0) ...[
+                        if (summary.unpricedCount > 0 ||
+                            summary.unknownVolumeCount > 0 ||
+                            summary.incompleteAlcoholCount > 0) ...[
                           const SizedBox(height: AppSpace.md),
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: InfoPill(
-                              '${summary.unpricedCount} sem preço',
-                              icon: Icons.sell_outlined,
-                              warning: true,
+                            child: Wrap(
+                              spacing: AppSpace.sm,
+                              runSpacing: AppSpace.sm,
+                              children: [
+                                if (summary.unpricedCount > 0)
+                                  InfoPill(
+                                    '${summary.unpricedCount} sem preço',
+                                    icon: Icons.sell_outlined,
+                                    warning: true,
+                                  ),
+                                if (summary.unknownVolumeCount > 0)
+                                  InfoPill(
+                                    '${summary.unknownVolumeCount} sem volume',
+                                    icon: Icons.opacity_outlined,
+                                    warning: true,
+                                  ),
+                                if (summary.incompleteAlcoholCount > 0)
+                                  InfoPill(
+                                    '${summary.incompleteAlcoholCount} com álcool incompleto',
+                                    icon: Icons.help_outline_rounded,
+                                    warning: true,
+                                  ),
+                              ],
                             ),
                           ),
                         ],

@@ -16,6 +16,7 @@ class DrinkFormState {
     this.presentations = const [],
     this.sizesAreGeneric = false,
     this.abvVariants = const [],
+    this.bottles = const [],
     this.showErrors = false,
     this.saving = false,
     this.saved = false,
@@ -35,6 +36,10 @@ class DrinkFormState {
 
   /// Documented ABVs when sources disagree; the user picks one or types it.
   final List<AbvVariant> abvVariants;
+
+  /// Documented bottles of a spirit. They are packages, not doses: they only
+  /// fill the bottle volume once the user marks the drink as shared.
+  final List<Presentation> bottles;
   final bool showErrors;
   final bool saving;
   final bool saved;
@@ -60,6 +65,7 @@ class DrinkFormState {
         presentations: presentations,
         sizesAreGeneric: sizesAreGeneric,
         abvVariants: abvVariants,
+        bottles: bottles,
         showErrors: showErrors ?? this.showErrors,
         saving: saving ?? this.saving,
         saved: saved ?? this.saved,
@@ -92,8 +98,16 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
           presentations: _sizesFor(item).list,
           sizesAreGeneric: _sizesFor(item).generic,
           abvVariants: item.abvVariants,
+          bottles: _bottlesOf(item),
         ),
       );
+
+  static List<Presentation> _bottlesOf(CatalogItem item) =>
+      item.category == DrinkCategory.spirit
+          ? item.documentedPresentations
+              .where((p) => p.kind == PresentationKind.bottle)
+              .toList()
+          : const [];
 
   /// Sizes shown as chips. Documented packages are kept apart from plain
   /// suggestions; spirits get dose suggestions plus their documented bottles
@@ -102,13 +116,8 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     if (item.isRecipe) return (list: const <Presentation>[], generic: false);
     final documented = item.documentedPresentations;
     if (item.category == DrinkCategory.spirit) {
-      return (
-        list: [
-          ...commonSizesFor(DrinkCategory.spirit),
-          ...documented.where((p) => p.kind == PresentationKind.bottle),
-        ],
-        generic: true,
-      );
+      // Doses only: the bottle is the package, not what one person drinks.
+      return (list: commonSizesFor(DrinkCategory.spirit), generic: true);
     }
     if (documented.isNotEmpty) return (list: documented, generic: false);
     if (item.presentations.isNotEmpty) {
@@ -140,6 +149,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
                 : commonSizesFor(entry.category)),
         sizesAreGeneric: entry.isMixed ? false : (item == null || _sizesFor(item).generic),
         abvVariants: item?.abvVariants ?? const [],
+        bottles: item == null ? const [] : _bottlesOf(item),
       ),
     );
   }
@@ -152,16 +162,8 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
 
   void _set(DrinkDraft draft) => emit(state.copyWith(draft: draft, dirty: true));
 
-  void selectPresentation(Presentation p) {
-    var draft = state.draft.withPresentation(p);
-    // A spirit bottle is meant to be shared; a dose is one person's.
-    if (draft.category == DrinkCategory.spirit &&
-        !p.isSuggestion &&
-        p.kind == PresentationKind.bottle) {
-      draft = draft.withShared(true);
-    }
-    _set(draft);
-  }
+  void selectPresentation(Presentation p) =>
+      _set(state.draft.withPresentation(p));
 
   void setVolume(int? ml) =>
       _set(state.draft.withContainerMl(ml, state.presentations));

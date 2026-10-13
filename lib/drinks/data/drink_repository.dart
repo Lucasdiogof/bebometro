@@ -147,6 +147,27 @@ class DrinkRepository {
     return _customFromJson(json);
   }
 
+  /// Makes an editable copy of a personal drink or recipe (also used to turn
+  /// a reference recipe into the user's own version).
+  Future<CatalogItem> duplicateCustom(CatalogItem item, {String? name}) async {
+    final copyName = name ?? '${item.name} (cópia)';
+    final recipe = item.recipe;
+    if (recipe != null) {
+      return saveCustomRecipe(name: copyName, components: recipe.components);
+    }
+    final volume =
+        item.presentations.isEmpty ? 1 : item.presentations.first.volumeMl;
+    return saveCustomDrink(
+      name: copyName,
+      category: item.category,
+      volumeMl: volume,
+      brand: item.brand,
+      style: item.style,
+      abvPercent: item.abvPercent,
+      ingredients: item.ingredients,
+    );
+  }
+
   /// Hides a personal drink from the catalog. Past records are untouched.
   Future<void> deleteCustomDrink(String itemId) async {
     final rawId = itemId.substring(CatalogItem.customPrefix.length);

@@ -7,6 +7,7 @@ import '../../drinks/domain/catalog_item.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/catalog_cubit.dart';
 import '../../drinks/presentation/drink_form_cubit.dart';
+import '../../drinks/presentation/my_drinks_cubit.dart';
 import '../../history/presentation/history_cubit.dart';
 import '../../home/presentation/home_cubit.dart';
 import '../../outings/data/outing_repository.dart';
@@ -50,6 +51,9 @@ Future<void> configureDependencies() async {
     )
     ..registerFactory<SettingsCubit>(
       () => SettingsCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
+    )
+    ..registerFactory<MyDrinksCubit>(
+      () => MyDrinksCubit(getIt<DrinkRepository>(), getIt<OutingRepository>()),
     )
     ..registerFactory<StartOutingCubit>(
       () => StartOutingCubit(getIt<OutingRepository>()),

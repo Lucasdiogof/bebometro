@@ -8,8 +8,35 @@ import 'core/theme/app_colors.dart';
 import 'core/theme/app_theme.dart';
 import 'home/presentation/home_page.dart';
 
-class BebometroApp extends StatelessWidget {
+class BebometroApp extends StatefulWidget {
   const BebometroApp({super.key});
+
+  @override
+  State<BebometroApp> createState() => _BebometroAppState();
+}
+
+class _BebometroAppState extends State<BebometroApp>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  /// Anything still pending (e.g. records the server refused before it was
+  /// ready for them) is retried whenever the app comes back to the foreground.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      getIt<SyncCubit>().schedule(immediate: true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

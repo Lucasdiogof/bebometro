@@ -1,6 +1,24 @@
 import '../../core/utils/formatters.dart';
 import 'catalog_item.dart';
 
+/// Ingredient roles a spirit product can fill in a recipe, with the label the
+/// editor shows. A role lets the user pick a brand when registering.
+const Map<String, String> ingredientRoleLabels = {
+  'cachaca': 'Cachaça',
+  'vodka': 'Vodka',
+  'gin': 'Gin',
+  'rum': 'Rum',
+  'tequila': 'Tequila',
+  'whisky': 'Whisky',
+  'orange-liqueur': 'Licor de laranja',
+  'campari': 'Campari',
+  'aperol': 'Aperol',
+  'vermouth-sweet': 'Vermute doce',
+  'vermouth-dry': 'Vermute seco',
+  'sparkling-wine': 'Espumante',
+  'bitters': 'Bitter',
+};
+
 /// One ingredient of a drink, as written in a reference recipe or as the user
 /// actually registered it. Unknown values stay null: a missing amount or ABV
 /// is never turned into zero.

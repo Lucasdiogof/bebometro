@@ -12,7 +12,7 @@ import '../domain/recipe.dart';
 import 'catalog_cubit.dart';
 
 /// What the user chose in the detail sheet.
-enum DetailAction { register, edit, delete }
+enum DetailAction { register, edit, delete, copyRecipe }
 
 /// Small tag telling where a drink's data comes from. It never claims
 /// certification or safety.
@@ -189,6 +189,16 @@ class _DrinkDetailSheet extends StatelessWidget {
                     const SizedBox(height: AppSpace.md),
                     _SourceTile(source: item.source!),
                   ],
+                  if (item.isRecipe)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton.icon(
+                        onPressed: () =>
+                            Navigator.pop(context, DetailAction.copyRecipe),
+                        icon: const Icon(Icons.copy_all_outlined, size: 18),
+                        label: const Text('Criar minha versão'),
+                      ),
+                    ),
                   if (item.isCustom) ...[
                     const SizedBox(height: AppSpace.md),
                     Row(children: [

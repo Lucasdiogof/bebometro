@@ -175,10 +175,10 @@ class _DrinkEntryView extends StatelessWidget {
                             padding: const EdgeInsets.only(top: AppSpace.sm),
                             child: Text(
                               d.category == DrinkCategory.spirit
-                                  ? 'Tamanhos sugeridos de dose, editáveis: não '
-                                      'são medidas oficiais de nenhum '
-                                      'estabelecimento. Escolher uma garrafa '
-                                      'marca a bebida como compartilhada.'
+                                  ? 'Doses sugeridas, editáveis: não são '
+                                      'medidas oficiais de nenhum '
+                                      'estabelecimento. A garrafa é a '
+                                      'embalagem, não a sua dose.'
                                   : 'Tamanhos sugeridos: este produto não tem '
                                       'embalagens verificadas no catálogo. '
                                       'Confira na embalagem.',
@@ -236,6 +236,37 @@ class _DrinkEntryView extends StatelessWidget {
                             ],
                           ),
                         ],
+                      ],
+                      if (state.bottles.isNotEmpty) ...[
+                        const SizedBox(height: AppSpace.md),
+                        Text(
+                          d.isShared
+                              ? 'Garrafa que está sendo dividida (preenche o '
+                                  'volume da garrafa):'
+                              : 'Embalagens do produto: '
+                                  '${state.bottles.map((b) => b.label).join(', ')}. '
+                                  'Para dividir uma garrafa, marque '
+                                  '"Compartilhada" abaixo.',
+                          style: AppText.caption,
+                        ),
+                        if (d.isShared)
+                          Padding(
+                            padding: const EdgeInsets.only(top: AppSpace.sm),
+                            child: Wrap(
+                              spacing: AppSpace.sm,
+                              runSpacing: AppSpace.sm,
+                              children: [
+                                for (final b in state.bottles)
+                                  ChoiceChip(
+                                    label: Text(b.label),
+                                    selected: d.containerMl == b.volumeMl,
+                                    showCheckmark: false,
+                                    onSelected: (_) =>
+                                        cubit.selectPresentation(b),
+                                  ),
+                              ],
+                            ),
+                          ),
                       ],
                       const SectionTitle('Individual ou compartilhada'),
                       SizedBox(
