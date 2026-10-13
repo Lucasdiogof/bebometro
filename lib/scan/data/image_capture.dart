@@ -104,6 +104,10 @@ class ImageCaptureService {
       throw const CaptureException(
           'Esse arquivo não parece ser uma imagem válida.');
     }
-    return bytes;
+    try {
+      return await ensureJpeg(bytes);
+    } catch (_) {
+      throw const CaptureException('Não foi possível ler essa imagem.');
+    }
   }
 }

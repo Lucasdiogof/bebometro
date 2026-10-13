@@ -292,10 +292,34 @@ Checklist por bloco em `docs/development-progress.md`. Nada foi compilado, anali
   Nunca base64 em linha. iOS: `NSCameraUsageDescription` e `NSPhotoLibraryUsageDescription` adicionadas ao Info.plist.
 - **Nuvem:** linhas `outing_drinks`/`outing_photos` seguem a fila de sincronização existente (mesma tolerância a tabela ausente). Fotos
   sobem para o bucket **privado** `outing-photos` em `<owner>/<outing>/<foto>.jpg` (`PhotoUploader`, rodado após as linhas; mesmo caminho =
-  sem duplicar; `uploaded_at` só após confirmação; falha não impede o envio dos dados estruturados). Enquanto isso a tela mostra
-  "ainda só neste aparelho".
-- **Migration pendente:** `supabase/migrations/20261015000000_outing_drinks_and_photos.sql` (tabelas, RLS, gatilho de mesmo dono,
-  `drink_entries.abv_source`, bucket privado e policies). **Não aplicada**: rodar no SQL Editor do projeto `jiisoqkryhmtopaojyyu`.
+  sem duplicar; `uploaded_at` só após confirmação; falha não impede o envio dos dados estruturados nem das outras fotos). Enquanto isso a
+  tela mostra "ainda só neste aparelho".
+- **Migration:** `supabase/migrations/20261015000000_outing_drinks_and_photos.sql` (tabelas, RLS, gatilho de mesmo dono,
+  `drink_entries.abv_source`, bucket privado e policies) **aplicada pelo responsável** no projeto `jiisoqkryhmtopaojyyu`. Isso não
+  foi verificado por este ambiente (sem acesso administrativo) nem pela sincronização rodando no Flutter.
+- **Revisão de integração (por leitura, 13/10/2026) e correções feitas:**
+  - *Rascunhos:* gravar ao sair da tela dentro da janela do atraso (500 ms) agora salva a última edição; rascunho concluído ou
+    descartado não é regravado por um salvamento atrasado (`_done`); trocar a foto grava o rascunho antes de apagar o arquivo antigo;
+    foto do rascunho ausente (web, arquivo removido) avisa e mantém o texto; no cardápio, itens apontam para a foto pela posição e
+    agora são reindexados quando alguma foto sumiu (antes ficavam trocados); rolê encerrado durante a leitura mostra aviso nas telas
+    de leitura (o item continua no rolê de origem).
+  - *Duplicação:* revisão do rótulo não abre duas vezes com toque repetido; "Continuar" de rascunho idem; abrir formulário/leitura
+    a partir do catálogo é um fluxo por vez (evita dois registros por toque duplo). Ids continuam estáveis (formulário, itens do
+    cardápio por sessão+item).
+  - *Fotos:* foto descartada de uma leitura retomada depois de confirmação parcial passa a ser excluída pelo caminho completo
+    (`discardPhoto`), sem deixar linha viva sem arquivo; linhas de foto só nascem se o arquivo existe; o item só aponta para fotos
+    que existem; imagens da galeria que não são JPEG (PNG/WebP) são reencodadas para JPEG (o bucket só aceita `image/jpeg`).
+  - *Envio:* uma foto que falha não bloqueia as outras (antes o primeiro erro encerrava o envio); foto excluída enquanto o envio
+    estava em andamento tem o objeto removido do servidor ao fim (resposta atrasada não a ressuscita); `uploaded_at` segue só após
+    confirmação; o contador "aguardando envio" e o estado "Sincronizado" agora incluem fotos pendentes (`PendingUploads.waiting`),
+    e foto sem arquivo não conta.
+  - *Preço:* o aviso do preço do cardápio deixa explícito que é sugestão e que garrafa/jarra dividida deve ser "Compartilhada" (o valor
+    vira total da conta, não a parcela). Preço desconhecido, cortesia e valor informado continuam distintos; a sugestão exige toque.
+  - *Verificado por leitura e sem alteração:* itens `outing:` fora de catálogo/Minhas bebidas/recentes/favoritos/sugestões de preço;
+    "Mais uma" copia composição, porção, origem do teor e preço; salvar item não cria consumo (só o formulário cria `drink_entries`);
+    imports condicionais para web (OCR stub, fotos em memória).
+  - *Janela conhecida:* se o app morrer entre o envio do arquivo e o registro de `uploaded_at`, e a foto for excluída antes do
+    próximo envio, o objeto pode ficar órfão no bucket (caminho derivado de ids; sem limpeza automática).
 - **Limitações:** nada compilado nem executado; pacotes novos não resolvidos (`flutter pub get`); heurísticas de OCR não validadas em
   fotos reais; na web não há leitura automática nem foto durável; leitura só de alfabeto latino; foto de rótulo curvo pode precisar de
   mais de uma imagem (o fluxo aceita uma por leitura de rótulo); `retrieveLostData` do Android não foi exercitado.

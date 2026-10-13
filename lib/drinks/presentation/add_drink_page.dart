@@ -49,7 +49,24 @@ class _AddDrinkView extends StatelessWidget {
 
   bool get _explore => outingId == null;
 
-  Future<void> _pick(BuildContext context, CatalogItem item) async {
+  /// One registration or reading flow at a time: a repeated tap while a form
+  /// is opening must not stack a second form (and a second record).
+  static bool _flowOpen = false;
+
+  Future<void> _once(Future<void> Function() flow) async {
+    if (_flowOpen) return;
+    _flowOpen = true;
+    try {
+      await flow();
+    } finally {
+      _flowOpen = false;
+    }
+  }
+
+  Future<void> _pick(BuildContext context, CatalogItem item) =>
+      _once(() => _pickItem(context, item));
+
+  Future<void> _pickItem(BuildContext context, CatalogItem item) async {
     var id = outingId ?? getIt<OutingRepository>().active?.id;
     if (id == null) {
       // Exploring with no outing: registering starts one when the person
@@ -124,7 +141,10 @@ class _AddDrinkView extends StatelessWidget {
     }
   }
 
-  Future<void> _scanLabel(BuildContext context) async {
+  Future<void> _scanLabel(BuildContext context) =>
+      _once(() => _scanLabelFlow(context));
+
+  Future<void> _scanLabelFlow(BuildContext context) async {
     final id = await _needOuting(context);
     if (id == null || !context.mounted) return;
     final result = await Navigator.of(context).push<ReviewResult>(
@@ -134,7 +154,10 @@ class _AddDrinkView extends StatelessWidget {
     await _afterReview(context, id, result);
   }
 
-  Future<void> _scanMenu(BuildContext context) async {
+  Future<void> _scanMenu(BuildContext context) =>
+      _once(() => _scanMenuFlow(context));
+
+  Future<void> _scanMenuFlow(BuildContext context) async {
     final id = await _needOuting(context);
     if (id == null || !context.mounted) return;
     final result = await Navigator.of(context).push<MenuResult>(
@@ -147,10 +170,10 @@ class _AddDrinkView extends StatelessWidget {
   }
 
   /// Manual sign-up inside an outing: the drink belongs to this outing only.
-  Future<void> _manualInOuting(
-    BuildContext context,
-    String suggestedName,
-  ) async {
+  Future<void> _manualInOuting(BuildContext context, String suggestedName) =>
+      _once(() => _manualFlow(context, suggestedName));
+
+  Future<void> _manualFlow(BuildContext context, String suggestedName) async {
     final id = outingId;
     if (id == null) return;
     final result = await Navigator.of(context).push<ReviewResult>(
@@ -387,7 +410,8 @@ class _AddDrinkView extends StatelessWidget {
         if (!_explore && showShortcuts)
           OutingDrinksSection(
             outingId: outingId!,
-            onRegister: (d) => _register(context, outingId!, d.toCatalogItem()),
+            onRegister: (d) => _once(
+                () => _register(context, outingId!, d.toCatalogItem())),
           ),
         if (showShortcuts && state.recents.isNotEmpty) ...[
           const SectionTitle('Recentes'),

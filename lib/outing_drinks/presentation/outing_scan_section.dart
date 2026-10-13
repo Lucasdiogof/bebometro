@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../core/di/injector.dart';
+import '../../core/sync/sync_cubit.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
@@ -36,6 +37,9 @@ class _OutingScanSectionState extends State<OutingScanSection> {
   var _photos = <OutingPhoto>[];
   var _open = <ScanDraft>[];
 
+  /// A repeated tap on "Continuar" must not open the same reading twice.
+  bool _resuming = false;
+
   @override
   void initState() {
     super.initState();
@@ -58,6 +62,16 @@ class _OutingScanSectionState extends State<OutingScanSection> {
   }
 
   Future<void> _resume(ScanDraft draft) async {
+    if (_resuming) return;
+    _resuming = true;
+    try {
+      await _openDraft(draft);
+    } finally {
+      _resuming = false;
+    }
+  }
+
+  Future<void> _openDraft(ScanDraft draft) async {
     final id = widget.outingId;
     if (draft.kind == OutingPhotoKind.menu) {
       await Navigator.of(context).push<MenuResult>(
@@ -97,7 +111,7 @@ class _OutingScanSectionState extends State<OutingScanSection> {
     );
     if (ok != true) return;
     for (final id in draft.photoIds) {
-      await _repo.files.delete(id);
+      await _repo.discardPhoto(id);
     }
     await _drafts.clear(draft.outingId, draft.kind);
     if (mounted) setState(_load);
@@ -109,6 +123,7 @@ class _OutingScanSectionState extends State<OutingScanSection> {
       return const SizedBox.shrink();
     }
     final localOnly = _photos.where((p) => !p.isUploaded).length;
+    final cloudSync = getIt<SyncCubit>().cloudEnabled;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -206,7 +221,10 @@ class _OutingScanSectionState extends State<OutingScanSection> {
           Text(
             localOnly == 0
                 ? 'Fotos guardadas também na nuvem, em arquivo privado.'
-                : '$localOnly foto(s) ainda só neste aparelho.',
+                : cloudSync
+                    ? '$localOnly foto(s) ainda só neste aparelho; o envio '
+                        'é tentado de novo sozinho.'
+                    : '$localOnly foto(s) só neste aparelho.',
             style: AppText.caption,
           ),
         ],

@@ -292,6 +292,9 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
               .toList()
           : null;
       final volume = parseInteger(_volume.text);
+      // Only photos that still exist are linked: a lost file (web session
+      // ended) leaves the structured data intact and simply has no photo.
+      final photoIds = await _repo.existingPhotos(_photoIds);
       final drink = OutingDrink(
         id: _id,
         outingId: widget.outingId,
@@ -308,7 +311,7 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
         components: comps,
         referenceItemId: _referenceId,
         advertisedCents: parseCents(_price.text),
-        photoIds: _photoIds,
+        photoIds: photoIds,
         sourceText: _sourceText,
         createdAt: _existing?.createdAt ?? now,
         updatedAt: now,
@@ -318,7 +321,7 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
         _origin == OutingDrinkOrigin.menu
             ? OutingPhotoKind.menu
             : OutingPhotoKind.label,
-        _photoIds,
+        photoIds,
       );
       await _repo.save(drink);
       if (mounted) {

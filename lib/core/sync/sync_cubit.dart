@@ -88,6 +88,9 @@ class SyncCubit extends Cubit<SyncState> {
   String? _lastMessage;
   SyncStatus? _lastProblem;
 
+  /// Rows waiting plus photos waiting to be sent or removed on the server.
+  int get _pendingTotal => _store.pendingCount + (uploads?.waiting ?? 0);
+
   /// Starts the first sync after launch.
   void start() => schedule(immediate: true);
 
@@ -132,7 +135,7 @@ class SyncCubit extends Cubit<SyncState> {
 
   void _emitIdle() {
     if (isClosed) return;
-    final pending = _store.pendingCount;
+    final pending = _pendingTotal;
     if (!cloudEnabled) {
       emit(SyncState(
         SyncStatus.localOnly,
@@ -166,7 +169,7 @@ class SyncCubit extends Cubit<SyncState> {
     _lastMessage = message;
     emit(SyncState(
       status,
-      pending: _store.pendingCount,
+      pending: _pendingTotal,
       lastSyncAt: _lastSyncAt,
       message: message,
     ));
@@ -190,7 +193,7 @@ class SyncCubit extends Cubit<SyncState> {
       var user = client.auth.currentUser;
       if (user == null) {
         emit(SyncState(SyncStatus.syncing,
-            pending: _store.pendingCount, lastSyncAt: _lastSyncAt));
+            pending: _pendingTotal, lastSyncAt: _lastSyncAt));
         try {
           user = (await client.auth.signInAnonymously()).user;
         } on AuthRetryableFetchException {
@@ -212,13 +215,7 @@ class SyncCubit extends Cubit<SyncState> {
       final snapshot = _store.pending;
       if (snapshot.isEmpty) {
         await _runUploads(client, user.id);
-        if (_store.pendingCount > 0) {
-          // An upload changed a photo row: one more pass sends it.
-          _again = true;
-          _emitIdle();
-          return;
-        }
-        _finishOk();
+        _finishAfterUploads();
         return;
       }
       emit(SyncState(SyncStatus.syncing,
@@ -383,13 +380,7 @@ class SyncCubit extends Cubit<SyncState> {
         return;
       }
 
-      if (_store.pendingCount > 0) {
-        // Edited while uploading: another pass is needed before "synced".
-        _again = true;
-        _emitIdle();
-        return;
-      }
-      _finishOk();
+      _finishAfterUploads();
     } on AuthException catch (e) {
       _log('auth/network error: ${e.message}');
       _failures++;
@@ -401,6 +392,28 @@ class SyncCubit extends Cubit<SyncState> {
       _problem(SyncStatus.failed, 'Sem conexão. Vamos tentar de novo.',
           retryIn: _backoff);
     }
+  }
+
+  /// "Synced" only when nothing is left: rows edited meanwhile get another
+  /// pass, and photos that could not be sent keep the state at "pending".
+  void _finishAfterUploads() {
+    if (_store.pendingCount > 0) {
+      // An upload changed a photo row, or a row was edited while syncing.
+      _again = true;
+      _emitIdle();
+      return;
+    }
+    if ((uploads?.waiting ?? 0) > 0) {
+      _failures++;
+      _problem(
+        SyncStatus.pending,
+        'Algumas fotos ainda não foram enviadas. Elas continuam salvas no '
+        'aparelho e o envio será tentado de novo.',
+        retryIn: _backoff,
+      );
+      return;
+    }
+    _finishOk();
   }
 
   /// Photo uploads never block or fail the structured sync.

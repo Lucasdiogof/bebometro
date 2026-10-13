@@ -6,4 +6,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /// back by it.
 abstract class PendingUploads {
   Future<void> run(SupabaseClient client, String ownerId);
+
+  /// Items still waiting to be sent or removed on the server. Counted in the
+  /// "aguardando envio" total, so "Sincronizado" never hides a pending photo.
+  int get waiting;
 }

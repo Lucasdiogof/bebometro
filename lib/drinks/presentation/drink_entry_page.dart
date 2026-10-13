@@ -1110,8 +1110,10 @@ class _AdvertisedBanner extends StatelessWidget {
           const Text('Preço do cardápio', style: AppText.overline),
           const SizedBox(height: AppSpace.xs),
           Text(
-            'O cardápio anunciava ${formatCents(cents)}. Confirme o que foi '
-            'pago de fato: pode ter promoção ou outro pedido.',
+            'O cardápio anunciava ${formatCents(cents)}. É só uma sugestão: '
+            'confirme o que foi pago de fato, pois pode ter promoção ou outro '
+            'pedido. Se for garrafa ou jarra dividida, marque "Compartilhada": '
+            'o valor vira o total da conta, não a sua parte.',
             style: AppText.body,
           ),
           Align(

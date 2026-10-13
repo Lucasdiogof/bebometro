@@ -21,6 +21,10 @@ abstract class PhotoFiles {
 
   Future<void> delete(String photoId);
 
+  /// Whether the photo file is still there (false after the web session ended
+  /// or when the file was removed). Never reads the whole image.
+  Future<bool> exists(String photoId);
+
   /// Local file path for engines that read from disk (text recognition);
   /// null when there is no file (web).
   Future<String?> pathOf(String photoId);

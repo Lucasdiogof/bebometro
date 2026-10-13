@@ -58,6 +58,15 @@ class _IoPhotoFiles implements PhotoFiles {
   }
 
   @override
+  Future<bool> exists(String photoId) async {
+    try {
+      return await (await _file(photoId)).exists();
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
   Future<String?> pathOf(String photoId) async {
     final file = await _file(photoId);
     return await file.exists() ? file.path : null;

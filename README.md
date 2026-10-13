@@ -55,6 +55,15 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 - Editable recipe components and units; personal drinks and recipes can currently be edited, duplicated and deleted without changing past entries.
 - Each consumption entry keeps a snapshot. Later catalog or recipe edits do not rewrite history.
 
+**Drinks from photos (outing only)**
+
+- *Label:* camera or gallery photo, rotate/replace, local text reading, review, then either “Confirm and continue” (opens the normal consumption form) or “Save only in this outing” (no consumption is recorded).
+- *Menu:* one or more photos produce reviewable candidates; fix, discard or add items by hand. Saving items does not record consumption, and the advertised price is only a suggestion: you confirm what was actually paid.
+- *Reading unavailable* (web, denied permission, empty result): the photo stays visible and you type or paste the text, or fill the item in by hand. Results are never simulated.
+- *Manual sign-up inside an outing* uses the same review screen. Outside an outing, “My drinks” works as before.
+- Everything created this way belongs to that outing's ID: it is not in the global catalog, “My drinks”, favorites, recents, other outings or future price suggestions, and it stays in that outing's history, also past midnight. Unfinished readings stay tied to their original outing.
+- Photos are local files (not base64) and can be deleted without losing the confirmed drink data. A private cloud bucket receives them when synchronization works.
+
 **Your table**
 
 - Table/list switch and six settings: bar, nightclub, barbecue, home, beach and restaurant.
@@ -111,7 +120,8 @@ Feature-based organization separates domain, data and presentation, with Cubits 
 | App | Flutter / Dart |
 | State | `flutter_bloc` / Cubit |
 | Dependency injection | `get_it` |
-| Local persistence | `shared_preferences` |
+| Local persistence | `shared_preferences`, local photo files (`path_provider`) |
+| Photos and text reading | `image_picker`, `image`, `google_mlkit_text_recognition` (on-device, Android/iOS) |
 | Backend | Supabase Auth, PostgreSQL, RLS |
 | Graphics | Flutter widgets and custom painters |
 | Sharing | `share_plus` |
@@ -127,6 +137,7 @@ lib/
   shell/                 main navigation
   home/  outings/        home and outing lifecycle
   drinks/                catalog, recipes, portions and entries
+  scan/  outing_drinks/  label/menu reading, photos and outing-only drinks
   places/  history/      saved places and past outings
   stats/  settings/      statistics and preferences
   table/  glass/         scenes, vessels and glass interactions
@@ -157,12 +168,13 @@ For web, add `-d chrome` to the run command. These are setup instructions, not e
 
 ## Roadmap and current limits
 
-- **In progress:** label/menu photos, OCR with manual review and outing-only manual registration. The latest commit adds the data foundation, OCR services, parsers and a migration; the complete user-facing flow is not yet documented as delivered.
-- **Required scope rule for that delivery:** custom items, photos and menu prices belong to the outing ID, even across midnight. They must not enter the global catalog, automatically become reusable personal items or feed future-visit price suggestions. They remain in that outing's history.
+- **Implemented in code, not yet validated in execution:** label and menu photos with on-device text reading (Android/iOS only), manual review, outing-only drinks and photos, private photo upload and the manual alternative used on the web. The web has no automatic reading and keeps photos only for the current session. There is no barcode reader.
+- **Not verified:** the label and menu parsers are heuristic and were not tested on real photos, so no accuracy is claimed. The `20261015000000` migration was applied by the maintainer; synchronization of these tables and photos from the app has not been observed.
+- **Scope rule (implemented):** custom items, photos and menu prices belong to the outing ID, even across midnight. They do not enter the global catalog, do not automatically become reusable personal items and do not feed future-visit price suggestions.
 - **Later:** map/place search, opt-in lock-screen activities, regional prices backed by real observations and additional catalog coverage.
 - **Pending validation:** dependency resolution, compilation, device/browser flows, visual review and end-to-end synchronization. Sensor-based glass tilting is not implemented.
 
-The existing reusable personal-drink feature predates the outing-only capture scope. The new rule must be implemented without deleting existing records.
+The reusable personal drinks created before this scope were preserved; inside an outing, new manual drinks are outing-only.
 
 ## Documentation
 

@@ -25,5 +25,8 @@ class _MemoryPhotoFiles implements PhotoFiles {
   }
 
   @override
+  Future<bool> exists(String photoId) async => _bytes.containsKey(photoId);
+
+  @override
   Future<String?> pathOf(String photoId) async => null;
 }

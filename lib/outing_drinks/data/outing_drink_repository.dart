@@ -92,6 +92,9 @@ class OutingDrinkRepository {
     final now = DateTime.now();
     for (final id in photoIds) {
       if (photoById(id) != null) continue;
+      // A file that is gone (web session ended, removed) gets no row: there
+      // would be nothing to show or upload.
+      if (!await _files.exists(id)) continue;
       await _store.put(
         LocalStore.outingPhotos,
         OutingPhoto(
@@ -103,6 +106,20 @@ class OutingDrinkRepository {
         ).toJson(),
       );
     }
+  }
+
+  /// Photo ids whose file still exists, in the same order.
+  Future<List<String>> existingPhotos(List<String> ids) async => [
+        for (final id in ids)
+          if (await _files.exists(id)) id,
+      ];
+
+  /// Throws away a photo from an unfinished reading. When a row already
+  /// exists (a confirmation that failed halfway and was resumed) it is
+  /// deleted the regular way, so it cannot stay behind as a live photo.
+  Future<void> discardPhoto(String id) async {
+    if (photoById(id) != null) return deletePhoto(id);
+    await _files.delete(id);
   }
 
   /// Deletes the photo (file and row) and keeps every confirmed drink data.

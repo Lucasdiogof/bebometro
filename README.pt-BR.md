@@ -55,6 +55,15 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 - Componentes e unidades editáveis; bebidas e receitas pessoais atualmente podem ser editadas, duplicadas e excluídas sem modificar registros passados.
 - Cada consumo guarda uma cópia dos dados. Atualizações do catálogo ou da receita não reescrevem o histórico.
 
+**Bebidas por foto (só no rolê)**
+
+- *Rótulo:* foto pela câmera ou galeria, girar/trocar, leitura local do texto, revisão e então “Confirmar e continuar” (abre o formulário normal de consumo) ou “Salvar só neste rolê” (nenhum consumo é registrado).
+- *Cardápio:* uma ou mais fotos geram candidatos revisáveis; corrija, descarte ou adicione itens à mão. Salvar os itens não registra consumo, e o preço anunciado é só sugestão: você confirma o valor efetivamente pago.
+- *Leitura indisponível* (web, permissão negada, resultado vazio): a foto continua visível e você digita ou cola o texto, ou preenche o item à mão. Resultados nunca são simulados.
+- *Cadastro manual dentro do rolê* usa a mesma tela de revisão. Fora do rolê, “Minhas bebidas” segue como antes.
+- Tudo o que nasce assim pertence ao ID daquele rolê: não entra no catálogo global, em “Minhas bebidas”, favoritos, recentes, outros rolês nem em sugestões futuras de preço, e permanece no histórico do rolê, inclusive após a meia-noite. Leituras inacabadas continuam ligadas ao rolê de origem.
+- As fotos são arquivos locais (não base64) e podem ser excluídas sem perder os dados confirmados da bebida. Um bucket privado na nuvem as recebe quando a sincronização funciona.
+
 **Mesa do rolê**
 
 - Alternância Mesa/Lista e seis cenários: bar, balada, churrasco, casa, praia e restaurante.
@@ -111,7 +120,8 @@ Organização por funcionalidade com separação entre domínio, dados e apresen
 | App | Flutter / Dart |
 | Estado | `flutter_bloc` / Cubit |
 | Injeção de dependências | `get_it` |
-| Persistência local | `shared_preferences` |
+| Persistência local | `shared_preferences`, arquivos locais de foto (`path_provider`) |
+| Fotos e leitura de texto | `image_picker`, `image`, `google_mlkit_text_recognition` (no aparelho, Android/iOS) |
 | Backend | Supabase Auth, PostgreSQL, RLS |
 | Gráficos | Widgets Flutter e custom painters |
 | Compartilhamento | `share_plus` |
@@ -127,6 +137,7 @@ lib/
   shell/                 navegação principal
   home/  outings/        início e ciclo do rolê
   drinks/                catálogo, receitas, porções e registros
+  scan/  outing_drinks/  leitura de rótulo/cardápio, fotos e bebidas só do rolê
   places/  history/      locais salvos e rolês anteriores
   stats/  settings/      estatísticas e preferências
   table/  glass/         cenários, recipientes e interações com o copo
@@ -157,12 +168,13 @@ Na web, acrescente `-d chrome` ao comando de execução. São instruções de co
 
 ## Roadmap e limitações atuais
 
-- **Em andamento:** fotos de rótulos/cardápios, OCR com revisão manual e cadastro restrito ao rolê de origem. O commit mais recente adiciona a base de dados, serviços de OCR, parsers e uma migration; o fluxo completo de telas ainda não está documentado como entregue.
-- **Regra dessa entrega:** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras. Permanecem no histórico daquele rolê.
+- **Implementado no código, ainda não validado em execução:** fotos de rótulo e cardápio com leitura de texto no aparelho (só Android/iOS), revisão manual, bebidas e fotos só do rolê, envio privado das fotos e a alternativa manual usada na web. A web não tem leitura automática e guarda as fotos só durante a sessão. Não há leitor de código de barras.
+- **Não verificado:** os interpretadores de rótulo e cardápio são heurísticos e não foram testados com fotos reais, então não se promete precisão. A migration `20261015000000` foi aplicada pelo responsável; a sincronização dessas tabelas e fotos pelo app ainda não foi observada.
+- **Regra de escopo (implementada):** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras.
 - **Depois:** busca de locais/mapas, atividades opcionais na tela bloqueada, preços regionais sustentados por observações reais e ampliação do catálogo.
 - **Validação pendente:** resolução de dependências, compilação, fluxos em aparelho/navegador, revisão visual e sincronização ponta a ponta. Inclinação do copo por sensor ainda não está implementada.
 
-O recurso existente de bebidas pessoais reutilizáveis é anterior ao escopo de captura por rolê. A nova regra deve ser implementada preservando os registros existentes.
+As bebidas pessoais reutilizáveis criadas antes desse escopo foram preservadas; dentro de um rolê, novos cadastros manuais ficam só nele.
 
 ## Documentação
 

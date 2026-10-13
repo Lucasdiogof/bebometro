@@ -7,6 +7,7 @@ import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/common.dart';
+import '../../outings/data/outing_repository.dart';
 import '../../drinks/domain/abv_source.dart';
 import '../../outing_drinks/data/outing_drink_repository.dart';
 import '../../outing_drinks/domain/outing_drink.dart';
@@ -46,6 +47,13 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
   String? _error;
   Timer? _debounce;
 
+  /// Set once the reading ended (confirmed or discarded): nothing may write
+  /// the draft again, not even a pending delayed save.
+  bool _done = false;
+
+  /// Guards against a second review opened by a repeated tap.
+  bool _reviewOpen = false;
+
   @override
   void initState() {
     super.initState();
@@ -54,7 +62,11 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
 
   @override
   void dispose() {
-    _debounce?.cancel();
+    // Leaving within the debounce window must not lose the last edit.
+    if (_debounce?.isActive ?? false) {
+      _debounce!.cancel();
+      unawaited(_saveDraft());
+    }
     _text.dispose();
     super.dispose();
   }
@@ -68,6 +80,12 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
         if (bytes != null) {
           _photoId = draft.photoIds.first;
           _bytes = bytes;
+        } else {
+          // Web session ended or file removed: the text stays, the photo is
+          // gone and the person is told instead of seeing a blank screen.
+          _error = 'A foto desta leitura não está mais disponível neste '
+              'aparelho. O texto foi mantido: tire outra foto ou continue '
+              'sem ela.';
         }
       }
       if (mounted) setState(() {});
@@ -83,12 +101,15 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
     _debounce = Timer(const Duration(milliseconds: 500), _saveDraft);
   }
 
-  Future<void> _saveDraft() => _drafts.save(ScanDraft(
+  Future<void> _saveDraft() async {
+    if (_done) return;
+    await _drafts.save(ScanDraft(
         outingId: widget.outingId,
         kind: OutingPhotoKind.label,
         photoIds: [if (_photoId != null) _photoId!],
         text: _text.text,
       ));
+  }
 
   Future<void> _pick(CaptureSource source) async {
     setState(() => _error = null);
@@ -111,8 +132,10 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
       }
       return;
     }
-    if (old != null) await _repo.files.delete(old);
-    if (!mounted) return;
+    if (!mounted) {
+      await _repo.discardPhoto(id);
+      return;
+    }
     setState(() {
       _photoId = id;
       _bytes = bytes;
@@ -120,7 +143,9 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
       _error = null;
       _text.clear();
     });
+    // The draft points to the new photo before the old file goes away.
     await _saveDraft();
+    if (old != null) await _repo.discardPhoto(old);
   }
 
   Future<void> _rotate(int degrees) async {
@@ -145,7 +170,8 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
 
   Future<void> _discard() async {
     final id = _photoId;
-    if (id != null) await _repo.files.delete(id);
+    _debounce?.cancel();
+    if (id != null) await _repo.discardPhoto(id);
     await _drafts.clear(widget.outingId, OutingPhotoKind.label);
     if (!mounted) return;
     setState(() {
@@ -199,6 +225,7 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
   /// Opens the review. With [parse], the text is interpreted; otherwise the
   /// fields start empty (the photo and text are still kept with the item).
   Future<void> _review({required bool parse}) async {
+    if (_reviewOpen) return;
     final text = _text.text.trim();
     ReviewPrefill prefill;
     if (parse && text.isNotEmpty) {
@@ -228,15 +255,25 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
         sourceText: text.isEmpty ? null : text,
       );
     }
-    final result = await Navigator.of(context).push<ReviewResult>(
-      MaterialPageRoute(
-        builder: (_) => OutingDrinkReviewPage(
-          outingId: widget.outingId,
-          prefill: prefill,
+    _reviewOpen = true;
+    final ReviewResult? result;
+    try {
+      result = await Navigator.of(context).push<ReviewResult>(
+        MaterialPageRoute(
+          builder: (_) => OutingDrinkReviewPage(
+            outingId: widget.outingId,
+            prefill: prefill,
+          ),
         ),
-      ),
-    );
-    if (result == null || !mounted) return;
+      );
+    } finally {
+      _reviewOpen = false;
+    }
+    if (result == null) return;
+    // The drink is saved: the reading is over for good, even if this screen
+    // is already gone.
+    _done = true;
+    _debounce?.cancel();
     await _drafts.clear(widget.outingId, OutingPhotoKind.label);
     if (mounted) Navigator.of(context).pop(result);
   }
@@ -261,6 +298,15 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
               style: AppText.body,
             ),
           ),
+          if (getIt<OutingRepository>().byId(widget.outingId)?.endedAt !=
+              null) ...[
+            const SizedBox(height: AppSpace.sm),
+            const InfoPill(
+              'Este rolê já foi encerrado. O que você ler fica salvo nele.',
+              icon: Icons.info_outline_rounded,
+              warning: true,
+            ),
+          ],
           if (!_repo.files.isDurable) ...[
             const SizedBox(height: AppSpace.sm),
             const Text(

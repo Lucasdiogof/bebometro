@@ -55,6 +55,15 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 - Componentes y unidades editables; actualmente las bebidas y recetas personales pueden editarse, duplicarse y eliminarse sin modificar registros anteriores.
 - Cada consumo conserva una copia de sus datos. Las actualizaciones del catálogo o de una receta no reescriben el historial.
 
+**Bebidas por foto (solo en la salida)**
+
+- *Etiqueta:* foto desde cámara o galería, girar/cambiar, lectura local del texto, revisión y luego “Confirmar y continuar” (abre el formulario normal de consumo) o “Guardar solo en esta salida” (no se registra consumo).
+- *Carta:* una o más fotos generan candidatos revisables; corrige, descarta o añade artículos a mano. Guardar los artículos no registra consumo, y el precio anunciado es solo una sugerencia: tú confirmas lo realmente pagado.
+- *Lectura no disponible* (web, permiso denegado, resultado vacío): la foto sigue visible y escribes o pegas el texto, o rellenas el artículo a mano. Nunca se simulan resultados.
+- *Registro manual dentro de la salida* usa la misma pantalla de revisión. Fuera de una salida, “Mis bebidas” funciona como antes.
+- Todo lo creado así pertenece al ID de esa salida: no entra al catálogo global, a “Mis bebidas”, favoritos, recientes, otras salidas ni a futuras sugerencias de precio, y permanece en el historial de la salida, también pasada la medianoche. Las lecturas inconclusas siguen ligadas a su salida de origen.
+- Las fotos son archivos locales (no base64) y pueden borrarse sin perder los datos confirmados de la bebida. Un bucket privado en la nube las recibe cuando la sincronización funciona.
+
 **La mesa**
 
 - Alternancia Mesa/Lista y seis ambientes: bar, discoteca, barbacoa, casa, playa y restaurante.
@@ -111,7 +120,8 @@ Organización por funcionalidad con separación de dominio, datos y presentació
 | App | Flutter / Dart |
 | Estado | `flutter_bloc` / Cubit |
 | Inyección de dependencias | `get_it` |
-| Persistencia local | `shared_preferences` |
+| Persistencia local | `shared_preferences`, archivos locales de foto (`path_provider`) |
+| Fotos y lectura de texto | `image_picker`, `image`, `google_mlkit_text_recognition` (en el dispositivo, Android/iOS) |
 | Backend | Supabase Auth, PostgreSQL, RLS |
 | Gráficos | Widgets Flutter y custom painters |
 | Compartir | `share_plus` |
@@ -127,6 +137,7 @@ lib/
   shell/                 navegación principal
   home/  outings/        inicio y ciclo de las salidas
   drinks/                catálogo, recetas, porciones y registros
+  scan/  outing_drinks/  lectura de etiqueta/carta, fotos y bebidas solo de la salida
   places/  history/      lugares guardados e historial
   stats/  settings/      estadísticas y preferencias
   table/  glass/         ambientes, recipientes e interacciones con el vaso
@@ -157,12 +168,13 @@ Para web, añade `-d chrome` al comando de ejecución. Son instrucciones de conf
 
 ## Hoja de ruta y límites actuales
 
-- **En desarrollo:** fotos de etiquetas/cartas, OCR con revisión manual y registro restringido a la salida de origen. El último commit incorpora la base de datos, servicios OCR, parsers y una migración; el flujo completo de pantallas todavía no está documentado como entregado.
-- **Regla de esa entrega:** los artículos personalizados, fotos y precios de la carta pertenecen al ID de la salida, incluso después de medianoche. No entran al catálogo global, no se convierten automáticamente en artículos personales reutilizables ni alimentan sugerencias para visitas futuras. Permanecen en el historial de esa salida.
+- **Implementado en el código, aún no validado en ejecución:** fotos de etiqueta y carta con lectura de texto en el dispositivo (solo Android/iOS), revisión manual, bebidas y fotos solo de la salida, envío privado de fotos y la alternativa manual usada en la web. La web no tiene lectura automática y conserva las fotos solo durante la sesión. No hay lector de códigos de barras.
+- **No verificado:** los intérpretes de etiqueta y carta son heurísticos y no se probaron con fotos reales, por lo que no se promete precisión. La migración `20261015000000` fue aplicada por el responsable; la sincronización de esas tablas y fotos desde la app aún no se observó.
+- **Regla de alcance (implementada):** los artículos personalizados, fotos y precios de la carta pertenecen al ID de la salida, incluso después de medianoche. No entran al catálogo global, no se convierten automáticamente en artículos personales reutilizables ni alimentan sugerencias para visitas futuras.
 - **Más adelante:** búsqueda de lugares/mapas, actividades opcionales en pantalla bloqueada, precios regionales basados en observaciones reales y ampliación del catálogo.
 - **Validación pendiente:** resolución de dependencias, compilación, flujos en dispositivo/navegador, revisión visual y sincronización de extremo a extremo. La inclinación por sensores no está implementada.
 
-La función existente de bebidas personales reutilizables es anterior al alcance de captura por salida. La nueva regla debe implementarse conservando los registros existentes.
+Las bebidas personales reutilizables creadas antes de este alcance se conservaron; dentro de una salida, los nuevos registros manuales quedan solo en ella.
 
 ## Documentación
 

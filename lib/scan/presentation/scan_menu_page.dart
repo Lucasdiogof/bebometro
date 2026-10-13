@@ -11,6 +11,7 @@ import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../drinks/domain/drink_category.dart';
 import '../../drinks/domain/recipe.dart';
+import '../../outings/data/outing_repository.dart';
 import '../../outing_drinks/data/outing_drink_repository.dart';
 import '../../outing_drinks/domain/outing_drink.dart';
 import '../data/image_capture.dart';
@@ -61,6 +62,10 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
   String? _error;
   Timer? _debounce;
 
+  /// Set once the reading ended (saved or discarded): nothing may write the
+  /// draft again, not even a pending delayed save.
+  bool _done = false;
+
   @override
   void initState() {
     super.initState();
@@ -70,7 +75,11 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
 
   @override
   void dispose() {
-    _debounce?.cancel();
+    // Leaving within the debounce window must not lose the last edit.
+    if (_debounce?.isActive ?? false) {
+      _debounce!.cancel();
+      unawaited(_saveDraft());
+    }
     _pasted.dispose();
     super.dispose();
   }
@@ -83,12 +92,27 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
       final p = draft.payload;
       _session = p['session'] as String? ?? _session;
       _pasted.text = draft.text;
-      for (final id in draft.photoIds) {
+      // Items point to their photo by position. Photos that are gone (web
+      // session ended, file removed) are dropped, so the positions of the
+      // others are remapped and the items of a lost photo are kept without
+      // a photo: the text the person confirmed is never thrown away.
+      final remap = <int, int>{};
+      for (var i = 0; i < draft.photoIds.length; i++) {
+        final id = draft.photoIds[i];
         final b = await _repo.files.read(id);
         if (b != null) {
+          remap[i] = _photoIds.length;
           _photoIds.add(id);
           _bytes[id] = b;
         }
+      }
+      final lostPhotos = draft.photoIds.length - _photoIds.length;
+      if (lostPhotos > 0) {
+        _error = lostPhotos == 1
+            ? 'Uma foto desta leitura não está mais disponível. Os itens '
+                'dela foram mantidos para você conferir.'
+            : '$lostPhotos fotos desta leitura não estão mais disponíveis. '
+                'Os itens delas foram mantidos para você conferir.';
       }
       final ocr = p['ocr'];
       if (ocr is Map) {
@@ -100,7 +124,9 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
       }
       _candidates = [
         for (final c in (p['candidates'] as List? ?? const []))
-          MenuCandidate.fromJson(Map<String, dynamic>.from(c as Map)),
+          _remapped(
+              MenuCandidate.fromJson(Map<String, dynamic>.from(c as Map)),
+              remap),
       ];
       _notes = (p['notes'] as List?)?.cast<String>() ?? <String>[];
       _reviewing = p['reviewing'] as bool? ?? false;
@@ -112,12 +138,19 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     }
   }
 
+  MenuCandidate _remapped(MenuCandidate c, Map<int, int> remap) {
+    if (c.sourceIndex < 0) return c;
+    return c.copyWith(sourceIndex: remap[c.sourceIndex] ?? -1);
+  }
+
   void _saveDraftSoon() {
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), _saveDraft);
   }
 
-  Future<void> _saveDraft() => _drafts.save(ScanDraft(
+  Future<void> _saveDraft() async {
+    if (_done) return;
+    await _drafts.save(ScanDraft(
         outingId: widget.outingId,
         kind: OutingPhotoKind.menu,
         photoIds: List.of(_photoIds),
@@ -132,6 +165,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
                 'candidates': [for (final c in _candidates) c.toJson()],
               },
       ));
+  }
 
   void _changed(VoidCallback fn) {
     setState(fn);
@@ -191,7 +225,7 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
   Future<void> _removePhoto(String id) async {
     final index = _photoIds.indexOf(id);
     if (index < 0) return;
-    await _repo.files.delete(id);
+    await _repo.discardPhoto(id);
     _changed(() {
       _photoIds.removeAt(index);
       _bytes.remove(id);
@@ -363,6 +397,8 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
           updatedAt: now,
         ));
       }
+      _done = true;
+      _debounce?.cancel();
       await _drafts.clear(widget.outingId, OutingPhotoKind.menu);
       if (mounted) Navigator.of(context).pop(MenuResult(kept.length));
     } catch (_) {
@@ -391,8 +427,10 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
       ),
     );
     if (ok != true) return;
+    _done = true;
+    _debounce?.cancel();
     for (final id in _photoIds) {
-      await _repo.files.delete(id);
+      await _repo.discardPhoto(id);
     }
     await _drafts.clear(widget.outingId, OutingPhotoKind.menu);
     if (mounted) Navigator.of(context).pop();
@@ -434,6 +472,15 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
             style: AppText.body,
           ),
         ),
+        if (getIt<OutingRepository>().byId(widget.outingId)?.endedAt !=
+            null) ...[
+          const SizedBox(height: AppSpace.sm),
+          const InfoPill(
+            'Este rolê já foi encerrado. Os itens ficam salvos nele.',
+            icon: Icons.info_outline_rounded,
+            warning: true,
+          ),
+        ],
         if (!_repo.files.isDurable) ...[
           const SizedBox(height: AppSpace.sm),
           const Text('No navegador as fotos só ficam guardadas durante esta sessão.',
