@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data/local_store.dart';
+import 'pending_uploads.dart';
 
 enum SyncStatus {
   /// Everything saved on the device was confirmed by the server.
@@ -62,7 +63,7 @@ class SyncState {
 /// way. A row is only dropped from the queue after the server confirmed it and
 /// only if it was not edited again in the meantime.
 class SyncCubit extends Cubit<SyncState> {
-  SyncCubit(this._store, {required this.cloudEnabled})
+  SyncCubit(this._store, {required this.cloudEnabled, this.uploads})
       : super(const SyncState(SyncStatus.synced)) {
     _lastSyncAt = _parseTime(_store.getString(_lastSyncKey));
     _sub = _store.changes.listen((_) => schedule());
@@ -73,6 +74,9 @@ class SyncCubit extends Cubit<SyncState> {
 
   final LocalStore _store;
   final bool cloudEnabled;
+
+  /// Extra work after the rows (private photo uploads); optional.
+  final PendingUploads? uploads;
   late final StreamSubscription<String> _sub;
 
   Timer? _debounce;
@@ -207,6 +211,13 @@ class SyncCubit extends Cubit<SyncState> {
 
       final snapshot = _store.pending;
       if (snapshot.isEmpty) {
+        await _runUploads(client, user.id);
+        if (_store.pendingCount > 0) {
+          // An upload changed a photo row: one more pass sends it.
+          _again = true;
+          _emitIdle();
+          return;
+        }
         _finishOk();
         return;
       }
@@ -241,12 +252,12 @@ class SyncCubit extends Cubit<SyncState> {
             await _store.clearPending(entry.key, entry.value);
             continue;
           }
-          if (collection == LocalStore.drinkEntries &&
+          if (LocalStore.outingChildren.contains(collection) &&
               failedOutings.contains(row['outing_id'])) {
             rejected++; // its outing is not on the server yet
             continue;
           }
-          if (collection == LocalStore.drinkEntries &&
+          if (LocalStore.outingChildren.contains(collection) &&
               heldOutings.contains(row['outing_id'])) {
             held++;
             continue;
@@ -360,6 +371,8 @@ class SyncCubit extends Cubit<SyncState> {
         return;
       }
 
+      if (schemaGaps == 0) await _runUploads(client, user.id);
+
       if (schemaGaps > 0) {
         _problem(
           SyncStatus.pending,
@@ -390,6 +403,17 @@ class SyncCubit extends Cubit<SyncState> {
     }
   }
 
+  /// Photo uploads never block or fail the structured sync.
+  Future<void> _runUploads(SupabaseClient client, String ownerId) async {
+    final extra = uploads;
+    if (extra == null) return;
+    try {
+      await extra.run(client, ownerId);
+    } catch (e) {
+      _log('uploads failed: $e');
+    }
+  }
+
   static const _optionalColumns = {
     'outings': [
       'place_id',
@@ -400,7 +424,7 @@ class SyncCubit extends Cubit<SyncState> {
       'feedback_hangover',
       'feedback_note',
     ],
-    'drink_entries': ['composition'],
+    'drink_entries': ['composition', 'abv_source'],
     'custom_drinks': ['components'],
   };
 

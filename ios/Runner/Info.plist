@@ -24,6 +24,10 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>A câmera é usada só para fotografar rótulos e cardápios do rolê. As fotos ficam no seu aparelho.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>A galeria é usada só para você escolher fotos de rótulos e cardápios do rolê.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>

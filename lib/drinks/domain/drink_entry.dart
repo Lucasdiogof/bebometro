@@ -1,3 +1,4 @@
+import 'abv_source.dart';
 import 'drink_category.dart';
 import 'recipe.dart';
 
@@ -37,6 +38,7 @@ class DrinkEntry {
     this.presentation,
     this.catalogItemId,
     this.abvPercent,
+    this.abvSource,
     this.ingredients,
     this.composition,
     this.isShared = false,
@@ -60,6 +62,10 @@ class DrinkEntry {
   final String? presentation;
   final String? catalogItemId;
   final double? abvPercent;
+
+  /// Where the ABV came from when it is not the catalog's own (label, menu,
+  /// typed by the user). Null for ordinary records.
+  final AbvSource? abvSource;
   final List<String>? ingredients;
 
   /// What went into a mixed drink, as registered. Null for simple drinks.
@@ -130,6 +136,7 @@ class DrinkEntry {
         presentation: presentation,
         catalogItemId: catalogItemId,
         abvPercent: abvPercent,
+        abvSource: abvSource,
         ingredients: ingredients,
         composition: composition,
         containerMl: containerMl,
@@ -156,6 +163,7 @@ class DrinkEntry {
         presentation: presentation,
         catalogItemId: catalogItemId,
         abvPercent: abvPercent,
+        abvSource: abvSource,
         ingredients: ingredients,
         composition: composition,
         containerMl: containerMl,
@@ -189,6 +197,7 @@ class DrinkEntry {
         presentation: presentation,
         catalogItemId: catalogItemId,
         abvPercent: abvPercent,
+        abvSource: abvSource,
         ingredients: ingredients,
         composition: composition,
         containerMl: containerMl,
@@ -233,6 +242,8 @@ class DrinkEntry {
         // Only present for mixed drinks, so simple drinks keep syncing to a
         // database that does not have the column yet.
         if (composition != null) 'composition': composition!.toJson(),
+        // Same idea: only present when set, so older databases keep working.
+        if (abvSource != null) 'abv_source': abvSource!.code,
       };
 
   factory DrinkEntry.fromJson(Map<String, dynamic> json) => DrinkEntry(
@@ -246,6 +257,7 @@ class DrinkEntry {
         presentation: json['presentation'] as String?,
         catalogItemId: json['catalog_item_id'] as String?,
         abvPercent: (json['abv_percent'] as num?)?.toDouble(),
+        abvSource: AbvSource.fromCode(json['abv_source'] as String?),
         ingredients: (json['ingredients'] as List?)?.cast<String>(),
         composition: json['composition'] == null
             ? null

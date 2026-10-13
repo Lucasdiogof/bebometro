@@ -37,8 +37,22 @@ class LocalStore {
   static const customDrinks = 'custom_drinks';
   static const drinkEntries = 'drink_entries';
 
+  /// Drinks and photos that belong to a single outing (label, menu, manual).
+  static const outingDrinks = 'outing_drinks';
+  static const outingPhotos = 'outing_photos';
+
   /// Upload order: parents before children.
-  static const collections = [places, outings, customDrinks, drinkEntries];
+  static const collections = [
+    places,
+    outings,
+    customDrinks,
+    outingDrinks,
+    outingPhotos,
+    drinkEntries,
+  ];
+
+  /// Collections whose rows point to an outing (`outing_id`).
+  static const outingChildren = {outingDrinks, outingPhotos, drinkEntries};
 
   static const _pendingKey = 'sync.pending';
 

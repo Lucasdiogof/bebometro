@@ -1,3 +1,4 @@
+import 'catalog_item.dart';
 import 'drink_entry.dart';
 
 /// What is needed to decide that two records are "the same drink in the same
@@ -36,9 +37,12 @@ class ComparableKey {
 }
 
 /// Only the user's own, informed prices of non-customised drinks count.
+/// Records made from items that exist only inside one outing (label, menu or
+/// manual sign-up in the outing) never feed price suggestions or history.
 bool isPriceComparable(DrinkEntry e) =>
     e.priceKind == PriceKind.informed &&
-    !(e.composition?.customized ?? false);
+    !(e.composition?.customized ?? false) &&
+    !(e.catalogItemId?.startsWith(CatalogItem.outingPrefix) ?? false);
 
 /// The price a record states for the whole serving: the package/bill total
 /// when shared, the paid price otherwise. Null when there is none.

@@ -12,10 +12,16 @@ import '../../drinks/presentation/drink_form_cubit.dart';
 import '../../drinks/presentation/my_drinks_cubit.dart';
 import '../../history/presentation/history_cubit.dart';
 import '../../home/presentation/home_cubit.dart';
+import '../../outing_drinks/data/outing_drink_repository.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/domain/outing.dart';
 import '../../places/data/place_repository.dart';
 import '../../places/presentation/places_cubit.dart';
+import '../../scan/data/image_capture.dart';
+import '../../scan/data/photo_files.dart';
+import '../../scan/data/photo_uploader.dart';
+import '../../scan/data/scan_draft_store.dart';
+import '../../scan/data/text_recognizer.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../outings/presentation/outing_cubit.dart';
 import '../../outings/presentation/price_fix_cubit.dart';
@@ -59,9 +65,20 @@ Future<void> configureDependencies() async {
     cloudEnabled = false;
   }
 
+  final photoFiles = PhotoFiles();
+  final outingDrinks = OutingDrinkRepository(store, photoFiles);
+
   getIt
     ..registerSingleton<LocalStore>(store)
-    ..registerSingleton<SyncCubit>(SyncCubit(store, cloudEnabled: cloudEnabled))
+    ..registerSingleton<OutingDrinkRepository>(outingDrinks)
+    ..registerSingleton<ScanDraftStore>(ScanDraftStore(store))
+    ..registerSingleton<ImageCaptureService>(ImageCaptureService())
+    ..registerSingleton<TextRecognizer>(TextRecognizer())
+    ..registerSingleton<SyncCubit>(SyncCubit(
+      store,
+      cloudEnabled: cloudEnabled,
+      uploads: PhotoUploader(store, outingDrinks),
+    ))
     ..registerSingleton<OutingRepository>(
       OutingRepository(store),
     )

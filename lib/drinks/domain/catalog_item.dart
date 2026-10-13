@@ -1,4 +1,5 @@
 import '../../core/utils/formatters.dart';
+import 'abv_source.dart';
 import 'drink_category.dart';
 import 'recipe.dart';
 
@@ -121,6 +122,8 @@ class CatalogItem {
     this.abvSource,
     this.roles = const [],
     this.recipe,
+    this.abvOrigin,
+    this.advertisedCents,
   });
 
   final String id;
@@ -158,7 +161,20 @@ class CatalogItem {
   /// Present for reference or personal recipes (mixed drinks).
   final Recipe? recipe;
 
+  /// Where the ABV came from, only for items that belong to one outing.
+  final AbvSource? abvOrigin;
+
+  /// Price a menu advertised for this outing item. A suggestion only: the
+  /// user confirms what was actually paid.
+  final int? advertisedCents;
+
   static const customPrefix = 'custom:';
+
+  /// Items created inside an outing (manual, label or menu). They live only in
+  /// that outing and never appear in the catalog.
+  static const outingPrefix = 'outing:';
+
+  bool get isOutingOnly => id.startsWith(outingPrefix);
 
   bool get isCustom => id.startsWith(customPrefix);
 

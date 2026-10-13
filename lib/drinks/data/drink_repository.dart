@@ -291,7 +291,12 @@ class DrinkRepository {
   List<String> recentItemIds({int limit = 12}) {
     final entries = _store
         .all(LocalStore.drinkEntries)
-        .where((j) => j['deleted_at'] == null && j['catalog_item_id'] != null)
+        .where((j) =>
+            j['deleted_at'] == null &&
+            j['catalog_item_id'] != null &&
+            // Items that exist only inside one outing are never "recent".
+            !(j['catalog_item_id'] as String)
+                .startsWith(CatalogItem.outingPrefix))
         .map(DrinkEntry.fromJson)
         .toList()
       ..sort((a, b) => b.consumedAt.compareTo(a.consumedAt));

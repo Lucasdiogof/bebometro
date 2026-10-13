@@ -1,4 +1,5 @@
 import '../../core/utils/formatters.dart';
+import 'abv_source.dart';
 import 'catalog_item.dart';
 import 'drink_category.dart';
 import 'drink_entry.dart';
@@ -20,6 +21,7 @@ class DrinkDraft {
     this.presentationLabel,
     this.containerMl,
     this.abvPercent,
+    this.abvSource,
     this.priceKind = PriceKind.unknown,
     this.paidCents,
     this.billTotalCents,
@@ -79,6 +81,7 @@ class DrinkDraft {
           (first == null || first.isSuggestion) ? null : first.label,
       containerMl: first?.volumeMl,
       abvPercent: item.abvPercent,
+      abvSource: item.abvOrigin,
       personalMl: first?.volumeMl,
       notBefore: notBefore,
       notAfter: notAfter,
@@ -101,6 +104,7 @@ class DrinkDraft {
         presentationLabel: e.presentation,
         containerMl: e.containerMl,
         abvPercent: e.abvPercent,
+        abvSource: e.abvSource,
         priceKind: e.priceKind,
         paidCents: e.paidCents,
         billTotalCents: e.billTotalCents,
@@ -129,6 +133,7 @@ class DrinkDraft {
   final String? presentationLabel;
   final int? containerMl;
   final double? abvPercent;
+  final AbvSource? abvSource;
 
   final PriceKind priceKind;
   final int? paidCents;
@@ -171,6 +176,7 @@ class DrinkDraft {
     String? Function()? presentationLabel,
     int? Function()? containerMl,
     double? Function()? abvPercent,
+    AbvSource? Function()? abvSource,
     PriceKind? priceKind,
     int? Function()? paidCents,
     int? Function()? billTotalCents,
@@ -203,6 +209,7 @@ class DrinkDraft {
             : this.presentationLabel,
         containerMl: containerMl != null ? containerMl() : this.containerMl,
         abvPercent: abvPercent != null ? abvPercent() : this.abvPercent,
+        abvSource: abvSource != null ? abvSource() : this.abvSource,
         priceKind: priceKind ?? this.priceKind,
         paidCents: paidCents != null ? paidCents() : this.paidCents,
         billTotalCents:
@@ -254,7 +261,13 @@ class DrinkDraft {
         ._rebalance();
   }
 
-  DrinkDraft withAbv(double? abv) => _copy(abvPercent: () => abv);
+  /// Changing the ABV makes the user its source; the same value keeps the
+  /// source it already had (label, menu, catalog).
+  DrinkDraft withAbv(double? abv) => _copy(
+        abvPercent: () => abv,
+        abvSource: () =>
+            abv == abvPercent ? abvSource : (abv == null ? null : AbvSource.typed),
+      );
 
   DrinkDraft withShared(bool shared) =>
       _copy(isShared: shared, personalEdited: false, paidEdited: false)
@@ -449,6 +462,7 @@ class DrinkDraft {
       presentation: presentationLabel,
       catalogItemId: catalogItemId,
       abvPercent: isRecipe ? null : abvPercent,
+      abvSource: isRecipe ? null : abvSource,
       ingredients: ingredients,
       composition: composition,
       containerMl: container,
