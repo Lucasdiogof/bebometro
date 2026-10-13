@@ -198,7 +198,8 @@ For web, add `-d chrome` to the run command. These are setup instructions, not e
 - **Not verified:** the label and menu parsers are heuristic and were not tested on real photos, so no accuracy is claimed. The `20261015000000` migration was applied by the maintainer; synchronization of these tables and photos from the app has not been observed.
 - **Scope rule (implemented):** custom items, photos and menu prices belong to the outing ID, even across midnight. They do not enter the global catalog, do not automatically become reusable personal items and do not feed future-visit price suggestions.
 - **Places and map:** written in code, not executed; search, map and GPS have never been observed working. They need the Geoapify key (not configured yet) and `flutter pub get` (new packages). Migration `20261017000000` was applied by the maintainer.
-- **Account and sync:** written in code, not executed. They need migration `20261018000000` (cloud reads and conflicts), the deployed `delete-account` function and the e-mail settings in Supabase; none of this has been observed working.
+- **Account and sync:** written in code, not executed. Migration `20261018000000` was applied by the maintainer; they still need the deployed `delete-account` function and the e-mail settings in Supabase (SMTP, redirects, manual linking, templates); none of this has been observed working.
+- **Languages (pt-BR, en, es):** official Flutter localization with ARB files, a manual language choice in Settings (device preference, available before sign-in, switches without restarting), localized catalog/recipe/card content, native lock-screen texts sent by the app, and language-independent exports. Written in code, not compiled or run. Supabase e-mail templates for the three languages are prepared in `supabase/email-templates/` but **not applied**; iOS permission texts follow the system language. See the [i18n checklist](docs/i18n-checklist.md).
 - **Later:** regional prices backed by real observations and additional catalog coverage.
 - **Pending validation:** dependency resolution, compilation, device/browser flows, visual review and end-to-end synchronization. The full-screen beer physics and sensor axes are implemented in code but have not been observed on a device.
 
@@ -208,6 +209,8 @@ The reusable personal drinks created before this scope were preserved; inside an
 
 - [Technical handoff](HANDOFF.md)
 - [Development progress](docs/development-progress.md)
+- [Product checklist](docs/product-checklist.md)
+- [Internationalization checklist](docs/i18n-checklist.md), [export format](docs/export-format.md), [auth e-mails](docs/auth-emails.md)
 - [Product catalog and recipe data](assets/catalog/)
 - [Database migrations](supabase/migrations/)
 

@@ -1,6 +1,7 @@
 import 'catalog_item.dart';
 import 'drink_entry.dart';
 import '../../core/utils/formatters.dart';
+import 'presentation_label.dart';
 
 /// What is needed to decide that two records are "the same drink in the same
 /// size": product (or name), package volume, presentation and whether it was

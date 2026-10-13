@@ -198,7 +198,8 @@ Para web, añade `-d chrome` al comando de ejecución. Son instrucciones de conf
 - **No verificado:** los intérpretes de etiqueta y carta son heurísticos y no se probaron con fotos reales, por lo que no se promete precisión. La migración `20261015000000` fue aplicada por el responsable; la sincronización de esas tablas y fotos desde la app aún no se observó.
 - **Regla de alcance (implementada):** los artículos personalizados, fotos y precios de la carta pertenecen al ID de la salida, incluso después de medianoche. No entran al catálogo global, no se convierten automáticamente en artículos personales reutilizables ni alimentan sugerencias para visitas futuras.
 - **Lugares y mapa:** escritos en el código, sin ejecutar; búsqueda, mapa y GPS nunca se observaron funcionando. Dependen de la clave de Geoapify (aún no configurada) y de `flutter pub get` (paquetes nuevos). La migración `20261017000000` fue aplicada por el responsable.
-- **Cuenta y sincronización:** escritas en el código, sin ejecutar. Dependen de la migración `20261018000000` (lectura de la nube y conflictos), de la función `delete-account` publicada y de la configuración de correo en Supabase; nada de esto se observó funcionando.
+- **Cuenta y sincronización:** escritas en el código, sin ejecutar. La migración `20261018000000` fue aplicada por el responsable; aún dependen de la función `delete-account` publicada y de la configuración de correo en Supabase (SMTP, redirecciones, manual linking, plantillas); nada de esto se observó funcionando.
+- **Idiomas (pt-BR, en, es):** localización oficial de Flutter con archivos ARB, elección manual del idioma en Ajustes (preferencia del dispositivo, disponible antes de iniciar sesión, cambio sin reiniciar), contenido de catálogo/recetas/cartas traducido, textos nativos de la pantalla de bloqueo enviados por la app y exportaciones independientes del idioma. Escrito en código, sin compilar ni ejecutar. Las plantillas de correo de Supabase en los tres idiomas están preparadas en `supabase/email-templates/`, pero **no se aplicaron**; los textos de permisos de iOS siguen el idioma del sistema. Consulta el [checklist de i18n](docs/i18n-checklist.md).
 - **Más adelante:** precios regionales basados en observaciones reales y ampliación del catálogo.
 - **Validación pendiente:** resolución de dependencias, compilación, flujos en dispositivo/navegador, revisión visual y sincronización de extremo a extremo. La física de la cerveza a pantalla completa y los ejes del sensor están implementados en el código, pero nunca se observaron en un dispositivo.
 
@@ -208,6 +209,8 @@ Las bebidas personales reutilizables creadas antes de este alcance se conservaro
 
 - [Documento técnico de continuidad](HANDOFF.md)
 - [Progreso de desarrollo](docs/development-progress.md)
+- [Checklist de producto](docs/product-checklist.md)
+- [Checklist de internacionalización](docs/i18n-checklist.md), [formato de exportación](docs/export-format.md), [correos de autenticación](docs/auth-emails.md)
 - [Datos del catálogo y recetas](assets/catalog/)
 - [Migraciones](supabase/migrations/)
 

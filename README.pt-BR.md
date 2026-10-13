@@ -198,7 +198,8 @@ Na web, acrescente `-d chrome` ao comando de execução. São instruções de co
 - **Não verificado:** os interpretadores de rótulo e cardápio são heurísticos e não foram testados com fotos reais, então não se promete precisão. A migration `20261015000000` foi aplicada pelo responsável; a sincronização dessas tabelas e fotos pelo app ainda não foi observada.
 - **Regra de escopo (implementada):** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras.
 - **Locais e mapa:** escritos no código, não executados; busca, mapa e GPS nunca foram observados funcionando. Dependem da chave Geoapify (ainda não configurada) e de `flutter pub get` (pacotes novos). A migration `20261017000000` foi aplicada pelo responsável.
-- **Conta e sincronização:** escritas no código, não executadas. Dependem da migration `20261018000000` (leitura da nuvem e conflitos), da função `delete-account` publicada e da configuração de e-mail no Supabase; nada disso foi observado funcionando.
+- **Conta e sincronização:** escritas no código, não executadas. A migration `20261018000000` foi aplicada pelo responsável; ainda dependem da função `delete-account` publicada e da configuração de e-mail no Supabase (SMTP, redirects, manual linking, templates); nada disso foi observado funcionando.
+- **Idiomas (pt-BR, en, es):** localização oficial do Flutter com arquivos ARB, escolha manual do idioma em Configurações (preferência do aparelho, disponível antes do login, troca sem reiniciar), conteúdo de catálogo/receitas/cartas traduzido, textos nativos da tela bloqueada enviados pelo app e exportações independentes do idioma. Escrito em código, não compilado nem executado. Os templates de e-mail do Supabase nos três idiomas estão preparados em `supabase/email-templates/`, mas **não foram aplicados**; os textos de permissão do iOS seguem o idioma do sistema. Veja o [checklist de i18n](docs/i18n-checklist.md).
 - **Depois:** preços regionais sustentados por observações reais e ampliação do catálogo.
 - **Validação pendente:** resolução de dependências, compilação, fluxos em aparelho/navegador, revisão visual e sincronização ponta a ponta. A física da cerveja em tela cheia e os eixos do sensor estão implementados no código, mas nunca foram observados em aparelho.
 
@@ -208,6 +209,8 @@ As bebidas pessoais reutilizáveis criadas antes desse escopo foram preservadas;
 
 - [Handoff técnico](HANDOFF.md)
 - [Progresso do desenvolvimento](docs/development-progress.md)
+- [Checklist de produto](docs/product-checklist.md)
+- [Checklist de internacionalização](docs/i18n-checklist.md), [formato de exportação](docs/export-format.md), [e-mails de autenticação](docs/auth-emails.md)
 - [Dados do catálogo e receitas](assets/catalog/)
 - [Migrations do banco](supabase/migrations/)
 

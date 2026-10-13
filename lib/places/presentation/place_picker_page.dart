@@ -16,6 +16,7 @@ import '../domain/place.dart';
 import '../domain/place_draft.dart';
 import 'place_confirm_page.dart';
 import '../../l10n/l10n.dart';
+import '../../core/utils/formatters.dart';
 
 enum PlacePickerMode {
   /// Choosing the place of a new outing.

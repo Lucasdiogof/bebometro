@@ -652,12 +652,31 @@ vez); app_links no iOS com `SceneDelegate` não foi conferido em aparelho; `coun
 Android/iOS/web; conversão do anônimo; importação; leitura da nuvem e conflitos; exclusão; tela bloqueada na troca de
 conta.
 
+## Internacionalização (bloco 17, 13/10/2026)
+
+Leia `docs/i18n-checklist.md` (decisões e limites), `docs/export-format.md` e `docs/auth-emails.md`.
+
+- ARBs oficiais (`lib/l10n/app_{pt,en,es}.arb`), código gerado e versionado em `lib/l10n/generated/` (`flutter gen-l10n`).
+  Acesso por `tr.chave`. Ao editar o `app_pt.arb`, o bloco `@chave.placeholders` define a **ordem dos argumentos**; manter a
+  ordem em que os placeholders aparecem no texto. Plural/select em ICU.
+- `LocaleController` (preferência `app.language`, pré-login) troca `tr` e `app.dart` reconstrói os elementos sem perder estado.
+- Dinheiro: `MoneyField` + `parseCents`/`numberInputError` (recusa "1.500" ambíguo com erro no campo); valores em centavos, BRL.
+- Conteúdo: `i18n` nos JSON do catálogo/receitas/cartas; `CatalogItem` (`name`, `note`), `SourceRef`, `AbvVariant` e `Recipe`
+  resolvem pelo idioma atual; ingredientes do fabricante ficam no original. Rótulos de embalagem canônicos pt-BR com
+  `localizePresentation` na exibição (`lib/drinks/domain/presentation_label.dart`).
+- Nativo: `TrackingSnapshot.texts` leva os textos prontos no idioma do app; Kotlin/Swift só exibem (fallback em pt).
+  `InfoPlist.strings` por idioma (segue o idioma do sistema). `TrackingCoordinator.refreshTexts()` reenvia na troca.
+- Exportação: colunas/códigos fixos (ver `docs/export-format.md`). Texto compartilhado segue o idioma do app.
+- E-mails: `user_metadata.language` gravado; templates em `supabase/email-templates/` (não aplicados no painel).
+- Ferramentas de conferência usadas (não versionadas): checagem de chaves×uso, ordem/quantidade de argumentos dos
+  placeholders, `tr.` em contexto `const`, imports. **Nunca rodou `flutter analyze`.**
+
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
 executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de
 fonte grande, teclado aberto nas telas de formulário, layout largo na web.
 
 ## Próximo passo recomendado
-`flutter pub get`, `flutter analyze` e corrigir o que aparecer; rodar o cenário completo (Bar MELT)
+Antes de tudo: aplicar os templates de e-mail e conferir o app nos três idiomas. `flutter pub get`, `flutter analyze` e corrigir o que aparecer; rodar o cenário completo (Bar MELT)
 em aparelho e conferir no painel do Supabase que as linhas chegam. Depois: testes de unidade para
 `DrinkDraft`, `OutingSummary`, parsing e `SyncCubit`.

@@ -20,6 +20,7 @@ implementado.
 | 9 | Copão e "virar o copo" | Copão: implementado, ainda não executado. "Virar o copo" refeito em 13/10/2026 como cerveja em tela cheia com acelerômetro (`sensors_plus`), arrasto na web/sem sensor; implementado, **não executado** (física, cores, sinal dos eixos no iOS e desempenho por observar em aparelho; ver HANDOFF) |
 | 10 | Cartão compartilhável e exportação JSON/CSV | Implementado, ainda não executado (depende de `share_plus`, declarado no pubspec e ainda não resolvido; falta `pub get`) |
 | 11 | Revisão dirigida e acabamento | Implementado (revisão por leitura; nada executado) |
+| 17 | Internacionalização pt-BR/en/es (ARBs oficiais, seletor, formatos, campo de dinheiro, catálogo/receitas/cartas traduzidos, textos nativos, exportação estável, templates de e-mail) | Implementado em código, **não compilado, analisado nem executado**; templates de e-mail **não aplicados**; ver `docs/i18n-checklist.md` |
 | 16 | Conta obrigatória (e-mail e senha), perfil, sincronização com leitura da nuvem, conflitos, dados antigos, sair e excluir conta | Implementado, **não executado, não compilado nem analisado**; migration `20261018000000` **pendente**, Edge Function `delete-account` **não publicada**, configuração de Auth/SMTP pendente (ver `docs/accounts-sync-checklist.md`) |
 | 15 | Locais e mapa: seletor reutilizável (busca de estabelecimento/endereço na Geoapify, localização atual sob demanda, confirmação e ajuste no mapa, só apelido, locais salvos), correção do local de um rolê, detalhes com mapa, "Abrir no mapa", "Iniciar rolê aqui" | Implementado, **não executado, não compilado nem analisado**; pacotes novos sem `pub get`; chave `GEOAPIFY_KEY` **não configurada**; migration `20261017000000` **pendente** |
 | 14 | Rolê na tela bloqueada (Live Activity/Dynamic Island no iOS 16.2+, notificação silenciosa no Android, só dentro do app na web; ativação e preferências, ocultar por rolê, ações que abrem o app e pedem confirmação) | Implementado em Dart, Swift e Kotlin, **não executado, não compilado nem analisado**; a extensão iOS foi adicionada ao `project.pbxproj` à mão (ver HANDOFF) |
@@ -38,7 +39,7 @@ implementado.
 | `20261015000000_outing_drinks_and_photos.sql` | Aplicada pelo responsável (tabelas `outing_drinks`/`outing_photos`, `drink_entries.abv_source`, bucket privado `outing-photos`). Não verificada daqui nem pela sincronização rodando no Flutter |
 | `20261016000000_outing_tabs.sql` | Aplicada pelo responsável (tabela `outing_tabs`: a comanda inteira como um documento jsonb por rolê). Não verificada daqui nem pela sincronização rodando no Flutter |
 | `20261017000000_places_map.sql` | Aplicada pelo responsável (colunas de mapa em `places` e `outings`). Não verificada daqui |
-| `20261018000000_accounts_sync.sql` | **Pendente** (sem acesso administrativo daqui). `revision`/`server_updated_at`/`base_revision` com gatilho, `deleted_at` em `outings` e `places`, tabela `account_deletions`. Sem ela o app envia como antes e não lê da nuvem |
+| `20261018000000_accounts_sync.sql` | Aplicada pelo responsável (informado em 13/10/2026; não verificada daqui). `revision`/`server_updated_at`/`base_revision` com gatilho, `deleted_at` em `outings` e `places`, tabela `account_deletions` |
 
 ## Revisão de integração do bloco 12 (13/10/2026)
 

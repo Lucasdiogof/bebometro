@@ -55,16 +55,19 @@ do pub), não em execução.
 Este ambiente não tem acesso administrativo ao projeto `jiisoqkryhmtopaojyyu` (o Supabase acessível daqui é de outro
 projeto e não foi tocado).
 
-1. **Aplicar** `supabase/migrations/20261018000000_accounts_sync.sql`. Sem ela, o app envia como antes (sem detecção de
-   conflito) e a leitura da nuvem fica desligada; nada quebra.
+1. **Migration** `supabase/migrations/20261018000000_accounts_sync.sql`: **aplicada pelo responsável** (informado em
+   13/10/2026; não verificada daqui). Sem ela, o app envia como antes e a leitura da nuvem fica desligada.
 2. **Publicar a função:** `supabase functions deploy delete-account --project-ref jiisoqkryhmtopaojyyu` (com
    verificação de JWT ligada, o padrão). Sem ela, "Excluir conta" avisa que ainda não está disponível e não apaga nada.
 3. **Auth > URL Configuration:** em *Redirect URLs*, incluir `bebometro://auth-callback` e a origem web usada (ex.:
    `http://localhost:PORTA` em desenvolvimento e o domínio de produção quando existir; nenhum domínio foi inventado).
 4. **Auth > Providers > Email:** manter "Confirm email" ligado (o app trata os dois casos).
-5. **Auth:** ligar **Manual linking** (exigido pelo Supabase para converter o usuário anônimo com `updateUser(email)`).
-   Sem isso a conversão mostra o erro e a pessoa pode criar conta nova e importar.
-6. **SMTP próprio:** o SMTP padrão do Supabase só entrega para endereços da equipe do projeto e tem limite baixo por
+5. **Auth:** ligar **Manual linking**. A exigência está **confirmada** no guia oficial "Anonymous Sign-Ins → Convert an
+   anonymous user to a permanent user" (vale também para `updateUser(email)`), conferido em 13/10/2026 (detalhes em
+   `docs/auth-emails.md`). Sem isso a conversão mostra o erro e a pessoa pode criar conta nova e importar.
+6. **E-mails em pt-BR/en/es:** colar os templates de `supabase/email-templates/` (ver `docs/auth-emails.md`). Só então os
+   e-mails ficam traduzidos; as telas já estão.
+6b. **SMTP próprio:** o SMTP padrão do Supabase só entrega para endereços da equipe do projeto e tem limite baixo por
    hora. Para usuários reais é preciso configurar SMTP (Auth > SMTP Settings). Nenhum e-mail foi enviado daqui.
 7. **Opcional:** "Secure password change" (o app já pede o código por e-mail quando o servidor exigir).
 8. **Login anônimo:** o app não cria mais sessões anônimas. Antes de desligar "Allow anonymous sign-ins", conferir no
