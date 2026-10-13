@@ -65,6 +65,9 @@ Segunda rodada (mesmo dia): ainda sem acesso administrativo (CLI sem o projeto; 
 tokens com ES256 (JWKS público); a documentação da plataforma diz que `verify_jwt` valida esses tokens, mas outra página oficial
 traz aviso divergente; por isso a função ganhou o modo `dry_run` e o script `scripts/check-delete-account.ps1` para provar com
 uma sessão real, sem apagar nada. Exclusão de conta **não** declarada funcional.
+Terceira rodada (token pessoal fornecido): `delete-account` **publicada** (v1, ACTIVE, `verify_jwt` ligado, 401 sem sessão);
+`uri_allow_list` agora tem `bebometro://auth-callback`; *Manual linking* **ligado**; templates **recusados pela plataforma** até haver
+SMTP próprio; SMTP, Geoapify e Team iOS seguem pendentes. Nada validado no app.
 
 ## Bloqueios conhecidos
 

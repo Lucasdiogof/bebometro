@@ -14,17 +14,20 @@ Legenda das colunas de estado: **Implementado** (código no repositório) · **C
 
 ## Resumo
 
-| Configuração | Implementado | Configurado | Verificado pela API (13/10/2026) | O que falta |
+| Configuração | Implementado | Configurado (aplicado em 13/10/2026) | Verificado pela API | O que falta |
 |---|---|---|---|---|
-| Função `delete-account` | Sim (revisada, corrigida, com `dry_run` para teste) | **Não** | `POST /functions/v1/delete-account` sem sessão responde **404 NOT_FOUND**: não está publicada | Publicar e rodar o teste `dry_run` com sessão real (seção 1) |
-| Redirects de Auth | Sim (app, manifest, Info.plist coerentes) | Não confirmado | Não há leitura pública da lista | Cadastrar as URLs (seção 2) |
-| Conversão das sessões anônimas | Sim (`updateUser(email)`) | Não confirmado | `anonymous_users: true` (sessões antigas continuam válidas) | Ligar *Manual linking* (seção 3) |
-| Confirmação de e-mail | Sim (o app trata os dois casos) | — | `mailer_autoconfirm: true` = **"Confirm email" está desligado** | Ligar quando o SMTP existir (seção 4) |
-| SMTP | n/a | Não confirmado | Não legível | Configurar remetente autorizado (seção 4) |
-| Templates PT-BR/EN/ES | Sim (4 arquivos revisados) | **Não** | Não legível | Colar no painel (seção 5) |
-| Geoapify | Sim | **Não** (sem chave) | Sem chave, nada a verificar | Obter a chave (seção 6) |
-| Assinatura iOS | Alvos coerentes | **Não** (sem Team) | n/a | Escolher o Team nos dois alvos (seção 7) |
-| Migrations até `20261018000000` | Sim | Aplicadas pelo responsável | Colunas/tabelas existem (`revision`, `server_updated_at`, `deleted_at`, `account_deletions`, `outing_tabs`, `outing_photos`) | Nada |
+| Função `delete-account` | Sim (revisada, corrigida, `dry_run`) | **Sim**: publicada, versão 1, `ACTIVE` | `verify_jwt: true`; `POST` sem sessão = **401** (antes 404) | Teste com sessão real (`dry_run`): **exclusão NÃO declarada funcional** |
+| Redirects de Auth | Sim | **Sim**: `uri_allow_list = bebometro://auth-callback` (estava vazia); *Site URL* mantido (`http://localhost:3000`) | Lido de volta da API de gerenciamento | URL web de produção quando existir |
+| Conversão das sessões anônimas | Sim (`updateUser(email)`) | **Sim**: *Manual linking* ligado (estava desligado); login anônimo mantido ligado | Lido de volta | Conversão real ainda não executada |
+| Confirmação de e-mail | Sim | **Não** (segue desligada, de propósito) | `mailer_autoconfirm: true` | Ligar só depois do SMTP |
+| SMTP | n/a | **Não** (`smtp_host` vazio) | Lido: sem SMTP | Remetente e credencial autorizados |
+| Templates PT-BR/EN/ES | Sim (4 arquivos) | **Não**: a plataforma recusa (HTTP 400, "não disponível no plano gratuito com o provedor padrão; configure SMTP próprio") | Templates atuais = padrão do Supabase | Fazer o SMTP primeiro, depois aplicar |
+| Geoapify | Sim | **Não** (sem chave) | n/a | Chave dedicada |
+| Assinatura iOS | Alvos coerentes | **Não** (sem Team) | n/a | Team no Xcode |
+| Migrations até `20261018000000` | Sim | Aplicadas pelo responsável | Colunas/tabelas existem | Nada |
+
+Aplicado por token pessoal do Supabase (usado só em memória, nunca gravado em arquivo; **revogue-o**). Configuração de Auth anterior
+guardada fora do repositório para desfazer, se preciso. Só o projeto `jiisoqkryhmtopaojyyu` foi tocado.
 
 ## 1. Função `delete-account`
 
@@ -65,7 +68,8 @@ Resultado esperado: `Function answered: {"ok":true,"dry_run":true,"reauthenticat
 válido, indica o problema do gateway acima. **Enquanto esse teste não for feito com sessão real, a exclusão de conta NÃO está
 declarada funcional**, mesmo depois do deploy.
 
-**Publicar** (quem tem acesso à organização do projeto; a CLI precisa estar logada nela):
+**Estado (13/10/2026): já publicada** com `supabase functions deploy delete-account --project-ref jiisoqkryhmtopaojyyu --use-api`
+(sem Docker). Para publicar de novo (quem tem acesso à organização do projeto; a CLI precisa estar logada nela):
 
 ```bash
 supabase functions deploy delete-account --project-ref jiisoqkryhmtopaojyyu
@@ -87,7 +91,8 @@ Conferido por leitura: `AndroidManifest.xml` (intent-filter `bebometro`/`auth-ca
 recuperação abre a tela de nova senha, inclusive em partida a frio; link inválido/expirado vira aviso, sem expor a URL).
 Na web o app usa a **origem da página** (`Uri.base.origin`).
 
-Em **Auth → URL Configuration → Redirect URLs**, **acrescentar** (sem apagar as que já existem):
+**Estado (13/10/2026): `bebometro://auth-callback` já está na lista** (a lista estava vazia; *Site URL* não foi alterado). Em
+**Auth → URL Configuration → Redirect URLs**, o que ainda precisa ser **acrescentado** (sem apagar as que já existem):
 
 | Ambiente | URL |
 |---|---|
@@ -103,7 +108,7 @@ A documentação oficial de Redirect URLs (conferida) manda usar URLs exatas em 
 O código (`AuthController.convertAnonymous` → `updateUser(email)` + senha depois da confirmação) é o fluxo documentado de
 "Convert an anonymous user to a permanent user", que exige **Manual linking** (Auth → Sign In / Providers → *Allow manual
 linking*) — também para o caso de e-mail. Conferido no código atual: o app não usa `linkIdentity`, só `updateUser`.
-**Ligar *Manual linking*** e **manter *Allow anonymous sign-ins* ligado** enquanto houver sessões antigas (hoje a API mostra
+**Estado (13/10/2026): *Manual linking* ligado** (lido de volta) e login anônimo mantido ligado. Regra: **manter *Allow anonymous sign-ins* ligado** enquanto houver sessões antigas (hoje a API mostra
 `anonymous_users: true`). O app não cria mais sessões anônimas. Nenhuma conversão foi executada.
 
 ## 4. SMTP e confirmação de e-mail
@@ -112,7 +117,8 @@ Estado lido pela API: `mailer_autoconfirm: true`, ou seja, hoje **ninguém preci
 confirmação é enviado. O SMTP padrão do Supabase só entrega para endereços da equipe do projeto e tem limite baixo por hora, então
 não serve para usuários reais. Nada foi enviado nesta rodada.
 
-Campos a preencher em **Auth → SMTP Settings** (com um provedor e domínio **seus e já autorizados**):
+**Os templates (seção 5) só podem ser aplicados depois do SMTP:** tentei por API e a plataforma recusou (400: modificar templates não
+está disponível em projeto gratuito com o provedor padrão). Campos a preencher em **Auth → SMTP Settings** (com um provedor e domínio **seus e já autorizados**):
 
 - Remetente (*Sender email*) e nome (*Sender name* = `Bebômetro`): um endereço que o provedor autoriza para envio transacional.
   Não foi escolhido nenhum: não presumi o endereço do site nem de outro app.

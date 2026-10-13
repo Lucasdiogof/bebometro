@@ -680,6 +680,9 @@ no `.gitignore`); comentário do Geoapify corrigido (a doc da Places API permite
 delimitada). Lido pela API pública: `delete-account` 404 (não publicada); `mailer_autoconfirm: true`; `anonymous_users: true`;
 migration `20261018000000` visível no esquema. Não configurado/validado: deploy, redirects, Manual linking, SMTP, templates, chave
 Geoapify, Team iOS. O nome do app continua **Bebômetro**.
+**Atualização (token pessoal, mesmo dia):** aplicado no projeto `jiisoqkryhmtopaojyyu`: `delete-account` publicada (ACTIVE, v1,
+`verify_jwt` ligado, 401 sem sessão), `bebometro://auth-callback` na lista de redirects, *Manual linking* ligado. Templates: a plataforma
+recusou sem SMTP próprio. Falta: teste `dry_run` com sessão real, SMTP, templates, Geoapify, Team iOS.
 
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
