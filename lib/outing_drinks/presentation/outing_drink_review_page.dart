@@ -183,6 +183,10 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
       volumeMl: parseInteger(_volume.text),
       abvPercent: parseDecimal(_abv.text),
       category: _category,
+      ingredients: [
+        for (final r in _rows)
+          if (r.name.text.trim().isNotEmpty) r.name.text.trim(),
+      ],
     );
     final results = query.name.isEmpty
         ? const <CatalogMatch>[]
@@ -213,6 +217,30 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
       }
       if (_ingredients.text.trim().isEmpty && item.ingredients != null) {
         _ingredients.text = item.ingredients!.join(', ');
+      }
+      _referenceId = item.id;
+      _dirty = true;
+    });
+  }
+
+  /// Copies only the ingredient names of a reference recipe, with unknown
+  /// amounts: a menu description does not say how much of each was served.
+  void _fillIngredientsFrom(CatalogItem item) {
+    final recipe = item.recipe;
+    if (recipe == null) return;
+    setState(() {
+      _category = DrinkCategory.cocktail;
+      for (final c in recipe.components) {
+        if (_rows.any((r) =>
+            r.name.text.trim().toLowerCase() == c.name.toLowerCase())) {
+          continue;
+        }
+        _rows.add(_CompRow(EntryComponent(
+          name: c.name,
+          alcoholic: c.alcoholic,
+          role: c.role,
+          unit: c.unit,
+        )));
       }
       _referenceId = item.id;
       _dirty = true;
@@ -665,6 +693,12 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                                 onPressed: () => _fillEmptyFrom(m.item),
                                 child: const Text('Preencher campos vazios'),
                               ),
+                              if (m.item.isRecipe)
+                                TextButton(
+                                  onPressed: () => _fillIngredientsFrom(m.item),
+                                  child: const Text(
+                                      'Copiar ingredientes (sem quantidades)'),
+                                ),
                             ]),
                           ],
                         ),

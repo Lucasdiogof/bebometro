@@ -10,6 +10,7 @@ class MatchQuery {
     this.volumeMl,
     this.abvPercent,
     this.category,
+    this.ingredients = const [],
   });
 
   final String name;
@@ -17,6 +18,9 @@ class MatchQuery {
   final int? volumeMl;
   final double? abvPercent;
   final DrinkCategory? category;
+
+  /// Ingredients named by the source; they only help to rank recipes.
+  final List<String> ingredients;
 }
 
 /// One thing that is the same or differs between the query and a product.
@@ -66,6 +70,18 @@ List<CatalogMatch> matchCatalog(
         item.brand != null &&
         normalizeText(brand) == normalizeText(item.brand!)) {
       rank += 0.25;
+    }
+    final recipe = item.recipe;
+    if (recipe != null && query.ingredients.isNotEmpty) {
+      final names = recipe.components.map((c) => normalizeText(c.name)).toList();
+      var shared = 0;
+      for (final ing in query.ingredients) {
+        final n = normalizeText(ing);
+        if (n.length >= 3 && names.any((r) => r.contains(n) || n.contains(r))) {
+          shared++;
+        }
+      }
+      rank += (shared * 0.1).clamp(0.0, 0.3).toDouble();
     }
     if (query.category != null && query.category == item.category) {
       rank += 0.1;
@@ -117,6 +133,11 @@ List<MatchNote> _notesFor(CatalogItem item, MatchQuery q) {
       item.brand != null &&
       normalizeText(brand) != normalizeText(item.brand!)) {
     notes.add(MatchNote('Outra marca (${item.brand})', difference: true));
+  }
+  if (item.isRecipe) {
+    notes.add(const MatchNote(
+        'Receita de referência: o drink servido pode ser diferente',
+        difference: true));
   }
   notes.add(const MatchNote('Parecida pelo nome: confirme se é o mesmo produto',
       difference: true));

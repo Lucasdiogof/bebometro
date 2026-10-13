@@ -20,6 +20,9 @@ implementado.
 | 9 | Copão e "virar o copo" | Implementado, ainda não executado (inclinação por sensor: não implementada, exigiria o pacote `sensors_plus`) |
 | 10 | Cartão compartilhável e exportação JSON/CSV | Implementado, ainda não executado (depende de `share_plus`, declarado no pubspec e ainda não resolvido; falta `pub get`) |
 | 11 | Revisão dirigida e acabamento | Implementado (revisão por leitura; nada executado) |
+| 12 | Bebida por foto: rótulo, cardápio e cadastro do rolê (OCR local, revisão, "Bebidas deste rolê", fotos privadas) | Implementado, ainda não executado; migration `20261015000000` **não aplicada** |
+
+**Regra central do bloco 12:** Bebidas, fotos e itens de cardápio criados neste fluxo pertencem exclusivamente ao rolê de origem.
 
 ## Migrations
 
@@ -28,6 +31,7 @@ implementado.
 | `20261012000000_initial_schema.sql` | Aplicada pelo dono |
 | `20261013000000_recipes_and_unknown_volume.sql` | Aplicada pelo dono (campos confirmados pela API) |
 | `20261014000000_places_budget_feedback_details.sql` | Aplicada pelo dono (13/10/2026); `places` e colunas novas de `outings` confirmadas pela API. Envio pelo Flutter ainda não observado |
+| `20261015000000_outing_drinks_and_photos.sql` | **Pendente**: rodar no SQL Editor (tabelas `outing_drinks`/`outing_photos`, `drink_entries.abv_source`, bucket privado `outing-photos`) |
 
 ## Bloqueios conhecidos
 

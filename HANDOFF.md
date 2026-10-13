@@ -247,6 +247,59 @@ Checklist por bloco em `docs/development-progress.md`. Nada foi compilado, anali
   sensor; cenários/recipientes desenhados em código (sem assets); "Resenha" não tem som/vibração; estatísticas não têm gráfico de linha
   (de propósito: dia sem registro não é dia sem beber).
 
+## Bebida por foto, rótulo e cardápio (escopo: só o rolê)
+
+**Regra central: bebidas, fotos e itens de cardápio criados neste fluxo pertencem exclusivamente ao rolê de origem.**
+
+- **Fluxos** (entradas em "Adicionar bebida", no rolê ou fora dele; sem rolê ativo o app oferece iniciar um):
+  A. *Ler rótulo* (`lib/scan/presentation/scan_label_page.dart`): foto (câmera/galeria) → ver, girar, trocar → ler o texto → revisão
+  (`lib/outing_drinks/presentation/outing_drink_review_page.dart`) → "Confirmar e continuar" (vai ao formulário de registro) ou
+  "Salvar só neste rolê".
+  B. *Ler cardápio* (`scan_menu_page.dart`): uma ou mais fotos → itens candidatos corrigíveis/descartáveis/adicionáveis → salvar como
+  "Bebidas deste rolê". Nada vira consumo; o consumo nasce ao escolher o item e confirmar o formulário de sempre.
+  C. *Sem leitura automática* (web/desktop, falha ou recusa): a foto continua visível e o texto pode ser digitado/colado, ou o item
+  é preenchido à mão. Nunca se simula resultado de OCR.
+  Cadastro manual dentro de um rolê usa a mesma tela de revisão (sem foto) e também fica só no rolê. Fora do rolê, "Cadastrar bebida"
+  continua gravando em "Minhas bebidas" (bebidas próprias antigas preservadas, sem migração).
+- **Como o isolamento funciona:**
+  - Coleção própria `outing_drinks` (+ `outing_photos`), sempre com `outing_id`. Não entram em `DrinkRepository.catalog()`, nem em
+    "Minhas bebidas", favoritos ou recentes (`recentItemIds` ignora ids `outing:`), nem na busca do catálogo.
+  - `OutingDrink.toCatalogItem()` usa o id `outing:<uuid>` (`CatalogItem.outingPrefix`). Todo registro feito dele leva esse
+    `catalog_item_id`; `isPriceComparable` (price_history) exclui esses registros de sugestões e do "Seu histórico" por local.
+  - O vínculo é pelo id do rolê, nunca pela data (rolê que passa da meia-noite segue sendo o mesmo). A lista "Bebidas deste rolê" filtra
+    por `outing_id`; consultar/corrigir o histórico não as mostra em outro rolê.
+  - Ao encerrar, itens e fotos ficam no detalhe do rolê (`OutingScanSection` no resumo). Excluir um item da lista ou uma foto não apaga
+    consumos já registrados (que guardam o próprio snapshot).
+  - Rascunhos (`ScanDraftStore`, chave `scan.draft.<outingId>.<kind>`) ficam presos ao rolê de origem. Se o rolê é encerrado com leitura
+    aberta, aparece aviso e o rascunho segue no resumo desse rolê ("Continuar"/"Descartar"); nunca é movido para outro.
+- **Teor e origem:** `AbvSource` (rótulo/cardápio/informado/catálogo) fica no item e no snapshot do consumo (`drink_entries.abv_source`,
+  coluna opcional). O produto do catálogo nunca é alterado; a correspondência (`catalog_matcher.dart`) só mostra diferenças (tamanho,
+  teor, marca, categoria) e o usuário escolhe "usar como referência" ou "preencher campos vazios". Sem percentual de confiança.
+- **Interpretação** (`lib/scan/domain/`): `label_parser.dart` (nome/marca por destaque, volume `350 ml`/`600 mL`/`1 L`, teor `4,5% vol`;
+  ignora tabela nutricional e porção; só "Ingredientes:" declarados; ambiguidade vira aviso e o campo fica vazio) e `menu_parser.dart`
+  (colunas, preço inline/linha seguinte, tamanho+preço por linha, descrição em várias linhas, promoção, preço incerto com trecho para
+  escolha, repetidos entre imagens marcados). Coberto só por leitura de código; **nenhum teste ou foto real foi usado**.
+- **Preço:** `advertisedCents` é só sugestão no formulário ("Usar como o que paguei/total da conta"); o valor pago continua confirmado
+  pelo usuário (valor/cortesia/não sei, compartilhado, etc.). Sem tabela permanente do local nem média pública.
+- **Drinks de cardápio:** ingredientes ficam como citados, sem quantidades; receitas parecidas só como referência ("pode ser diferente"),
+  com opção de copiar apenas os nomes dos ingredientes; álcool só com volume e teor conhecidos (regra já existente do editor).
+- **OCR local:** `google_mlkit_text_recognition` (Google ML Kit, no aparelho, sem cobrança), só Android e iOS. Isolado por import
+  condicional (`dart.library.io`) em `lib/scan/data/text_recognizer_*.dart`; na web usa um stub "não suportado". Plataformas
+  (conforme a documentação do pacote na pub.dev): Android minSdk 21 (o app usa `flutter.minSdkVersion`; `image_picker` pede 24), iOS 15.5+
+  (o projeto foi ajustado de 15.0 para 15.5) com Xcode 15.3+; sem arm 32 bits. Leitura de código de barras **não** existe.
+- **Imagens:** `image_picker` (câmera/galeria, também na web), `image` (girar), `path_provider` (pasta do app; sem web). Arquivos em
+  `<documentos>/outing_photos/<id>.jpg` (`lib/scan/data/photo_files_io.dart`); na web só em memória (`photo_files_web.dart`), com aviso.
+  Nunca base64 em linha. iOS: `NSCameraUsageDescription` e `NSPhotoLibraryUsageDescription` adicionadas ao Info.plist.
+- **Nuvem:** linhas `outing_drinks`/`outing_photos` seguem a fila de sincronização existente (mesma tolerância a tabela ausente). Fotos
+  sobem para o bucket **privado** `outing-photos` em `<owner>/<outing>/<foto>.jpg` (`PhotoUploader`, rodado após as linhas; mesmo caminho =
+  sem duplicar; `uploaded_at` só após confirmação; falha não impede o envio dos dados estruturados). Enquanto isso a tela mostra
+  "ainda só neste aparelho".
+- **Migration pendente:** `supabase/migrations/20261015000000_outing_drinks_and_photos.sql` (tabelas, RLS, gatilho de mesmo dono,
+  `drink_entries.abv_source`, bucket privado e policies). **Não aplicada**: rodar no SQL Editor do projeto `jiisoqkryhmtopaojyyu`.
+- **Limitações:** nada compilado nem executado; pacotes novos não resolvidos (`flutter pub get`); heurísticas de OCR não validadas em
+  fotos reais; na web não há leitura automática nem foto durável; leitura só de alfabeto latino; foto de rótulo curvo pode precisar de
+  mais de uma imagem (o fluxo aceita uma por leitura de rótulo); `retrieveLostData` do Android não foi exercitado.
+
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
 executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de
