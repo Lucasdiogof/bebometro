@@ -196,6 +196,46 @@ máscara, então vale conferir as bordas em aparelho.
   se ainda faltar espaço, o último slot vira "+N". Tocar abre detalhes com Corrigir/Excluir existentes; "Desfazer" continua removendo o
   registro certo. Nada de recompensas por quantidade.
 
+## Rodada longa (navegação, locais, orçamento, estatísticas, jogos, compartilhar)
+Checklist por bloco em `docs/development-progress.md`. Nada foi compilado, analisado, testado nem visto em tela.
+- **Navegação** (`lib/shell/main_shell.dart`): abas Início, Catálogo, Histórico e Resenha (`NavigationBar` + `IndexedStack`, estado e filtros
+  preservados); Configurações pelo cabeçalho (`SettingsAction`); barra discreta "Rolê em andamento" nas outras abas; voltar de uma aba
+  volta ao Início; `OutingFlow`/`AppRoutes` evitam empilhar a mesma rota. O Catálogo funciona sem rolê (detalhes, busca, filtros, favoritos,
+  Minhas bebidas); registrar a partir dele inicia (ou reutiliza) um rolê.
+- **Locais salvos** (`lib/places/`): apelido OU endereço, cidade/UF opcionais, tipo, favorito, arquivar; escolher/criar ao iniciar o rolê;
+  detalhe com rolês, gastos informados e "Seu histórico de preços". O rolê guarda a própria cópia do local (`nickname/address/city/state`) e
+  só o `place_id` liga ao local salvo: editar o local nunca reescreve rolês antigos. Locais nunca são unidos por nome parecido. Sem busca de
+  mapas (integração externa fica para depois).
+- **Orçamento e preços:** orçamento opcional (ao iniciar ou durante), barra com gasto informado × orçamento e texto honesto quando faltam preços
+  (`BudgetStatus`); avisos a 80%/100% uma vez por patamar (`AppPrefs`, pode desligar em Configurações). "Preencher preços ausentes" no resumo:
+  um a um ou em lote com prévia; valores já informados só mudam se incluídos e selecionados; em bebida compartilhada vale a parcela paga.
+- **Preços do próprio histórico** (`price_history.dart`): sugere o último preço do próprio usuário para o mesmo produto, apresentação e local
+  (por `place_id`) ou, sem local salvo, no mesmo rolê; só vira preço ao confirmar; parcela e total da garrafa nunca se misturam; rotulado
+  "Seu histórico", nunca média de mercado.
+- **Estatísticas** (`lib/stats/`, Histórico → ícone): 7/30/90 dias ou período personalizado; rolês, bebidas por categoria (água/sem álcool à
+  parte), volume informado, álcool dos dados conhecidos (mínimo quando incompleto), gastos, locais mais visitados, relatos; comparação só com
+  período anterior de mesma duração e só se houver base; toque abre os registros. Sem pontuação, ranking ou limite.
+- **Feedback:** após a resposta rápida, detalhes opcionais (como acordou, ressaca, nota, revisar bebidas esquecidas); editável no resumo.
+  "Esse rolê ainda está acontecendo?" para rolê aberto há 8 h sem registros: Continuar (não pergunta por 24 h) ou Encerrar com horário
+  ajustável; nunca encerra sozinho. Bebida adicionada depois a um rolê encerrado assume o horário final como padrão.
+- **Resenha** (`lib/games/`): Eu nunca, Quem é mais provável, Verdade ou desafio; offline, sem conta, sem rolê ativo. Apelidos, Leve ou +18
+  (confirmação de adultos; +18 mistura as leves com flerte/humor, tudo opcional), pontos opcionais, pular sem punição, sem repetir cartas até
+  acabar (depois pode reembaralhar), partida salva e retomável, cartas próprias (criar/excluir). 134 cartas originais em
+  `assets/games/cards_v1.json` com ids estáveis; nenhuma carta pede para beber nem registra bebida.
+- **Copão e virar o copo** (`lib/glass/`): copão opcional no rolê (volume conhecido somado, escala explícita, "+N sem volume", sem metas);
+  "Virar o copo" é só brincadeira visual (arrastar ou slider; sensores não implementados, exigiriam `sensors_plus`).
+- **Compartilhar e exportar** (`lib/share/`, `lib/export/`): cartão do resumo (escolhe-se nome do local, mesa, bebidas, gasto; nunca endereço
+  nem relato) via `share_plus` (declarado no pubspec, **não resolvido: rode `flutter pub get`**) com cópia de texto como alternativa;
+  exportação JSON (tudo) e CSV (rolês e bebidas; `;`, UTF-8 com BOM, vazio = desconhecido) em Configurações → Exportar meus dados.
+- **Sincronização compatível:** a coleção `places` entra na fila (antes dos rolês). Colunas/tabelas novas ausentes no servidor não bloqueiam o
+  resto: o rolê é enviado sem os campos novos, a linha continua pendente e o aviso diz que parte dos dados aguarda atualização do servidor.
+- **Migration nova, NÃO aplicada (sem acesso administrativo):** `supabase/migrations/20261014000000_places_budget_feedback_details.sql`
+  (tabela `places` + RLS, `outings.place_id/city/state/budget_cents/feedback_wake/feedback_hangover/feedback_note`). Ação: rodar no SQL Editor
+  do projeto `jiisoqkryhmtopaojyyu`. Até lá locais, orçamento e detalhes do relato ficam só no aparelho (pendentes).
+- **Limitações conhecidas:** tudo sem execução (podem existir erros de compilação); share via web depende do navegador; sem inclinação por
+  sensor; cenários/recipientes desenhados em código (sem assets); "Resenha" não tem som/vibração; estatísticas não têm gráfico de linha
+  (de propósito: dia sem registro não é dia sem beber).
+
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
 executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de

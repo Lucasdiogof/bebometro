@@ -19,7 +19,7 @@ implementado.
 | 8 | Resenha: jogos locais (Eu nunca, Quem é mais provável, Verdade ou desafio) | Implementado, ainda não executado |
 | 9 | Copão e "virar o copo" | Implementado, ainda não executado (inclinação por sensor: não implementada, exigiria o pacote `sensors_plus`) |
 | 10 | Cartão compartilhável e exportação JSON/CSV | Implementado, ainda não executado (depende de `share_plus`, declarado no pubspec e ainda não resolvido; falta `pub get`) |
-| 11 | Revisão dirigida e acabamento | Pendente |
+| 11 | Revisão dirigida e acabamento | Implementado (revisão por leitura; nada executado) |
 
 ## Migrations
 
@@ -27,6 +27,7 @@ implementado.
 |---------|--------|
 | `20261012000000_initial_schema.sql` | Aplicada pelo dono |
 | `20261013000000_recipes_and_unknown_volume.sql` | Aplicada pelo dono (campos confirmados pela API) |
+| `20261014000000_places_budget_feedback_details.sql` | **Pendente**: sem acesso administrativo; rodar no SQL Editor |
 
 ## Bloqueios conhecidos
 
