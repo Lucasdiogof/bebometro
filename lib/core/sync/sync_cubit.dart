@@ -216,6 +216,14 @@ class SyncCubit extends Cubit<SyncState> {
       final failedOutings = <String>{};
       var rejected = 0;
       var activeConflict = false;
+      // The server refused to link an outing to its place (FK or the same-owner
+      // trigger). Never worked around: the outing stays pending as it is.
+      var placeLinkError = false;
+      // Places the server has not confirmed (pending, rejected or table absent).
+      final unconfirmedPlaces = <String>{};
+      // Outings waiting for their place; their drinks wait with them.
+      final heldOutings = <String>{};
+      var held = 0;
       // Rows whose newer columns/tables do not exist on the server yet: the
       // compatible part is sent, the row stays pending for a later full send.
       var schemaGaps = 0;
@@ -238,6 +246,18 @@ class SyncCubit extends Cubit<SyncState> {
             rejected++; // its outing is not on the server yet
             continue;
           }
+          if (collection == LocalStore.drinkEntries &&
+              heldOutings.contains(row['outing_id'])) {
+            held++;
+            continue;
+          }
+          if (collection == LocalStore.outings &&
+              unconfirmedPlaces.contains(row['place_id'])) {
+            // Keep the link: wait until the place is confirmed, send nothing.
+            heldOutings.add(id);
+            held++;
+            continue;
+          }
           rows.add({...row, 'owner_id': user.id});
           versions[id] = entry.value;
         }
@@ -251,8 +271,11 @@ class SyncCubit extends Cubit<SyncState> {
               (b['status'] == 'active' ? 1 : 0));
         }
 
-        Future<void> ack(String id) =>
-            _store.clearPending('$prefix$id', versions[id]!);
+        final acked = <String>{};
+        Future<void> ack(String id) async {
+          await _store.clearPending('$prefix$id', versions[id]!);
+          acked.add(id);
+        }
 
         try {
           await client.from(collection).upsert(rows);
@@ -271,6 +294,15 @@ class SyncCubit extends Cubit<SyncState> {
               _log('row $collection/$id rejected: ${e.code} ${e.message}');
               if (_tableMissing(e)) {
                 schemaGaps++; // whole table absent: keep the row pending
+                continue;
+              }
+              if (collection == LocalStore.outings &&
+                  (e.code == '23503' || e.code == 'P0001')) {
+                // Place link refused (missing place or owner mismatch): the
+                // row, its place_id and its drinks stay as they are.
+                placeLinkError = true;
+                rejected++;
+                failedOutings.add(id);
                 continue;
               }
               if (_columnGap(e, collection)) {
@@ -293,6 +325,12 @@ class SyncCubit extends Cubit<SyncState> {
             }
           }
         }
+        if (collection == LocalStore.places) {
+          for (final row in rows) {
+            final id = row['id'] as String;
+            if (!acked.contains(id)) unconfirmedPlaces.add(id);
+          }
+        }
       }
 
       if (rejected > 0) {
@@ -302,8 +340,21 @@ class SyncCubit extends Cubit<SyncState> {
           activeConflict
               ? 'O servidor já tem outro rolê em andamento. Nada foi apagado: '
                   'os dados continuam salvos no aparelho.'
-              : 'O servidor recusou algumas alterações. Seus dados continuam '
+              : placeLinkError
+                  ? 'O servidor não aceitou o vínculo de um rolê com o local '
+                      'salvo. Nada foi alterado: os dados continuam salvos no '
+                      'aparelho.'
+                  : 'O servidor recusou algumas alterações. Seus dados continuam '
                   'salvos no aparelho.',
+          retryIn: _backoff,
+        );
+        return;
+      }
+
+      if (held > 0 && schemaGaps == 0) {
+        _problem(
+          SyncStatus.pending,
+          'Alguns rolês aguardam o envio do local salvo. Nada foi perdido.',
           retryIn: _backoff,
         );
         return;
@@ -356,14 +407,11 @@ class SyncCubit extends Cubit<SyncState> {
   bool _tableMissing(PostgrestException e) =>
       e.code == 'PGRST205' || e.code == '42P01';
 
-  /// A column the server does not have (or, for outings, a place that is not
-  /// on the server yet: the FK says 23503 and the same-owner trigger raises
-  /// P0001, which is its only exception).
+  /// A column the server does not have. Place-link errors (23503, P0001) are
+  /// deliberately not here: P0001 is a generic exception code and the outing
+  /// must not lose its place_id to get past a validation.
   bool _columnGap(PostgrestException e, String collection) =>
-      e.code == 'PGRST204' ||
-      e.code == '42703' ||
-      (collection == LocalStore.outings &&
-          (e.code == '23503' || e.code == 'P0001'));
+      e.code == 'PGRST204' || e.code == '42703';
 
   /// The row without its newer optional columns, or null if it had none.
   Map<String, dynamic>? _withoutOptionalColumns(

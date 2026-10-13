@@ -235,8 +235,14 @@ Checklist por bloco em `docs/development-progress.md`. Nada foi compilado, anali
   sincronização observada no Flutter: o envio real dos dados pendentes ainda não foi visto rodando.
 - **Reenvio após a migration:** linhas que foram enviadas só com a parte compatível continuam na fila (nunca recebem ack parcial). Na próxima
   rodada (retry de 5 min, mudança local, abertura do app ou "Sincronizar agora") a linha completa é reenviada por upsert com o mesmo `id`:
-  sem duplicar, sem perder o vínculo com o local e sem reinstalar. `places` sobe antes de `outings`. Um local ainda não enviado (FK `23503` ou
-  gatilho `P0001`) não bloqueia mais o rolê nem as bebidas: o rolê sobe sem `place_id` e fica pendente. "Sincronizar agora" zera o recuo.
+  sem duplicar, sem perder o vínculo com o local e sem reinstalar. `places` sobe antes de `outings`. Um local ainda não confirmado (vínculo: ver abaixo).
+  "Sincronizar agora" zera o recuo.
+- **Vínculo rolê↔local (revisado):** `P0001` é código genérico do Postgres (o gatilho `outings_place_same_owner` na migration só levanta uma
+  exceção, mas ela cobre local inexistente e local de outro dono) e **não** é tratado como "local não sincronizado". O app decide antes de
+  enviar: rolê com `place_id` cujo local ainda não foi confirmado (pendente, recusado ou tabela ausente) **não é enviado** e fica na fila com as
+  bebidas dele; os rolês independentes seguem. Se o servidor recusar o vínculo (`23503` ou `P0001`), o rolê e o `place_id` ficam intactos e
+  pendentes, as bebidas esperam, e o aviso é de erro ("O servidor não aceitou o vínculo..."): nenhuma validação é contornada. Só coluna
+  ausente (`PGRST204`/`42703`) ainda gera envio parcial sem os campos novos, com a linha pendente. Tudo por inspeção; nada executado.
 - **Limitações conhecidas:** tudo sem execução (podem existir erros de compilação); share via web depende do navegador; sem inclinação por
   sensor; cenários/recipientes desenhados em código (sem assets); "Resenha" não tem som/vibração; estatísticas não têm gráfico de linha
   (de propósito: dia sem registro não é dia sem beber).
