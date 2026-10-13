@@ -308,7 +308,8 @@ class DrinkDraft {
       final a = ref[i];
       final b = list[i];
       if (a.name != b.name ||
-          a.amountMl != b.amountMl ||
+          a.amount != b.amount ||
+          a.unit != b.unit ||
           a.abvPercent != b.abvPercent ||
           a.productId != b.productId) {
         return false;
@@ -330,11 +331,14 @@ class DrinkDraft {
     );
   }
 
-  DrinkDraft withComponentAmount(int index, double? ml) {
+  /// Sets the amount (and optionally the unit) of a component. Nothing is
+  /// converted: an amount in spoons stays in spoons.
+  DrinkDraft withComponentAmount(int index, double? amount, [RecipeUnit? unit]) {
     final list = [...components];
     list[index] = list[index].copyWith(
-      amountMl: () => ml,
-      amountText: () => ml == null ? list[index].amountText : null,
+      amount: () => amount,
+      unit: unit,
+      amountText: () => amount == null ? list[index].amountText : null,
     );
     return _withComponents(list);
   }
@@ -388,8 +392,8 @@ class DrinkDraft {
         if (abv != null && (abv < 0 || abv > 100)) {
           result['component_abv_$i'] = 'O teor vai de 0 a 100%';
         }
-        final ml = components[i].amountMl;
-        if (ml != null && ml < 0) result['component_ml_$i'] = 'Quantidade inválida';
+        final qty = components[i].amount;
+        if (qty != null && qty < 0) result['component_ml_$i'] = 'Quantidade inválida';
       }
     } else if (container == null || container <= 0) {
       result['volume'] = 'Informe o volume em ml';

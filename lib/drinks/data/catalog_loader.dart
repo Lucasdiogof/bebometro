@@ -145,48 +145,53 @@ class CatalogLoader {
     );
   }
 
+  /// Maps the unit of a reference recipe to [RecipeUnit] without converting
+  /// anything: the original wording stays in `amountText` whenever the unit
+  /// is not one the app models.
   static EntryComponent _component(Map<String, dynamic> c) {
-    final unit = c['unit'] as String? ?? 'ml';
+    final raw = c['unit'] as String? ?? 'ml';
     final amount = (c['amount'] as num?)?.toDouble();
+    final text = c['text'] as String?;
+    RecipeUnit unit;
+    double? value = amount;
+    String? amountText = text;
+    switch (raw) {
+      case 'ml':
+        unit = RecipeUnit.ml;
+        amountText = null;
+      case 'tsp':
+        unit = RecipeUnit.tsp;
+      case 'unit':
+        unit = RecipeUnit.unit;
+      case 'drops':
+        unit = RecipeUnit.drop;
+      default:
+        // barspoon, wedge, pcs (sprigs), dash, splash, topup: kept as written.
+        unit = RecipeUnit.other;
+        value = null;
+        amountText = text ?? _fallbackText(raw);
+    }
     return EntryComponent(
       name: c['name'] as String,
       role: c['role'] as String?,
       alcoholic: c['alcoholic'] as bool? ?? false,
-      // Only millilitres become a volume. Spoons, pieces, dashes, leaves and
-      // "top up" stay as text.
-      amountMl: (unit == 'ml') ? amount : null,
-      amountText: unit == 'ml' ? null : (c['text'] as String? ?? _unitText(unit, amount)),
+      amount: value,
+      unit: unit,
+      amountText: amountText,
       optional: c['optional'] as bool? ?? false,
     );
   }
 
-  static String _unitText(String unit, double? amount) {
-    final n = amount == null
-        ? ''
-        : (amount == amount.roundToDouble()
-            ? '${amount.toInt()} '
-            : '$amount ');
+  static String _fallbackText(String unit) {
     switch (unit) {
-      case 'tsp':
-        return '${n}colher(es) de chá';
-      case 'barspoon':
-        return '${n}colher(es) de bar';
-      case 'pcs':
-        return '${n}unidade(s)';
-      case 'unit':
-        return '${n}unidade(s)';
-      case 'wedge':
-        return '${n}gomo(s)';
       case 'dash':
         return 'algumas gotas';
-      case 'drops':
-        return 'poucas gotas';
       case 'splash':
         return 'um toque';
       case 'topup':
         return 'completar';
       default:
-        return '$n$unit'.trim();
+        return unit;
     }
   }
 

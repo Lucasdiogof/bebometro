@@ -181,8 +181,10 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
 
   // ---- Mixed drinks ------------------------------------------------------------
 
-  void setComponentAmount(int i, double? ml) =>
-      _set(state.draft.withComponentAmount(i, ml));
+  void setComponentAmount(int i, double? amount, [RecipeUnit? unit]) =>
+      _set(state.draft.withComponentAmount(i, amount, unit));
+  void setComponentUnit(int i, RecipeUnit unit) => _set(state.draft
+      .withComponentAmount(i, state.draft.components[i].amount, unit));
   void setComponentAbv(int i, double? abv) =>
       _set(state.draft.withComponentAbv(i, abv));
   void pickComponentProduct(int i, CatalogItem? product) =>

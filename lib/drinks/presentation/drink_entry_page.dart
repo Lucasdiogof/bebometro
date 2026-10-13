@@ -12,6 +12,7 @@ import '../domain/recipe.dart';
 import '../domain/drink_draft.dart';
 import '../domain/drink_entry.dart';
 import 'drink_form_cubit.dart';
+import 'unit_dropdown.dart';
 
 /// How the entry screen was closed, when it changed something.
 enum EntryOutcome { saved, deleted }
@@ -975,21 +976,37 @@ class _ComponentCard extends StatelessWidget {
                 icon: const Icon(Icons.close_rounded, size: 18),
               ),
             ]),
-            if (c.amountMl == null && c.amountText != null)
+            if (c.amount == null && c.amountText != null)
               Text('Na receita: ${c.amountText}', style: AppText.caption),
             const SizedBox(height: AppSpace.sm),
-            _NumberField<double>(
-              label: 'Quantidade (ml)',
-              suffix: 'ml',
-              value: c.amountMl,
-              parse: parseDecimal,
-              format: decimalToInput,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              helper: c.amountMl == null
-                  ? 'Em branco = desconhecida. Só informe se souber o volume.'
-                  : null,
-              onChanged: (v) => cubit.setComponentAmount(index, v),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (c.unit != RecipeUnit.toTaste && c.unit != RecipeUnit.other)
+                  Expanded(
+                    child: _NumberField<double>(
+                      label: 'Quantidade',
+                      suffix: c.unit.shortLabel,
+                      value: c.amount,
+                      parse: parseDecimal,
+                      format: decimalToInput,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      helper: c.amount == null
+                          ? 'Em branco = desconhecida.'
+                          : null,
+                      onChanged: (v) => cubit.setComponentAmount(index, v),
+                    ),
+                  ),
+                if (c.unit != RecipeUnit.toTaste && c.unit != RecipeUnit.other)
+                  const SizedBox(width: AppSpace.sm),
+                Expanded(
+                  child: UnitDropdown(
+                    value: c.unit,
+                    onChanged: (u) => cubit.setComponentUnit(index, u),
+                  ),
+                ),
+              ],
             ),
             if (c.alcoholic) ...[
               const SizedBox(height: AppSpace.sm),
@@ -1022,8 +1039,8 @@ class _ComponentCard extends StatelessWidget {
               const SizedBox(height: AppSpace.xs),
               Text(
                 pure == null
-                    ? 'Álcool deste ingrediente: não calculado (falta '
-                        '${c.amountMl == null ? 'a quantidade' : 'o teor'}).'
+                    ? 'Álcool deste ingrediente: não calculado '
+                        '(${c.alcoholGap ?? 'dados incompletos'}).'
                     : 'Álcool deste ingrediente: ${formatGrams(pure * 0.789)}',
                 style: AppText.caption,
               ),

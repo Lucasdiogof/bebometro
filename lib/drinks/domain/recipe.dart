@@ -19,6 +19,39 @@ const Map<String, String> ingredientRoleLabels = {
   'bitters': 'Bitter',
 };
 
+/// Unit of an ingredient amount. Only [ml] is a liquid volume: the others are
+/// never converted into ml, so they never enter the alcohol calculation.
+enum RecipeUnit {
+  ml('ml', 'ml (mililitros)', 'ml'),
+  g('g', 'g (gramas)', 'g'),
+  unit('unit', 'unidade', 'un.'),
+  tsp('tsp', 'colher de chá', 'c. chá'),
+  tbsp('tbsp', 'colher de sopa', 'c. sopa'),
+  leaf('leaf', 'folha', 'folha(s)'),
+  drop('drop', 'gota', 'gota(s)'),
+  toTaste('to_taste', 'a gosto', 'a gosto'),
+
+  /// The recipe's own wording (e.g. "6 ramos de hortelã", "completar"),
+  /// kept as written when it does not fit the units above.
+  other('other', 'texto da receita', '');
+
+  const RecipeUnit(this.code, this.label, this.shortLabel);
+
+  final String code;
+  final String label;
+  final String shortLabel;
+
+  /// Units the editor offers (the original wording is not selectable).
+  static const editable = [ml, g, unit, tsp, tbsp, leaf, drop, toTaste];
+
+  static RecipeUnit? fromCode(String? code) {
+    for (final u in RecipeUnit.values) {
+      if (u.code == code) return u;
+    }
+    return null;
+  }
+}
+
 /// One ingredient of a drink, as written in a reference recipe or as the user
 /// actually registered it. Unknown values stay null: a missing amount or ABV
 /// is never turned into zero.
@@ -27,7 +60,8 @@ class EntryComponent {
     required this.name,
     required this.alcoholic,
     this.role,
-    this.amountMl,
+    this.amount,
+    this.unit = RecipeUnit.ml,
     this.amountText,
     this.abvPercent,
     this.productId,
@@ -42,11 +76,12 @@ class EntryComponent {
   final String? role;
   final bool alcoholic;
 
-  /// Liquid volume in ml, only when the recipe gives one. Pieces, spoons,
-  /// dashes, leaves and ice are never converted into ml.
-  final double? amountMl;
+  /// Amount in [unit]. Null = unknown.
+  final double? amount;
+  final RecipeUnit unit;
 
-  /// How the amount reads when there is no ml value ("4 colheres de chá").
+  /// The recipe's wording, kept when the amount is not a number in [unit]
+  /// ("completar", "6 ramos de hortelã").
   final String? amountText;
 
   /// Null = unknown.
@@ -55,12 +90,33 @@ class EntryComponent {
   final String? productName;
   final bool optional;
 
+  /// Liquid volume in ml, only when the amount is in ml. Spoons, pieces,
+  /// leaves, drops and grams are never turned into ml.
+  double? get amountMl => unit == RecipeUnit.ml ? amount : null;
+
   String get amountLabel {
-    if (amountMl != null) return '${_trim(amountMl!)} ml';
-    return amountText ?? 'quantidade não informada';
+    switch (unit) {
+      case RecipeUnit.toTaste:
+        return 'a gosto';
+      case RecipeUnit.other:
+        return amountText ?? 'quantidade não informada';
+      default:
+        if (amount == null) return amountText ?? 'quantidade não informada';
+        return '${_trim(amount!)} ${unit.shortLabel}';
+    }
   }
 
-  /// Pure alcohol in ml, only when both the volume and the ABV are known.
+  /// Why the alcohol of this ingredient cannot be counted, or null if it can.
+  String? get alcoholGap {
+    if (!alcoholic) return null;
+    if (abvPercent == null) return 'teor desconhecido';
+    if (unit != RecipeUnit.ml) return 'quantidade não está em ml';
+    if (amount == null) return 'quantidade desconhecida';
+    return null;
+  }
+
+  /// Pure alcohol in ml, only when both the volume (in ml) and the ABV are
+  /// known.
   double? get pureAlcoholMl =>
       (alcoholic && amountMl != null && abvPercent != null)
           ? amountMl! * abvPercent! / 100
@@ -69,7 +125,8 @@ class EntryComponent {
   EntryComponent copyWith({
     String? name,
     bool? alcoholic,
-    double? Function()? amountMl,
+    double? Function()? amount,
+    RecipeUnit? unit,
     String? Function()? amountText,
     double? Function()? abvPercent,
     String? Function()? productId,
@@ -79,7 +136,8 @@ class EntryComponent {
         name: name ?? this.name,
         alcoholic: alcoholic ?? this.alcoholic,
         role: role,
-        amountMl: amountMl != null ? amountMl() : this.amountMl,
+        amount: amount != null ? amount() : this.amount,
+        unit: unit ?? this.unit,
         amountText: amountText != null ? amountText() : this.amountText,
         abvPercent: abvPercent != null ? abvPercent() : this.abvPercent,
         productId: productId != null ? productId() : this.productId,
@@ -91,7 +149,10 @@ class EntryComponent {
         'name': name,
         'alcoholic': alcoholic,
         if (role != null) 'role': role,
+        // Kept for readers that only know millilitres.
         'amount_ml': amountMl,
+        'amount': amount,
+        'unit': unit.code,
         if (amountText != null) 'amount_text': amountText,
         'abv_percent': abvPercent,
         if (productId != null) 'product_id': productId,
@@ -99,17 +160,28 @@ class EntryComponent {
         if (optional) 'optional': true,
       };
 
-  factory EntryComponent.fromJson(Map<String, dynamic> j) => EntryComponent(
-        name: j['name'] as String,
-        alcoholic: j['alcoholic'] as bool? ?? false,
-        role: j['role'] as String?,
-        amountMl: (j['amount_ml'] as num?)?.toDouble(),
-        amountText: j['amount_text'] as String?,
-        abvPercent: (j['abv_percent'] as num?)?.toDouble(),
-        productId: j['product_id'] as String?,
-        productName: j['product_name'] as String?,
-        optional: j['optional'] as bool? ?? false,
-      );
+  /// Reads current snapshots and older ones (which only had `amount_ml` and
+  /// `amount_text`, no unit).
+  factory EntryComponent.fromJson(Map<String, dynamic> j) {
+    var unit = RecipeUnit.fromCode(j['unit'] as String?);
+    unit ??= (j['amount_ml'] != null || j['amount_text'] == null)
+        ? RecipeUnit.ml
+        : RecipeUnit.other;
+    final amount = (j['amount'] as num?)?.toDouble() ??
+        (unit == RecipeUnit.ml ? (j['amount_ml'] as num?)?.toDouble() : null);
+    return EntryComponent(
+      name: j['name'] as String,
+      alcoholic: j['alcoholic'] as bool? ?? false,
+      role: j['role'] as String?,
+      amount: amount,
+      unit: unit,
+      amountText: j['amount_text'] as String?,
+      abvPercent: (j['abv_percent'] as num?)?.toDouble(),
+      productId: j['product_id'] as String?,
+      productName: j['product_name'] as String?,
+      optional: j['optional'] as bool? ?? false,
+    );
+  }
 
   static String _trim(double v) =>
       v == v.roundToDouble() ? v.toStringAsFixed(0) : decimalToInput(v);
@@ -216,7 +288,7 @@ AlcoholEstimate estimateComponents(List<EntryComponent> components) {
     if (!c.alcoholic) continue;
     final ml = c.pureAlcoholMl;
     if (ml == null) {
-      missing.add(c.name);
+      missing.add('${c.name} (${c.alcoholGap})');
     } else {
       pure += ml;
     }

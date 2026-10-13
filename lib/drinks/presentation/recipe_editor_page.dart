@@ -8,6 +8,7 @@ import '../../core/widgets/common.dart';
 import '../data/drink_repository.dart';
 import '../domain/catalog_item.dart';
 import '../domain/recipe.dart';
+import 'unit_dropdown.dart';
 
 /// Full editor for a personal recipe: name and every component (ingredient,
 /// alcohol flag, amount, ABV, role). Pops the saved [CatalogItem].
@@ -28,8 +29,9 @@ class RecipeEditorPage extends StatefulWidget {
 class _RowModel {
   _RowModel({
     String name = '',
-    double? amountMl,
+    double? amount,
     double? abv,
+    this.unit = RecipeUnit.ml,
     this.alcoholic = false,
     this.role,
     this.amountText,
@@ -38,7 +40,7 @@ class _RowModel {
     this.productName,
   })  : name = TextEditingController(text: name),
         amount = TextEditingController(
-          text: amountMl == null ? '' : decimalToInput(amountMl),
+          text: amount == null ? '' : decimalToInput(amount),
         ),
         abv = TextEditingController(
           text: abv == null ? '' : decimalToInput(abv),
@@ -46,7 +48,8 @@ class _RowModel {
 
   factory _RowModel.from(EntryComponent c) => _RowModel(
         name: c.name,
-        amountMl: c.amountMl,
+        amount: c.amount,
+        unit: c.unit,
         abv: c.abvPercent,
         alcoholic: c.alcoholic,
         role: c.role,
@@ -61,6 +64,7 @@ class _RowModel {
   final TextEditingController abv;
   bool alcoholic;
   String? role;
+  RecipeUnit unit;
 
   /// How the original recipe wrote an amount that is not in ml; kept as text
   /// while no ml value is typed.
@@ -70,13 +74,17 @@ class _RowModel {
   final String? productName;
 
   EntryComponent toComponent() {
-    final ml = parseDecimal(amount.text);
+    // "a gosto" and the recipe's own wording have no number; nothing is ever
+    // converted between units.
+    final hasNumber = unit != RecipeUnit.toTaste && unit != RecipeUnit.other;
+    final qty = hasNumber ? parseDecimal(amount.text) : null;
     return EntryComponent(
       name: name.text.trim(),
       alcoholic: alcoholic,
       role: alcoholic ? role : null,
-      amountMl: ml,
-      amountText: ml == null ? amountText : null,
+      amount: qty,
+      unit: unit,
+      amountText: qty == null ? amountText : null,
       abvPercent: alcoholic ? parseDecimal(abv.text) : null,
       productId: alcoholic ? productId : null,
       productName: alcoholic ? productName : null,
@@ -131,8 +139,8 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
       if (abv != null && (abv < 0 || abv > 100)) {
         return 'O teor de "${c.name}" vai de 0 a 100%.';
       }
-      final ml = c.amountMl;
-      if (ml != null && ml < 0) return 'A quantidade de "${c.name}" é inválida.';
+      final qty = c.amount;
+      if (qty != null && qty < 0) return 'A quantidade de "${c.name}" é inválida.';
     }
     return null;
   }
@@ -314,19 +322,47 @@ class _RowCard extends StatelessWidget {
             ]),
           ]),
           const SizedBox(height: AppSpace.sm),
-          TextField(
-            controller: row.amount,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: InputDecoration(
-              labelText: 'Quantidade (ml)',
-              suffixText: 'ml',
-              helperText: row.amountText == null
-                  ? 'Em branco = desconhecida.'
-                  : 'Na receita original: ${row.amountText}',
-              helperMaxLines: 2,
-            ),
-            onChanged: (_) => onChanged(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (row.unit != RecipeUnit.toTaste &&
+                  row.unit != RecipeUnit.other)
+                Expanded(
+                  child: TextField(
+                    controller: row.amount,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    decoration: InputDecoration(
+                      labelText: 'Quantidade',
+                      suffixText: row.unit.shortLabel,
+                      helperText: row.amountText == null
+                          ? 'Em branco = desconhecida.'
+                          : 'Na receita original: ${row.amountText}',
+                      helperMaxLines: 2,
+                    ),
+                    onChanged: (_) => onChanged(),
+                  ),
+                ),
+              if (row.unit != RecipeUnit.toTaste &&
+                  row.unit != RecipeUnit.other)
+                const SizedBox(width: AppSpace.sm),
+              Expanded(
+                child: UnitDropdown(
+                  value: row.unit,
+                  onChanged: (u) {
+                    row.unit = u;
+                    onChanged();
+                  },
+                ),
+              ),
+            ],
           ),
+          if (row.unit == RecipeUnit.other && row.amountText != null)
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpace.xs),
+              child: Text('Na receita original: ${row.amountText}',
+                  style: AppText.caption),
+            ),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             title: const Text('Tem álcool'),

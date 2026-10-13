@@ -1,0 +1,34 @@
+# Bebômetro: progresso do desenvolvimento
+
+Checklist da rodada longa. Estados: **Pendente**, **Em andamento**, **Implementado, ainda não executado**,
+**Bloqueado** (com motivo). Nada aqui foi compilado, analisado, testado nem visto em tela.
+
+Se o contexto for compactado, retome por este arquivo e pelo `HANDOFF.md`; não refaça o que já está
+implementado.
+
+| # | Bloco | Estado |
+|---|-------|--------|
+| 1a | Unidades dos ingredientes (ml, g, unidade, colher de chá/sopa, folha, gota, a gosto) | Implementado, ainda não executado |
+| 1b | Mesa do rolê: mesa/lista, cenários, recipientes, animação ilustrativa, muitos registros, preferências, retrospectiva | Em andamento |
+| 2 | Navegação principal (Início, Catálogo, Histórico, Resenha) + catálogo sem rolê ativo | Pendente |
+| 3 | Locais salvos (+ migration de `places`/`place_id`) | Pendente |
+| 4 | Orçamento e gastos, edição rápida de preços ausentes | Pendente |
+| 5 | Preços do próprio histórico | Pendente |
+| 6 | Estatísticas pessoais | Pendente |
+| 7 | Feedback detalhado e "rolê esquecido" | Pendente |
+| 8 | Resenha: jogos locais (Eu nunca, Quem é mais provável, Verdade ou desafio) | Pendente |
+| 9 | Copão e "virar o copo" | Pendente |
+| 10 | Cartão compartilhável e exportação JSON/CSV | Pendente |
+| 11 | Revisão dirigida e acabamento | Pendente |
+
+## Migrations
+
+| Arquivo | Estado |
+|---------|--------|
+| `20261012000000_initial_schema.sql` | Aplicada pelo dono |
+| `20261013000000_recipes_and_unknown_volume.sql` | Aplicada pelo dono (campos confirmados pela API) |
+
+## Bloqueios conhecidos
+
+- Sem acesso administrativo ao Supabase neste ambiente: novas migrations serão preparadas, não aplicadas.
+- Nada pode ser executado nesta rodada (sem `pub get`, analyze, testes ou builds).
