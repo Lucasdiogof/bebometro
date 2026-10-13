@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../places/data/place_repository.dart';
 import '../../places/domain/place.dart';
+import '../../places/domain/place_draft.dart';
 import '../data/outing_repository.dart';
 import '../domain/outing.dart';
 
@@ -29,8 +30,9 @@ class StartOutingState {
   final String city;
   final String state;
 
-  /// A saved place chosen instead of typing the data.
-  final Place? place;
+  /// What the place picker returned (a saved place, a search result, the
+  /// device point or a nickname), used instead of the inline fields.
+  final PlaceDraft? place;
 
   /// Save the typed place for next time (ignored when [place] is chosen).
   final bool saveAsPlace;
@@ -62,7 +64,7 @@ class StartOutingState {
     String? address,
     String? city,
     String? state,
-    Place? Function()? place,
+    PlaceDraft? Function()? place,
     bool? saveAsPlace,
     int? Function()? budgetCents,
     bool? submitting,
@@ -119,8 +121,14 @@ class StartOutingCubit extends Cubit<StartOutingState> {
 
   /// Picks a saved place (its type becomes the outing type) or clears it.
   void selectPlace(Place? place) => emit(state.copyWith(
-        place: () => place,
+        place: () => place == null ? null : PlaceDraft.saved(place),
         type: place?.type,
+      ));
+
+  /// Uses what the place picker returned.
+  void choosePlace(PlaceDraft draft) => emit(state.copyWith(
+        place: () => draft,
+        type: draft.saved?.type,
       ));
 
   Future<void> submit() async {
@@ -138,38 +146,22 @@ class StartOutingCubit extends Cubit<StartOutingState> {
     }
     emit(state.copyWith(submitting: true));
     try {
-      var nickname = state.nickname;
-      var address = state.address;
-      var city = state.city;
-      var uf = state.state;
-      String? placeId;
-
-      final chosen = state.place;
-      if (chosen != null) {
-        // The outing keeps its own copy of the place data (snapshot).
-        nickname = chosen.nickname ?? '';
-        address = chosen.address ?? '';
-        city = chosen.city ?? '';
-        uf = chosen.state ?? '';
-        placeId = chosen.id;
-      } else if (state.saveAsPlace) {
-        final saved = await _places.save(
-          type: state.type,
-          nickname: nickname,
-          address: address,
-          city: city,
-          state: uf,
-        );
-        placeId = saved.id;
-      }
+      // Saved place as it is, a confirmed search result/point (saved only if
+      // the person asked) or the inline nickname/address. The outing keeps
+      // its own copy of the place data.
+      final draft = state.place ??
+          PlaceDraft(
+            nickname: state.nickname,
+            address: state.address,
+            city: state.city,
+            state: state.state,
+            save: state.saveAsPlace,
+          );
+      final place = await _places.resolve(draft, state.type);
 
       final outing = await _outings.start(
         type: state.type,
-        nickname: nickname,
-        address: address,
-        city: city,
-        state: uf,
-        placeId: placeId,
+        place: place,
         budgetCents: state.budgetCents,
         startedAt: state.startedAt,
       );

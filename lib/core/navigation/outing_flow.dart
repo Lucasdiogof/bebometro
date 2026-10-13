@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../outings/presentation/outing_page.dart';
 import '../../outings/presentation/outing_summary_page.dart';
+import '../../places/domain/place.dart';
 import '../../outings/presentation/start_outing_page.dart';
 
 /// Opens the outing screens from anywhere (home, catalog, the "rolê em
@@ -34,10 +35,10 @@ class OutingFlow {
 
   /// Starts a new outing (or recovers the running one) and opens it. Returns
   /// the outing id, or null when the person backed out.
-  static Future<String?> start(BuildContext context) async {
+  static Future<String?> start(BuildContext context, {Place? place}) async {
     if (_busy) return null;
     final id = await Navigator.of(context).push<String>(
-      MaterialPageRoute(builder: (_) => const StartOutingPage()),
+      MaterialPageRoute(builder: (_) => StartOutingPage(place: place)),
     );
     if (id != null && context.mounted) await open(context, id);
     return id;

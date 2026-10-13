@@ -15,6 +15,8 @@ import '../../home/presentation/home_cubit.dart';
 import '../../outing_drinks/data/outing_drink_repository.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/domain/outing.dart';
+import '../../places/data/device_location.dart';
+import '../../places/data/geo_search.dart';
 import '../../places/data/place_repository.dart';
 import '../../places/presentation/places_cubit.dart';
 import '../../scan/data/image_capture.dart';
@@ -141,6 +143,9 @@ Future<void> configureDependencies() async {
       () => MyDrinksCubit(getIt<DrinkRepository>(), getIt<OutingRepository>()),
     )
     ..registerSingleton<PlaceRepository>(PlaceRepository(store))
+    // Search and location are only called on demand (never at app start).
+    ..registerLazySingleton<GeoSearch>(GeoSearch.new)
+    ..registerLazySingleton<DeviceLocation>(DeviceLocation.new)
     ..registerFactory<PlacesCubit>(
       () => PlacesCubit(getIt<PlaceRepository>(), getIt<OutingRepository>()),
     )

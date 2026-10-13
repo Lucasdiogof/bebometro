@@ -24,6 +24,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Só quando você toca em "Usar minha localização": para sugerir lugares por perto e marcar o ponto no mapa. O Bebômetro não acompanha seus deslocamentos.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>A câmera é usada só para fotografar rótulos e cardápios do rolê. As fotos ficam no seu aparelho.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

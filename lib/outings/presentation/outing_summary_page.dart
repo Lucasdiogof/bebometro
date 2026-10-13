@@ -22,6 +22,7 @@ import '../../outing_drinks/presentation/outing_scan_section.dart';
 import 'outing_cubit.dart';
 import '../../tab/presentation/tab_entry_card.dart';
 import 'price_fix_page.dart';
+import '../../places/presentation/change_outing_place.dart';
 import 'outing_page.dart' show EntryTile;
 
 /// Summary of a finished outing. Records can still be corrected here, and the
@@ -148,6 +149,29 @@ class _SummaryViewState extends State<_SummaryView> {
                               child: Text(outing.subtitleAddress!,
                                   style: AppText.caption),
                             ),
+                          if (outing.nickname != null &&
+                              outing.placeName != null &&
+                              outing.placeName != outing.nickname)
+                            Text(outing.placeName!, style: AppText.caption),
+                          Wrap(
+                            spacing: AppSpace.sm,
+                            children: [
+                              if (outingHasMapTarget(outing))
+                                TextButton.icon(
+                                  onPressed: () =>
+                                      openOutingInMaps(context, outing),
+                                  icon: const Icon(Icons.map_outlined, size: 18),
+                                  label: const Text('Abrir no mapa'),
+                                ),
+                              TextButton.icon(
+                                onPressed: () =>
+                                    changeOutingPlace(context, outing),
+                                icon: const Icon(Icons.edit_location_alt_outlined,
+                                    size: 18),
+                                label: const Text('Corrigir local'),
+                              ),
+                            ],
+                          ),
                           const SizedBox(height: AppSpace.lg),
                           Row(children: [
                             Expanded(

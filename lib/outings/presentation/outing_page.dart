@@ -13,6 +13,7 @@ import '../../core/widgets/state_views.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/add_drink_page.dart';
 import '../../drinks/presentation/drink_entry_page.dart';
+import '../../places/presentation/change_outing_place.dart';
 import '../../scan/data/scan_draft_store.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../table/presentation/table_scene.dart';
@@ -260,6 +261,8 @@ class _OutingViewState extends State<_OutingView> {
                 onSelected: (v) {
                   if (v == 'finish') _finish();
                   if (v == 'tracking') _toggleTracking();
+                  if (v == 'place') changeOutingPlace(context, outing);
+                  if (v == 'map') openOutingInMaps(context, outing);
                 },
                 itemBuilder: (_) {
                   final tracking = getIt<TrackingCoordinator>();
@@ -273,6 +276,11 @@ class _OutingViewState extends State<_OutingView> {
                             ? 'Mostrar na tela bloqueada'
                             : 'Ocultar neste rolê'),
                       ),
+                    if (outingHasMapTarget(outing))
+                      const PopupMenuItem(
+                          value: 'map', child: Text('Abrir no mapa')),
+                    const PopupMenuItem(
+                        value: 'place', child: Text('Corrigir local')),
                     const PopupMenuItem(
                         value: 'finish', child: Text('Encerrar rolê')),
                   ];

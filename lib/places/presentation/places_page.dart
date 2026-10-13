@@ -47,6 +47,11 @@ class _PlacesView extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: AppText.subtitle),
+                if (p.providerSubtitle != null)
+                  Text(p.providerSubtitle!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppText.caption),
                 Text(
                   [
                     if (p.cityState != null) p.cityState!,

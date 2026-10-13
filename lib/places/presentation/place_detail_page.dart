@@ -9,7 +9,13 @@ import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../drinks/domain/price_history.dart';
 import '../../outings/presentation/outing_summary_page.dart';
+import '../../core/navigation/outing_flow.dart';
+import '../../outings/data/outing_repository.dart';
+import '../domain/geo_point.dart';
+import '../domain/place.dart';
+import 'open_in_maps.dart';
 import 'place_editor_page.dart';
+import 'place_map.dart';
 import 'places_cubit.dart';
 
 /// One saved place: its visits, what was registered there, and the user's own
@@ -101,13 +107,12 @@ class _PlaceDetailView extends StatelessWidget {
                     ]),
                     const SizedBox(height: AppSpace.sm),
                     Text(place.displayName, style: AppText.headline),
-                    if (place.subtitleAddress != null)
+                    if (place.providerSubtitle != null)
                       Padding(
                         padding: const EdgeInsets.only(top: AppSpace.xs),
-                        child: Text(place.subtitleAddress!, style: AppText.caption),
+                        child: Text(place.providerSubtitle!,
+                            style: AppText.caption),
                       ),
-                    if (place.cityState != null)
-                      Text(place.cityState!, style: AppText.caption),
                     const SizedBox(height: AppSpace.lg),
                     Row(children: [
                       Expanded(
@@ -125,6 +130,28 @@ class _PlaceDetailView extends StatelessWidget {
                         ),
                       ),
                     ]),
+                    if (state.visits.isNotEmpty) ...[
+                      const SizedBox(height: AppSpace.sm),
+                      Text(
+                        'Última visita: ${formatDate(state.visits.first.outing.startedAt)}',
+                        style: AppText.caption,
+                      ),
+                    ],
+                    const SizedBox(height: AppSpace.md),
+                    Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
+                      if (!place.isArchived)
+                        FilledButton.icon(
+                          onPressed: () => _startHere(context, place),
+                          icon: const Icon(Icons.play_arrow_rounded),
+                          label: const Text('Iniciar rolê aqui'),
+                        ),
+                      if (_hasMapTarget(place))
+                        OutlinedButton.icon(
+                          onPressed: () => _openMaps(context, place),
+                          icon: const Icon(Icons.map_outlined),
+                          label: const Text('Abrir no mapa'),
+                        ),
+                    ]),
                     if (state.unpricedCount > 0) ...[
                       const SizedBox(height: AppSpace.md),
                       InfoPill(
@@ -136,6 +163,16 @@ class _PlaceDetailView extends StatelessWidget {
                       ),
                     ],
                   ],
+                ),
+              ),
+              _PlaceDetails(place: place),
+              const Padding(
+                padding: EdgeInsets.only(top: AppSpace.sm),
+                child: Text(
+                  'Gasto informado: o que você registrou nas suas bebidas aqui. '
+                  'O total da mesa e os pagamentos da comanda ficam no resumo '
+                  'de cada rolê e não entram nesta soma.',
+                  style: AppText.caption,
                 ),
               ),
               const SectionTitle('Seu histórico de preços'),
@@ -241,6 +278,102 @@ class _PriceTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+bool _hasMapTarget(Place p) =>
+    p.point != null || (p.address?.trim().isNotEmpty ?? false);
+
+Future<void> _openMaps(BuildContext context, Place p) async {
+  final ok = await openInMaps(
+    point: p.point,
+    address: p.address,
+    city: p.city,
+    state: p.state,
+    label: p.providerName,
+  );
+  if (!ok && context.mounted) {
+    showToast(context, 'Não foi possível abrir um aplicativo de mapas.');
+  }
+}
+
+Future<void> _startHere(BuildContext context, Place p) async {
+  if (getIt<OutingRepository>().active != null) {
+    showToast(context, 'Já existe um rolê em andamento. Encerre-o antes.');
+    return;
+  }
+  await OutingFlow.start(context, place: p);
+}
+
+/// Address, name from the map data, where the location came from, and the
+/// map itself when there is a point. Names of fields are plain words.
+class _PlaceDetails extends StatefulWidget {
+  const _PlaceDetails({required this.place});
+
+  final Place place;
+
+  @override
+  State<_PlaceDetails> createState() => _PlaceDetailsState();
+}
+
+class _PlaceDetailsState extends State<_PlaceDetails> {
+  bool _tilesFailed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = widget.place;
+    final rows = <(String, String)>[
+      if (p.providerName != null) ('Nome no mapa', p.providerName!),
+      if (p.address != null) ('Endereço', p.address!),
+      if (p.cityState != null) ('Cidade', p.cityState!),
+      ('Origem', switch (p.source) {
+        LocationSource.search => 'Escolhido na busca (OpenStreetMap)',
+        LocationSource.currentLocation => 'Sua localização, conferida no mapa',
+        LocationSource.adjusted => 'Ponto ajustado por você',
+        null => 'Informado por você',
+      }),
+    ];
+    final point = p.point;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionTitle('Detalhes'),
+        if (point != null && PlaceMap.available && !_tilesFailed) ...[
+          SizedBox(
+            height: 200,
+            child: PlaceMap(
+              point: point,
+              interactive: false,
+              onTilesFailed: () {
+                if (mounted) setState(() => _tilesFailed = true);
+              },
+            ),
+          ),
+          const SizedBox(height: AppSpace.md),
+        ],
+        SurfaceCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final (label, value) in rows)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(label, style: AppText.caption),
+                      Text(value, style: AppText.body),
+                    ],
+                  ),
+                ),
+              if (point == null && p.address == null)
+                const Text('Sem endereço nem ponto no mapa. Dá para buscar '
+                    'em "Editar".', style: AppText.caption),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

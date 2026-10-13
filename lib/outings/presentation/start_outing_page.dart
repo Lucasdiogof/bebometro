@@ -7,24 +7,46 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../places/domain/place.dart';
+import '../../places/domain/place_draft.dart';
+import '../../places/presentation/place_picker_page.dart';
 import 'outing_type_picker.dart';
 import 'start_outing_cubit.dart';
 
 /// Pops with the id of the created (or already running) outing.
 class StartOutingPage extends StatelessWidget {
-  const StartOutingPage({super.key});
+  const StartOutingPage({super.key, this.place});
+
+  /// Saved place to start at ("Iniciar rolê aqui").
+  final Place? place;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<StartOutingCubit>(),
+      create: (_) {
+        final cubit = getIt<StartOutingCubit>();
+        if (place != null) cubit.selectPlace(place);
+        return cubit;
+      },
       child: const _StartOutingView(),
     );
   }
 }
 
-class _StartOutingView extends StatelessWidget {
+class _StartOutingView extends StatefulWidget {
   const _StartOutingView();
+
+  @override
+  State<_StartOutingView> createState() => _StartOutingViewState();
+}
+
+class _StartOutingViewState extends State<_StartOutingView> {
+  bool _showAddress = false;
+
+  Future<void> _pick(StartOutingCubit cubit) async {
+    final draft = await PlacePickerPage.open(context,
+        mode: PlacePickerMode.start, type: cubit.state.type);
+    if (draft != null) cubit.choosePlace(draft);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +83,29 @@ class _StartOutingView extends StatelessWidget {
                             onClear: () => cubit.selectPlace(null),
                           )
                         else ...[
+                          SurfaceCard(
+                            onTap: () => _pick(cubit),
+                            child: const Row(children: [
+                              Icon(Icons.search_rounded,
+                                  color: AppColors.amber),
+                              SizedBox(width: AppSpace.md),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Buscar bar ou endereço',
+                                        style: AppText.subtitle),
+                                    Text(
+                                        'Ou usar sua localização e conferir no mapa',
+                                        style: AppText.caption),
+                                  ],
+                                ),
+                              ),
+                              Icon(Icons.chevron_right_rounded,
+                                  color: AppColors.textMuted),
+                            ]),
+                          ),
+                          const SizedBox(height: AppSpace.md),
                           if (shortcuts.isNotEmpty) ...[
                             const Text('Locais salvos', style: AppText.caption),
                             const SizedBox(height: AppSpace.sm),
@@ -94,7 +139,7 @@ class _StartOutingView extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: AppSpace.md),
-                            const Text('Ou informe um novo', style: AppText.caption),
+                            const Text('Ou só um apelido', style: AppText.caption),
                             const SizedBox(height: AppSpace.sm),
                           ],
                           TextField(
@@ -107,6 +152,17 @@ class _StartOutingView extends StatelessWidget {
                             ),
                             onChanged: cubit.setNickname,
                           ),
+                          if (!_showAddress)
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: TextButton.icon(
+                                onPressed: () =>
+                                    setState(() => _showAddress = true),
+                                icon: const Icon(Icons.add_rounded),
+                                label: const Text('Digitar endereço (opcional)'),
+                              ),
+                            )
+                          else ...[
                           const SizedBox(height: AppSpace.md),
                           TextField(
                             textCapitalization: TextCapitalization.words,
@@ -152,6 +208,7 @@ class _StartOutingView extends StatelessWidget {
                               ),
                             ],
                           ),
+                          ],
                           SwitchListTile(
                             contentPadding: EdgeInsets.zero,
                             title: const Text('Salvar este local'),
@@ -230,28 +287,41 @@ class _StartOutingView extends StatelessWidget {
 class _ChosenPlace extends StatelessWidget {
   const _ChosenPlace({required this.place, required this.onClear});
 
-  final Place place;
+  final PlaceDraft place;
   final VoidCallback onClear;
 
   @override
   Widget build(BuildContext context) {
+    final saved = place.isSavedAsIs ? place.saved : null;
+    final address = saved != null ? saved.subtitleAddress : place.address;
+    final extra = [
+      if (saved == null && place.nickname != null && place.providerName != null)
+        place.providerName!,
+      if (address != null && address != place.title) address,
+      if (saved?.cityState != null) saved!.cityState!,
+    ];
+    final willSave = saved == null && (place.saved != null || place.save);
     return SurfaceCard(
       highlight: true,
       child: Row(children: [
-        Icon(place.type.icon, color: AppColors.amber),
+        Icon(saved?.type.icon ?? Icons.place_rounded, color: AppColors.amber),
         const SizedBox(width: AppSpace.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(place.displayName,
+              Text(place.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: AppText.subtitle),
-              if (place.subtitleAddress != null)
-                Text(place.subtitleAddress!, style: AppText.caption),
-              if (place.cityState != null)
-                Text(place.cityState!, style: AppText.caption),
+              for (final line in extra)
+                Text(line,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppText.caption),
+              if (willSave)
+                const Text('Será salvo nos seus locais',
+                    style: AppText.caption),
             ],
           ),
         ),

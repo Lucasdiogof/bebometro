@@ -7,7 +7,9 @@ import '../../core/widgets/common.dart';
 import '../../outings/domain/outing.dart';
 import '../../outings/presentation/outing_type_picker.dart';
 import '../data/place_repository.dart';
+import '../domain/geo_point.dart';
 import '../domain/place.dart';
+import 'place_picker_page.dart';
 
 /// Creates or edits a saved place. Editing never rewrites the place data kept
 /// inside past outings.
@@ -26,6 +28,13 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
   late final TextEditingController _city;
   late final TextEditingController _state;
   late OutingType _type;
+
+  // Location kept with the place (from a search, the device or the map).
+  String? _providerName;
+  GeoPoint? _point;
+  LocationSource? _source;
+  String? _provider;
+  String? _providerPlaceId;
   String? _error;
   bool _saving = false;
 
@@ -38,7 +47,41 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
     _city = TextEditingController(text: p?.city ?? '');
     _state = TextEditingController(text: p?.state ?? '');
     _type = p?.type ?? OutingType.bar;
+    _providerName = p?.providerName;
+    _point = p?.point;
+    _source = p?.source;
+    _provider = p?.provider;
+    _providerPlaceId = p?.providerPlaceId;
   }
+
+  Future<void> _locate() async {
+    final d = await PlacePickerPage.open(context,
+        mode: PlacePickerMode.locate, type: _type, editing: widget.editing);
+    if (d == null || !mounted) return;
+    setState(() {
+      _providerName = d.providerName;
+      _point = d.point;
+      _source = d.source;
+      _provider = d.provider;
+      _providerPlaceId = d.providerPlaceId;
+      _address.text = d.address ?? '';
+      _city.text = d.city ?? '';
+      _state.text = d.state ?? '';
+      // The nickname the person chose is never overwritten by the search.
+      if (_nickname.text.trim().isEmpty && d.nickname != null) {
+        _nickname.text = d.nickname!;
+      }
+      _error = null;
+    });
+  }
+
+  void _clearLocation() => setState(() {
+        _providerName = null;
+        _point = null;
+        _source = null;
+        _provider = null;
+        _providerPlaceId = null;
+      });
 
   @override
   void dispose() {
@@ -63,6 +106,11 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
         address: _address.text,
         city: _city.text,
         state: _state.text,
+        providerName: _providerName,
+        point: _point,
+        source: _source,
+        provider: _provider,
+        providerPlaceId: _providerPlaceId,
       );
       if (mounted) Navigator.of(context).pop(place);
     } on ArgumentError catch (e) {
@@ -116,6 +164,68 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                     errorText: _error,
                   ),
                 ),
+                const SectionTitle('Localização'),
+                SurfaceCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(children: [
+                        Icon(
+                          _point != null
+                              ? Icons.location_on_rounded
+                              : Icons.location_off_outlined,
+                          color: _point != null
+                              ? AppColors.amber
+                              : AppColors.textMuted,
+                        ),
+                        const SizedBox(width: AppSpace.md),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _providerName ??
+                                    (_point != null
+                                        ? 'Ponto no mapa'
+                                        : 'Sem ponto no mapa'),
+                                style: AppText.subtitle,
+                              ),
+                              Text(
+                                switch (_source) {
+                                  LocationSource.search =>
+                                    'Escolhido na busca (dados do OpenStreetMap)',
+                                  LocationSource.currentLocation =>
+                                    'Sua localização, conferida no mapa',
+                                  LocationSource.adjusted =>
+                                    'Ponto ajustado por você no mapa',
+                                  null => _point == null
+                                      ? 'Opcional. Apelido ou endereço já bastam.'
+                                      : 'Ponto salvo',
+                                },
+                                style: AppText.caption,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]),
+                      const SizedBox(height: AppSpace.sm),
+                      Wrap(spacing: AppSpace.sm, children: [
+                        OutlinedButton.icon(
+                          onPressed: _locate,
+                          icon: const Icon(Icons.search_rounded),
+                          label: Text(_point == null
+                              ? 'Buscar no mapa'
+                              : 'Buscar ou ajustar'),
+                        ),
+                        if (_point != null || _providerName != null)
+                          TextButton(
+                            onPressed: _clearLocation,
+                            child: const Text('Remover do mapa'),
+                          ),
+                      ]),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: AppSpace.md),
                 TextField(
                   controller: _address,
@@ -123,7 +233,7 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                   textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     labelText: 'Endereço (opcional)',
-                    helperText: 'Apelido ou endereço já bastam.',
+                    helperText: 'Apelido, nome do lugar ou endereço já bastam.',
                   ),
                 ),
                 const SizedBox(height: AppSpace.md),
