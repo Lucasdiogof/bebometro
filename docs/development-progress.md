@@ -18,7 +18,7 @@ implementado.
 | 7 | Feedback detalhado e "rolê esquecido" | Implementado, ainda não executado (campos novos na migration `20261014000000`, não aplicada) |
 | 8 | Resenha: jogos locais (Eu nunca, Quem é mais provável, Verdade ou desafio) | Implementado, ainda não executado |
 | 9 | Copão e "virar o copo" | Implementado, ainda não executado (inclinação por sensor: não implementada, exigiria o pacote `sensors_plus`) |
-| 10 | Cartão compartilhável e exportação JSON/CSV | Pendente |
+| 10 | Cartão compartilhável e exportação JSON/CSV | Implementado, ainda não executado (depende de `share_plus`, declarado no pubspec e ainda não resolvido; falta `pub get`) |
 | 11 | Revisão dirigida e acabamento | Pendente |
 
 ## Migrations

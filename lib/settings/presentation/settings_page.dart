@@ -9,6 +9,7 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../drinks/presentation/my_drinks_page.dart';
+import '../../export/presentation/export_page.dart';
 import '../../places/presentation/places_page.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import 'settings_cubit.dart';
@@ -132,6 +133,21 @@ class _SettingsViewState extends State<_SettingsView> {
                     SizedBox(width: AppSpace.md),
                     Expanded(
                       child: Text('Locais salvos', style: AppText.subtitle),
+                    ),
+                    Icon(Icons.chevron_right_rounded,
+                        color: AppColors.textMuted),
+                  ]),
+                ),
+                const SizedBox(height: AppSpace.sm),
+                SurfaceCard(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const ExportPage()),
+                  ),
+                  child: const Row(children: [
+                    Icon(Icons.download_outlined, color: AppColors.amber),
+                    SizedBox(width: AppSpace.md),
+                    Expanded(
+                      child: Text('Exportar meus dados', style: AppText.subtitle),
                     ),
                     Icon(Icons.chevron_right_rounded,
                         color: AppColors.textMuted),
