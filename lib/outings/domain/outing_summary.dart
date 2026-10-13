@@ -22,6 +22,8 @@ class OutingSummary {
   const OutingSummary({
     required this.entryCount,
     required this.personalMl,
+    required this.alcoholicMl,
+    required this.otherMl,
     required this.unknownVolumeCount,
     required this.informedCents,
     required this.pricedCount,
@@ -35,6 +37,8 @@ class OutingSummary {
   /// Summary of the given (non-deleted) entries.
   factory OutingSummary.of(List<DrinkEntry> entries) {
     var personalMl = 0;
+    var alcoholicMl = 0;
+    var otherMl = 0;
     var unknownVolume = 0;
     var informed = 0;
     var priced = 0;
@@ -50,6 +54,11 @@ class OutingSummary {
         unknownVolume++;
       } else {
         personalMl += ml;
+        if (e.isAlcoholic) {
+          alcoholicMl += ml;
+        } else {
+          otherMl += ml;
+        }
       }
       if (e.hasPrice) {
         priced++;
@@ -71,6 +80,8 @@ class OutingSummary {
     return OutingSummary(
       entryCount: entries.length,
       personalMl: personalMl,
+      alcoholicMl: alcoholicMl,
+      otherMl: otherMl,
       unknownVolumeCount: unknownVolume,
       informedCents: informed,
       pricedCount: priced,
@@ -88,6 +99,10 @@ class OutingSummary {
 
   /// Sum of the volumes that are known.
   final int personalMl;
+
+  /// The known volume split in drinks with alcohol and water/non-alcoholic.
+  final int alcoholicMl;
+  final int otherMl;
 
   /// Records whose volume is unknown (not counted, and not counted as zero).
   final int unknownVolumeCount;

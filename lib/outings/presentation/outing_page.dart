@@ -16,6 +16,8 @@ import '../../drinks/presentation/drink_entry_page.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../table/presentation/table_scene.dart';
 import '../../table/presentation/table_sheets.dart';
+import '../../glass/presentation/accumulated_glass.dart';
+import '../../glass/presentation/tip_glass_page.dart';
 import 'budget_section.dart';
 import 'outing_cubit.dart';
 
@@ -348,6 +350,43 @@ class _OutingViewState extends State<_OutingView> {
                             ),
                           ),
                     ],
+                    const SizedBox(height: AppSpace.md),
+                    SurfaceCard(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpace.md),
+                      child: Theme(
+                        data: Theme.of(context)
+                            .copyWith(dividerColor: Colors.transparent),
+                        child: ExpansionTile(
+                          tilePadding: EdgeInsets.zero,
+                          childrenPadding:
+                              const EdgeInsets.only(bottom: AppSpace.md),
+                          title: const Text('Copão (opcional)',
+                              style: AppText.subtitle),
+                          subtitle: const Text(
+                              'O volume informado, somado, num copo.',
+                              style: AppText.caption),
+                          children: [
+                            AccumulatedGlass(
+                              alcoholicMl: summary.alcoholicMl,
+                              otherMl: summary.otherMl,
+                              unknownVolumeCount: summary.unknownVolumeCount,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: TextButton.icon(
+                                onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (_) => const TipGlassPage()),
+                                ),
+                                icon: const Icon(Icons.rotate_right_rounded,
+                                    size: 18),
+                                label: const Text('Brincar de virar o copo'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: AppSpace.lg),
                     Center(
                       child: TextButton.icon(
