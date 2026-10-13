@@ -74,6 +74,9 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 **Locais e gastos**
 
 - Locais salvos com apelido ou endereço, cidade/UF opcionais, favoritos e arquivamento.
+- Ao iniciar um rolê: buscar um bar ou um endereço, usar a localização atual (só depois do toque), conferir e ajustar o ponto no mapa, dar um apelido ("Casa da Samara"), escolher um local salvo ou informar só um apelido. O apelido aparece como nome; o endereço fica nos detalhes. Cada rolê guarda a própria cópia do local, e corrigir o local de um rolê muda só aquele rolê.
+- Detalhes do local com mapa, "Abrir no mapa" (coordenadas ou endereço, nunca o apelido), "Iniciar rolê aqui", visitas, última visita e gasto informado nas suas bebidas (separado do total da mesa da comanda).
+- Busca e mapa pela Geoapify (dados do OpenStreetMap, com atribuição), configurados pela chave `GEOAPIFY_KEY`. Sem a chave, apelido, endereço digitado e locais salvos continuam funcionando.
 - Orçamento opcional, avisos configuráveis e preenchimento de preços ausentes individualmente ou em lote.
 - Sugestões de preços com base em registros comparáveis do próprio usuário, confirmadas antes de usar. Não são médias públicas de mercado.
 - Valor pago, cortesia e preço desconhecido tratados separadamente.
@@ -179,8 +182,10 @@ Para um projeto Supabase próprio, aplique as [migrations](supabase/migrations/)
 git clone https://github.com/Lucasdiogof/bebometro.git
 cd bebometro
 flutter pub get
-flutter run --dart-define=SUPABASE_URL=https://SEU_PROJETO.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=SUA_CHAVE_PUBLICAVEL
+flutter run --dart-define=SUPABASE_URL=https://SEU_PROJETO.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=SUA_CHAVE_PUBLICAVEL --dart-define=GEOAPIFY_KEY=SUA_CHAVE_GEOAPIFY
 ```
+
+`GEOAPIFY_KEY` é opcional: sem ela, a busca de lugares e o mapa ficam desligados e o resto do app funciona. Veja a configuração da chave no [HANDOFF](HANDOFF.md).
 
 Na web, acrescente `-d chrome` ao comando de execução. São instruções de configuração, não evidência de comandos executados nesta atualização da documentação. Quando o backend falha, o fluxo implementado mantém os registros locais e mostra a sincronização pendente.
 
@@ -191,7 +196,8 @@ Na web, acrescente `-d chrome` ao comando de execução. São instruções de co
 - **Tela bloqueada:** escrita em Dart, Swift e Kotlin, não compilada nem executada em aparelho. A extensão de widget do iOS foi adicionada ao projeto Xcode à mão e precisa do Team de assinatura escolhido no Xcode. As ações rápidas abrem o app para confirmação; não registram em segundo plano. O sistema limita Live Activities (cerca de 8 horas, mais até 4 na tela bloqueada).
 - **Não verificado:** os interpretadores de rótulo e cardápio são heurísticos e não foram testados com fotos reais, então não se promete precisão. A migration `20261015000000` foi aplicada pelo responsável; a sincronização dessas tabelas e fotos pelo app ainda não foi observada.
 - **Regra de escopo (implementada):** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras.
-- **Depois:** busca de locais/mapas, atividades opcionais na tela bloqueada, preços regionais sustentados por observações reais e ampliação do catálogo.
+- **Locais e mapa:** escritos no código, não executados; busca, mapa e GPS nunca foram observados funcionando. Dependem da chave Geoapify (ainda não configurada) e de `flutter pub get` (pacotes novos). A migration `20261017000000` ainda precisa ser aplicada; até lá, os campos novos não sobem e o resto sincroniza normalmente.
+- **Depois:** preços regionais sustentados por observações reais e ampliação do catálogo.
 - **Validação pendente:** resolução de dependências, compilação, fluxos em aparelho/navegador, revisão visual e sincronização ponta a ponta. A física da cerveja em tela cheia e os eixos do sensor estão implementados no código, mas nunca foram observados em aparelho.
 
 As bebidas pessoais reutilizáveis criadas antes desse escopo foram preservadas; dentro de um rolê, novos cadastros manuais ficam só nele.

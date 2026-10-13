@@ -74,6 +74,9 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 **Places and spending**
 
 - Saved places with nickname or address, optional city/state, favorites and archiving.
+- When starting an outing: search a bar or an address, use the current location (only after a tap), check and adjust the point on a map, give a nickname ("Casa da Samara"), pick a saved place, or just type a nickname. The nickname is shown as the name; the address stays in the details. Each outing keeps its own copy of the place, and correcting the place of one outing changes only that outing.
+- Place details with a map, "Open in maps" (coordinates or address, never the nickname), "Start outing here", visits, last visit and the spending entered for your own drinks (kept apart from the tab's table total).
+- Search and map by Geoapify (OpenStreetMap data, with attribution), enabled by the `GEOAPIFY_KEY` key. Without it, nickname, typed address and saved places keep working.
 - Optional budget, configurable threshold notices, and individual or batch correction of missing prices.
 - Price suggestions from comparable entries in the user's own history, accepted explicitly. These are not public market averages.
 - Paid amount, complimentary drinks and unknown prices remain distinct.
@@ -179,8 +182,10 @@ For your own Supabase project, apply the [migrations](supabase/migrations/) in o
 git clone https://github.com/Lucasdiogof/bebometro.git
 cd bebometro
 flutter pub get
-flutter run --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLISHABLE_KEY
+flutter run --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLISHABLE_KEY --dart-define=GEOAPIFY_KEY=YOUR_GEOAPIFY_KEY
 ```
+
+`GEOAPIFY_KEY` is optional: without it, place search and the map are off and the rest of the app works. See the key setup in [HANDOFF](HANDOFF.md) (Portuguese).
 
 For web, add `-d chrome` to the run command. These are setup instructions, not evidence that the commands were executed for this documentation update. When backend access fails, the implemented flow keeps records locally and shows pending synchronization.
 
@@ -191,7 +196,8 @@ For web, add `-d chrome` to the run command. These are setup instructions, not e
 - **Lock-screen tracking:** written in Dart, Swift and Kotlin, not compiled or run on a device. The iOS widget extension was added to the Xcode project by hand and needs the signing Team chosen in Xcode. Quick actions open the app for confirmation; they do not register in the background. The system limits Live Activities (about 8 hours plus up to 4 on the lock screen).
 - **Not verified:** the label and menu parsers are heuristic and were not tested on real photos, so no accuracy is claimed. The `20261015000000` migration was applied by the maintainer; synchronization of these tables and photos from the app has not been observed.
 - **Scope rule (implemented):** custom items, photos and menu prices belong to the outing ID, even across midnight. They do not enter the global catalog, do not automatically become reusable personal items and do not feed future-visit price suggestions.
-- **Later:** map/place search, opt-in lock-screen activities, regional prices backed by real observations and additional catalog coverage.
+- **Places and map:** written in code, not executed; search, map and GPS have never been observed working. They need the Geoapify key (not configured yet) and `flutter pub get` (new packages). Migration `20261017000000` still has to be applied; until then the new fields are not uploaded and everything else syncs normally.
+- **Later:** regional prices backed by real observations and additional catalog coverage.
 - **Pending validation:** dependency resolution, compilation, device/browser flows, visual review and end-to-end synchronization. The full-screen beer physics and sensor axes are implemented in code but have not been observed on a device.
 
 The reusable personal drinks created before this scope were preserved; inside an outing, new manual drinks are outing-only.

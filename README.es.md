@@ -74,6 +74,9 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 **Lugares y gastos**
 
 - Lugares guardados con apodo o dirección, ciudad/estado opcionales, favoritos y archivo.
+- Al iniciar una salida: buscar un bar o una dirección, usar la ubicación actual (solo después de tocar), revisar y ajustar el punto en el mapa, poner un apodo ("Casa da Samara"), elegir un lugar guardado o escribir solo un apodo. El apodo se muestra como nombre; la dirección queda en los detalles. Cada salida guarda su propia copia del lugar, y corregir el lugar de una salida cambia solo esa salida.
+- Detalles del lugar con mapa, "Abrir en el mapa" (coordenadas o dirección, nunca el apodo), "Iniciar salida aquí", visitas, última visita y el gasto informado en tus bebidas (separado del total de la mesa de la cuenta).
+- Búsqueda y mapa con Geoapify (datos de OpenStreetMap, con atribución), activados por la clave `GEOAPIFY_KEY`. Sin ella, apodo, dirección escrita y lugares guardados siguen funcionando.
 - Presupuesto opcional, avisos configurables y corrección de precios ausentes individual o por lotes.
 - Sugerencias de precios a partir de registros comparables del propio usuario, aceptadas explícitamente. No son promedios públicos del mercado.
 - Importe pagado, cortesía y precio desconocido diferenciados.
@@ -179,8 +182,10 @@ Para tu propio proyecto Supabase, aplica las [migraciones](supabase/migrations/)
 git clone https://github.com/Lucasdiogof/bebometro.git
 cd bebometro
 flutter pub get
-flutter run --dart-define=SUPABASE_URL=https://TU_PROYECTO.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=TU_CLAVE_PUBLICABLE
+flutter run --dart-define=SUPABASE_URL=https://TU_PROYECTO.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=TU_CLAVE_PUBLICABLE --dart-define=GEOAPIFY_KEY=TU_CLAVE_GEOAPIFY
 ```
+
+`GEOAPIFY_KEY` es opcional: sin ella, la búsqueda de lugares y el mapa quedan desactivados y el resto de la app funciona. La configuración de la clave está en el [HANDOFF](HANDOFF.md) (en portugués).
 
 Para web, añade `-d chrome` al comando de ejecución. Son instrucciones de configuración, no evidencia de ejecución durante esta actualización documental. Si falla el backend, el flujo implementado conserva los registros locales y muestra la sincronización pendiente.
 
@@ -191,7 +196,8 @@ Para web, añade `-d chrome` al comando de ejecución. Son instrucciones de conf
 - **Pantalla de bloqueo:** escrita en Dart, Swift y Kotlin, sin compilar ni ejecutar en un dispositivo. La extensión de widget de iOS se añadió al proyecto Xcode a mano y necesita el Team de firma elegido en Xcode. Las acciones rápidas abren la app para confirmar; no registran en segundo plano. El sistema limita las Live Activities (unas 8 horas, más hasta 4 en la pantalla de bloqueo).
 - **No verificado:** los intérpretes de etiqueta y carta son heurísticos y no se probaron con fotos reales, por lo que no se promete precisión. La migración `20261015000000` fue aplicada por el responsable; la sincronización de esas tablas y fotos desde la app aún no se observó.
 - **Regla de alcance (implementada):** los artículos personalizados, fotos y precios de la carta pertenecen al ID de la salida, incluso después de medianoche. No entran al catálogo global, no se convierten automáticamente en artículos personales reutilizables ni alimentan sugerencias para visitas futuras.
-- **Más adelante:** búsqueda de lugares/mapas, actividades opcionales en pantalla bloqueada, precios regionales basados en observaciones reales y ampliación del catálogo.
+- **Lugares y mapa:** escritos en el código, sin ejecutar; búsqueda, mapa y GPS nunca se observaron funcionando. Dependen de la clave de Geoapify (aún no configurada) y de `flutter pub get` (paquetes nuevos). La migración `20261017000000` aún debe aplicarse; hasta entonces los campos nuevos no se envían y el resto se sincroniza con normalidad.
+- **Más adelante:** precios regionales basados en observaciones reales y ampliación del catálogo.
 - **Validación pendiente:** resolución de dependencias, compilación, flujos en dispositivo/navegador, revisión visual y sincronización de extremo a extremo. La física de la cerveza a pantalla completa y los ejes del sensor están implementados en el código, pero nunca se observaron en un dispositivo.
 
 Las bebidas personales reutilizables creadas antes de este alcance se conservaron; dentro de una salida, los nuevos registros manuales quedan solo en ella.

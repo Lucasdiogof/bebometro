@@ -20,6 +20,7 @@ implementado.
 | 9 | Copão e "virar o copo" | Copão: implementado, ainda não executado. "Virar o copo" refeito em 13/10/2026 como cerveja em tela cheia com acelerômetro (`sensors_plus`), arrasto na web/sem sensor; implementado, **não executado** (física, cores, sinal dos eixos no iOS e desempenho por observar em aparelho; ver HANDOFF) |
 | 10 | Cartão compartilhável e exportação JSON/CSV | Implementado, ainda não executado (depende de `share_plus`, declarado no pubspec e ainda não resolvido; falta `pub get`) |
 | 11 | Revisão dirigida e acabamento | Implementado (revisão por leitura; nada executado) |
+| 15 | Locais e mapa: seletor reutilizável (busca de estabelecimento/endereço na Geoapify, localização atual sob demanda, confirmação e ajuste no mapa, só apelido, locais salvos), correção do local de um rolê, detalhes com mapa, "Abrir no mapa", "Iniciar rolê aqui" | Implementado, **não executado, não compilado nem analisado**; pacotes novos sem `pub get`; chave `GEOAPIFY_KEY` **não configurada**; migration `20261017000000` **pendente** |
 | 14 | Rolê na tela bloqueada (Live Activity/Dynamic Island no iOS 16.2+, notificação silenciosa no Android, só dentro do app na web; ativação e preferências, ocultar por rolê, ações que abrem o app e pedem confirmação) | Implementado em Dart, Swift e Kotlin, **não executado, não compilado nem analisado**; a extensão iOS foi adicionada ao `project.pbxproj` à mão (ver HANDOFF) |
 | 13 | Comanda e divisão da conta (itens agrupados, extras, serviço/desconto, participantes, 3 modos de divisão, pagamentos, compartilhamento em texto) | Implementado, **não executado nem analisado**; migration `20261016000000` aplicada pelo responsável |
 | 12 | Bebida por foto: rótulo, cardápio e cadastro do rolê (OCR local, revisão, "Bebidas deste rolê", fotos privadas) | Implementado, ainda não executado; migration `20261015000000` aplicada pelo responsável. Revisão de integração por leitura feita em 13/10/2026 (ver HANDOFF) |
@@ -35,6 +36,7 @@ implementado.
 | `20261014000000_places_budget_feedback_details.sql` | Aplicada pelo dono (13/10/2026); `places` e colunas novas de `outings` confirmadas pela API. Envio pelo Flutter ainda não observado |
 | `20261015000000_outing_drinks_and_photos.sql` | Aplicada pelo responsável (tabelas `outing_drinks`/`outing_photos`, `drink_entries.abv_source`, bucket privado `outing-photos`). Não verificada daqui nem pela sincronização rodando no Flutter |
 | `20261016000000_outing_tabs.sql` | Aplicada pelo responsável (tabela `outing_tabs`: a comanda inteira como um documento jsonb por rolê). Não verificada daqui nem pela sincronização rodando no Flutter |
+| `20261017000000_places_map.sql` | **Pendente** (sem acesso administrativo daqui ao `jiisoqkryhmtopaojyyu`; SQL entregue). Colunas opcionais de mapa em `places` e `outings`, `places_name_present` aceitando `provider_name`. Até aplicar, o app envia a parte compatível de cada linha |
 
 ## Revisão de integração do bloco 12 (13/10/2026)
 

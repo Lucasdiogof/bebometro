@@ -204,8 +204,8 @@ Checklist por bloco em `docs/development-progress.md`. Nada foi compilado, anali
   Minhas bebidas); registrar a partir dele inicia (ou reutiliza) um rolê.
 - **Locais salvos** (`lib/places/`): apelido OU endereço, cidade/UF opcionais, tipo, favorito, arquivar; escolher/criar ao iniciar o rolê;
   detalhe com rolês, gastos informados e "Seu histórico de preços". O rolê guarda a própria cópia do local (`nickname/address/city/state`) e
-  só o `place_id` liga ao local salvo: editar o local nunca reescreve rolês antigos. Locais nunca são unidos por nome parecido. Sem busca de
-  mapas (integração externa fica para depois).
+  só o `place_id` liga ao local salvo: editar o local nunca reescreve rolês antigos. Locais nunca são unidos por nome parecido. Busca e mapa
+  chegaram no bloco 15 (abaixo).
 - **Orçamento e preços:** orçamento opcional (ao iniciar ou durante), barra com gasto informado × orçamento e texto honesto quando faltam preços
   (`BudgetStatus`); avisos a 80%/100% uma vez por patamar (`AppPrefs`, pode desligar em Configurações). "Preencher preços ausentes" no resumo:
   um a um ou em lote com prévia; valores já informados só mudam se incluídos e selecionados; em bebida compartilhada vale a parcela paga.
@@ -495,6 +495,93 @@ executado em aparelho nem aberto no Xcode/Android Studio**. Pode haver erros de 
 **Não observado em execução:** compilação do Swift/Kotlin e do `.pbxproj`; Live Activity na tela bloqueada e na Dynamic Island; dispensa pelo
 usuário; notificação, permissão do Android 13+, remoção e reposição; abertura por toque a frio e com o app aberto; confirmação das ações;
 nenhum efeito sobre a sincronização foi testado.
+
+## Locais e mapa (bloco 15, 13/10/2026)
+
+Escrito por leitura da documentação oficial e do código; **nada foi compilado, analisado, executado nem aberto em aparelho ou navegador.
+A busca, o mapa e o GPS nunca foram vistos funcionando.** Pacotes novos ainda sem `flutter pub get`.
+
+**Provedor escolhido: Geoapify** (dados do OpenStreetMap). Motivo: uma chave de cliente cobre autocomplete de estabelecimentos **e**
+endereços (`/v1/geocode/autocomplete`), lugares por perto (`/v2/places`), endereço de um ponto (`/v1/geocode/reverse`) e os tiles do
+mapa (estilo escuro `dark-matter-yellow-roads`), então resultado e mapa vêm da mesma base. Plano gratuito de 3.000 créditos/dia, **sem
+cartão**, uso comercial permitido dentro da cota. A página da Places API diz explicitamente que os resultados podem ser guardados sem
+limite; exige atribuição ao OpenStreetMap e, no plano gratuito, à Geoapify ("Powered by Geoapify", "© OpenStreetMap", "© OpenMapTiles"
+nos tiles). Para autocomplete/reverse a documentação não fala de armazenamento: os dados são do OSM (ODbL); reconfirmar com a Geoapify
+se o plano mudar.
+- **Descartados:** Google Places (só o `place_id` pode ser guardado sem limite; o resto tem cache restrito, e exige billing); Nominatim e
+  tiles públicos do OSM (não servem para autocomplete nem como infraestrutura de app); APIs de CEP (não acham bares). Nada de scraping.
+- **Sem Cloudflare/proxy:** a chave é de cliente; o pior abuso é gastar a cota grátis do dia (sem cartão, não gera cobrança). Um proxy
+  só passa a valer num plano pago.
+
+**Configuração pendente (manual, do responsável)**
+1. Criar conta grátis em geoapify.com, criar um projeto e copiar a API key (nada foi criado, habilitado ou aceito daqui).
+2. No painel da Geoapify, restringir a chave (origens HTTP do domínio web e o que o painel oferecer). Chave em app móvel é extraível: a
+   restrição reduz uso por terceiros, não o impede.
+3. Rodar/buildar com `--dart-define=GEOAPIFY_KEY=...` (ou no `env.json` de `--dart-define-from-file`). Sem a chave,
+   `GeoSearch.configured` é falso: busca e mapa somem, o seletor explica isso, e apelido, endereço digitado e locais salvos funcionam.
+4. Aplicar `supabase/migrations/20261017000000_places_map.sql` (abaixo).
+
+**O que foi entregue (código)**
+- `lib/places/domain/`: `GeoPoint` (valida faixa e finitude; ausência é `null`, nunca 0,0), `LocationSource` (busca, localização atual,
+  ponto ajustado), `PlaceDraft` (o que o seletor devolve) e `PlaceSnapshot` (cópia do local no rolê). `Place` ganhou `providerName`,
+  `point`, `source`, `provider`, `providerPlaceId` (opcionais; `toJson` só envia quando existem). `placeTitle()` é a regra única de
+  título: **apelido > nome do provedor > endereço > "Ponto no mapa"**; endereço nunca é inventado.
+- `Outing` ganhou as cópias `placeName` e `point`, e `withPlace()` para a correção explícita.
+- `lib/places/data/geo_search.dart`: cliente HTTP com tempo limite de 8 s, filtro Brasil, `lang=pt`, viés pela posição quando houver,
+  cache em memória de 40 consultas (a mesma consulta não repete chamada), erros `notConfigured`/`offline`/`unavailable`. A UF só é
+  guardada quando o provedor manda 2 letras válidas.
+- `lib/places/data/device_location.dart` (`geolocator`): uma leitura, em primeiro plano, só após o toque; trata serviço desligado,
+  negado, negado para sempre (botão para os ajustes), tempo limite de 15 s, localização aproximada ("reduzida" no iOS/Android ou
+  precisão > 500 m) e falha na web. Sem segundo plano, sem acompanhar deslocamento, sem detectar entrada em bar.
+- `place_picker_page.dart`, seletor reutilizável (iniciar rolê, localizar um local salvo no editor, corrigir o local de um rolê): busca em
+  destaque, favoritos e recentes antes de digitar, "Usar minha localização", "Informar apenas um apelido"; debounce de 450 ms, mínimo de
+  3 letras, respostas antigas descartadas por número de sequência; estados carregando / sem resultado / sem internet / indisponível /
+  não configurado; atribuição sob os resultados; nome + endereço para separar homônimos e "Salvo como …" quando já é local salvo. Com
+  localização: "Perto de você" (raio de 300 m, ou 1,5 km se aproximada) e "Marcar só este ponto no mapa".
+- `place_confirm_page.dart`: mapa grande (`flutter_map`), nome, endereço, atribuição, apelido opcional, "Salvar nos meus locais" (ligado e
+  visível: nada é salvo sem a pessoa ver), "Usar este local". **Ajuste do ponto** (toque no mapa): estabelecimento, endereço, cidade/UF e
+  vínculo com o provedor são **removidos**; aparece "Ponto ajustado: o nome e o endereço anteriores não valem mais", com "Buscar endereço
+  deste ponto" (reverse só no toque, sem herdar o nome de outro estabelecimento) e "Usar o nome anterior como apelido". Se os tiles
+  falham: aviso e confirmação pelos dados em texto. Zoom +/−/centralizar com rótulos acessíveis.
+- **Duplicatas:** só pelo id do provedor (`findByProvider`, ativos e arquivados). Havendo correspondência, a confirmação avisa "Você já
+  salvou este lugar como …; o apelido continua" e reaproveita (um arquivado volta a ativo, por ser escolha explícita). Nunca por nome nem
+  por proximidade. Reescolher o estabelecimento **não apaga o apelido** (`PlaceRepository.resolve`).
+- **Início do rolê:** card "Buscar bar ou endereço", atalhos salvos, apelido inline (o caminho mais curto continua: digitar e começar) e
+  endereço manual recolhido em "Digitar endereço (opcional)". `StartOutingPage(place:)` atende "Iniciar rolê aqui".
+- **Correção de um rolê** (`change_outing_place.dart`): "Corrigir local" no menu do rolê e no resumo, com confirmação; troca só a cópia
+  daquele rolê (`OutingRepository.changePlace`) no mesmo `outing_id` (bebidas, fotos, itens do rolê e comanda ficam). A tela bloqueada se
+  atualiza pela mudança do rolê e mostra apelido ou nome do lugar (se a pessoa permitiu), **nunca** o endereço.
+- **Locais salvos:** editor com seção "Localização" (buscar/ajustar no mapa, remover do mapa; origem em palavras, sem nome de campo);
+  detalhe com mapa (200 px, sem interação), "Detalhes" (nome no mapa, endereço, cidade, origem), "Abrir no mapa", "Iniciar rolê aqui" e
+  última visita. Arquivar continua igual; arquivados seguem ligados aos rolês antigos.
+- **Abrir no mapa** (`open_in_maps.dart`, `url_launcher`): coordenadas quando há, senão busca pelo **endereço** (o apelido nunca vira
+  consulta). Android `geo:` (qualquer app de mapas) → Google Maps na web; iOS Apple Maps → Google; web OpenStreetMap. Só abre: não inicia
+  navegação nem compartilha localização.
+- **Histórico por local:** rolês, registros, gasto informado, sem preço e última visita. "Gasto informado" é só o das suas bebidas; total
+  da mesa, parcela e pagamentos da comanda ficam no resumo de cada rolê e **não** entram aqui (sem dupla contagem). Itens `outing:`
+  continuam fora de "Seu histórico de preços" e das sugestões (`isPriceComparable`, bloco 12). Nada público.
+- **Plataformas:** Android `INTERNET` (faltava no manifesto principal; builds de release ficariam sem rede, inclusive para o Supabase),
+  `ACCESS_COARSE_LOCATION` e `ACCESS_FINE_LOCATION`; iOS `NSLocationWhenInUseUsageDescription` (sem "Always"); web: `geolocator` exige
+  HTTPS e permissão do navegador. Nenhum código nativo novo.
+- **Sincronização:** `places` (`provider_name`, `latitude`, `longitude`, `location_source`, `provider`, `provider_place_id`) e `outings`
+  (`place_name`, `latitude`, `longitude`) entraram em `_optionalColumns`: sem a migration, a parte compatível sobe e a linha completa fica
+  pendente. Fila, ordem (`places` antes de `outings`) e idempotência (upsert por id) são as já existentes. O provedor de mapas não
+  participa da sincronização. **Caso de borda:** um local salvo só com nome do provedor (sem apelido nem endereço) é recusado pela regra
+  antiga `places_name_present` até a migration ser aplicada.
+
+**Migration `20261017000000_places_map.sql`: pendente.** Este ambiente não tem acesso administrativo ao `jiisoqkryhmtopaojyyu` (o MCP do
+Supabase daqui é de outro projeto e não foi tocado). Idempotente: colunas opcionais, coordenadas válidas (ambas ou nenhuma),
+`location_source` com valores fixos, `places_name_present` passando a aceitar `provider_name`, índice não único por
+`(owner_id, provider, provider_place_id)`.
+
+**Limites conhecidos:** chave de cliente extraível; cota de 3.000 créditos/dia (uma tecla não gasta crédito, só a consulta após o
+debounce); cobertura de bares no Brasil depende do OSM (estabelecimentos pequenos ou novos podem faltar; o apelido cobre isso);
+`state_code` da Geoapify para o Brasil não foi conferido em resposta real; o marcador não é arrastável (o ajuste é por toque); sem
+paginação além de 8 resultados no autocomplete e 20 por perto.
+
+**Não observado em execução:** resolução dos pacotes (`flutter_map` 8, `latlong2`, `geolocator` 14, `http`, `url_launcher`) e
+compatibilidade com o Gradle/Kotlin do projeto; respostas reais da Geoapify; tiles; permissão de localização no Android/iOS/web; abrir
+mapas em cada plataforma; layout com teclado aberto; envio dos campos novos ao Supabase.
 
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
