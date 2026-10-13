@@ -19,6 +19,8 @@ class ExportBuilder {
     required List<Map<String, dynamic>> outings,
     required List<Map<String, dynamic>> drinkEntries,
     required List<Map<String, dynamic>> customDrinks,
+    List<Map<String, dynamic>> outingDrinks = const [],
+    List<Map<String, dynamic>> outingPhotos = const [],
   }) {
     const encoder = JsonEncoder.withIndent('  ');
     return encoder.convert({
@@ -32,6 +34,10 @@ class ExportBuilder {
       'outings': outings,
       'drink_entries': drinkEntries,
       'custom_drinks': customDrinks,
+      // Drinks and photos that belong to one outing each (outing_id). Photo
+      // files are not included, only their metadata.
+      'outing_drinks': outingDrinks,
+      'outing_photos': outingPhotos,
     });
   }
 

@@ -38,6 +38,8 @@ class _ExportPageState extends State<ExportPage> {
       outings: store.all(LocalStore.outings),
       drinkEntries: live(LocalStore.drinkEntries),
       customDrinks: live(LocalStore.customDrinks),
+      outingDrinks: live(LocalStore.outingDrinks),
+      outingPhotos: live(LocalStore.outingPhotos),
     );
   }
 

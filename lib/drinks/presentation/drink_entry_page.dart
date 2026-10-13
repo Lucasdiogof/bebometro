@@ -295,6 +295,7 @@ class _DrinkEntryView extends StatelessWidget {
                         errors: errors,
                         suggestion: state.suggestion,
                         scope: state.suggestionScope,
+                        advertisedCents: state.advertisedCents,
                       ),
                       const SectionTitle('Horário'),
                       SurfaceCard(
@@ -537,12 +538,14 @@ class _PriceCard extends StatelessWidget {
     required this.errors,
     required this.suggestion,
     required this.scope,
+    this.advertisedCents,
   });
 
   final DrinkDraft draft;
   final Map<String, String> errors;
   final PriceSuggestion suggestion;
   final String scope;
+  final int? advertisedCents;
 
   @override
   Widget build(BuildContext context) {
@@ -566,6 +569,10 @@ class _PriceCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpace.md),
+          if (advertisedCents != null) ...[
+            _AdvertisedBanner(draft: draft, cents: advertisedCents!),
+            const SizedBox(height: AppSpace.md),
+          ],
           if (!suggestion.isEmpty) ...[
             _SuggestionBanner(
                 draft: draft, suggestion: suggestion, scope: scope),
@@ -1077,6 +1084,50 @@ class _ProductChoice {
   final CatalogItem? product;
 }
 
+
+/// The price written in the menu photo. A suggestion for this outing only:
+/// what was actually paid may differ (promotion, a different order, a shared
+/// bill), so it only applies when the user taps.
+class _AdvertisedBanner extends StatelessWidget {
+  const _AdvertisedBanner({required this.draft, required this.cents});
+
+  final DrinkDraft draft;
+  final int cents;
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<DrinkFormCubit>();
+    return Container(
+      padding: const EdgeInsets.all(AppSpace.md),
+      decoration: BoxDecoration(
+        color: AppColors.amber.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: AppColors.amber.withValues(alpha: 0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Preço do cardápio', style: AppText.overline),
+          const SizedBox(height: AppSpace.xs),
+          Text(
+            'O cardápio anunciava ${formatCents(cents)}. Confirme o que foi '
+            'pago de fato: pode ter promoção ou outro pedido.',
+            style: AppText.body,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: cubit.applyAdvertised,
+              child: Text(draft.isShared
+                  ? 'Usar como total da conta'
+                  : 'Usar como o que paguei'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 /// "Seu histórico": the user's own last price for this drink and size. It only
 /// becomes the price when the user taps to confirm; a paid share and a package

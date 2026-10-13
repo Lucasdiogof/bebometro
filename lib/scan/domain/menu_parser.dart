@@ -76,6 +76,8 @@ class MenuCandidate {
     List<String>? ingredients,
     bool? duplicate,
     bool? discarded,
+    int? sourceIndex,
+    List<MenuPrice>? priceOptions,
   }) =>
       MenuCandidate(
         id: id,
@@ -83,12 +85,12 @@ class MenuCandidate {
         description: description != null ? description() : this.description,
         category: category != null ? category() : this.category,
         volumeMl: volumeMl != null ? volumeMl() : this.volumeMl,
-        priceOptions: priceOptions,
+        priceOptions: priceOptions ?? this.priceOptions,
         priceCents: priceCents != null ? priceCents() : this.priceCents,
         promo: promo,
         ingredients: ingredients ?? this.ingredients,
         snippets: snippets,
-        sourceIndex: sourceIndex,
+        sourceIndex: sourceIndex ?? this.sourceIndex,
         duplicate: duplicate ?? this.duplicate,
         discarded: discarded ?? this.discarded,
       );
@@ -247,7 +249,13 @@ class _Item {
   double height;
 }
 
-MenuReading parseMenu(OcrResult ocr, {int sourceIndex = 0}) {
+/// [idPrefix] makes the candidate ids unique across several images (the
+/// photo id); it defaults to the image index.
+MenuReading parseMenu(
+  OcrResult ocr, {
+  int sourceIndex = 0,
+  String? idPrefix,
+}) {
   final lines = [
     for (final l in ocr.lines)
       if (l.text.trim().isNotEmpty) l,
@@ -378,7 +386,7 @@ MenuReading parseMenu(OcrResult ocr, {int sourceIndex = 0}) {
             ? DrinkCategory.cocktail
             : guessCategory(item.description ?? ''));
     return MenuCandidate(
-      id: '$sourceIndex:${n++}',
+      id: '${idPrefix ?? sourceIndex}:${n++}',
       name: item.name,
       description: item.description,
       category: category,

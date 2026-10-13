@@ -20,6 +20,7 @@ class DrinkFormState {
     this.bottles = const [],
     this.suggestion = const PriceSuggestion(),
     this.suggestionScope = 'neste rolê',
+    this.advertisedCents,
     this.showErrors = false,
     this.saving = false,
     this.saved = false,
@@ -50,6 +51,10 @@ class DrinkFormState {
 
   /// "neste local" or "neste rolê".
   final String suggestionScope;
+
+  /// Price a menu advertised for this outing-only item. It only becomes the
+  /// price when the user taps to confirm it; it is not history.
+  final int? advertisedCents;
   final bool showErrors;
   final bool saving;
   final bool saved;
@@ -79,6 +84,7 @@ class DrinkFormState {
         bottles: bottles,
         suggestion: suggestion ?? this.suggestion,
         suggestionScope: suggestionScope,
+        advertisedCents: advertisedCents,
         showErrors: showErrors ?? this.showErrors,
         saving: saving ?? this.saving,
         saved: saved ?? this.saved,
@@ -126,6 +132,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
           draft: draft,
           suggestionScope: outing.placeId != null ? 'neste local' : 'neste rolê',
           suggestion: suggestPrice(candidates, _keyOf(draft)),
+          advertisedCents: item.advertisedCents,
           presentations: _sizesFor(item).list,
           sizesAreGeneric: _sizesFor(item).generic,
           abvVariants: item.abvVariants,
@@ -215,6 +222,15 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     _set(state.draft
         .withPriceKind(PriceKind.informed)
         .withBillTotalCents(cents));
+  }
+
+  /// The user confirmed the menu's advertised price as what they paid (or as
+  /// the bill total when the drink is shared).
+  void applyAdvertised() {
+    final cents = state.advertisedCents;
+    if (cents == null) return;
+    final d = state.draft.withPriceKind(PriceKind.informed);
+    _set(d.isShared ? d.withBillTotalCents(cents) : d.withPaidCents(cents));
   }
 
   void selectPresentation(Presentation p) =>

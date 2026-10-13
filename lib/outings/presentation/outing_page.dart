@@ -13,6 +13,7 @@ import '../../core/widgets/state_views.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/add_drink_page.dart';
 import '../../drinks/presentation/drink_entry_page.dart';
+import '../../scan/data/scan_draft_store.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../table/presentation/table_scene.dart';
 import '../../table/presentation/table_sheets.dart';
@@ -114,6 +115,15 @@ class _OutingViewState extends State<_OutingView> {
     setState(() => _finishing = true);
     try {
       await cubit.finish(endedAt);
+      if (mounted &&
+          getIt<ScanDraftStore>().openFor(outing.id).isNotEmpty) {
+        // An unfinished label/menu reading stays tied to this outing.
+        showToast(
+          context,
+          'Há uma leitura de rótulo ou cardápio em aberto. Ela continua '
+          'ligada a este rolê e aparece no resumo dele.',
+        );
+      }
       if (mounted) Navigator.of(context).pop(outing.id);
     } on ArgumentError catch (e) {
       if (!mounted) return;

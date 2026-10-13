@@ -18,6 +18,7 @@ import 'budget_section.dart';
 import '../../drinks/presentation/add_drink_page.dart';
 import '../../home/presentation/feedback_details_sheet.dart';
 import '../../share/presentation/share_card_page.dart';
+import '../../outing_drinks/presentation/outing_scan_section.dart';
 import 'outing_cubit.dart';
 import 'price_fix_page.dart';
 import 'outing_page.dart' show EntryTile;
@@ -332,6 +333,7 @@ class _SummaryViewState extends State<_SummaryView> {
                         ],
                       ),
                     ),
+                    OutingScanSection(outingId: outing.id),
                     SectionTitle('Registros (${state.entries.length})'),
                     if (state.entries.isEmpty)
                       const EmptyView(

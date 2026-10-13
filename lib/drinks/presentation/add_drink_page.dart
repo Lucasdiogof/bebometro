@@ -12,6 +12,11 @@ import '../../core/navigation/app_routes.dart';
 import '../../core/navigation/outing_flow.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/presentation/start_outing_page.dart';
+import '../../outing_drinks/domain/outing_drink.dart';
+import '../../outing_drinks/presentation/outing_drink_review_page.dart';
+import '../../outing_drinks/presentation/outing_drinks_section.dart';
+import '../../scan/presentation/scan_label_page.dart';
+import '../../scan/presentation/scan_menu_page.dart';
 import 'catalog_cubit.dart';
 import 'my_drinks_page.dart';
 import 'custom_drink_page.dart';
@@ -54,9 +59,19 @@ class _AddDrinkView extends StatelessWidget {
       );
       if (id == null || !context.mounted) return;
     }
+    await _register(context, id, item);
+  }
+
+  /// Opens the registration form for [item] in outing [id] and leaves the
+  /// screen the same way for catalog items and outing-only items.
+  Future<void> _register(
+    BuildContext context,
+    String id,
+    CatalogItem item,
+  ) async {
     final outcome = await Navigator.of(context).push<EntryOutcome>(
       MaterialPageRoute(
-        builder: (_) => DrinkEntryPage.create(outingId: id!, item: item),
+        builder: (_) => DrinkEntryPage.create(outingId: id, item: item),
       ),
     );
     if (!context.mounted) return;
@@ -67,6 +82,90 @@ class _AddDrinkView extends StatelessWidget {
     }
   }
 
+  /// The outing the new flows belong to: the one on screen, the running one,
+  /// or one the person chooses to start. Null when they decline.
+  Future<String?> _needOuting(BuildContext context) async {
+    final existing = outingId ?? getIt<OutingRepository>().active?.id;
+    if (existing != null) return existing;
+    final start = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Precisa de um rolê em andamento'),
+        content: const Text(
+          'Bebidas lidas de rótulo ou cardápio ficam guardadas no rolê em que '
+          'foram cadastradas. Quer iniciar um agora?',
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Agora não')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('Iniciar rolê')),
+        ],
+      ),
+    );
+    if (start != true || !context.mounted) return null;
+    return Navigator.of(context).push<String>(
+      MaterialPageRoute(builder: (_) => const StartOutingPage()),
+    );
+  }
+
+  Future<void> _afterReview(
+    BuildContext context,
+    String id,
+    ReviewResult? result,
+  ) async {
+    if (result == null || !context.mounted) return;
+    if (result.register) {
+      await _register(context, id, result.drink.toCatalogItem());
+    } else {
+      showToast(context, 'Salva em "Bebidas deste rolê"');
+    }
+  }
+
+  Future<void> _scanLabel(BuildContext context) async {
+    final id = await _needOuting(context);
+    if (id == null || !context.mounted) return;
+    final result = await Navigator.of(context).push<ReviewResult>(
+      MaterialPageRoute(builder: (_) => ScanLabelPage(outingId: id)),
+    );
+    if (!context.mounted) return;
+    await _afterReview(context, id, result);
+  }
+
+  Future<void> _scanMenu(BuildContext context) async {
+    final id = await _needOuting(context);
+    if (id == null || !context.mounted) return;
+    final result = await Navigator.of(context).push<MenuResult>(
+      MaterialPageRoute(builder: (_) => ScanMenuPage(outingId: id)),
+    );
+    if (result != null && context.mounted) {
+      showToast(context,
+          '${result.saved} item(ns) em "Bebidas deste rolê". Escolha um para registrar.');
+    }
+  }
+
+  /// Manual sign-up inside an outing: the drink belongs to this outing only.
+  Future<void> _manualInOuting(
+    BuildContext context,
+    String suggestedName,
+  ) async {
+    final id = outingId;
+    if (id == null) return;
+    final result = await Navigator.of(context).push<ReviewResult>(
+      MaterialPageRoute(
+        builder: (_) => OutingDrinkReviewPage(
+          outingId: id,
+          prefill: ReviewPrefill(
+              name: suggestedName.isEmpty ? null : suggestedName),
+        ),
+      ),
+    );
+    if (!context.mounted) return;
+    await _afterReview(context, id, result);
+  }
+
   /// Creates (or edits) a personal drink; a new one goes straight to the
   /// registration form.
   Future<void> _custom(
@@ -74,6 +173,11 @@ class _AddDrinkView extends StatelessWidget {
     String suggestedName = '',
     CatalogItem? editing,
   }) async {
+    if (!_explore && editing == null) {
+      // Inside an outing a new drink belongs to that outing only.
+      await _manualInOuting(context, suggestedName);
+      return;
+    }
     final item = await Navigator.of(context).push<CatalogItem>(
       MaterialPageRoute(
         builder: (_) =>
@@ -202,12 +306,34 @@ class _AddDrinkView extends StatelessWidget {
               if (f.advancedCount > 0) _ActiveFilters(state: state, cubit: cubit),
               Expanded(child: _body(context, state, cubit)),
               BottomActionBar(
-                child: OutlinedButton.icon(
-                  onPressed: () =>
-                      _custom(context, suggestedName: state.query.trim()),
-                  icon: const Icon(Icons.add_rounded),
-                  label: const Text('Cadastrar bebida'),
-                ),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  Row(children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => _scanLabel(context),
+                        icon: const Icon(Icons.qr_code_scanner_rounded),
+                        label: const Text('Ler rótulo'),
+                      ),
+                    ),
+                    const SizedBox(width: AppSpace.sm),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => _scanMenu(context),
+                        icon: const Icon(Icons.menu_book_outlined),
+                        label: const Text('Ler cardápio'),
+                      ),
+                    ),
+                  ]),
+                  const SizedBox(height: AppSpace.sm),
+                  OutlinedButton.icon(
+                    onPressed: () =>
+                        _custom(context, suggestedName: state.query.trim()),
+                    icon: const Icon(Icons.add_rounded),
+                    label: Text(_explore
+                        ? 'Cadastrar bebida'
+                        : 'Cadastrar bebida deste rolê'),
+                  ),
+                ]),
               ),
             ],
           ),
@@ -242,10 +368,14 @@ class _AddDrinkView extends StatelessWidget {
       return EmptyView(
         icon: Icons.search_off_rounded,
         title: 'Nenhuma bebida encontrada',
-        message: state.filters.isEmpty
-            ? 'Cadastre a sua e ela fica salva para os próximos rolês.'
-            : 'Tente tirar algum filtro ou cadastre a sua.',
-        actionLabel: 'Cadastrar bebida',
+        message: !_explore
+            ? 'Cadastre uma bebida só deste rolê, ou leia um rótulo ou '
+                'cardápio.'
+            : (state.filters.isEmpty
+                ? 'Cadastre a sua e ela fica salva para os próximos rolês.'
+                : 'Tente tirar algum filtro ou cadastre a sua.'),
+        actionLabel:
+            _explore ? 'Cadastrar bebida' : 'Cadastrar bebida deste rolê',
         onAction: () => _custom(context, suggestedName: state.query.trim()),
       );
     }
@@ -254,6 +384,11 @@ class _AddDrinkView extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(
           AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
       children: [
+        if (!_explore && showShortcuts)
+          OutingDrinksSection(
+            outingId: outingId!,
+            onRegister: (d) => _register(context, outingId!, d.toCatalogItem()),
+          ),
         if (showShortcuts && state.recents.isNotEmpty) ...[
           const SectionTitle('Recentes'),
           _Shortcuts(
