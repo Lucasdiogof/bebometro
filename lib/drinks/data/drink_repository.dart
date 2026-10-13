@@ -48,6 +48,14 @@ class DrinkRepository {
       .where((j) => j['deleted_at'] == null)
       .length;
 
+  /// Every live (not deleted) record on the device, oldest first.
+  List<DrinkEntry> allEntries() => _store
+      .all(LocalStore.drinkEntries)
+      .where((j) => j['deleted_at'] == null)
+      .map(DrinkEntry.fromJson)
+      .toList()
+    ..sort((a, b) => a.consumedAt.compareTo(b.consumedAt));
+
   DrinkEntry? entryById(String id) {
     final json = _store.get(LocalStore.drinkEntries, id);
     return json == null ? null : DrinkEntry.fromJson(json);

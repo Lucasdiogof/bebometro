@@ -36,6 +36,14 @@ class OutingRepository {
     return json == null ? null : Outing.fromJson(json);
   }
 
+  /// Outings (running or finished) linked to a saved place, newest first.
+  List<Outing> forPlace(String placeId) =>
+      _all().where((o) => o.placeId == placeId).toList()
+        ..sort((a, b) => b.startedAt.compareTo(a.startedAt));
+
+  /// Every outing, newest first.
+  List<Outing> all() => _all()..sort((a, b) => b.startedAt.compareTo(a.startedAt));
+
   /// Finished outings, newest first.
   List<Outing> ended() => _all().where((o) => !o.isActive).toList()
     ..sort((a, b) => b.startedAt.compareTo(a.startedAt));
@@ -53,6 +61,10 @@ class OutingRepository {
     required OutingType type,
     String? nickname,
     String? address,
+    String? city,
+    String? state,
+    String? placeId,
+    int? budgetCents,
     required DateTime startedAt,
   }) async {
     if (active != null) throw const ActiveOutingExistsException();
@@ -67,6 +79,12 @@ class OutingRepository {
       type: type,
       nickname: (nick == null || nick.isEmpty) ? null : nick,
       address: (addr == null || addr.isEmpty) ? null : addr,
+      city: (city == null || city.trim().isEmpty) ? null : city.trim(),
+      state: (state == null || state.trim().isEmpty)
+          ? null
+          : state.trim().toUpperCase(),
+      placeId: placeId,
+      budgetCents: budgetCents != null && budgetCents > 0 ? budgetCents : null,
       startedAt: startedAt,
       createdAt: now,
       updatedAt: now,
@@ -85,6 +103,34 @@ class OutingRepository {
       throw ArgumentError('O fim não pode estar no futuro.');
     }
     await _save(outing.copyWith(endedAt: endedAt, updatedAt: DateTime.now()));
+  }
+
+  /// Sets or clears (null) the optional drinks budget of an outing.
+  Future<void> setBudget(String id, int? cents) async {
+    final outing = byId(id);
+    if (outing == null) return;
+    await _save(outing.copyWith(
+      budgetCents: () => (cents != null && cents > 0) ? cents : null,
+      updatedAt: DateTime.now(),
+    ));
+  }
+
+  /// Optional details of the personal account (all of them can be left out).
+  Future<void> setFeedbackDetails(
+    String id, {
+    WakeFeeling? wake,
+    Hangover? hangover,
+    String? note,
+  }) async {
+    final outing = byId(id);
+    if (outing == null) return;
+    final trimmed = note?.trim();
+    await _save(outing.copyWith(
+      wakeFeeling: () => wake,
+      hangover: () => hangover,
+      feedbackNote: () => (trimmed == null || trimmed.isEmpty) ? null : trimmed,
+      updatedAt: DateTime.now(),
+    ));
   }
 
   Future<void> answerFeedback(String id, FeedbackMood mood) async {

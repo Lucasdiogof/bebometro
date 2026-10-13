@@ -215,6 +215,9 @@ class SyncCubit extends Cubit<SyncState> {
       final failedOutings = <String>{};
       var rejected = 0;
       var activeConflict = false;
+      // Rows whose newer columns/tables do not exist on the server yet: the
+      // compatible part is sent, the row stays pending for a later full send.
+      var schemaGaps = 0;
 
       for (final collection in LocalStore.collections) {
         final prefix = '$collection|';
@@ -265,6 +268,22 @@ class SyncCubit extends Cubit<SyncState> {
               await ack(id);
             } on PostgrestException catch (e) {
               _log('row $collection/$id rejected: ${e.code} ${e.message}');
+              if (_tableMissing(e)) {
+                schemaGaps++; // whole table absent: keep the row pending
+                continue;
+              }
+              if (_columnGap(e, collection)) {
+                final core = _withoutOptionalColumns(collection, row);
+                if (core != null) {
+                  try {
+                    await client.from(collection).upsert(core);
+                    schemaGaps++; // not acked: the full row is retried later
+                    continue;
+                  } on PostgrestException catch (e2) {
+                    _log('core row $collection/$id rejected: ${e2.code}');
+                  }
+                }
+              }
               rejected++;
               if (collection == LocalStore.outings) {
                 failedOutings.add(id);
@@ -289,6 +308,16 @@ class SyncCubit extends Cubit<SyncState> {
         return;
       }
 
+      if (schemaGaps > 0) {
+        _problem(
+          SyncStatus.pending,
+          'Parte dos dados novos aguarda uma atualização do servidor. O '
+          'restante já foi enviado e nada foi perdido.',
+          retryIn: const Duration(minutes: 5),
+        );
+        return;
+      }
+
       if (_store.pendingCount > 0) {
         // Edited while uploading: another pass is needed before "synced".
         _again = true;
@@ -307,6 +336,43 @@ class SyncCubit extends Cubit<SyncState> {
       _problem(SyncStatus.failed, 'Sem conexão. Vamos tentar de novo.',
           retryIn: _backoff);
     }
+  }
+
+  static const _optionalColumns = {
+    'outings': [
+      'place_id',
+      'city',
+      'state',
+      'budget_cents',
+      'feedback_wake',
+      'feedback_hangover',
+      'feedback_note',
+    ],
+    'drink_entries': ['composition'],
+    'custom_drinks': ['components'],
+  };
+
+  bool _tableMissing(PostgrestException e) =>
+      e.code == 'PGRST205' || e.code == '42P01';
+
+  /// A column the server does not have (or, for outings, a place that is not
+  /// on the server yet).
+  bool _columnGap(PostgrestException e, String collection) =>
+      e.code == 'PGRST204' ||
+      e.code == '42703' ||
+      (collection == LocalStore.outings && e.code == '23503');
+
+  /// The row without its newer optional columns, or null if it had none.
+  Map<String, dynamic>? _withoutOptionalColumns(
+    String collection,
+    Map<String, dynamic> row,
+  ) {
+    final optional = _optionalColumns[collection];
+    if (optional == null || !optional.any(row.containsKey)) return null;
+    return {
+      for (final e in row.entries)
+        if (!optional.contains(e.key)) e.key: e.value,
+    };
   }
 
   void _finishOk() {

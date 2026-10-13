@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../places/data/place_repository.dart';
+import '../../places/domain/place.dart';
 import '../data/outing_repository.dart';
 import '../domain/outing.dart';
 
@@ -9,6 +11,11 @@ class StartOutingState {
     required this.startedAt,
     this.nickname = '',
     this.address = '',
+    this.city = '',
+    this.state = '',
+    this.place,
+    this.saveAsPlace = true,
+    this.budgetCents,
     this.submitting = false,
     this.showErrors = false,
     this.error,
@@ -19,6 +26,15 @@ class StartOutingState {
   final DateTime startedAt;
   final String nickname;
   final String address;
+  final String city;
+  final String state;
+
+  /// A saved place chosen instead of typing the data.
+  final Place? place;
+
+  /// Save the typed place for next time (ignored when [place] is chosen).
+  final bool saveAsPlace;
+  final int? budgetCents;
   final bool submitting;
   final bool showErrors;
   final String? error;
@@ -26,16 +42,29 @@ class StartOutingState {
   /// Set once the outing exists; the page then navigates away.
   final String? createdId;
 
-  /// Needs at least a nickname or an address.
-  String? get placeError => (nickname.trim().isEmpty && address.trim().isEmpty)
+  /// Needs a saved place, or at least a nickname or an address.
+  String? get placeError => (place == null &&
+          nickname.trim().isEmpty &&
+          address.trim().isEmpty)
       ? 'Informe um apelido (ex.: Casa da Samara) ou um endereço'
       : null;
+
+  String? get stateError {
+    final uf = state.trim();
+    if (uf.isEmpty) return null;
+    return RegExp(r'^[A-Za-z]{2}$').hasMatch(uf) ? null : 'A UF tem 2 letras';
+  }
 
   StartOutingState copyWith({
     OutingType? type,
     DateTime? startedAt,
     String? nickname,
     String? address,
+    String? city,
+    String? state,
+    Place? Function()? place,
+    bool? saveAsPlace,
+    int? Function()? budgetCents,
     bool? submitting,
     bool? showErrors,
     String? error,
@@ -46,6 +75,11 @@ class StartOutingState {
         startedAt: startedAt ?? this.startedAt,
         nickname: nickname ?? this.nickname,
         address: address ?? this.address,
+        city: city ?? this.city,
+        state: state ?? this.state,
+        place: place != null ? place() : this.place,
+        saveAsPlace: saveAsPlace ?? this.saveAsPlace,
+        budgetCents: budgetCents != null ? budgetCents() : this.budgetCents,
         submitting: submitting ?? this.submitting,
         showErrors: showErrors ?? this.showErrors,
         error: error,
@@ -54,22 +88,44 @@ class StartOutingState {
 }
 
 class StartOutingCubit extends Cubit<StartOutingState> {
-  StartOutingCubit(this._outings)
+  StartOutingCubit(this._outings, this._places)
       : super(StartOutingState(
           type: OutingType.bar,
           startedAt: DateTime.now(),
         ));
 
   final OutingRepository _outings;
+  final PlaceRepository _places;
+
+  /// Saved places offered as shortcuts: recent first, then favourites.
+  List<Place> get shortcuts {
+    final recent = _places.recent([..._outings.ended()]);
+    final favorites = _places.active().where((p) => p.favorite);
+    final seen = <String>{};
+    return [
+      for (final p in [...favorites, ...recent])
+        if (seen.add(p.id)) p,
+    ];
+  }
 
   void setType(OutingType type) => emit(state.copyWith(type: type));
   void setNickname(String v) => emit(state.copyWith(nickname: v));
   void setAddress(String v) => emit(state.copyWith(address: v));
+  void setCity(String v) => emit(state.copyWith(city: v));
+  void setState(String v) => emit(state.copyWith(state: v));
   void setStartedAt(DateTime v) => emit(state.copyWith(startedAt: v));
+  void setSaveAsPlace(bool v) => emit(state.copyWith(saveAsPlace: v));
+  void setBudgetCents(int? v) => emit(state.copyWith(budgetCents: () => v));
+
+  /// Picks a saved place (its type becomes the outing type) or clears it.
+  void selectPlace(Place? place) => emit(state.copyWith(
+        place: () => place,
+        type: place?.type,
+      ));
 
   Future<void> submit() async {
     if (state.submitting || state.createdId != null) return;
-    if (state.placeError != null) {
+    if (state.placeError != null || state.stateError != null) {
       emit(state.copyWith(showErrors: true));
       return;
     }
@@ -82,10 +138,39 @@ class StartOutingCubit extends Cubit<StartOutingState> {
     }
     emit(state.copyWith(submitting: true));
     try {
+      var nickname = state.nickname;
+      var address = state.address;
+      var city = state.city;
+      var uf = state.state;
+      String? placeId;
+
+      final chosen = state.place;
+      if (chosen != null) {
+        // The outing keeps its own copy of the place data (snapshot).
+        nickname = chosen.nickname ?? '';
+        address = chosen.address ?? '';
+        city = chosen.city ?? '';
+        uf = chosen.state ?? '';
+        placeId = chosen.id;
+      } else if (state.saveAsPlace) {
+        final saved = await _places.save(
+          type: state.type,
+          nickname: nickname,
+          address: address,
+          city: city,
+          state: uf,
+        );
+        placeId = saved.id;
+      }
+
       final outing = await _outings.start(
         type: state.type,
-        nickname: state.nickname,
-        address: state.address,
+        nickname: nickname,
+        address: address,
+        city: city,
+        state: uf,
+        placeId: placeId,
+        budgetCents: state.budgetCents,
         startedAt: state.startedAt,
       );
       emit(state.copyWith(submitting: false, createdId: outing.id));

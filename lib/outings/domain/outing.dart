@@ -53,6 +53,45 @@ enum FeedbackStatus {
       .firstWhere((s) => s.code == code, orElse: () => FeedbackStatus.pending);
 }
 
+/// How the person woke up the day after. A personal account, not a measure.
+enum WakeFeeling {
+  great('great', 'Bem'),
+  ok('ok', 'Normal'),
+  tired('tired', 'Cansado'),
+  bad('bad', 'Mal');
+
+  const WakeFeeling(this.code, this.label);
+
+  final String code;
+  final String label;
+
+  static WakeFeeling? fromCode(String? code) {
+    for (final w in WakeFeeling.values) {
+      if (w.code == code) return w;
+    }
+    return null;
+  }
+}
+
+enum Hangover {
+  none('none', 'Nenhuma'),
+  mild('mild', 'Leve'),
+  moderate('moderate', 'Moderada'),
+  strong('strong', 'Forte');
+
+  const Hangover(this.code, this.label);
+
+  final String code;
+  final String label;
+
+  static Hangover? fromCode(String? code) {
+    for (final h in Hangover.values) {
+      if (h.code == code) return h;
+    }
+    return null;
+  }
+}
+
 class Outing {
   const Outing({
     required this.id,
@@ -66,6 +105,13 @@ class Outing {
     this.feedbackMood,
     this.feedbackStatus = FeedbackStatus.pending,
     this.feedbackSnoozedUntil,
+    this.placeId,
+    this.city,
+    this.state,
+    this.budgetCents,
+    this.wakeFeeling,
+    this.hangover,
+    this.feedbackNote,
   });
 
   final String id;
@@ -81,6 +127,22 @@ class Outing {
   final FeedbackMood? feedbackMood;
   final FeedbackStatus feedbackStatus;
   final DateTime? feedbackSnoozedUntil;
+
+  /// Optional details of the personal account, filled in later if the person
+  /// wants. Never required.
+  final WakeFeeling? wakeFeeling;
+  final Hangover? hangover;
+  final String? feedbackNote;
+
+  /// The saved place this outing was linked to (null for a one-off place).
+  /// [nickname], [address], [city] and [state] are this outing's own snapshot
+  /// and are never rewritten when the saved place is edited.
+  final String? placeId;
+  final String? city;
+  final String? state;
+
+  /// Optional drinks budget in cents. Null = none set.
+  final int? budgetCents;
 
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -117,6 +179,10 @@ class Outing {
     FeedbackStatus? feedbackStatus,
     DateTime? feedbackSnoozedUntil,
     bool clearSnooze = false,
+    int? Function()? budgetCents,
+    WakeFeeling? Function()? wakeFeeling,
+    Hangover? Function()? hangover,
+    String? Function()? feedbackNote,
     required DateTime updatedAt,
   }) =>
       Outing(
@@ -124,6 +190,9 @@ class Outing {
         type: type,
         nickname: nickname,
         address: address,
+        placeId: placeId,
+        city: city,
+        state: state,
         startedAt: startedAt,
         endedAt: endedAt ?? this.endedAt,
         feedbackMood: feedbackMood ?? this.feedbackMood,
@@ -131,6 +200,11 @@ class Outing {
         feedbackSnoozedUntil: clearSnooze
             ? null
             : (feedbackSnoozedUntil ?? this.feedbackSnoozedUntil),
+        budgetCents: budgetCents != null ? budgetCents() : this.budgetCents,
+        wakeFeeling: wakeFeeling != null ? wakeFeeling() : this.wakeFeeling,
+        hangover: hangover != null ? hangover() : this.hangover,
+        feedbackNote:
+            feedbackNote != null ? feedbackNote() : this.feedbackNote,
         createdAt: createdAt,
         updatedAt: updatedAt,
       );
@@ -149,6 +223,15 @@ class Outing {
             feedbackSnoozedUntil?.toUtc().toIso8601String(),
         'created_at': createdAt.toUtc().toIso8601String(),
         'updated_at': updatedAt.toUtc().toIso8601String(),
+        // Newer fields are only sent when set, so outings keep syncing to a
+        // database that does not have those columns yet.
+        if (placeId != null) 'place_id': placeId,
+        if (city != null) 'city': city,
+        if (state != null) 'state': state,
+        if (budgetCents != null) 'budget_cents': budgetCents,
+        if (wakeFeeling != null) 'feedback_wake': wakeFeeling!.code,
+        if (hangover != null) 'feedback_hangover': hangover!.code,
+        if (feedbackNote != null) 'feedback_note': feedbackNote,
       };
 
   factory Outing.fromJson(Map<String, dynamic> json) => Outing(
@@ -169,5 +252,12 @@ class Outing {
                 .toLocal(),
         createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
         updatedAt: DateTime.parse(json['updated_at'] as String).toLocal(),
+        placeId: json['place_id'] as String?,
+        city: json['city'] as String?,
+        state: json['state'] as String?,
+        budgetCents: (json['budget_cents'] as num?)?.toInt(),
+        wakeFeeling: WakeFeeling.fromCode(json['feedback_wake'] as String?),
+        hangover: Hangover.fromCode(json['feedback_hangover'] as String?),
+        feedbackNote: json['feedback_note'] as String?,
       );
 }

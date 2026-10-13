@@ -11,9 +11,9 @@ implementado.
 | 1a | Unidades dos ingredientes (ml, g, unidade, colher de chá/sopa, folha, gota, a gosto) | Implementado, ainda não executado |
 | 1b | Mesa do rolê: mesa/lista, cenários, recipientes, animação ilustrativa, muitos registros, preferências, retrospectiva | Implementado, ainda não executado |
 | 2 | Navegação principal (Início, Catálogo, Histórico, Resenha) + catálogo sem rolê ativo | Pendente |
-| 3 | Locais salvos (+ migration de `places`/`place_id`) | Pendente |
+| 3 | Locais salvos (+ migration de `places`/`place_id`) | Implementado, ainda não executado; migration `20261014000000` **não aplicada** (sem acesso administrativo) |
 | 4 | Orçamento e gastos, edição rápida de preços ausentes | Pendente |
-| 5 | Preços do próprio histórico | Pendente |
+| 5 | Preços do próprio histórico | Implementado, ainda não executado |
 | 6 | Estatísticas pessoais | Pendente |
 | 7 | Feedback detalhado e "rolê esquecido" | Pendente |
 | 8 | Resenha: jogos locais (Eu nunca, Quem é mais provável, Verdade ou desafio) | Implementado, ainda não executado (falta ligar a aba Resenha na navegação, bloco 2) |

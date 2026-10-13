@@ -32,12 +32,13 @@ class LocalStore {
     }
   }
 
+  static const places = 'places';
   static const outings = 'outings';
   static const customDrinks = 'custom_drinks';
   static const drinkEntries = 'drink_entries';
 
   /// Upload order: parents before children.
-  static const collections = [outings, customDrinks, drinkEntries];
+  static const collections = [places, outings, customDrinks, drinkEntries];
 
   static const _pendingKey = 'sync.pending';
 

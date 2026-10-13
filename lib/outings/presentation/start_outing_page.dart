@@ -6,7 +6,8 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
-import '../domain/outing.dart';
+import '../../places/domain/place.dart';
+import 'outing_type_picker.dart';
 import 'start_outing_cubit.dart';
 
 /// Pops with the id of the created (or already running) outing.
@@ -37,8 +38,8 @@ class _StartOutingView extends StatelessWidget {
           bottom: false,
           child: BlocBuilder<StartOutingCubit, StartOutingState>(
             builder: (context, state) {
-              final placeError =
-                  state.showErrors ? state.placeError : null;
+              final placeError = state.showErrors ? state.placeError : null;
+              final shortcuts = cubit.shortcuts;
               return Column(
                 children: [
                   Expanded(
@@ -49,34 +50,119 @@ class _StartOutingView extends StatelessWidget {
                           AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
                       children: [
                         const SectionTitle('Que tipo de rolê?'),
-                        _TypePicker(
+                        OutingTypePicker(
                           selected: state.type,
                           onSelected: cubit.setType,
                         ),
                         const SectionTitle('Onde?'),
-                        TextField(
-                          textCapitalization: TextCapitalization.words,
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                            labelText: 'Apelido do local',
-                            hintText: 'Ex.: Bar MELT, Casa da Samara',
-                            errorText: placeError,
+                        if (state.place != null)
+                          _ChosenPlace(
+                            place: state.place!,
+                            onClear: () => cubit.selectPlace(null),
+                          )
+                        else ...[
+                          if (shortcuts.isNotEmpty) ...[
+                            const Text('Locais salvos', style: AppText.caption),
+                            const SizedBox(height: AppSpace.sm),
+                            SizedBox(
+                              height: 44,
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: shortcuts.length,
+                                separatorBuilder: (_, _) =>
+                                    const SizedBox(width: AppSpace.sm),
+                                itemBuilder: (context, i) {
+                                  final p = shortcuts[i];
+                                  return ActionChip(
+                                    avatar: Icon(
+                                      p.favorite
+                                          ? Icons.star_rounded
+                                          : p.type.icon,
+                                      size: 18,
+                                      color: AppColors.amber,
+                                    ),
+                                    label: ConstrainedBox(
+                                      constraints:
+                                          const BoxConstraints(maxWidth: 180),
+                                      child: Text(p.displayName,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                    onPressed: () => cubit.selectPlace(p),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: AppSpace.md),
+                            const Text('Ou informe um novo', style: AppText.caption),
+                            const SizedBox(height: AppSpace.sm),
+                          ],
+                          TextField(
+                            textCapitalization: TextCapitalization.words,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              labelText: 'Apelido do local',
+                              hintText: 'Ex.: Bar MELT, Casa da Samara',
+                              errorText: placeError,
+                            ),
+                            onChanged: cubit.setNickname,
                           ),
-                          onChanged: cubit.setNickname,
-                        ),
-                        const SizedBox(height: AppSpace.md),
-                        TextField(
-                          textCapitalization: TextCapitalization.words,
-                          textInputAction: TextInputAction.done,
-                          decoration: InputDecoration(
-                            labelText: 'Endereço (opcional)',
-                            hintText: 'Rua, número, bairro',
-                            helperText: 'Apelido ou endereço já bastam.',
-                            errorText: placeError == null ? null : ' ',
+                          const SizedBox(height: AppSpace.md),
+                          TextField(
+                            textCapitalization: TextCapitalization.words,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              labelText: 'Endereço (opcional)',
+                              hintText: 'Rua, número, bairro',
+                              helperText: 'Apelido ou endereço já bastam.',
+                              errorText: placeError == null ? null : ' ',
+                            ),
+                            onChanged: cubit.setAddress,
                           ),
-                          onChanged: cubit.setAddress,
-                          onSubmitted: (_) => cubit.submit(),
-                        ),
+                          const SizedBox(height: AppSpace.md),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: TextField(
+                                  textCapitalization: TextCapitalization.words,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: const InputDecoration(
+                                      labelText: 'Cidade (opcional)'),
+                                  onChanged: cubit.setCity,
+                                ),
+                              ),
+                              const SizedBox(width: AppSpace.sm),
+                              Expanded(
+                                flex: 1,
+                                child: TextField(
+                                  textCapitalization:
+                                      TextCapitalization.characters,
+                                  maxLength: 2,
+                                  decoration: InputDecoration(
+                                    labelText: 'UF',
+                                    counterText: '',
+                                    errorText: state.showErrors
+                                        ? state.stateError
+                                        : null,
+                                  ),
+                                  onChanged: cubit.setState,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SwitchListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: const Text('Salvar este local'),
+                            subtitle: const Text(
+                                'Para escolher de novo nos próximos rolês. '
+                                'Fica privado no seu perfil.'),
+                            value: state.saveAsPlace,
+                            activeThumbColor: AppColors.amber,
+                            onChanged: cubit.setSaveAsPlace,
+                          ),
+                        ],
                         const SectionTitle('Quando começou?'),
                         SurfaceCard(
                           onTap: () async {
@@ -95,6 +181,18 @@ class _StartOutingView extends StatelessWidget {
                             const Text('Editar',
                                 style: TextStyle(color: AppColors.amber)),
                           ]),
+                        ),
+                        const SectionTitle('Orçamento (opcional)'),
+                        TextField(
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          decoration: const InputDecoration(
+                            labelText: 'Orçamento para bebidas',
+                            prefixText: r'R$ ',
+                            helperText:
+                                'Você pode definir ou mudar depois, durante o rolê.',
+                          ),
+                          onChanged: (v) => cubit.setBudgetCents(parseCents(v)),
                         ),
                         if (state.error != null)
                           Padding(
@@ -129,64 +227,36 @@ class _StartOutingView extends StatelessWidget {
   }
 }
 
-class _TypePicker extends StatelessWidget {
-  const _TypePicker({required this.selected, required this.onSelected});
+class _ChosenPlace extends StatelessWidget {
+  const _ChosenPlace({required this.place, required this.onClear});
 
-  final OutingType selected;
-  final ValueChanged<OutingType> onSelected;
+  final Place place;
+  final VoidCallback onClear;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      const gap = AppSpace.sm;
-      final width = (constraints.maxWidth - gap * 2) / 3;
-      return Wrap(
-        spacing: gap,
-        runSpacing: gap,
-        children: [
-          for (final t in OutingType.values)
-            SizedBox(
-              width: width,
-              child: Semantics(
-                button: true,
-                selected: selected == t,
-                label: t.label,
-                child: SurfaceCard(
-                  selected: selected == t,
-                  onTap: () => onSelected(t),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: AppSpace.md, horizontal: AppSpace.xs),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        t.icon,
-                        size: 26,
-                        color: selected == t
-                            ? AppColors.amber
-                            : AppColors.textMuted,
-                      ),
-                      const SizedBox(height: AppSpace.xs),
-                      Text(
-                        t.label,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: selected == t
-                              ? AppColors.text
-                              : AppColors.textMuted,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-        ],
-      );
-    });
+    return SurfaceCard(
+      highlight: true,
+      child: Row(children: [
+        Icon(place.type.icon, color: AppColors.amber),
+        const SizedBox(width: AppSpace.md),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(place.displayName,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.subtitle),
+              if (place.subtitleAddress != null)
+                Text(place.subtitleAddress!, style: AppText.caption),
+              if (place.cityState != null)
+                Text(place.cityState!, style: AppText.caption),
+            ],
+          ),
+        ),
+        TextButton(onPressed: onClear, child: const Text('Trocar')),
+      ]),
+    );
   }
 }

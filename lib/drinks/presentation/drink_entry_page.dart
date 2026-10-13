@@ -11,6 +11,7 @@ import '../domain/drink_category.dart';
 import '../domain/recipe.dart';
 import '../domain/drink_draft.dart';
 import '../domain/drink_entry.dart';
+import '../domain/price_history.dart';
 import 'drink_form_cubit.dart';
 import 'unit_dropdown.dart';
 
@@ -289,7 +290,12 @@ class _DrinkEntryView extends StatelessWidget {
                       ],
                       ],
                       const SectionTitle('Preço (opcional)'),
-                      _PriceCard(draft: d, errors: errors),
+                      _PriceCard(
+                        draft: d,
+                        errors: errors,
+                        suggestion: state.suggestion,
+                        scope: state.suggestionScope,
+                      ),
                       const SectionTitle('Horário'),
                       SurfaceCard(
                         onTap: () async {
@@ -526,10 +532,17 @@ class _SharingCard extends StatelessWidget {
 }
 
 class _PriceCard extends StatelessWidget {
-  const _PriceCard({required this.draft, required this.errors});
+  const _PriceCard({
+    required this.draft,
+    required this.errors,
+    required this.suggestion,
+    required this.scope,
+  });
 
   final DrinkDraft draft;
   final Map<String, String> errors;
+  final PriceSuggestion suggestion;
+  final String scope;
 
   @override
   Widget build(BuildContext context) {
@@ -553,6 +566,11 @@ class _PriceCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpace.md),
+          if (!suggestion.isEmpty) ...[
+            _SuggestionBanner(
+                draft: draft, suggestion: suggestion, scope: scope),
+            const SizedBox(height: AppSpace.md),
+          ],
           if (draft.priceKind == PriceKind.informed) ...[
             if (draft.isShared) ...[
               _NumberField<int>(
@@ -1057,4 +1075,75 @@ class _ProductChoice {
   const _ProductChoice(this.product);
 
   final CatalogItem? product;
+}
+
+
+/// "Seu histórico": the user's own last price for this drink and size. It only
+/// becomes the price when the user taps to confirm; a paid share and a package
+/// total are never swapped.
+class _SuggestionBanner extends StatelessWidget {
+  const _SuggestionBanner({
+    required this.draft,
+    required this.suggestion,
+    required this.scope,
+  });
+
+  final DrinkDraft draft;
+  final PriceSuggestion suggestion;
+  final String scope;
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<DrinkFormCubit>();
+    final paid = suggestion.paidCents;
+    final total = suggestion.totalCents;
+    return Container(
+      padding: const EdgeInsets.all(AppSpace.md),
+      decoration: BoxDecoration(
+        color: AppColors.amber.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: AppColors.amber.withValues(alpha: 0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Seu histórico', style: AppText.overline),
+          const SizedBox(height: AppSpace.xs),
+          if (paid != null) ...[
+            Text(
+              draft.isShared
+                  ? 'Sua parcela foi ${formatCents(paid)} $scope em '
+                      '${formatDate(suggestion.paidAt!)}.'
+                  : 'Você pagou ${formatCents(paid)} $scope em '
+                      '${formatDate(suggestion.paidAt!)}.',
+              style: AppText.body,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                onPressed: cubit.applySuggestedPaid,
+                child: Text(draft.isShared
+                    ? 'Usar como minha parcela'
+                    : 'Usar este valor'),
+              ),
+            ),
+          ],
+          if (draft.isShared && total != null) ...[
+            Text(
+              'O total da garrafa/porção foi ${formatCents(total)} em '
+              '${formatDate(suggestion.totalAt!)}.',
+              style: AppText.body,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                onPressed: cubit.applySuggestedTotal,
+                child: const Text('Usar como total'),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
 }

@@ -8,6 +8,7 @@ import '../domain/common_sizes.dart';
 import '../domain/drink_draft.dart';
 import '../domain/drink_category.dart';
 import '../domain/drink_entry.dart';
+import '../domain/price_history.dart';
 import '../domain/recipe.dart';
 
 class DrinkFormState {
@@ -17,6 +18,8 @@ class DrinkFormState {
     this.sizesAreGeneric = false,
     this.abvVariants = const [],
     this.bottles = const [],
+    this.suggestion = const PriceSuggestion(),
+    this.suggestionScope = 'neste rolê',
     this.showErrors = false,
     this.saving = false,
     this.saved = false,
@@ -40,6 +43,13 @@ class DrinkFormState {
   /// Documented bottles of a spirit. They are packages, not doses: they only
   /// fill the bottle volume once the user marks the drink as shared.
   final List<Presentation> bottles;
+
+  /// The user's own last price for the same drink and size (never a market
+  /// average). It only becomes the price when the user confirms it.
+  final PriceSuggestion suggestion;
+
+  /// "neste local" or "neste rolê".
+  final String suggestionScope;
   final bool showErrors;
   final bool saving;
   final bool saved;
@@ -59,6 +69,7 @@ class DrinkFormState {
     bool? deleted,
     bool? dirty,
     String? error,
+    PriceSuggestion? suggestion,
   }) =>
       DrinkFormState(
         draft: draft ?? this.draft,
@@ -66,6 +77,8 @@ class DrinkFormState {
         sizesAreGeneric: sizesAreGeneric,
         abvVariants: abvVariants,
         bottles: bottles,
+        suggestion: suggestion ?? this.suggestion,
+        suggestionScope: suggestionScope,
         showErrors: showErrors ?? this.showErrors,
         saving: saving ?? this.saving,
         saved: saved ?? this.saved,
@@ -76,31 +89,47 @@ class DrinkFormState {
 }
 
 class DrinkFormCubit extends Cubit<DrinkFormState> {
-  DrinkFormCubit._(this._drinks, this._outingId, super.initial)
+  DrinkFormCubit._(this._drinks, this._outingId, this._candidates, super.initial)
       : _entryId = _drinks.newId();
+
+  static ComparableKey _keyOf(DrinkDraft d) => ComparableKey(
+        item: d.catalogItemId ?? 'name:${d.name}',
+        containerMl: d.containerMl,
+        presentation: d.presentationLabel,
+        shared: d.isShared,
+      );
+
+  /// Records at the same place (or in the same outing) to look prices up in.
+  final List<DrinkEntry> _candidates;
 
   /// New registration from a catalog item.
   factory DrinkFormCubit.forItem(
     DrinkRepository drinks,
     Outing outing,
     CatalogItem item,
-  ) =>
-      DrinkFormCubit._(
+    List<DrinkEntry> candidates,
+  ) {
+    final draft = DrinkDraft.fromItem(
+      item,
+      now: DateTime.now(),
+      notBefore: outing.startedAt,
+      notAfter: outing.endedAt,
+    );
+    return DrinkFormCubit._(
         drinks,
         outing.id,
+        candidates,
         DrinkFormState(
-          draft: DrinkDraft.fromItem(
-            item,
-            now: DateTime.now(),
-            notBefore: outing.startedAt,
-            notAfter: outing.endedAt,
-          ),
+          draft: draft,
+          suggestionScope: outing.placeId != null ? 'neste local' : 'neste rolê',
+          suggestion: suggestPrice(candidates, _keyOf(draft)),
           presentations: _sizesFor(item).list,
           sizesAreGeneric: _sizesFor(item).generic,
           abvVariants: item.abvVariants,
           bottles: _bottlesOf(item),
         ),
       );
+  }
 
   static List<Presentation> _bottlesOf(CatalogItem item) =>
       item.category == DrinkCategory.spirit
@@ -131,11 +160,14 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     DrinkRepository drinks,
     Outing outing,
     DrinkEntry entry,
+    List<DrinkEntry> candidates,
   ) {
     final item = drinks.itemById(entry.catalogItemId);
+    final others = [for (final c in candidates) if (c.id != entry.id) c];
     return DrinkFormCubit._(
       drinks,
       entry.outingId,
+      others,
       DrinkFormState(
         draft: DrinkDraft.fromEntry(
           entry,
@@ -160,7 +192,27 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
   /// Stable per form, so a repeated "save" never creates a second row.
   final String _entryId;
 
-  void _set(DrinkDraft draft) => emit(state.copyWith(draft: draft, dirty: true));
+  void _set(DrinkDraft draft) => emit(state.copyWith(
+        draft: draft,
+        dirty: true,
+        suggestion: suggestPrice(_candidates, _keyOf(draft)),
+      ));
+
+  /// The user confirmed the suggested price (their own last paid value).
+  void applySuggestedPaid() {
+    final cents = state.suggestion.paidCents;
+    if (cents == null) return;
+    _set(state.draft.withPriceKind(PriceKind.informed).withPaidCents(cents));
+  }
+
+  /// The user confirmed the suggested package total (shared drinks).
+  void applySuggestedTotal() {
+    final cents = state.suggestion.totalCents;
+    if (cents == null) return;
+    _set(state.draft
+        .withPriceKind(PriceKind.informed)
+        .withBillTotalCents(cents));
+  }
 
   void selectPresentation(Presentation p) =>
       _set(state.draft.withPresentation(p));
