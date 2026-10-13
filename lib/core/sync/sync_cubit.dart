@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data/local_store.dart';
+import 'cloud_pull.dart';
 import 'pending_uploads.dart';
+import 'sync_conflicts.dart';
 
 enum SyncStatus {
   /// Everything saved on the device was confirmed by the server.
@@ -18,8 +20,8 @@ enum SyncStatus {
   /// Offline or the server refused something; will retry.
   failed,
 
-  /// Cloud sync is not available (e.g. anonymous sign-in disabled).
-  /// Data stays safely on this device.
+  /// Cloud sync is not available right now (no valid session for this
+  /// account, or the cloud could not start). Data stays on this device.
   localOnly,
 }
 
@@ -29,10 +31,34 @@ class SyncState {
     this.pending = 0,
     this.lastSyncAt,
     this.message,
+    this.conflicts = 0,
+    this.restoring = false,
+    this.restoredRows = 0,
+    this.restoreFailed = false,
+    this.historyRestored = true,
   });
 
   final SyncStatus status;
   final int pending;
+
+  /// Changes waiting for the person's choice ("Alterações para resolver").
+  final int conflicts;
+
+  /// Reading the account's history from the cloud right now.
+  final bool restoring;
+  final int restoredRows;
+
+  /// The last read from the cloud failed (retry offered).
+  final bool restoreFailed;
+
+  /// The first full read of this account on this device finished. Until then
+  /// an empty history is "not recovered yet", never "nothing here".
+  final bool historyRestored;
+
+  /// Everything on the device is confirmed in the cloud, with nothing waiting
+  /// and nothing to resolve.
+  bool get allSaved =>
+      status == SyncStatus.synced && pending == 0 && conflicts == 0;
   final DateTime? lastSyncAt;
 
   /// Short, user-facing explanation. Technical details go to the debug log.
@@ -41,7 +67,7 @@ class SyncState {
   String get label {
     switch (status) {
       case SyncStatus.synced:
-        return 'Sincronizado';
+        return conflicts > 0 ? '$conflicts para resolver' : 'Sincronizado';
       case SyncStatus.pending:
         return '$pending aguardando envio';
       case SyncStatus.syncing:
@@ -54,7 +80,7 @@ class SyncState {
   }
 }
 
-/// Sends locally saved rows to Supabase.
+/// Sends locally saved rows to Supabase, then reads back what changed there.
 ///
 /// Writes always land on the device first ([LocalStore] keeps a durable queue
 /// of pending rows). This class drains that queue: one run at a time, parents
@@ -63,10 +89,17 @@ class SyncState {
 /// way. A row is only dropped from the queue after the server confirmed it and
 /// only if it was not edited again in the meantime.
 class SyncCubit extends Cubit<SyncState> {
-  SyncCubit(this._store, {required this.cloudEnabled, this.uploads})
-      : super(const SyncState(SyncStatus.synced)) {
+  SyncCubit(
+    this._store, {
+    required this.cloudEnabled,
+    required this.userId,
+    required this.conflicts,
+    this.uploads,
+  })  : _pull = CloudPull(_store),
+        super(const SyncState(SyncStatus.synced)) {
     _lastSyncAt = _parseTime(_store.getString(_lastSyncKey));
     _sub = _store.changes.listen((_) => schedule());
+    _conflictSub = conflicts.changes.listen((_) => _emitIdle());
     _emitIdle();
   }
 
@@ -74,6 +107,22 @@ class SyncCubit extends Cubit<SyncState> {
 
   final LocalStore _store;
   final bool cloudEnabled;
+
+  /// The account this sync belongs to. A run whose session is no longer this
+  /// user stops without writing anything.
+  final String userId;
+  final SyncConflicts conflicts;
+  final CloudPull _pull;
+  late final StreamSubscription<void> _conflictSub;
+  bool _restoring = false;
+  int _restoredRows = 0;
+  bool _restoreFailed = false;
+
+  /// Whether the server has the revision columns (migration 20261018000000).
+  /// Without them rows still go up as before, without conflict detection,
+  /// and reading back is off.
+  bool _serverRevisions = false;
+  bool _probed = false;
 
   /// Extra work after the rows (private photo uploads); optional.
   final PendingUploads? uploads;
@@ -133,6 +182,24 @@ class SyncCubit extends Cubit<SyncState> {
     return run;
   }
 
+  /// Every state carries the conflict and restore fields.
+  @override
+  void emit(SyncState state) {
+    if (isClosed) return;
+    super.emit(SyncState(
+      state.status,
+      pending: state.pending,
+      lastSyncAt: state.lastSyncAt,
+      message: state.message,
+      conflicts: conflicts.count,
+      restoring: _restoring,
+      restoredRows: _restoredRows,
+      restoreFailed: _restoreFailed,
+      historyRestored:
+          _pull.everCompleted || !cloudEnabled || (_probed && !_serverRevisions),
+    ));
+  }
+
   void _emitIdle() {
     if (isClosed) return;
     final pending = _pendingTotal;
@@ -190,31 +257,25 @@ class SyncCubit extends Cubit<SyncState> {
     }
     try {
       final client = Supabase.instance.client;
-      var user = client.auth.currentUser;
-      if (user == null) {
-        emit(SyncState(SyncStatus.syncing,
-            pending: _pendingTotal, lastSyncAt: _lastSyncAt));
-        try {
-          user = (await client.auth.signInAnonymously()).user;
-        } on AuthRetryableFetchException {
-          rethrow; // network trouble: handled as "offline" below
-        } on AuthException catch (e) {
-          _log('anonymous sign-in refused: ${e.message}');
-          _failures++;
-          _problem(SyncStatus.localOnly, _localOnlyMessage,
-              retryIn: const Duration(minutes: 5));
-          return;
-        }
-      }
-      if (user == null) {
-        _problem(SyncStatus.localOnly, _localOnlyMessage,
+      final user = client.auth.currentUser;
+      // Never signs in by itself (no anonymous fallback). No session for THIS
+      // account means: keep everything local until the person signs in again.
+      if (user == null || user.id != userId || user.isAnonymous) {
+        _problem(SyncStatus.localOnly,
+            'Entre novamente na sua conta para enviar e receber os dados. '
+            'Tudo continua salvo neste aparelho.',
             retryIn: const Duration(minutes: 5));
         return;
       }
+      bool stale() => isClosed || client.auth.currentUser?.id != userId;
+      await _probeRevisions(client);
+      if (stale()) return;
 
       final snapshot = _store.pending;
       if (snapshot.isEmpty) {
         await _runUploads(client, user.id);
+        if (stale()) return;
+        await _runPull(client, stale);
         _finishAfterUploads();
         return;
       }
@@ -249,6 +310,7 @@ class SyncCubit extends Cubit<SyncState> {
             await _store.clearPending(entry.key, entry.value);
             continue;
           }
+          if (conflicts.isHeld(collection, id)) continue; // waiting for a choice
           if (LocalStore.outingChildren.contains(collection) &&
               failedOutings.contains(row['outing_id'])) {
             rejected++; // its outing is not on the server yet
@@ -266,7 +328,7 @@ class SyncCubit extends Cubit<SyncState> {
             held++;
             continue;
           }
-          rows.add({...row, 'owner_id': user.id});
+          rows.add(_wire(collection, id, row, user.id));
           versions[id] = entry.value;
         }
         if (rows.isEmpty) continue;
@@ -286,7 +348,8 @@ class SyncCubit extends Cubit<SyncState> {
         }
 
         try {
-          await client.from(collection).upsert(rows);
+          await _upsert(client, collection, rows);
+          if (stale()) return;
           for (final row in rows) {
             await ack(row['id'] as String);
           }
@@ -296,12 +359,28 @@ class SyncCubit extends Cubit<SyncState> {
           for (final row in rows) {
             final id = row['id'] as String;
             try {
-              await client.from(collection).upsert(row);
+              await _upsert(client, collection, [row]);
+              if (stale()) return;
               await ack(id);
             } on PostgrestException catch (e) {
               _log('row $collection/$id rejected: ${e.code} ${e.message}');
               if (_tableMissing(e)) {
                 schemaGaps++; // whole table absent: keep the row pending
+                continue;
+              }
+              if (e.code == 'PT409') {
+                // Changed on the server since this device last saw it: kept
+                // aside for the person, never overwritten either way.
+                await _recordRowConflict(client, collection, id);
+                continue;
+              }
+              if (collection == LocalStore.outings &&
+                  e.code == '23505' &&
+                  row['status'] == 'active') {
+                // Another outing is running on the server (started offline on
+                // another device). Both are kept; the person chooses.
+                await _recordActiveConflict(client, id, user.id);
+                failedOutings.add(id);
                 continue;
               }
               if (collection == LocalStore.outings &&
@@ -341,6 +420,11 @@ class SyncCubit extends Cubit<SyncState> {
         }
       }
 
+      // Reading back never waits for the upload problems to be solved: the
+      // history of other devices must arrive even with a row stuck here.
+      if (stale()) return;
+      await _runPull(client, stale);
+
       if (rejected > 0) {
         _failures++;
         _problem(
@@ -369,6 +453,7 @@ class SyncCubit extends Cubit<SyncState> {
       }
 
       if (schemaGaps == 0) await _runUploads(client, user.id);
+      if (stale()) return;
 
       if (schemaGaps > 0) {
         _problem(
@@ -453,6 +538,153 @@ class SyncCubit extends Cubit<SyncState> {
     'custom_drinks': ['components'],
   };
 
+  static const _serverOnly = {
+    'owner_id',
+    'revision',
+    'server_updated_at',
+    'base_revision',
+  };
+
+  /// Row as sent: local-only keys out, owner and the revision this edit was
+  /// based on in (only when the server checks revisions).
+  Map<String, dynamic> _wire(
+      String collection, String id, Map<String, dynamic> row, String owner) {
+    final out = <String, dynamic>{
+      for (final e in row.entries)
+        if (!e.key.startsWith('_') && !_serverOnly.contains(e.key))
+          e.key: e.value,
+      'owner_id': owner,
+    };
+    if (_serverRevisions) {
+      out['base_revision'] = _store.revisionOf(collection, id);
+    }
+    return out;
+  }
+
+  Future<void> _upsert(
+    SupabaseClient client,
+    String collection,
+    List<Map<String, dynamic>> rows,
+  ) async {
+    if (!_serverRevisions) {
+      await client.from(collection).upsert(rows);
+      return;
+    }
+    final back =
+        await client.from(collection).upsert(rows).select('id, revision');
+    await _store.setRevisions(collection, {
+      for (final r in back)
+        r['id'] as String: (r['revision'] as num).toInt(),
+    });
+  }
+
+  Future<void> _probeRevisions(SupabaseClient client) async {
+    if (_serverRevisions) return;
+    try {
+      await client.from(LocalStore.outings).select('revision').limit(1);
+      _serverRevisions = true;
+      _probed = true;
+    } on PostgrestException catch (e) {
+      if (!_columnGap(e, LocalStore.outings)) rethrow;
+      _serverRevisions = false;
+      _probed = true;
+    }
+  }
+
+  Map<String, dynamic> _clean(Map<String, dynamic> r) =>
+      Map<String, dynamic>.from(r)..removeWhere((k, _) => _serverOnly.contains(k));
+
+  Future<void> _recordRowConflict(
+      SupabaseClient client, String collection, String id) async {
+    final local = _store.get(collection, id);
+    if (local == null) return;
+    Map<String, dynamic>? remote;
+    int? rev;
+    try {
+      final r =
+          await client.from(collection).select().eq('id', id).maybeSingle();
+      if (r != null) {
+        rev = (r['revision'] as num?)?.toInt();
+        remote = _clean(r);
+      }
+    } catch (e) {
+      _log('could not read remote $collection/$id: $e');
+    }
+    await conflicts.add(SyncConflict(
+      kind: ConflictKind.row,
+      collection: collection,
+      id: id,
+      local: local,
+      remote: remote,
+      remoteRevision: rev,
+      at: DateTime.now(),
+    ));
+    await _store.dropPending(collection, id);
+  }
+
+  Future<void> _recordActiveConflict(
+      SupabaseClient client, String localId, String owner) async {
+    final local = _store.get(LocalStore.outings, localId);
+    if (local == null) return;
+    String? otherId;
+    try {
+      final r = await client
+          .from(LocalStore.outings)
+          .select()
+          .eq('owner_id', owner)
+          .eq('status', 'active')
+          .neq('id', localId)
+          .maybeSingle();
+      if (r != null) {
+        otherId = r['id'] as String;
+        final rev = (r['revision'] as num?)?.toInt() ?? 0;
+        // Brought here so the person can see and choose it.
+        await _store.putRemote(
+            LocalStore.outings, [(json: _clean(r), revision: rev)]);
+      }
+    } catch (e) {
+      _log('could not read the other active outing: $e');
+    }
+    await conflicts.add(SyncConflict(
+      kind: ConflictKind.activeOuting,
+      collection: LocalStore.outings,
+      id: localId,
+      local: local,
+      otherId: otherId,
+      at: DateTime.now(),
+    ));
+    await _store.dropPending(LocalStore.outings, localId);
+  }
+
+  /// Reads the account's rows back (first login on a device, changes made on
+  /// other devices, deletions). A failure here never fails the upload side.
+  Future<void> _runPull(SupabaseClient client, bool Function() stale) async {
+    if (!_serverRevisions) return;
+    _restoring = true;
+    _restoreFailed = false;
+    _emitIdle();
+    try {
+      await _pull.run(
+        client,
+        userId,
+        cancelled: stale,
+        onProgress: (p) {
+          _restoredRows = p.received;
+          if (!stale()) _emitIdle();
+        },
+      );
+    } catch (e) {
+      _log('pull failed: $e');
+      _restoreFailed = true;
+    } finally {
+      _restoring = false;
+    }
+  }
+
+  /// "Tentar de novo" on the restore screen.
+  Future<void> retryRestore() => syncNow();
+
+
   bool _tableMissing(PostgrestException e) =>
       e.code == 'PGRST205' || e.code == '42P01';
 
@@ -496,6 +728,7 @@ class SyncCubit extends Cubit<SyncState> {
     _debounce?.cancel();
     _retry?.cancel();
     _sub.cancel();
+    _conflictSub.cancel();
     return super.close();
   }
 }

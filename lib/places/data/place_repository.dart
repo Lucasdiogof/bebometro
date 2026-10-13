@@ -15,8 +15,12 @@ class PlaceRepository {
   Stream<void> get changes =>
       _store.changes.where((c) => c == LocalStore.places);
 
-  List<Place> _all() =>
-      _store.all(LocalStore.places).map(Place.fromJson).toList();
+  /// Tombstones (`deleted_at`, from another device) never show up.
+  List<Place> _all() => _store
+      .all(LocalStore.places)
+      .where((j) => j['deleted_at'] == null)
+      .map(Place.fromJson)
+      .toList();
 
   Place? byId(String? id) {
     if (id == null) return null;

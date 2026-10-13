@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/data/local_store.dart';
@@ -76,6 +78,39 @@ class OutingDrinkRepository {
       .map(OutingPhoto.fromJson)
       .toList()
     ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+
+  final _downloads = <String, Future<Uint8List?>>{};
+
+  /// The photo's bytes: the file on this device or, when the photo reached
+  /// the cloud from another device, the private object downloaded with the
+  /// person's own session (storage policies allow only their folder) and kept
+  /// here. Null = not sent yet by the other device, or unavailable right now;
+  /// the drink record never depends on it.
+  Future<Uint8List?> photoBytes(String id) async {
+    final local = await _files.read(id);
+    if (local != null) return local;
+    final photo = photoById(id);
+    final path = photo?.storagePath;
+    if (photo == null || photo.isDeleted || !photo.isUploaded || path == null) {
+      return null;
+    }
+    return _downloads[id] ??= _download(id, path).whenComplete(() {
+      _downloads.remove(id);
+    });
+  }
+
+  Future<Uint8List?> _download(String id, String path) async {
+    try {
+      final bytes = await Supabase.instance.client.storage
+          .from('outing-photos')
+          .download(path);
+      if (_store.isClosed) return null; // account changed meanwhile
+      await _files.write(id, bytes);
+      return bytes;
+    } catch (_) {
+      return null; // offline or object missing: shown as unavailable
+    }
+  }
 
   OutingPhoto? photoById(String id) {
     final j = _store.get(LocalStore.outingPhotos, id);

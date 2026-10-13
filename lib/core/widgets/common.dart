@@ -242,6 +242,8 @@ class SyncBadge extends StatelessWidget {
     return BlocBuilder<SyncCubit, SyncState>(
       builder: (context, state) {
         final (icon, color) = switch (state.status) {
+          SyncStatus.synced when state.conflicts > 0 =>
+            (Icons.call_split_rounded, AppColors.amber),
           SyncStatus.synced => (Icons.cloud_done_outlined, AppColors.textMuted),
           SyncStatus.syncing => (Icons.cloud_sync_outlined, AppColors.amber),
           SyncStatus.pending => (Icons.cloud_upload_outlined, AppColors.amber),

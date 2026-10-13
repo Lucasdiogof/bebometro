@@ -20,8 +20,13 @@ class OutingRepository {
   Stream<void> get changes =>
       _store.changes.where((c) => c == LocalStore.outings);
 
-  List<Outing> _all() =>
-      _store.all(LocalStore.outings).map(Outing.fromJson).toList();
+  /// Rows deleted on another device arrive as tombstones (`deleted_at`) and
+  /// never show up again.
+  List<Outing> _all() => _store
+      .all(LocalStore.outings)
+      .where((j) => j['deleted_at'] == null)
+      .map(Outing.fromJson)
+      .toList();
 
   /// The single running outing, restored from disk after a restart.
   Outing? get active {
@@ -34,7 +39,9 @@ class OutingRepository {
 
   Outing? byId(String id) {
     final json = _store.get(LocalStore.outings, id);
-    return json == null ? null : Outing.fromJson(json);
+    return json == null || json['deleted_at'] != null
+        ? null
+        : Outing.fromJson(json);
   }
 
   /// Outings (running or finished) linked to a saved place, newest first.

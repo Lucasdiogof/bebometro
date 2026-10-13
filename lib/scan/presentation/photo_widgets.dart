@@ -36,7 +36,7 @@ class PhotoThumb extends StatelessWidget {
             width: size,
             height: size,
             child: FutureBuilder<Uint8List?>(
-              future: repo.files.read(photoId),
+              future: repo.photoBytes(photoId),
               builder: (context, snap) {
                 final bytes = snap.data;
                 if (bytes != null) {
@@ -80,12 +80,15 @@ Future<void> showPhotoViewer(
       child: Stack(children: [
         Positioned.fill(
           child: FutureBuilder<Uint8List?>(
-            future: getIt<OutingDrinkRepository>().files.read(photoId),
+            future: getIt<OutingDrinkRepository>().photoBytes(photoId),
             builder: (context, snap) {
               final bytes = snap.data;
               if (bytes == null) {
                 return const Center(
-                  child: Text('Foto indisponível neste aparelho.',
+                  child: Text(
+                      'Foto indisponível agora: ainda não enviada pelo outro '
+                      'aparelho, ou sem conexão. O registro continua salvo.',
+                      textAlign: TextAlign.center,
                       style: TextStyle(color: AppColors.textMuted)),
                 );
               }
