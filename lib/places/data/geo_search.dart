@@ -110,7 +110,10 @@ class GeoResult {
 ///
 /// Chosen because one client key covers autocomplete of establishments AND
 /// addresses, nearby places and the map tiles; the free plan needs no credit
-/// card; and its terms allow keeping the results (OSM attribution required).
+/// card. Storage: the Places API docs say results may be cached/stored with no
+/// limits; the geocoding (autocomplete/reverse) docs and the terms say nothing
+/// about it, so that part is an open question (docs/external-setup.md, 6).
+/// OSM and "Powered by Geoapify" attribution are required.
 /// Calls are made only on demand: debounced typing with a minimum length,
 /// repeated queries answered from a small in-memory cache.
 class GeoSearch {

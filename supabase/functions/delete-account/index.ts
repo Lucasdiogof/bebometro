@@ -86,21 +86,38 @@ Deno.serve(async (req) => {
   });
 
   try {
-    // 1. Files: every object under <uid>/ (outing folders), page by page.
+    // 1. Files: every object under <uid>/ (outing folders, plus anything at
+    //    the root), repeated until nothing is left. A page is at most 1000
+    //    entries, so a person with more than 1000 outing folders needs more
+    //    than one pass. The guard stops a pass that removes nothing, so a
+    //    listing that never empties cannot loop forever.
     const storage = admin.storage.from(BUCKET);
-    const { data: folders, error: listErr } = await storage.list(uid, { limit: 1000 });
-    if (listErr) throw new Error(`list: ${listErr.message}`);
-    for (const folder of folders ?? []) {
-      const prefix = `${uid}/${folder.name}`;
-      while (true) {
-        const { data: files, error } = await storage.list(prefix, { limit: 1000 });
-        if (error) throw new Error(`list files: ${error.message}`);
-        const paths = (files ?? []).filter((f) => f.id).map((f) => `${prefix}/${f.name}`);
-        if (paths.length === 0) break;
-        const { error: rmErr } = await storage.remove(paths);
+    for (let pass = 0; pass < 100; pass++) {
+      const { data: entries, error: listErr } = await storage.list(uid, { limit: 1000 });
+      if (listErr) throw new Error(`list: ${listErr.message}`);
+      if (!entries || entries.length === 0) break;
+      let removed = 0;
+      // Files directly under <uid>/ have an id; folders do not.
+      const rootFiles = entries.filter((f) => f.id).map((f) => `${uid}/${f.name}`);
+      if (rootFiles.length > 0) {
+        const { error: rmErr } = await storage.remove(rootFiles);
         if (rmErr) throw new Error(`remove: ${rmErr.message}`);
-        if (paths.length < 1000) break;
+        removed += rootFiles.length;
       }
+      for (const folder of entries.filter((f) => !f.id)) {
+        const prefix = `${uid}/${folder.name}`;
+        while (true) {
+          const { data: files, error } = await storage.list(prefix, { limit: 1000 });
+          if (error) throw new Error(`list files: ${error.message}`);
+          const paths = (files ?? []).filter((f) => f.id).map((f) => `${prefix}/${f.name}`);
+          if (paths.length === 0) break;
+          const { error: rmErr } = await storage.remove(paths);
+          if (rmErr) throw new Error(`remove: ${rmErr.message}`);
+          removed += paths.length;
+          if (paths.length < 1000) break;
+        }
+      }
+      if (removed === 0) break;
     }
     await mark("files_removed");
 

@@ -1,19 +1,22 @@
 <!-- Bebômetro · auth e-mail "recovery" · pt-BR (default), en, es.
      The language comes from user_metadata.language (set by the app). Anything else, or
      an account that never recorded it, gets Portuguese. Subject: Redefinir senha · Reset password · Restablecer contraseña -->
-{{ if eq .Data.language "en" }}
+<div style="font-family:Arial,Helvetica,sans-serif;max-width:480px;margin:0 auto;padding:24px;color:#222;line-height:1.5">
+<p style="margin:0 0 16px;font-size:14px;font-weight:700;color:#C77D0A">Bebômetro</p>
+{{ if and .Data .Data.language (eq .Data.language "en") }}
 <h2>Reset your password</h2>
 <p>We received a request to reset the password of your Bebômetro account. If it was not you, ignore this email.</p>
-<p><a href="{{ .ConfirmationURL }}">Set a new password</a></p>
+<p><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#F2A81D;color:#151311;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:700">Set a new password</a></p>
 <p>Or enter this code in the app: <strong>{{ .Token }}</strong></p>
-{{ else if eq .Data.language "es" }}
+{{ else if and .Data .Data.language (eq .Data.language "es") }}
 <h2>Restablece tu contraseña</h2>
 <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta de Bebômetro. Si no fuiste tú, ignora este correo.</p>
-<p><a href="{{ .ConfirmationURL }}">Definir nueva contraseña</a></p>
+<p><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#F2A81D;color:#151311;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:700">Definir nueva contraseña</a></p>
 <p>O escribe este código en la app: <strong>{{ .Token }}</strong></p>
 {{ else }}
 <h2>Redefinir senha</h2>
 <p>Recebemos um pedido para redefinir a senha da sua conta no Bebômetro. Se não foi você, ignore este e-mail.</p>
-<p><a href="{{ .ConfirmationURL }}">Definir nova senha</a></p>
+<p><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#F2A81D;color:#151311;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:700">Definir nova senha</a></p>
 <p>Ou digite este código no app: <strong>{{ .Token }}</strong></p>
 {{ end }}
+</div>
