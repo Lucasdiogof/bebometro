@@ -1,6 +1,8 @@
 // Bebometro: deletes the CALLER's account. The user is taken from the JWT in
 // the Authorization header (validated by Supabase Auth), never from the body,
-// so nobody can delete someone else by sending an id.
+// so nobody can delete someone else by sending an id. A body of
+// {"dry_run": true} runs the authentication checks and returns without
+// deleting anything (used to verify a deployment).
 //
 // Order, each step idempotent and recorded in public.account_deletions so a
 // failure can simply be retried by calling again:
@@ -57,9 +59,24 @@ Deno.serve(async (req) => {
   const user = who.user;
   if (user.is_anonymous) return json({ error: "anonymous_not_allowed" }, 403);
 
+  // Optional dry run: proves that a valid session reaches this function and
+  // passes the same checks, WITHOUT changing anything. The body is never
+  // trusted for who to delete; it can only ask for this harmless check.
+  let dryRun = false;
+  try {
+    const body = await req.json();
+    dryRun = body?.dry_run === true;
+  } catch (_) {
+    // No body (the app sends none): a real deletion request.
+  }
+
   // Recent sign-in required (the app asks for the password right before).
   const lastSignIn = user.last_sign_in_at ? Date.parse(user.last_sign_in_at) : 0;
-  if (Date.now() - lastSignIn > 10 * 60 * 1000) {
+  const recentSignIn = Date.now() - lastSignIn <= 10 * 60 * 1000;
+  if (dryRun) {
+    return json({ ok: true, dry_run: true, reauthentication_needed: !recentSignIn });
+  }
+  if (!recentSignIn) {
     return json({ error: "reauthentication_needed" }, 403);
   }
 

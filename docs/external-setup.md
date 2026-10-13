@@ -3,7 +3,8 @@
 Projeto Supabase: `jiisoqkryhmtopaojyyu`. Este é o **único** guia de configuração externa; os outros documentos
 (`accounts-sync-checklist.md`, `auth-emails.md`, `product-checklist.md`, HANDOFF, READMEs) apontam para cá.
 
-Rodada de 13/10/2026. O ambiente de desenvolvimento **não tem acesso administrativo** ao projeto do Bebômetro (a CLI do
+Rodada de 13/10/2026 (reconferida numa segunda rodada no mesmo dia: a CLI continua sem o projeto na lista, o Claude in Chrome não
+estava conectado e o painel no navegador embutido pedia login — não entrei com credenciais). O ambiente de desenvolvimento **não tem acesso administrativo** ao projeto do Bebômetro (a CLI do
 Supabase daqui enxerga só outros projetos; o conector Supabase é de outro app e não foi tocado). Por isso nada abaixo foi
 aplicado por mim: o que existe é código/arquivos prontos, mais leituras públicas e sem efeito feitas pela API.
 
@@ -15,7 +16,7 @@ Legenda das colunas de estado: **Implementado** (código no repositório) · **C
 
 | Configuração | Implementado | Configurado | Verificado pela API (13/10/2026) | O que falta |
 |---|---|---|---|---|
-| Função `delete-account` | Sim (revisada e corrigida) | **Não** | `POST /functions/v1/delete-account` sem sessão responde **404 NOT_FOUND**: não está publicada | Publicar (seção 1) |
+| Função `delete-account` | Sim (revisada, corrigida, com `dry_run` para teste) | **Não** | `POST /functions/v1/delete-account` sem sessão responde **404 NOT_FOUND**: não está publicada | Publicar e rodar o teste `dry_run` com sessão real (seção 1) |
 | Redirects de Auth | Sim (app, manifest, Info.plist coerentes) | Não confirmado | Não há leitura pública da lista | Cadastrar as URLs (seção 2) |
 | Conversão das sessões anônimas | Sim (`updateUser(email)`) | Não confirmado | `anonymous_users: true` (sessões antigas continuam válidas) | Ligar *Manual linking* (seção 3) |
 | Confirmação de e-mail | Sim (o app trata os dois casos) | — | `mailer_autoconfirm: true` = **"Confirm email" está desligado** | Ligar quando o SMTP existir (seção 4) |
@@ -38,9 +39,31 @@ Legenda das colunas de estado: **Implementado** (código no repositório) · **C
 - Limitação conhecida: se a identidade for apagada mas a resposta se perder, a nova tentativa chega com um token de usuário que não
   existe mais e a função responde 401; o app trata como "entre de novo". Não há como distinguir isso sem expor se o e-mail existe.
 
-**`verify_jwt`:** o padrão (ligado) é o coerente: a função é chamada com o token do usuário e ainda o valida por dentro. Segundo a
-documentação oficial de Edge Functions (conferida em 13/10/2026), funções chamadas por usuário devem manter `verify_jwt` ligado; só
-funções chamadas com chave secreta/webhook o desligam. **Não use `--no-verify-jwt`.**
+**`verify_jwt` com as chaves atuais:** a API pública (`/auth/v1/.well-known/jwks.json`) mostra que o projeto assina os tokens de
+usuário com **uma chave assimétrica ES256** (JWKS com 1 chave EC P-256). Documentação oficial (conferida em 13/10/2026):
+- *Authorization headers* (Edge Functions): a checagem da plataforma "valida JWTs HS256 legados e JWTs assinados com as novas chaves
+  assimétricas"; o JWT da sessão vai em `Authorization` e a chave publicável em `apikey` — exatamente o que o `supabase_flutter`
+  envia em `functions.invoke`. Funções chamadas por usuário devem manter `verify_jwt` ligado.
+- A página *JWT Signing Keys* contém um aviso mais antigo de que funções com *Verify JWT* podem quebrar numa **rotação** de chaves
+  e que o remédio é desligar a checagem e verificar no código. Há, portanto, texto oficial divergente; o que vale para o projeto é
+  testar com uma sessão real (abaixo), não presumir.
+- Dentro da função, `admin.auth.getUser(token)` valida o token no servidor de Auth, qualquer que seja o algoritmo — esta checagem
+  independe do gateway e já existe.
+Decisão: manter o padrão (`verify_jwt` ligado). **Não** desligar por tentativa. Se o teste com sessão real falhar com 401 do gateway
+(`Invalid JWT`) mesmo com login válido, aí sim o caminho documentado é publicar com `--no-verify-jwt` (a função já autentica por
+dentro com `getUser`) — decisão a tomar com esse resultado na mão.
+
+**Um 401 sem sessão só prova que o acesso anônimo é recusado.** Para provar que **uma sessão válida chega** à função, a função aceita
+`{"dry_run": true}`: depois de autenticar o chamador (e recusar sessão anônima) ela responde `{"ok":true,"dry_run":true,...}` **sem
+apagar nada**. Rode com a **sua** conta (a senha é pedida na hora, só vai ao login do projeto e não é gravada):
+
+```bash
+powershell -File scripts/check-delete-account.ps1
+```
+
+Resultado esperado: `Function answered: {"ok":true,"dry_run":true,"reauthentication_needed":false}`. Um `HTTP 401` aqui, com login
+válido, indica o problema do gateway acima. **Enquanto esse teste não for feito com sessão real, a exclusão de conta NÃO está
+declarada funcional**, mesmo depois do deploy.
 
 **Publicar** (quem tem acesso à organização do projeto; a CLI precisa estar logada nela):
 
@@ -49,7 +72,8 @@ supabase functions deploy delete-account --project-ref jiisoqkryhmtopaojyyu
 ```
 
 Sem secrets extras: `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` são injetados pelo Supabase.
-**Verificação sem efeito destrutivo** depois do deploy: `POST` sem sessão deve deixar de dar 404 e passar a dar **401**.
+**Verificação sem efeito destrutivo** depois do deploy: (1) `POST` sem sessão deve deixar de dar 404 e passar a dar **401** (só prova
+que o acesso anônimo é recusado); (2) o teste com sessão real descrito acima (`dry_run`).
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" -X POST https://jiisoqkryhmtopaojyyu.supabase.co/functions/v1/delete-account

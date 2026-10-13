@@ -55,6 +55,7 @@ do pub), não em execução.
 > **Guia central: [`external-setup.md`](external-setup.md)** (estado real, comandos e campos exatos). Leitura pública da API em
 > 13/10/2026: `delete-account` responde 404 (não publicada); `mailer_autoconfirm: true` (confirmação de e-mail desligada);
 > `anonymous_users: true`; as colunas/tabelas da migration `20261018000000` existem. Nada foi aplicado daqui.
+> Teste de sessão real da função (sem apagar): `scripts/check-delete-account.ps1` (modo `dry_run`).
 
 Este ambiente não tem acesso administrativo ao projeto `jiisoqkryhmtopaojyyu` (o Supabase acessível daqui é de outro
 projeto e não foi tocado).

@@ -61,6 +61,10 @@ geoapify/redirects/SMTP/iOS documentados, `env.example.json`. Verificado pela AP
 "Confirm email" desligado, login anônimo ligado, colunas/tabelas da migration `20261018000000` existentes. Pendente (responsável):
 deploy da função, redirects, *Manual linking*, SMTP e confirmação de e-mail, templates, chave Geoapify, Team no Xcode.
 Nada foi validado no app.
+Segunda rodada (mesmo dia): ainda sem acesso administrativo (CLI sem o projeto; painel pedia login). Apurado: o projeto assina
+tokens com ES256 (JWKS público); a documentação da plataforma diz que `verify_jwt` valida esses tokens, mas outra página oficial
+traz aviso divergente; por isso a função ganhou o modo `dry_run` e o script `scripts/check-delete-account.ps1` para provar com
+uma sessão real, sem apagar nada. Exclusão de conta **não** declarada funcional.
 
 ## Bloqueios conhecidos
 
