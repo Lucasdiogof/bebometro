@@ -12,7 +12,7 @@ implementado.
 | 1b | Mesa do rolê: mesa/lista, cenários, recipientes, animação ilustrativa, muitos registros, preferências, retrospectiva | Implementado, ainda não executado |
 | 2 | Navegação principal (Início, Catálogo, Histórico, Resenha) + catálogo sem rolê ativo | Pendente |
 | 3 | Locais salvos (+ migration de `places`/`place_id`) | Implementado, ainda não executado; migration `20261014000000` **não aplicada** (sem acesso administrativo) |
-| 4 | Orçamento e gastos, edição rápida de preços ausentes | Pendente |
+| 4 | Orçamento e gastos, edição rápida de preços ausentes | Implementado, ainda não executado (`budget_cents` na migration `20261014000000`, não aplicada) |
 | 5 | Preços do próprio histórico | Implementado, ainda não executado |
 | 6 | Estatísticas pessoais | Pendente |
 | 7 | Feedback detalhado e "rolê esquecido" | Pendente |

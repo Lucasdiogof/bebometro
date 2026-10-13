@@ -14,7 +14,9 @@ import '../../drinks/presentation/drink_entry_page.dart';
 import '../domain/outing_summary.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../table/presentation/table_scene.dart';
+import 'budget_section.dart';
 import 'outing_cubit.dart';
+import 'price_fix_page.dart';
 import 'outing_page.dart' show EntryTile;
 
 /// Summary of a finished outing. Records can still be corrected here, and the
@@ -220,6 +222,15 @@ class _SummaryViewState extends State<_SummaryView> {
                           ),
                           const SizedBox(height: AppSpace.sm),
                           Text(s.financeLine, style: AppText.caption),
+                          if (outing.budgetCents != null) ...[
+                            const SizedBox(height: AppSpace.md),
+                            BudgetSection(
+                              budgetCents: outing.budgetCents,
+                              summary: s,
+                              editable: false,
+                              onChange: (_) {},
+                            ),
+                          ],
                           if (s.unpricedCount > 0) ...[
                             const SizedBox(height: AppSpace.md),
                             InfoPill(
@@ -228,6 +239,20 @@ class _SummaryViewState extends State<_SummaryView> {
                               'sem preço: o total pode estar maior',
                               icon: Icons.sell_outlined,
                               warning: true,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: TextButton.icon(
+                                onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => PriceFixPage(
+                                        outingId: outing.id),
+                                  ),
+                                ),
+                                icon: const Icon(Icons.edit_note_rounded,
+                                    size: 18),
+                                label: const Text('Preencher preços ausentes'),
+                              ),
                             ),
                           ],
                         ],

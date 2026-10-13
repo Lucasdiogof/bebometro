@@ -16,6 +16,7 @@ import '../../drinks/presentation/drink_entry_page.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../table/presentation/table_scene.dart';
 import '../../table/presentation/table_sheets.dart';
+import 'budget_section.dart';
 import 'outing_cubit.dart';
 
 /// Running outing. Pops with the outing id after it is finished, so the
@@ -254,7 +255,13 @@ class _OutingViewState extends State<_OutingView> {
                         ],
                       ]),
                     ),
-                    const SizedBox(height: AppSpace.md),
+                    const SizedBox(height: AppSpace.sm),
+                    BudgetSection(
+                      budgetCents: outing.budgetCents,
+                      summary: summary,
+                      onChange: cubit.setBudget,
+                    ),
+                    const SizedBox(height: AppSpace.sm),
                     Row(children: [
                       Expanded(
                         child: SegmentedButton<TableView>(

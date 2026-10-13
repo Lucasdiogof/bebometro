@@ -74,6 +74,23 @@ class DrinkRepository {
     await _store.put(LocalStore.drinkEntries, entry.toJson());
   }
 
+  /// Applies payments to several records at once (batch price fix). Each
+  /// record is saved on its own, so a failure never loses the ones before it.
+  Future<void> applyPrices(
+    Map<String, ({PriceKind kind, int? paidCents})> updates,
+  ) async {
+    final now = DateTime.now();
+    for (final e in updates.entries) {
+      final entry = entryById(e.key);
+      if (entry == null || entry.isDeleted) continue;
+      await save(entry.copyWithPrice(
+        kind: e.value.kind,
+        paidCents: e.value.paidCents,
+        updatedAt: now,
+      ));
+    }
+  }
+
   Future<void> delete(String id) async {
     final entry = entryById(id);
     if (entry == null || entry.isDeleted) return;

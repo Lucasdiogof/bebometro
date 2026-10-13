@@ -18,9 +18,11 @@ import '../../places/data/place_repository.dart';
 import '../../places/presentation/places_cubit.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../outings/presentation/outing_cubit.dart';
+import '../../outings/presentation/price_fix_cubit.dart';
 import '../../outings/presentation/start_outing_cubit.dart';
 import '../../settings/presentation/settings_cubit.dart';
 import '../config/env.dart';
+import '../data/app_prefs.dart';
 import '../data/local_store.dart';
 import '../sync/sync_cubit.dart';
 
@@ -64,6 +66,7 @@ Future<void> configureDependencies() async {
     ..registerSingleton<DrinkRepository>(
       DrinkRepository(store, bundledCatalog),
     )
+    ..registerSingleton<AppPrefs>(AppPrefs(store))
     ..registerSingleton<TablePrefsCubit>(TablePrefsCubit(store))
     ..registerSingleton<GameRepository>(GameRepository(store, bundledCards))
     ..registerFactory<GameCubit>(() => GameCubit(getIt<GameRepository>()))
@@ -95,11 +98,15 @@ Future<void> configureDependencies() async {
       () => StartOutingCubit(getIt<OutingRepository>(), getIt<PlaceRepository>()),
     )
     ..registerFactory<CatalogCubit>(() => CatalogCubit(getIt<DrinkRepository>()))
+    ..registerFactoryParam<PriceFixCubit, String, void>(
+      (outingId, _) => PriceFixCubit(outingId, getIt<DrinkRepository>()),
+    )
     ..registerFactoryParam<OutingCubit, String, void>(
       (outingId, _) => OutingCubit(
         outingId,
         getIt<OutingRepository>(),
         getIt<DrinkRepository>(),
+        getIt<AppPrefs>(),
       ),
     )
     ..registerFactoryParam<DrinkFormCubit, ({String outingId, CatalogItem item}),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/data/app_prefs.dart';
 import '../../core/di/injector.dart';
 import '../../core/sync/sync_cubit.dart';
 import '../../core/theme/app_colors.dart';
@@ -103,6 +104,8 @@ class _SettingsViewState extends State<_SettingsView> {
                     );
                   },
                 ),
+                const SectionTitle('Orçamento'),
+                const _BudgetAlertsTile(),
                 const SectionTitle('Minhas bebidas'),
                 SurfaceCard(
                   onTap: () => Navigator.of(context).push(
@@ -225,6 +228,40 @@ class _SettingsViewState extends State<_SettingsView> {
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+
+/// Turns the budget warnings (80% and 100% of the informed spending) on or off.
+class _BudgetAlertsTile extends StatefulWidget {
+  const _BudgetAlertsTile();
+
+  @override
+  State<_BudgetAlertsTile> createState() => _BudgetAlertsTileState();
+}
+
+class _BudgetAlertsTileState extends State<_BudgetAlertsTile> {
+  final _prefs = getIt<AppPrefs>();
+
+  @override
+  Widget build(BuildContext context) {
+    return SurfaceCard(
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppSpace.sm, vertical: AppSpace.xs),
+      child: SwitchListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpace.sm),
+        title: const Text('Avisos de orçamento'),
+        subtitle: const Text(
+            'Um aviso ao chegar a 80% e a 100% do orçamento do rolê, uma vez '
+            'por patamar.'),
+        value: _prefs.budgetAlerts,
+        activeThumbColor: AppColors.amber,
+        onChanged: (v) async {
+          await _prefs.setBudgetAlerts(v);
+          if (mounted) setState(() {});
+        },
       ),
     );
   }

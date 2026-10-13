@@ -171,6 +171,41 @@ class DrinkEntry {
         deletedAt: clearDeleted ? null : (deletedAt ?? this.deletedAt),
       );
 
+  /// Same record with a new payment. Consumption (volumes) is untouched, and
+  /// for shared drinks only what the user paid changes, never the bill total.
+  DrinkEntry copyWithPrice({
+    required PriceKind kind,
+    int? paidCents,
+    required DateTime updatedAt,
+  }) =>
+      DrinkEntry(
+        id: id,
+        outingId: outingId,
+        consumedAt: consumedAt,
+        name: name,
+        category: category,
+        brand: brand,
+        style: style,
+        presentation: presentation,
+        catalogItemId: catalogItemId,
+        abvPercent: abvPercent,
+        ingredients: ingredients,
+        composition: composition,
+        containerMl: containerMl,
+        isShared: isShared,
+        peopleCount: peopleCount,
+        personalMl: personalMl,
+        leftoverMl: leftoverMl,
+        priceKind: kind,
+        paidCents: kind == PriceKind.informed
+            ? paidCents
+            : (kind == PriceKind.complimentary ? 0 : null),
+        billTotalCents: kind == PriceKind.informed ? billTotalCents : null,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        deletedAt: deletedAt,
+      );
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'outing_id': outingId,
