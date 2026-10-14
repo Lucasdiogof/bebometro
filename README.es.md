@@ -49,7 +49,8 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 
 **Catálogo y recetas**
 
-- Catálogo incluido y versionado de cervezas, cervezas de barril, productos sin alcohol, destilados y aperitivos, además de recetas de referencia.
+- Catálogo incluido y versionado de cervezas, cervezas de barril, productos sin alcohol, destilados y aperitivos, bebidas listas para tomar (tragos en lata/botella, ice, hard seltzers), además de recetas de referencia.
+- **Sobre estos datos:** el detalle de cada producto tiene una sección plegada que muestra, campo por campo, de dónde vienen la graduación, los ingredientes, los tamaños y el estilo (fabricante, etiqueta en fuente secundaria, registro público de envase, prensa, receta de referencia, información tuya o volumen sugerido), con mercado, fecha de consulta y dirección que se abre al tocar y se puede copiar. Un campo sin fuente propia lo indica. Un tamaño tomado de un registro de código de barras prueba que el envase existió, no que esté a la venta.
 - Búsqueda por producto, marca, estilo y alias; filtros por categoría, marca, estilo y presentación, favoritos y recientes.
 - Detalles con presentaciones, ingredientes declarados, graduación y fuentes cuando se conocen.
 - Componentes y unidades editables; actualmente las bebidas y recetas personales pueden editarse, duplicarse y eliminarse sin modificar registros anteriores.
@@ -126,11 +127,11 @@ La app registra consumo; **no** mide alcohol en sangre o aliento, certifica sobr
 Organización por funcionalidad con separación de dominio, datos y presentación, Cubits para el estado y `get_it` para inyección de dependencias.
 
 - **Primero local:** SharedPreferences conserva registros y una cola duradera de envíos pendientes con versiones.
-- **Cuenta:** obligatoria, con correo y contraseña (Supabase Auth, enlaces PKCE). Los datos quedan separados por cuenta en el dispositivo y funcionan sin conexión una vez iniciada la sesión. Los registros de versiones antiguas (sesión anónima) se conservan y pueden convertirse, importarse o exportarse.
+- **Cuenta:** obligatoria, con correo y contraseña (Supabase Auth). El registro entra directo, sin confirmar el correo. Una contraseña olvidada se restablece con un código de 6 dígitos enviado por correo y escrito en la app, en cualquier dispositivo. Los datos quedan separados por cuenta en el dispositivo y funcionan sin conexión una vez iniciada la sesión.
 - **Supabase:** PostgreSQL con migraciones RLS versionadas.
 - **Envíos y lectura:** UUID estables del cliente, upserts, reintentos y sincronización manual. Una operación deja de estar pendiente solo tras la confirmación del servidor para esa versión. La lectura de la nube recupera el historial en otro dispositivo (paginada, reanudable); las ediciones concurrentes se detectan por la revisión del servidor y van a "Cambios por resolver".
 - **Dependencias:** los lugares se envían antes de sus salidas y estas antes de las bebidas. Los vínculos rechazados quedan pendientes, sin eliminarse silenciosamente.
-- **Limitación actual:** no hay recuperación desde la nube ni cuenta permanente para restaurar datos en otro dispositivo. Subir datos todavía no ofrece restauración. Algunas preferencias son locales.
+- **Limitación actual:** algunas preferencias (idioma, mesa y pantalla de bloqueo) quedan en el dispositivo y no se sincronizan.
 
 ## Tecnologías
 
@@ -198,7 +199,7 @@ Para web, añade `-d chrome` al comando de ejecución. Son instrucciones de conf
 - **No verificado:** los intérpretes de etiqueta y carta son heurísticos y no se probaron con fotos reales, por lo que no se promete precisión. La migración `20261015000000` fue aplicada por el responsable; la sincronización de esas tablas y fotos desde la app aún no se observó.
 - **Regla de alcance (implementada):** los artículos personalizados, fotos y precios de la carta pertenecen al ID de la salida, incluso después de medianoche. No entran al catálogo global, no se convierten automáticamente en artículos personales reutilizables ni alimentan sugerencias para visitas futuras.
 - **Lugares y mapa:** escritos en el código, sin ejecutar; búsqueda, mapa y GPS nunca se observaron funcionando. Dependen de la clave de Geoapify (aún no configurada) y de `flutter pub get` (paquetes nuevos). La migración `20261017000000` fue aplicada por el responsable.
-- **Cuenta y sincronización:** escritas en el código, sin ejecutar. La migración `20261018000000` fue aplicada por el responsable; aún dependen de la función `delete-account` publicada y de la configuración de correo en Supabase (SMTP, redirecciones, manual linking, plantillas); nada de esto se observó funcionando.
+- **Cuenta y sincronización:** escritas en el código, sin ejecutar. La migración `20261018000000` fue aplicada por el responsable; el SMTP está configurado; faltan aplicar la plantilla de recuperación por código y la longitud de 6 dígitos (`scripts/apply_recovery_code.py`) y verificar `delete-account` por completo. Nada de esto se observó funcionando en la app.
 - **Idiomas (pt-BR, en, es):** localización oficial de Flutter con archivos ARB, elección manual del idioma en Ajustes (preferencia del dispositivo, disponible antes de iniciar sesión, cambio sin reiniciar), contenido de catálogo/recetas/cartas traducido, textos nativos de la pantalla de bloqueo enviados por la app y exportaciones independientes del idioma. Escrito en código, sin compilar ni ejecutar. Las plantillas de correo de Supabase en los tres idiomas están preparadas en `supabase/email-templates/`, pero **no se aplicaron**; los textos de permisos de iOS siguen el idioma del sistema. Consulta el [checklist de i18n](docs/i18n-checklist.md).
 - **Más adelante:** precios regionales basados en observaciones reales y ampliación del catálogo.
 - **Validación pendiente:** resolución de dependencias, compilación, flujos en dispositivo/navegador, revisión visual y sincronización de extremo a extremo. La física de la cerveza a pantalla completa y los ejes del sensor están implementados en el código, pero nunca se observaron en un dispositivo.

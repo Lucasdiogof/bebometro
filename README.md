@@ -49,7 +49,8 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 
 **Catalog and recipes**
 
-- Bundled, versioned catalog of beers, draft beers, alcohol-free products, spirits and aperitifs, plus cocktail reference recipes.
+- Bundled, versioned catalog of beers, draft beers, alcohol-free products, spirits and aperitifs, ready-to-drink products (canned/bottled mixed drinks, ice, hard seltzers), plus cocktail reference recipes.
+- **About this data:** each product detail has a folded section showing, field by field, where the ABV, ingredients, sizes and style come from (manufacturer, label in a secondary source, public package registry, press, reference recipe, your own data or a suggested volume), with market, consultation date and a tappable/copyable address. A field without its own source says so. Barcode-registry sizes prove a package existed, not that it is on sale.
 - Search by product, brand, style and aliases; category, brand, style and presentation filters, favorites and recents.
 - Product details include available presentations, declared ingredients, alcohol content and source information where known.
 - Editable recipe components and units; personal drinks and recipes can currently be edited, duplicated and deleted without changing past entries.

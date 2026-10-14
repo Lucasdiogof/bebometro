@@ -87,3 +87,38 @@ Origem, Petra Stark Bier, Patagonia Bohemian Pilsener, Spaten, Beck's, Corona, C
 - **Destilados:** embalagens de Beefeater, Jack Daniel's, Chivas, Bacardi, Campari, Martini e outros; o catálogo de marcas da
   Heineken (`catalogodemarcas.heineken.com.br`) carrega por JavaScript atrás de confirmação de idade e não foi usado.
 - **Heineken 0.0:** continua "no máximo 0,03%" na nota, `abv` nulo (o modelo não tem limite superior).
+
+## Catálogo v6 (14/10/2026, terceira rodada): bebidas prontas e procedência
+```
+TOTAL           136  abv 112  abv-variants   3  ingred  36  sizes  78  style  86  field-sourced  47
+beer             76  abv  70  abv-variants   2  ingred  30  sizes  46  style  53  field-sourced  23
+draft             7  abv   7  abv-variants   0  ingred   1  sizes   0  style   3  field-sourced   0
+nonAlcoholic      3  abv   2  abv-variants   0  ingred   1  sizes   2  style   0  field-sourced   1
+readyToDrink     20  abv   8  abv-variants   0  ingred   0  sizes  17  style   0  field-sourced  20
+spirit           30  abv  25  abv-variants   1  ingred   4  sizes  13  style  30  field-sourced   3
+brands: 62
+```
+v5 → v6: produtos 116 → 136; marcas 55 → 62; com teor 104 → 112; com ingredientes 36 → 36; com apresentações 61 → 78;
+**bebidas prontas (RTD): 0 → 20**. Produtos existentes: 1 lacuna preenchida (Spaten, estilo "Munich Helles" pelo rótulo) e 5 valores
+confirmados por foto de rótulo brasileiro (Spaten 5,2%, Corona 4,6% na lata de 269 ml, Stella 5,0%, Skol 4,7% na lata de 269 ml) ou
+contraditos (Antarctica Original: lata de 350 ml diz 5,0%, catálogo tem 4,9%; mantido, divergência na nota e na procedência).
+
+### RTDs (categoria `readyToDrink`, código salvo `ready_to_drink`)
+- **Com teor:** Fest Drinks Gin Tônica 7,9%, Intense Citrus 7,9% e Spritz 5,0% (site oficial da Itaipava); 51 Ice Gin Tônica 7,9%
+  (lata 269) e Açaí com Guaraná 5,5% (275 ml) (GiroNews, imprensa); Skol Beats GT 7,9% (lata 269; Tribuna de Jundiaí, 2020);
+  Skol Beats Mint Mojito 7,9% (descrição do cadastro GTIN); Smirnoff Ice Tropical 5% (foto do rótulo brasileiro, Open Food Facts).
+- **Só embalagens (teor em branco, sem fonte aceitável):** Skol Beats Senses (o 8% de 2014 não foi confirmado), Red Mix, Green Mix,
+  Tropical, Caipi Beats; Smirnoff Ice Original e Green Apple; 51 Ice Limão; Tanqueray, Gordon's e Beefeater Gin Tônica prontos; Isla
+  Hard Seltzer Framboesa e Amora.
+- Cada sabor é um produto: nenhum teor foi herdado de outro sabor da linha; ingredientes não foram deduzidos do nome.
+- Não entraram: Corote (teores de linha em imprensa e varejo, divergentes), 51 Ice XVT (fonte não lida), Tanqueray 6,5% (foto ilegível),
+  Smirnoff Ice com 5% só em varejistas, linhas sem nenhum dado além do nome.
+
+### Fontes novas desta rodada
+- Fotos de rótulos do Open Food Facts (CC BY-SA), lidas uma a uma; só valem rótulos em português com código 789. Um contrarrótulo da
+  Budweiser 330 ml com código brasileiro era **chileno** (budweiser.cl) e foi descartado.
+- Tipo de fonte por campo (`type`): `official`, `label`, `packagingRegistry`, `secondary`.
+
+### Lacunas que continuam
+- Ingredientes: nenhuma fonte nova legível (os versos fotografados estavam cortados). Ambev/Petrópolis seguem bloqueados.
+- Teor de Bohemia, Budweiser (BR), Brahma Duplo Malte Tostada/Black, Petra Origem, Black Princess; embalagens de vários destilados.

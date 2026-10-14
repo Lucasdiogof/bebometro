@@ -13,7 +13,7 @@ para as últimas etapas e não foram começados.
 | Item | Código | Externo | Execução | Situação |
 |------|--------|---------|----------|----------|
 | Rolê: iniciar, editar, encerrar, feedback, orçamento, preços ausentes | Sim | n/a | Não | Pendente validar |
-| Catálogo (v5: 116 produtos, procedência por campo), filtros, favoritos, recentes, "Mais uma", água, desfazer | Sim | n/a | Não | Pendente validar |
+| Catálogo (v6: 136 produtos, 20 bebidas prontas), "Sobre estes dados" por campo, filtros, favoritos, recentes, "Mais uma", água, desfazer | Sim | Migration `20261019000000` (categoria nova) **pendente** | Não | Pendente validar |
 | Receitas de referência e próprias, composição, avisos de dado incompleto | Sim | n/a | Não | Pendente validar |
 | Bebidas por foto (rótulo/cardápio), itens só do rolê, rascunhos | Sim | Migration `20261015000000` aplicada pelo dono | Não | Heurísticas de OCR não validadas |
 | Locais salvos e mapa (Geoapify) | Sim | Chave `GEOAPIFY_KEY` **não configurada**; migration `20261017000000` aplicada | Não | Parcial (depende da chave) |
@@ -46,8 +46,8 @@ para as últimas etapas e não foram começados.
 
 ## Banco e migrations
 
-Todas até `20261018000000_accounts_sync.sql` foram **aplicadas pelo dono** (não verificado daqui). Nenhuma migration nova
-nesta rodada. Detalhes: `docs/development-progress.md`.
+Todas até `20261018000000_accounts_sync.sql` foram **aplicadas pelo dono** (não verificado daqui). **Nova e pendente:**
+`20261019000000_ready_to_drink_category.sql` (idempotente; só amplia os `check` de categoria). Detalhes: `docs/development-progress.md`.
 
 ## Configurações externas pendentes
 

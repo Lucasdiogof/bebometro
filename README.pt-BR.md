@@ -49,7 +49,8 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 
 **Catálogo e receitas**
 
-- Catálogo embarcado e versionado de cervejas, chopps, produtos sem álcool, destilados e aperitivos, além de receitas de referência.
+- Catálogo embarcado e versionado de cervejas, chopps, produtos sem álcool, destilados e aperitivos, bebidas prontas (drinks em lata/garrafa, ice, hard seltzers), além de receitas de referência.
+- **Sobre estes dados:** o detalhe de cada produto tem uma seção recolhida que mostra, campo a campo, de onde vêm teor, ingredientes, tamanhos e estilo (fabricante, rótulo em fonte secundária, cadastro público de embalagem, imprensa, receita de referência, informação sua ou volume sugerido), com mercado, data de consulta e endereço que abre ao tocar e pode ser copiado. Campo sem fonte própria avisa isso. Tamanho vindo de cadastro de código de barras prova que a embalagem existiu, não que esteja à venda.
 - Busca por produto, marca, estilo e apelidos; filtros por categoria, marca, estilo e apresentação, favoritos e recentes.
 - Detalhes com apresentações, ingredientes declarados, teor alcoólico e fontes, quando conhecidos.
 - Componentes e unidades editáveis; bebidas e receitas pessoais atualmente podem ser editadas, duplicadas e excluídas sem modificar registros passados.
@@ -126,11 +127,11 @@ O app registra consumo; **não** mede álcool no sangue ou no sopro, certifica s
 Organização por funcionalidade com separação entre domínio, dados e apresentação, Cubits para estado e `get_it` para injeção de dependências.
 
 - **Gravação local primeiro:** SharedPreferences mantém os registros e uma fila durável de envios pendentes, com versões.
-- **Conta:** obrigatória, com e-mail e senha (Supabase Auth, links por PKCE). Os dados ficam separados por conta no aparelho e funcionam offline para quem já entrou. Registros de versões antigas (sessão anônima) são preservados e podem ser convertidos, importados ou exportados.
+- **Conta:** obrigatória, com e-mail e senha (Supabase Auth). O cadastro entra direto, sem confirmação de e-mail. Senha esquecida é redefinida com um código de 6 dígitos enviado por e-mail e digitado no app, em qualquer aparelho. Os dados ficam separados por conta no aparelho e funcionam offline para quem já entrou.
 - **Supabase:** PostgreSQL com migrations de RLS versionadas.
 - **Envios e leitura:** UUIDs estáveis no cliente, upserts, novas tentativas e sincronização manual. Uma pendência só sai após confirmação do servidor para aquela versão. A leitura da nuvem recupera o histórico em outro aparelho (paginada, retomável); edições concorrentes são detectadas pela revisão do servidor e vão para "Alterações para resolver".
 - **Dependências:** locais sobem antes dos rolês vinculados; rolês antes das bebidas. Vínculos recusados ficam pendentes, sem remoção silenciosa.
-- **Limitação atual:** não há leitura de recuperação da nuvem nem conta permanente para restaurar dados em outro aparelho. Enviar dados ainda não equivale a oferecer restauração. Algumas preferências ficam locais.
+- **Limitação atual:** algumas preferências (idioma, mesa e tela bloqueada) ficam no aparelho e não são sincronizadas.
 
 ## Stack
 
@@ -198,7 +199,7 @@ Na web, acrescente `-d chrome` ao comando de execução. São instruções de co
 - **Não verificado:** os interpretadores de rótulo e cardápio são heurísticos e não foram testados com fotos reais, então não se promete precisão. A migration `20261015000000` foi aplicada pelo responsável; a sincronização dessas tabelas e fotos pelo app ainda não foi observada.
 - **Regra de escopo (implementada):** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras.
 - **Locais e mapa:** escritos no código, não executados; busca, mapa e GPS nunca foram observados funcionando. Dependem da chave Geoapify (ainda não configurada) e de `flutter pub get` (pacotes novos). A migration `20261017000000` foi aplicada pelo responsável.
-- **Conta e sincronização:** escritas no código, não executadas. A migration `20261018000000` foi aplicada pelo responsável; ainda dependem da função `delete-account` publicada e da configuração de e-mail no Supabase (SMTP, redirects, manual linking, templates); nada disso foi observado funcionando.
+- **Conta e sincronização:** escritas no código, não executadas. A migration `20261018000000` foi aplicada pelo responsável; o SMTP está configurado; faltam aplicar o template de recuperação por código e o comprimento de 6 dígitos (`scripts/apply_recovery_code.py`) e conferir a `delete-account` por completo. Nada disso foi observado funcionando no app.
 - **Idiomas (pt-BR, en, es):** localização oficial do Flutter com arquivos ARB, escolha manual do idioma em Configurações (preferência do aparelho, disponível antes do login, troca sem reiniciar), conteúdo de catálogo/receitas/cartas traduzido, textos nativos da tela bloqueada enviados pelo app e exportações independentes do idioma. Escrito em código, não compilado nem executado. Os templates de e-mail do Supabase nos três idiomas estão preparados em `supabase/email-templates/`, mas **não foram aplicados**; os textos de permissão do iOS seguem o idioma do sistema. Veja o [checklist de i18n](docs/i18n-checklist.md).
 - **Depois:** preços regionais sustentados por observações reais e ampliação do catálogo.
 - **Validação pendente:** resolução de dependências, compilação, fluxos em aparelho/navegador, revisão visual e sincronização ponta a ponta. A física da cerveja em tela cheia e os eixos do sensor estão implementados no código, mas nunca foram observados em aparelho.

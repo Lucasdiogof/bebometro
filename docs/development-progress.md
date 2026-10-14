@@ -98,3 +98,11 @@ Sétima rodada: e-mail de teste entregue na caixa de entrada; "Confirm email" **
 
 Conferido por leitura (não é teste): a recuperação e a limpeza. Executados só scripts de dados (`catalog_tool.py check/coverage/merge`,
 conferência de referências/intervalos/traduções) e `flutter gen-l10n`.
+
+## Rodada 14/10/2026 (bebidas prontas, procedência por campo, catálogo v6)
+
+| Item | Implementado | Servidor | Verificado | Validado no app |
+|---|---|---|---|---|
+| Categoria `ready_to_drink` (enum, textos pt/en/es, filtros/busca por `values`, OCR por palavras do rótulo, tamanhos sugeridos 269/275/350, mesa = lata, estatísticas, exportação pelo código) | Sim (`4356c90`) | Migration `20261019000000` **pendente** (amplia os `check` de `custom_drinks` e `drink_entries`); até lá a sincronização mantém essas linhas pendentes com o aviso "aguarda atualização do servidor" | n/a | Não |
+| "Sobre estes dados" no detalhe (fonte por campo, tipo, mercado, data de consulta, endereço que abre/copia, aviso de divergência sempre visível) | Sim (`4356c90`) | n/a | n/a | Não |
+| Catálogo v6 (136 produtos, 20 RTDs) | Sim (`d678cd5`) | n/a | `catalog_tool.py check`: 0 problemas | Não |

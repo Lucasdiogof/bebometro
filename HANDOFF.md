@@ -762,3 +762,24 @@ em aparelho e conferir no painel do Supabase que as linhas chegam. Depois: teste
   `docs/catalog-coverage.md`. Pesquisa feita com scripts temporários fora do repositório (coleta educada de cadastros GTIN no Systax,
   que libera tudo no `robots.txt`); o resultado entra pelo `catalog_tool.py merge`.
 - **Nada compilado, analisado, testado nem executado.**
+
+## Rodada 14/10/2026: bebidas prontas (RTD) e procedência por campo
+
+- **Categoria nova** `DrinkCategory.readyToDrink` (código salvo `ready_to_drink`; no JSON do catálogo `readyToDrink`). Códigos antigos
+  intactos. `fromCode` de versões antigas cai em `cocktail` para códigos desconhecidos (comportamento já existente). Tratada em
+  `drink_category.dart`, `common_sizes.dart` (269/275/350, sugestões), `drink_vessel.dart` (lata, cor própria), `label_parser.dart`
+  (só quando o rótulo diz "bebida mista", "hard seltzer", "pronto para beber", "ice"...; sempre revisável), `catalog_loader.dart`.
+  Filtros, cadastro manual, revisão de rótulo/cardápio, estatísticas e exportação já percorrem `DrinkCategory.values`/`code`.
+- **Banco:** `supabase/migrations/20261019000000_ready_to_drink_category.sql` (pendente; idempotente; acha o `check` antigo pela
+  definição e recria com nome fixo). Sem ela o servidor responde `23514`; o `SyncCubit` trata isso como lacuna de esquema (linha
+  pendente, aviso `syncNoticeSchemaGap`), nunca como rejeição.
+- **Procedência por campo:** `lib/drinks/domain/provenance.dart` (`ProvenanceKind`, `FieldSource`, `provenanceOf`), carregada de
+  `fieldSources` (`type`: official/label/packagingRegistry/secondary). Na ficha (`drink_detail_sheet.dart`) a antiga "Fonte dos dados"
+  virou **"Sobre estes dados"** (recolhida): teor, ingredientes, estilo e apresentações (agrupadas por fonte), cada uma com tipo,
+  rótulo da fonte, mercado, "consultado em", nota e URL (toque abre com `url_launcher`, botão copia). Campo sem fonte própria mostra
+  "vale a fonte geral do produto" (sem inventar). Divergência de teor aparece fora da seção recolhida. Os rótulos das fontes ficam no
+  texto original (pt), com o tipo traduzido.
+- **Catálogo v6** (`d678cd5`): ver `docs/catalog-coverage.md`. `catalog_tool.py merge` aceita `corroborate` (anexa fonte a um valor
+  existente sem mudá-lo).
+- **Nada compilado, analisado, testado nem executado.** Pendências: aplicar `20261019000000`; `scripts/apply_recovery_code.py`
+  (rodada anterior).
