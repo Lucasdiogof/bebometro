@@ -82,7 +82,8 @@ class _AccessGateState extends State<AccessGate> {
           case AccessStatus.reauthRequired:
             return const SignInPage(reauth: true);
           case AccessStatus.emailPending:
-            return const CheckEmailPage();
+            // E-mail confirmation is off (Supabase auto-confirms): never reached.
+            return const SignInPage();
           case AccessStatus.legacyAnonymous:
             // Never reached: an old anonymous session is signed out at start.
             return const SignInPage();

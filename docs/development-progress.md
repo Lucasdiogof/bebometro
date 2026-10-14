@@ -81,6 +81,8 @@ conferido. Entrega de e-mail não verificada.
 
 Sétima rodada: e-mail de teste entregue na caixa de entrada; "Confirm email" **ligado**. **Dados antigos removidos (13/10/2026):** o app nunca foi usado por ninguém, então não existem registros antigos nem contas a converter. As telas "Dados antigos" (importar/manter/exportar, "criar conta com meus registros"), o aviso na entrada, o aviso em Minha conta e o convite ao abrir foram **retirados**. Uma sessão anônima que sobrar num aparelho de teste é encerrada localmente na abertura e a pessoa cai na tela normal de entrar/criar conta. O código de dados antigos (`legacy_data.dart`, conversão em `AuthController`) ficou sem tela e pode ser apagado depois; as telas de entrar/criar conta/recuperar não mudaram. Nada compilado.
 
+**Confirmação de e-mail removida (13/10/2026):** o Supabase passou a confirmar contas automaticamente (`mailer_autoconfirm: true`, lido de volta) e o app não tem mais a tela "confira seu e-mail" (`CheckEmailPage` apagada). O cadastro entra direto. O e-mail de **recuperação de senha** continua existindo (SMTP e template aplicados). O template de confirmação segue aplicado, mas não é disparado. Nada compilado.
+
 ## Bloqueios conhecidos
 
 - Sem acesso administrativo ao Supabase neste ambiente: novas migrations são preparadas e aplicadas pelo dono.

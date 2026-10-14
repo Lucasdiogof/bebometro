@@ -694,6 +694,8 @@ recusou sem SMTP próprio (aplicar com `scripts/apply_auth_email.py` quando houv
 
 Um e-mail de teste (sem link) enviado por SMTP ao responsável chegou à caixa de entrada, fora do spam; em seguida "Confirm email" foi **ligado** (lido de volta). Os templates do Auth ainda não foram vistos num e-mail real.
 
+**Confirmação de e-mail removida (13/10/2026):** o Supabase passou a confirmar contas automaticamente (`mailer_autoconfirm: true`, lido de volta) e o app não tem mais a tela "confira seu e-mail" (`CheckEmailPage` apagada). O cadastro entra direto. O e-mail de **recuperação de senha** continua existindo (SMTP e template aplicados). O template de confirmação segue aplicado, mas não é disparado. Nada compilado.
+
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
 executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de
