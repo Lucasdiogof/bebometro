@@ -319,7 +319,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get authPasswordHelper =>
-      'Al menos 8 caracteres, con letras y números.';
+      'Al menos 8 caracteres.';
 
   @override
   String get authPasswordMin => 'Usa al menos 8 caracteres.';
@@ -424,7 +424,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get authWeakPassword =>
-      'Contraseña débil. Usa al menos 8 caracteres, combinando letras y números.';
+      'Contraseña débil. Usa al menos 8 caracteres.';
 
   @override
   String get authWrongCredentials => 'Correo o contraseña incorrectos.';

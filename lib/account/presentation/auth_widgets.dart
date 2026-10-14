@@ -225,9 +225,7 @@ String? validateEmail(String v) {
 }
 
 String? validateNewPassword(String v) {
+  // Same rule as the fan-hub app: length only (8 characters).
   if (v.length < 8) return tr.authPasswordMin;
-  if (!RegExp(r'[A-Za-z]').hasMatch(v) || !RegExp(r'\d').hasMatch(v)) {
-    return tr.authPasswordMix;
-  }
   return null;
 }
