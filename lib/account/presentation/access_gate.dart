@@ -3,16 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/injector.dart';
 import '../../core/sync/sync_cubit.dart';
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/state_views.dart';
 import '../../shell/main_shell.dart';
 import '../../tracking/application/tracking_coordinator.dart';
 import '../../tracking/application/tracking_links.dart';
 import '../application/auth_controller.dart';
 import 'auth_pages.dart';
-import 'auth_widgets.dart';
-import '../../l10n/l10n.dart';
 
 /// The ONLY place that decides what can be opened. Every screen of the
 /// product lives under [_AccountHome], which only exists for a permanent
@@ -111,8 +107,6 @@ class _AccountHome extends StatefulWidget {
 }
 
 class _AccountHomeState extends State<_AccountHome> {
-  bool _continueWithoutHistory = false;
-
   @override
   void initState() {
     super.initState();
@@ -123,75 +117,11 @@ class _AccountHomeState extends State<_AccountHome> {
     });
   }
 
+  /// Straight to the home: the cloud is read in the background (the sync
+  /// started with the account scope) and the screens update as rows arrive.
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: getIt<SyncCubit>(),
-      child: BlocBuilder<SyncCubit, SyncState>(
-        buildWhen: (a, b) =>
-            a.historyRestored != b.historyRestored ||
-            a.restoring != b.restoring ||
-            a.restoredRows != b.restoredRows ||
-            a.restoreFailed != b.restoreFailed ||
-            a.status != b.status,
-        builder: (context, sync) {
-          if (sync.historyRestored || _continueWithoutHistory) {
-            return const MainShell();
-          }
-          return _RestorePage(
-            sync: sync,
-            onContinue: () => setState(() => _continueWithoutHistory = true),
-          );
-        },
-      ),
-    );
-  }
-}
-
-/// First sign-in on this device: the history is being read from the cloud.
-/// Never shown as an empty history.
-class _RestorePage extends StatelessWidget {
-  const _RestorePage({required this.sync, required this.onContinue});
-
-  final SyncState sync;
-  final VoidCallback onContinue;
-
-  @override
-  Widget build(BuildContext context) {
-    final failed = !sync.restoring &&
-        (sync.restoreFailed ||
-            sync.status == SyncStatus.failed ||
-            sync.status == SyncStatus.localOnly);
-    return AuthScaffold(
-      title: failed ? tr.restoreFailedTitle : tr.restoreTitle,
-      subtitle: failed
-          ? (sync.message ??
-              tr.restoreFailedBody)
-          : tr.restoreBody,
-      action: failed
-          ? FilledButton(
-              onPressed: () => context.read<SyncCubit>().retryRestore(),
-              child: Text(tr.commonRetry),
-            )
-          : null,
-      children: [
-        if (!failed) ...[
-          const LinearProgressIndicator(color: AppColors.amber),
-          const SizedBox(height: AppSpace.md),
-          Text(
-            sync.restoredRows == 0
-                ? tr.restoreConnecting
-                : tr.restoreReceived(sync.restoredRows),
-            style: AppText.body,
-          ),
-        ],
-        const SizedBox(height: AppSpace.lg),
-        TextButton(
-          onPressed: onContinue,
-          child: Text(tr.restoreUseApp),
-        ),
-        Text(tr.restoreUseAppHint, style: AppText.caption),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => BlocProvider.value(
+        value: getIt<SyncCubit>(),
+        child: const MainShell(),
+      );
 }
