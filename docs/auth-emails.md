@@ -83,3 +83,5 @@ python -I scripts/apply_auth_email.py --apply` (SMTP já configurado, não preci
 
 **Estado:** código e template alterados no repositório; **ainda não aplicados no Supabase** (a sessão que fez a mudança não tinha
 `SUPABASE_ACCESS_TOKEN`). Nenhum e-mail com o novo template foi enviado nem o fluxo foi executado no app.
+
+**Estado do template de recuperação (14/10/2026):** o ecovery.html com {{ .Token }} (variável oficial do OTP de e-mail) está no repositório, mas **não foi aplicado nem lido de volta** — esta sessão não tem token do projeto jiisoqkryhmtopaojyyu. Aplicar com SUPABASE_ACCESS_TOKEN + python -I scripts/apply_auth_email.py --apply (ou colar em Auth → Email Templates → Reset password). Enquanto não for aplicado, o e-mail ainda leva o link antigo e o fluxo por código não funciona de ponta a ponta. Conferir também mailer_otp_length = 6.
