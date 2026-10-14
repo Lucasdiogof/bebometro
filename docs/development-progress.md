@@ -68,6 +68,11 @@ uma sessão real, sem apagar nada. Exclusão de conta **não** declarada funcion
 Terceira rodada (token pessoal fornecido): `delete-account` **publicada** (v1, ACTIVE, `verify_jwt` ligado, 401 sem sessão);
 `uri_allow_list` agora tem `bebometro://auth-callback`; *Manual linking* **ligado**; templates **recusados pela plataforma** até haver
 SMTP próprio; SMTP, Geoapify e Team iOS seguem pendentes. Nada validado no app.
+Quarta rodada: corpo publicado de `delete-account` conferido pela API (contém `dry_run` e o esvaziamento do bucket); `dry_run` retorna
+antes de qualquer escrita (revisão do código); sem sessão válida de usuário fornecida, o teste autenticado segue pendente. SMTP:
+nenhuma credencial acessível (secret do Resend do site não é legível; ler outro projeto foi negado); `scripts/apply_auth_email.py`
+aplica SMTP + templates com uma credencial fornecida. Geoapify: armazenamento permitido pela doc oficial desde que a atribuição
+fique visível (adicionada ao detalhe do local); sem chave. Redirect web: aguarda hospedagem. iOS: sem Mac/Team.
 
 ## Bloqueios conhecidos
 

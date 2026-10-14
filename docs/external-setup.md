@@ -20,10 +20,11 @@ Legenda das colunas de estado: **Implementado** (código no repositório) · **C
 | Redirects de Auth | Sim | **Sim**: `uri_allow_list = bebometro://auth-callback` (estava vazia); *Site URL* mantido (`http://localhost:3000`) | Lido de volta da API de gerenciamento | URL web de produção quando existir |
 | Conversão das sessões anônimas | Sim (`updateUser(email)`) | **Sim**: *Manual linking* ligado (estava desligado); login anônimo mantido ligado | Lido de volta | Conversão real ainda não executada |
 | Confirmação de e-mail | Sim | **Não** (segue desligada, de propósito) | `mailer_autoconfirm: true` | Ligar só depois do SMTP |
-| SMTP | n/a | **Não** (`smtp_host` vazio) | Lido: sem SMTP | Remetente e credencial autorizados |
-| Templates PT-BR/EN/ES | Sim (4 arquivos) | **Não**: a plataforma recusa (HTTP 400, "não disponível no plano gratuito com o provedor padrão; configure SMTP próprio") | Templates atuais = padrão do Supabase | Fazer o SMTP primeiro, depois aplicar |
-| Geoapify | Sim | **Não** (sem chave) | n/a | Chave dedicada |
-| Assinatura iOS | Alvos coerentes | **Não** (sem Team) | n/a | Team no Xcode |
+| SMTP | Script pronto (`scripts/apply_auth_email.py`) | **Não** (`smtp_host` vazio) | Lido: sem SMTP | **Pendente de credencial**: senha SMTP (chave do Resend) e remetente (seção 4) |
+| Templates PT-BR/EN/ES | Sim (4 arquivos) | **Não**: a plataforma recusa (HTTP 400, "não disponível no plano gratuito com o provedor padrão; configure SMTP próprio") | Templates atuais = padrão do Supabase | **Pendente de credencial** (depende do SMTP): o mesmo script aplica depois |
+| Geoapify | Sim (atribuição também no detalhe do local) | **Não** (sem chave em `env.json`/ambiente) | Armazenamento de resultados: **permitido** pela doc oficial (seção 6) | **Pendente de credencial**: chave dedicada |
+| Redirect web | n/a | **Não** (não existe URL web do Bebômetro no repositório) | n/a | **Aguarda hospedagem web** |
+| Assinatura iOS | Alvos coerentes | **Não** (sem Team; sem Mac/Xcode neste ambiente) | n/a | **Pendente de ação manual** no Xcode |
 | Migrations até `20261018000000` | Sim | Aplicadas pelo responsável | Colunas/tabelas existem | Nada |
 
 Aplicado por token pessoal do Supabase (usado só em memória, nunca gravado em arquivo; **revogue-o**). Configuração de Auth anterior
@@ -97,8 +98,8 @@ Na web o app usa a **origem da página** (`Uri.base.origin`).
 | Ambiente | URL |
 |---|---|
 | Android/iOS | `bebometro://auth-callback` |
-| Web em desenvolvimento | `http://localhost:PORTA` (a porta do `flutter run -d chrome --web-port PORTA`; `http://localhost:PORTA/**` não é necessário, o app usa só a origem) |
-| Web em produção | **indefinida**: o app web ainda não tem endereço publicado. Cadastrar a origem exata (`https://…`) quando existir. Não use o domínio de outro projeto. |
+| Web em desenvolvimento | **não cadastrada** (o *Site URL* atual `http://localhost:3000` é um padrão do Supabase, não um destino do app). Para testar a web, rode `flutter run -d chrome --web-port 5050` e acrescente `http://localhost:5050` à lista (o app usa só a origem, sem `/**`) |
+| Web em produção | **aguarda hospedagem web** (conferido: não há URL do Bebômetro no repositório nem na configuração); **indefinida**: o app web ainda não tem endereço publicado. Cadastrar a origem exata (`https://…`) quando existir. Não use o domínio de outro projeto. |
 
 *Site URL*: pode continuar como está; não há página de destino do Bebômetro na web ainda.
 A documentação oficial de Redirect URLs (conferida) manda usar URLs exatas em produção e `**` só em desenvolvimento.
@@ -116,6 +117,24 @@ linking*) — também para o caso de e-mail. Conferido no código atual: o app n
 Estado lido pela API: `mailer_autoconfirm: true`, ou seja, hoje **ninguém precisa confirmar o e-mail** e nenhum e-mail de
 confirmação é enviado. O SMTP padrão do Supabase só entrega para endereços da equipe do projeto e tem limite baixo por hora, então
 não serve para usuários reais. Nada foi enviado nesta rodada.
+
+**Como foi tentado (13/10/2026):** a infraestrutura transacional conhecida é o Resend do site lucksrei.com (o Worker `lucksrei-site` usa o
+secret `RESEND_API_KEY` e o domínio `lucksrei.com` verificado). O secret de um Worker não pode ser lido de volta, não há cópia
+local, e ler a configuração de e-mail de outro projeto Supabase foi negado pelo controle de acesso — não contornei. Portanto **não há
+credencial acessível** para o Bebômetro.
+
+**Parâmetros oficiais do Resend (docs, conferido):** host `smtp.resend.com`; porta 465 (TLS implícito) ou 587 (STARTTLS); usuário
+`resend`; senha = **uma chave de API do Resend** (aqui a chave de API *é* a senha SMTP, por documentação do próprio Resend); o domínio
+do remetente precisa estar verificado. Recomendo criar uma chave **nova**, só de envio, restrita ao domínio, em vez de reutilizar a do
+site. Depois de pôr as variáveis no ambiente (abaixo), um único comando aplica SMTP + templates e lê de volta, sem mostrar a senha:
+
+```powershell
+$env:BEBOMETRO_SMTP_FROM = "remetente@seu-dominio-verificado"   # você escolhe; não inventei
+$env:BEBOMETRO_SMTP_PASS = "<chave do Resend>"
+python -I scripts/apply_auth_email.py --apply
+# só depois de conferir o envio real:
+python -I scripts/apply_auth_email.py --apply --enable-confirmation
+```
 
 **Os templates (seção 5) só podem ser aplicados depois do SMTP:** tentei por API e a plataforma recusou (400: modificar templates não
 está disponível em projeto gratuito com o provedor padrão). Campos a preencher em **Auth → SMTP Settings** (com um provedor e domínio **seus e já autorizados**):
@@ -151,7 +170,7 @@ Depois de colar, ler a configuração de volta no painel e conferir os *Auth Log
 ## 6. Geoapify (busca de lugares e mapa)
 
 Sem a chave (`GEOAPIFY_KEY`), busca e mapa ficam desligados e o resto funciona. **Não há chave específica do Bebômetro
-disponível** e não criei conta nem aceitei termos. Único passo seu: criar um projeto no plano gratuito em geoapify.com, gerar
+disponível** e não criei conta nem aceitei termos. Único passo seu (a chave não existe em nenhum lugar acessível daqui): criar um projeto no plano gratuito em geoapify.com, gerar
 **uma chave só para o Bebômetro** e passá-la no build (`env.example.json` → `env.json`, que está no `.gitignore`):
 
 ```bash
@@ -165,13 +184,13 @@ dentro da cota; é **obrigatório** exibir "Powered by Geoapify" (link) e a atri
 - **Restrições da chave:** a documentação consultada não descreve restrição por domínio/IP/app, então não afirmo que existam. Em app
   nativo a chave fica no binário (como a publicável do Supabase). Use uma chave dedicada, acompanhe o consumo no painel e troque a
   chave se houver abuso. Não consegui confirmar restrição por origem para a web.
-- **Armazenar resultados:** a documentação da **Places API** diz textualmente "Cache/store results with no limits". A documentação
-  de **geocodificação (autocomplete e reverse)** e os termos **não dizem nada** sobre armazenar. **Dúvida delimitada:** o app grava,
-  para um local que a pessoa **confirmou** (e pode editar), coordenadas, endereço, cidade/UF, nome e identificador do provedor.
-  Esses campos vêm da busca de lugares próximos (permitido, documentado) ou da busca por texto/ponto no mapa (não documentado).
-  O apelido e qualquer endereço digitado à mão são da pessoa e não dependem disso. Pergunta única a fazer ao suporte da Geoapify
-  antes de publicar: "resultados de autocomplete e reverse geocoding podem ser armazenados no plano gratuito?". Enquanto isso, nada
-  foi alterado no comportamento de gravação (e o comentário de código que afirmava que os termos permitiam foi corrigido).
+- **Armazenar resultados — resolvido pela documentação oficial (13/10/2026):** a página da Geocoding API da Geoapify responde à
+  pergunta "Os termos permitem guardar o resultado recebido?": "Nossos serviços se baseiam em dados abertos, então não restringimos
+  guardar resultados", **desde que a atribuição da fonte acompanhe o objeto guardado ou fique visível quando o dado for reutilizado**.
+  A Places API diz "Cache/store results with no limits" e o site repete que os termos permitem cache e armazenamento. Logo,
+  gravar endereço, coordenadas, cidade/UF, nome e id do provedor de um local confirmado é permitido. A condição é a atribuição:
+  ela já aparece no seletor, na confirmação e no mapa, e **passou a aparecer também no detalhe do local** quando o local veio do
+  provedor. Apelido e endereço digitado à mão continuam sendo dados da pessoa (o campo `provider` fica vazio quando é manual).
 - Chamadas só sob demanda (digitar com mínimo de 3 letras, tocar em "perto de mim"/no mapa); nenhuma chamada foi feita nesta
   rodada, pois não há chave.
 

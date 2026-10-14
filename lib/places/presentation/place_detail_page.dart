@@ -117,6 +117,13 @@ class _PlaceDetailView extends StatelessWidget {
                         child: Text(place.providerSubtitle!,
                             style: AppText.caption),
                       ),
+                    // Geoapify keeps the data free to store as long as the
+                    // data-source credit stays visible where it is reused.
+                    if (place.provider != null)
+                      const Padding(
+                        padding: EdgeInsets.only(top: AppSpace.xs),
+                        child: MapAttribution(compact: true),
+                      ),
                     const SizedBox(height: AppSpace.lg),
                     Row(children: [
                       Expanded(

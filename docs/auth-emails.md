@@ -3,7 +3,8 @@
 > Passo a passo de configuração (assuntos, SMTP, redirects): [`external-setup.md`](external-setup.md), seções 4 e 5.
 > Atualização de 13/10/2026: templates revisados (layout simples e responsivo, marca, teste de idioma protegido contra campo
 > ausente). A API pública mostra que **"Confirm email" está desligado** hoje (`mailer_autoconfirm: true`); templates e SMTP
-> continuam **não aplicados** (sem acesso ao painel) e nenhum e-mail foi enviado.
+> continuam **não aplicados** e nenhum e-mail foi enviado. Em 13/10/2026 a API de gerenciamento recusou a alteração dos templates
+> enquanto não há SMTP próprio; o `scripts/apply_auth_email.py` aplica SMTP + templates juntos quando houver credencial.
 
 **Estado:** as telas do app estão nos três idiomas (implementado em código). Os **e-mails** enviados pelo Supabase são
 outra coisa: só ficam traduzidos depois que os templates abaixo forem colados no painel. **Nada disso foi aplicado
