@@ -5,9 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../core/config/env.dart';
 import '../../core/data/device_store.dart';
-import '../data/legacy_data.dart';
 import '../../l10n/l10n.dart';
 
 enum AccessStatus {
@@ -16,17 +14,6 @@ enum AccessStatus {
 
   /// No session: sign in or create an account.
   signedOut,
-
-  /// An anonymous session from before accounts became mandatory. The product
-  /// is closed until the person converts it or signs in to another account.
-  legacyAnonymous,
-
-  /// Account created (or anonymous conversion asked); waiting for the e-mail
-  /// link.
-  emailPending,
-
-  /// Anonymous user converted (e-mail confirmed): a password must be set.
-  needsPassword,
 
   /// Permanent account. Works offline.
   authenticated,
@@ -47,8 +34,6 @@ class AccessState {
     this.email,
     this.displayName,
     this.emailConfirmed = false,
-    this.pendingEmail,
-    this.converting = false,
     this.cloudUnavailable = false,
     this.notice,
   });
@@ -60,12 +45,6 @@ class AccessState {
   final String? email;
   final String? displayName;
   final bool emailConfirmed;
-
-  /// Address that must receive the confirmation link.
-  final String? pendingEmail;
-
-  /// The pending e-mail belongs to an anonymous conversion (same user id).
-  final bool converting;
 
   /// The cloud could not be reached at start-up (temporary connection
   /// failure or bad configuration). Signed-in people keep working locally.
@@ -82,8 +61,6 @@ class AccessState {
         email: email,
         displayName: displayName,
         emailConfirmed: emailConfirmed,
-        pendingEmail: pendingEmail,
-        converting: converting,
         cloudUnavailable: cloudUnavailable,
         notice: clearNotice ? null : (notice ?? this.notice),
       );
@@ -108,11 +85,10 @@ class AuthFailure implements Exception {
 /// the server refuses the stored session) leads to [AccessStatus.reauthRequired],
 /// and nothing local is deleted.
 class AuthController extends Cubit<AccessState> {
-  AuthController(this._device, this._legacy, {required this.cloudEnabled})
+  AuthController(this._device, {required this.cloudEnabled})
       : super(const AccessState(status: AccessStatus.initializing));
 
   final DeviceStore _device;
-  final LegacyData _legacy;
   final bool cloudEnabled;
   StreamSubscription<AuthState>? _sub;
   Future<void> _queue = Future.value();
@@ -121,20 +97,14 @@ class AuthController extends Cubit<AccessState> {
   Future<void> _enqueue(Future<void> Function() step) => _queue = _queue
       .then((_) => step())
       .catchError((Object e) => _log('auth step failed: ${e.runtimeType}'));
-  DateTime? _lastResend;
   DateTime? _lastRecoverySend;
 
   static const _lastUidKey = 'auth.last_uid';
   static const _lastEmailKey = 'auth.last_email';
-  static const _pendingEmailKey = 'auth.pending_email';
-  static const _conversionKey = 'auth.conversion';
   static const _recoveryKey = 'auth.recovery';
   static const _signingOutKey = 'auth.signing_out';
 
   GoTrueClient get _auth => Supabase.instance.client.auth;
-
-  /// Where the e-mail links send the person back (registered in Supabase).
-  static String get redirectUrl => kIsWeb ? Uri.base.origin : Env.authRedirectUrl;
 
   Future<void> start() async {
     if (!cloudEnabled) {
@@ -227,20 +197,6 @@ class AuthController extends Cubit<AccessState> {
     if (isClosed) return;
     final user = session?.user;
     if (user == null) {
-      final pending = _device.getString(_pendingEmailKey);
-      emit(AccessState(
-        status: pending != null ? AccessStatus.emailPending : AccessStatus.signedOut,
-        pendingEmail: pending,
-        email: _device.getString(_lastEmailKey),
-        notice: state.notice,
-      ));
-      return;
-    }
-    final name = user.userMetadata?['display_name'] as String?;
-    final confirmed = user.emailConfirmedAt != null;
-    final conversion = _jsonKey(_conversionKey);
-
-    if (user.isAnonymous) {
       emit(AccessState(
         status: AccessStatus.signedOut,
         email: _device.getString(_lastEmailKey),
@@ -248,15 +204,14 @@ class AuthController extends Cubit<AccessState> {
       ));
       return;
     }
+    final name = user.userMetadata?['display_name'] as String?;
+    final confirmed = user.emailConfirmedAt != null;
 
-    if (conversion?['uid'] == user.id && confirmed) {
-      // E-mail of the converted anonymous user confirmed: password next.
+    if (user.isAnonymous) {
       emit(AccessState(
-        status: AccessStatus.needsPassword,
-        userId: user.id,
-        email: user.email,
-        displayName: name,
-        emailConfirmed: true,
+        status: AccessStatus.signedOut,
+        email: _device.getString(_lastEmailKey),
+        notice: state.notice,
       ));
       return;
     }
@@ -279,10 +234,21 @@ class AuthController extends Cubit<AccessState> {
         ));
         return;
       }
+      // A recovery session whose new password was never saved (marker too
+      // old or of another address) must not become a normal sign-in.
       await _device.remove(_recoveryKey);
+      await _device.setString(_signingOutKey, '1');
+      try {
+        await _auth.signOut(scope: SignOutScope.local);
+      } catch (_) {}
+      await _device.remove(_lastUidKey);
+      emit(AccessState(
+        status: AccessStatus.signedOut,
+        email: _device.getString(_lastEmailKey),
+      ));
+      return;
     }
 
-    await _device.remove(_pendingEmailKey);
     await _device.setString(_lastUidKey, user.id);
     if (user.email != null) await _device.setString(_lastEmailKey, user.email!);
     emit(AccessState(
@@ -321,8 +287,9 @@ class AuthController extends Cubit<AccessState> {
     }
   }
 
-  /// Creates the account. With e-mail confirmation on (the expected setup)
-  /// there is no session yet: the state becomes "check your e-mail".
+  /// Creates the account and signs in right away (e-mail confirmation is off
+  /// in the project). If the server ever asks for confirmation there is no
+  /// session: the person is told and stays on the form.
   Future<void> signUp(String name, String email, String password) async {
     _requireCloud();
     try {
@@ -330,81 +297,8 @@ class AuthController extends Cubit<AccessState> {
         email: email.trim(),
         password: password,
         data: {'display_name': name.trim(), 'language': trLanguage},
-        emailRedirectTo: redirectUrl,
       );
-      if (res.session == null) {
-        await _device.setString(_pendingEmailKey, email.trim());
-        _lastResend = DateTime.now();
-        emit(AccessState(
-          status: AccessStatus.emailPending,
-          pendingEmail: email.trim(),
-        ));
-      }
-    } on AuthException catch (e) {
-      throw _map(e);
-    }
-  }
-
-  /// Case A: keeps the anonymous user (same id, same records) and links an
-  /// e-mail to it. The password can only be set after the e-mail is
-  /// confirmed (Supabase rule), so it is asked in [setPassword] later.
-  Future<void> convertAnonymous(String name, String email) async {
-    _requireCloud();
-    final user = _auth.currentUser;
-    if (user == null || !user.isAnonymous) {
-      throw AuthFailure(tr.authNoOldSession);
-    }
-    try {
-      await _auth.updateUser(
-        UserAttributes(
-            email: email.trim(),
-            data: {'display_name': name.trim(), 'language': trLanguage}),
-        emailRedirectTo: redirectUrl,
-      );
-      await _device.setString(
-          _conversionKey, jsonEncode({'uid': user.id, 'email': email.trim()}));
-      _lastResend = DateTime.now();
-      await _apply(_auth.currentSession);
-    } on AuthException catch (e) {
-      throw _map(e);
-    }
-  }
-
-  /// Gives up a pending conversion (the anonymous session stays).
-  Future<void> cancelConversion() async {
-    await _device.remove(_conversionKey);
-    await _apply(cloudEnabled ? _auth.currentSession : null);
-  }
-
-  /// Leaves the "check your e-mail" screen without a confirmed account.
-  Future<void> forgetPendingEmail() async {
-    await _device.remove(_pendingEmailKey);
-    await _apply(cloudEnabled ? _auth.currentSession : null);
-  }
-
-  /// Seconds before another confirmation e-mail may be asked (local guard;
-  /// the server also limits).
-  int get resendWaitSeconds {
-    final last = _lastResend;
-    if (last == null) return 0;
-    final left = 60 - DateTime.now().difference(last).inSeconds;
-    return left > 0 ? left : 0;
-  }
-
-  Future<void> resendConfirmation() async {
-    _requireCloud();
-    final email = state.pendingEmail;
-    if (email == null) return;
-    if (resendWaitSeconds > 0) {
-      throw AuthFailure(tr.authResendWait(resendWaitSeconds));
-    }
-    try {
-      await _auth.resend(
-        type: state.converting ? OtpType.emailChange : OtpType.signup,
-        email: email,
-        emailRedirectTo: redirectUrl,
-      );
-      _lastResend = DateTime.now();
+      if (res.session == null) throw AuthFailure(tr.authEmailNotConfirmed);
     } on AuthException catch (e) {
       throw _map(e);
     }
@@ -453,20 +347,23 @@ class AuthController extends Cubit<AccessState> {
         token: code.trim(),
       );
       // The listener applies the session (passwordRecovery).
-    } on AuthException catch (e) {
+    } catch (e) {
+      // Rejected code or no connection: no session, no new-password screen.
       await _device.remove(_recoveryKey);
-      throw _map(e);
+      if (e is AuthException) throw _map(e);
+      throw AuthFailure(tr.authNoConnection);
     }
   }
 
-  /// New password after the recovery code, or the first password of a converted
-  /// anonymous user.
+  /// New password, only inside a verified recovery session.
   Future<void> setPassword(String password) async {
     _requireCloud();
+    if (state.status != AccessStatus.passwordRecovery) {
+      throw AuthFailure(tr.authSessionEnded);
+    }
     try {
       await _auth.updateUser(UserAttributes(password: password));
       await _device.remove(_recoveryKey);
-      await _device.remove(_conversionKey);
       await _apply(_auth.currentSession);
     } on AuthException catch (e) {
       throw _map(e);
@@ -543,6 +440,7 @@ class AuthController extends Cubit<AccessState> {
   /// own space and only comes back when the same account signs in.
   Future<void> signOut() async {
     await _device.setString(_signingOutKey, '1');
+    await _device.remove(_recoveryKey);
     try {
       if (cloudEnabled) await _auth.signOut(scope: SignOutScope.local);
     } catch (_) {
@@ -585,7 +483,6 @@ class AuthController extends Cubit<AccessState> {
       'otp_expired' || 'invalid_otp' => AuthFailure(tr.authCodeInvalid, field: 'code'),
       'reauthentication_needed' || 'reauthentication_not_valid' => AuthFailure(tr.authNeedsCode, field: 'code'),
       'signup_disabled' => AuthFailure(tr.authSignupDisabled),
-      'manual_linking_disabled' => AuthFailure(tr.authLinkingDisabled),
       'session_not_found' || 'refresh_token_not_found' =>
         AuthFailure(tr.authSessionEnded),
       _ => (e.statusCode == '429')

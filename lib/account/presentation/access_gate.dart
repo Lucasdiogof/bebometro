@@ -13,7 +13,7 @@ import 'auth_pages.dart';
 /// The ONLY place that decides what can be opened. Every screen of the
 /// product lives under [_AccountHome], which only exists for a permanent
 /// account whose data space is open. Without one, only the screens needed to
-/// sign in, recover access and look after old records are reachable.
+/// sign in, create an account and recover access are reachable.
 ///
 /// When the person or the account changes, the navigation goes back to the
 /// root, so no screen of the previous session stays on the stack.
@@ -77,16 +77,8 @@ class _AccessGateState extends State<AccessGate> {
             return const SignInPage();
           case AccessStatus.reauthRequired:
             return const SignInPage(reauth: true);
-          case AccessStatus.emailPending:
-            // E-mail confirmation is off (Supabase auto-confirms): never reached.
-            return const SignInPage();
-          case AccessStatus.legacyAnonymous:
-            // Never reached: an old anonymous session is signed out at start.
-            return const SignInPage();
-          case AccessStatus.needsPassword:
-            return const NewPasswordPage(recovery: false);
           case AccessStatus.passwordRecovery:
-            return const NewPasswordPage(recovery: true);
+            return const NewPasswordPage();
           case AccessStatus.authenticated:
             final uid = s.userId!;
             if (_readyFor != uid) return const Scaffold(body: LoadingView());

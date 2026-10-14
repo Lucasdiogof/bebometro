@@ -63,13 +63,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountLastSyncNever => 'Last completed sync: not yet.';
 
   @override
-  String get accountLegacy => 'Old records on this device';
-
-  @override
-  String get accountLegacyDecide =>
-      'Old records on this device: import or export';
-
-  @override
   String get accountName => 'Name';
 
   @override
@@ -202,28 +195,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Bebômetro';
 
   @override
-  String get authAlreadyConfirmed => 'I\'ve confirmed: sign in';
-
-  @override
   String get authCancelAndLeave => 'Cancel and sign out';
 
   @override
   String get authCheckEmail => 'Check the e-mail you typed.';
-
-  @override
-  String authCheckInboxBody(String email) {
-    return 'We sent a link to $email. Open it on this device to finish.';
-  }
-
-  @override
-  String get authCheckInboxTitle => 'Check your e-mail';
-
-  @override
-  String get authChoosePassword => 'Choose your password';
-
-  @override
-  String get authChoosePasswordBody =>
-      'E-mail confirmed. Now choose the password to sign in on other devices.';
 
   @override
   String get authCloudDown =>
@@ -236,14 +211,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authConfirmPassword => 'Confirm password';
 
   @override
-  String get authConvertBody =>
-      'Your records on this device stay with you. After confirming the e-mail, you choose the password.';
-
-  @override
   String get authCreateAccount => 'Create account';
-
-  @override
-  String get authCreateWithRecords => 'Create an account with your records';
 
   @override
   String get authDifferentAccount =>
@@ -280,10 +248,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'This link has expired or was already used. Ask for another one and open it on this device. If you confirmed your e-mail on another device, just sign in with e-mail and password.';
 
   @override
-  String get authLinkingDisabled =>
-      'Converting the old account isn\'t enabled on the server yet. You can create a new account and import the records later.';
-
-  @override
   String get authNameMissing => 'What should we call you?';
 
   @override
@@ -304,13 +268,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authNoConnection =>
       'No connection. Check the internet and try again.';
-
-  @override
-  String get authNoOldSession => 'There is no old session to convert.';
-
-  @override
-  String get authNotArrived =>
-      'Didn\'t arrive? Check the spam folder and that the address is right. The link is valid for a limited time.';
 
   @override
   String get authPassword => 'Password';
@@ -342,7 +299,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authCodeVerify => 'Confirm code';
 
   @override
-  String get authCodeInvalid => 'Invalid or expired code. Check the 6 digits or ask for a new code.';
+  String get authCodeInvalid =>
+      'Invalid or expired code. Check the 6 digits or ask for a new code.';
 
   @override
   String get authCodeIncomplete => 'Enter the 6 digits of the code.';
@@ -375,20 +333,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get authResent => 'We sent another e-mail. Check the spam folder too.';
-
-  @override
   String get authSamePassword =>
       'The new password must be different from the current one.';
 
   @override
   String get authSavePassword => 'Save password';
-
-  @override
-  String get authSendAgain => 'Send again';
-
-  @override
-  String get authSendConfirmation => 'Send confirmation';
 
   @override
   String get authSendLink => 'Send code';
@@ -436,12 +385,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authTooManyShort => 'Too many attempts. Wait a few minutes.';
 
   @override
-  String get authUseOtherEmail => 'Use another e-mail';
-
-  @override
-  String get authUseOtherEmailBack => 'Go back and use another e-mail';
-
-  @override
   String get authWeakPassword => 'Weak password. Use at least 8 characters.';
 
   @override
@@ -449,9 +392,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authYourAccount => 'your account';
-
-  @override
-  String get authYourEmail => 'your e-mail';
 
   @override
   String get budgetDialogTitle => 'Drinks budget';
@@ -1026,118 +966,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Portuguese, English or Spanish as on the device; other languages use Portuguese.';
 
   @override
-  String get legacyAnonBody =>
-      'If you already used the app on this device, your records were kept. Create your account to keep them and get them back on another device.';
-
-  @override
-  String get legacyAnonCreate => 'Create an account with my records';
-
-  @override
-  String get legacyAnonHaveAccount => 'I already have an account';
-
-  @override
-  String get legacyAnonHaveAccountHint =>
-      'The old records stay apart on this device; you decide later whether to import them into the account.';
-
-  @override
-  String get legacyAnonTitle => 'Bebômetro now uses accounts';
-
-  @override
-  String get legacyAnonView => 'View or export the old records';
-
-  @override
-  String get legacyDrinks => 'Drinks';
-
-  @override
-  String get legacyExport => 'Export old records (JSON)';
-
-  @override
-  String get legacyImport => 'Import into my account';
-
-  @override
-  String get legacyImportAsEnded => 'Import as finished';
-
-  @override
-  String get legacyImportExplain =>
-      'Importing copies the records into the current account with new identifiers (photos are uploaded again). An old anonymous account can\'t be recovered without its session: what is imported is what is on this device.';
-
-  @override
-  String get legacyImportFailed =>
-      'The import didn\'t finish. Nothing was deleted; try again.';
-
-  @override
-  String legacyImported(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other:
-          'Import finished: $count records copied into your account. The old copy is still kept on this device.',
-      one: 'Import finished: 1 record copied into your account. The old copy is still kept on this device.',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get legacyKeep => 'Keep apart for now';
-
-  @override
-  String get legacyKept =>
-      'The old records stay apart on this device. You can import them any time from \"My account\".';
-
-  @override
-  String get legacyNeverSent => 'Never uploaded';
-
-  @override
-  String get legacyNone => 'There are no old records on this device.';
-
-  @override
-  String get legacyNotice =>
-      'There are old records on this device. They are kept: after signing in you can import them. Tap to view or export.';
-
-  @override
-  String legacyOfferBody(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other:
-          'There are $count outings from before Bebômetro used accounts. They\'re kept and won\'t go into your account unless you choose.',
-      one: 'There is 1 outing from before Bebômetro used accounts. It\'s kept and won\'t go into your account unless you choose.',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get legacyOfferOpen => 'Review and decide';
-
-  @override
-  String get legacyOfferTitle => 'Old records on this device';
-
-  @override
-  String get legacyOutings => 'Outings';
-
-  @override
-  String get legacyStatusAdopted =>
-      'These records already belong to your account (created from them).';
-
-  @override
-  String get legacyStatusImported =>
-      'These records were already imported into an account. The old copy stays here for safety.';
-
-  @override
-  String get legacyStatusKept => 'You chose to keep these records apart.';
-
-  @override
-  String get legacyStatusPending =>
-      'Records made before Bebômetro used accounts. They weren\'t deleted.';
-
-  @override
-  String get legacyTitle => 'Old records';
-
-  @override
-  String get legacyTwoActiveBody =>
-      'Your account already has an outing in progress and so do the old records. To import, the old outing comes in as finished now. Its drinks stay with it, without mixing.';
-
-  @override
   String get legacyTwoActiveTitle => 'Two outings in progress';
 
   @override
@@ -1389,41 +1217,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get repoStateFormat => 'The state code has 2 letters (e.g. SP).';
-
-  @override
-  String get restoreBody =>
-      'Bringing your outings, drinks, places and tabs from the cloud.';
-
-  @override
-  String get restoreConnecting => 'Connecting…';
-
-  @override
-  String get restoreFailedBody =>
-      'No connection to the cloud. Nothing was lost: try again when you have internet.';
-
-  @override
-  String get restoreFailedTitle => 'Couldn\'t restore right now';
-
-  @override
-  String restoreReceived(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count records received so far',
-      one: '1 record received so far',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get restoreTitle => 'Restoring your history';
-
-  @override
-  String get restoreUseApp => 'Use the app meanwhile';
-
-  @override
-  String get restoreUseAppHint =>
-      'If you continue now, the history shows up as it arrives. New records are saved on this device and uploaded later.';
 
   @override
   String get settingsAccount => 'My account';

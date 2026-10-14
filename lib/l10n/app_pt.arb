@@ -28,8 +28,6 @@
     }
   },
   "accountLastSyncNever": "Última sincronização concluída: ainda não houve.",
-  "accountLegacy": "Registros antigos deste aparelho",
-  "accountLegacyDecide": "Registros antigos deste aparelho: importar ou exportar",
   "accountName": "Nome",
   "accountNameUpdated": "Nome atualizado",
   "accountNoName": "Sem nome",
@@ -105,26 +103,12 @@
     }
   },
   "appName": "Bebômetro",
-  "authAlreadyConfirmed": "Já confirmei: entrar",
   "authCancelAndLeave": "Cancelar e sair",
   "authCheckEmail": "Confira o e-mail digitado.",
-  "authCheckInboxBody": "Enviamos um link para {email}. Abra o link neste aparelho para concluir.",
-  "@authCheckInboxBody": {
-    "placeholders": {
-      "email": {
-        "type": "String"
-      }
-    }
-  },
-  "authCheckInboxTitle": "Confira seu e-mail",
-  "authChoosePassword": "Escolha sua senha",
-  "authChoosePasswordBody": "E-mail confirmado. Agora escolha a senha para entrar em outros aparelhos.",
   "authCloudDown": "Não foi possível falar com o servidor agora. Confira a internet e tente de novo em instantes.",
   "authConfirmNewPassword": "Confirmar nova senha",
   "authConfirmPassword": "Confirmar senha",
-  "authConvertBody": "Seus registros deste aparelho continuam com você. Depois de confirmar o e-mail, você escolhe a senha.",
   "authCreateAccount": "Criar conta",
-  "authCreateWithRecords": "Criar conta com seus registros",
   "authDifferentAccount": "Conta diferente da sessão atual.",
   "authEmail": "E-mail",
   "authEmailExists": "Já existe uma conta com esse e-mail. Entre com ela ou recupere a senha.",
@@ -135,7 +119,6 @@
   "authGenericError": "Não foi possível concluir agora. Tente de novo.",
   "authHidePassword": "Ocultar senha",
   "authLinkInvalid": "Esse link expirou ou já foi usado. Peça outro e abra-o neste aparelho. Se você confirmou o e-mail em outro aparelho, é só entrar com e-mail e senha.",
-  "authLinkingDisabled": "A conversão da conta antiga não está liberada no servidor ainda. Você pode criar uma conta nova e importar os registros depois.",
   "authNameMissing": "Como podemos te chamar?",
   "authNeedsCode": "Por segurança, confirme com o código enviado ao seu e-mail.",
   "authNewPassword": "Nova senha",
@@ -149,8 +132,6 @@
   },
   "authNewPasswordTitle": "Nova senha",
   "authNoConnection": "Sem conexão. Confira a internet e tente de novo.",
-  "authNoOldSession": "Não há uma sessão antiga para converter.",
-  "authNotArrived": "Não chegou? Confira o spam e se o endereço está certo. O link vale por tempo limitado.",
   "authPassword": "Senha",
   "authPasswordHelper": "Pelo menos 8 caracteres.",
   "authPasswordMin": "Use pelo menos 8 caracteres.",
@@ -190,11 +171,8 @@
       }
     }
   },
-  "authResent": "Enviamos outro e-mail. Confira também o spam.",
   "authSamePassword": "A nova senha precisa ser diferente da atual.",
   "authSavePassword": "Salvar senha",
-  "authSendAgain": "Enviar de novo",
-  "authSendConfirmation": "Enviar confirmação",
   "authSendLink": "Enviar código",
   "authServerUnreachable": "Sem conexão com o servidor agora. Tente de novo em instantes.",
   "authSessionEnded": "Sua sessão terminou. Entre novamente.",
@@ -208,12 +186,9 @@
   "authSignupDisabled": "Cadastro desativado no servidor no momento.",
   "authTooManyAttempts": "Muitas tentativas. Espere alguns minutos e tente de novo.",
   "authTooManyShort": "Muitas tentativas. Espere alguns minutos.",
-  "authUseOtherEmail": "Usar outro e-mail",
-  "authUseOtherEmailBack": "Voltar e usar outro e-mail",
   "authWeakPassword": "Senha fraca. Use pelo menos 8 caracteres.",
   "authWrongCredentials": "E-mail ou senha incorretos.",
   "authYourAccount": "sua conta",
-  "authYourEmail": "o seu e-mail",
   "budgetDialogTitle": "Orçamento para bebidas",
   "budgetEdit": "Editar orçamento",
   "budgetLeft": "Sobram {amount} do orçamento.",
@@ -587,48 +562,6 @@
   "languagePt": "Português (Brasil)",
   "languageSystem": "Idioma do sistema",
   "languageSystemHint": "Português, inglês ou espanhol conforme o aparelho; outros idiomas usam português.",
-  "legacyAnonBody": "Se você já usava o app neste aparelho, seus registros foram guardados. Crie sua conta para continuar com eles e recuperá-los em outro aparelho.",
-  "legacyAnonCreate": "Criar conta com meus registros",
-  "legacyAnonHaveAccount": "Já tenho conta",
-  "legacyAnonHaveAccountHint": "Os registros antigos ficam separados neste aparelho; você decide depois se importa para a conta.",
-  "legacyAnonTitle": "Agora o Bebômetro usa conta",
-  "legacyAnonView": "Ver ou exportar os registros antigos",
-  "legacyDrinks": "Bebidas",
-  "legacyExport": "Exportar registros antigos (JSON)",
-  "legacyImport": "Importar para minha conta",
-  "legacyImportAsEnded": "Importar como encerrado",
-  "legacyImportExplain": "Importar copia os registros para a conta atual com novos identificadores (as fotos são reenviadas). Uma conta anônima antiga não pode ser recuperada sem a sessão dela: o que importa é o que está neste aparelho.",
-  "legacyImportFailed": "A importação não terminou. Nada foi apagado; tente de novo.",
-  "legacyImported": "{count, plural, =1{Importação concluída: 1 registro copiado para a sua conta. A cópia antiga continua guardada neste aparelho.} other{Importação concluída: {count} registros copiados para a sua conta. A cópia antiga continua guardada neste aparelho.}}",
-  "@legacyImported": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "legacyKeep": "Manter separados por enquanto",
-  "legacyKept": "Os registros antigos continuam separados neste aparelho. Você pode importar quando quiser, por \"Minha conta\".",
-  "legacyNeverSent": "Nunca enviados",
-  "legacyNone": "Não há registros antigos neste aparelho.",
-  "legacyNotice": "Há registros antigos neste aparelho. Eles estão guardados: depois de entrar, você pode importá-los. Toque para ver ou exportar.",
-  "legacyOfferBody": "{count, plural, =1{Há 1 rolê de antes de o Bebômetro usar contas. Ele está guardado e não entra na sua conta sem você escolher.} other{Há {count} rolês de antes de o Bebômetro usar contas. Eles estão guardados e não entram na sua conta sem você escolher.}}",
-  "@legacyOfferBody": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "legacyOfferOpen": "Ver e decidir",
-  "legacyOfferTitle": "Registros antigos neste aparelho",
-  "legacyOutings": "Rolês",
-  "legacyStatusAdopted": "Estes registros já são da sua conta (criada a partir deles).",
-  "legacyStatusImported": "Estes registros já foram importados para uma conta. A cópia antiga fica guardada aqui por segurança.",
-  "legacyStatusKept": "Você escolheu manter estes registros separados.",
-  "legacyStatusPending": "Registros feitos antes de o Bebômetro usar contas. Eles não foram apagados.",
-  "legacyTitle": "Registros antigos",
-  "legacyTwoActiveBody": "Sua conta já tem um rolê em andamento e os registros antigos também. Para importar, o rolê antigo entra como encerrado agora. As bebidas dele continuam nele, sem se misturar.",
   "legacyTwoActiveTitle": "Dois rolês em andamento",
   "moneyFieldHelper": "Valores em reais (R$). Ex.: 15 ou 15,50.",
   "moodCheerful": "Alegre",
@@ -773,21 +706,6 @@
   "repoRecipeIngredient": "Adicione pelo menos um ingrediente.",
   "repoRecipeName": "Dê um nome para a receita.",
   "repoStateFormat": "A UF tem 2 letras (ex.: SP).",
-  "restoreBody": "Trazendo seus rolês, bebidas, locais e comandas da nuvem.",
-  "restoreConnecting": "Conectando…",
-  "restoreFailedBody": "Sem conexão com a nuvem. Nada foi perdido: tente de novo quando estiver com internet.",
-  "restoreFailedTitle": "Não deu para recuperar agora",
-  "restoreReceived": "{count, plural, =1{1 registro recebido até agora} other{{count} registros recebidos até agora}}",
-  "@restoreReceived": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "restoreTitle": "Recuperando seu histórico",
-  "restoreUseApp": "Usar o app enquanto isso",
-  "restoreUseAppHint": "Se continuar agora, o histórico aparece conforme chegar. Os registros novos ficam salvos neste aparelho e são enviados depois.",
   "settingsAccount": "Minha conta",
   "settingsBudget": "Orçamento",
   "settingsBudgetAlerts": "Avisos de orçamento",

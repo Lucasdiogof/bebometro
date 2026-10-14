@@ -5,9 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Durable on-device storage of ONE account. Each collection is a map of
 /// id -> JSON row, held in memory and written through to SharedPreferences
-/// under the account namespace (`acct.<userId>.`). The empty namespace is the
-/// old, pre-account layout ("legacy space"), opened read-mostly to preserve,
-/// adopt or import old records; it is never deleted automatically.
+/// under the account namespace (`acct.<userId>.`). Keys of the old,
+/// pre-account layout (no prefix) are never read nor deleted.
 ///
 /// Every local write also records the row in a persisted "pending upload" set
 /// with a version number, in the same step as the data itself, so a saved row
@@ -80,34 +79,17 @@ class LocalStore {
     drinkEntries,
   };
 
-  /// Keys (relative to the namespace) that belong to the account besides the
-  /// collections. Used to adopt the legacy space and to find account data.
-  static bool isAccountKey(String key) =>
-      key.startsWith('col.') ||
-      key.startsWith('rev.') ||
-      key.startsWith('pull.') ||
-      key.startsWith('sync.') ||
-      key.startsWith('budget.fired.') ||
-      key.startsWith('stale.snooze.') ||
-      key.startsWith('scan.') ||
-      key.startsWith('games.') ||
-      key == 'favorites';
-
   static const _pendingKey = 'sync.pending';
 
   /// The account space of [userId].
   static Future<LocalStore> openAccount(String userId) async =>
       LocalStore._(await SharedPreferences.getInstance(), accountPrefix(userId));
 
-  /// The pre-account layout (keys without prefix).
-  static Future<LocalStore> openLegacy() async =>
-      LocalStore._(await SharedPreferences.getInstance(), '');
-
   static String accountPrefix(String userId) => 'acct.$userId.';
 
   final SharedPreferences _prefs;
 
-  /// Key prefix of this space ('' = legacy).
+  /// Key prefix of this space.
   final String namespace;
   final _data = <String, Map<String, Map<String, dynamic>>>{};
   final _revisions = <String, Map<String, int>>{};

@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../account/application/auth_controller.dart';
-import '../../account/data/legacy_data.dart';
 import '../../drinks/data/catalog_loader.dart';
 import '../../games/data/game_repository.dart';
 import '../../games/domain/game_models.dart';
@@ -97,14 +96,12 @@ Future<void> configureDependencies() async {
     _cloudEnabled = false;
   }
 
-  final legacy = LegacyData(device);
   getIt
     ..registerSingleton<DeviceStore>(device)
     // Language: a device preference, read before anything is shown.
     ..registerSingleton<LocaleController>(LocaleController(device))
-    ..registerSingleton<LegacyData>(legacy)
     ..registerSingleton<AuthController>(
-        AuthController(device, legacy, cloudEnabled: _cloudEnabled))
+        AuthController(device, cloudEnabled: _cloudEnabled))
     ..registerSingleton<PhotoFiles>(PhotoFiles())
     ..registerSingleton<ImageCaptureService>(ImageCaptureService())
     ..registerSingleton<TextRecognizer>(TextRecognizer())
@@ -139,11 +136,6 @@ class AccountScope {
     await close();
     final closing = _closing;
     if (closing != null) await closing;
-
-    // Old records written by this same user (converted anonymous session)
-    // become the account space; anything else waits for an explicit import.
-    final legacy = getIt<LegacyData>();
-    if (legacy.owner == userId) await legacy.adopt(userId);
 
     final store = await LocalStore.openAccount(userId);
     _userId = userId;

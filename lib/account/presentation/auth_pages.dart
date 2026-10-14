@@ -113,11 +113,7 @@ class _SignInPageState extends State<SignInPage> {
 // ------------------------------------------------------------------ sign up
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key, this.convert = false});
-
-  /// Converting the old anonymous session (keeps its records): no password
-  /// here, it is asked after the e-mail is confirmed (Supabase rule).
-  final bool convert;
+  const SignUpPage({super.key});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -144,12 +140,9 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {
       _nameError = _name.text.trim().isEmpty ? tr.authNameMissing : null;
       _emailError = validateEmail(_email.text);
-      if (!widget.convert) {
-        _passwordError = validateNewPassword(_password.text);
-        _confirmError = _confirm.text != _password.text
-            ? tr.authPasswordsDiffer
-            : null;
-      }
+      _passwordError = validateNewPassword(_password.text);
+      _confirmError =
+          _confirm.text != _password.text ? tr.authPasswordsDiffer : null;
       _error = null;
     });
     if ([_nameError, _emailError, _passwordError, _confirmError]
@@ -159,11 +152,7 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() => _busy = true);
     final auth = context.read<AuthController>();
     try {
-      if (widget.convert) {
-        await auth.convertAnonymous(_name.text, _email.text);
-      } else {
-        await auth.signUp(_name.text, _email.text, _password.text);
-      }
+      await auth.signUp(_name.text, _email.text, _password.text);
       TextInput.finishAutofillContext();
       if (mounted) Navigator.of(context).popUntil((r) => r.isFirst);
     } on AuthFailure catch (e) {
@@ -186,14 +175,9 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return AuthScaffold(
       showBack: true,
-      title: widget.convert ? tr.authCreateWithRecords : tr.authCreateAccount,
-      subtitle: widget.convert
-          ? tr.authConvertBody
-          : null,
+      title: tr.authCreateAccount,
       action: BusyButton(
-          label: widget.convert ? tr.authSendConfirmation : tr.authCreateAccount,
-          busy: _busy,
-          onPressed: _submit),
+          label: tr.authCreateAccount, busy: _busy, onPressed: _submit),
       children: [
         if (_error != null) FormMessage(_error!),
         TextField(
@@ -209,24 +193,22 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         const SizedBox(height: AppSpace.md),
         EmailField(controller: _email, error: _emailError),
-        if (!widget.convert) ...[
-          const SizedBox(height: AppSpace.md),
-          PasswordField(
-            controller: _password,
-            newPassword: true,
-            error: _passwordError,
-            helper: tr.authPasswordHelper,
-          ),
-          const SizedBox(height: AppSpace.md),
-          PasswordField(
-            controller: _confirm,
-            label: tr.authConfirmPassword,
-            newPassword: true,
-            done: true,
-            error: _confirmError,
-            onSubmitted: (_) => _submit(),
-          ),
-        ],
+        const SizedBox(height: AppSpace.md),
+        PasswordField(
+          controller: _password,
+          newPassword: true,
+          error: _passwordError,
+          helper: tr.authPasswordHelper,
+        ),
+        const SizedBox(height: AppSpace.md),
+        PasswordField(
+          controller: _confirm,
+          label: tr.authConfirmPassword,
+          newPassword: true,
+          done: true,
+          error: _confirmError,
+          onSubmitted: (_) => _submit(),
+        ),
         const SizedBox(height: AppSpace.md),
         Text(tr.authSignUpNote, style: AppText.caption),
       ],
@@ -442,12 +424,10 @@ class _ResetCodePageState extends State<ResetCodePage> {
   }
 }
 
-/// New password: after the recovery code ([recovery]) or the first password of a
-/// converted anonymous account. Nothing else of the app opens before it.
+/// New password after the recovery code. Nothing else of the app opens
+/// before it; leaving signs out.
 class NewPasswordPage extends StatefulWidget {
-  const NewPasswordPage({super.key, required this.recovery});
-
-  final bool recovery;
+  const NewPasswordPage({super.key});
 
   @override
   State<NewPasswordPage> createState() => _NewPasswordPageState();
@@ -496,10 +476,8 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
   Widget build(BuildContext context) {
     final s = context.watch<AuthController>().state;
     return AuthScaffold(
-      title: widget.recovery ? tr.authNewPasswordTitle : tr.authChoosePassword,
-      subtitle: widget.recovery
-          ? tr.authNewPasswordFor(s.email ?? tr.authYourAccount)
-          : tr.authChoosePasswordBody,
+      title: tr.authNewPasswordTitle,
+      subtitle: tr.authNewPasswordFor(s.email ?? tr.authYourAccount),
       action: BusyButton(label: tr.authSavePassword, busy: _busy, onPressed: _submit),
       children: [
         if (_error != null) FormMessage(_error!),
@@ -519,13 +497,11 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
           error: _confirmError,
           onSubmitted: (_) => _submit(),
         ),
-        if (widget.recovery) ...[
-          const SizedBox(height: AppSpace.lg),
-          TextButton(
-            onPressed: () => context.read<AuthController>().cancelRecovery(),
-            child: Text(tr.authCancelAndLeave),
-          ),
-        ],
+        const SizedBox(height: AppSpace.lg),
+        TextButton(
+          onPressed: () => context.read<AuthController>().cancelRecovery(),
+          child: Text(tr.authCancelAndLeave),
+        ),
       ],
     );
   }

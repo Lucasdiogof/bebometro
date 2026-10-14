@@ -184,18 +184,6 @@ abstract class AppLocalizations {
   /// **'Última sincronização concluída: ainda não houve.'**
   String get accountLastSyncNever;
 
-  /// No description provided for @accountLegacy.
-  ///
-  /// In pt, this message translates to:
-  /// **'Registros antigos deste aparelho'**
-  String get accountLegacy;
-
-  /// No description provided for @accountLegacyDecide.
-  ///
-  /// In pt, this message translates to:
-  /// **'Registros antigos deste aparelho: importar ou exportar'**
-  String get accountLegacyDecide;
-
   /// No description provided for @accountName.
   ///
   /// In pt, this message translates to:
@@ -352,12 +340,6 @@ abstract class AppLocalizations {
   /// **'Bebômetro'**
   String get appName;
 
-  /// No description provided for @authAlreadyConfirmed.
-  ///
-  /// In pt, this message translates to:
-  /// **'Já confirmei: entrar'**
-  String get authAlreadyConfirmed;
-
   /// No description provided for @authCancelAndLeave.
   ///
   /// In pt, this message translates to:
@@ -369,30 +351,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Confira o e-mail digitado.'**
   String get authCheckEmail;
-
-  /// No description provided for @authCheckInboxBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Enviamos um link para {email}. Abra o link neste aparelho para concluir.'**
-  String authCheckInboxBody(String email);
-
-  /// No description provided for @authCheckInboxTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Confira seu e-mail'**
-  String get authCheckInboxTitle;
-
-  /// No description provided for @authChoosePassword.
-  ///
-  /// In pt, this message translates to:
-  /// **'Escolha sua senha'**
-  String get authChoosePassword;
-
-  /// No description provided for @authChoosePasswordBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'E-mail confirmado. Agora escolha a senha para entrar em outros aparelhos.'**
-  String get authChoosePasswordBody;
 
   /// No description provided for @authCloudDown.
   ///
@@ -412,23 +370,11 @@ abstract class AppLocalizations {
   /// **'Confirmar senha'**
   String get authConfirmPassword;
 
-  /// No description provided for @authConvertBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Seus registros deste aparelho continuam com você. Depois de confirmar o e-mail, você escolhe a senha.'**
-  String get authConvertBody;
-
   /// No description provided for @authCreateAccount.
   ///
   /// In pt, this message translates to:
   /// **'Criar conta'**
   String get authCreateAccount;
-
-  /// No description provided for @authCreateWithRecords.
-  ///
-  /// In pt, this message translates to:
-  /// **'Criar conta com seus registros'**
-  String get authCreateWithRecords;
 
   /// No description provided for @authDifferentAccount.
   ///
@@ -490,12 +436,6 @@ abstract class AppLocalizations {
   /// **'Esse link expirou ou já foi usado. Peça outro e abra-o neste aparelho. Se você confirmou o e-mail em outro aparelho, é só entrar com e-mail e senha.'**
   String get authLinkInvalid;
 
-  /// No description provided for @authLinkingDisabled.
-  ///
-  /// In pt, this message translates to:
-  /// **'A conversão da conta antiga não está liberada no servidor ainda. Você pode criar uma conta nova e importar os registros depois.'**
-  String get authLinkingDisabled;
-
   /// No description provided for @authNameMissing.
   ///
   /// In pt, this message translates to:
@@ -531,18 +471,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Sem conexão. Confira a internet e tente de novo.'**
   String get authNoConnection;
-
-  /// No description provided for @authNoOldSession.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não há uma sessão antiga para converter.'**
-  String get authNoOldSession;
-
-  /// No description provided for @authNotArrived.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não chegou? Confira o spam e se o endereço está certo. O link vale por tempo limitado.'**
-  String get authNotArrived;
 
   /// No description provided for @authPassword.
   ///
@@ -619,13 +547,13 @@ abstract class AppLocalizations {
   /// No description provided for @authRecoverBody.
   ///
   /// In pt, this message translates to:
-  /// **'Enviamos um link para criar uma nova senha. Abra-o neste aparelho.'**
+  /// **'Enviaremos um código de 6 dígitos para o seu e-mail. Você o digita aqui no app, em qualquer aparelho.'**
   String get authRecoverBody;
 
   /// No description provided for @authRecoverSent.
   ///
   /// In pt, this message translates to:
-  /// **'Se houver uma conta com esse e-mail, o link chega em instantes. Confira também o spam.'**
+  /// **'Se houver uma conta com esse e-mail, o código chega em instantes. Confira também o spam.'**
   String get authRecoverSent;
 
   /// No description provided for @authRecoverTitle.
@@ -652,12 +580,6 @@ abstract class AppLocalizations {
   /// **'Aguarde {seconds} s para pedir outro e-mail.'**
   String authResendWait(int seconds);
 
-  /// No description provided for @authResent.
-  ///
-  /// In pt, this message translates to:
-  /// **'Enviamos outro e-mail. Confira também o spam.'**
-  String get authResent;
-
   /// No description provided for @authSamePassword.
   ///
   /// In pt, this message translates to:
@@ -669,18 +591,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Salvar senha'**
   String get authSavePassword;
-
-  /// No description provided for @authSendAgain.
-  ///
-  /// In pt, this message translates to:
-  /// **'Enviar de novo'**
-  String get authSendAgain;
-
-  /// No description provided for @authSendConfirmation.
-  ///
-  /// In pt, this message translates to:
-  /// **'Enviar confirmação'**
-  String get authSendConfirmation;
 
   /// No description provided for @authSendLink.
   ///
@@ -760,18 +670,6 @@ abstract class AppLocalizations {
   /// **'Muitas tentativas. Espere alguns minutos.'**
   String get authTooManyShort;
 
-  /// No description provided for @authUseOtherEmail.
-  ///
-  /// In pt, this message translates to:
-  /// **'Usar outro e-mail'**
-  String get authUseOtherEmail;
-
-  /// No description provided for @authUseOtherEmailBack.
-  ///
-  /// In pt, this message translates to:
-  /// **'Voltar e usar outro e-mail'**
-  String get authUseOtherEmailBack;
-
   /// No description provided for @authWeakPassword.
   ///
   /// In pt, this message translates to:
@@ -789,12 +687,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'sua conta'**
   String get authYourAccount;
-
-  /// No description provided for @authYourEmail.
-  ///
-  /// In pt, this message translates to:
-  /// **'o seu e-mail'**
-  String get authYourEmail;
 
   /// No description provided for @budgetDialogTitle.
   ///
@@ -1684,174 +1576,6 @@ abstract class AppLocalizations {
   /// **'Português, inglês ou espanhol conforme o aparelho; outros idiomas usam português.'**
   String get languageSystemHint;
 
-  /// No description provided for @legacyAnonBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Se você já usava o app neste aparelho, seus registros foram guardados. Crie sua conta para continuar com eles e recuperá-los em outro aparelho.'**
-  String get legacyAnonBody;
-
-  /// No description provided for @legacyAnonCreate.
-  ///
-  /// In pt, this message translates to:
-  /// **'Criar conta com meus registros'**
-  String get legacyAnonCreate;
-
-  /// No description provided for @legacyAnonHaveAccount.
-  ///
-  /// In pt, this message translates to:
-  /// **'Já tenho conta'**
-  String get legacyAnonHaveAccount;
-
-  /// No description provided for @legacyAnonHaveAccountHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Os registros antigos ficam separados neste aparelho; você decide depois se importa para a conta.'**
-  String get legacyAnonHaveAccountHint;
-
-  /// No description provided for @legacyAnonTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Agora o Bebômetro usa conta'**
-  String get legacyAnonTitle;
-
-  /// No description provided for @legacyAnonView.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ver ou exportar os registros antigos'**
-  String get legacyAnonView;
-
-  /// No description provided for @legacyDrinks.
-  ///
-  /// In pt, this message translates to:
-  /// **'Bebidas'**
-  String get legacyDrinks;
-
-  /// No description provided for @legacyExport.
-  ///
-  /// In pt, this message translates to:
-  /// **'Exportar registros antigos (JSON)'**
-  String get legacyExport;
-
-  /// No description provided for @legacyImport.
-  ///
-  /// In pt, this message translates to:
-  /// **'Importar para minha conta'**
-  String get legacyImport;
-
-  /// No description provided for @legacyImportAsEnded.
-  ///
-  /// In pt, this message translates to:
-  /// **'Importar como encerrado'**
-  String get legacyImportAsEnded;
-
-  /// No description provided for @legacyImportExplain.
-  ///
-  /// In pt, this message translates to:
-  /// **'Importar copia os registros para a conta atual com novos identificadores (as fotos são reenviadas). Uma conta anônima antiga não pode ser recuperada sem a sessão dela: o que importa é o que está neste aparelho.'**
-  String get legacyImportExplain;
-
-  /// No description provided for @legacyImportFailed.
-  ///
-  /// In pt, this message translates to:
-  /// **'A importação não terminou. Nada foi apagado; tente de novo.'**
-  String get legacyImportFailed;
-
-  /// No description provided for @legacyImported.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{Importação concluída: 1 registro copiado para a sua conta. A cópia antiga continua guardada neste aparelho.} other{Importação concluída: {count} registros copiados para a sua conta. A cópia antiga continua guardada neste aparelho.}}'**
-  String legacyImported(int count);
-
-  /// No description provided for @legacyKeep.
-  ///
-  /// In pt, this message translates to:
-  /// **'Manter separados por enquanto'**
-  String get legacyKeep;
-
-  /// No description provided for @legacyKept.
-  ///
-  /// In pt, this message translates to:
-  /// **'Os registros antigos continuam separados neste aparelho. Você pode importar quando quiser, por \"Minha conta\".'**
-  String get legacyKept;
-
-  /// No description provided for @legacyNeverSent.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nunca enviados'**
-  String get legacyNeverSent;
-
-  /// No description provided for @legacyNone.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não há registros antigos neste aparelho.'**
-  String get legacyNone;
-
-  /// No description provided for @legacyNotice.
-  ///
-  /// In pt, this message translates to:
-  /// **'Há registros antigos neste aparelho. Eles estão guardados: depois de entrar, você pode importá-los. Toque para ver ou exportar.'**
-  String get legacyNotice;
-
-  /// No description provided for @legacyOfferBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{Há 1 rolê de antes de o Bebômetro usar contas. Ele está guardado e não entra na sua conta sem você escolher.} other{Há {count} rolês de antes de o Bebômetro usar contas. Eles estão guardados e não entram na sua conta sem você escolher.}}'**
-  String legacyOfferBody(int count);
-
-  /// No description provided for @legacyOfferOpen.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ver e decidir'**
-  String get legacyOfferOpen;
-
-  /// No description provided for @legacyOfferTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Registros antigos neste aparelho'**
-  String get legacyOfferTitle;
-
-  /// No description provided for @legacyOutings.
-  ///
-  /// In pt, this message translates to:
-  /// **'Rolês'**
-  String get legacyOutings;
-
-  /// No description provided for @legacyStatusAdopted.
-  ///
-  /// In pt, this message translates to:
-  /// **'Estes registros já são da sua conta (criada a partir deles).'**
-  String get legacyStatusAdopted;
-
-  /// No description provided for @legacyStatusImported.
-  ///
-  /// In pt, this message translates to:
-  /// **'Estes registros já foram importados para uma conta. A cópia antiga fica guardada aqui por segurança.'**
-  String get legacyStatusImported;
-
-  /// No description provided for @legacyStatusKept.
-  ///
-  /// In pt, this message translates to:
-  /// **'Você escolheu manter estes registros separados.'**
-  String get legacyStatusKept;
-
-  /// No description provided for @legacyStatusPending.
-  ///
-  /// In pt, this message translates to:
-  /// **'Registros feitos antes de o Bebômetro usar contas. Eles não foram apagados.'**
-  String get legacyStatusPending;
-
-  /// No description provided for @legacyTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Registros antigos'**
-  String get legacyTitle;
-
-  /// No description provided for @legacyTwoActiveBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sua conta já tem um rolê em andamento e os registros antigos também. Para importar, o rolê antigo entra como encerrado agora. As bebidas dele continuam nele, sem se misturar.'**
-  String get legacyTwoActiveBody;
-
   /// No description provided for @legacyTwoActiveTitle.
   ///
   /// In pt, this message translates to:
@@ -2277,54 +2001,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'A UF tem 2 letras (ex.: SP).'**
   String get repoStateFormat;
-
-  /// No description provided for @restoreBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Trazendo seus rolês, bebidas, locais e comandas da nuvem.'**
-  String get restoreBody;
-
-  /// No description provided for @restoreConnecting.
-  ///
-  /// In pt, this message translates to:
-  /// **'Conectando…'**
-  String get restoreConnecting;
-
-  /// No description provided for @restoreFailedBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sem conexão com a nuvem. Nada foi perdido: tente de novo quando estiver com internet.'**
-  String get restoreFailedBody;
-
-  /// No description provided for @restoreFailedTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não deu para recuperar agora'**
-  String get restoreFailedTitle;
-
-  /// No description provided for @restoreReceived.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{1 registro recebido até agora} other{{count} registros recebidos até agora}}'**
-  String restoreReceived(int count);
-
-  /// No description provided for @restoreTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Recuperando seu histórico'**
-  String get restoreTitle;
-
-  /// No description provided for @restoreUseApp.
-  ///
-  /// In pt, this message translates to:
-  /// **'Usar o app enquanto isso'**
-  String get restoreUseApp;
-
-  /// No description provided for @restoreUseAppHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Se continuar agora, o histórico aparece conforme chegar. Os registros novos ficam salvos neste aparelho e são enviados depois.'**
-  String get restoreUseAppHint;
 
   /// No description provided for @settingsAccount.
   ///
