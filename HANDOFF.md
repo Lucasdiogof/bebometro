@@ -696,6 +696,36 @@ Um e-mail de teste (sem link) enviado por SMTP ao responsável chegou à caixa d
 
 **Confirmação de e-mail removida (13/10/2026):** o Supabase passou a confirmar contas automaticamente (`mailer_autoconfirm: true`, lido de volta) e o app não tem mais a tela "confira seu e-mail" (`CheckEmailPage` apagada). O cadastro entra direto. O e-mail de **recuperação de senha** continua existindo (SMTP e template aplicados). O template de confirmação segue aplicado, mas não é disparado. Nada compilado.
 
+## Cerveja em tela cheia: texturas + máscara dinâmica + shader (14/10/2026)
+
+Substitui o desenho por gradientes/círculos de `beer_painter.dart`. **Nada foi compilado, analisado nem executado no app.**
+O shader foi compilado isoladamente com o `impellerc` do SDK (SkSL, GLES, Metal, Vulkan: ok) e a composição foi
+avaliada com `tools/beer_textures/preview.py` (reprodução em numpy das mesmas fórmulas e texturas; não é captura do Flutter).
+
+- **Física intacta** (`beer_sim.dart`, sensores, conservação de volume, escoamento, pausa, modo manual, redução de movimento).
+- **Assets** (`assets/glass/`, procedência em `assets/glass/README.md`): procedurais e originais, gerados por
+  `tools/beer_textures/generate.py`; nada de terceiros.
+- **Shader** `shaders/beer.frag` (declarado em `flutter: shaders:`), duas passadas do mesmo programa:
+  0 = ar + líquido (textura em duas escalas, ondulação de refração, deriva contra a gravidade, tom por profundidade,
+  brilho interno, "lacing" sob a espuma); 1 = espuma + vidro (alpha pré-multiplicado). Entre as passadas, as bolhas de
+  gás são sprites (`drawRawAtlas`) recortados pelo líquido, que somem ao chegar na espuma.
+- **Superfície**: a mesma função analítica no Dart e no shader (nível + 3 ondas amortecidas ao longo da direção da
+  superfície), então recorte, shader e fallback coincidem sem arrays de uniforms.
+- **Espuma acompanhando a inclinação**: coordenada x = distância ao longo da superfície; y = profundidade na faixa;
+  mesma escala nos dois eixos (a textura é 4:1 e um tile mede 4 alturas de faixa), então nada estica ao inclinar. Uma
+  segunda cópia deslocada é misturada por ruído lento para esconder a repetição. A borda superior = perfil largo de
+  espessura + relevo das próprias bolhas da textura.
+- **Vidro**: condensação em duas escalas + reflexos laterais + escurecimento das bordas, fixos na tela e acima de tudo.
+- **Escala independente do aparelho**: tudo em px lógicos (`FlutterFragCoord`); tiles de 420/360 px lógicos.
+- **Amostragem**: `setImageSampler(..., filterQuality: medium)` (o padrão do Flutter é vizinho mais próximo).
+- **Carregamento** (`beer_materials.dart`): texturas e programa antes do primeiro quadro (fundo escuro até lá, sem flash);
+  descarte de imagens e shaders com a página.
+- **Fallback** sem runtime shaders: Canvas com `ImageShader` das **mesmas** texturas (líquido em repetição + tom por
+  profundidade em multiply, espuma com matriz alinhada à superfície, condensação repetida) e os mesmos sprites de bolha.
+  Sem o relevo de borda por bolha nem a ondulação de refração.
+- **Não visto em execução**: desempenho por quadro (duas passadas em tela cheia + atlas), aparência real em aparelho,
+  web (CanvasKit), comportamento do fallback.
+
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
 executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de
