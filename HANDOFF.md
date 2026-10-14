@@ -705,3 +705,8 @@ fonte grande, teclado aberto nas telas de formulário, layout largo na web.
 Antes de tudo: aplicar os templates de e-mail e conferir o app nos três idiomas. `flutter pub get`, `flutter analyze` e corrigir o que aparecer; rodar o cenário completo (Bar MELT)
 em aparelho e conferir no painel do Supabase que as linhas chegam. Depois: testes de unidade para
 `DrinkDraft`, `OutingSummary`, parsing e `SyncCubit`.
+
+## Retomada 14/10/2026 (recuperação, cerveja, catálogo)
+- **Recuperação por código** integrada por rebase e publicada (5e04c6a). Fluxo conferido por leitura (pedir código, verificar, nova senha, reenvio com espera, expirado/inválido, volta ao gate). **Pendente:** aplicar o template `supabase/email-templates/recovery.html` (só `{{ .Token }}`) — sem token do projeto nesta sessão; ver `docs/auth-emails.md`. Conferir `mailer_otp_length = 6`.
+- **Simulador de cerveja:** `lib/glass/presentation/beer_painter.dart` reescrito (pilsen dourada, ar quase preto, espuma branco-creme com microtextura irregular em pontos, bolhas pequenas e translúcidas com brilho, reflexos de vidro fixos na tela); `beer_sim.dart` só mudou raio (0,7–3 px) e quantidade (72) das bolhas. Sensores, volume, escoamento, modo manual e redução de movimento intactos. **Nada foi executado ou visto em aparelho**: afinar cores/densidade olhando na tela.
+- **Catálogo v4:** 112 produtos (82 antes); ver `docs/catalog-coverage.md` e `scripts/catalog_tool.py` (coverage/check/merge). Fontes oficiais bloqueadas por anti-robô limitam o avanço; lista de lacunas no doc. Itens criados em rolê continuam presos ao `outing_id` (não mexi). Busca/aliases: nada alterado além dos aliases dos itens novos.

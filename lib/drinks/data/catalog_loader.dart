@@ -102,7 +102,9 @@ class CatalogLoader {
           ...((t['aliases'] as List?) ?? const []).cast<String>(),
       ];
 
-  static CatalogItem _product(Map<String, dynamic> j, String? consultedOn) {
+  static CatalogItem _product(Map<String, dynamic> j, String? fileDate) {
+    // Each product may carry its own consultation date; the file's is the default.
+    final consultedOn = (j['retrieved'] as String?) ?? fileDate;
     final abvSource = _source(j['abvSource'] as Map<String, dynamic>?,
         consultedOn, _texts(_i18n(j), 'abvSourceLabel'));
     final i18n = _i18n(j);

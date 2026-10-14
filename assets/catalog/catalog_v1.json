@@ -1,5 +1,5 @@
 {
- "version": 3,
+ "version": 4,
  "consultedOn": "2026-10-12",
  "description": "Catálogo inicial do Bebômetro. Campos ausentes são desconhecidos, nunca zero.",
  "products": [
@@ -1341,7 +1341,7 @@
    "brand": "Heineken",
    "name": "Heineken",
    "category": "beer",
-   "style": null,
+   "style": "Lager",
    "abv": 5.0,
    "ingredients": [
     "Água",
@@ -1372,7 +1372,8 @@
     "es": {
      "sourceLabel": "Heineken Brasil (sitio oficial)"
     }
-   }
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "heineken-0-0",
@@ -1381,7 +1382,13 @@
    "category": "nonAlcoholic",
    "style": null,
    "abv": null,
-   "ingredients": null,
+   "ingredients": [
+    "Água",
+    "Malte de cevada",
+    "Extrato de lúpulo",
+    "Levedura A",
+    "Aromas naturais"
+   ],
    "presentations": [],
    "aliases": [
     "heineken zero",
@@ -1392,15 +1399,18 @@
     "url": "https://www.heinekenbrasil.com.br/nossas-marcas",
     "label": "Heineken Brasil (site oficial)"
    },
-   "note": null,
+   "note": "A página declara teor de no máximo 0,03% ABV (“menos de 0,03%” no FAQ); por isso o teor numérico não foi fixado. Aromas naturais são adicionados após a retirada do álcool.",
    "i18n": {
     "en": {
-     "sourceLabel": "Heineken Brasil (official website)"
+     "sourceLabel": "Heineken Brasil (official website)",
+     "note": "The page states at most 0.03% ABV (\"less than 0.03%\" in the FAQ), so no numeric ABV was set. Natural flavorings are added after the alcohol is removed."
     },
     "es": {
-     "sourceLabel": "Heineken Brasil (sitio oficial)"
+     "sourceLabel": "Heineken Brasil (sitio oficial)",
+     "note": "La página declara como máximo 0,03% ABV (\"menos de 0,03%\" en las preguntas frecuentes), por eso no se fijó un valor numérico. Los aromas naturales se añaden tras retirar el alcohol."
     }
-   }
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "heineken-ultimate",
@@ -2221,7 +2231,18 @@
    "category": "spirit",
    "style": "Gin",
    "abv": 40.0,
-   "ingredients": null,
+   "ingredients": [
+    "zimbro",
+    "casca de limão",
+    "sementes de coentro",
+    "raiz de íris",
+    "raiz de angélica",
+    "amêndoas amargas",
+    "alcaçuz",
+    "casca de canela-cássia",
+    "bagas de cubeba",
+    "grãos-do-paraíso"
+   ],
    "presentations": [
     {
      "kind": "bottle",
@@ -2252,7 +2273,8 @@
      "note": "Botellas de 70 cl y 1 L en la tienda oficial (mercado fuera de Brasil). Revisa la etiqueta local.",
      "sourceLabel": "Bombay Sapphire (tienda oficial)"
     }
-   }
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "beefeater-london-dry-gin",
@@ -2291,24 +2313,52 @@
    "style": "Blended Scotch Whisky",
    "abv": 40.0,
    "ingredients": null,
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 50
+    },
+    {
+     "kind": "bottle",
+     "ml": 200
+    },
+    {
+     "kind": "bottle",
+     "ml": 375
+    },
+    {
+     "kind": "bottle",
+     "ml": 750
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    },
+    {
+     "kind": "bottle",
+     "ml": 1750
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.johnniewalker.com/en-us/our-whisky/core-range/johnnie-walker-red-label",
     "label": "Johnnie Walker (site oficial)"
    },
-   "note": null,
+   "note": "Teor e tamanhos da página dos EUA; confira o rótulo vendido no Brasil.",
    "roles": [
     "whisky"
    ],
    "i18n": {
     "en": {
-     "sourceLabel": "Johnnie Walker (official website)"
+     "sourceLabel": "Johnnie Walker (official website)",
+     "note": "ABV and sizes from the US page; check the label of the bottle sold in Brazil."
     },
     "es": {
-     "sourceLabel": "Johnnie Walker (sitio oficial)"
+     "sourceLabel": "Johnnie Walker (sitio oficial)",
+     "note": "Graduación y tamaños de la página de EE. UU.; revisa la etiqueta de la botella vendida en Brasil."
     }
-   }
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "johnnie-walker-black-label",
@@ -2318,13 +2368,38 @@
    "style": "Blended Scotch Whisky",
    "abv": null,
    "ingredients": null,
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 50
+    },
+    {
+     "kind": "bottle",
+     "ml": 200
+    },
+    {
+     "kind": "bottle",
+     "ml": 375
+    },
+    {
+     "kind": "bottle",
+     "ml": 750
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    },
+    {
+     "kind": "bottle",
+     "ml": 1750
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.johnniewalker.com/en-us/our-whisky/core-range/johnnie-walker-black-label",
     "label": "Johnnie Walker (site oficial)"
    },
-   "note": null,
+   "note": "Tamanhos da página dos EUA (40% nela); a página da África do Sul indica 43%. Confira o rótulo local.",
    "roles": [
     "whisky"
    ],
@@ -2344,16 +2419,19 @@
      "abvVariants": [
       "US, Canada and UK pages",
       "South Africa page"
-     ]
+     ],
+     "note": "Sizes from the US page (40% there); the South Africa page states 43%. Check the local label."
     },
     "es": {
      "sourceLabel": "Johnnie Walker (sitio oficial)",
      "abvVariants": [
       "páginas de EE. UU., Canadá y Reino Unido",
       "página de Sudáfrica"
-     ]
+     ],
+     "note": "Tamaños de la página de EE. UU. (40% allí); la página de Sudáfrica indica 43%. Revisa la etiqueta local."
     }
-   }
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "jack-daniel-s-old-no-7",
@@ -2483,7 +2561,11 @@
    "category": "spirit",
    "style": "Tequila 100% agave",
    "abv": 40.0,
-   "ingredients": null,
+   "ingredients": [
+    "Agave azul Weber 100%",
+    "levedura",
+    "água"
+   ],
    "presentations": [
     {
      "kind": "bottle",
@@ -2500,6 +2582,10 @@
     {
      "kind": "bottle",
      "ml": 1750
+    },
+    {
+     "kind": "bottle",
+     "ml": 50
     }
    ],
    "aliases": [
@@ -2520,7 +2606,8 @@
     "es": {
      "sourceLabel": "Patrón (sitio oficial)"
     }
-   }
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "olmeca-silver",
@@ -2742,6 +2829,1069 @@
      "sourceLabel": "Martini (sitio oficial)"
     }
    }
+  },
+  {
+   "id": "lohn-bier-ipa-premium",
+   "brand": "Lohn Bier",
+   "name": "IPA Premium",
+   "category": "beer",
+   "style": "IPA",
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "lohn ipa",
+    "lohn bier ipa"
+   ],
+   "source": {
+    "url": "https://www.lohnbier.com.br/cervejas/cerveja-ipa-premium",
+    "label": "Lohn Bier (site oficial)"
+   },
+   "note": "A página não informa tamanhos nem lista de ingredientes.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Lohn Bier (official website)",
+     "note": "The page does not state sizes or a full ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Lohn Bier (sitio oficial)",
+     "note": "La página no indica tamaños ni la lista de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "lohn-bier-pilsen",
+   "brand": "Lohn Bier",
+   "name": "Pilsen",
+   "category": "beer",
+   "style": "Pilsen",
+   "abv": 4.6,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "lohn pilsen"
+   ],
+   "source": {
+    "url": "https://www.lohnbier.com.br/cervejas/cerveja-pilsen",
+    "label": "Lohn Bier (site oficial)"
+   },
+   "note": "A página não informa tamanhos nem lista de ingredientes.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Lohn Bier (official website)",
+     "note": "The page does not state sizes or a full ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Lohn Bier (sitio oficial)",
+     "note": "La página no indica tamaños ni la lista de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "lohn-bier-session-ipa",
+   "brand": "Lohn Bier",
+   "name": "Session IPA",
+   "category": "beer",
+   "style": "Session IPA",
+   "abv": 4.2,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "lohn session ipa"
+   ],
+   "source": {
+    "url": "https://www.lohnbier.com.br/cervejas/cerveja-session-ipa",
+    "label": "Lohn Bier (site oficial)"
+   },
+   "note": "A página não informa tamanhos nem lista de ingredientes.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Lohn Bier (official website)",
+     "note": "The page does not state sizes or a full ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Lohn Bier (sitio oficial)",
+     "note": "La página no indica tamaños ni la lista de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "lohn-bier-premium-lager",
+   "brand": "Lohn Bier",
+   "name": "Premium Lager",
+   "category": "beer",
+   "style": "Premium Lager",
+   "abv": 4.2,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "lohn premium lager"
+   ],
+   "source": {
+    "url": "https://www.lohnbier.com.br/cervejas/cerveja-premium-lager",
+    "label": "Lohn Bier (site oficial)"
+   },
+   "note": "A página não informa tamanhos nem lista de ingredientes.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Lohn Bier (official website)",
+     "note": "The page does not state sizes or a full ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Lohn Bier (sitio oficial)",
+     "note": "La página no indica tamaños ni la lista de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "lohn-bier-pale-ale",
+   "brand": "Lohn Bier",
+   "name": "Pale Ale",
+   "category": "beer",
+   "style": "Pale Ale",
+   "abv": 4.8,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "lohn pale ale"
+   ],
+   "source": {
+    "url": "https://www.lohnbier.com.br/cervejas/cerveja-pale-ale",
+    "label": "Lohn Bier (site oficial)"
+   },
+   "note": "A página não informa tamanhos nem lista de ingredientes.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Lohn Bier (official website)",
+     "note": "The page does not state sizes or a full ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Lohn Bier (sitio oficial)",
+     "note": "La página no indica tamaños ni la lista de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "opa-bier-india-pale-ale",
+   "brand": "Opa Bier",
+   "name": "India Pale Ale",
+   "category": "beer",
+   "style": "India Pale Ale",
+   "abv": 6.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    }
+   ],
+   "aliases": [
+    "opa bier ipa",
+    "opa ipa"
+   ],
+   "source": {
+    "url": "https://opabier.com.br/produtos/opa-bier-india-pale-ale/",
+    "label": "Opa Bier (site oficial)"
+   },
+   "note": "A página não lista os ingredientes completos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Opa Bier (official website)",
+     "note": "The page does not list the full ingredients."
+    },
+    "es": {
+     "sourceLabel": "Opa Bier (sitio oficial)",
+     "note": "La página no enumera los ingredientes completos."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "opa-bier-pilsen",
+   "brand": "Opa Bier",
+   "name": "Pilsen",
+   "category": "beer",
+   "style": "Pilsen",
+   "abv": 4.6,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "can",
+     "ml": 473
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    }
+   ],
+   "aliases": [
+    "opa pilsen"
+   ],
+   "source": {
+    "url": "https://opabier.com.br/produtos/opa-bier-pilsen/",
+    "label": "Opa Bier (site oficial)"
+   },
+   "note": "A página não lista os ingredientes completos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Opa Bier (official website)",
+     "note": "The page does not list the full ingredients."
+    },
+    "es": {
+     "sourceLabel": "Opa Bier (sitio oficial)",
+     "note": "La página no enumera los ingredientes completos."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "opa-bier-pale-ale",
+   "brand": "Opa Bier",
+   "name": "Pale Ale",
+   "category": "beer",
+   "style": "Pale Ale",
+   "abv": 5.6,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 600
+    }
+   ],
+   "aliases": [
+    "opa pale ale"
+   ],
+   "source": {
+    "url": "https://opabier.com.br/produtos/opa-bier-pale-ale/",
+    "label": "Opa Bier (site oficial)"
+   },
+   "note": "A página não lista os ingredientes completos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Opa Bier (official website)",
+     "note": "The page does not list the full ingredients."
+    },
+    "es": {
+     "sourceLabel": "Opa Bier (sitio oficial)",
+     "note": "La página no enumera los ingredientes completos."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "opa-bier-hefe-weizen",
+   "brand": "Opa Bier",
+   "name": "Hefe Weizen",
+   "category": "beer",
+   "style": "Hefe Weizen",
+   "abv": 6.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 600
+    }
+   ],
+   "aliases": [
+    "opa hefe weizen",
+    "opa weiss"
+   ],
+   "source": {
+    "url": "https://opabier.com.br/produtos/opa-bier-hefe-weizen/",
+    "label": "Opa Bier (site oficial)"
+   },
+   "note": "A página não lista os ingredientes completos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Opa Bier (official website)",
+     "note": "The page does not list the full ingredients."
+    },
+    "es": {
+     "sourceLabel": "Opa Bier (sitio oficial)",
+     "note": "La página no enumera los ingredientes completos."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "opa-bier-porter",
+   "brand": "Opa Bier",
+   "name": "Porter",
+   "category": "beer",
+   "style": "Porter",
+   "abv": 6.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 600
+    }
+   ],
+   "aliases": [
+    "opa porter"
+   ],
+   "source": {
+    "url": "https://opabier.com.br/produtos/opa-bier-porter/",
+    "label": "Opa Bier (site oficial)"
+   },
+   "note": "A página não lista os ingredientes completos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Opa Bier (official website)",
+     "note": "The page does not list the full ingredients."
+    },
+    "es": {
+     "sourceLabel": "Opa Bier (sitio oficial)",
+     "note": "La página no enumera los ingredientes completos."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "opa-bier-hop-lager",
+   "brand": "Opa Bier",
+   "name": "Hop Lager",
+   "category": "beer",
+   "style": "Hop Lager",
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "longNeck",
+     "ml": 355
+    }
+   ],
+   "aliases": [
+    "opa hop lager"
+   ],
+   "source": {
+    "url": "https://opabier.com.br/produtos/hop-lager/",
+    "label": "Opa Bier (site oficial)"
+   },
+   "note": "A página não lista os ingredientes completos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Opa Bier (official website)",
+     "note": "The page does not list the full ingredients."
+    },
+    "es": {
+     "sourceLabel": "Opa Bier (sitio oficial)",
+     "note": "La página no enumera los ingredientes completos."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "dogma-american-ipa",
+   "brand": "Dogma",
+   "name": "American IPA",
+   "category": "beer",
+   "style": "American IPA",
+   "abv": 6.5,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 473
+    }
+   ],
+   "aliases": [
+    "dogma ipa"
+   ],
+   "source": {
+    "url": "https://cervejariadogma.com.br/products/american-ipa",
+    "label": "Dogma (site oficial)"
+   },
+   "note": "A página cita só lúpulos e não traz lista de ingredientes completa.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Dogma (official website)",
+     "note": "The page names only hops and has no full ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Dogma (sitio oficial)",
+     "note": "La página solo cita lúpulos y no trae lista completa de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "dogma-hazy-ipa",
+   "brand": "Dogma",
+   "name": "Hazy IPA",
+   "category": "beer",
+   "style": "Hazy IPA",
+   "abv": 6.2,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 355
+    }
+   ],
+   "aliases": [
+    "dogma hazy"
+   ],
+   "source": {
+    "url": "https://cervejariadogma.com.br/products/hazy-ipa",
+    "label": "Dogma (site oficial)"
+   },
+   "note": "A página não traz lista de ingredientes.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Dogma (official website)",
+     "note": "The page has no ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Dogma (sitio oficial)",
+     "note": "La página no trae lista de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "way-beer-ipa",
+   "brand": "Way Beer",
+   "name": "IPA",
+   "category": "beer",
+   "style": "American India Pale Ale",
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "ml": 355
+    }
+   ],
+   "aliases": [
+    "way ipa",
+    "waybeer ipa"
+   ],
+   "source": {
+    "url": "https://waybeer.com.br/loja/cerveja-way-beer-ipa-355-ml/",
+    "label": "Way Beer (loja oficial)"
+   },
+   "note": "A página não traz lista de ingredientes.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Way Beer (official store)",
+     "note": "The page has no ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Way Beer (tienda oficial)",
+     "note": "La página no trae lista de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "way-beer-premium-lager",
+   "brand": "Way Beer",
+   "name": "Premium Lager",
+   "category": "beer",
+   "style": "American Lager",
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "ml": 355
+    }
+   ],
+   "aliases": [
+    "way premium lager",
+    "waybeer lager"
+   ],
+   "source": {
+    "url": "https://waybeer.com.br/loja/way-beer-premium-lager-355-ml/",
+    "label": "Way Beer (loja oficial)"
+   },
+   "note": "A página não traz lista de ingredientes.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Way Beer (official store)",
+     "note": "The page has no ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Way Beer (tienda oficial)",
+     "note": "La página no trae lista de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "way-beer-red-ale",
+   "brand": "Way Beer",
+   "name": "Red Ale",
+   "category": "beer",
+   "style": "Irish Red Ale",
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "ml": 355
+    }
+   ],
+   "aliases": [
+    "way red ale"
+   ],
+   "source": {
+    "url": "https://waybeer.com.br/loja/cerveja-way-beer-red-ale-355-ml/",
+    "label": "Way Beer (loja oficial)"
+   },
+   "note": "A página não traz lista de ingredientes.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Way Beer (official store)",
+     "note": "The page has no ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Way Beer (tienda oficial)",
+     "note": "La página no trae lista de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "cervejaria-nacional-mula-ipa",
+   "brand": "Cervejaria Nacional",
+   "name": "Mula IPA",
+   "category": "beer",
+   "style": "IPA",
+   "abv": 7.5,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "mula ipa"
+   ],
+   "source": {
+    "url": "https://www.cervejarianacional.com.br",
+    "label": "Cervejaria Nacional (site oficial)"
+   },
+   "note": "A página não informa tamanhos nem ingredientes completos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Cervejaria Nacional (official website)",
+     "note": "The page does not state sizes or full ingredients."
+    },
+    "es": {
+     "sourceLabel": "Cervejaria Nacional (sitio oficial)",
+     "note": "La página no indica tamaños ni ingredientes completos."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "cervejaria-nacional-y-iara",
+   "brand": "Cervejaria Nacional",
+   "name": "Y-iara",
+   "category": "beer",
+   "style": "Pilsen",
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "yiara"
+   ],
+   "source": {
+    "url": "https://www.cervejarianacional.com.br",
+    "label": "Cervejaria Nacional (site oficial)"
+   },
+   "note": "A página não informa tamanhos nem ingredientes completos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Cervejaria Nacional (official website)",
+     "note": "The page does not state sizes or full ingredients."
+    },
+    "es": {
+     "sourceLabel": "Cervejaria Nacional (sitio oficial)",
+     "note": "La página no indica tamaños ni ingredientes completos."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "johnnie-walker-double-black-label",
+   "brand": "Johnnie Walker",
+   "name": "Double Black Label",
+   "category": "spirit",
+   "style": "Blended Scotch Whisky",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 750
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    }
+   ],
+   "aliases": [
+    "double black"
+   ],
+   "source": {
+    "url": "https://www.johnniewalker.com/en-us/our-whisky/core-range/johnnie-walker-double-black",
+    "label": "Johnnie Walker (site oficial)"
+   },
+   "note": "Teor e tamanhos da página dos EUA; confira o rótulo vendido no Brasil.",
+   "roles": [
+    "whisky"
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Johnnie Walker (official website)",
+     "note": "ABV and sizes from the US page; check the label of the bottle sold in Brazil."
+    },
+    "es": {
+     "sourceLabel": "Johnnie Walker (sitio oficial)",
+     "note": "Graduación y tamaños de la página de EE. UU.; revisa la etiqueta de la botella vendida en Brasil."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "US"
+  },
+  {
+   "id": "johnnie-walker-gold-label-reserve",
+   "brand": "Johnnie Walker",
+   "name": "Gold Label Reserve",
+   "category": "spirit",
+   "style": "Blended Scotch Whisky",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 200
+    },
+    {
+     "kind": "bottle",
+     "ml": 750
+    }
+   ],
+   "aliases": [
+    "gold label",
+    "jw gold"
+   ],
+   "source": {
+    "url": "https://www.johnniewalker.com/en-us/our-whisky/core-range/johnnie-walker-gold-label-reserve",
+    "label": "Johnnie Walker (site oficial)"
+   },
+   "note": "Teor e tamanhos da página dos EUA; confira o rótulo vendido no Brasil.",
+   "roles": [
+    "whisky"
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Johnnie Walker (official website)",
+     "note": "ABV and sizes from the US page; check the label of the bottle sold in Brazil."
+    },
+    "es": {
+     "sourceLabel": "Johnnie Walker (sitio oficial)",
+     "note": "Graduación y tamaños de la página de EE. UU.; revisa la etiqueta de la botella vendida en Brasil."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "US"
+  },
+  {
+   "id": "smirnoff-no-21",
+   "brand": "Smirnoff",
+   "name": "No. 21",
+   "category": "spirit",
+   "style": "Vodka",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 750
+    }
+   ],
+   "aliases": [
+    "smirnoff",
+    "smirnoff vodka",
+    "smirnoff 21"
+   ],
+   "source": {
+    "url": "https://www.smirnoff.com/en-us/products/vodkas-and-flavors/smirnoff-no-21-vodka",
+    "label": "Smirnoff (site oficial, EUA)"
+   },
+   "note": "Teor e garrafa de 750 ml da página dos EUA (rótulo: 40% Alc/Vol). Confira o rótulo vendido no Brasil.",
+   "roles": [
+    "vodka"
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Smirnoff (official website, US)",
+     "note": "ABV and 750 ml bottle from the US page (label: 40% Alc/Vol). Check the label of the bottle sold in Brazil."
+    },
+    "es": {
+     "sourceLabel": "Smirnoff (sitio oficial, EE. UU.)",
+     "note": "Graduación y botella de 750 ml de la página de EE. UU. (etiqueta: 40% Alc/Vol). Revisa la etiqueta de la botella vendida en Brasil."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "US"
+  },
+  {
+   "id": "cointreau-lunique",
+   "brand": "Cointreau",
+   "name": "L'Unique",
+   "category": "spirit",
+   "style": "Licor de laranja",
+   "abv": 40.0,
+   "ingredients": [
+    "água",
+    "açúcar",
+    "álcool neutro",
+    "óleos essenciais de cascas de laranja doce e amarga"
+   ],
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 375
+    },
+    {
+     "kind": "bottle",
+     "ml": 750
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    }
+   ],
+   "aliases": [
+    "cointreau",
+    "triple sec"
+   ],
+   "source": {
+    "url": "https://www.cointreau.com/us/en/products/cointreau",
+    "label": "Cointreau (site oficial, EUA)"
+   },
+   "note": "Teor, tamanhos e ingredientes da página dos EUA. Confira o rótulo vendido no Brasil.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Cointreau (official website, US)",
+     "note": "ABV, sizes and ingredients from the US page. Check the label of the bottle sold in Brazil."
+    },
+    "es": {
+     "sourceLabel": "Cointreau (sitio oficial, EE. UU.)",
+     "note": "Graduación, tamaños e ingredientes de la página de EE. UU. Revisa la etiqueta de la botella vendida en Brasil."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "US"
+  },
+  {
+   "id": "ciroc-premium-vodka",
+   "brand": "Cîroc",
+   "name": "Premium Vodka",
+   "category": "spirit",
+   "style": "Vodka",
+   "abv": 40.0,
+   "ingredients": [
+    "uvas francesas"
+   ],
+   "presentations": [],
+   "aliases": [
+    "ciroc",
+    "cîroc"
+   ],
+   "source": {
+    "url": "https://www.ciroc.com/en-us/vodkas/ultra-premium-vodka",
+    "label": "Cîroc (site oficial, EUA)"
+   },
+   "note": "A página dos EUA informa 40% Alc/Vol e base de uvas francesas. Confira o rótulo vendido no Brasil.",
+   "roles": [
+    "vodka"
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Cîroc (official website, US)",
+     "note": "The US page states 40% Alc/Vol and a French grape base. Check the label of the bottle sold in Brazil."
+    },
+    "es": {
+     "sourceLabel": "Cîroc (sitio oficial, EE. UU.)",
+     "note": "La página de EE. UU. indica 40% Alc/Vol y base de uvas francesas. Revisa la etiqueta de la botella vendida en Brasil."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "US"
+  },
+  {
+   "id": "captain-morgan-original-spiced-rum",
+   "brand": "Captain Morgan",
+   "name": "Original Spiced Rum",
+   "category": "spirit",
+   "style": "Rum temperado",
+   "abv": 35.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "captain morgan",
+    "capitão morgan"
+   ],
+   "source": {
+    "url": "https://www.captainmorgan.com/en-us/products/captain-morgan-original-spiced-rum",
+    "label": "Captain Morgan (site oficial, EUA)"
+   },
+   "note": "Teor da página dos EUA (35% Alc/Vol); a página só cita baunilha e sabores naturais, sem lista completa. Confira o rótulo no Brasil.",
+   "roles": [
+    "rum"
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Captain Morgan (official website, US)",
+     "note": "ABV from the US page (35% Alc/Vol); the page only mentions vanilla and natural flavors, no full list. Check the label in Brazil."
+    },
+    "es": {
+     "sourceLabel": "Captain Morgan (sitio oficial, EE. UU.)",
+     "note": "Graduación de la página de EE. UU. (35% Alc/Vol); la página solo menciona vainilla y sabores naturales, sin lista completa. Revisa la etiqueta en Brasil."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "US"
+  },
+  {
+   "id": "cynar-cynar",
+   "brand": "Cynar",
+   "name": "Cynar",
+   "category": "spirit",
+   "style": "Licor amargo de alcachofra",
+   "abv": 16.5,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "cynar"
+   ],
+   "source": {
+    "url": "https://www.camparigroup.com/en/brand/cynar",
+    "label": "Campari Group (site oficial)"
+   },
+   "note": "Teor informado pelo grupo Campari; a página cita alcachofra e 13 ervas e plantas, sem lista completa de ingredientes.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Campari Group (official website)",
+     "note": "ABV stated by Campari Group; the page mentions artichoke and 13 herbs and plants, with no full ingredient list."
+    },
+    "es": {
+     "sourceLabel": "Campari Group (sitio oficial)",
+     "note": "Graduación indicada por Campari Group; la página menciona alcachofa y 13 hierbas y plantas, sin lista completa de ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "salinas-black",
+   "brand": "Salinas",
+   "name": "Black",
+   "category": "spirit",
+   "style": "Cachaça envelhecida",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "cachaça salinas black"
+   ],
+   "source": {
+    "url": "https://cachacasalinas.com.br/salinas-black/",
+    "label": "Cachaça Salinas (site oficial)"
+   },
+   "note": "Ficha técnica: 40% vol.; envelhecida 3 anos em carvalho americano. A página não informa volume nem ingredientes.",
+   "roles": [
+    "cachaca"
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Cachaça Salinas (official website)",
+     "note": "Spec sheet: 40% vol.; aged 3 years in American oak. The page does not state volume or ingredients."
+    },
+    "es": {
+     "sourceLabel": "Cachaça Salinas (sitio oficial)",
+     "note": "Ficha técnica: 40% vol.; envejecida 3 años en roble americano. La página no indica volumen ni ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "salinas-limited",
+   "brand": "Salinas",
+   "name": "Limited",
+   "category": "spirit",
+   "style": "Cachaça envelhecida",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 700
+    }
+   ],
+   "aliases": [
+    "cachaça salinas limited"
+   ],
+   "source": {
+    "url": "https://cachacasalinas.com.br/salinas-limited/",
+    "label": "Cachaça Salinas (site oficial)"
+   },
+   "note": "Ficha técnica: 40% e 700 ml; reserva limitada (8 anos em bálsamo e 2 em carvalho europeu). A página não lista ingredientes.",
+   "roles": [
+    "cachaca"
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Cachaça Salinas (official website)",
+     "note": "Spec sheet: 40% and 700 ml; limited reserve (8 years in balsam wood and 2 in European oak). The page lists no ingredients."
+    },
+    "es": {
+     "sourceLabel": "Cachaça Salinas (sitio oficial)",
+     "note": "Ficha técnica: 40% y 700 ml; reserva limitada (8 años en bálsamo y 2 en roble europeo). La página no lista ingredientes."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "weber-haus-balsamo",
+   "brand": "Weber Haus",
+   "name": "Bálsamo",
+   "category": "spirit",
+   "style": "Cachaça envelhecida",
+   "abv": 38.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 700
+    }
+   ],
+   "aliases": [
+    "weber haus",
+    "cachaça weber haus"
+   ],
+   "source": {
+    "url": "https://loja.weberhaus.com.br/cachaca/cachaca-envelhecida-em-balsamos-weber-haus-750ml",
+    "label": "Weber Haus (loja oficial)"
+   },
+   "note": "Loja oficial: graduação 38% e 700 ml no título; envelhecida um ano em barris de bálsamo. A URL cita 750 ml, divergente do título.",
+   "roles": [
+    "cachaca"
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Weber Haus (official store)",
+     "note": "Official store: 38% ABV and 700 ml in the title; aged one year in balsam wood barrels. The URL mentions 750 ml, which differs from the title."
+    },
+    "es": {
+     "sourceLabel": "Weber Haus (tienda oficial)",
+     "note": "Tienda oficial: graduación 38% y 700 ml en el título; envejecida un año en barriles de bálsamo. La URL cita 750 ml, distinto del título."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "pitu-vitoriosa",
+   "brand": "Pitú",
+   "name": "Vitoriosa",
+   "category": "spirit",
+   "style": "Cachaça envelhecida",
+   "abv": 39.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "vitoriosa"
+   ],
+   "source": {
+    "url": "https://pitu.com.br/produtos/vitoriosa/",
+    "label": "Pitú (site oficial)"
+   },
+   "note": "Site oficial: teor de 39%; envelhecida em barris de carvalho francês. Volume e ingredientes não informados.",
+   "roles": [
+    "cachaca"
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Pitú (official website)",
+     "note": "Official site: 39% ABV; aged in French oak barrels. Volume and ingredients not stated."
+    },
+    "es": {
+     "sourceLabel": "Pitú (sitio oficial)",
+     "note": "Sitio oficial: graduación 39%; envejecida en barriles de roble francés. Volumen e ingredientes no indicados."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR"
+  },
+  {
+   "id": "leblon-cachaca",
+   "brand": "Leblon",
+   "name": "Cachaça",
+   "category": "spirit",
+   "style": "Cachaça",
+   "abv": 40.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "leblon"
+   ],
+   "source": {
+    "url": "https://www.leblon.com/buy-online.html",
+    "label": "Leblon (site oficial)"
+   },
+   "note": "Página de compra do site oficial (mercado dos EUA): 40% Alc. by Vol.; a página não confirma tamanhos.",
+   "roles": [
+    "cachaca"
+   ],
+   "i18n": {
+    "en": {
+     "sourceLabel": "Leblon (official website)",
+     "note": "Official site buy page (US market): 40% Alc. by Vol.; the page does not confirm sizes."
+    },
+    "es": {
+     "sourceLabel": "Leblon (sitio oficial)",
+     "note": "Página de compra del sitio oficial (mercado de EE. UU.): 40% Alc. by Vol.; la página no confirma tamaños."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "US"
   }
  ]
 }
