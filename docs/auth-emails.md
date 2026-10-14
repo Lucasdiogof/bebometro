@@ -60,3 +60,26 @@ estar logada, num app com outro idioma escolhido agora, recebe o e-mail no idiom
 permite escolher o idioma por pedido, então isso não é prometido. Contas sem o campo recebem português.
 
 **Atualização (13/10/2026):** SMTP e templates aplicados e lidos de volta; um e-mail de teste chegou à caixa de entrada; "Confirm email" está **ligado**. Os templates em si ainda não foram vistos num e-mail real do Auth.
+
+## Recuperação de senha por código de 6 dígitos (13/10/2026)
+
+O link de recuperação foi **removido**: ele dependia de PKCE + deep link `bebometro://auth-callback` e falhava quando o e-mail
+era aberto em outro aparelho (ou numa tela branca do Gmail). Agora:
+
+1. "Esqueci minha senha" → e-mail → `resetPasswordForEmail` (sem `redirectTo`).
+2. Tela `ResetCodePage`: e-mail + código de 6 dígitos → `auth.verifyOTP(type: recovery, email, token)`, que abre a sessão.
+   Reenvio com espera de 60 s (`AuthController.recoveryWaitSeconds`); código errado ou expirado (`otp_expired`/`invalid_otp`)
+   mostra "Código inválido ou expirado" no campo; "Já tenho um código" pula o passo 1.
+3. A sessão cai em `AccessStatus.passwordRecovery` → tela de nova senha (`NewPasswordPage`) → `updateUser(password)`.
+
+Funciona em qualquer aparelho: não há link, deep link nem PKCE. O marcador local de recuperação é gravado antes do `verifyOTP`
+e removido se falhar.
+
+O template `recovery.html` mostra **só** `{{ .Token }}` em destaque (sem link, botão nem `{{ .ConfirmationURL }}`), com aviso de
+que expira e de que pode ser ignorado; o idioma segue `{{ .Data.language }}`. Requisitos do projeto: `mailer_otp_length = 6` e
+`mailer_otp_exp` (segundos) coerente com o texto "expira em pouco tempo" (o padrão do Supabase é 3600). O
+`scripts/apply_auth_email.py` imprime esses dois valores antes e depois de aplicar; para aplicar: `SUPABASE_ACCESS_TOKEN=...
+python -I scripts/apply_auth_email.py --apply` (SMTP já configurado, não precisa das variáveis de SMTP).
+
+**Estado:** código e template alterados no repositório; **ainda não aplicados no Supabase** (a sessão que fez a mudança não tinha
+`SUPABASE_ACCESS_TOKEN`). Nenhum e-mail com o novo template foi enviado nem o fluxo foi executado no app.

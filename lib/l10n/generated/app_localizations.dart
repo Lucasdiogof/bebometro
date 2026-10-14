@@ -574,6 +574,48 @@ abstract class AppLocalizations {
   /// **'As senhas não são iguais.'**
   String get authPasswordsDiffer;
 
+  /// No description provided for @authCodeTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Digite o código'**
+  String get authCodeTitle;
+
+  /// No description provided for @authCodeBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enviamos um código de 6 dígitos para {email}. Digite-o abaixo; ele vale por pouco tempo.'**
+  String authCodeBody(String email);
+
+  /// No description provided for @authCodeLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código de 6 dígitos'**
+  String get authCodeLabel;
+
+  /// No description provided for @authCodeVerify.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar código'**
+  String get authCodeVerify;
+
+  /// No description provided for @authCodeInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código inválido ou expirado. Confira os 6 dígitos ou peça um novo código.'**
+  String get authCodeInvalid;
+
+  /// No description provided for @authCodeIncomplete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Digite os 6 dígitos do código.'**
+  String get authCodeIncomplete;
+
+  /// No description provided for @authHaveCode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já tenho um código'**
+  String get authHaveCode;
+
   /// No description provided for @authRecoverBody.
   ///
   /// In pt, this message translates to:
@@ -643,7 +685,7 @@ abstract class AppLocalizations {
   /// No description provided for @authSendLink.
   ///
   /// In pt, this message translates to:
-  /// **'Enviar link'**
+  /// **'Enviar código'**
   String get authSendLink;
 
   /// No description provided for @authServerUnreachable.

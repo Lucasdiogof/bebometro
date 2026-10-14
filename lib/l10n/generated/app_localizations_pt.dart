@@ -329,12 +329,35 @@ class AppLocalizationsPt extends AppLocalizations {
   String get authPasswordsDiffer => 'As senhas não são iguais.';
 
   @override
+  String get authCodeTitle => 'Digite o código';
+
+  @override
+  String authCodeBody(String email) {
+    return 'Enviamos um código de 6 dígitos para $email. Digite-o abaixo; ele vale por pouco tempo.';
+  }
+
+  @override
+  String get authCodeLabel => 'Código de 6 dígitos';
+
+  @override
+  String get authCodeVerify => 'Confirmar código';
+
+  @override
+  String get authCodeInvalid => 'Código inválido ou expirado. Confira os 6 dígitos ou peça um novo código.';
+
+  @override
+  String get authCodeIncomplete => 'Digite os 6 dígitos do código.';
+
+  @override
+  String get authHaveCode => 'Já tenho um código';
+
+  @override
   String get authRecoverBody =>
-      'Enviamos um link para criar uma nova senha. Abra-o neste aparelho.';
+      'Enviaremos um código de 6 dígitos para o seu e-mail. Você o digita aqui no app, em qualquer aparelho.';
 
   @override
   String get authRecoverSent =>
-      'Se houver uma conta com esse e-mail, o link chega em instantes. Confira também o spam.';
+      'Se houver uma conta com esse e-mail, o código chega em instantes. Confira também o spam.';
 
   @override
   String get authRecoverTitle => 'Recuperar senha';
@@ -368,7 +391,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get authSendConfirmation => 'Enviar confirmação';
 
   @override
-  String get authSendLink => 'Enviar link';
+  String get authSendLink => 'Enviar código';
 
   @override
   String get authServerUnreachable =>

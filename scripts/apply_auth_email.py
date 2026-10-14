@@ -67,6 +67,9 @@ def main():
 
     before = call(token, 'GET')
     has_smtp = bool(before.get('smtp_host'))
+    # The recovery e-mail carries only the code: it must have 6 digits.
+    print('mailer_otp_length:', before.get('mailer_otp_length'), '(expected 6)',
+          '| mailer_otp_exp (s):', before.get('mailer_otp_exp'))
     smtp = {}
     if password and sender:
         smtp = {
@@ -104,6 +107,8 @@ def main():
         ok = ok and same
         print(k, 'OK' if same else 'DIFF')
     print('smtp_pass stored:', bool(after.get('smtp_pass')))
+    print('mailer_otp_length:', after.get('mailer_otp_length'),
+          '| mailer_otp_exp (s):', after.get('mailer_otp_exp'))
     print('mailer_autoconfirm:', after.get('mailer_autoconfirm'),
           '(False = "Confirm email" is ON)')
     if not ok:

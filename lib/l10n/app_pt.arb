@@ -156,8 +156,22 @@
   "authPasswordMin": "Use pelo menos 8 caracteres.",
   "authPasswordMix": "Misture letras e números.",
   "authPasswordsDiffer": "As senhas não são iguais.",
-  "authRecoverBody": "Enviamos um link para criar uma nova senha. Abra-o neste aparelho.",
-  "authRecoverSent": "Se houver uma conta com esse e-mail, o link chega em instantes. Confira também o spam.",
+  "authCodeTitle": "Digite o código",
+  "authCodeBody": "Enviamos um código de 6 dígitos para {email}. Digite-o abaixo; ele vale por pouco tempo.",
+  "@authCodeBody": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authCodeLabel": "Código de 6 dígitos",
+  "authCodeVerify": "Confirmar código",
+  "authCodeInvalid": "Código inválido ou expirado. Confira os 6 dígitos ou peça um novo código.",
+  "authCodeIncomplete": "Digite os 6 dígitos do código.",
+  "authHaveCode": "Já tenho um código",
+  "authRecoverBody": "Enviaremos um código de 6 dígitos para o seu e-mail. Você o digita aqui no app, em qualquer aparelho.",
+  "authRecoverSent": "Se houver uma conta com esse e-mail, o código chega em instantes. Confira também o spam.",
   "authRecoverTitle": "Recuperar senha",
   "authResend": "Reenviar e-mail",
   "authResendIn": "Reenviar em {seconds} s",
@@ -181,7 +195,7 @@
   "authSavePassword": "Salvar senha",
   "authSendAgain": "Enviar de novo",
   "authSendConfirmation": "Enviar confirmação",
-  "authSendLink": "Enviar link",
+  "authSendLink": "Enviar código",
   "authServerUnreachable": "Sem conexão com o servidor agora. Tente de novo em instantes.",
   "authSessionEnded": "Sua sessão terminou. Entre novamente.",
   "authShowPassword": "Mostrar senha",

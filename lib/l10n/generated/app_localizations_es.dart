@@ -330,12 +330,35 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authPasswordsDiffer => 'Las contraseñas no coinciden.';
 
   @override
+  String get authCodeTitle => 'Escribe el código';
+
+  @override
+  String authCodeBody(String email) {
+    return 'Enviamos un código de 6 dígitos a $email. Escríbelo abajo; vale por poco tiempo.';
+  }
+
+  @override
+  String get authCodeLabel => 'Código de 6 dígitos';
+
+  @override
+  String get authCodeVerify => 'Confirmar código';
+
+  @override
+  String get authCodeInvalid => 'Código inválido o caducado. Revisa los 6 dígitos o pide uno nuevo.';
+
+  @override
+  String get authCodeIncomplete => 'Escribe los 6 dígitos del código.';
+
+  @override
+  String get authHaveCode => 'Ya tengo un código';
+
+  @override
   String get authRecoverBody =>
-      'Enviaremos un enlace para crear una nueva contraseña. Ábrelo en este dispositivo.';
+      'Enviaremos un código de 6 dígitos a tu correo. Lo escribes aquí en la app, en cualquier dispositivo.';
 
   @override
   String get authRecoverSent =>
-      'Si hay una cuenta con este correo, el enlace llega en un momento. Revisa también el spam.';
+      'Si hay una cuenta con este correo, el código llega en un momento. Revisa también el spam.';
 
   @override
   String get authRecoverTitle => 'Recuperar contraseña';
@@ -370,7 +393,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authSendConfirmation => 'Enviar confirmación';
 
   @override
-  String get authSendLink => 'Enviar enlace';
+  String get authSendLink => 'Enviar código';
 
   @override
   String get authServerUnreachable =>

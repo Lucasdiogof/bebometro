@@ -1,22 +1,23 @@
 <!-- Bebômetro · auth e-mail "recovery" · pt-BR (default), en, es.
+     Code only: no link and no button (the app asks for the 6-digit code).
      The language comes from user_metadata.language (set by the app). Anything else, or
      an account that never recorded it, gets Portuguese. Subject: Redefinir senha · Reset password · Restablecer contraseña -->
 <div style="font-family:Arial,Helvetica,sans-serif;max-width:480px;margin:0 auto;padding:24px;color:#222;line-height:1.5">
 <p style="margin:0 0 16px;font-size:14px;font-weight:700;color:#C77D0A">Bebômetro</p>
 {{ if and .Data .Data.language (eq .Data.language "en") }}
-<h2>Reset your password</h2>
-<p>We received a request to reset the password of your Bebômetro account. If it was not you, ignore this email.</p>
-<p><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#F2A81D;color:#151311;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:700">Set a new password</a></p>
-<p>Or enter this code in the app: <strong>{{ .Token }}</strong></p>
+<h2>Your password reset code</h2>
+<p>Enter this code in the Bebômetro app to create a new password:</p>
+<p style="margin:20px 0;padding:16px;background:#FFF4DC;border-radius:8px;text-align:center;font-size:32px;font-weight:700;letter-spacing:8px;color:#151311">{{ .Token }}</p>
+<p>The code expires soon. If you did not ask for it, you can ignore this email.</p>
 {{ else if and .Data .Data.language (eq .Data.language "es") }}
-<h2>Restablece tu contraseña</h2>
-<p>Recibimos una solicitud para restablecer la contraseña de tu cuenta de Bebômetro. Si no fuiste tú, ignora este correo.</p>
-<p><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#F2A81D;color:#151311;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:700">Definir nueva contraseña</a></p>
-<p>O escribe este código en la app: <strong>{{ .Token }}</strong></p>
+<h2>Tu código para restablecer la contraseña</h2>
+<p>Escribe este código en la app Bebômetro para crear una nueva contraseña:</p>
+<p style="margin:20px 0;padding:16px;background:#FFF4DC;border-radius:8px;text-align:center;font-size:32px;font-weight:700;letter-spacing:8px;color:#151311">{{ .Token }}</p>
+<p>El código caduca pronto. Si no lo pediste, puedes ignorar este correo.</p>
 {{ else }}
-<h2>Redefinir senha</h2>
-<p>Recebemos um pedido para redefinir a senha da sua conta no Bebômetro. Se não foi você, ignore este e-mail.</p>
-<p><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#F2A81D;color:#151311;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:700">Definir nova senha</a></p>
-<p>Ou digite este código no app: <strong>{{ .Token }}</strong></p>
+<h2>Seu código para redefinir a senha</h2>
+<p>Digite este código no app Bebômetro para criar uma nova senha:</p>
+<p style="margin:20px 0;padding:16px;background:#FFF4DC;border-radius:8px;text-align:center;font-size:32px;font-weight:700;letter-spacing:8px;color:#151311">{{ .Token }}</p>
+<p>O código expira em pouco tempo. Se você não pediu, pode ignorar este e-mail.</p>
 {{ end }}
 </div>

@@ -328,12 +328,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authPasswordsDiffer => 'The passwords don\'t match.';
 
   @override
+  String get authCodeTitle => 'Enter the code';
+
+  @override
+  String authCodeBody(String email) {
+    return 'We sent a 6-digit code to $email. Enter it below; it is valid for a short time.';
+  }
+
+  @override
+  String get authCodeLabel => '6-digit code';
+
+  @override
+  String get authCodeVerify => 'Confirm code';
+
+  @override
+  String get authCodeInvalid => 'Invalid or expired code. Check the 6 digits or ask for a new code.';
+
+  @override
+  String get authCodeIncomplete => 'Enter the 6 digits of the code.';
+
+  @override
+  String get authHaveCode => 'I already have a code';
+
+  @override
   String get authRecoverBody =>
-      'We\'ll send a link to create a new password. Open it on this device.';
+      'We\'ll send a 6-digit code to your e-mail. You type it here in the app, on any device.';
 
   @override
   String get authRecoverSent =>
-      'If there is an account with this e-mail, the link arrives in a moment. Check the spam folder too.';
+      'If there is an account with this e-mail, the code arrives in a moment. Check the spam folder too.';
 
   @override
   String get authRecoverTitle => 'Recover password';
@@ -368,7 +391,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authSendConfirmation => 'Send confirmation';
 
   @override
-  String get authSendLink => 'Send link';
+  String get authSendLink => 'Send code';
 
   @override
   String get authServerUnreachable =>

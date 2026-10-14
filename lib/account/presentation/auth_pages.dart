@@ -248,7 +248,6 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   late final _email = TextEditingController(text: widget.initialEmail);
   bool _busy = false;
-  bool _sent = false;
   String? _emailError;
   String? _error;
 
@@ -256,6 +255,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   void dispose() {
     _email.dispose();
     super.dispose();
+  }
+
+  void _openCodePage({required bool sent}) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => ResetCodePage(email: _email.text.trim(), sent: sent)));
   }
 
   Future<void> _submit() async {
@@ -268,7 +272,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     setState(() => _busy = true);
     try {
       await context.read<AuthController>().sendPasswordReset(_email.text);
-      if (mounted) setState(() => _sent = true);
+      if (mounted) _openCodePage(sent: true);
     } on AuthFailure catch (e) {
       if (mounted) setState(() => _error = e.message);
     } finally {
@@ -282,13 +286,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       showBack: true,
       title: tr.authRecoverTitle,
       subtitle: tr.authRecoverBody,
-      action: BusyButton(
-          label: _sent ? tr.authSendAgain : tr.authSendLink,
-          busy: _busy,
-          onPressed: _submit),
+      action:
+          BusyButton(label: tr.authSendLink, busy: _busy, onPressed: _submit),
       children: [
-        if (_sent)
-          FormMessage(tr.authRecoverSent, error: false),
         if (_error != null) FormMessage(_error!),
         EmailField(
           controller: _email,
@@ -296,12 +296,153 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           autofocus: widget.initialEmail.isEmpty,
           onSubmitted: (_) => _submit(),
         ),
+        const SizedBox(height: AppSpace.md),
+        TextButton(
+          onPressed: () {
+            final err = validateEmail(_email.text);
+            setState(() => _emailError = err);
+            if (err == null) _openCodePage(sent: false);
+          },
+          child: Text(tr.authHaveCode),
+        ),
       ],
     );
   }
 }
 
-/// New password: after a reset link ([recovery]) or the first password of a
+/// Second step of the recovery: e-mail + the 6-digit code that came by
+/// e-mail. Works on any device (no link, no deep link, no PKCE). A valid code
+/// opens a session and the access gate shows the new-password screen.
+class ResetCodePage extends StatefulWidget {
+  const ResetCodePage({super.key, required this.email, this.sent = false});
+
+  final String email;
+
+  /// A code was just requested for [email] (starts the resend wait).
+  final bool sent;
+
+  @override
+  State<ResetCodePage> createState() => _ResetCodePageState();
+}
+
+class _ResetCodePageState extends State<ResetCodePage> {
+  late final _email = TextEditingController(text: widget.email);
+  final _code = TextEditingController();
+  Timer? _ticker;
+  bool _busy = false;
+  bool _resending = false;
+  String? _emailError, _codeError, _error, _info;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.sent) _info = tr.authRecoverSent;
+    _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _ticker?.cancel();
+    _email.dispose();
+    _code.dispose();
+    super.dispose();
+  }
+
+  Future<void> _verify() async {
+    final emailErr = validateEmail(_email.text);
+    final code = _code.text.trim();
+    setState(() {
+      _emailError = emailErr;
+      _codeError = code.length == 6 ? null : tr.authCodeIncomplete;
+      _error = null;
+      _info = null;
+    });
+    if (emailErr != null || code.length != 6) return;
+    setState(() => _busy = true);
+    try {
+      await context.read<AuthController>().verifyRecoveryCode(_email.text, code);
+      // The gate takes over (new-password screen).
+    } on AuthFailure catch (e) {
+      if (!mounted) return;
+      setState(() {
+        if (e.field == 'code') {
+          _codeError = e.message;
+        } else if (e.field == 'email') {
+          _emailError = e.message;
+        } else {
+          _error = e.message;
+        }
+      });
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _resend() async {
+    final emailErr = validateEmail(_email.text);
+    setState(() {
+      _emailError = emailErr;
+      _error = null;
+      _info = null;
+    });
+    if (emailErr != null) return;
+    setState(() => _resending = true);
+    try {
+      await context.read<AuthController>().sendPasswordReset(_email.text);
+      if (mounted) setState(() => _info = tr.authRecoverSent);
+    } on AuthFailure catch (e) {
+      if (mounted) setState(() => _error = e.message);
+    } finally {
+      if (mounted) setState(() => _resending = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final wait = context.read<AuthController>().recoveryWaitSeconds;
+    return AuthScaffold(
+      showBack: true,
+      title: tr.authCodeTitle,
+      subtitle: tr.authCodeBody(
+          widget.email.isEmpty ? tr.authYourAccount : widget.email),
+      action: BusyButton(
+          label: tr.authCodeVerify, busy: _busy, onPressed: _verify),
+      children: [
+        if (_info != null) FormMessage(_info!, error: false),
+        if (_error != null) FormMessage(_error!),
+        EmailField(controller: _email, error: _emailError),
+        const SizedBox(height: AppSpace.md),
+        TextField(
+          controller: _code,
+          autofocus: widget.email.isNotEmpty,
+          keyboardType: TextInputType.number,
+          textInputAction: TextInputAction.done,
+          autocorrect: false,
+          maxLength: 6,
+          autofillHints: const [AutofillHints.oneTimeCode],
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          onSubmitted: (_) => _verify(),
+          style: const TextStyle(letterSpacing: 6, fontSize: 22),
+          decoration: InputDecoration(
+            labelText: tr.authCodeLabel,
+            prefixIcon: const Icon(Icons.pin_outlined),
+            errorText: _codeError,
+            counterText: '',
+          ),
+        ),
+        const SizedBox(height: AppSpace.md),
+        TextButton(
+          onPressed: (wait > 0 || _resending) ? null : _resend,
+          child: Text(wait > 0 ? tr.authResendIn(wait) : tr.authResend),
+        ),
+      ],
+    );
+  }
+}
+
+/// New password: after the recovery code ([recovery]) or the first password of a
 /// converted anonymous account. Nothing else of the app opens before it.
 class NewPasswordPage extends StatefulWidget {
   const NewPasswordPage({super.key, required this.recovery});

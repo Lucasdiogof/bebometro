@@ -31,7 +31,8 @@ enum AccessStatus {
   /// Permanent account. Works offline.
   authenticated,
 
-  /// Opened from a password reset link: new password first, nothing else.
+  /// Opened with the code sent for a password reset: new password first,
+  /// nothing else.
   passwordRecovery,
 
   /// The server rejected the stored session (revoked/expired refresh). Local
@@ -121,6 +122,7 @@ class AuthController extends Cubit<AccessState> {
       .then((_) => step())
       .catchError((Object e) => _log('auth step failed: ${e.runtimeType}'));
   DateTime? _lastResend;
+  DateTime? _lastRecoverySend;
 
   static const _lastUidKey = 'auth.last_uid';
   static const _lastEmailKey = 'auth.last_email';
@@ -264,7 +266,9 @@ class AuthController extends Cubit<AccessState> {
       final at = DateTime.tryParse(recovery['at'] as String? ?? '');
       final fresh = at != null &&
           DateTime.now().toUtc().difference(at) < const Duration(hours: 2);
-      final sameEmail = recovery['email'] == null || recovery['email'] == user.email;
+      final sameEmail = recovery['email'] == null ||
+          (recovery['email'] as String).toLowerCase() ==
+              (user.email ?? '').toLowerCase();
       if (fresh && sameEmail) {
         emit(AccessState(
           status: AccessStatus.passwordRecovery,
@@ -406,22 +410,56 @@ class AuthController extends Cubit<AccessState> {
     }
   }
 
+  /// Seconds before another recovery code may be asked (local guard; the
+  /// server also limits).
+  int get recoveryWaitSeconds {
+    final last = _lastRecoverySend;
+    if (last == null) return 0;
+    final left = 60 - DateTime.now().difference(last).inSeconds;
+    return left > 0 ? left : 0;
+  }
+
+  /// Asks for the 6-digit recovery code (e-mail template without a link).
+  /// No redirect, no PKCE: the code is typed in [verifyRecoveryCode], on any
+  /// device.
   Future<void> sendPasswordReset(String email) async {
     _requireCloud();
+    if (recoveryWaitSeconds > 0) {
+      throw AuthFailure(tr.authResendWait(recoveryWaitSeconds));
+    }
     try {
-      await _device.setString(
-          _recoveryKey,
-          jsonEncode({
-            'email': email.trim(),
-            'at': DateTime.now().toUtc().toIso8601String(),
-          }));
-      await _auth.resetPasswordForEmail(email.trim(), redirectTo: redirectUrl);
+      await _auth.resetPasswordForEmail(email.trim());
+      _lastRecoverySend = DateTime.now();
     } on AuthException catch (e) {
       throw _map(e);
     }
   }
 
-  /// New password after a reset link, or the first password of a converted
+  /// Exchanges the code for a session and opens the new-password screen.
+  /// The marker is written first so the session that [verifyOTP] opens is
+  /// read as a recovery and never as a normal sign-in.
+  Future<void> verifyRecoveryCode(String email, String code) async {
+    _requireCloud();
+    await _device.setString(
+        _recoveryKey,
+        jsonEncode({
+          'email': email.trim().toLowerCase(),
+          'at': DateTime.now().toUtc().toIso8601String(),
+        }));
+    try {
+      await _auth.verifyOTP(
+        type: OtpType.recovery,
+        email: email.trim(),
+        token: code.trim(),
+      );
+      // The listener applies the session (passwordRecovery).
+    } on AuthException catch (e) {
+      await _device.remove(_recoveryKey);
+      throw _map(e);
+    }
+  }
+
+  /// New password after the recovery code, or the first password of a converted
   /// anonymous user.
   Future<void> setPassword(String password) async {
     _requireCloud();
@@ -436,7 +474,7 @@ class AuthController extends Cubit<AccessState> {
   }
 
   /// Leaves the reset screen without changing the password (signs out: the
-  /// link session must not open the product by the back door).
+  /// recovery session must not open the product by the back door).
   Future<void> cancelRecovery() async {
     await _device.remove(_recoveryKey);
     await signOut();
@@ -544,6 +582,7 @@ class AuthController extends Cubit<AccessState> {
       'over_email_send_rate_limit' || 'over_request_rate_limit' => AuthFailure(tr.authTooManyAttempts),
       'email_address_invalid' || 'validation_failed' =>
         AuthFailure(tr.authCheckEmail, field: 'email'),
+      'otp_expired' || 'invalid_otp' => AuthFailure(tr.authCodeInvalid, field: 'code'),
       'reauthentication_needed' || 'reauthentication_not_valid' => AuthFailure(tr.authNeedsCode, field: 'code'),
       'signup_disabled' => AuthFailure(tr.authSignupDisabled),
       'manual_linking_disabled' => AuthFailure(tr.authLinkingDisabled),
