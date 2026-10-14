@@ -1,5 +1,5 @@
 {
- "version": 4,
+ "version": 5,
  "consultedOn": "2026-10-12",
  "description": "Catálogo inicial do Bebômetro. Campos ausentes são desconhecidos, nunca zero.",
  "products": [
@@ -43,6 +43,10 @@
     {
      "kind": "bottle",
      "ml": 1000
+    },
+    {
+     "kind": "longNeck",
+     "ml": 250
     }
    ],
    "aliases": [
@@ -53,17 +57,31 @@
     "url": "https://www.brahma.com.br/pt-br/produto/chopp-brahma-claro",
     "label": "Brahma (site oficial)"
    },
-   "note": "Os tamanhos vêm da página do produto; ela só distingue lata (350 ml) e garrafas de vidro (600 ml e 1 L).",
+   "note": "Os tamanhos vêm da página do produto; ela só distingue lata (350 ml) e garrafas de vidro (600 ml e 1 L). Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "note": "Sizes come from the product page, which only distinguishes the can (350 ml) and glass bottles (600 ml and 1 L).",
+     "note": "Sizes come from the product page, which only distinguishes the can (350 ml) and glass bottles (600 ml and 1 L). Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs.",
      "sourceLabel": "Brahma (official website)"
     },
     "es": {
-     "note": "Los tamaños provienen de la página del producto, que solo distingue la lata (350 ml) y las botellas de vidrio (600 ml y 1 L).",
+     "note": "Los tamaños provienen de la página del producto, que solo distingue la lata (350 ml) y las botellas de vidrio (600 ml y 1 L). Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados.",
      "sourceLabel": "Brahma (sitio oficial)"
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891149104147",
+      "label": "Cadastro GTIN 07891149104147 (Systax): cerveja pilsen brahma chopp 250ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 250 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "brahma-duplo-malte",
@@ -128,21 +146,42 @@
    "style": null,
    "abv": 4.9,
    "ingredients": null,
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.brahma.com.br/pt-br/produto/brahma-duplo-malte-trigo",
     "label": "Brahma (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Brahma (official website)"
+     "sourceLabel": "Brahma (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Brahma (sitio oficial)"
+     "sourceLabel": "Brahma (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991305150",
+      "label": "Cadastro GTIN 07891991305150 (Systax): cerveja pilsner malte trigo brahma duplo malte 350ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 350 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "brahma-duplo-malte-tostada",
@@ -204,6 +243,14 @@
     {
      "kind": "bottle",
      "ml": 300
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "longNeck",
+     "ml": 355
     }
    ],
    "aliases": [
@@ -214,17 +261,40 @@
     "url": "https://www.brahma.com.br/pt-br/produto/brahma-zero",
     "label": "Brahma (site oficial)"
    },
-   "note": "Teor declarado: 0,00%.",
+   "note": "Teor declarado: 0,00%. Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "note": "Declared ABV: 0.00%.",
+     "note": "Declared ABV: 0.00%. Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs.",
      "sourceLabel": "Brahma (official website)"
     },
     "es": {
-     "note": "Graduación declarada: 0,00%.",
+     "note": "Graduación declarada: 0,00%. Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados.",
      "sourceLabel": "Brahma (sitio oficial)"
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891149104932",
+      "label": "Cadastro GTIN 07891149104932 (Systax): cerveja brahma 0 0 zero alcool 350ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 350 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891149104956",
+      "label": "Cadastro GTIN 07891149104956 (Systax): cerveja brahma 0 0 zero alcool 355ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 355 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "skol-pilsen",
@@ -262,6 +332,22 @@
     {
      "kind": "bottle",
      "ml": 1000
+    },
+    {
+     "kind": "longNeck",
+     "ml": 250
+    },
+    {
+     "kind": "longNeck",
+     "ml": 275
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "bottle",
+     "ml": 500
     }
    ],
    "aliases": [],
@@ -269,7 +355,7 @@
     "url": "https://www.skol.com.br/produto/skol-pilsen",
     "label": "Skol (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "abvVariants": [
     {
      "value": 4.6,
@@ -286,16 +372,59 @@
      "abvVariants": [
       "product page on the Skol website",
       "long neck and can packs, according to the Skol website"
-     ]
+     ],
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
      "sourceLabel": "Skol (sitio oficial)",
      "abvVariants": [
       "página del producto en el sitio de Skol",
       "envases long neck y lata, según el sitio de Skol"
-     ]
+     ],
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891149103645",
+      "label": "Cadastro GTIN 07891149103645 (Systax): cerveja pilsen baixa fermentacao skol 250ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 250 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891149107704",
+      "label": "Cadastro GTIN 07891149107704 (Systax): cerveja pilsen baixa fermentacao skol 275ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 275 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891149200504",
+      "label": "Cadastro GTIN 07891149200504 (Systax): cerveja pilsen skol 350ml lata aluminio descartavei",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 350 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891149101474",
+      "label": "Cadastro GTIN 07891149101474 (Systax): cerveja pilsen baixa fermentacao skol 500ml big neck garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 500 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "skol-puro-malte",
@@ -422,6 +551,18 @@
     },
     {
      "ml": 600
+    },
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "can",
+     "ml": 473
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
     }
    ],
    "aliases": [],
@@ -429,15 +570,49 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/original/original",
     "label": "Ambev (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Ambev (official website)"
+     "sourceLabel": "Ambev (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Ambev (sitio oficial)"
+     "sourceLabel": "Ambev (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991295086",
+      "label": "Cadastro GTIN 07891991295086 (Systax): cerveja pilsen original antarctica 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 269 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991295017",
+      "label": "Cadastro GTIN 07891991295017 (Systax): cerveja pilsen original antarctica 473ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 473 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991304733",
+      "label": "Cadastro GTIN 07891991304733 (Systax): cerveja pilsen antarctica original 1l garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 1000 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "antarctica-subzero",
@@ -568,6 +743,22 @@
     {
      "kind": "bottle",
      "ml": 600
+    },
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "bottle",
+     "ml": 300
+    },
+    {
+     "kind": "can",
+     "ml": 410
+    },
+    {
+     "kind": "bottle",
+     "ml": 550
     }
    ],
    "aliases": [
@@ -577,15 +768,58 @@
     "url": "https://budweiser.com.br/produto/budweiser",
     "label": "Budweiser Brasil (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Budweiser Brasil (official website)"
+     "sourceLabel": "Budweiser Brasil (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Budweiser Brasil (sitio oficial)"
+     "sourceLabel": "Budweiser Brasil (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991011877",
+      "label": "Cadastro GTIN 07891991011877 (Systax): cerveja budweiser 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 269 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991304986",
+      "label": "Cadastro GTIN 07891991304986 (Systax): cerveja budweiser 300ml garrafa vidro retornavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 300 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991015523",
+      "label": "Cadastro GTIN 07891991015523 (Systax): cerveja budweiser 410ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 410 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991014786",
+      "label": "Cadastro GTIN 07891991014786 (Systax): cerveja budweiser 550ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 550 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "corona-corona",
@@ -610,6 +844,18 @@
     {
      "ml": 210,
      "label": "Coronita 210 ml"
+    },
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "can",
+     "ml": 473
     }
    ],
    "aliases": [
@@ -620,17 +866,49 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/corona/corona",
     "label": "Ambev (site oficial)"
    },
-   "note": "A Coronita (210 ml) aparece na página da Ambev com os mesmos dados.",
+   "note": "A Coronita (210 ml) aparece na página da Ambev com os mesmos dados. Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "note": "Coronita (210 ml) appears on the Ambev page with the same data.",
+     "note": "Coronita (210 ml) appears on the Ambev page with the same data. Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs.",
      "sourceLabel": "Ambev (official website)"
     },
     "es": {
-     "note": "La Coronita (210 ml) aparece en la página de Ambev con los mismos datos.",
+     "note": "La Coronita (210 ml) aparece en la página de Ambev con los mismos datos. Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados.",
      "sourceLabel": "Ambev (sitio oficial)"
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991306324",
+      "label": "Cadastro GTIN 07891991306324 (Systax): cerveja corona extra 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 269 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991295055",
+      "label": "Cadastro GTIN 07891991295055 (Systax): cerveja extra corona extra 350ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 350 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991305846",
+      "label": "Cadastro GTIN 07891991305846 (Systax): cerveja corona extra 473ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 473 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "stella-artois-stella-artois",
@@ -669,6 +947,18 @@
     },
     {
      "ml": 410
+    },
+    {
+     "kind": "longNeck",
+     "ml": 275
+    },
+    {
+     "kind": "bottle",
+     "ml": 550
+    },
+    {
+     "kind": "bottle",
+     "ml": 970
     }
    ],
    "aliases": [
@@ -678,15 +968,49 @@
     "url": "https://www.stellaartois.com.br/produto/stella-artois",
     "label": "Stella Artois Brasil (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Stella Artois Brasil (official website)"
+     "sourceLabel": "Stella Artois Brasil (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Stella Artois Brasil (sitio oficial)"
+     "sourceLabel": "Stella Artois Brasil (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891149101900",
+      "label": "Cadastro GTIN 07891149101900 (Systax): cerveja premium lager puro malte stella artois 275ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 275 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991013024",
+      "label": "Cadastro GTIN 07891991013024 (Systax): cerveja premium lager stella artois 550ml garrafa vidro retornavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 550 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891149103256",
+      "label": "Cadastro GTIN 07891149103256 (Systax): cerveja premium lager stella artois 970ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 970 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "spaten-spaten",
@@ -700,21 +1024,55 @@
     "Malte",
     "Lúpulo"
    ],
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "longNeck",
+     "ml": 330
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/spaten/spaten/",
     "label": "Ambev (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Ambev (official website)"
+     "sourceLabel": "Ambev (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Ambev (sitio oficial)"
+     "sourceLabel": "Ambev (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991303347",
+      "label": "Cadastro GTIN 07891991303347 (Systax): cerveja puro malte munich helles spaten 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 269 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991305440",
+      "label": "Cadastro GTIN 07891991305440 (Systax): cerveja spaten 330ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 330 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "beck-s-beck-s",
@@ -728,7 +1086,20 @@
     "Malte",
     "Lúpulo"
    ],
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "longNeck",
+     "ml": 330
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    }
+   ],
    "aliases": [
     "becks"
    ],
@@ -736,15 +1107,49 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/becks/becks",
     "label": "Ambev (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Ambev (official website)"
+     "sourceLabel": "Ambev (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Ambev (sitio oficial)"
+     "sourceLabel": "Ambev (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991014717",
+      "label": "Cadastro GTIN 07891991014717 (Systax): cerveja german lager puro malte beck s 330ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 330 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991294263",
+      "label": "Cadastro GTIN 07891991294263 (Systax): cerveja german lager puro malte beck s 350ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 350 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991295116",
+      "label": "Cadastro GTIN 07891991295116 (Systax): cerveja german lager puro malte beck s 600ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 600 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "michelob-ultra",
@@ -788,7 +1193,12 @@
     "Lúpulo",
     "Levedura"
    ],
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 300
+    }
+   ],
    "aliases": [
     "bohemia weiss"
    ],
@@ -796,15 +1206,31 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/bohemia/bohemia-14-weiss",
     "label": "Ambev (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Ambev (official website)"
+     "sourceLabel": "Ambev (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Ambev (sitio oficial)"
+     "sourceLabel": "Ambev (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991013215",
+      "label": "Cadastro GTIN 07891991013215 (Systax): cerveja weiss bohemia 14 300ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 300 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "bohemia-imperial",
@@ -842,21 +1268,42 @@
    "style": "German Pilsner",
    "abv": 4.8,
    "ingredients": null,
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 300
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/bohemia/bohemia-magna-pils",
     "label": "Ambev (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Ambev (official website)"
+     "sourceLabel": "Ambev (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Ambev (sitio oficial)"
+     "sourceLabel": "Ambev (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991013635",
+      "label": "Cadastro GTIN 07891991013635 (Systax): cerveja bohemia magna pils 300ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 300 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "colorado-ribeirao-lager",
@@ -897,21 +1344,42 @@
    "style": "Honey Wheat Ale",
    "abv": 5.5,
    "ingredients": null,
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-appia",
     "label": "Ambev (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Ambev (official website)"
+     "sourceLabel": "Ambev (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Ambev (sitio oficial)"
+     "sourceLabel": "Ambev (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07898605254132",
+      "label": "Cadastro GTIN 07898605254132 (Systax): cerveja wheat ale mel colorado appia 350ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 350 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "colorado-cauim",
@@ -968,21 +1436,42 @@
     "Rapadura",
     "Lúpulo"
    ],
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/cervejaria-colorado/colorado-indica",
     "label": "Ambev (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Ambev (official website)"
+     "sourceLabel": "Ambev (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Ambev (sitio oficial)"
+     "sourceLabel": "Ambev (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07898605253852",
+      "label": "Cadastro GTIN 07898605253852 (Systax): cerveja forte escura ipa colorado indica 350ml lata aluminio descartavel sleek",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 350 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "colorado-vixnu",
@@ -1290,21 +1779,68 @@
    "style": "Pilsen",
    "abv": 5.2,
    "ingredients": null,
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "longNeck",
+     "ml": 355
+    },
+    {
+     "kind": "can",
+     "ml": 473
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/patagonia/patagonia-bohemian-pilsener",
     "label": "Ambev (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Ambev (official website)"
+     "sourceLabel": "Ambev (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Ambev (sitio oficial)"
+     "sourceLabel": "Ambev (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991301855",
+      "label": "Cadastro GTIN 07891991301855 (Systax): cerveja bohemian pilsener puro malte patagonia 350ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 350 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891149107476",
+      "label": "Cadastro GTIN 07891149107476 (Systax): cerveja puro malte extra bohemian pilsener patagonia 355ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 355 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891149108138",
+      "label": "Cadastro GTIN 07891149108138 (Systax): cerveja bohemian pilsener patagonia 473ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 473 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "goose-island-ipa",
@@ -1641,6 +2177,14 @@
     {
      "kind": "bottle",
      "ml": 1000
+    },
+    {
+     "kind": "can",
+     "ml": 473
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
     }
    ],
    "aliases": [
@@ -1660,7 +2204,28 @@
      "note": "La página no indica la graduación alcohólica.",
      "sourceLabel": "Kaiser (sitio oficial)"
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.kaiser.com.br/produtos/kaiser-473ml/",
+      "label": "Kaiser (site oficial): Lata 473 ml",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "variant": "can 473 ml"
+     },
+     {
+      "url": "https://www.kaiser.com.br/produtos/kaiser-600ml/",
+      "label": "Kaiser (site oficial): Garrafa 600 ml",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "variant": "bottle 600 ml"
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "baden-baden-ipa",
@@ -1843,6 +2408,10 @@
     {
      "kind": "can",
      "ml": 550
+    },
+    {
+     "kind": "longNeck",
+     "ml": 355
     }
    ],
    "aliases": [],
@@ -1850,7 +2419,7 @@
     "url": "https://cervejaitaipava.com.br/produto/pilsen/",
     "label": "Itaipava (site oficial) e rótulo da lata 350 ml"
    },
-   "note": "Teor lido no rótulo da lata de 350 ml (código 7897395020101, via Open Food Facts).",
+   "note": "Teor lido no rótulo da lata de 350 ml (código 7897395020101, via Open Food Facts). Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "abvEvidence": "secondary",
    "abvSource": {
     "url": "https://world.openfoodfacts.org/product/7897395020101",
@@ -1858,16 +2427,30 @@
    },
    "i18n": {
     "en": {
-     "note": "ABV read from the 350 ml can label (code 7897395020101, via Open Food Facts).",
+     "note": "ABV read from the 350 ml can label (code 7897395020101, via Open Food Facts). Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs.",
      "sourceLabel": "Itaipava (official website) and 350 ml can label",
      "abvSourceLabel": "350 ml can label, transcribed on Open Food Facts (secondary source)"
     },
     "es": {
-     "note": "Graduación leída en la etiqueta de la lata de 350 ml (código 7897395020101, vía Open Food Facts).",
+     "note": "Graduación leída en la etiqueta de la lata de 350 ml (código 7897395020101, vía Open Food Facts). Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados.",
      "sourceLabel": "Itaipava (sitio oficial) y etiqueta de la lata de 350 ml",
      "abvSourceLabel": "Etiqueta de la lata de 350 ml, transcrita en Open Food Facts (fuente secundaria)"
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07897395010126",
+      "label": "Cadastro GTIN 07897395010126 (Systax): cerveja pilsen itaipava 355ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 355 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "itaipava-premium",
@@ -1926,21 +2509,42 @@
     "Lúpulo",
     "Malte de cevada"
    ],
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "longNeck",
+     "ml": 330
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.grupopetropolis.com.br/itaipava-apresenta-a-sua-cerveja-100-malte/",
     "label": "Grupo Petrópolis (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Grupo Petrópolis (official website)"
+     "sourceLabel": "Grupo Petrópolis (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Grupo Petrópolis (sitio oficial)"
+     "sourceLabel": "Grupo Petrópolis (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07897395001001",
+      "label": "Cadastro GTIN 07897395001001 (Systax): cerveja puro malte 100 itaipava 330ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 330 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "itaipava-zero",
@@ -1993,6 +2597,14 @@
     {
      "kind": "can",
      "ml": 350
+    },
+    {
+     "kind": "longNeck",
+     "ml": 355
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
     }
    ],
    "aliases": [],
@@ -2000,15 +2612,40 @@
     "url": "https://cervejaitaipava.com.br/produto/malzbier/",
     "label": "Itaipava (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Itaipava (official website)"
+     "sourceLabel": "Itaipava (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Itaipava (sitio oficial)"
+     "sourceLabel": "Itaipava (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07897395010164",
+      "label": "Cadastro GTIN 07897395010164 (Systax): cerveja malzbier itaipava 355ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 355 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07897395010188",
+      "label": "Cadastro GTIN 07897395010188 (Systax): cerveja malzbier itaipava 600ml garrafa vidro retornavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 600 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "petra-origem",
@@ -2018,21 +2655,42 @@
    "style": "American Lager",
    "abv": 4.8,
    "ingredients": null,
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "longNeck",
+     "ml": 330
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.cervejapetra.com.br/cerveja/petra-origem-puro-malte/",
     "label": "Petra (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Petra (official website)"
+     "sourceLabel": "Petra (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Petra (sitio oficial)"
+     "sourceLabel": "Petra (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07897395001032",
+      "label": "Cadastro GTIN 07897395001032 (Systax): cerveja puro malte petra origem 330ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 330 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "petra-stark-bier",
@@ -2042,21 +2700,42 @@
    "style": null,
    "abv": 8.2,
    "ingredients": null,
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 500
+    }
+   ],
    "aliases": [],
    "source": {
     "url": "https://www.cervejapetra.com.br/cerveja/petra-stark-bier/",
     "label": "Petra (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "i18n": {
     "en": {
-     "sourceLabel": "Petra (official website)"
+     "sourceLabel": "Petra (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Petra (sitio oficial)"
+     "sourceLabel": "Petra (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07897395020507",
+      "label": "Cadastro GTIN 07897395020507 (Systax): cerveja puro malte forte tipo pilsen petra stark bier 500ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 500 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "black-princess-chopp-gold",
@@ -2201,7 +2880,24 @@
    "style": "Vodka",
    "abv": 40.0,
    "ingredients": null,
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 50
+    },
+    {
+     "kind": "bottle",
+     "ml": 200
+    },
+    {
+     "kind": "bottle",
+     "ml": 750
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    }
+   ],
    "aliases": [
     "absolut vodka"
    ],
@@ -2209,20 +2905,61 @@
     "url": "https://www.absolut.com/en/vodka-guide/vodka-basics/understanding-vodka-alcohol-content/",
     "label": "Absolut (site oficial)"
    },
-   "note": "Teor informado pela marca para a Original. Confira o rótulo da garrafa vendida no Brasil.",
+   "note": "Teor informado pela marca para a Original. Confira o rótulo da garrafa vendida no Brasil. Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "roles": [
     "vodka"
    ],
    "i18n": {
     "en": {
-     "note": "ABV given by the brand for the Original. Check the label of the bottle sold in Brazil.",
+     "note": "ABV given by the brand for the Original. Check the label of the bottle sold in Brazil. Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs.",
      "sourceLabel": "Absolut (official website)"
     },
     "es": {
-     "note": "Graduación indicada por la marca para la Original. Revisa la etiqueta de la botella vendida en Brasil.",
+     "note": "Graduación indicada por la marca para la Original. Revisa la etiqueta de la botella vendida en Brasil. Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados.",
      "sourceLabel": "Absolut (sitio oficial)"
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07312040017508",
+      "label": "Cadastro GTIN 07312040017508 (Systax): vodka sueca absolut 50ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 50 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07312040017201",
+      "label": "Cadastro GTIN 07312040017201 (Systax): vodka tradicional regular absolut 200 ml bolso garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 200 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07312040017010",
+      "label": "Cadastro GTIN 07312040017010 (Systax): vodka absolut 750ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 750 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07312040017034",
+      "label": "Cadastro GTIN 07312040017034 (Systax): vodka sueca absolut 1l garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 1000 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "bombay-sapphire-london-dry-gin",
@@ -2502,7 +3239,20 @@
    "style": "Cachaça",
    "abv": 39.0,
    "ingredients": null,
-   "presentations": [],
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 500
+    },
+    {
+     "kind": "bottle",
+     "ml": 700
+    },
+    {
+     "kind": "bottle",
+     "ml": 965
+    }
+   ],
    "aliases": [
     "cachaca 51",
     "pirassununga"
@@ -2511,18 +3261,52 @@
     "url": "https://cachaca51.com.br/",
     "label": "Cachaça 51 (site oficial)"
    },
-   "note": null,
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
    "roles": [
     "cachaca"
    ],
    "i18n": {
     "en": {
-     "sourceLabel": "Cachaça 51 (official website)"
+     "sourceLabel": "Cachaça 51 (official website)",
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
     },
     "es": {
-     "sourceLabel": "Cachaça 51 (sitio oficial)"
+     "sourceLabel": "Cachaça 51 (sitio oficial)",
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
     }
-   }
+   },
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07896002110020",
+      "label": "Cadastro GTIN 07896002110020 (Systax): cachaca 51 pirassununga 500ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 500 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07896002100441",
+      "label": "Cadastro GTIN 07896002100441 (Systax): cachaca 51 pirassununga 700ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 700 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07896002100014",
+      "label": "Cadastro GTIN 07896002100014 (Systax): cachaca 51 pirassununga 965ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 965 ml",
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+     }
+    ]
+   },
+   "retrieved": "2026-10-14"
   },
   {
    "id": "velho-barreiro-gold-black-label",
@@ -3892,6 +4676,318 @@
    },
    "retrieved": "2026-10-14",
    "market": "US"
+  },
+  {
+   "id": "devassa-tropical",
+   "brand": "Devassa",
+   "name": "Tropical",
+   "category": "beer",
+   "style": null,
+   "abv": 4.7,
+   "ingredients": [
+    "Água",
+    "Malte",
+    "Milho",
+    "Lúpulo"
+   ],
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "bottle",
+     "ml": 300
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "can",
+     "ml": 473
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    }
+   ],
+   "aliases": [
+    "devassa",
+    "devassa tropical"
+   ],
+   "source": {
+    "url": "https://www.devassa.com.br/produtos/devassa-garrafa/",
+    "label": "Devassa (site oficial)"
+   },
+   "note": "Receita nova (2026): deixou de ser puro malte. Teor e ingredientes iguais nas páginas da garrafa e da lata.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Devassa (official website)",
+     "note": "New recipe (2026): no longer all-malt. ABV and ingredients are the same on the bottle and can pages."
+    },
+    "es": {
+     "sourceLabel": "Devassa (sitio oficial)",
+     "note": "Receta nueva (2026): dejó de ser puro malta. Graduación e ingredientes iguales en las páginas de botella y lata."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://www.devassa.com.br/produtos/devassa-garrafa/",
+      "label": "Devassa Garrafa (site oficial): \"Teor alcólico 4,7% vol.\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary"
+     },
+     {
+      "url": "https://www.devassa.com.br/produtos/devassa-lata/",
+      "label": "Devassa Lata (site oficial): \"Teor alcólico 4,7% vol.\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary"
+     }
+    ],
+    "ingredients": [
+     {
+      "url": "https://www.devassa.com.br/produtos/devassa-garrafa/",
+      "label": "Devassa Garrafa (site oficial): \"Água, malte, milho e lúpulo.\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://www.devassa.com.br/produtos/devassa-garrafa/",
+      "label": "Devassa Garrafa (site oficial): 300 ml, 600 ml, 1 L",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "variant": "bottle 300/600/1000 ml"
+     },
+     {
+      "url": "https://www.devassa.com.br/produtos/devassa-lata/",
+      "label": "Devassa Lata (site oficial): 269, 350, 473",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "variant": "can 269/350/473 ml"
+     }
+    ]
+   }
+  },
+  {
+   "id": "licor-43-original",
+   "brand": "Licor 43",
+   "name": "Original",
+   "category": "spirit",
+   "style": "Licor",
+   "abv": 31.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "licor 43",
+    "cuarenta y tres"
+   ],
+   "source": {
+    "url": "https://licor43.com/pt-br/perguntas-frequentes/",
+    "label": "Licor 43 (site oficial, Brasil)"
+   },
+   "note": "A página informa só \"43 ingredientes\" (receita secreta); tamanhos não informados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Licor 43 (official website, Brazil)",
+     "note": "The page only says \"43 ingredients\" (secret recipe); sizes not stated."
+    },
+    "es": {
+     "sourceLabel": "Licor 43 (sitio oficial, Brasil)",
+     "note": "La página solo dice \"43 ingredientes\" (receta secreta); tamaños no indicados."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://licor43.com/pt-br/perguntas-frequentes/",
+      "label": "Licor 43, perguntas frequentes (pt-BR): \"O Licor 43 Original tem 31% de teor alcoólico.\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary"
+     }
+    ]
+   }
+  },
+  {
+   "id": "petra-ultra",
+   "brand": "Petra",
+   "name": "Ultra",
+   "category": "beer",
+   "style": null,
+   "abv": 4.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "longNeck",
+     "ml": 275
+    }
+   ],
+   "aliases": [
+    "petra ultra"
+   ],
+   "source": {
+    "url": "https://supervarejo.com.br/lan%C3%A7amento/grupo-petropolis-reposiciona-marca-petra-cerveja-puro-malte",
+    "label": "SuperVarejo, lançamento da Petra Ultra (imprensa)"
+   },
+   "evidence": "secondary",
+   "abvEvidence": "secondary",
+   "abvSource": {
+    "url": "https://supervarejo.com.br/lan%C3%A7amento/grupo-petropolis-reposiciona-marca-petra-cerveja-puro-malte",
+    "label": "SuperVarejo (imprensa, lançamento do Grupo Petrópolis)"
+   },
+   "note": "Dados de matéria de imprensa sobre o lançamento; o site oficial bloqueia acesso automático. Confira o rótulo.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "SuperVarejo, Petra Ultra launch (press)",
+     "abvSourceLabel": "SuperVarejo (press, Grupo Petrópolis launch)",
+     "note": "Data from a press article about the launch; the official site blocks automated access. Check the label."
+    },
+    "es": {
+     "sourceLabel": "SuperVarejo, lanzamiento de Petra Ultra (prensa)",
+     "abvSourceLabel": "SuperVarejo (prensa, lanzamiento del Grupo Petrópolis)",
+     "note": "Datos de una nota de prensa sobre el lanzamiento; el sitio oficial bloquea el acceso automático. Revisa la etiqueta."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://supervarejo.com.br/lan%C3%A7amento/grupo-petropolis-reposiciona-marca-petra-cerveja-puro-malte",
+      "label": "SuperVarejo: \"Com 4% de teor alcoólico\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://supervarejo.com.br/lan%C3%A7amento/grupo-petropolis-reposiciona-marca-petra-cerveja-puro-malte",
+      "label": "SuperVarejo: lata de 269 ml e long neck de 275 ml",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 269 / longNeck 275 ml"
+     }
+    ]
+   }
+  },
+  {
+   "id": "bohemia-puro-malte",
+   "brand": "Bohemia",
+   "name": "Puro Malte",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 300
+    },
+    {
+     "kind": "longNeck",
+     "ml": 330
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    },
+    {
+     "kind": "can",
+     "ml": 473
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    }
+   ],
+   "aliases": [
+    "bohemia"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07891149840915",
+    "label": "Cadastros GTIN da Bohemia (Systax)"
+   },
+   "evidence": "secondary",
+   "note": "Só as embalagens, por cadastros de código de barras. O site oficial bloqueia acesso automático e as fontes secundárias divergem no teor (4,95% x 5%), então o teor ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Bohemia barcode records (Systax)",
+     "note": "Packaging only, from barcode records. The official site blocks automated access and secondary sources disagree on the ABV (4.95% vs 5%), so the ABV is left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Bohemia (Systax)",
+     "note": "Solo los envases, según registros de código de barras. El sitio oficial bloquea el acceso automático y las fuentes secundarias no coinciden en la graduación (4,95% vs 5%), así que quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991013772",
+      "label": "Cadastro GTIN 07891991013772 (Systax): cerveja puro malte tipo lager bohemia 300ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 300 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991302777",
+      "label": "Cadastro GTIN 07891991302777 (Systax): cerveja puro malte tipo lager bohemia 330ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "longNeck 330 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891149840915",
+      "label": "Cadastro GTIN 07891149840915 (Systax): cerveja puro malte lager bohemia 350ml lata aluminio sleek descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 350 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991014236",
+      "label": "Cadastro GTIN 07891991014236 (Systax): cerveja lager pilsen bohemia 473ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "can 473 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991294393",
+      "label": "Cadastro GTIN 07891991294393 (Systax): cerveja puro malte lager bohemia 600ml garrafa vidro descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "variant": "bottle 600 ml"
+     }
+    ]
+   }
   }
  ]
 }

@@ -10,11 +10,15 @@ A research file is {"patches": [...], "new": [...], "unresolved": [...]}:
   differs from what is already there is reported as a conflict and never
   overwrites it. Nothing is ever averaged.
 - new products are skipped when the id or the brand+name already exists.
+- fieldSources {field: [{url, label, retrieved, market, evidence, variant?,
+  note?}]} records where each filled field came from; entries of a patch are
+  appended only for the fields that patch actually filled.
 Ids never change, so favorites and past records (which keep their own
 snapshot) are not affected.
 """
 import json
 import os
+import re
 import sys
 import unicodedata
 
@@ -22,6 +26,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, '..', 'assets', 'catalog', 'catalog_v1.json')
 CATEGORIES = {'beer', 'draft', 'nonAlcoholic', 'spirit', 'wine'}
 KINDS = {'can', 'longNeck', 'bottle', 'glass', 'shot'}
+EVIDENCE = {'primary', 'secondary'}
+SOURCED = {'abv', 'abvVariants', 'ingredients', 'presentations', 'style', 'note'}
 FILL = ['style', 'abv', 'abvVariants', 'ingredients', 'presentations', 'note',
         'abvEvidence', 'abvSource', 'evidence', 'roles']
 
@@ -68,6 +74,23 @@ def validate(p):
         errs.append('bad source')
     if p.get('abvEvidence') == 'secondary' and empty(p.get('abvSource')):
         errs.append('secondary abv without abvSource')
+    for field, entries in (p.get('fieldSources') or {}).items():
+        if field not in SOURCED:
+            errs.append(f'fieldSources.{field} unknown field')
+        for e in entries:
+            if not str(e.get('url', '')).startswith('http') or empty(e.get('label')):
+                errs.append(f'fieldSources.{field} without url/label')
+            if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', str(e.get('retrieved', ''))):
+                errs.append(f'fieldSources.{field} without retrieved date')
+            if empty(e.get('market')):
+                errs.append(f'fieldSources.{field} without market')
+            if e.get('evidence') not in EVIDENCE:
+                errs.append(f'fieldSources.{field} evidence must be primary/secondary')
+    if p.get('retrieved') and not re.fullmatch(r'\d{4}-\d{2}-\d{2}', p['retrieved']):
+        errs.append('bad retrieved date')
+    for a in p.get('aliases') or []:
+        if not isinstance(a, str) or not a.strip():
+            errs.append(f'bad alias {a!r}')
     i18n = p.get('i18n') or {}
     for lang in ('en', 'es'):
         t = i18n.get(lang) or {}
@@ -98,7 +121,25 @@ def check(doc):
             bad += 1
             print(f"  {p.get('id')}: {e}")
     print(f"{len(doc['products'])} products, {bad} problems")
+    suspicious(doc)
     return bad
+
+
+def _core(p):
+    """Brand + name without packaging words, to spot the same beer twice."""
+    s = norm(f"{p.get('brand')} {p.get('name')}")
+    s = re.sub(r'\b(cerveja|beer|lata|garrafa|long ?neck|\d+ ?ml)\b', ' ', s)
+    return re.sub(r'[^a-z0-9]+', '', s)
+
+
+def suspicious(doc):
+    """Warnings only: products whose brand+name collapse to the same core."""
+    seen = {}
+    for p in doc['products']:
+        k = _core(p)
+        if k in seen:
+            print(f"  warning: {p['id']} looks like {seen[k]}")
+        seen[k] = p['id']
 
 
 def coverage(doc):
@@ -114,7 +155,8 @@ def coverage(doc):
               f"  abv-variants {f(lambda p: p.get('abvVariants')):3}"
               f"  ingred {f(lambda p: p.get('ingredients')):3}"
               f"  sizes {f(lambda p: p.get('presentations')):3}"
-              f"  style {f(lambda p: p.get('style')):3}")
+              f"  style {f(lambda p: p.get('style')):3}"
+              f"  field-sourced {f(lambda p: p.get('fieldSources')):3}")
     row('TOTAL', P)
     for c in sorted(cats):
         row(c, cats[c])
@@ -137,6 +179,8 @@ def merge(doc, files, write):
                 stats['skipped'] += 1
                 continue
             changed = False
+            filled = set()
+            added_ml = None  # None = the whole list was filled
             for k in FILL:
                 if k not in pt or empty(pt[k]):
                     continue
@@ -149,6 +193,7 @@ def merge(doc, files, write):
                         continue
                     p[k] = pt[k]
                     changed = True
+                    filled.add(k)
                     stats['filled'] += 1
                 elif p[k] != pt[k]:
                     if k == 'presentations':
@@ -158,6 +203,8 @@ def merge(doc, files, write):
                         if add:
                             p[k] = p[k] + add
                             changed = True
+                            filled.add(k)
+                            added_ml = {x['ml'] for x in add}
                             stats['filled'] += 1
                         continue
                     print(f"  conflict {p['id']}.{k}: keep {p[k]!r}, source says {pt[k]!r}")
@@ -168,6 +215,18 @@ def merge(doc, files, write):
                     if k not in cur and not empty(v):
                         cur[k] = v
                         changed = True
+            for k, entries in (pt.get('fieldSources') or {}).items():
+                if k not in filled:
+                    continue
+                have = p.setdefault('fieldSources', {}).setdefault(k, [])
+                urls = {e['url'] for e in have}
+                for e in entries:
+                    m = re.search(r'(\d+) ml', e.get('variant') or '')
+                    if (k == 'presentations' and added_ml is not None and m
+                            and int(m.group(1)) not in added_ml):
+                        continue  # that size was already documented
+                    if e['url'] not in urls:
+                        have.append(e)
             if changed:
                 if pt.get('retrieved'):
                     p['retrieved'] = pt['retrieved']

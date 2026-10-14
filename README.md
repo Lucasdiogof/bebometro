@@ -126,11 +126,11 @@ The app records consumption; it does **not** measure blood or breath alcohol, ce
 Feature-based organization separates domain, data and presentation, with Cubits for UI state and `get_it` for dependency injection.
 
 - **Local first:** SharedPreferences stores records and a durable, versioned pending-upload queue.
-- **Account:** required, with e-mail and password (Supabase Auth, PKCE links). Data is kept per account on the device and works offline once signed in. Records from older versions (anonymous session) are preserved and can be converted, imported or exported.
+- **Account:** required, with e-mail and password (Supabase Auth). Sign-up opens the app right away (no e-mail confirmation). A forgotten password is reset with a 6-digit code sent by e-mail and typed in the app, on any device. Data is kept per account on the device and works offline once signed in.
 - **Supabase:** PostgreSQL with versioned RLS migrations.
 - **Uploads and reads:** stable client UUIDs, upserts, retries and a manual synchronization action. A pending marker is cleared only after server confirmation for that version. Reading from the cloud restores the history on another device (paged, resumable); concurrent edits are detected by a server revision and listed under "Changes to resolve".
 - **Dependencies:** saved places upload before dependent outings, and outings before their drink entries. Rejected links remain pending rather than being silently removed.
-- **Current limitation:** there is no cloud pull or permanent-account recovery flow. Uploading data does not yet provide restoration on another device. Some preferences remain local.
+- **Current limitation:** some preferences (language, table and lock-screen settings) stay on the device and are not synchronized.
 
 ## Tech stack
 
@@ -198,7 +198,7 @@ For web, add `-d chrome` to the run command. These are setup instructions, not e
 - **Not verified:** the label and menu parsers are heuristic and were not tested on real photos, so no accuracy is claimed. The `20261015000000` migration was applied by the maintainer; synchronization of these tables and photos from the app has not been observed.
 - **Scope rule (implemented):** custom items, photos and menu prices belong to the outing ID, even across midnight. They do not enter the global catalog, do not automatically become reusable personal items and do not feed future-visit price suggestions.
 - **Places and map:** written in code, not executed; search, map and GPS have never been observed working. They need the Geoapify key (not configured yet) and `flutter pub get` (new packages). Migration `20261017000000` was applied by the maintainer.
-- **Account and sync:** written in code, not executed. Migration `20261018000000` was applied by the maintainer; they still need the deployed `delete-account` function and the e-mail settings in Supabase (SMTP, redirects, manual linking, templates); none of this has been observed working.
+- **Account and sync:** written in code, not executed. Migration `20261018000000` was applied by the maintainer; SMTP is configured; the recovery-code template and the 6-digit code length still have to be applied (`scripts/apply_recovery_code.py`) and the full `delete-account` check is pending. None of this has been observed working in the app.
 - **Languages (pt-BR, en, es):** official Flutter localization with ARB files, a manual language choice in Settings (device preference, available before sign-in, switches without restarting), localized catalog/recipe/card content, native lock-screen texts sent by the app, and language-independent exports. Written in code, not compiled or run. Supabase e-mail templates for the three languages are prepared in `supabase/email-templates/` but **not applied**; iOS permission texts follow the system language. See the [i18n checklist](docs/i18n-checklist.md).
 - **Later:** regional prices backed by real observations and additional catalog coverage.
 - **Pending validation:** dependency resolution, compilation, device/browser flows, visual review and end-to-end synchronization. The full-screen beer physics and sensor axes are implemented in code but have not been observed on a device.
