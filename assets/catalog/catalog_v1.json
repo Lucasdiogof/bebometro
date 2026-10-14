@@ -1,5 +1,5 @@
 {
- "version": 5,
+ "version": 6,
  "consultedOn": "2026-10-12",
  "description": "Catálogo inicial do Bebômetro. Campos ausentes são desconhecidos, nunca zero.",
  "products": [
@@ -77,7 +77,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 250 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -177,7 +178,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 350 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -281,7 +283,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 350 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891149104956",
@@ -290,7 +293,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 355 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -393,7 +397,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 250 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891149107704",
@@ -402,7 +407,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 275 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891149200504",
@@ -411,7 +417,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 350 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891149101474",
@@ -420,7 +427,19 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 500 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
+     }
+    ],
+    "abv": [
+     {
+      "url": "https://world.openfoodfacts.org/product/7891149103102",
+      "label": "Foto da lata de 269 ml (Open Food Facts): \"4,7% VOL ALC\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "label",
+      "variant": "can 269 ml"
      }
     ]
    },
@@ -570,15 +589,15 @@
     "url": "https://www.ambev.com.br/marcas/cervejas/original/original",
     "label": "Ambev (site oficial)"
    },
-   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha.",
+   "note": "Alguns tamanhos vêm de cadastros de código de barras (Systax, fonte secundária) e podem incluir embalagens fora de linha. Divergência: a lata de 350 ml fotografada (Open Food Facts) diz 5,0%; o valor anterior (4,9%) foi mantido até resolver a variante.",
    "i18n": {
     "en": {
      "sourceLabel": "Ambev (official website)",
-     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs."
+     "note": "Some sizes come from barcode records (Systax, secondary source) and may include discontinued packs. Discrepancy: the photographed 350 ml can (Open Food Facts) says 5.0%; the previous value (4.9%) is kept until the variant is resolved."
     },
     "es": {
      "sourceLabel": "Ambev (sitio oficial)",
-     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados."
+     "note": "Algunos tamaños vienen de registros de código de barras (Systax, fuente secundaria) y pueden incluir envases descontinuados. Discrepancia: la lata de 350 ml fotografiada (Open Food Facts) dice 5,0%; se mantuvo el valor anterior (4,9%) hasta resolver la variante."
     }
    },
    "fieldSources": {
@@ -590,7 +609,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 269 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991295017",
@@ -599,7 +619,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 473 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991304733",
@@ -608,7 +629,20 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 1000 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
+     }
+    ],
+    "abv": [
+     {
+      "url": "https://world.openfoodfacts.org/product/7891991015493",
+      "label": "Foto da lata de 350 ml (Open Food Facts): \"[teor alco]ólico 5,0% vol.\" — diverge do valor do catálogo (4,9%)",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "label",
+      "variant": "can 350 ml",
+      "note": "Divergência não resolvida: o valor anterior (4,9%) foi mantido."
      }
     ]
    },
@@ -788,7 +822,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 269 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991304986",
@@ -797,7 +832,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 300 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991015523",
@@ -806,7 +842,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 410 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991014786",
@@ -815,7 +852,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 550 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -886,7 +924,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 269 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991295055",
@@ -895,7 +934,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 350 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991305846",
@@ -904,7 +944,19 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 473 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
+     }
+    ],
+    "abv": [
+     {
+      "url": "https://world.openfoodfacts.org/product/7891991306324",
+      "label": "Foto da lata de 269 ml (Open Food Facts): \"4,6% Vol. Alc.\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "label",
+      "variant": "can 269 ml"
      }
     ]
    },
@@ -988,7 +1040,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 275 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991013024",
@@ -997,7 +1050,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 550 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891149103256",
@@ -1006,7 +1060,19 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 970 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
+     }
+    ],
+    "abv": [
+     {
+      "url": "https://world.openfoodfacts.org/product/7891991303309",
+      "label": "Foto da lata de 473 ml (Open Food Facts): \"5,0% Vol\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "label",
+      "variant": "can 473 ml"
      }
     ]
    },
@@ -1017,7 +1083,7 @@
    "brand": "Spaten",
    "name": "Spaten",
    "category": "beer",
-   "style": null,
+   "style": "Munich Helles",
    "abv": 5.2,
    "ingredients": [
     "Água",
@@ -1059,7 +1125,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 269 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991305440",
@@ -1068,7 +1135,29 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 330 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
+     }
+    ],
+    "style": [
+     {
+      "url": "https://world.openfoodfacts.org/product/7891991305440",
+      "label": "Foto do rótulo da long neck 330 ml (Open Food Facts): \"CERVEJA PURO MALTE MUNICH HELLES\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "label"
+     }
+    ],
+    "abv": [
+     {
+      "url": "https://world.openfoodfacts.org/product/7891991305440",
+      "label": "Foto do rótulo da long neck 330 ml (Open Food Facts): \"5,2% VOL. ALC.\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "label",
+      "variant": "longNeck 330 ml"
      }
     ]
    },
@@ -1127,7 +1216,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 330 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991294263",
@@ -1136,7 +1226,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 350 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991295116",
@@ -1145,7 +1236,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 600 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -1226,7 +1318,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 300 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -1299,7 +1392,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 300 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -1375,7 +1469,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 350 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -1467,7 +1562,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 350 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -1818,7 +1914,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 350 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891149107476",
@@ -1827,7 +1924,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 355 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891149108138",
@@ -1836,7 +1934,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "can 473 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -2213,7 +2312,8 @@
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "primary",
-      "variant": "can 473 ml"
+      "variant": "can 473 ml",
+      "type": "official"
      },
      {
       "url": "https://www.kaiser.com.br/produtos/kaiser-600ml/",
@@ -2221,7 +2321,8 @@
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "primary",
-      "variant": "bottle 600 ml"
+      "variant": "bottle 600 ml",
+      "type": "official"
      }
     ]
    },
@@ -2446,7 +2547,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 355 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -2540,7 +2642,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 330 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -2632,7 +2735,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 355 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07897395010188",
@@ -2641,7 +2745,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 600 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -2686,7 +2791,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "longNeck 330 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -2731,7 +2837,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 500 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -2928,7 +3035,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 50 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07312040017201",
@@ -2937,7 +3045,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 200 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07312040017010",
@@ -2946,7 +3055,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 750 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07312040017034",
@@ -2955,7 +3065,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 1000 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -3284,7 +3395,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 500 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07896002100441",
@@ -3293,7 +3405,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 700 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07896002100014",
@@ -3302,7 +3415,8 @@
       "market": "BR",
       "evidence": "secondary",
       "variant": "bottle 965 ml",
-      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda."
+      "note": "Registro fiscal do código de barras (GS1 Brasil, prefixo 789); comprova a embalagem, não que ela ainda esteja à venda.",
+      "type": "packagingRegistry"
      }
     ]
    },
@@ -4744,14 +4858,16 @@
       "label": "Devassa Garrafa (site oficial): \"Teor alcólico 4,7% vol.\"",
       "retrieved": "2026-10-14",
       "market": "BR",
-      "evidence": "primary"
+      "evidence": "primary",
+      "type": "official"
      },
      {
       "url": "https://www.devassa.com.br/produtos/devassa-lata/",
       "label": "Devassa Lata (site oficial): \"Teor alcólico 4,7% vol.\"",
       "retrieved": "2026-10-14",
       "market": "BR",
-      "evidence": "primary"
+      "evidence": "primary",
+      "type": "official"
      }
     ],
     "ingredients": [
@@ -4760,7 +4876,8 @@
       "label": "Devassa Garrafa (site oficial): \"Água, malte, milho e lúpulo.\"",
       "retrieved": "2026-10-14",
       "market": "BR",
-      "evidence": "primary"
+      "evidence": "primary",
+      "type": "official"
      }
     ],
     "presentations": [
@@ -4770,7 +4887,8 @@
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "primary",
-      "variant": "bottle 300/600/1000 ml"
+      "variant": "bottle 300/600/1000 ml",
+      "type": "official"
      },
      {
       "url": "https://www.devassa.com.br/produtos/devassa-lata/",
@@ -4778,7 +4896,8 @@
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "primary",
-      "variant": "can 269/350/473 ml"
+      "variant": "can 269/350/473 ml",
+      "type": "official"
      }
     ]
    }
@@ -4820,7 +4939,8 @@
       "label": "Licor 43, perguntas frequentes (pt-BR): \"O Licor 43 Original tem 31% de teor alcoólico.\"",
       "retrieved": "2026-10-14",
       "market": "BR",
-      "evidence": "primary"
+      "evidence": "primary",
+      "type": "official"
      }
     ]
    }
@@ -4878,7 +4998,8 @@
       "label": "SuperVarejo: \"Com 4% de teor alcoólico\"",
       "retrieved": "2026-10-14",
       "market": "BR",
-      "evidence": "secondary"
+      "evidence": "secondary",
+      "type": "secondary"
      }
     ],
     "presentations": [
@@ -4888,7 +5009,8 @@
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "secondary",
-      "variant": "can 269 / longNeck 275 ml"
+      "variant": "can 269 / longNeck 275 ml",
+      "type": "secondary"
      }
     ]
    }
@@ -4952,7 +5074,8 @@
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "secondary",
-      "variant": "bottle 300 ml"
+      "variant": "bottle 300 ml",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991302777",
@@ -4960,7 +5083,8 @@
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "secondary",
-      "variant": "longNeck 330 ml"
+      "variant": "longNeck 330 ml",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891149840915",
@@ -4968,7 +5092,8 @@
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "secondary",
-      "variant": "can 350 ml"
+      "variant": "can 350 ml",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991014236",
@@ -4976,7 +5101,8 @@
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "secondary",
-      "variant": "can 473 ml"
+      "variant": "can 473 ml",
+      "type": "packagingRegistry"
      },
      {
       "url": "https://www.systax.com.br/ean/07891991294393",
@@ -4984,9 +5110,1198 @@
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "secondary",
-      "variant": "bottle 600 ml"
+      "variant": "bottle 600 ml",
+      "type": "packagingRegistry"
      }
     ]
+   }
+  },
+  {
+   "id": "fest-drinks-gin-tonica",
+   "brand": "Fest Drinks",
+   "name": "Gin Tônica",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": 7.9,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "fest drinks",
+    "fest gin tônica",
+    "itaipava fest drinks"
+   ],
+   "source": {
+    "url": "https://cervejaitaipava.com.br/produto/fest-drinks/",
+    "label": "Itaipava, página Fest Drinks (site oficial)"
+   },
+   "note": "A página oficial dá o teor de cada sabor, mas não lista ingredientes nem tamanhos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Itaipava, Fest Drinks page (official website)",
+     "note": "The official page gives each flavour's ABV but lists neither ingredients nor sizes."
+    },
+    "es": {
+     "sourceLabel": "Itaipava, página Fest Drinks (sitio oficial)",
+     "note": "La página oficial da la graduación de cada sabor, pero no lista ingredientes ni tamaños."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://cervejaitaipava.com.br/produto/fest-drinks/",
+      "label": "Itaipava, Fest Drinks Gin Tônica: \"tem 7,9% de teor alcoólico\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ]
+   }
+  },
+  {
+   "id": "fest-drinks-intense-citrus",
+   "brand": "Fest Drinks",
+   "name": "Intense Citrus",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": 7.9,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "fest drinks",
+    "fest intense citrus",
+    "itaipava fest drinks"
+   ],
+   "source": {
+    "url": "https://cervejaitaipava.com.br/produto/fest-drinks/",
+    "label": "Itaipava, página Fest Drinks (site oficial)"
+   },
+   "note": "A página oficial dá o teor de cada sabor, mas não lista ingredientes nem tamanhos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Itaipava, Fest Drinks page (official website)",
+     "note": "The official page gives each flavour's ABV but lists neither ingredients nor sizes."
+    },
+    "es": {
+     "sourceLabel": "Itaipava, página Fest Drinks (sitio oficial)",
+     "note": "La página oficial da la graduación de cada sabor, pero no lista ingredientes ni tamaños."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://cervejaitaipava.com.br/produto/fest-drinks/",
+      "label": "Itaipava, Fest Drinks Intense Citrus: \"tem 7,9% de teor alcoólico\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ]
+   }
+  },
+  {
+   "id": "fest-drinks-spritz",
+   "brand": "Fest Drinks",
+   "name": "Spritz",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "fest drinks",
+    "fest spritz",
+    "itaipava fest drinks"
+   ],
+   "source": {
+    "url": "https://cervejaitaipava.com.br/produto/fest-drinks/",
+    "label": "Itaipava, página Fest Drinks (site oficial)"
+   },
+   "note": "A página oficial dá o teor de cada sabor, mas não lista ingredientes nem tamanhos.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Itaipava, Fest Drinks page (official website)",
+     "note": "The official page gives each flavour's ABV but lists neither ingredients nor sizes."
+    },
+    "es": {
+     "sourceLabel": "Itaipava, página Fest Drinks (sitio oficial)",
+     "note": "La página oficial da la graduación de cada sabor, pero no lista ingredientes ni tamaños."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://cervejaitaipava.com.br/produto/fest-drinks/",
+      "label": "Itaipava, Fest Drinks Spritz: \"Com 5,0% de teor alcoólico\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ]
+   }
+  },
+  {
+   "id": "51-ice-gin-tonica",
+   "brand": "51 Ice",
+   "name": "Gin Tônica",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": 7.9,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "51 ice",
+    "51 ice gin tonica"
+   ],
+   "source": {
+    "url": "https://gironews.com/lancamentos/chegou-a-51-ice-gin-tonica-65589/",
+    "label": "GiroNews, lançamento da 51 Ice Gin Tônica (imprensa)"
+   },
+   "note": "Dados de matéria de imprensa sobre o lançamento; ingredientes não informados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "GiroNews, 51 Ice Gin Tônica launch (press)",
+     "note": "Data from a press article about the launch; ingredients not stated.",
+     "abvSourceLabel": "GiroNews (press)"
+    },
+    "es": {
+     "sourceLabel": "GiroNews, lanzamiento de 51 Ice Gin Tônica (prensa)",
+     "note": "Datos de una nota de prensa sobre el lanzamiento; ingredientes no indicados.",
+     "abvSourceLabel": "GiroNews (prensa)"
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://gironews.com/lancamentos/chegou-a-51-ice-gin-tonica-65589/",
+      "label": "GiroNews: \"Tem teor alcoólico de 7,9%, em sua versão lata (269ml)\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "secondary"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07896002111782",
+      "label": "Cadastro GTIN 07896002111782 (Systax): bebida ice base cachaca gaseificada gin tonica 51 ice 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary",
+   "abvEvidence": "secondary",
+   "abvSource": {
+    "url": "https://gironews.com/lancamentos/chegou-a-51-ice-gin-tonica-65589/",
+    "label": "GiroNews (imprensa)"
+   }
+  },
+  {
+   "id": "51-ice-acai-guarana",
+   "brand": "51 Ice",
+   "name": "Açaí com Guaraná",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": 5.5,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "longNeck",
+     "ml": 275
+    }
+   ],
+   "aliases": [
+    "51 ice",
+    "51 ice acai"
+   ],
+   "source": {
+    "url": "https://gironews.com/lancamentos/foco-na-geracao-z-73700/",
+    "label": "GiroNews, lançamento da 51 Ice Açaí com Guaraná (imprensa)"
+   },
+   "note": "Dados de matéria de imprensa sobre o lançamento; ingredientes não informados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "GiroNews, 51 Ice Açaí com Guaraná launch (press)",
+     "note": "Data from a press article about the launch; ingredients not stated.",
+     "abvSourceLabel": "GiroNews (press)"
+    },
+    "es": {
+     "sourceLabel": "GiroNews, lanzamiento de 51 Ice Açaí com Guaraná (prensa)",
+     "note": "Datos de una nota de prensa sobre el lanzamiento; ingredientes no indicados.",
+     "abvSourceLabel": "GiroNews (prensa)"
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://gironews.com/lancamentos/foco-na-geracao-z-73700/",
+      "label": "GiroNews: \"tem teor alcoólico de 5,5%\" (embalagens de 275ml)",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "secondary"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07896002111928",
+      "label": "Cadastro GTIN 07896002111928 (Systax): bebida alcoolica mista gaseificada acai guarana 51 ice 275ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "longNeck 275 ml"
+     }
+    ]
+   },
+   "evidence": "secondary",
+   "abvEvidence": "secondary",
+   "abvSource": {
+    "url": "https://gironews.com/lancamentos/foco-na-geracao-z-73700/",
+    "label": "GiroNews (imprensa)"
+   }
+  },
+  {
+   "id": "skol-beats-gt",
+   "brand": "Skol Beats",
+   "name": "GT",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": 7.9,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "beats gt",
+    "skol beats gin tonica",
+    "beats"
+   ],
+   "source": {
+    "url": "https://tribunadejundiai.com.br/gastronomia/skol-beats-lanca-versao-gim-tonica-para-o-carnaval/",
+    "label": "Tribuna de Jundiaí, lançamento da Skol Beats GT (imprensa, 2020)"
+   },
+   "note": "Teor e lata de 269 ml da matéria de lançamento (2020); sabor gim tônica. Ingredientes não informados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Tribuna de Jundiaí, Skol Beats GT launch (press, 2020)",
+     "note": "ABV and 269 ml can from the 2020 launch article; gin and tonic flavour. Ingredients not stated.",
+     "abvSourceLabel": "Tribuna de Jundiaí (press)"
+    },
+    "es": {
+     "sourceLabel": "Tribuna de Jundiaí, lanzamiento de Skol Beats GT (prensa, 2020)",
+     "note": "Graduación y lata de 269 ml de la nota de lanzamiento (2020); sabor gin tonic. Ingredientes no indicados.",
+     "abvSourceLabel": "Tribuna de Jundiaí (prensa)"
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://tribunadejundiai.com.br/gastronomia/skol-beats-lanca-versao-gim-tonica-para-o-carnaval/",
+      "label": "Tribuna de Jundiaí: \"Com teor alcoólico de 7,9%\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "secondary"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://tribunadejundiai.com.br/gastronomia/skol-beats-lanca-versao-gim-tonica-para-o-carnaval/",
+      "label": "Tribuna de Jundiaí: \"disponível na versão 269 ml\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "secondary",
+      "variant": "can 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary",
+   "abvEvidence": "secondary",
+   "abvSource": {
+    "url": "https://tribunadejundiai.com.br/gastronomia/skol-beats-lanca-versao-gim-tonica-para-o-carnaval/",
+    "label": "Tribuna de Jundiaí (imprensa)"
+   }
+  },
+  {
+   "id": "skol-beats-mint-mojito",
+   "brand": "Skol Beats",
+   "name": "Mint Mojito",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": 7.9,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "beats mojito",
+    "beats"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07891991300865",
+    "label": "Cadastro GTIN da Skol Beats Mint Mojito (Systax)"
+   },
+   "note": "O teor está escrito na descrição do cadastro de código de barras (\"teor alcoólico 7,9\"), não na página do fabricante.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Skol Beats Mint Mojito barcode record (Systax)",
+     "note": "The ABV is written in the barcode record description (\"teor alcoólico 7,9\"), not on the maker's page.",
+     "abvSourceLabel": "Barcode record (Systax)"
+    },
+    "es": {
+     "sourceLabel": "Registro de código de barras de Skol Beats Mint Mojito (Systax)",
+     "note": "La graduación está escrita en la descripción del registro de código de barras (\"teor alcoólico 7,9\"), no en la página del fabricante.",
+     "abvSourceLabel": "Registro de código de barras (Systax)"
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991300865",
+      "label": "Cadastro GTIN 07891991300865 (Systax): bebida alcoolica mista gaseificada skol beats mint mojito 269ml teor alcoolico 7 9 lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "note": "Descrição fiscal: \"teor alcoólico 7,9\""
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991300865",
+      "label": "Cadastro GTIN 07891991300865 (Systax): bebida alcoolica mista gaseificada skol beats mint mojito 269ml teor alcoolico 7 9 lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary",
+   "abvEvidence": "secondary",
+   "abvSource": {
+    "url": "https://www.systax.com.br/ean/07891991300865",
+    "label": "Cadastro GTIN (Systax)"
+   }
+  },
+  {
+   "id": "skol-beats-senses",
+   "brand": "Skol Beats",
+   "name": "Senses",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "longNeck",
+     "ml": 269
+    },
+    {
+     "kind": "longNeck",
+     "ml": 313
+    },
+    {
+     "kind": "bottle",
+     "ml": 1000
+    }
+   ],
+   "aliases": [
+    "beats senses",
+    "beats"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07891149106912",
+    "label": "Cadastros GTIN de Skol Beats Senses (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco. O teor de 8% citado no lançamento (2014) não foi confirmado para a versão atual.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Skol Beats Senses barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank. The 8% quoted at launch (2014) was not confirmed for the current version."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Skol Beats Senses (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco. El 8% citado en el lanzamiento (2014) no se confirmó para la versión actual."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891149106912",
+      "label": "Cadastro GTIN 07891149106912 (Systax): bebida alcoolica mista gaseificada beats senses 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991301138",
+      "label": "Cadastro GTIN 07891991301138 (Systax): bebida alcoolica mista coquetel gaseificada beats senses 269ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "longNeck 269 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991302418",
+      "label": "Cadastro GTIN 07891991302418 (Systax): bebida alcoolica mista coquetel gaseificada beats senses 313ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "longNeck 313 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991306980",
+      "label": "Cadastro GTIN 07891991306980 (Systax): bebida alcoolica mista gaseificada beats senses 1l garrafa pet descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "bottle 1000 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "skol-beats-red-mix",
+   "brand": "Skol Beats",
+   "name": "Red Mix",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "longNeck",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "beats red mix",
+    "beats"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07891991307185",
+    "label": "Cadastros GTIN de Skol Beats Red Mix (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Skol Beats Red Mix barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Skol Beats Red Mix (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991307185",
+      "label": "Cadastro GTIN 07891991307185 (Systax): bebida alcoolica mista gaseificada frutas vermelhas beats red mix 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991307208",
+      "label": "Cadastro GTIN 07891991307208 (Systax): bebida alcoolica mista gaseificada frutas vermelhas beats red mix 269ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "longNeck 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "skol-beats-green-mix",
+   "brand": "Skol Beats",
+   "name": "Green Mix",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "longNeck",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "beats green mix",
+    "beats"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07891991307994",
+    "label": "Cadastros GTIN de Skol Beats Green Mix (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Skol Beats Green Mix barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Skol Beats Green Mix (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991307994",
+      "label": "Cadastro GTIN 07891991307994 (Systax): bebida alcoolica mista gaseificada beats green mix ice 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991308014",
+      "label": "Cadastro GTIN 07891991308014 (Systax): bebida alcoolica mista gaseificada beats green mix ice 269ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "longNeck 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "skol-beats-tropical",
+   "brand": "Skol Beats",
+   "name": "Tropical",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "longNeck",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "beats tropical",
+    "beats"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07891991306164",
+    "label": "Cadastros GTIN de Skol Beats Tropical (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Skol Beats Tropical barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Skol Beats Tropical (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991306164",
+      "label": "Cadastro GTIN 07891991306164 (Systax): bebida alcoolica mista gaseificada sabor gin frutas tropicais beats tropical 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07891991306188",
+      "label": "Cadastro GTIN 07891991306188 (Systax): bebida alcoolica mista gaseificada sabor gin frutas tropicais beats tropical 269ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "longNeck 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "skol-beats-caipi",
+   "brand": "Skol Beats",
+   "name": "Caipi Beats",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "caipi beats",
+    "beats caipirinha",
+    "beats"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07891991304252",
+    "label": "Cadastros GTIN de Skol Beats Caipi Beats (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Skol Beats Caipi Beats barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Skol Beats Caipi Beats (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991304252",
+      "label": "Cadastro GTIN 07891991304252 (Systax): bebida alcoolica mista gaseificada sabor caipirinha beats caipi beats 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "smirnoff-ice-original",
+   "brand": "Smirnoff Ice",
+   "name": "Original",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "longNeck",
+     "ml": 275
+    }
+   ],
+   "aliases": [
+    "smirnoff ice",
+    "ice limao"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07893218003474",
+    "label": "Cadastros GTIN de Smirnoff Ice Original (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Smirnoff Ice Original barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Smirnoff Ice Original (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07893218003474",
+      "label": "Cadastro GTIN 07893218003474 (Systax): bebida alcoolica mista gaseificada fermentada vodka sabor limao smirnoff ice original 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07893218003603",
+      "label": "Cadastro GTIN 07893218003603 (Systax): bebida alcoolica mista gaseificada fermentada vodka limao smirnoff ice original 275ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "longNeck 275 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "smirnoff-ice-green-apple",
+   "brand": "Smirnoff Ice",
+   "name": "Green Apple",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "smirnoff ice maca verde",
+    "smirnoff ice"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07893218003986",
+    "label": "Cadastros GTIN de Smirnoff Ice Green Apple (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Smirnoff Ice Green Apple barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Smirnoff Ice Green Apple (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07893218003986",
+      "label": "Cadastro GTIN 07893218003986 (Systax): bebida alcoolica mista gaseificada fermentada vodka sabor maca verde green apple smirnoff ice 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "51-ice-limao",
+   "brand": "51 Ice",
+   "name": "Limão",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
+   "aliases": [
+    "51 ice",
+    "51 ice limao"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07896002111126",
+    "label": "Cadastros GTIN de 51 Ice Limão (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "51 Ice Limão barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de 51 Ice Limão (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07896002111126",
+      "label": "Cadastro GTIN 07896002111126 (Systax): bebida ice base cachaca gaseificada limao 51 ice 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07896002110716",
+      "label": "Cadastro GTIN 07896002110716 (Systax): bebida ice base cachaca limao 51 ice 350ml lata aluminio",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 350 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "tanqueray-gin-tonic",
+   "brand": "Tanqueray",
+   "name": "Gin Tonic (pronto para beber)",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "tanqueray gin tonica",
+    "gin tonica lata"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07893218003931",
+    "label": "Cadastros GTIN de Tanqueray Gin Tonic (pronto para beber) (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Tanqueray Gin Tonic (pronto para beber) barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Tanqueray Gin Tonic (pronto para beber) (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07893218003931",
+      "label": "Cadastro GTIN 07893218003931 (Systax): bebida alcoolica mista coquetel gin tonica london dry tanqueray 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "gordons-gin-tonic",
+   "brand": "Gordon's",
+   "name": "Gin Tonic (pronto para beber)",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "gordons gin tonica",
+    "gin tonica lata"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07893218003771",
+    "label": "Cadastros GTIN de Gordon's Gin Tonic (pronto para beber) (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Gordon's Gin Tonic (pronto para beber) barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Gordon's Gin Tonic (pronto para beber) (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07893218003771",
+      "label": "Cadastro GTIN 07893218003771 (Systax): bebida alcoolica mista coquetel gaseificada gin tonic london dry gordon s 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "beefeater-gin-tonica",
+   "brand": "Beefeater",
+   "name": "Gin Tônica (pronto para beber)",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "beefeater gin tonica",
+    "gin tonica lata"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07891991302173",
+    "label": "Cadastros GTIN de Beefeater Gin Tônica (pronto para beber) (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Beefeater Gin Tônica (pronto para beber) barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Beefeater Gin Tônica (pronto para beber) (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991302173",
+      "label": "Cadastro GTIN 07891991302173 (Systax): bebida alcoolica mista gaseificada gin tonica sabor limao laranja beefeater london 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "isla-hard-seltzer-framboesa-amora",
+   "brand": "Isla",
+   "name": "Hard Seltzer Framboesa e Amora",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    }
+   ],
+   "aliases": [
+    "isla hard seltzer",
+    "hard seltzer"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07891991303255",
+    "label": "Cadastros GTIN de Isla Hard Seltzer Framboesa e Amora (Systax)"
+   },
+   "note": "Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje. Teor não encontrado em fonte aceitável; ficou em branco.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Isla Hard Seltzer Framboesa e Amora barcode records (Systax)",
+     "note": "Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today. ABV not found in an acceptable source; left blank."
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Isla Hard Seltzer Framboesa e Amora (Systax)",
+     "note": "Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy. Graduación no encontrada en una fuente aceptable; quedó en blanco."
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07891991303255",
+      "label": "Cadastro GTIN 07891991303255 (Systax): bebida alcoolica mista gaseificada gin sabor framboesa amora isla hard seltzer 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     }
+    ]
+   },
+   "evidence": "secondary"
+  },
+  {
+   "id": "smirnoff-ice-tropical",
+   "brand": "Smirnoff Ice",
+   "name": "Tropical",
+   "category": "readyToDrink",
+   "style": null,
+   "abv": 5.0,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "longNeck",
+     "ml": 275
+    }
+   ],
+   "aliases": [
+    "smirnoff ice tropical",
+    "smirnoff ice"
+   ],
+   "source": {
+    "url": "https://www.systax.com.br/ean/07893218003993",
+    "label": "Cadastros GTIN de Smirnoff Ice Tropical (Systax)"
+   },
+   "note": "Teor lido na foto do rótulo da long neck de 275 ml (\"GRAD. ALC. 5% vol.\", rótulo brasileiro), via Open Food Facts. Tamanhos por cadastro de código de barras (Systax): a embalagem existiu no mercado, não necessariamente à venda hoje.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Smirnoff Ice Tropical barcode records (Systax)",
+     "note": "ABV read on the 275 ml long neck label photo (\"GRAD. ALC. 5% vol.\", Brazilian label), via Open Food Facts. Sizes from barcode records (Systax): the package existed on the market, not necessarily on sale today.",
+     "abvSourceLabel": "Label photo, 275 ml long neck (Open Food Facts)"
+    },
+    "es": {
+     "sourceLabel": "Registros de código de barras de Smirnoff Ice Tropical (Systax)",
+     "note": "Graduación leída en la foto de la etiqueta de la long neck de 275 ml (\"GRAD. ALC. 5% vol.\", etiqueta brasileña), vía Open Food Facts. Tamaños según registros de código de barras (Systax): el envase existió en el mercado, no necesariamente a la venta hoy.",
+     "abvSourceLabel": "Foto de la etiqueta, long neck 275 ml (Open Food Facts)"
+    }
+   },
+   "retrieved": "2026-10-14",
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://www.systax.com.br/ean/07893218003993",
+      "label": "Cadastro GTIN 07893218003993 (Systax): bebida alcoolica mista gaseificada fermentada vodka sabor frutas tropicais tropical smirnoff ice 269ml lata aluminio descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "can 269 ml"
+     },
+     {
+      "url": "https://www.systax.com.br/ean/07893218004150",
+      "label": "Cadastro GTIN 07893218004150 (Systax): bebida alcoolica mista gaseificada vodka frutas tropicais tropical smirnoff ice 275ml long neck descartavel",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "packagingRegistry",
+      "variant": "longNeck 275 ml"
+     }
+    ],
+    "abv": [
+     {
+      "url": "https://world.openfoodfacts.org/product/7893218004150",
+      "label": "Foto do rótulo (Open Food Facts, imagem 1): \"GRAD. ALC. 5% vol.\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "secondary",
+      "type": "label",
+      "variant": "longNeck 275 ml"
+     }
+    ]
+   },
+   "evidence": "secondary",
+   "abvEvidence": "secondary",
+   "abvSource": {
+    "url": "https://world.openfoodfacts.org/product/7893218004150",
+    "label": "Foto do rótulo, long neck 275 ml (Open Food Facts)"
    }
   }
  ]

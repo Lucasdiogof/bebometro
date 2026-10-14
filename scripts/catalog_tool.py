@@ -6,6 +6,8 @@
   python -I scripts/catalog_tool.py merge --write ...   # ... and save
 
 A research file is {"patches": [...], "new": [...], "unresolved": [...]}:
+- corroborate {id: source} attaches a source to a field that already has a
+  value (default field abv) without changing it.
 - patches only FILL fields that are empty (null / [] / missing). A value that
   differs from what is already there is reported as a conflict and never
   overwrites it. Nothing is ever averaged.
@@ -27,6 +29,7 @@ PATH = os.path.join(HERE, '..', 'assets', 'catalog', 'catalog_v1.json')
 CATEGORIES = {'beer', 'draft', 'nonAlcoholic', 'spirit', 'wine', 'readyToDrink'}
 KINDS = {'can', 'longNeck', 'bottle', 'glass', 'shot'}
 EVIDENCE = {'primary', 'secondary'}
+TYPES = {'official', 'label', 'packagingRegistry', 'secondary'}
 SOURCED = {'abv', 'abvVariants', 'ingredients', 'presentations', 'style', 'note'}
 FILL = ['style', 'abv', 'abvVariants', 'ingredients', 'presentations', 'note',
         'abvEvidence', 'abvSource', 'evidence', 'roles']
@@ -84,6 +87,10 @@ def validate(p):
                 errs.append(f'fieldSources.{field} without retrieved date')
             if empty(e.get('market')):
                 errs.append(f'fieldSources.{field} without market')
+            if e.get('type') is not None and e['type'] not in TYPES:
+                errs.append(f"fieldSources.{field} bad type {e['type']}")
+            if e.get('type') == 'official' and e.get('evidence') != 'primary':
+                errs.append(f'fieldSources.{field} official must be primary')
             if e.get('evidence') not in EVIDENCE:
                 errs.append(f'fieldSources.{field} evidence must be primary/secondary')
     if p.get('retrieved') and not re.fullmatch(r'\d{4}-\d{2}-\d{2}', p['retrieved']):
@@ -231,6 +238,19 @@ def merge(doc, files, write):
                 if pt.get('retrieved'):
                     p['retrieved'] = pt['retrieved']
                 stats['patched'] += 1
+        # Sources that confirm (or contradict) a value already present: only
+        # the source is recorded, the value never changes.
+        for pid, e in (r.get('corroborate') or {}).items():
+            p = byid.get(pid)
+            if p is None:
+                print(f"  corroborate for unknown id {pid}")
+                continue
+            e = dict(e)
+            field = e.pop('field', 'abv')
+            have = p.setdefault('fieldSources', {}).setdefault(field, [])
+            if e['url'] not in {x['url'] for x in have}:
+                have.append(e)
+                stats['corroborated'] = stats.get('corroborated', 0) + 1
         for n in r.get('new', []):
             key = (norm(n.get('brand')), norm(n.get('name')))
             if n.get('id') in byid or key in names:
