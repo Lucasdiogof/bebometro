@@ -11,6 +11,7 @@ import '../../core/di/injector.dart';
 import '../../core/widgets/common.dart';
 import '../data/tilt_source.dart';
 import '../domain/beer_sim.dart';
+import 'beer_materials.dart';
 import 'beer_painter.dart';
 import '../../l10n/l10n.dart';
 
@@ -33,6 +34,10 @@ class _TipGlassPageState extends State<TipGlassPage>
   static const _hintKey = 'glass.motion_hint_seen';
 
   final _sim = BeerSim();
+
+  /// Textures + shader, ready before the first beer frame (no flash of
+  /// missing textures). Released with the page.
+  BeerRenderer? _renderer;
   final _tilt = TiltSource();
   late final Ticker _ticker;
   Duration _last = Duration.zero;
@@ -59,6 +64,17 @@ class _TipGlassPageState extends State<TipGlassPage>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _ticker = createTicker(_onTick);
+    BeerMaterials.load().then((m) {
+      if (!mounted) {
+        m.dispose();
+        return;
+      }
+      setState(() => _renderer = BeerRenderer(m));
+    }).catchError((Object e) {
+      // Assets missing or undecodable: the dark background stays, the
+      // controls keep working; reported in debug only.
+      if (kDebugMode) debugPrint('[beer] materials failed: $e');
+    });
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     SystemChrome.setPreferredOrientations(const [DeviceOrientation.portraitUp]);
     _tilt.onUnavailable = () {
@@ -169,6 +185,8 @@ class _TipGlassPageState extends State<TipGlassPage>
     _hintTimer?.cancel();
     _sensorWatch?.cancel();
     _sim.dispose();
+    _renderer?.dispose();
+    _renderer?.m.dispose();
     _empty.dispose();
     _hint.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -278,7 +296,7 @@ class _TipGlassPageState extends State<TipGlassPage>
         systemNavigationBarColor: Colors.transparent,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFF241608),
+        backgroundColor: const Color(0xFF070707),
         body: LayoutBuilder(
           builder: (context, box) {
             final size = box.biggest;
@@ -291,10 +309,12 @@ class _TipGlassPageState extends State<TipGlassPage>
                   child: Semantics(
                     label: tr.tipSemantics,
                     child: RepaintBoundary(
-                      child: CustomPaint(
-                        painter: BeerPainter(_sim),
-                        size: size,
-                      ),
+                      child: _renderer == null
+                          ? const ColoredBox(color: Color(0xFF070707))
+                          : CustomPaint(
+                              painter: BeerPainter(_sim, _renderer!),
+                              size: size,
+                            ),
                     ),
                   ),
                 ),
