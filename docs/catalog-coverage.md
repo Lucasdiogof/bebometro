@@ -122,3 +122,30 @@ contraditos (Antarctica Original: lata de 350 ml diz 5,0%, catálogo tem 4,9%; m
 ### Lacunas que continuam
 - Ingredientes: nenhuma fonte nova legível (os versos fotografados estavam cortados). Ambev/Petrópolis seguem bloqueados.
 - Teor de Bohemia, Budweiser (BR), Brahma Duplo Malte Tostada/Black, Petra Origem, Black Princess; embalagens de vários destilados.
+
+## Atualização reproduzível (`tools/catalog_sync`, 14/10/2026)
+Processo: `collect` → `import-off` → `compare` → revisão de `proposal.md` → `catalog_tool.py merge`. Ver `tools/catalog_sync/README.md`.
+
+**Cobertura de dados antes/depois: sem mudança** (136 produtos; teor 112; teor variável 3; ingredientes 36; apresentações 78; estilo 86).
+Nenhum campo vazio foi preenchido: as 17 páginas das marcas HEINEKEN Brasil (Eisenbahn, Devassa, Kaiser, Baden Baden) trouxeram os mesmos
+valores que o catálogo já tinha (9 de 9 teores iguais; ingredientes da Devassa e tamanhos iguais).
+**Procedência por campo: 47 → 55 produtos com `fieldSources`** (+15 entradas, sem valor novo): teor de Eisenbahn Pilsen, American IPA,
+Pale Ale e Weizenbier; teor e tamanhos de Baden Baden Cristal, Golden, IPA e Witbier; tamanhos 350 ml e 1 L da Kaiser; ingredientes da
+Devassa (página de lata). Entradas só com URL, rótulo e data (sem trecho copiado), por causa dos termos do site (abaixo).
+
+### Candidatos retidos (não aplicados)
+- **Open Food Facts (14 registros do cache, mapeados à mão a 9 produtos):** 4 tamanhos que o catálogo não tem (Heineken 350 e 250 ml,
+  Heineken 0.0 350 ml, Colorado Appia 600 ml). Retidos: ODbL exige atribuição e compartilhamento nas mesmas condições, o dado é
+  colaborativo e a unidade do campo de álcool não é garantida. Nenhum teor ou ingrediente do OFF foi proposto como exato.
+- **Páginas HEINEKEN Brasil:** Termos de Uso da Devassa (item 4) proíbem armazenar ou reproduzir o conteúdo do site; os outros três sites não têm
+  termos localizados. Nenhum dado novo seria incorporado por elas (e nenhum apareceu); só citação de fonte.
+- Sem teor na página (ficam desconhecidos): Kaiser (todas), Eisenbahn Session IPA e Unfiltered.
+
+### Pesquisa de fontes (resumo)
+- MAPA/SIPEAGRO "Vinhos e Bebidas": só estabelecimentos (UF, município, registro, status, CNPJ mascarado, razão social, área, atividade,
+  classificação); sem produto, teor ou ingrediente.
+- Sem fonte gratuita pública com teor + ingredientes + apresentações para o mercado brasileiro: GS1 Brasil (contrato) e Cosmos (25 consultas/dia)
+  não foram contratados; FatSecret/USDA/LCBO não cobrem o Brasil. Amostra de 35 produtos no OFF: 16 com tag Brasil, 4 com teor, 6 com ingredientes.
+- Aviso sobre o passado: valores já presentes que vieram de rótulos transcritos no OFF (p.ex. Itaipava Pilsen, Smirnoff Ice Tropical) são
+  fotos lidas à mão, não dados importados; seguem com a procedência de cada campo.
+

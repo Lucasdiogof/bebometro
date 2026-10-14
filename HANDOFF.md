@@ -783,3 +783,19 @@ em aparelho e conferir no painel do Supabase que as linhas chegam. Depois: teste
   existente sem mudá-lo).
 - **Nada compilado, analisado, testado nem executado.** Pendências: aplicar `20261019000000`; `scripts/apply_recovery_code.py`
   (rodada anterior).
+
+## Rodada 14/10/2026: atualização reproduzível do catálogo (`tools/catalog_sync`)
+- **Processo** (não sobrescreve o catálogo): `python -I tools/catalog_sync/catalog_sync.py collect heineken` → `import-off JSONL` →
+  `compare` → ler `tools/catalog_sync/work/proposal.md` → `python -I scripts/catalog_tool.py merge [--write] .../research_safe.json`
+  → `catalog_tool.py check` e `ids HEAD`. Classes: produto novo, campo preenchido, igual, divergência, possível duplicata, incerto.
+  Detalhes e regras (limite máximo ≠ teor exato, tamanho sugerido ≠ embalagem, sem média) em `tools/catalog_sync/README.md`.
+- **Resultado desta rodada:** cobertura de dados **inalterada** (136 produtos; teor 112; ingredientes 36; apresentações 78). Os candidatos
+  das marcas HEINEKEN Brasil repetiram o que já havia. Ganho real: **procedência por campo em +8 produtos** (`fieldSources`: 47 → 55; 15 entradas
+  novas, só URL/rótulo/data) que o app já mostra em "Sobre estes dados" (nenhum texto novo; não houve mudança de interface nem de .arb).
+- **Retidos por licença:** Open Food Facts (ODbL, share-alike; 4 tamanhos candidatos) e páginas HEINEKEN Brasil (Termos da Devassa, item 4, proíbem
+  armazenar/reproduzir conteúdo; só citação). Decisão do dono pendente se quiser incorporar OFF (atribuição + compartilhamento).
+- `catalog_tool.py`: `corroborate` aceita lista (vários campos do mesmo produto); novo comando `ids [ref]` confere ids/valores preservados contra o git.
+- Pesquisa (fora do repo, pasta re-work do usuário): MAPA/SIPEAGRO só tem estabelecimentos; AlcoLog usa catálogo estático próprio (1.218 itens) e
+  quatro bases só no leitor de código de barras; nada do AlcoLog foi copiado. Sem fonte gratuita suficiente para o Brasil (ver `docs/catalog-coverage.md`).
+- **Nada compilado, analisado, testado nem executado** (só `selftest` do script Python e `catalog_tool.py check`).
+
