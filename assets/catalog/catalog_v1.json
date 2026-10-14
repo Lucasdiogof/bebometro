@@ -2131,6 +2131,18 @@
     "es": {
      "sourceLabel": "Eisenbahn (sitio oficial)"
     }
+   },
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://www.eisenbahn.com.br/pilsen/",
+      "label": "Eisenbahn Pilsen (site oficial)",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ]
    }
   },
   {
@@ -2186,6 +2198,18 @@
     "es": {
      "sourceLabel": "Eisenbahn (sitio oficial)"
     }
+   },
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://www.eisenbahn.com.br/weizenbier/",
+      "label": "Eisenbahn Weizenbier (site oficial)",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ]
    }
   },
   {
@@ -2210,6 +2234,18 @@
     "es": {
      "sourceLabel": "Eisenbahn (sitio oficial)"
     }
+   },
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://www.eisenbahn.com.br/american-ipa/",
+      "label": "Eisenbahn American IPA (site oficial)",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ]
    }
   },
   {
@@ -2234,6 +2270,18 @@
     "es": {
      "sourceLabel": "Eisenbahn (sitio oficial)"
     }
+   },
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://www.eisenbahn.com.br/pale-ale/",
+      "label": "Eisenbahn Pale Ale (site oficial)",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ]
    }
   },
   {
@@ -2323,6 +2371,24 @@
       "evidence": "primary",
       "variant": "bottle 600 ml",
       "type": "official"
+     },
+     {
+      "url": "https://www.kaiser.com.br/produtos/kaiser-350ml/",
+      "label": "Kaiser 350 ml (site oficial): 350 ml",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "350 ml"
+     },
+     {
+      "url": "https://www.kaiser.com.br/produtos/kaiser-1-litro/",
+      "label": "Kaiser 1 litro (site oficial): 1000 ml",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "1000 ml"
      }
     ]
    },
@@ -2364,6 +2430,29 @@
      "note": "La página menciona jugo de maracuyá; no da la lista completa.",
      "sourceLabel": "Baden Baden (sitio oficial)"
     }
+   },
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://www.badenbaden.com.br/produtos/ipa/",
+      "label": "Baden Baden IPA (site oficial)",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://www.badenbaden.com.br/produtos/ipa/",
+      "label": "Baden Baden IPA (site oficial): 350 ml, 600 ml",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "350 ml, 600 ml"
+     }
+    ]
    }
   },
   {
@@ -2397,6 +2486,29 @@
     "es": {
      "sourceLabel": "Baden Baden (sitio oficial)"
     }
+   },
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://www.badenbaden.com.br/produtos/witbier/",
+      "label": "Baden Baden Witbier (site oficial)",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://www.badenbaden.com.br/produtos/witbier/",
+      "label": "Baden Baden Witbier (site oficial): 350 ml, 600 ml",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "350 ml, 600 ml"
+     }
+    ]
    }
   },
   {
@@ -2430,6 +2542,29 @@
     "es": {
      "sourceLabel": "Baden Baden (sitio oficial)"
     }
+   },
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://www.badenbaden.com.br/produtos/cristal/",
+      "label": "Baden Baden Cristal (site oficial)",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://www.badenbaden.com.br/produtos/cristal/",
+      "label": "Baden Baden Cristal (site oficial): 350 ml, 600 ml",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "350 ml, 600 ml"
+     }
+    ]
    }
   },
   {
@@ -2463,6 +2598,29 @@
     "es": {
      "sourceLabel": "Baden Baden (sitio oficial)"
     }
+   },
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://www.badenbaden.com.br/produtos/golden/",
+      "label": "Baden Baden Golden (site oficial)",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://www.badenbaden.com.br/produtos/golden/",
+      "label": "Baden Baden Golden (site oficial): 350 ml, 600 ml",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "350 ml, 600 ml"
+     }
+    ]
    }
   },
   {
@@ -4874,6 +5032,14 @@
      {
       "url": "https://www.devassa.com.br/produtos/devassa-garrafa/",
       "label": "Devassa Garrafa (site oficial): \"Água, malte, milho e lúpulo.\"",
+      "retrieved": "2026-10-14",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     },
+     {
+      "url": "https://www.devassa.com.br/produtos/devassa-lata/",
+      "label": "Devassa Lata (site oficial)",
       "retrieved": "2026-10-14",
       "market": "BR",
       "evidence": "primary",
