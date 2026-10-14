@@ -5,6 +5,7 @@ import '../../l10n/l10n.dart';
 import 'abv_source.dart';
 import 'drink_category.dart';
 import 'presentation_label.dart';
+import 'provenance.dart';
 import 'recipe.dart';
 
 /// Where a catalog item's information comes from.
@@ -181,6 +182,8 @@ class CatalogItem {
     this.recipe,
     this.abvOrigin,
     this.advertisedCents,
+    this.fieldSources = const [],
+    this.market,
   })  : _name = name,
         _note = note;
 
@@ -238,6 +241,12 @@ class CatalogItem {
   /// Price a menu advertised for this outing item. A suggestion only: the
   /// user confirms what was actually paid.
   final int? advertisedCents;
+
+  /// Where individual fields were read; wins over [source] for that field.
+  final List<FieldSource> fieldSources;
+
+  /// Market the product data refers to ("BR", "US"), when the catalog says.
+  final String? market;
 
   static const customPrefix = 'custom:';
 

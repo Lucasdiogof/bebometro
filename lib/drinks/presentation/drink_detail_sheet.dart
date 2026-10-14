@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
@@ -8,6 +9,7 @@ import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../domain/catalog_item.dart';
 import '../domain/drink_category.dart';
+import '../domain/provenance.dart';
 import 'catalog_cubit.dart';
 import '../../l10n/l10n.dart';
 
@@ -171,10 +173,14 @@ class _DrinkDetailSheet extends StatelessWidget {
                     const SizedBox(height: AppSpace.md),
                     Text(item.note!, style: AppText.caption),
                   ],
-                  if (item.source != null) ...[
+                  if (!item.isRecipe && item.abvVariants.isNotEmpty) ...[
                     const SizedBox(height: AppSpace.md),
-                    _SourceTile(source: item.source!),
+                    // Divergence stays visible; the details are folded below.
+                    InfoPill(tr.aboutDataDivergence,
+                        icon: Icons.compare_arrows_rounded, warning: true),
                   ],
+                  const SizedBox(height: AppSpace.md),
+                  _AboutDataTile(item: item),
                   if (item.isRecipe)
                     Align(
                       alignment: Alignment.centerLeft,
@@ -245,57 +251,48 @@ class _Row extends StatelessWidget {
   }
 }
 
-/// Discreet "where does this come from" line, expandable to the address.
-class _SourceTile extends StatelessWidget {
-  const _SourceTile({required this.source});
+/// "About this data": where each field comes from. Folded by default so the
+/// sheet stays quick; a field source always wins over the general source.
+class _AboutDataTile extends StatelessWidget {
+  const _AboutDataTile({required this.item});
 
-  final SourceRef source;
-
-  String? get _date {
-    final raw = source.consultedOn;
-    final d = raw == null ? null : DateTime.tryParse(raw);
-    return d == null ? null : formatDate(d);
-  }
+  final CatalogItem item;
 
   @override
   Widget build(BuildContext context) {
+    final fields = provenanceOf(item);
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
         tilePadding: EdgeInsets.zero,
         childrenPadding: EdgeInsets.zero,
         dense: true,
+        expandedCrossAxisAlignment: CrossAxisAlignment.start,
         title: Text(
-          tr.detailSourceTitle,
+          tr.aboutDataTitle,
           style: AppText.caption.copyWith(color: AppColors.amber),
         ),
         children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              _date == null
-                  ? source.displayLabel
-                  : tr.detailSourceLine(source.displayLabel, _date!),
-              style: AppText.caption,
-            ),
-          ),
-          const SizedBox(height: AppSpace.xs),
-          Row(children: [
-            Expanded(
-              child: SelectableText(
-                source.url,
-                style: AppText.caption.copyWith(fontSize: 12),
-              ),
-            ),
-            IconButton(
-              tooltip: tr.detailCopyAddress,
-              onPressed: () async {
-                await Clipboard.setData(ClipboardData(text: source.url));
-                if (context.mounted) showToast(context, tr.detailAddressCopied);
-              },
-              icon: const Icon(Icons.copy_rounded, size: 18),
-            ),
-          ]),
+          for (final f in fields) _FieldBlock(f),
+          if (item.abvVariants.isNotEmpty) ...[
+            Text(tr.aboutDataVariantsTitle, style: AppText.caption),
+            for (final v in item.abvVariants)
+              Text('${formatAbv(v.value)}: ${v.displayScope}',
+                  style: AppText.caption),
+            const SizedBox(height: AppSpace.sm),
+          ],
+          if (item.source != null) ...[
+            Text(tr.aboutDataGeneralTitle, style: AppText.caption),
+            _SourceLines(FieldSource(
+              field: ProvenanceField.abv,
+              kind: ProvenanceKind.general,
+              label: item.source!.label,
+              labelI18n: item.source!.labelI18n,
+              url: item.source!.url,
+              consultedOn: item.source!.consultedOn,
+              market: item.market,
+            )),
+          ],
           Text(tr.detailMayVary, style: AppText.caption),
         ],
       ),
@@ -303,6 +300,114 @@ class _SourceTile extends StatelessWidget {
   }
 }
 
+class _FieldBlock extends StatelessWidget {
+  const _FieldBlock(this.p);
+
+  final FieldProvenance p;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpace.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(p.field.label,
+              style: AppText.body.copyWith(fontWeight: FontWeight.w600)),
+          if (p.fallback)
+            Text(tr.aboutDataFallback, style: AppText.caption),
+          for (final (i, s) in p.sources.indexed) ...[
+            if ((p.presentations[i] ?? const []).isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: AppSpace.xs),
+                child: Text(
+                  p.presentations[i]!.map((x) => x.displayLabel).join(', '),
+                  style: AppText.caption.copyWith(color: AppColors.text),
+                ),
+              ),
+            _SourceLines(s),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// One source: kind, name, market, consultation date and the address
+/// (tap to open, button to copy).
+class _SourceLines extends StatelessWidget {
+  const _SourceLines(this.s);
+
+  final FieldSource s;
+
+  String? get _date {
+    final raw = s.consultedOn;
+    final d = raw == null ? null : DateTime.tryParse(raw);
+    return d == null ? null : formatDate(d);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final url = s.url;
+    return Padding(
+      padding: const EdgeInsets.only(top: AppSpace.xs, bottom: AppSpace.xs),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(s.kind.label,
+              style: AppText.caption.copyWith(color: AppColors.amber)),
+          Text(s.displayLabel, style: AppText.caption),
+          if (s.market != null || _date != null)
+            Text(
+              [
+                if (s.market != null) tr.aboutDataMarket(s.market!),
+                if (_date != null) tr.aboutDataConsulted(_date!),
+              ].join(' · '),
+              style: AppText.caption,
+            ),
+          if (s.displayNote != null)
+            Text(s.displayNote!, style: AppText.caption),
+          if (s.kind == ProvenanceKind.packagingRegistry)
+            Text(tr.aboutDataRegistryNote, style: AppText.caption),
+          if (url != null)
+            Row(children: [
+              Expanded(
+                child: InkWell(
+                  onTap: () async {
+                    final uri = Uri.tryParse(url);
+                    if (uri == null) return;
+                    final ok = await launchUrl(uri,
+                        mode: LaunchMode.externalApplication);
+                    if (!ok && context.mounted) {
+                      showToast(context, tr.aboutDataOpenFailed);
+                    }
+                  },
+                  child: Text(
+                    url,
+                    style: AppText.caption.copyWith(
+                      fontSize: 12,
+                      color: AppColors.amber,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ),
+              IconButton(
+                tooltip: tr.detailCopyAddress,
+                onPressed: () async {
+                  await Clipboard.setData(ClipboardData(text: url));
+                  if (context.mounted) {
+                    showToast(context, tr.detailAddressCopied);
+                  }
+                },
+                icon: const Icon(Icons.copy_rounded, size: 18),
+              ),
+            ]),
+        ],
+      ),
+    );
+  }
+}
 
 String _abvText(CatalogItem item) {
   if (item.abvPercent != null) return formatAbv(item.abvPercent!);

@@ -217,6 +217,10 @@ DrinkCategory? guessCategory(String text) {
   final normalized = normalizeText(text);
   bool has(String pattern) => RegExp(pattern).hasMatch(normalized);
   if (has(r'chopp|chope')) return DrinkCategory.draft;
+  // Only what the label states about the product type (never the flavour).
+  if (has(r'bebida (alcoolica )?mista|mista alcoolica|hard seltzer|seltzer alcoolic|pronto para (beber|consumo)|lista para beber|ready to drink|\bice\b|drink pronto|coquetel pronto|coctel listo')) {
+    return DrinkCategory.readyToDrink;
+  }
   if (has(r'cerveja|cerveza|beer|pilsen|lager|\bipa\b|stout|weiss|witbier')) {
     return DrinkCategory.beer;
   }

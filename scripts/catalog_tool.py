@@ -24,7 +24,7 @@ import unicodedata
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, '..', 'assets', 'catalog', 'catalog_v1.json')
-CATEGORIES = {'beer', 'draft', 'nonAlcoholic', 'spirit', 'wine'}
+CATEGORIES = {'beer', 'draft', 'nonAlcoholic', 'spirit', 'wine', 'readyToDrink'}
 KINDS = {'can', 'longNeck', 'bottle', 'glass', 'shot'}
 EVIDENCE = {'primary', 'secondary'}
 SOURCED = {'abv', 'abvVariants', 'ingredients', 'presentations', 'style', 'note'}

@@ -1827,6 +1827,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get categorySpirit => 'Destilado/dose';
 
   @override
+  String get categoryReadyToDrink => 'Bebida pronta';
+
+  @override
   String get categoryWine => 'Vinho';
 
   @override
@@ -5568,4 +5571,69 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get gameCardTooLong => 'Texto longo demais.';
+
+  @override
+  String get provenanceOfficial => 'Fabricante / ficha oficial';
+
+  @override
+  String get provenanceLabel => 'Rótulo em fonte secundária';
+
+  @override
+  String get provenancePackagingRegistry => 'Cadastro público de embalagem';
+
+  @override
+  String get provenanceSecondary => 'Fonte secundária';
+
+  @override
+  String get provenanceRecipe => 'Receita de referência';
+
+  @override
+  String get provenanceUser => 'Informação sua';
+
+  @override
+  String get provenanceSuggestion => 'Volume sugerido';
+
+  @override
+  String get provenanceGeneric => 'Referência genérica';
+
+  @override
+  String get provenanceGeneral => 'Fonte geral do produto';
+
+  @override
+  String get provenanceSuggestionLine =>
+      'Tamanhos comuns para facilitar o registro, não embalagens documentadas deste produto.';
+
+  @override
+  String get aboutDataTitle => 'Sobre estes dados';
+
+  @override
+  String get aboutDataFallback =>
+      'Sem fonte específica para este campo; vale a fonte geral do produto.';
+
+  @override
+  String get aboutDataGeneralTitle => 'Fonte geral do produto';
+
+  @override
+  String get aboutDataVariantsTitle => 'Teores documentados (sem média)';
+
+  @override
+  String get aboutDataDivergence => 'As fontes divergem sobre o teor';
+
+  @override
+  String get aboutDataRegistryNote =>
+      'O cadastro mostra que a embalagem existiu no mercado; não indica que esteja à venda hoje.';
+
+  @override
+  String get aboutDataOpenFailed =>
+      'Não foi possível abrir o endereço. Copie e abra no navegador.';
+
+  @override
+  String aboutDataMarket(String market) {
+    return 'Mercado: $market';
+  }
+
+  @override
+  String aboutDataConsulted(String date) {
+    return 'Consultado em $date';
+  }
 }

@@ -1829,6 +1829,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categorySpirit => 'Spirit/shot';
 
   @override
+  String get categoryReadyToDrink => 'Ready-to-drink';
+
+  @override
   String get categoryWine => 'Wine';
 
   @override
@@ -5553,4 +5556,69 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gameCardTooLong => 'Text too long.';
+
+  @override
+  String get provenanceOfficial => 'Manufacturer / official sheet';
+
+  @override
+  String get provenanceLabel => 'Label in a secondary source';
+
+  @override
+  String get provenancePackagingRegistry => 'Public package registry';
+
+  @override
+  String get provenanceSecondary => 'Secondary source';
+
+  @override
+  String get provenanceRecipe => 'Reference recipe';
+
+  @override
+  String get provenanceUser => 'Your information';
+
+  @override
+  String get provenanceSuggestion => 'Suggested volume';
+
+  @override
+  String get provenanceGeneric => 'Generic reference';
+
+  @override
+  String get provenanceGeneral => 'Product\'s general source';
+
+  @override
+  String get provenanceSuggestionLine =>
+      'Common sizes to make logging easier, not documented packages of this product.';
+
+  @override
+  String get aboutDataTitle => 'About this data';
+
+  @override
+  String get aboutDataFallback =>
+      'No specific source for this field; the product\'s general source applies.';
+
+  @override
+  String get aboutDataGeneralTitle => 'Product\'s general source';
+
+  @override
+  String get aboutDataVariantsTitle => 'Documented ABVs (not averaged)';
+
+  @override
+  String get aboutDataDivergence => 'Sources disagree on the ABV';
+
+  @override
+  String get aboutDataRegistryNote =>
+      'The registry shows the package existed on the market; it does not mean it is sold today.';
+
+  @override
+  String get aboutDataOpenFailed =>
+      'Could not open the address. Copy it and open it in a browser.';
+
+  @override
+  String aboutDataMarket(String market) {
+    return 'Market: $market';
+  }
+
+  @override
+  String aboutDataConsulted(String date) {
+    return 'Consulted on $date';
+  }
 }

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import '../domain/catalog_item.dart';
 import '../domain/drink_category.dart';
 import '../domain/recipe.dart';
+import '../domain/provenance.dart';
 
 /// Reads the versioned catalog shipped with the app (`assets/catalog`):
 /// products (beers, spirits...) and reference recipes.
@@ -153,7 +154,55 @@ class CatalogLoader {
             label: p['label'] as String?,
           ),
       ],
+      fieldSources: _fieldSources(j, i18n),
+      market: j['market'] as String?,
     );
+  }
+
+  /// `fieldSources: {field: [{url, label, retrieved, market, evidence, type,
+  /// variant, note}]}`. Translations of label/note sit in
+  /// `i18n.<lang>.fieldSources.<field>[i]` as `{label, note}`. Unknown fields
+  /// or types are skipped, never guessed.
+  static List<FieldSource> _fieldSources(
+      Map<String, dynamic> j, Map<String, Map<String, dynamic>> i18n) {
+    final raw = (j['fieldSources'] as Map?) ?? const {};
+    final out = <FieldSource>[];
+    for (final e in raw.entries) {
+      final field = ProvenanceField.fromCode(e.key as String);
+      if (field == null) continue;
+      for (final (i, s) in ((e.value as List?) ?? const []).indexed) {
+        final m = Map<String, dynamic>.from(s as Map);
+        final kind = ProvenanceKind.fromCode(m['type'] as String?) ??
+            (m['evidence'] == 'primary'
+                ? ProvenanceKind.official
+                : ProvenanceKind.secondary);
+        String? text(String lang, String key) {
+          final list = ((i18n[lang]?['fieldSources'] as Map?)?[e.key] as List?);
+          if (list == null || list.length <= i) return null;
+          return (list[i] as Map)[key] as String?;
+        }
+
+        out.add(FieldSource(
+          field: field,
+          kind: kind,
+          label: m['label'] as String,
+          url: m['url'] as String?,
+          consultedOn: m['retrieved'] as String?,
+          market: m['market'] as String?,
+          variant: m['variant'] as String?,
+          note: m['note'] as String?,
+          labelI18n: {
+            for (final lang in i18n.keys)
+              if (text(lang, 'label') != null) lang: text(lang, 'label')!,
+          },
+          noteI18n: {
+            for (final lang in i18n.keys)
+              if (text(lang, 'note') != null) lang: text(lang, 'note')!,
+          },
+        ));
+      }
+    }
+    return out;
   }
 
   static CatalogItem _recipe(Map<String, dynamic> j, String? consultedOn) {
@@ -257,7 +306,11 @@ class CatalogLoader {
     }
   }
 
-  /// The JSON uses camelCase for "nonAlcoholic"; the app's code is snake_case.
-  static String _categoryCode(String raw) =>
-      raw == 'nonAlcoholic' ? DrinkCategory.nonAlcoholic.code : raw;
+  /// The JSON uses camelCase ("nonAlcoholic", "readyToDrink"); the app's code
+  /// is snake_case.
+  static String _categoryCode(String raw) => switch (raw) {
+        'nonAlcoholic' => DrinkCategory.nonAlcoholic.code,
+        'readyToDrink' => DrinkCategory.readyToDrink.code,
+        _ => raw,
+      };
 }

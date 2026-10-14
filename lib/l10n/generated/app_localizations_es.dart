@@ -1835,6 +1835,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get categorySpirit => 'Destilado/dosis';
 
   @override
+  String get categoryReadyToDrink => 'Bebida lista';
+
+  @override
   String get categoryWine => 'Vino';
 
   @override
@@ -5584,4 +5587,70 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get gameCardTooLong => 'Texto demasiado largo.';
+
+  @override
+  String get provenanceOfficial => 'Fabricante / ficha oficial';
+
+  @override
+  String get provenanceLabel => 'Etiqueta en fuente secundaria';
+
+  @override
+  String get provenancePackagingRegistry => 'Registro público de envase';
+
+  @override
+  String get provenanceSecondary => 'Fuente secundaria';
+
+  @override
+  String get provenanceRecipe => 'Receta de referencia';
+
+  @override
+  String get provenanceUser => 'Información tuya';
+
+  @override
+  String get provenanceSuggestion => 'Volumen sugerido';
+
+  @override
+  String get provenanceGeneric => 'Referencia genérica';
+
+  @override
+  String get provenanceGeneral => 'Fuente general del producto';
+
+  @override
+  String get provenanceSuggestionLine =>
+      'Tamaños comunes para facilitar el registro, no envases documentados de este producto.';
+
+  @override
+  String get aboutDataTitle => 'Sobre estos datos';
+
+  @override
+  String get aboutDataFallback =>
+      'Sin fuente específica para este campo; vale la fuente general del producto.';
+
+  @override
+  String get aboutDataGeneralTitle => 'Fuente general del producto';
+
+  @override
+  String get aboutDataVariantsTitle =>
+      'Graduaciones documentadas (sin promedio)';
+
+  @override
+  String get aboutDataDivergence => 'Las fuentes no coinciden en la graduación';
+
+  @override
+  String get aboutDataRegistryNote =>
+      'El registro muestra que el envase existió en el mercado; no indica que se venda hoy.';
+
+  @override
+  String get aboutDataOpenFailed =>
+      'No se pudo abrir la dirección. Cópiala y ábrela en el navegador.';
+
+  @override
+  String aboutDataMarket(String market) {
+    return 'Mercado: $market';
+  }
+
+  @override
+  String aboutDataConsulted(String date) {
+    return 'Consultado el $date';
+  }
 }

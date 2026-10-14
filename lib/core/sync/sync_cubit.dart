@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../drinks/domain/drink_category.dart';
 import '../data/local_store.dart';
 import 'cloud_pull.dart';
 import 'pending_uploads.dart';
@@ -391,6 +392,13 @@ class SyncCubit extends Cubit<SyncState> {
               _log('row $collection/$id rejected: ${e.code} ${e.message}');
               if (_tableMissing(e)) {
                 schemaGaps++; // whole table absent: keep the row pending
+                continue;
+              }
+              if (e.code == '23514' &&
+                  row['category'] == DrinkCategory.readyToDrink.code) {
+                // The server still has the old category check (migration
+                // 20261019000000 not applied): kept pending, not rejected.
+                schemaGaps++;
                 continue;
               }
               if (e.code == 'PT409') {

@@ -68,6 +68,8 @@ VesselKind vesselKindFor(DrinkEntry e) {
       return VesselKind.cocktailGlass;
     case DrinkCategory.spirit:
       return VesselKind.shot;
+    case DrinkCategory.readyToDrink:
+      return VesselKind.can;
     case DrinkCategory.wine:
       return VesselKind.wineGlass;
     case DrinkCategory.water:
@@ -87,6 +89,8 @@ Color liquidColorFor(DrinkEntry e) {
       return const Color(0xFFE86A4B);
     case DrinkCategory.spirit:
       return const Color(0xFFB5651D);
+    case DrinkCategory.readyToDrink:
+      return const Color(0xFFD9C95A);
     case DrinkCategory.wine:
       return const Color(0xFF7A1F2B);
     case DrinkCategory.water:

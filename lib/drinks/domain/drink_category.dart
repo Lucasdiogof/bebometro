@@ -7,6 +7,10 @@ enum DrinkCategory {
   draft('draft', Icons.local_drink_rounded),
   cocktail('cocktail', Icons.wine_bar_rounded),
   spirit('spirit', Icons.liquor_rounded),
+
+  /// Industrialized mixed drinks sold ready to drink (bottled/canned
+  /// cocktails, "ice", hard seltzers). Recipes stay in [cocktail].
+  readyToDrink('ready_to_drink', Icons.local_bar_rounded),
   wine('wine', Icons.wine_bar_outlined),
   nonAlcoholic('non_alcoholic', Icons.emoji_food_beverage_rounded),
   water('water', Icons.water_drop_rounded);
@@ -32,6 +36,7 @@ enum DrinkCategory {
         DrinkCategory.draft => t.categoryDraft,
         DrinkCategory.cocktail => t.categoryCocktail,
         DrinkCategory.spirit => t.categorySpirit,
+        DrinkCategory.readyToDrink => t.categoryReadyToDrink,
         DrinkCategory.wine => t.categoryWine,
         DrinkCategory.nonAlcoholic => t.categoryNonAlcoholic,
         DrinkCategory.water => t.categoryWater,

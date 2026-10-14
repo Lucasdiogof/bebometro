@@ -1020,6 +1020,7 @@
   "categoryDraft": "Chopp",
   "categoryCocktail": "Drink",
   "categorySpirit": "Destilado/dose",
+  "categoryReadyToDrink": "Bebida pronta",
   "categoryWine": "Vinho",
   "categoryNonAlcoholic": "Sem álcool",
   "categoryWater": "Água",
@@ -3544,5 +3545,38 @@
     }
   },
   "gameCardNeedText": "Escreva o texto da carta.",
-  "gameCardTooLong": "Texto longo demais."
+  "gameCardTooLong": "Texto longo demais.",
+  "provenanceOfficial": "Fabricante / ficha oficial",
+  "provenanceLabel": "Rótulo em fonte secundária",
+  "provenancePackagingRegistry": "Cadastro público de embalagem",
+  "provenanceSecondary": "Fonte secundária",
+  "provenanceRecipe": "Receita de referência",
+  "provenanceUser": "Informação sua",
+  "provenanceSuggestion": "Volume sugerido",
+  "provenanceGeneric": "Referência genérica",
+  "provenanceGeneral": "Fonte geral do produto",
+  "provenanceSuggestionLine": "Tamanhos comuns para facilitar o registro, não embalagens documentadas deste produto.",
+  "aboutDataTitle": "Sobre estes dados",
+  "aboutDataFallback": "Sem fonte específica para este campo; vale a fonte geral do produto.",
+  "aboutDataGeneralTitle": "Fonte geral do produto",
+  "aboutDataVariantsTitle": "Teores documentados (sem média)",
+  "aboutDataDivergence": "As fontes divergem sobre o teor",
+  "aboutDataRegistryNote": "O cadastro mostra que a embalagem existiu no mercado; não indica que esteja à venda hoje.",
+  "aboutDataOpenFailed": "Não foi possível abrir o endereço. Copie e abra no navegador.",
+  "aboutDataMarket": "Mercado: {market}",
+  "@aboutDataMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutDataConsulted": "Consultado em {date}",
+  "@aboutDataConsulted": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

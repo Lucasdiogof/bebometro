@@ -33,6 +33,12 @@ List<Presentation> commonSizesFor(DrinkCategory category) {
         Presentation('Dose 50 ml', 50, kind: PresentationKind.shot, isSuggestion: true),
         Presentation('Dose dupla 100 ml', 100, kind: PresentationKind.shot, isSuggestion: true),
       ];
+    case DrinkCategory.readyToDrink:
+      return const [
+        Presentation('269 ml', 269, kind: PresentationKind.can, isSuggestion: true),
+        Presentation('275 ml', 275, kind: PresentationKind.longNeck, isSuggestion: true),
+        Presentation('350 ml', 350, kind: PresentationKind.can, isSuggestion: true),
+      ];
     case DrinkCategory.wine:
       return const [
         Presentation('Taça 150 ml', 150, kind: PresentationKind.glass, isSuggestion: true),

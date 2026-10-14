@@ -2992,6 +2992,12 @@ abstract class AppLocalizations {
   /// **'Destilado/dose'**
   String get categorySpirit;
 
+  /// No description provided for @categoryReadyToDrink.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebida pronta'**
+  String get categoryReadyToDrink;
+
   /// No description provided for @categoryWine.
   ///
   /// In pt, this message translates to:
@@ -8930,6 +8936,120 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Texto longo demais.'**
   String get gameCardTooLong;
+
+  /// No description provided for @provenanceOfficial.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fabricante / ficha oficial'**
+  String get provenanceOfficial;
+
+  /// No description provided for @provenanceLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rótulo em fonte secundária'**
+  String get provenanceLabel;
+
+  /// No description provided for @provenancePackagingRegistry.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cadastro público de embalagem'**
+  String get provenancePackagingRegistry;
+
+  /// No description provided for @provenanceSecondary.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fonte secundária'**
+  String get provenanceSecondary;
+
+  /// No description provided for @provenanceRecipe.
+  ///
+  /// In pt, this message translates to:
+  /// **'Receita de referência'**
+  String get provenanceRecipe;
+
+  /// No description provided for @provenanceUser.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informação sua'**
+  String get provenanceUser;
+
+  /// No description provided for @provenanceSuggestion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume sugerido'**
+  String get provenanceSuggestion;
+
+  /// No description provided for @provenanceGeneric.
+  ///
+  /// In pt, this message translates to:
+  /// **'Referência genérica'**
+  String get provenanceGeneric;
+
+  /// No description provided for @provenanceGeneral.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fonte geral do produto'**
+  String get provenanceGeneral;
+
+  /// No description provided for @provenanceSuggestionLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tamanhos comuns para facilitar o registro, não embalagens documentadas deste produto.'**
+  String get provenanceSuggestionLine;
+
+  /// No description provided for @aboutDataTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sobre estes dados'**
+  String get aboutDataTitle;
+
+  /// No description provided for @aboutDataFallback.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem fonte específica para este campo; vale a fonte geral do produto.'**
+  String get aboutDataFallback;
+
+  /// No description provided for @aboutDataGeneralTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fonte geral do produto'**
+  String get aboutDataGeneralTitle;
+
+  /// No description provided for @aboutDataVariantsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Teores documentados (sem média)'**
+  String get aboutDataVariantsTitle;
+
+  /// No description provided for @aboutDataDivergence.
+  ///
+  /// In pt, this message translates to:
+  /// **'As fontes divergem sobre o teor'**
+  String get aboutDataDivergence;
+
+  /// No description provided for @aboutDataRegistryNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'O cadastro mostra que a embalagem existiu no mercado; não indica que esteja à venda hoje.'**
+  String get aboutDataRegistryNote;
+
+  /// No description provided for @aboutDataOpenFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível abrir o endereço. Copie e abra no navegador.'**
+  String get aboutDataOpenFailed;
+
+  /// No description provided for @aboutDataMarket.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mercado: {market}'**
+  String aboutDataMarket(String market);
+
+  /// No description provided for @aboutDataConsulted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consultado em {date}'**
+  String aboutDataConsulted(String date);
 }
 
 class _AppLocalizationsDelegate
