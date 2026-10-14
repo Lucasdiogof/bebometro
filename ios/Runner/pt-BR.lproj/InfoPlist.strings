@@ -4,3 +4,4 @@
 "NSCameraUsageDescription" = "A câmera é usada só para fotografar rótulos e cardápios do rolê. As fotos ficam no seu aparelho.";
 "NSPhotoLibraryUsageDescription" = "A galeria é usada só para você escolher fotos de rótulos e cardápios do rolê.";
 "NSMotionUsageDescription" = "O movimento do aparelho é usado só para inclinar a cerveja no \"Virar o copo\". Nada é gravado.";
+"NSPhotoLibraryAddUsageDescription" = "Usada só quando você escolhe salvar na galeria uma imagem que compartilhou do Bebômetro.";

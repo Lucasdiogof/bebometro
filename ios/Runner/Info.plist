@@ -53,6 +53,8 @@
 	<string>Só quando você toca em "Usar minha localização": para sugerir lugares por perto e marcar o ponto no mapa. O Bebômetro não acompanha seus deslocamentos.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>O movimento do aparelho é usado só para inclinar a cerveja no "Virar o copo". Nada é gravado.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Usada só quando você escolhe salvar na galeria uma imagem que compartilhou do Bebômetro.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>A galeria é usada só para você escolher fotos de rótulos e cardápios do rolê.</string>
 	<key>NSSupportsLiveActivities</key>
