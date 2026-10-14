@@ -150,12 +150,16 @@ class AuthController extends Cubit<AccessState> {
               status: AccessStatus.signedOut, cloudUnavailable: true));
       return;
     }
-    final session = _auth.currentSession;
-    // Notes the owner of the old records before anything else can change the
-    // session (only an anonymous session restored from disk can tell).
-    final restored = session?.user;
-    await _legacy.recordOwner(
-        restored != null && restored.isAnonymous ? restored.id : null);
+    var session = _auth.currentSession;
+    // The app never keeps anonymous sessions any more (it has no old data to
+    // keep): one left on the device by a test build is dropped locally, so
+    // the person lands on the normal sign-in / create-account screen.
+    if (session?.user.isAnonymous == true) {
+      try {
+        await _auth.signOut(scope: SignOutScope.local);
+      } catch (_) {}
+      session = _auth.currentSession;
+    }
 
     // The SDK replays every event of this run (ReplaySubject), including a
     // passwordRecovery produced by the link that opened a cold app. Events
@@ -235,12 +239,9 @@ class AuthController extends Cubit<AccessState> {
     final conversion = _jsonKey(_conversionKey);
 
     if (user.isAnonymous) {
-      final converting = conversion?['uid'] == user.id;
       emit(AccessState(
-        status: converting ? AccessStatus.emailPending : AccessStatus.legacyAnonymous,
-        userId: user.id,
-        pendingEmail: converting ? conversion!['email'] as String? : null,
-        converting: converting,
+        status: AccessStatus.signedOut,
+        email: _device.getString(_lastEmailKey),
         notice: state.notice,
       ));
       return;

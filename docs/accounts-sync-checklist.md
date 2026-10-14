@@ -8,6 +8,8 @@ do pub), não em execução.
 
 ## Decisões
 
+> **Dados antigos removidos (13/10/2026):** o app nunca foi usado por ninguém, então não existem registros antigos nem contas a converter. As telas "Dados antigos" (importar/manter/exportar, "criar conta com meus registros"), o aviso na entrada, o aviso em Minha conta e o convite ao abrir foram **retirados**. Uma sessão anônima que sobrar num aparelho de teste é encerrada localmente na abertura e a pessoa cai na tela normal de entrar/criar conta. O código de dados antigos (`legacy_data.dart`, conversão em `AuthController`) ficou sem tela e pode ser apagado depois; as telas de entrar/criar conta/recuperar não mudaram. Nada compilado.
+
 1. **Conta permanente obrigatória, só e-mail e senha.** Sem "continuar como visitante" e sem `signInAnonymously` (nem
    como fallback). Sessão anônima antiga vira o estado "dados antigos aguardando conversão/importação".
 2. **Sessão local manda offline.** A sessão persistida pelo SDK continua valendo sem rede. Só `signedOut` com

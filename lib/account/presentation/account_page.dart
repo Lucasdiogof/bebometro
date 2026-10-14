@@ -12,10 +12,8 @@ import '../../core/widgets/common.dart';
 import '../../scan/data/photo_files.dart';
 import '../application/auth_controller.dart';
 import '../data/account_service.dart';
-import '../data/legacy_data.dart';
 import 'auth_widgets.dart';
 import 'conflicts_page.dart';
-import 'legacy_data_page.dart';
 import '../../l10n/l10n.dart';
 
 /// "Minha conta": profile, password, what is saved where, sign out and
@@ -29,16 +27,6 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   bool _syncing = false;
-  LegacyInfo? _legacy;
-
-  @override
-  void initState() {
-    super.initState();
-    getIt<LegacyData>().info().then((i) {
-      if (mounted) setState(() => _legacy = i);
-    });
-  }
-
   Future<void> _editName(String? current) async {
     final controller = TextEditingController(text: current ?? '');
     final name = await showDialog<String>(
@@ -236,28 +224,6 @@ class _AccountPageState extends State<AccountPage> {
                     Expanded(
                       child: Text(
                         tr.accountConflicts(sync.conflicts),
-                        style: AppText.subtitle,
-                      ),
-                    ),
-                    const Icon(Icons.chevron_right_rounded,
-                        color: AppColors.textMuted),
-                  ]),
-                ),
-              ],
-              if (_legacy?.hasData == true) ...[
-                const SizedBox(height: AppSpace.sm),
-                SurfaceCard(
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const LegacyDataPage())),
-                  child: Row(children: [
-                    const Icon(Icons.inventory_2_outlined,
-                        color: AppColors.amber),
-                    const SizedBox(width: AppSpace.md),
-                    Expanded(
-                      child: Text(
-                        _legacy!.needsDecision || _legacy!.status == LegacyStatus.kept
-                            ? tr.accountLegacyDecide
-                            : tr.accountLegacy,
                         style: AppText.subtitle,
                       ),
                     ),

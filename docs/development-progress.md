@@ -79,6 +79,8 @@ Sexta rodada: SMTP do Resend (`smtp.resend.com:465`, remetente `Bebômetro <mark
 4 templates + 4 assuntos trilíngues **aplicados** e lidos de volta; confirmação de e-mail **continua desligada** até um envio real ser
 conferido. Entrega de e-mail não verificada.
 
+Sétima rodada: e-mail de teste entregue na caixa de entrada; "Confirm email" **ligado**. **Dados antigos removidos (13/10/2026):** o app nunca foi usado por ninguém, então não existem registros antigos nem contas a converter. As telas "Dados antigos" (importar/manter/exportar, "criar conta com meus registros"), o aviso na entrada, o aviso em Minha conta e o convite ao abrir foram **retirados**. Uma sessão anônima que sobrar num aparelho de teste é encerrada localmente na abertura e a pessoa cai na tela normal de entrar/criar conta. O código de dados antigos (`legacy_data.dart`, conversão em `AuthController`) ficou sem tela e pode ser apagado depois; as telas de entrar/criar conta/recuperar não mudaram. Nada compilado.
+
 ## Bloqueios conhecidos
 
 - Sem acesso administrativo ao Supabase neste ambiente: novas migrations são preparadas e aplicadas pelo dono.

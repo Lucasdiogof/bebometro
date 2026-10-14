@@ -10,8 +10,6 @@ import '../../shell/main_shell.dart';
 import '../../tracking/application/tracking_coordinator.dart';
 import '../../tracking/application/tracking_links.dart';
 import '../application/auth_controller.dart';
-import '../data/legacy_data.dart';
-import 'legacy_data_page.dart';
 import 'auth_pages.dart';
 import 'auth_widgets.dart';
 import '../../l10n/l10n.dart';
@@ -86,7 +84,8 @@ class _AccessGateState extends State<AccessGate> {
           case AccessStatus.emailPending:
             return const CheckEmailPage();
           case AccessStatus.legacyAnonymous:
-            return const LegacyAnonymousPage();
+            // Never reached: an old anonymous session is signed out at start.
+            return const SignInPage();
           case AccessStatus.needsPassword:
             return const NewPasswordPage(recovery: false);
           case AccessStatus.passwordRecovery:
@@ -120,39 +119,7 @@ class _AccountHomeState extends State<_AccountHome> {
       if (!mounted || !AccountScope.isOpen) return;
       getIt<TrackingCoordinator>().start();
       getIt<TrackingLinks>().start();
-      _offerLegacy();
     });
-  }
-
-  static bool _offered = false;
-
-  /// Old records waiting for a decision: offered once per app run, never
-  /// imported without the person's choice.
-  Future<void> _offerLegacy() async {
-    if (_offered) return;
-    final info = await getIt<LegacyData>().info();
-    if (!mounted || !info.needsDecision) return;
-    _offered = true;
-    final nav = AppNavigator.key.currentState;
-    if (nav == null) return;
-    final open = await showDialog<bool>(
-      context: nav.context,
-      builder: (ctx) => AlertDialog(
-        title: Text(tr.legacyOfferTitle),
-        content: Text(tr.legacyOfferBody(info.outings)),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.commonLater)),
-          FilledButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.legacyOfferOpen)),
-        ],
-      ),
-    );
-    if (open == true) {
-      await nav.push(MaterialPageRoute<void>(builder: (_) => const LegacyDataPage()));
-    }
   }
 
   @override

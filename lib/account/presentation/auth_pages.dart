@@ -9,7 +9,6 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/common.dart';
 import '../application/auth_controller.dart';
 import 'auth_widgets.dart';
-import 'legacy_data_page.dart';
 import '../../l10n/l10n.dart';
 
 // ------------------------------------------------------------------ sign in
@@ -106,8 +105,6 @@ class _SignInPageState extends State<SignInPage> {
               .push(MaterialPageRoute(builder: (_) => const SignUpPage())),
           child: Text(tr.authCreateAccount),
         ),
-        const SizedBox(height: AppSpace.lg),
-        const LegacyNoticeCard(),
       ],
     );
   }
@@ -484,62 +481,6 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
             child: Text(tr.authCancelAndLeave),
           ),
         ],
-      ],
-    );
-  }
-}
-
-// ------------------------------------------------------- old anonymous user
-
-/// The device still has the anonymous session of an older version. The
-/// product stays closed until the person creates the account (keeping the
-/// same records) or signs in to another one (records kept apart, importable).
-class LegacyAnonymousPage extends StatelessWidget {
-  const LegacyAnonymousPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final s = context.watch<AuthController>().state;
-    return AuthScaffold(
-      title: tr.legacyAnonTitle,
-      subtitle: tr.legacyAnonBody,
-      action: FilledButton(
-        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => const SignUpPage(convert: true))),
-        child: Text(tr.legacyAnonCreate),
-      ),
-      children: [
-        if (s.notice != null) FormMessage(s.notice!),
-        SurfaceCard(
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => const SignInPage())),
-          child: Row(children: [
-            Icon(Icons.login_rounded, color: AppColors.amber),
-            SizedBox(width: AppSpace.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(tr.legacyAnonHaveAccount, style: AppText.subtitle),
-                  Text(tr.legacyAnonHaveAccountHint, style: AppText.caption),
-                ],
-              ),
-            ),
-          ]),
-        ),
-        const SizedBox(height: AppSpace.sm),
-        SurfaceCard(
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => const LegacyDataPage())),
-          child: Row(children: [
-            Icon(Icons.inventory_2_outlined, color: AppColors.amber),
-            SizedBox(width: AppSpace.md),
-            Expanded(
-              child: Text(tr.legacyAnonView,
-                  style: AppText.subtitle),
-            ),
-          ]),
-        ),
       ],
     );
   }

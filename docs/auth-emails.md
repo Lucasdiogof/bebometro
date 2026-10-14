@@ -58,3 +58,5 @@ exige vincular uma identidade e que isso requer **habilitar Manual linking** —
 O Supabase renderiza o e-mail com os dados da **conta** (`user_metadata.language`). Uma pessoa que pede recuperação de senha sem
 estar logada, num app com outro idioma escolhido agora, recebe o e-mail no idioma **gravado na conta**. A API do cliente não
 permite escolher o idioma por pedido, então isso não é prometido. Contas sem o campo recebem português.
+
+**Atualização (13/10/2026):** SMTP e templates aplicados e lidos de volta; um e-mail de teste chegou à caixa de entrada; "Confirm email" está **ligado**. Os templates em si ainda não foram vistos num e-mail real do Auth.

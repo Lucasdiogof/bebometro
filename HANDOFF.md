@@ -686,6 +686,14 @@ recusou sem SMTP próprio (aplicar com `scripts/apply_auth_email.py` quando houv
 **Mais tarde no mesmo dia:** SMTP (Resend, `marketing@lucksrei.com`), templates e assuntos aplicados e lidos de volta; chave Geoapify em
 `env.json` (fora do Git). Confirmação de e-mail ainda desligada até conferir um envio real. Detalhes: `docs/external-setup.md`.
 
+## Dados antigos: telas removidas (13/10/2026)
+
+**Dados antigos removidos (13/10/2026):** o app nunca foi usado por ninguém, então não existem registros antigos nem contas a converter. As telas "Dados antigos" (importar/manter/exportar, "criar conta com meus registros"), o aviso na entrada, o aviso em Minha conta e o convite ao abrir foram **retirados**. Uma sessão anônima que sobrar num aparelho de teste é encerrada localmente na abertura e a pessoa cai na tela normal de entrar/criar conta. O código de dados antigos (`legacy_data.dart`, conversão em `AuthController`) ficou sem tela e pode ser apagado depois; as telas de entrar/criar conta/recuperar não mudaram. Nada compilado.
+
+## Entrega de e-mail e confirmação (13/10/2026)
+
+Um e-mail de teste (sem link) enviado por SMTP ao responsável chegou à caixa de entrada, fora do spam; em seguida "Confirm email" foi **ligado** (lido de volta). Os templates do Auth ainda não foram vistos num e-mail real.
+
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem
 executada**. Pendente de olho humano em aparelho: contraste, espaçamentos, textos longos, escala de
