@@ -18,7 +18,7 @@ Legenda das colunas de estado: **Implementado** (código no repositório) · **C
 |---|---|---|---|---|
 | Função `delete-account` | Sim (revisada, corrigida, `dry_run`) | **Sim**: publicada, versão 1, `ACTIVE` | `verify_jwt: true`; `POST` sem sessão = **401** (antes 404) | Teste com sessão real (`dry_run`): **exclusão NÃO declarada funcional** |
 | Redirects de Auth | Sim | **Sim**: `uri_allow_list = bebometro://auth-callback` (estava vazia); *Site URL* mantido (`http://localhost:3000`) | Lido de volta da API de gerenciamento | URL web de produção quando existir |
-| Conversão das sessões anônimas | Sim (`updateUser(email)`) | **Sim**: *Manual linking* ligado (estava desligado); login anônimo mantido ligado | Lido de volta | Conversão real ainda não executada |
+| Conversão das sessões anônimas | **Removida** (14/10/2026: sem tela e sem código) | *Manual linking* e login anônimo seguem ligados no projeto; o app não usa nenhum dos dois | Lido de volta (13/10) | Nada |
 | Confirmação de e-mail | **Removida** (app sem a tela) | **Desligada de propósito**: `mailer_autoconfirm: true` | Lido de volta (painel e `/auth/v1/settings`) | Nada. Recuperação de senha continua por e-mail |
 | SMTP | Sim (`scripts/apply_auth_email.py`) | **Sim**: `smtp.resend.com:465`, usuário `resend`, remetente `Bebômetro <marketing@lucksrei.com>`, senha armazenada | Lido de volta (senha só como "armazenada"). **Entrega verificada**: e-mail de teste (sem link) enviado ao responsável chegou à caixa de entrada, fora do spam | Nada |
 | Templates PT-BR/EN/ES | Sim (4 arquivos) | **Sim**: 4 templates e 4 assuntos trilíngues aplicados (a recusa anterior era por falta de SMTP próprio) | Lidos de volta, idênticos aos arquivos. **Renderização ainda não vista** (o teste enviado não usou os templates) | Conferir idioma/link num cadastro real |
@@ -104,13 +104,12 @@ Na web o app usa a **origem da página** (`Uri.base.origin`).
 *Site URL*: pode continuar como está; não há página de destino do Bebômetro na web ainda.
 A documentação oficial de Redirect URLs (conferida) manda usar URLs exatas em produção e `**` só em desenvolvimento.
 
-## 3. Conversão das sessões anônimas antigas
+## 3. Sessões anônimas antigas (fluxo cancelado)
 
-O código (`AuthController.convertAnonymous` → `updateUser(email)` + senha depois da confirmação) é o fluxo documentado de
-"Convert an anonymous user to a permanent user", que exige **Manual linking** (Auth → Sign In / Providers → *Allow manual
-linking*) — também para o caso de e-mail. Conferido no código atual: o app não usa `linkIdentity`, só `updateUser`.
-**Estado (13/10/2026): *Manual linking* ligado** (lido de volta) e login anônimo mantido ligado. Regra: **manter *Allow anonymous sign-ins* ligado** enquanto houver sessões antigas (hoje a API mostra
-`anonymous_users: true`). O app não cria mais sessões anônimas. Nenhuma conversão foi executada.
+**Cancelado e removido do código em 14/10/2026** (`legacy_data.dart`, `convertAnonymous`, estados de confirmação/conversão). O app
+nunca teve usuários reais; uma sessão anônima que sobrar num aparelho de teste é encerrada localmente na abertura. *Manual linking* e
+"Allow anonymous sign-ins" continuam ligados no projeto (não foram mexidos nesta rodada); o app não depende deles. Desligar é opcional
+e fica para quem administra o projeto.
 
 ## 4. SMTP e confirmação de e-mail
 
@@ -139,8 +138,6 @@ site. Depois de pôr as variáveis no ambiente (abaixo), um único comando aplic
 $env:BEBOMETRO_SMTP_FROM = "remetente@seu-dominio-verificado"   # você escolhe; não inventei
 $env:BEBOMETRO_SMTP_PASS = "<chave do Resend>"
 python -I scripts/apply_auth_email.py --apply
-# só depois de conferir o envio real:
-python -I scripts/apply_auth_email.py --apply --enable-confirmation
 ```
 
 **Os templates (seção 5) só podem ser aplicados depois do SMTP:** tentei por API e a plataforma recusou (400: modificar templates não
@@ -152,7 +149,7 @@ está disponível em projeto gratuito com o provedor padrão). Campos a preenche
 - Domínio do remetente verificado no provedor (SPF/DKIM) antes de ligar.
 - Conferir o limite de envios por hora do provedor e o *rate limit* de e-mails em Auth → Rate Limits.
 
-Depois de o SMTP funcionar, **ligar "Confirm email"** (Auth → Sign In / Providers → Email). O app já trata as duas situações.
+**"Confirm email" fica desligado** (decisão de produto: o cadastro entra direto). O script não tem mais opção para ligá-lo.
 
 ## 5. Templates de e-mail (PT-BR, EN, ES)
 

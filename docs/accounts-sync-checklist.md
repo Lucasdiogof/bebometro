@@ -8,7 +8,7 @@ do pub), não em execução.
 
 ## Decisões
 
-> **Dados antigos removidos (13/10/2026):** o app nunca foi usado por ninguém, então não existem registros antigos nem contas a converter. As telas "Dados antigos" (importar/manter/exportar, "criar conta com meus registros"), o aviso na entrada, o aviso em Minha conta e o convite ao abrir foram **retirados**. Uma sessão anônima que sobrar num aparelho de teste é encerrada localmente na abertura e a pessoa cai na tela normal de entrar/criar conta. O código de dados antigos (`legacy_data.dart`, conversão em `AuthController`) ficou sem tela e pode ser apagado depois; as telas de entrar/criar conta/recuperar não mudaram. Nada compilado.
+> **Dados antigos removidos (13/10/2026):** o app nunca foi usado por ninguém, então não existem registros antigos nem contas a converter. As telas "Dados antigos" (importar/manter/exportar, "criar conta com meus registros"), o aviso na entrada, o aviso em Minha conta e o convite ao abrir foram **retirados**. Uma sessão anônima que sobrar num aparelho de teste é encerrada localmente na abertura e a pessoa cai na tela normal de entrar/criar conta. O código de dados antigos (`legacy_data.dart`, conversão em `AuthController`) foi **apagado em 14/10/2026**. As menções abaixo a dados antigos, conversão, espaço legado, *Manual linking* e login anônimo descrevem o desenho antigo e ficam só como histórico. Nada compilado.
 
 1. **Conta permanente obrigatória, só e-mail e senha.** Sem "continuar como visitante" e sem `signInAnonymously` (nem
    como fallback). Sessão anônima antiga vira o estado "dados antigos aguardando conversão/importação".
@@ -70,7 +70,7 @@ projeto e não foi tocado).
    verificação de JWT ligada, o padrão). Sem ela, "Excluir conta" avisa que ainda não está disponível e não apaga nada.
 3. **Auth > URL Configuration:** em *Redirect URLs*, incluir `bebometro://auth-callback` e a origem web usada (ex.:
    `http://localhost:PORTA` em desenvolvimento e o domínio de produção quando existir; nenhum domínio foi inventado).
-4. **Auth > Providers > Email:** manter "Confirm email" ligado (o app trata os dois casos).
+4. **Auth > Providers > Email:** manter "Confirm email" **desligado** (decisão de produto, 13/10/2026).
 5. **Auth:** ligar **Manual linking**. A exigência está **confirmada** no guia oficial "Anonymous Sign-Ins → Convert an
    anonymous user to a permanent user" (vale também para `updateUser(email)`), conferido em 13/10/2026 (detalhes em
    `docs/auth-emails.md`). Sem isso a conversão mostra o erro e a pessoa pode criar conta nova e importar.

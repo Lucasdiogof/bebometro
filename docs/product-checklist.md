@@ -38,8 +38,8 @@ para as últimas etapas e não foram começados.
 
 | Item | Código | Externo | Execução |
 |------|--------|---------|----------|
-| Conta obrigatória (e-mail e senha), perfil, recuperação | Sim | SMTP próprio **pendente**; redirects **pendentes** | Não |
-| Conversão da sessão anônima antiga | Sim | *Manual linking* **pendente** (exigência confirmada na documentação oficial) | Não |
+| Conta obrigatória (e-mail e senha), cadastro entra direto, perfil | Sim | SMTP aplicado; "Confirm email" desligado de propósito (lido pela API pública em 14/10) | Não |
+| Recuperação de senha por código de 6 dígitos | Sim (`verifyOTP` tipo `recovery`) | Template `recovery.html` com `{{ .Token }}` e `mailer_otp_length = 6` **não aplicados/lidos daqui** (sem token administrativo): `scripts/apply_recovery_code.py` | Não |
 | Sincronização com leitura da nuvem, conflitos, exclusões | Sim | Migration `20261018000000` aplicada pelo dono | Não |
 | Excluir conta | Sim | Função `delete-account` **não publicada** | Não |
 | Persistência local por conta | Sim | n/a | Não |
@@ -54,7 +54,7 @@ nesta rodada. Detalhes: `docs/development-progress.md`.
 Passo a passo e estado real (implementado / configurado / verificado pela API / validado no app): [`external-setup.md`](external-setup.md).
 Geoapify: chave dedicada configurada em `env.json` local (verificada por HTTP); mapa e busca ainda **não validados no app**.
 
-1. SMTP próprio, redirects (`bebometro://auth-callback` e origem web), *Manual linking*.
+1. Aplicar o template de recuperação por código e conferir `mailer_otp_length = 6`: `SUPABASE_ACCESS_TOKEN=... python -I scripts/apply_recovery_code.py --apply` (só mexe nesses campos e confere que o resto não mudou). Depois, pedir um código para uma conta própria e concluir a troca de senha no app.
 2. Deploy de `delete-account`.
 3. Templates de e-mail trilíngues (`supabase/email-templates/`, ver `docs/auth-emails.md`).
 4. Chave Geoapify (`GEOAPIFY_KEY`) e `flutter pub get` dos pacotes novos.

@@ -1,87 +1,80 @@
 # E-mails de autenticação (Supabase) em pt-BR, en e es
 
-> Passo a passo de configuração (assuntos, SMTP, redirects): [`external-setup.md`](external-setup.md), seções 4 e 5.
-> Atualização de 13/10/2026: templates revisados (layout simples e responsivo, marca, teste de idioma protegido contra campo
-> ausente). A API pública mostra que **"Confirm email" está desligado** hoje (`mailer_autoconfirm: true`); templates e SMTP
-> continuam **não aplicados** e nenhum e-mail foi enviado. Em 13/10/2026 a API de gerenciamento recusou a alteração dos templates
-> enquanto não há SMTP próprio; o `scripts/apply_auth_email.py` aplica SMTP + templates juntos quando houver credencial.
-> **Atualização (13/10/2026): SMTP e templates foram aplicados e lidos de volta.** "Confirm email" segue desligado e nenhuma entrega real
-> foi verificada.
+> Passo a passo de SMTP e redirects: [`external-setup.md`](external-setup.md), seções 4 e 5.
+> Estado em **14/10/2026**. Legenda: *implementado* (código no repositório), *configurado no servidor* (aplicado no projeto),
+> *verificado pela API* (lido de volta), *validado no app* (fluxo executado e observado).
 
-**Estado:** as telas do app estão nos três idiomas (implementado em código). Os **e-mails** enviados pelo Supabase são
-outra coisa: só ficam traduzidos depois que os templates abaixo forem colados no painel. **Nada disso foi aplicado
-daqui** (sem acesso administrativo) e nenhum e-mail de teste foi enviado.
+## Decisões em vigor
 
-## O que o Supabase permite (documentação oficial conferida em 13/10/2026)
+- Conta permanente obrigatória; o cadastro **entra direto**, sem confirmação de e-mail (`mailer_autoconfirm: true`, lido pela API
+  pública `/auth/v1/settings` em 14/10/2026).
+- Recuperação de senha por **código de 6 dígitos**, sem link, deep link nem PKCE.
+- Não existe conversão de sessão anônima nem importação de dados antigos (código removido em 14/10/2026).
 
-- Cada tipo de e-mail tem **um** template por projeto, em Go templates. Não há um template por idioma.
-- O idioma pode vir de `user_metadata`: `{{ .Data.language }}` com `if/else` no próprio template (guia "Customizing
-  Emails by Language").
-- Assunto: um só por tipo; por isso os assuntos são trilíngues ("Confirme seu e-mail · Confirm your email · Confirma tu
-  correo").
-- Alternativas que exigiriam infraestrutura/serviço extra (não adotadas): Auth Hook de e-mail (Send Email hook) com
-  provedor próprio.
+## Recuperação por código
 
-## O que o app faz
-
-- Grava `language` (`pt`, `en` ou `es`) em `user_metadata` no **cadastro** e na **conversão de conta antiga**, e
-  atualiza quando a pessoa troca o idioma com a conta aberta (`AuthController.syncLanguage`, silencioso).
-- Contas que nunca gravaram o idioma (criadas antes desta rodada e que não trocaram de idioma depois) recebem o
-  e-mail em **português** (ramo `else`). Um e-mail de recuperação de senha pedido sem sessão usa o último idioma gravado.
-
-## Aplicação (manual, por quem tem acesso ao painel)
-
-Em **Auth → Email Templates**, para cada tipo, copiar o conteúdo do arquivo e ajustar o assunto:
-
-| Tipo no painel | Arquivo |
+| Etapa | Estado |
 |---|---|
-| Confirm signup | `supabase/email-templates/confirmation.html` |
-| Reset password | `supabase/email-templates/recovery.html` |
-| Change email address | `supabase/email-templates/email_change.html` |
-| Reauthentication | `supabase/email-templates/reauthentication.html` |
+| App: pedir código (`resetPasswordForEmail`, sem `redirectTo`) | Implementado |
+| App: verificar (`verifyOTP(type: OtpType.recovery, email, token)`) | Implementado |
+| App: nova senha (`updateUser(password)`, só no estado `passwordRecovery`) | Implementado |
+| Template `recovery.html` com `{{ .Token }}`, sem link | Implementado no repositório; **não aplicado nem lido de volta daqui** |
+| `mailer_otp_length = 6` | **Não conferido** (a API pública não mostra; precisa de token administrativo) |
+| E-mail real com código recebido | **Não observado** |
+| Troca de senha concluída no app | **Não validado** |
 
-Magic link e Invite não são usados pelo app. Cada template traz o assunto sugerido no comentário do topo. Se o painel
-recusar a sintaxe, o Supabase usa um template padrão (ver "Email template not updating" na documentação); conferir os
-*Auth Logs*.
+**Tipo de OTP correto (conferido no pacote instalado `gotrue` 2.27.3, em `verifyOTP`):** `type: recovery` vai para `/verify` com
+`type=recovery` e emite `AuthChangeEvent.passwordRecovery`. Não é `OtpType.email`/`magiclink` nem `signInWithOtp`, então não cria
+conta nem faz login por código. `resetPasswordForEmail` só envia e-mail para conta existente; a mensagem do app é neutra ("se houver
+uma conta com esse e-mail...").
 
-Observação: depois de colar, **testar com uma conta própria** nos três idiomas antes de liberar.
+**Variável do template (documentação oficial "Email Templates", conferida em 14/10/2026):** `{{ .Token }}` é o código numérico de uso
+único; `{{ .ConfirmationURL }}` é o link. O `recovery.html` usa só `{{ .Token }}`. O idioma vem de `{{ .Data.language }}` (pt como
+padrão).
 
-## Manual linking
+### Comportamentos conferidos por leitura do código (não é teste)
 
-O guia oficial "Anonymous Sign-Ins → Convert an anonymous user to a permanent user" diz que converter o usuário anônimo
-exige vincular uma identidade e que isso requer **habilitar Manual linking** — inclusive no caso de e-mail via
-`updateUser(email)`. O fluxo implementado (`AuthController.convertAnonymous`) é exatamente esse, então a exigência
-**está confirmada pela documentação** (não é uma suposição) e o item do checklist permanece.
+- Código rejeitado ou falha de rede: o marcador local de recuperação é apagado, não há sessão e a tela de nova senha não abre; o erro
+  aparece no campo do código (código inválido/expirado) ou no topo (sem conexão). E-mail e código digitados continuam na tela.
+- Nova senha só é salva no estado `passwordRecovery` (`setPassword` recusa qualquer outro estado).
+- "Cancelar e sair" na tela de nova senha encerra a sessão; o botão voltar do sistema não leva ao app (a tela é a raiz do portão).
+- Sessão de recuperação sem nova senha salva: na reabertura, dentro de 2 h, volta à tela de nova senha; depois disso (ou com marcador
+  de outro e-mail) a sessão é **encerrada**, nunca vira login normal.
+- Logout apaga o marcador de recuperação.
+- Reenvio: um único `Timer` por tela (cancelado no `dispose`) só redesenha a contagem; a espera de 60 s fica no `AuthController`.
+- Logs: só o tipo do erro (`runtimeType`), nunca e-mail, código, token ou senha.
+- Callbacks antigos: os estados `emailPending`, `needsPassword` e `legacyAnonymous` não existem mais; o portão só conhece
+  `initializing`, `signedOut`, `reauthRequired`, `passwordRecovery` e `authenticated`.
 
-## Idioma do e-mail x idioma atual de quem pede
+### Aplicar no servidor (pendência do responsável)
 
-O Supabase renderiza o e-mail com os dados da **conta** (`user_metadata.language`). Uma pessoa que pede recuperação de senha sem
-estar logada, num app com outro idioma escolhido agora, recebe o e-mail no idioma **gravado na conta**. A API do cliente não
-permite escolher o idioma por pedido, então isso não é prometido. Contas sem o campo recebem português.
+```bash
+SUPABASE_ACCESS_TOKEN=... python -I scripts/apply_recovery_code.py
+```
 
-**Atualização (13/10/2026):** SMTP e templates aplicados e lidos de volta; um e-mail de teste chegou à caixa de entrada; "Confirm email" está **ligado**. Os templates em si ainda não foram vistos num e-mail real do Auth.
+Sem `--apply` só mostra o estado atual (template tem `{{ .Token }}`? tem link? `mailer_otp_length`, `mailer_otp_exp`,
+`mailer_autoconfirm`) e o que mudaria. Com `--apply` envia **só** `mailer_templates_recovery_content`, `mailer_subjects_recovery` e,
+se diferente, `mailer_otp_length = 6`; depois lê de volta e para com erro se SMTP, `site_url`, o template de confirmação,
+`mailer_otp_exp` ou `mailer_autoconfirm` tiverem mudado. Não envia e-mail.
 
-## Recuperação de senha por código de 6 dígitos (13/10/2026)
+Alternativa manual: Auth → Email Templates → **Reset password** (colar `supabase/email-templates/recovery.html`, assunto
+`Redefinir senha · Reset password · Restablecer contraseña`) e Auth → Providers → Email → **Email OTP Length = 6**.
 
-O link de recuperação foi **removido**: ele dependia de PKCE + deep link `bebometro://auth-callback` e falhava quando o e-mail
-era aberto em outro aparelho (ou numa tela branca do Gmail). Agora:
+Depois: pedir um código para uma conta **própria**, conferir que o e-mail mostra 6 dígitos e nenhum link, digitar no app e salvar
+uma senha nova.
 
-1. "Esqueci minha senha" → e-mail → `resetPasswordForEmail` (sem `redirectTo`).
-2. Tela `ResetCodePage`: e-mail + código de 6 dígitos → `auth.verifyOTP(type: recovery, email, token)`, que abre a sessão.
-   Reenvio com espera de 60 s (`AuthController.recoveryWaitSeconds`); código errado ou expirado (`otp_expired`/`invalid_otp`)
-   mostra "Código inválido ou expirado" no campo; "Já tenho um código" pula o passo 1.
-3. A sessão cai em `AccessStatus.passwordRecovery` → tela de nova senha (`NewPasswordPage`) → `updateUser(password)`.
+## Templates no repositório
 
-Funciona em qualquer aparelho: não há link, deep link nem PKCE. O marcador local de recuperação é gravado antes do `verifyOTP`
-e removido se falhar.
+| Tipo no painel | Arquivo | Usado pelo app hoje |
+|---|---|---|
+| Reset password | `supabase/email-templates/recovery.html` | Sim (código) |
+| Reauthentication | `supabase/email-templates/reauthentication.html` | Só se "Secure password change" for ligado |
+| Change email address | `supabase/email-templates/email_change.html` | Não (o app não troca e-mail) |
+| Confirm signup | `supabase/email-templates/confirmation.html` | Não (confirmação desligada) |
 
-O template `recovery.html` mostra **só** `{{ .Token }}` em destaque (sem link, botão nem `{{ .ConfirmationURL }}`), com aviso de
-que expira e de que pode ser ignorado; o idioma segue `{{ .Data.language }}`. Requisitos do projeto: `mailer_otp_length = 6` e
-`mailer_otp_exp` (segundos) coerente com o texto "expira em pouco tempo" (o padrão do Supabase é 3600). O
-`scripts/apply_auth_email.py` imprime esses dois valores antes e depois de aplicar; para aplicar: `SUPABASE_ACCESS_TOKEN=...
-python -I scripts/apply_auth_email.py --apply` (SMTP já configurado, não precisa das variáveis de SMTP).
+Cada tipo tem um template por projeto (Go templates) e um assunto; por isso os assuntos são trilíngues. O idioma vem de
+`user_metadata.language`, gravado pelo app no cadastro e ao trocar de idioma com a conta aberta. Contas sem o campo recebem
+português. Quem pede recuperação sem estar logado recebe no idioma **gravado na conta**, não no do aparelho.
 
-**Estado:** código e template alterados no repositório; **ainda não aplicados no Supabase** (a sessão que fez a mudança não tinha
-`SUPABASE_ACCESS_TOKEN`). Nenhum e-mail com o novo template foi enviado nem o fluxo foi executado no app.
-
-**Estado do template de recuperação (14/10/2026):** o ecovery.html com {{ .Token }} (variável oficial do OTP de e-mail) está no repositório, mas **não foi aplicado nem lido de volta** — esta sessão não tem token do projeto jiisoqkryhmtopaojyyu. Aplicar com SUPABASE_ACCESS_TOKEN + python -I scripts/apply_auth_email.py --apply (ou colar em Auth → Email Templates → Reset password). Enquanto não for aplicado, o e-mail ainda leva o link antigo e o fluxo por código não funciona de ponta a ponta. Conferir também mailer_otp_length = 6.
+`scripts/apply_auth_email.py` aplica SMTP + os quatro templates (amplo; usar só para refazer tudo). A opção que ligava "Confirm
+email" foi **removida**.

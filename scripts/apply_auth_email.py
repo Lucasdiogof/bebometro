@@ -1,5 +1,6 @@
 """Applies the Bebometro e-mail setup to Supabase Auth: custom SMTP, the four
-trilingual templates and their subjects; optionally turns "Confirm email" on.
+trilingual templates and their subjects. "Confirm email" is never touched
+(the product signs people in right away; keep it OFF).
 
 Only project jiisoqkryhmtopaojyyu is touched. Secrets come from the
 environment and are never printed or written to disk:
@@ -13,10 +14,10 @@ Optional: BEBOMETRO_SMTP_HOST (default smtp.resend.com), BEBOMETRO_SMTP_PORT
 
   python -I scripts/apply_auth_email.py             # show what would change
   python -I scripts/apply_auth_email.py --apply     # SMTP, then templates
-  python -I scripts/apply_auth_email.py --apply --enable-confirmation
 
-Turn confirmation on only after the transport and templates are in place. The
-script does not send any e-mail and does not create accounts.
+To change ONLY the recovery template and the code length, use
+scripts/apply_recovery_code.py instead. The script does not send any e-mail
+and does not create accounts.
 """
 import json
 import os
@@ -97,8 +98,6 @@ def main():
     if smtp:
         call(token, 'PATCH', smtp)
     call(token, 'PATCH', templates)
-    if '--enable-confirmation' in sys.argv:
-        call(token, 'PATCH', {'mailer_autoconfirm': False})
 
     after = call(token, 'GET')
     ok = True
@@ -110,7 +109,7 @@ def main():
     print('mailer_otp_length:', after.get('mailer_otp_length'),
           '| mailer_otp_exp (s):', after.get('mailer_otp_exp'))
     print('mailer_autoconfirm:', after.get('mailer_autoconfirm'),
-          '(False = "Confirm email" is ON)')
+          '(must stay True: "Confirm email" OFF)')
     if not ok:
         raise SystemExit(1)
 
