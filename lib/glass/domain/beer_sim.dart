@@ -15,7 +15,7 @@ import 'package:flutter/foundation.dart';
 /// The container is the screen. Its mouth is the top edge: liquid that would
 /// sit above the lowest point of that edge leaves through it.
 class BeerSim extends ChangeNotifier {
-  BeerSim({this.initialFill = 0.78, int bubbleCount = 40})
+  BeerSim({this.initialFill = 0.78, int bubbleCount = 72})
       : volume = initialFill,
         _bx = Float32List(bubbleCount),
         _by = Float32List(bubbleCount),
@@ -249,7 +249,7 @@ class BeerSim extends ChangeNotifier {
         _bx[i] = x;
         _by[i] = y;
         final big = _rand.nextDouble();
-        _br[i] = 1.2 + big * big * 4.2;
+        _br[i] = 0.7 + big * big * big * 2.3;
         _bs[i] = 18 + _rand.nextDouble() * 70;
         _bp[i] = _rand.nextDouble() * 6.28;
         _balive[i] = 1;
