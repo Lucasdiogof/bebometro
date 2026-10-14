@@ -688,7 +688,7 @@ recusou sem SMTP próprio (aplicar com `scripts/apply_auth_email.py` quando houv
 
 ## Dados antigos: telas removidas (13/10/2026)
 
-**Dados antigos removidos (13/10/2026):** o app nunca foi usado por ninguém, então não existem registros antigos nem contas a converter. As telas "Dados antigos" (importar/manter/exportar, "criar conta com meus registros"), o aviso na entrada, o aviso em Minha conta e o convite ao abrir foram **retirados**. Uma sessão anônima que sobrar num aparelho de teste é encerrada localmente na abertura e a pessoa cai na tela normal de entrar/criar conta. O código de dados antigos (`legacy_data.dart`, conversão em `AuthController`) ficou sem tela e pode ser apagado depois; as telas de entrar/criar conta/recuperar não mudaram. Nada compilado.
+**Dados antigos removidos (13/10/2026):** o app nunca foi usado por ninguém, então não existem registros antigos nem contas a converter. As telas "Dados antigos" (importar/manter/exportar, "criar conta com meus registros"), o aviso na entrada, o aviso em Minha conta e o convite ao abrir foram **retirados**. Uma sessão anônima que sobrar num aparelho de teste é encerrada localmente na abertura e a pessoa cai na tela normal de entrar/criar conta. O código de dados antigos (`legacy_data.dart`, conversão em `AuthController`) foi **apagado em 14/10/2026** (ver "Rodada 14/10/2026" no fim). Nada compilado.
 
 ## Entrega de e-mail e confirmação (13/10/2026)
 
@@ -740,3 +740,25 @@ em aparelho e conferir no painel do Supabase que as linhas chegam. Depois: teste
 - **Recuperação por código** integrada por rebase e publicada (5e04c6a). Fluxo conferido por leitura (pedir código, verificar, nova senha, reenvio com espera, expirado/inválido, volta ao gate). **Pendente:** aplicar o template `supabase/email-templates/recovery.html` (só `{{ .Token }}`) — sem token do projeto nesta sessão; ver `docs/auth-emails.md`. Conferir `mailer_otp_length = 6`.
 - **Simulador de cerveja:** `lib/glass/presentation/beer_painter.dart` reescrito (pilsen dourada, ar quase preto, espuma branco-creme com microtextura irregular em pontos, bolhas pequenas e translúcidas com brilho, reflexos de vidro fixos na tela); `beer_sim.dart` só mudou raio (0,7–3 px) e quantidade (72) das bolhas. Sensores, volume, escoamento, modo manual e redução de movimento intactos. **Nada foi executado ou visto em aparelho**: afinar cores/densidade olhando na tela.
 - **Catálogo v4:** 112 produtos (82 antes); ver `docs/catalog-coverage.md` e `scripts/catalog_tool.py` (coverage/check/merge). Fontes oficiais bloqueadas por anti-robô limitam o avanço; lista de lacunas no doc. Itens criados em rolê continuam presos ao `outing_id` (não mexi). Busca/aliases: nada alterado além dos aliases dos itens novos.
+
+## Rodada 14/10/2026: recuperação por código, limpeza, catálogo v5
+
+- **Recuperação por código** (`auth_controller.dart`, `auth_pages.dart`): `verifyOTP(type: OtpType.recovery)` conferido no
+  `gotrue` 2.27.3 instalado (vai para `/verify` com `type=recovery`, emite `passwordRecovery`; não cria conta nem faz login por OTP).
+  Reforços: `setPassword` só no estado `passwordRecovery`; sessão de recuperação com marcador vencido (> 2 h) ou de outro e-mail é
+  **encerrada** em vez de virar login normal; `signOut` apaga o marcador; erro que não seja `AuthException` em `verifyOTP` também
+  apaga o marcador e vira "sem conexão"; cadastro que voltar sem sessão (se alguém religar a confirmação) mostra erro em vez de um
+  estado que não existe mais. **Servidor:** nada aplicado daqui (sem `SUPABASE_ACCESS_TOKEN`). Aplicar com
+  `python -I scripts/apply_recovery_code.py --apply` (só template/assunto de recuperação e `mailer_otp_length = 6`; lê de volta e
+  confere que SMTP, `site_url`, template de confirmação, `mailer_otp_exp` e `mailer_autoconfirm` não mudaram). O
+  `apply_auth_email.py` perdeu a opção `--enable-confirmation`. Detalhes: `docs/auth-emails.md`.
+- **Limpeza** (`33543b0`): apagados `legacy_data.dart`, `convertAnonymous`, `cancelConversion`, `forgetPendingEmail`,
+  `resendConfirmation`, os estados `legacyAnonymous`/`emailPending`/`needsPassword`, `SignUpPage(convert)`,
+  `NewPasswordPage(recovery: false)`, a adoção do espaço legado no `AccountScope.open`, `LocalStore.openLegacy`/`isAccountKey` e 54
+  textos sem uso (pt/en/es; `flutter gen-l10n` rodado). Nada de armazenamento, banco ou conta foi apagado: as chaves antigas sem
+  prefixo continuam no aparelho, só não são mais lidas. Mantidos: logout, sessão expirada, sincronização, conflitos, exportação,
+  isolamento por conta. *Manual linking* e login anônimo seguem ligados no projeto (não mexidos).
+- **Catálogo v5** (`b1cf676`): 116 produtos / 55 marcas; 23 produtos com embalagens novas; `fieldSources` por campo; ver
+  `docs/catalog-coverage.md`. Pesquisa feita com scripts temporários fora do repositório (coleta educada de cadastros GTIN no Systax,
+  que libera tudo no `robots.txt`); o resultado entra pelo `catalog_tool.py merge`.
+- **Nada compilado, analisado, testado nem executado.**

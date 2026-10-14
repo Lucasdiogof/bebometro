@@ -13,7 +13,7 @@ para as últimas etapas e não foram começados.
 | Item | Código | Externo | Execução | Situação |
 |------|--------|---------|----------|----------|
 | Rolê: iniciar, editar, encerrar, feedback, orçamento, preços ausentes | Sim | n/a | Não | Pendente validar |
-| Catálogo, filtros, favoritos, recentes, "Mais uma", água, desfazer | Sim | n/a | Não | Pendente validar |
+| Catálogo (v5: 116 produtos, procedência por campo), filtros, favoritos, recentes, "Mais uma", água, desfazer | Sim | n/a | Não | Pendente validar |
 | Receitas de referência e próprias, composição, avisos de dado incompleto | Sim | n/a | Não | Pendente validar |
 | Bebidas por foto (rótulo/cardápio), itens só do rolê, rascunhos | Sim | Migration `20261015000000` aplicada pelo dono | Não | Heurísticas de OCR não validadas |
 | Locais salvos e mapa (Geoapify) | Sim | Chave `GEOAPIFY_KEY` **não configurada**; migration `20261017000000` aplicada | Não | Parcial (depende da chave) |
