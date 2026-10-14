@@ -52,6 +52,7 @@ nesta rodada. Detalhes: `docs/development-progress.md`.
 ## Configurações externas pendentes
 
 Passo a passo e estado real (implementado / configurado / verificado pela API / validado no app): [`external-setup.md`](external-setup.md).
+Geoapify: chave dedicada configurada em `env.json` local (verificada por HTTP); mapa e busca ainda **não validados no app**.
 
 1. SMTP próprio, redirects (`bebometro://auth-callback` e origem web), *Manual linking*.
 2. Deploy de `delete-account`.

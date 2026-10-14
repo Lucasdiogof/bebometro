@@ -73,6 +73,8 @@ antes de qualquer escrita (revisão do código); sem sessão válida de usuário
 nenhuma credencial acessível (secret do Resend do site não é legível; ler outro projeto foi negado); `scripts/apply_auth_email.py`
 aplica SMTP + templates com uma credencial fornecida. Geoapify: armazenamento permitido pela doc oficial desde que a atribuição
 fique visível (adicionada ao detalhe do local); sem chave. Redirect web: aguarda hospedagem. iOS: sem Mac/Team.
+Quinta rodada: chave Geoapify dedicada recebida; gravada em `env.json` (fora do Git); aceita pela API (autocomplete, reverse, places,
+tile = 200). Mapa/busca não validados no Flutter.
 
 ## Bloqueios conhecidos
 

@@ -22,7 +22,7 @@ Legenda das colunas de estado: **Implementado** (código no repositório) · **C
 | Confirmação de e-mail | Sim | **Não** (segue desligada, de propósito) | `mailer_autoconfirm: true` | Ligar só depois do SMTP |
 | SMTP | Script pronto (`scripts/apply_auth_email.py`) | **Não** (`smtp_host` vazio) | Lido: sem SMTP | **Pendente de credencial**: senha SMTP (chave do Resend) e remetente (seção 4) |
 | Templates PT-BR/EN/ES | Sim (4 arquivos) | **Não**: a plataforma recusa (HTTP 400, "não disponível no plano gratuito com o provedor padrão; configure SMTP próprio") | Templates atuais = padrão do Supabase | **Pendente de credencial** (depende do SMTP): o mesmo script aplica depois |
-| Geoapify | Sim (atribuição também no detalhe do local) | **Não** (sem chave em `env.json`/ambiente) | Armazenamento de resultados: **permitido** pela doc oficial (seção 6) | **Pendente de credencial**: chave dedicada |
+| Geoapify | Sim (atribuição também no detalhe do local) | **Sim, só neste PC**: chave em `env.json` (fora do Git). Não está em CI nem em build de loja | Chave aceita: autocomplete, reverse, places e tile responderam 200 (poucas chamadas). **Não** é mapa validado no Flutter | Passar `--dart-define-from-file=env.json` em cada build; restringir/trocar a chave se necessário |
 | Redirect web | n/a | **Não** (não existe URL web do Bebômetro no repositório) | n/a | **Aguarda hospedagem web** |
 | Assinatura iOS | Alvos coerentes | **Não** (sem Team; sem Mac/Xcode neste ambiente) | n/a | **Pendente de ação manual** no Xcode |
 | Migrations até `20261018000000` | Sim | Aplicadas pelo responsável | Colunas/tabelas existem | Nada |
@@ -170,7 +170,10 @@ Depois de colar, ler a configuração de volta no painel e conferir os *Auth Log
 ## 6. Geoapify (busca de lugares e mapa)
 
 Sem a chave (`GEOAPIFY_KEY`), busca e mapa ficam desligados e o resto funciona. **Não há chave específica do Bebômetro
-disponível** e não criei conta nem aceitei termos. Único passo seu (a chave não existe em nenhum lugar acessível daqui): criar um projeto no plano gratuito em geoapify.com, gerar
+disponível** e não criei conta nem aceitei termos. **Estado (13/10/2026): a chave dedicada foi fornecida e gravada em `env.json` (ignorado pelo Git).** Verificação HTTP mínima, sem
+imprimir a chave: autocomplete (com `state_code` GO em endereços de Goiânia), reverse geocoding (cidade devolvida; **sem `state_code`**
+nesse ponto, o que o app já trata deixando a UF vazia), places (1 resultado em 500 m) e tile PNG, todos HTTP 200. Para obter uma
+chave nova: criar um projeto no plano gratuito em geoapify.com, gerar
 **uma chave só para o Bebômetro** e passá-la no build (`env.example.json` → `env.json`, que está no `.gitignore`):
 
 ```bash
