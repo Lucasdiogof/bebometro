@@ -1,0 +1,61 @@
+{
+ "reuse": {
+  "status": "odbl-attribution-sharealike",
+  "hold": true,
+  "citationOnly": false,
+  "evidence": "Open Food Facts: base sob ODbL, conteúdo DbCL, imagens CC BY-SA (world.openfoodfacts.org/terms-of-use). Atribuição obrigatória e compartilhamento nas mesmas condições para bases derivadas; dados de contribuidores sem garantia de exatidão.",
+  "consequence": "Candidatos mantidos separados; nada entra no catálogo publicado sem decisão sobre ODbL e conferência do dado."
+ },
+ "products": {
+  "brahma-chopp": {
+   "gtins": [
+    "7891149010509"
+   ]
+  },
+  "skol-pilsen": {
+   "gtins": [
+    "7891149103102"
+   ]
+  },
+  "budweiser-budweiser": {
+   "gtins": [
+    "7891991014762",
+    "7802130002199"
+   ]
+  },
+  "heineken-heineken": {
+   "gtins": [
+    "7896045506590",
+    "7896045523412",
+    "78935495",
+    "7802100004185"
+   ]
+  },
+  "stella-artois-stella-artois": {
+   "gtins": [
+    "7802130000775"
+   ]
+  },
+  "baden-baden-ipa": {
+   "gtins": [
+    "7898230716654"
+   ]
+  },
+  "colorado-appia": {
+   "gtins": [
+    "7898925943020"
+   ]
+  },
+  "brahma-zero": {
+   "gtins": [
+    "7891149104932"
+   ]
+  },
+  "heineken-0-0": {
+   "gtins": [
+    "7802100003270",
+    "7896045506064"
+   ]
+  }
+ }
+}

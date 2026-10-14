@@ -4,10 +4,12 @@
   python -I scripts/catalog_tool.py check               # validate the file
   python -I scripts/catalog_tool.py merge a.json b.json # apply research files
   python -I scripts/catalog_tool.py merge --write ...   # ... and save
+  python -I scripts/catalog_tool.py ids [git-ref]       # ids/values preserved vs a git ref (default HEAD)
 
 A research file is {"patches": [...], "new": [...], "unresolved": [...]}:
-- corroborate {id: source} attaches a source to a field that already has a
-  value (default field abv) without changing it.
+- corroborate {id: source | [source, ...]} attaches a source to a field that
+  already has a value (default field abv) without changing it; a list sources
+  several fields of one product.
 - patches only FILL fields that are empty (null / [] / missing). A value that
   differs from what is already there is reported as a conflict and never
   overwrites it. Nothing is ever averaged.
@@ -240,15 +242,25 @@ def merge(doc, files, write):
                 stats['patched'] += 1
         # Sources that confirm (or contradict) a value already present: only
         # the source is recorded, the value never changes.
-        for pid, e in (r.get('corroborate') or {}).items():
+        for pid, entries in (r.get('corroborate') or {}).items():
             p = byid.get(pid)
             if p is None:
                 print(f"  corroborate for unknown id {pid}")
                 continue
-            e = dict(e)
-            field = e.pop('field', 'abv')
-            have = p.setdefault('fieldSources', {}).setdefault(field, [])
-            if e['url'] not in {x['url'] for x in have}:
+            # one entry, or a list when several fields of the same product are sourced
+            for e in (entries if isinstance(entries, list) else [entries]):
+                e = dict(e)
+                field = e.pop('field', 'abv')
+                if field not in SOURCED:
+                    print(f"  corroborate {pid}: unknown field {field}")
+                    continue
+                have = p.setdefault('fieldSources', {}).setdefault(field, [])
+                same = [x for x in have if x['url'] == e['url']]
+                if (field == 'presentations' and same
+                        and e.get('variant') in {x.get('variant') for x in same}):
+                    continue
+                if field != 'presentations' and same:
+                    continue
                 have.append(e)
                 stats['corroborated'] = stats.get('corroborated', 0) + 1
         for n in r.get('new', []):
@@ -272,6 +284,33 @@ def merge(doc, files, write):
         print('written')
 
 
+def ids_vs_git(doc, ref):
+    """Every id and brand/name present in `ref` must still exist, unchanged."""
+    import subprocess
+    out = subprocess.run(['git', 'show', f'{ref}:assets/catalog/catalog_v1.json'], cwd=os.path.join(HERE, '..'),
+                         capture_output=True, check=True).stdout.decode('utf-8')
+    old = {p['id']: p for p in json.loads(out)['products']}
+    now = {p['id']: p for p in doc['products']}
+    lost = sorted(set(old) - set(now))
+    moved = sorted(i for i in old if i in now and (old[i]['brand'], old[i]['name'], old[i]['category'])
+                   != (now[i]['brand'], now[i]['name'], now[i]['category']))
+    # values never change through this tool: only empty fields may get filled
+    changed = []
+    for i, o in old.items():
+        n = now.get(i)
+        if not n:
+            continue
+        for k in ('abv', 'abvVariants', 'ingredients', 'style', 'category'):
+            if not empty(o.get(k)) and o.get(k) != n.get(k):
+                changed.append(f'{i}.{k}')
+        for pr in o.get('presentations') or []:
+            if pr not in (n.get('presentations') or []):
+                changed.append(f"{i}.presentations {pr}")
+    print(f'{len(old)} ids in {ref}, {len(now)} now; lost: {lost or "none"}; renamed: {moved or "none"}; '
+          f'values changed: {changed or "none"}; new ids: {sorted(set(now) - set(old)) or "none"}')
+    return 1 if lost or moved or changed else 0
+
+
 def main(argv):
     cmd = argv[1] if len(argv) > 1 else 'coverage'
     doc = load()
@@ -279,6 +318,8 @@ def main(argv):
         coverage(doc)
     elif cmd == 'check':
         raise SystemExit(1 if check(doc) else 0)
+    elif cmd == 'ids':
+        raise SystemExit(ids_vs_git(doc, argv[2] if len(argv) > 2 else 'HEAD'))
     elif cmd == 'merge':
         args = argv[2:]
         write = '--write' in args

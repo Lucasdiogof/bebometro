@@ -1,0 +1,170 @@
+{
+ "manufacturer": "HEINEKEN Brasil (HNK BR Indústria de Bebidas Ltda)",
+ "market": "BR",
+ "reuse": {
+  "status": "restricted",
+  "hold": true,
+  "citationOnly": true,
+  "evidence": "Devassa Termos de Uso (HNK BR, atualizado 11/06/2024), item 4: \"O armazenamento ou a reprodução no todo ou em parte do conteúdo disponibilizado no Site não é permitido\". Termos dos outros sites da marca não localizados (URLs testadas deram 404 ou página vazia) -> tratados igual.",
+  "consequence": "Nenhum dado novo é incorporado a partir destas páginas; só é proposta a citação (URL, rótulo e data, sem trecho copiado) para valores que o catálogo já tinha."
+ },
+ "robots": "Allow: / (verificado em 14/10/2026 nos 4 domínios)",
+ "pages": [
+  {
+   "url": "https://www.eisenbahn.com.br/pilsen/",
+   "label": "Eisenbahn Pilsen (site oficial)",
+   "brand": "Eisenbahn",
+   "catalogId": "eisenbahn-pilsen",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.eisenbahn.com.br/american-ipa/",
+   "label": "Eisenbahn American IPA (site oficial)",
+   "brand": "Eisenbahn",
+   "catalogId": "eisenbahn-american-ipa",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.eisenbahn.com.br/pale-ale/",
+   "label": "Eisenbahn Pale Ale (site oficial)",
+   "brand": "Eisenbahn",
+   "catalogId": "eisenbahn-pale-ale",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.eisenbahn.com.br/weizenbier/",
+   "label": "Eisenbahn Weizenbier (site oficial)",
+   "brand": "Eisenbahn",
+   "catalogId": "eisenbahn-weizenbier",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.eisenbahn.com.br/session-ipa/",
+   "label": "Eisenbahn Session IPA (site oficial)",
+   "brand": "Eisenbahn",
+   "catalogId": "eisenbahn-session-ipa",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.eisenbahn.com.br/unfiltered-old-suno/",
+   "label": "Eisenbahn Unfiltered (site oficial)",
+   "brand": "Eisenbahn",
+   "catalogId": "eisenbahn-unfiltered",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.devassa.com.br/produtos/devassa-lata/",
+   "label": "Devassa Lata (site oficial)",
+   "brand": "Devassa",
+   "catalogId": "devassa-tropical",
+   "variant": "can",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.devassa.com.br/produtos/devassa-garrafa/",
+   "label": "Devassa Garrafa (site oficial)",
+   "brand": "Devassa",
+   "catalogId": "devassa-tropical",
+   "variant": "bottle",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.kaiser.com.br/produtos/kaiser-350ml/",
+   "label": "Kaiser 350 ml (site oficial)",
+   "brand": "Kaiser",
+   "catalogId": "kaiser-lager",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.kaiser.com.br/produtos/kaiser-473ml/",
+   "label": "Kaiser 473 ml (site oficial)",
+   "brand": "Kaiser",
+   "catalogId": "kaiser-lager",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.kaiser.com.br/produtos/kaiser-600ml/",
+   "label": "Kaiser 600 ml (site oficial)",
+   "brand": "Kaiser",
+   "catalogId": "kaiser-lager",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.kaiser.com.br/produtos/kaiser-1-litro/",
+   "label": "Kaiser 1 litro (site oficial)",
+   "brand": "Kaiser",
+   "catalogId": "kaiser-lager",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.kaiser.com.br/produtos/kaiser-chopp/",
+   "label": "Kaiser Chopp (site oficial)",
+   "brand": "Kaiser",
+   "catalogId": null,
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.badenbaden.com.br/produtos/cristal/",
+   "label": "Baden Baden Cristal (site oficial)",
+   "brand": "Baden Baden",
+   "catalogId": "baden-baden-cristal",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.badenbaden.com.br/produtos/golden/",
+   "label": "Baden Baden Golden (site oficial)",
+   "brand": "Baden Baden",
+   "catalogId": "baden-baden-golden",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.badenbaden.com.br/produtos/ipa/",
+   "label": "Baden Baden IPA (site oficial)",
+   "brand": "Baden Baden",
+   "catalogId": "baden-baden-ipa",
+   "ignoreFields": [
+    "style"
+   ]
+  },
+  {
+   "url": "https://www.badenbaden.com.br/produtos/witbier/",
+   "label": "Baden Baden Witbier (site oficial)",
+   "brand": "Baden Baden",
+   "catalogId": "baden-baden-witbier",
+   "ignoreFields": [
+    "style"
+   ]
+  }
+ ],
+ "note": "style ignorado: o campo \"Estilo\" das paginas Eisenbahn e a familia (Ale/Lager), nao o estilo do produto."
+}
