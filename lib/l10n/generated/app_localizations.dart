@@ -553,7 +553,7 @@ abstract class AppLocalizations {
   /// No description provided for @authPasswordHelper.
   ///
   /// In pt, this message translates to:
-  /// **'Pelo menos 8 caracteres, com letras e números.'**
+  /// **'Pelo menos 8 caracteres.'**
   String get authPasswordHelper;
 
   /// No description provided for @authPasswordMin.
@@ -733,7 +733,7 @@ abstract class AppLocalizations {
   /// No description provided for @authWeakPassword.
   ///
   /// In pt, this message translates to:
-  /// **'Senha fraca. Use pelo menos 8 caracteres, misturando letras e números.'**
+  /// **'Senha fraca. Use pelo menos 8 caracteres.'**
   String get authWeakPassword;
 
   /// No description provided for @authWrongCredentials.

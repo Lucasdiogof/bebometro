@@ -316,8 +316,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authPassword => 'Password';
 
   @override
-  String get authPasswordHelper =>
-      'At least 8 characters.';
+  String get authPasswordHelper => 'At least 8 characters.';
 
   @override
   String get authPasswordMin => 'Use at least 8 characters.';
@@ -420,8 +419,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authUseOtherEmailBack => 'Go back and use another e-mail';
 
   @override
-  String get authWeakPassword =>
-      'Weak password. Use at least 8 characters.';
+  String get authWeakPassword => 'Weak password. Use at least 8 characters.';
 
   @override
   String get authWrongCredentials => 'Wrong e-mail or password.';
