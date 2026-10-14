@@ -682,7 +682,9 @@ migration `20261018000000` visível no esquema. Não configurado/validado: deplo
 Geoapify, Team iOS. O nome do app continua **Bebômetro**.
 **Atualização (token pessoal, mesmo dia):** aplicado no projeto `jiisoqkryhmtopaojyyu`: `delete-account` publicada (ACTIVE, v1,
 `verify_jwt` ligado, 401 sem sessão), `bebometro://auth-callback` na lista de redirects, *Manual linking* ligado. Templates: a plataforma
-recusou sem SMTP próprio (aplicar com `scripts/apply_auth_email.py` quando houver credencial; ver `docs/external-setup.md`). Falta: teste `dry_run` com sessão real, SMTP, templates, Geoapify, Team iOS.
+recusou sem SMTP próprio (aplicar com `scripts/apply_auth_email.py` quando houver credencial; ver `docs/external-setup.md`). Falta: teste `dry_run` com sessão real, Team iOS.
+**Mais tarde no mesmo dia:** SMTP (Resend, `marketing@lucksrei.com`), templates e assuntos aplicados e lidos de volta; chave Geoapify em
+`env.json` (fora do Git). Confirmação de e-mail ainda desligada até conferir um envio real. Detalhes: `docs/external-setup.md`.
 
 ## Revisão visual (estado real)
 Tudo desta etapa foi escrito e revisado por leitura do código; **nenhuma tela foi renderizada nem

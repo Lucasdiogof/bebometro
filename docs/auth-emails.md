@@ -5,6 +5,8 @@
 > ausente). A API pública mostra que **"Confirm email" está desligado** hoje (`mailer_autoconfirm: true`); templates e SMTP
 > continuam **não aplicados** e nenhum e-mail foi enviado. Em 13/10/2026 a API de gerenciamento recusou a alteração dos templates
 > enquanto não há SMTP próprio; o `scripts/apply_auth_email.py` aplica SMTP + templates juntos quando houver credencial.
+> **Atualização (13/10/2026): SMTP e templates foram aplicados e lidos de volta.** "Confirm email" segue desligado e nenhuma entrega real
+> foi verificada.
 
 **Estado:** as telas do app estão nos três idiomas (implementado em código). Os **e-mails** enviados pelo Supabase são
 outra coisa: só ficam traduzidos depois que os templates abaixo forem colados no painel. **Nada disso foi aplicado

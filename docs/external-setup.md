@@ -19,9 +19,9 @@ Legenda das colunas de estado: **Implementado** (código no repositório) · **C
 | Função `delete-account` | Sim (revisada, corrigida, `dry_run`) | **Sim**: publicada, versão 1, `ACTIVE` | `verify_jwt: true`; `POST` sem sessão = **401** (antes 404) | Teste com sessão real (`dry_run`): **exclusão NÃO declarada funcional** |
 | Redirects de Auth | Sim | **Sim**: `uri_allow_list = bebometro://auth-callback` (estava vazia); *Site URL* mantido (`http://localhost:3000`) | Lido de volta da API de gerenciamento | URL web de produção quando existir |
 | Conversão das sessões anônimas | Sim (`updateUser(email)`) | **Sim**: *Manual linking* ligado (estava desligado); login anônimo mantido ligado | Lido de volta | Conversão real ainda não executada |
-| Confirmação de e-mail | Sim | **Não** (segue desligada, de propósito) | `mailer_autoconfirm: true` | Ligar só depois do SMTP |
-| SMTP | Script pronto (`scripts/apply_auth_email.py`) | **Não** (`smtp_host` vazio) | Lido: sem SMTP | **Pendente de credencial**: senha SMTP (chave do Resend) e remetente (seção 4) |
-| Templates PT-BR/EN/ES | Sim (4 arquivos) | **Não**: a plataforma recusa (HTTP 400, "não disponível no plano gratuito com o provedor padrão; configure SMTP próprio") | Templates atuais = padrão do Supabase | **Pendente de credencial** (depende do SMTP): o mesmo script aplica depois |
+| Confirmação de e-mail | Sim | **Não** (segue desligada, de propósito) | `mailer_autoconfirm: true` | Ligar (`--enable-confirmation`) depois de um envio real conferido |
+| SMTP | Sim (`scripts/apply_auth_email.py`) | **Sim**: `smtp.resend.com:465`, usuário `resend`, remetente `Bebômetro <marketing@lucksrei.com>`, senha armazenada | Lido de volta (senha só como "armazenada"). **Entrega real NÃO verificada** | Um envio real a um destinatário seu (seção 4) |
+| Templates PT-BR/EN/ES | Sim (4 arquivos) | **Sim**: 4 templates e 4 assuntos trilíngues aplicados (a recusa anterior era por falta de SMTP próprio) | Lidos de volta, idênticos aos arquivos | Conferir renderização/idioma em e-mails reais |
 | Geoapify | Sim (atribuição também no detalhe do local) | **Sim, só neste PC**: chave em `env.json` (fora do Git). Não está em CI nem em build de loja | Chave aceita: autocomplete, reverse, places e tile responderam 200 (poucas chamadas). **Não** é mapa validado no Flutter | Passar `--dart-define-from-file=env.json` em cada build; restringir/trocar a chave se necessário |
 | Redirect web | n/a | **Não** (não existe URL web do Bebômetro no repositório) | n/a | **Aguarda hospedagem web** |
 | Assinatura iOS | Alvos coerentes | **Não** (sem Team; sem Mac/Xcode neste ambiente) | n/a | **Pendente de ação manual** no Xcode |
@@ -118,7 +118,14 @@ Estado lido pela API: `mailer_autoconfirm: true`, ou seja, hoje **ninguém preci
 confirmação é enviado. O SMTP padrão do Supabase só entrega para endereços da equipe do projeto e tem limite baixo por hora, então
 não serve para usuários reais. Nada foi enviado nesta rodada.
 
-**Como foi tentado (13/10/2026):** a infraestrutura transacional conhecida é o Resend do site lucksrei.com (o Worker `lucksrei-site` usa o
+**Aplicado (13/10/2026) com a chave do Resend fornecida pelo responsável** (usada só em memória; não está em arquivo). Domínio
+`lucksrei.com` no Resend: DKIM e SPF **verificados**, envio habilitado, região sa-east-1; só o CNAME de tracking de links consta como
+falho (irrelevante para e-mail transacional sem rastreio). **Remetente:** `marketing@lucksrei.com`, o endereço que o site já usa nesse
+domínio verificado; não foi inventada nenhuma caixa. Respostas a esses e-mails caem nessa caixa. Para trocar:
+`BEBOMETRO_SMTP_FROM=outro@dominio python -I scripts/apply_auth_email.py --apply`. A chave foi colada no chat: revogue-a no Resend e
+gere outra só de envio quando puder (depois, rode o script de novo com a nova). Nenhum e-mail foi enviado.
+
+**Histórico da tentativa anterior:** a infraestrutura transacional conhecida é o Resend do site lucksrei.com (o Worker `lucksrei-site` usa o
 secret `RESEND_API_KEY` e o domínio `lucksrei.com` verificado). O secret de um Worker não pode ser lido de volta, não há cópia
 local, e ler a configuração de e-mail de outro projeto Supabase foi negado pelo controle de acesso — não contornei. Portanto **não há
 credencial acessível** para o Bebômetro.

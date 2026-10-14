@@ -75,6 +75,9 @@ aplica SMTP + templates com uma credencial fornecida. Geoapify: armazenamento pe
 fique visível (adicionada ao detalhe do local); sem chave. Redirect web: aguarda hospedagem. iOS: sem Mac/Team.
 Quinta rodada: chave Geoapify dedicada recebida; gravada em `env.json` (fora do Git); aceita pela API (autocomplete, reverse, places,
 tile = 200). Mapa/busca não validados no Flutter.
+Sexta rodada: SMTP do Resend (`smtp.resend.com:465`, remetente `Bebômetro <marketing@lucksrei.com>`) **configurado** e lido de volta;
+4 templates + 4 assuntos trilíngues **aplicados** e lidos de volta; confirmação de e-mail **continua desligada** até um envio real ser
+conferido. Entrega de e-mail não verificada.
 
 ## Bloqueios conhecidos
 
