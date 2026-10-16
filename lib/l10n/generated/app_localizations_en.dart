@@ -2507,6 +2507,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get formSaveFailed => 'Could not save. Nothing was lost, try again.';
 
   @override
+  String get priceBulkTitle => 'Apply this price to the same drinks?';
+
+  @override
+  String priceBulkBody(
+    String name,
+    String price,
+    int total,
+    int unpriced,
+    int differing,
+  ) {
+    return '$name for $price. This outing has $total equal records: $unpriced without a price and $differing with another price. Nothing changes without your choice.';
+  }
+
+  @override
+  String priceBulkUnpriced(int count) {
+    return 'Apply to the $count without a price';
+  }
+
+  @override
+  String priceBulkAll(int count) {
+    return 'Apply to all $count equal ones';
+  }
+
+  @override
+  String get priceBulkOnlyThis => 'Only this record';
+
+  @override
+  String get priceBulkConfirmTitle => 'Replace prices?';
+
+  @override
+  String priceBulkConfirmBody(int count) {
+    return 'This replaces the price of $count records that already had another value. Other outings do not change.';
+  }
+
+  @override
+  String get priceBulkReplace => 'Replace';
+
+  @override
+  String priceBulkApplied(int count) {
+    return 'Price applied to $count records.';
+  }
+
+  @override
   String get formDeleteFailed => 'Could not delete. Try again.';
 
   @override
@@ -4914,6 +4957,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get shareCardFailed =>
       'Could not open sharing. The summary text was copied.';
+
+  @override
+  String get shareCardCaptureFailed =>
+      'Could not create the image. The summary text was copied.';
 
   @override
   String get shareCardMyOuting => 'My outing';

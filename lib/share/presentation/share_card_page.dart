@@ -66,27 +66,33 @@ class _ShareCardPageState extends State<ShareCardPage> {
     if (_busy) return;
     setState(() => _busy = true);
     final messenger = ScaffoldMessenger.of(context);
+    String? problem;
     try {
       final bytes = await ShareService.capturePng(_boundaryKey);
-      var ok = false;
-      if (bytes != null) {
-        ok = await ShareService.shareFile(
+      if (bytes == null) {
+        problem = tr.shareCardCaptureFailed;
+      } else {
+        final ok = await ShareService.shareFile(
           bytes: bytes,
-          name: 'bebometro-rolê.png',
+          // ASCII only: the name becomes a temporary file path.
+          name: 'bebometro-role.png',
           mimeType: 'image/png',
           text: _summaryText(),
         );
+        if (!ok) problem = tr.shareCardFailed;
       }
-      if (!ok) {
-        await Clipboard.setData(ClipboardData(text: _summaryText()));
-        messenger
-          ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(
-            content: Text(tr.shareCardFailed),
-          ));
-      }
+    } catch (e) {
+      ShareService.lastFailure = 'share card: ${e.runtimeType}: $e';
+      problem = tr.shareCardFailed;
     } finally {
       if (mounted) setState(() => _busy = false);
+    }
+    if (problem != null) {
+      // Whatever failed, the text still reaches the person (clipboard).
+      await Clipboard.setData(ClipboardData(text: _summaryText()));
+      messenger
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(problem)));
     }
   }
 
@@ -171,27 +177,54 @@ class _ShareCardPageState extends State<ShareCardPage> {
             ),
           ),
           BottomActionBar(
-            child: Row(children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: _copy,
-                  icon: const Icon(Icons.copy_rounded),
-                  label: Text(tr.tabCopyText),
-                ),
-              ),
-              const SizedBox(width: AppSpace.sm),
-              Expanded(
-                child: FilledButton.icon(
-                  onPressed: _busy ? null : _share,
-                  icon: const Icon(Icons.ios_share_rounded),
-                  label: Text(tr.tabShareButton),
-                ),
-              ),
-            ]),
+            child: _ShareActions(
+              onCopy: _copy,
+              onShare: _busy ? null : _share,
+            ),
           ),
         ],
       ),
     );
+  }
+}
+
+/// "Copiar texto" + "Compartilhar". The primary action gets the larger share
+/// of the width and its label never wraps (no icon: the word is the button).
+/// When the screen is narrow or the text scale is large, the buttons stack
+/// instead of shrinking the text.
+class _ShareActions extends StatelessWidget {
+  const _ShareActions({required this.onCopy, required this.onShare});
+
+  final VoidCallback onCopy;
+  final VoidCallback? onShare;
+
+  @override
+  Widget build(BuildContext context) {
+    final scale = MediaQuery.textScalerOf(context).scale(16) / 16;
+    final copy = OutlinedButton.icon(
+      onPressed: onCopy,
+      icon: const Icon(Icons.copy_rounded),
+      label: Text(tr.tabCopyText, maxLines: 1, softWrap: false),
+    );
+    final share = FilledButton(
+      onPressed: onShare,
+      child: Text(tr.tabShareButton, maxLines: 1, softWrap: false),
+    );
+    return LayoutBuilder(builder: (context, c) {
+      final stack = c.maxWidth < 330 || scale > 1.25;
+      if (stack) {
+        return Column(mainAxisSize: MainAxisSize.min, children: [
+          SizedBox(width: double.infinity, child: share),
+          const SizedBox(height: AppSpace.sm),
+          SizedBox(width: double.infinity, child: copy),
+        ]);
+      }
+      return Row(children: [
+        Expanded(flex: 5, child: copy),
+        const SizedBox(width: AppSpace.sm),
+        Expanded(flex: 6, child: share),
+      ]);
+    });
   }
 }
 

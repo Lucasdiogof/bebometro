@@ -4162,6 +4162,66 @@ abstract class AppLocalizations {
   /// **'Não foi possível salvar. Nada foi perdido, tente de novo.'**
   String get formSaveFailed;
 
+  /// No description provided for @priceBulkTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aplicar este preço às bebidas iguais?'**
+  String get priceBulkTitle;
+
+  /// No description provided for @priceBulkBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} por {price}. Neste rolê há {total} registros iguais: {unpriced} sem preço e {differing} com outro preço. Nada muda sem a sua escolha.'**
+  String priceBulkBody(
+    String name,
+    String price,
+    int total,
+    int unpriced,
+    int differing,
+  );
+
+  /// No description provided for @priceBulkUnpriced.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aplicar aos {count} sem preço'**
+  String priceBulkUnpriced(int count);
+
+  /// No description provided for @priceBulkAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aplicar a todos os {count} iguais'**
+  String priceBulkAll(int count);
+
+  /// No description provided for @priceBulkOnlyThis.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só este registro'**
+  String get priceBulkOnlyThis;
+
+  /// No description provided for @priceBulkConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Substituir preços?'**
+  String get priceBulkConfirmTitle;
+
+  /// No description provided for @priceBulkConfirmBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Isso troca o preço de {count} registros que já tinham outro valor. Os demais rolês não mudam.'**
+  String priceBulkConfirmBody(int count);
+
+  /// No description provided for @priceBulkReplace.
+  ///
+  /// In pt, this message translates to:
+  /// **'Substituir'**
+  String get priceBulkReplace;
+
+  /// No description provided for @priceBulkApplied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço aplicado a {count} registros.'**
+  String priceBulkApplied(int count);
+
   /// No description provided for @formDeleteFailed.
   ///
   /// In pt, this message translates to:
@@ -7958,6 +8018,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Não foi possível abrir o compartilhamento. O texto do resumo foi copiado.'**
   String get shareCardFailed;
+
+  /// No description provided for @shareCardCaptureFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível gerar a imagem. O texto do resumo foi copiado.'**
+  String get shareCardCaptureFailed;
 
   /// No description provided for @shareCardMyOuting.
   ///

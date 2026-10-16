@@ -2517,6 +2517,49 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo guardar. No se perdió nada, inténtalo de nuevo.';
 
   @override
+  String get priceBulkTitle => '¿Aplicar este precio a las mismas bebidas?';
+
+  @override
+  String priceBulkBody(
+    String name,
+    String price,
+    int total,
+    int unpriced,
+    int differing,
+  ) {
+    return '$name por $price. En este rolê hay $total registros iguales: $unpriced sin precio y $differing con otro precio. Nada cambia sin tu elección.';
+  }
+
+  @override
+  String priceBulkUnpriced(int count) {
+    return 'Aplicar a los $count sin precio';
+  }
+
+  @override
+  String priceBulkAll(int count) {
+    return 'Aplicar a los $count iguales';
+  }
+
+  @override
+  String get priceBulkOnlyThis => 'Solo este registro';
+
+  @override
+  String get priceBulkConfirmTitle => '¿Reemplazar precios?';
+
+  @override
+  String priceBulkConfirmBody(int count) {
+    return 'Esto reemplaza el precio de $count registros que ya tenían otro valor. Los demás rolês no cambian.';
+  }
+
+  @override
+  String get priceBulkReplace => 'Reemplazar';
+
+  @override
+  String priceBulkApplied(int count) {
+    return 'Precio aplicado a $count registros.';
+  }
+
+  @override
   String get formDeleteFailed => 'No se pudo eliminar. Inténtalo de nuevo.';
 
   @override
@@ -4943,6 +4986,10 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get shareCardFailed =>
       'No se pudo abrir el menú de compartir. Se copió el texto del resumen.';
+
+  @override
+  String get shareCardCaptureFailed =>
+      'No se pudo crear la imagen. Se copió el texto del resumen.';
 
   @override
   String get shareCardMyOuting => 'Mi salida';

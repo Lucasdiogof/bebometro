@@ -1432,6 +1432,44 @@
   "draftPaidRequired": "Informe o valor ou escolha outra opção",
   "formSaveRecipeFailed": "Não foi possível salvar a receita.",
   "formSaveFailed": "Não foi possível salvar. Nada foi perdido, tente de novo.",
+  "priceBulkTitle": "Aplicar este preço às bebidas iguais?",
+  "priceBulkBody": "{name} por {price}. Neste rolê há {total} registros iguais: {unpriced} sem preço e {differing} com outro preço. Nada muda sem a sua escolha.",
+  "@priceBulkBody": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "price": { "type": "String" },
+      "total": { "type": "int" },
+      "unpriced": { "type": "int" },
+      "differing": { "type": "int" }
+    }
+  },
+  "priceBulkUnpriced": "Aplicar aos {count} sem preço",
+  "@priceBulkUnpriced": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "priceBulkAll": "Aplicar a todos os {count} iguais",
+  "@priceBulkAll": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "priceBulkOnlyThis": "Só este registro",
+  "priceBulkConfirmTitle": "Substituir preços?",
+  "priceBulkConfirmBody": "Isso troca o preço de {count} registros que já tinham outro valor. Os demais rolês não mudam.",
+  "@priceBulkConfirmBody": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "priceBulkReplace": "Substituir",
+  "priceBulkApplied": "Preço aplicado a {count} registros.",
+  "@priceBulkApplied": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "formDeleteFailed": "Não foi possível excluir. Tente de novo.",
   "detailNotGiven": "Não informado",
   "detailAbv": "Teor alcoólico",
@@ -3091,6 +3129,7 @@
   "shareCardPlaceNameHint": "Só o nome, nunca o endereço.",
   "shareCardSpendHint": "Há bebidas sem preço: o total é parcial.",
   "shareCardFailed": "Não foi possível abrir o compartilhamento. O texto do resumo foi copiado.",
+  "shareCardCaptureFailed": "Não foi possível gerar a imagem. O texto do resumo foi copiado.",
   "shareCardMyOuting": "Meu rolê",
   "shareCardOthers": "+ {count} outros",
   "@shareCardOthers": {
