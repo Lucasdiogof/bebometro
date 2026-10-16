@@ -3690,5 +3690,22 @@
         "type": "String"
       }
     }
+  },
+  "entryFromLockScreen": "Adicionado pela tela bloqueada",
+  "entryOriginalTap": "Toque original: {time}",
+  "@entryOriginalTap": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "entryOriginalTapCorrected": "Horário corrigido. Toque original: {time}",
+  "@entryOriginalTapCorrected": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -9278,6 +9278,24 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Toque original na tela bloqueada: {time}'**
   String pendingReviewNote(String time);
+
+  /// No description provided for @entryFromLockScreen.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionado pela tela bloqueada'**
+  String get entryFromLockScreen;
+
+  /// No description provided for @entryOriginalTap.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque original: {time}'**
+  String entryOriginalTap(String time);
+
+  /// No description provided for @entryOriginalTapCorrected.
+  ///
+  /// In pt, this message translates to:
+  /// **'Horário corrigido. Toque original: {time}'**
+  String entryOriginalTapCorrected(String time);
 }
 
 class _AppLocalizationsDelegate

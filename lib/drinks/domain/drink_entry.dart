@@ -22,6 +22,46 @@ enum PriceKind {
       .firstWhere((k) => k.code == code, orElse: () => PriceKind.unknown);
 }
 
+/// Where a record came from, when it was not typed in the app: today only a
+/// lock-screen "Mais uma". [tappedAt] is the moment of the tap and never
+/// changes, even when the person corrects the record's time later.
+class EntryOrigin {
+  const EntryOrigin.lockScreen({required this.commandId, required this.tappedAt})
+      : kind = lockScreenKind;
+
+  const EntryOrigin._(this.kind, this.commandId, this.tappedAt);
+
+  static const lockScreenKind = 'lock_screen';
+
+  /// Stored code ("lock_screen").
+  final String kind;
+
+  /// Stable id of the command that created the record.
+  final String commandId;
+
+  /// Original time of the tap (immutable).
+  final DateTime tappedAt;
+
+  bool get isLockScreen => kind == lockScreenKind;
+
+  Map<String, dynamic> toJson() => {
+        'entry_origin': kind,
+        'origin_command_id': commandId,
+        'origin_tapped_at': tappedAt.toUtc().toIso8601String(),
+      };
+
+  /// Null for records without an origin (manual and older records): nothing
+  /// is ever guessed for them.
+  static EntryOrigin? fromJson(Map<String, dynamic> j) {
+    final kind = j['entry_origin'] as String?;
+    final id = j['origin_command_id'] as String?;
+    final at = j['origin_tapped_at'] as String?;
+    if (kind == null || id == null || at == null) return null;
+    final parsed = DateTime.tryParse(at);
+    return parsed == null ? null : EntryOrigin._(kind, id, parsed.toLocal());
+  }
+}
+
 /// A serving the user declares to have consumed. It stores a copy of the
 /// drink data so later catalog changes never rewrite history.
 class DrinkEntry {
@@ -50,7 +90,16 @@ class DrinkEntry {
     this.paidCents,
     this.billTotalCents,
     this.deletedAt,
+    this.entryOrigin,
   });
+
+  /// Lock-screen origin; null for records typed in the app and older ones.
+  /// Kept by every correction (price, composition, portion, time).
+  final EntryOrigin? entryOrigin;
+
+  /// The person changed the time of a lock-screen record.
+  bool get timeCorrected =>
+      entryOrigin != null && !entryOrigin!.tappedAt.isAtSameMomentAs(consumedAt);
 
   final String id;
   final String outingId;
@@ -148,7 +197,10 @@ class DrinkEntry {
 
   /// Copy for "Mais uma": same drink, composition (with the user's changes),
   /// size, ABV, sharing and price, but a new id and its own timestamp.
-  DrinkEntry repeated({required String newId, required DateTime at}) =>
+  /// [origin] is the origin of THIS new action (a lock-screen command), or
+  /// null for a repeat done in the app: the source's origin is never copied.
+  DrinkEntry repeated(
+          {required String newId, required DateTime at, EntryOrigin? origin}) =>
       DrinkEntry(
         id: newId,
         outingId: outingId,
@@ -173,6 +225,7 @@ class DrinkEntry {
         billTotalCents: billTotalCents,
         createdAt: at,
         updatedAt: at,
+        entryOrigin: origin,
       );
 
   DrinkEntry copyWith({DateTime? deletedAt, bool clearDeleted = false, DateTime? updatedAt}) =>
@@ -199,6 +252,7 @@ class DrinkEntry {
         paidCents: paidCents,
         billTotalCents: billTotalCents,
         createdAt: createdAt,
+        entryOrigin: entryOrigin,
         updatedAt: updatedAt ?? this.updatedAt,
         deletedAt: clearDeleted ? null : (deletedAt ?? this.deletedAt),
       );
@@ -232,6 +286,7 @@ class DrinkEntry {
         paidCents: paidCents,
         billTotalCents: billTotalCents,
         createdAt: createdAt,
+        entryOrigin: entryOrigin,
         updatedAt: updatedAt,
         deletedAt: deletedAt,
       );
@@ -268,6 +323,7 @@ class DrinkEntry {
             : (kind == PriceKind.complimentary ? 0 : null),
         billTotalCents: kind == PriceKind.informed ? billTotalCents : null,
         createdAt: createdAt,
+        entryOrigin: entryOrigin,
         updatedAt: updatedAt,
         deletedAt: deletedAt,
       );
@@ -301,6 +357,8 @@ class DrinkEntry {
         if (composition != null) 'composition': composition!.toJson(),
         // Same idea: only present when set, so older databases keep working.
         if (abvSource != null) 'abv_source': abvSource!.code,
+        // Only lock-screen records carry these keys (same idea as above).
+        if (entryOrigin != null) ...entryOrigin!.toJson(),
       };
 
   factory DrinkEntry.fromJson(Map<String, dynamic> json) => DrinkEntry(
@@ -333,5 +391,6 @@ class DrinkEntry {
         deletedAt: json['deleted_at'] == null
             ? null
             : DateTime.parse(json['deleted_at'] as String).toLocal(),
+        entryOrigin: EntryOrigin.fromJson(json),
       );
 }

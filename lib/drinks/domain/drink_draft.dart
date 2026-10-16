@@ -37,6 +37,7 @@ class DrinkDraft {
     this.notAfter,
     this.composition,
     this.reference,
+    this.entryOrigin,
   });
 
   factory DrinkDraft.fromItem(
@@ -97,6 +98,7 @@ class DrinkDraft {
     DateTime? notAfter,
     bool asNew = false,
     DateTime? consumedAt,
+    EntryOrigin? origin,
   }) =>
       DrinkDraft(
         name: e.name,
@@ -123,7 +125,13 @@ class DrinkDraft {
         notBefore: notBefore,
         notAfter: notAfter,
         composition: e.composition,
+        // A correction keeps the record's origin; a new record gets only the
+        // origin it is given (never the template's).
+        entryOrigin: asNew ? origin : e.entryOrigin,
       );
+
+  /// Lock-screen origin carried to the saved record (see [EntryOrigin]).
+  final EntryOrigin? entryOrigin;
 
   final String name;
   final DrinkCategory category;
@@ -207,6 +215,7 @@ class DrinkDraft {
         notBefore: notBefore,
         notAfter: notAfter,
         reference: reference,
+        entryOrigin: entryOrigin,
         composition: composition ?? this.composition,
         consumedAt: consumedAt ?? this.consumedAt,
         presentationLabel: presentationLabel != null
@@ -485,6 +494,7 @@ class DrinkDraft {
           : null,
       createdAt: existing?.createdAt ?? now,
       updatedAt: now,
+      entryOrigin: entryOrigin,
     );
   }
 }

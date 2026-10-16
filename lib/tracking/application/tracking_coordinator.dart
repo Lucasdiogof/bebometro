@@ -280,6 +280,10 @@ class TrackingCoordinator {
   /// review, which is what makes both idempotent.
   String entryIdFor(PendingCommand p) => _drinks.entryIdForCommand(p.command.id);
 
+  /// Origin written by BOTH the automatic path and a review.
+  EntryOrigin originOf(PendingCommand p) =>
+      EntryOrigin.lockScreen(commandId: p.command.id, tappedAt: p.command.at);
+
   /// Registers what the person tapped on the lock screen ("Mais uma", iOS 17+).
   /// Each command carries, from the moment of the tap, the account, the
   /// outing, the real time and the record the button showed; the app repeats
@@ -341,7 +345,10 @@ class TrackingCoordinator {
           pending.add(PendingCommand(c, outing, source, reason));
           continue;
         }
-        await _drinks.save(source!.repeated(newId: newId, at: c.at));
+        await _drinks.save(source!.repeated(
+            newId: newId,
+            at: c.at,
+            origin: EntryOrigin.lockScreen(commandId: c.id, tappedAt: c.at)));
         done.add(c.id);
         registered++;
       } catch (e) {

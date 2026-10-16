@@ -5770,4 +5770,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String pendingReviewNote(String time) {
     return 'Original lock-screen tap: $time';
   }
+
+  @override
+  String get entryFromLockScreen => 'Added from the lock screen';
+
+  @override
+  String entryOriginalTap(String time) {
+    return 'Original tap: $time';
+  }
+
+  @override
+  String entryOriginalTapCorrected(String time) {
+    return 'Time corrected. Original tap: $time';
+  }
 }

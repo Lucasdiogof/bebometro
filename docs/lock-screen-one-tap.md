@@ -87,3 +87,25 @@ Validar: tocar **Compartilhar** no resumo com o switch do nome ligado e desligad
 - **Validar no iPhone:** (a) tocar com o rolê aberto, encerrar o rolê antes de abrir o app → card na Home, "Revisar e adicionar" registra no horário do toque;
   (b) apagar a bebida de origem antes de abrir o app → "Escolher bebida"; (c) descartar → some da lista e do selo, nada apagado; (d) trocar de conta → a
   pendência da outra conta não aparece; (e) matar o app durante a revisão → ao voltar, a pendência continua e não há registro duplicado.
+
+## Origem dos registros da tela bloqueada (16/10/2026) — implementado, **não validado em aparelho**
+- **Modelo:** `EntryOrigin` em `drink_entry.dart`: `kind` = `lock_screen`, `commandId` (id estável do comando) e `tappedAt` (horário original do toque, imutável).
+  `DrinkEntry.entryOrigin` é opcional; `consumedAt` continua sendo o horário efetivo, que a pessoa pode corrigir. `timeCorrected` diz se os dois diferem.
+- **Quem grava a origem:** o processamento automático (`repeated(origin: …)`) e a revisão manual (`DrinkFormCubit.forReview(origin: …)` →
+  `DrinkDraft.entryOrigin` → `toEntry`). Os dois usam `TrackingCoordinator.originOf`/o mesmo comando, então gravam a mesma estrutura, com o mesmo id de
+  registro derivado do comando. A proteção contra duplicação continua igual.
+- **O que preserva a origem:** correção no formulário (`DrinkDraft.fromEntry` sem `asNew` copia a origem e `_copy` a mantém), preço em lote
+  (`copyWithPrice`), total da garrafa (`copyWithBillTotal`), apagar/restaurar (`copyWith`).
+- **O que não herda:** "Mais uma" dentro do app (`outing_cubit.dart`) chama `repeated` sem origem, então o novo consumo não tem comando nem horário
+  anteriores. Uma revisão usa só a origem do comando revisado, nunca a do registro de modelo.
+- **Armazenamento/sincronização/nuvem:** as chaves `entry_origin`, `origin_command_id` e `origin_tapped_at` só existem no JSON de registros da tela
+  bloqueada. Registros manuais e antigos ficam sem elas, sem nada inventado. São colunas opcionais no `SyncCubit`: sem a migration, a linha sobe sem
+  elas, continua pendente no aparelho e é reenviada completa depois. A leitura da nuvem usa `DrinkEntry.fromJson`, que lê as chaves quando existem.
+- **Exportação JSON:** usa as linhas do armazenamento local, então leva as três chaves. O CSV e o cartão compartilhável não mostram isso, de propósito.
+- **Interface:** no formulário de revisão e no de correção aparecem "Adicionado pela tela bloqueada" e "Toque original: …" ou "Horário corrigido.
+  Toque original: …" (pt/en/es).
+- **Migration:** `supabase/migrations/20261020000000_drink_entry_origin.sql` (aditiva, idempotente, com um `check` de coerência). **Pendente:** não há
+  acesso administrativo nesta sessão.
+- **Validar no iPhone:** (a) toque processado sozinho → abrir o registro mostra "Adicionado pela tela bloqueada"; (b) revisar um pendente corrigindo o
+  horário → o registro mostra "Horário corrigido. Toque original: …"; (c) editar o preço desse registro → a origem continua; (d) "Mais uma" no app a partir
+  dele → o novo registro não mostra a origem; (e) com a migration aplicada, o registro sincroniza e volta de outro aparelho com a origem.

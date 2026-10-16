@@ -204,7 +204,30 @@ class _DrinkEntryView extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(
                         AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
                     children: [
-                      if (cubit.reviewNote != null)
+                      // Discreet origin of lock-screen records (review and
+                      // correction). The original tap time never changes.
+                      if (d.entryOrigin?.isLockScreen ?? false)
+                        Padding(
+                          padding: const EdgeInsets.only(top: AppSpace.sm),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InfoPill(tr.entryFromLockScreen,
+                                  icon: Icons.lock_clock_outlined),
+                              const SizedBox(height: AppSpace.xs),
+                              Text(
+                                d.entryOrigin!.tappedAt
+                                        .isAtSameMomentAs(d.consumedAt)
+                                    ? tr.entryOriginalTap(
+                                        formatDateTime(d.entryOrigin!.tappedAt))
+                                    : tr.entryOriginalTapCorrected(
+                                        formatDateTime(d.entryOrigin!.tappedAt)),
+                                style: AppText.caption,
+                              ),
+                            ],
+                          ),
+                        )
+                      else if (cubit.reviewNote != null)
                         Padding(
                           padding: const EdgeInsets.only(top: AppSpace.sm),
                           child: InfoPill(cubit.reviewNote!,

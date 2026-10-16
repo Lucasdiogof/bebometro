@@ -5786,4 +5786,17 @@ class AppLocalizationsPt extends AppLocalizations {
   String pendingReviewNote(String time) {
     return 'Toque original na tela bloqueada: $time';
   }
+
+  @override
+  String get entryFromLockScreen => 'Adicionado pela tela bloqueada';
+
+  @override
+  String entryOriginalTap(String time) {
+    return 'Toque original: $time';
+  }
+
+  @override
+  String entryOriginalTapCorrected(String time) {
+    return 'Horário corrigido. Toque original: $time';
+  }
 }

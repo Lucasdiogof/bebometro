@@ -204,6 +204,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     required String entryId,
     required DateTime at,
     required String note,
+    required EntryOrigin origin,
   }) {
     final item = drinks.itemById(template.catalogItemId);
     return DrinkFormCubit._(
@@ -217,6 +218,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
           notAfter: outing.endedAt,
           asNew: true,
           consumedAt: at,
+          origin: origin,
         ),
         presentations: template.isMixed
             ? const []

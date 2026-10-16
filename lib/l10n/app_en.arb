@@ -1527,5 +1527,8 @@
   "pendingNotice": "{count, plural, =1{1 lock-screen tap needs you} other{{count} lock-screen taps need you}}",
   "pendingOutingOn": "Outing on {date}",
   "pendingTappedAt": "Tapped on {time}",
-  "pendingReviewNote": "Original lock-screen tap: {time}"
+  "pendingReviewNote": "Original lock-screen tap: {time}",
+  "entryFromLockScreen": "Added from the lock screen",
+  "entryOriginalTap": "Original tap: {time}",
+  "entryOriginalTapCorrected": "Time corrected. Original tap: {time}"
 }

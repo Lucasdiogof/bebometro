@@ -852,3 +852,12 @@ Implementado (nada compilado, analisado, testado nem visto em aparelho). Detalhe
 - **UI:** `lib/tracking/presentation/pending_commands_page.dart` (`PendingCommandsNotice` na Home e `PendingCommandsPage`). Textos `pending*` em pt/en/es.
 - **Correção:** a rodada anterior criou uma **chave duplicada** `trackingPending` nos .arb, que sobrescrevia o status "Ligado, mas ainda não apareceu…"
   das Configurações. O selo da Live Activity agora usa `trackingAwaitingSave`, e o texto original voltou.
+
+## Origem dos registros da tela bloqueada (16/10/2026)
+
+Resumo (detalhes em `docs/lock-screen-one-tap.md`):
+- `EntryOrigin` (`lock_screen`, id do comando, horário original imutável) em `DrinkEntry`/`DrinkDraft`, gravado pelo processamento automático e pela revisão.
+- Preservado em correções; não herdado por "Mais uma" no app.
+- Colunas opcionais na sincronização e exportação JSON automática.
+- Migration aditiva `20261020000000_drink_entry_origin.sql` **pendente**.
+- Nada compilado, analisado, testado nem visto em aparelho.

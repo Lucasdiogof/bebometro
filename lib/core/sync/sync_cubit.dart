@@ -561,7 +561,13 @@ class SyncCubit extends Cubit<SyncState> {
       'provider',
       'provider_place_id',
     ],
-    'drink_entries': ['composition', 'abv_source'],
+    'drink_entries': [
+      'composition',
+      'abv_source',
+      'entry_origin',
+      'origin_command_id',
+      'origin_tapped_at',
+    ],
     'custom_drinks': ['components'],
   };
 

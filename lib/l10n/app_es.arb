@@ -1527,5 +1527,8 @@
   "pendingNotice": "{count, plural, =1{1 toque de la pantalla de bloqueo te espera} other{{count} toques de la pantalla de bloqueo te esperan}}",
   "pendingOutingOn": "Salida del {date}",
   "pendingTappedAt": "Toque el {time}",
-  "pendingReviewNote": "Toque original en la pantalla de bloqueo: {time}"
+  "pendingReviewNote": "Toque original en la pantalla de bloqueo: {time}",
+  "entryFromLockScreen": "Añadido desde la pantalla de bloqueo",
+  "entryOriginalTap": "Toque original: {time}",
+  "entryOriginalTapCorrected": "Hora corregida. Toque original: {time}"
 }

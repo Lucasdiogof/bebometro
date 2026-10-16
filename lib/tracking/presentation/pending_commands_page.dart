@@ -206,6 +206,7 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
               entryId: _coordinator.entryIdFor(p),
               at: p.command.at,
               note: tr.pendingReviewNote(formatDateTime(p.command.at)),
+              origin: _coordinator.originOf(p),
             ),
           ),
         ),

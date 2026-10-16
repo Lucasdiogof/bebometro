@@ -5803,4 +5803,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String pendingReviewNote(String time) {
     return 'Toque original en la pantalla de bloqueo: $time';
   }
+
+  @override
+  String get entryFromLockScreen => 'Añadido desde la pantalla de bloqueo';
+
+  @override
+  String entryOriginalTap(String time) {
+    return 'Toque original: $time';
+  }
+
+  @override
+  String entryOriginalTapCorrected(String time) {
+    return 'Hora corregida. Toque original: $time';
+  }
 }
