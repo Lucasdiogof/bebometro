@@ -815,3 +815,21 @@ em aparelho e conferir no painel do Supabase que as linhas chegam. Depois: teste
 - **Não feito:** nenhuma tela de "seleção rápida" nova nem mudança no formulário (já cobertos acima). **Nada compilado, analisado, testado nem
   executado**; só `flutter gen-l10n` (código gerado versionado).
 
+## Correções da viagem BEB-001 a BEB-007 (16/10/2026, nada compilado/analisado/testado/executado)
+Pacote `Bebometro_Correcoes_Viagem.zip` (prompt + screenshots). O commit `94ffd1b` (repetir qualquer bebida do rolê pelo menu do registro) saiu antes de eu ter o prompt e continua válido.
+- **BEB-001 (preço em bebidas iguais):** `DrinkEntry.isEquivalentTo` (identidade, marca, categoria, apresentação, volume, compartilhamento/pessoas/porção, teor e **composição**; mesmo rolê, sem apagados),
+  `DrinkRepository.equivalentsOf`, `DrinkFormCubit.priceOffer()/applyPriceOffer()` e a folha `_BulkPriceSheet` em `drink_entry_page.dart` ao salvar um registro com preço: "só este", "aplicar aos N sem preço",
+  "aplicar a todos os N iguais" (este substitui e pede **confirmação** própria com a quantidade). Só muda a forma de pagamento (`applyPrices`: nunca volume nem total da conta), só neste rolê, e entra na fila offline.
+  Registros já com o mesmo preço ficam de fora das contagens. Textos pt/en/es `priceBulk*`.
+- **BEB-002:** removido "Brincar de virar o copo" do card Copão (`outing_page.dart`). A tela do copo segue acessível pela Resenha.
+- **BEB-003:** "Encerrar rolê" virou botão de largura total com contorno âmbar (sem vermelho) no fim do conteúdo + ícone de bandeira sempre visível na barra superior; atalho "Encerrar rolê" no card do rolê ativo da Home
+  (`OutingFlow.open(finish: true)` abre direto a folha de encerramento: mesma confirmação). "Mais uma" menor (altura 52, texto 16/800), sem perder o acesso rápido. Nada de dado muda sem confirmar.
+- **BEB-004:** ver `docs/lock-screen-one-tap.md`. Botão interativo iOS 17+ (`AnotherDrinkIntent`) enfileira comando e o Dart registra (idempotente, offline); iOS < 17 abre o app e registra sem diálogo.
+  **Depende de validação no iPhone** (compilação Xcode e roteiro do doc). Limitação real: se o Dart não rodar, o registro só entra ao abrir o app (o "✓ +N" na atividade é o aviso).
+- **BEB-005:** a Comanda **já tinha** taxa de serviço opcional (desligada por padrão, percentual editável, base e valor mostrados, rateio e arredondamento em `tab_calc.dart`, persistida e sincronizada com o documento da comanda).
+  Faltava só o atalho: agora **5%, 10% e 20%** em um toque, além do campo livre; desligar remove a taxa de todos os totais.
+- **BEB-006:** `_ShareActions` em `share_card_page.dart`: "Compartilhar" sem ícone (pedido), `maxLines: 1`/`softWrap: false`, proporção 5:6 e, com tela estreita (< 330 px) ou texto ampliado (> 125%), os botões se empilham em vez de quebrar a palavra.
+- **BEB-007:** causa **não reproduzida** (a captura não mostra erro). Corrigido o que era frágil: captura sem `catch`, `ShareResultStatus.unavailable` contado como sucesso, nome de arquivo com acento. Mensagens distintas (imagem x compartilhamento),
+  texto sempre copiado como alternativa, `ShareService.lastFailure` para diagnóstico. Roteiro de validação em `docs/lock-screen-one-tap.md`.
+- **Pendências:** compilar/validar no Xcode e no iPhone (BEB-004, BEB-006, BEB-007), rodar `flutter analyze`/testes numa fase posterior; textos antigos da confirmação da tela bloqueada (`outingConfirmAnother`, `outingConfirmWater`, `outingLockScreenRequest`) ficaram sem uso nos .arb.
+
