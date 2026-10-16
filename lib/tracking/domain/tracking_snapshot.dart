@@ -20,6 +20,9 @@ class TrackingSnapshot {
     this.spendCents,
     this.place,
     this.nextLabel,
+    this.repeatEntryId,
+    this.accountId,
+    this.pendingCommands = 0,
     this.texts = const {},
   });
 
@@ -29,6 +32,8 @@ class TrackingSnapshot {
     required DrinkEntry? lastAlcoholic,
     required bool showSpend,
     required bool showPlace,
+    String? accountId,
+    int pendingCommands = 0,
   }) {
     final summary = OutingSummary.of(entries);
     // Nickname first, then the name from the map data; never the address.
@@ -43,6 +48,9 @@ class TrackingSnapshot {
       spendCents: showSpend ? summary.informedCents : null,
       place: showPlace ? nick : null,
       nextLabel: lastAlcoholic == null ? null : _labelOf(lastAlcoholic),
+      repeatEntryId: lastAlcoholic?.id,
+      accountId: accountId,
+      pendingCommands: pendingCommands,
       texts: _texts(
         count: summary.alcoholicCount,
         spendCents: showSpend ? summary.informedCents : null,
@@ -75,6 +83,7 @@ class TrackingSnapshot {
         'anotherWith': next == null ? null : tr.trackingAnotherWith(next),
         'anotherA11y': next == null ? null : tr.trackingAnotherA11y(next),
         'water': tr.trackingWater,
+        'pending': tr.trackingPending,
         'channelName': tr.trackingTitleFallback,
         'channelDescription': tr.trackingChannelDescription,
       };
@@ -95,6 +104,15 @@ class TrackingSnapshot {
   /// is none (the action then does not exist).
   final String? nextLabel;
 
+  /// Record "Mais uma" repeats now; a lock-screen tap stores it.
+  final String? repeatEntryId;
+
+  /// Account that owns the outing; a lock-screen tap stores it.
+  final String? accountId;
+
+  /// Lock-screen taps received for this outing and not saved yet.
+  final int pendingCommands;
+
   static String _labelOf(DrinkEntry e) {
     final size = (e.presentation != null && e.presentation!.trim().isNotEmpty)
         ? localizePresentation(e.presentation!)
@@ -113,6 +131,9 @@ class TrackingSnapshot {
         'spendCents': spendCents,
         'place': place,
         'nextLabel': nextLabel,
+        'repeatEntryId': repeatEntryId,
+        'accountId': accountId,
+        'pendingCommands': pendingCommands,
         'texts': texts,
       };
 
@@ -126,6 +147,9 @@ class TrackingSnapshot {
       other.spendCents == spendCents &&
       other.place == place &&
       other.nextLabel == nextLabel &&
+      other.repeatEntryId == repeatEntryId &&
+      other.accountId == accountId &&
+      other.pendingCommands == pendingCommands &&
       _sameTexts(other.texts, texts);
 
   static bool _sameTexts(Map<String, String?> a, Map<String, String?> b) {

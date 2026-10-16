@@ -7962,7 +7962,7 @@ abstract class AppLocalizations {
   /// No description provided for @exportShareUnavailable.
   ///
   /// In pt, this message translates to:
-  /// **'Compartilhar não está disponível aqui. O conteúdo foi copiado: cole em um arquivo para guardar.'**
+  /// **'Compartilhar não está disponível aqui. Use \"Copiar texto\" para guardar o conteúdo.'**
   String get exportShareUnavailable;
 
   /// No description provided for @exportFailed.
@@ -8016,13 +8016,13 @@ abstract class AppLocalizations {
   /// No description provided for @shareCardFailed.
   ///
   /// In pt, this message translates to:
-  /// **'Não foi possível abrir o compartilhamento. O texto do resumo foi copiado.'**
+  /// **'Não foi possível abrir o compartilhamento. Você pode copiar o texto do resumo.'**
   String get shareCardFailed;
 
   /// No description provided for @shareCardCaptureFailed.
   ///
   /// In pt, this message translates to:
-  /// **'Não foi possível gerar a imagem. O texto do resumo foi copiado.'**
+  /// **'Não foi possível gerar a imagem. Você pode copiar o texto do resumo.'**
   String get shareCardCaptureFailed;
 
   /// No description provided for @shareCardMyOuting.
@@ -8130,7 +8130,7 @@ abstract class AppLocalizations {
   /// No description provided for @trackingPending.
   ///
   /// In pt, this message translates to:
-  /// **'Ligado, mas ainda não apareceu. No iPhone ele só começa com o app aberto; abra o rolê.'**
+  /// **'aguardando registro'**
   String get trackingPending;
 
   /// No description provided for @trackingNoPermissionToast.

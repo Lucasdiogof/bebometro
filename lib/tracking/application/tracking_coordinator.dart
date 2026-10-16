@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
+import '../../core/di/injector.dart' show AccountScope;
 import '../../drinks/data/drink_repository.dart';
 import '../../outings/data/outing_repository.dart';
 import '../data/tracking_platform.dart';
@@ -201,6 +202,8 @@ class TrackingCoordinator {
       lastAlcoholic: _drinks.lastAlcoholic(current.id),
       showSpend: _prefs.showSpend,
       showPlace: _prefs.showPlace,
+      accountId: AccountScope.userId,
+      pendingCommands: _pendingByOuting[current.id] ?? 0,
     );
     final alreadyShown = native.shownOutingIds.contains(current.id);
     if (alreadyShown && snapshot == _last) {
@@ -243,49 +246,74 @@ class TrackingCoordinator {
 
   bool _processingCommands = false;
 
-  /// Registers what the person tapped on the lock screen ("Mais uma", iOS 17+),
-  /// without opening the app and without asking again. Each command repeats the
-  /// outing's last alcoholic drink exactly as it was recorded (same composition,
-  /// portion, ABV origin and price) and is acknowledged only after it was
-  /// handled; the record id comes from the command id, so a replay never
-  /// duplicates a drink while two real taps stay two drinks. Commands for an
-  /// outing that is over, or without a drink to repeat, are dropped. A command
-  /// for an outing this account does not have is kept for a day (it may belong to
-  /// another account on this device) and then dropped.
+  /// Commands kept in the native queue because they cannot be applied safely
+  /// here (other account, unknown outing, missing record, time outside the
+  /// outing). Never dropped nor redirected; they wait for resolution.
+  final unresolvedCommands = ValueNotifier<int>(0);
+
+  /// Unresolved commands per outing, shown as "+N aguardando registro".
+  Map<String, int> _pendingByOuting = const {};
+
+  /// Registers what the person tapped on the lock screen ("Mais uma", iOS 17+).
+  /// Each command carries, from the moment of the tap, the account, the
+  /// outing, the real time and the record the button showed; the app repeats
+  /// THAT record (same composition, portion, ABV origin and price) at THAT
+  /// time. Never the last drink or the clock at processing time.
+  ///
+  /// The new record id comes from the command id and the command is
+  /// acknowledged only after the record is on disk, so a crash in between
+  /// replays the same id (no duplicate) and a record that already exists
+  /// (even if the person deleted it since) is never saved again. Anything
+  /// that does not match stays queued as unresolved, not acknowledged.
   Future<int> processCommands() async {
     if (_processingCommands || !_platform.isNativePlatform) return 0;
     _processingCommands = true;
     try {
       final commands = await _platform.peekCommands();
-      if (commands.isEmpty) return 0;
       final done = <String>[];
       var registered = 0;
+      var unresolved = 0;
+      final pending = <String, int>{};
       final now = DateTime.now();
+      final account = AccountScope.userId;
       for (final c in commands) {
         if (c.kind != 'another') {
-          done.add(c.id);
+          unresolved++; // unknown command from a newer build: kept
+          pending[c.outingId] = (pending[c.outingId] ?? 0) + 1;
+          continue;
+        }
+        final newId = _drinks.entryIdForCommand(c.id);
+        if (_drinks.entryById(newId) != null) {
+          done.add(c.id); // already saved before a crash: only acknowledge
           continue;
         }
         final outing = _outings.byId(c.outingId);
-        if (outing == null) {
-          if (now.difference(c.at) > const Duration(days: 1)) done.add(c.id);
+        final source = c.entryId == null ? null : _drinks.entryById(c.entryId!);
+        final ok = account != null &&
+            (c.accountId == null || c.accountId == account) &&
+            outing != null &&
+            source != null &&
+            source.outingId == outing.id &&
+            !c.at.isBefore(outing.startedAt) &&
+            (outing.endedAt == null || !c.at.isAfter(outing.endedAt!)) &&
+            !c.at.isAfter(now.add(const Duration(minutes: 5)));
+        if (!ok) {
+          unresolved++;
+          pending[c.outingId] = (pending[c.outingId] ?? 0) + 1;
           continue;
         }
+        await _drinks.save(source.repeated(newId: newId, at: c.at));
         done.add(c.id);
-        if (!outing.isActive) continue;
-        final last = _drinks.lastAlcoholic(outing.id);
-        if (last == null) continue;
-        var at = c.at;
-        if (at.isBefore(outing.startedAt) ||
-            at.isAfter(now.add(const Duration(minutes: 1)))) {
-          at = now;
-        }
-        await _drinks.save(
-            last.repeated(newId: _drinks.entryIdForCommand(c.id), at: at));
         registered++;
       }
       if (done.isNotEmpty) await _platform.ackCommands(done);
-      if (registered > 0) schedule(immediate: true);
+      unresolvedCommands.value = unresolved;
+      final changed = pending.length != _pendingByOuting.length ||
+          pending.entries.any((e) => _pendingByOuting[e.key] != e.value);
+      _pendingByOuting = pending;
+      if (registered > 0 || done.isNotEmpty || changed) {
+        schedule(immediate: true);
+      }
       return registered;
     } finally {
       _processingCommands = false;

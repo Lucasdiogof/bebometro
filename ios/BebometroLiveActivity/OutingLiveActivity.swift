@@ -102,13 +102,15 @@ private struct AnotherChip: View {
     }
 }
 
-/// Discreet confirmation of a one-tap command still being applied by the app.
+/// One-tap commands RECEIVED but not saved yet: "+1 aguardando registro".
+/// Never a "done" mark: the totals change only when the app saved the drink.
 @available(iOS 16.2, *)
 private struct QuickLoggedBadge: View {
     let count: Int?
+    var pending: String? = nil
     var body: some View {
         if let n = count, n > 0 {
-            Text("✓ +\(n)")
+            Text("+\(n) \(pending ?? "aguardando registro")")
                 .font(.caption.weight(.bold))
                 .foregroundColor(Palette.amber)
         }
@@ -139,7 +141,7 @@ private struct LockScreenView: View {
                             .foregroundColor(Palette.muted)
                             .lineLimit(1)
                             .minimumScaleFactor(0.8)
-                        QuickLoggedBadge(count: s.quickLogged)
+                        QuickLoggedBadge(count: s.quickLogged, pending: s.texts?.pending)
                     }
                 }
                 Spacer(minLength: 8)
@@ -203,7 +205,7 @@ struct OutingLiveActivity: Widget {
                                 .font(.subheadline)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.8)
-                            QuickLoggedBadge(count: s.quickLogged)
+                            QuickLoggedBadge(count: s.quickLogged, pending: s.texts?.pending)
                         }
                         if let spend = spendText(s) {
                             Text(spend)

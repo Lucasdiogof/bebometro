@@ -4941,7 +4941,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get exportShareUnavailable =>
-      'Compartilhar não está disponível aqui. O conteúdo foi copiado: cole em um arquivo para guardar.';
+      'Compartilhar não está disponível aqui. Use \"Copiar texto\" para guardar o conteúdo.';
 
   @override
   String get exportFailed => 'Não foi possível gerar o arquivo.';
@@ -4971,11 +4971,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get shareCardFailed =>
-      'Não foi possível abrir o compartilhamento. O texto do resumo foi copiado.';
+      'Não foi possível abrir o compartilhamento. Você pode copiar o texto do resumo.';
 
   @override
   String get shareCardCaptureFailed =>
-      'Não foi possível gerar a imagem. O texto do resumo foi copiado.';
+      'Não foi possível gerar a imagem. Você pode copiar o texto do resumo.';
 
   @override
   String get shareCardMyOuting => 'Meu rolê';
@@ -5048,8 +5048,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get trackingActive => 'Ativo agora.';
 
   @override
-  String get trackingPending =>
-      'Ligado, mas ainda não apareceu. No iPhone ele só começa com o app aberto; abra o rolê.';
+  String get trackingPending => 'aguardando registro';
 
   @override
   String get trackingNoPermissionToast =>

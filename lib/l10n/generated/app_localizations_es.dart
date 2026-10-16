@@ -4954,7 +4954,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get exportShareUnavailable =>
-      'Compartir no está disponible aquí. El contenido se copió: pégalo en un archivo para guardarlo.';
+      'Compartir no está disponible aquí. Usa \"Copiar texto\" para guardar el contenido.';
 
   @override
   String get exportFailed => 'No se pudo generar el archivo.';
@@ -4985,11 +4985,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get shareCardFailed =>
-      'No se pudo abrir el menú de compartir. Se copió el texto del resumen.';
+      'No se pudo abrir el menú de compartir. Puedes copiar el texto del resumen.';
 
   @override
   String get shareCardCaptureFailed =>
-      'No se pudo crear la imagen. Se copió el texto del resumen.';
+      'No se pudo crear la imagen. Puedes copiar el texto del resumen.';
 
   @override
   String get shareCardMyOuting => 'Mi salida';
@@ -5062,8 +5062,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get trackingActive => 'Activo ahora.';
 
   @override
-  String get trackingPending =>
-      'Activado, pero aún no apareció. En iPhone solo empieza con la app abierta; abre la salida.';
+  String get trackingPending => 'esperando registro';
 
   @override
   String get trackingNoPermissionToast =>

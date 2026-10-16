@@ -20,15 +20,23 @@ enum TrackingCommandQueue {
     private static let lock = NSLock()
 
     /// Appends a command with its own unique id (one per tap: a replay of the
-    /// same command is recognised by Flutter, two taps are two commands).
+    /// same command is recognised by Flutter, two taps are two commands). It
+    /// records, at the moment of the tap, the account, the outing, the real
+    /// time and the record the button was showing, so later processing never
+    /// depends on the last drink or the clock at that later moment. Nothing is
+    /// ever dropped here: only Flutter's acknowledgement removes a command.
     @discardableResult
-    static func enqueue(outingId: String, kind: String) -> String {
+    static func enqueue(outingId: String, kind: String, accountId: String?,
+                        entryId: String?, label: String?) -> String {
         lock.lock(); defer { lock.unlock() }
         let id = UUID().uuidString
         var list = UserDefaults.standard.array(forKey: key) as? [[String: Any]] ?? []
-        list.append(["id": id, "outingId": outingId, "kind": kind,
-                     "at": Date().timeIntervalSince1970])
-        if list.count > 100 { list.removeFirst(list.count - 100) }
+        var item: [String: Any] = ["id": id, "outingId": outingId, "kind": kind,
+                                   "at": Date().timeIntervalSince1970]
+        if let accountId = accountId { item["accountId"] = accountId }
+        if let entryId = entryId { item["entryId"] = entryId }
+        if let label = label { item["label"] = label }
+        list.append(item)
         UserDefaults.standard.set(list, forKey: key)
         return id
     }
@@ -72,17 +80,26 @@ struct AnotherDrinkIntent: LiveActivityIntent {
 
     func perform() async throws -> some IntentResult {
         guard !outingId.isEmpty else { return .result() }
-        TrackingCommandQueue.enqueue(outingId: outingId, kind: "another")
-        // Immediate, language-neutral feedback on the activity itself ("✓ +1"):
-        // Flutter replaces the whole state with the real totals as soon as it
-        // runs (it also fixes it if the command is dropped).
         if #available(iOS 16.2, *) {
-            for activity in Activity<OutingActivityAttributes>.activities
-            where activity.attributes.outingId == outingId {
+            let mine = Activity<OutingActivityAttributes>.activities
+                .filter { $0.attributes.outingId == outingId }
+            // What the button showed at the moment of the tap.
+            let shown = mine.first?.content.state
+            TrackingCommandQueue.enqueue(outingId: outingId, kind: "another",
+                                         accountId: shown?.accountId,
+                                         entryId: shown?.repeatEntryId,
+                                         label: shown?.nextLabel)
+            // Immediate feedback: "+1 aguardando registro" (received, NOT
+            // saved). Flutter replaces the whole state with the real totals
+            // once the drink is saved; an unresolved command stays queued.
+            for activity in mine {
                 var state = activity.content.state
                 state.quickLogged = (state.quickLogged ?? 0) + 1
                 await activity.update(ActivityContent(state: state, staleDate: nil))
             }
+        } else {
+            TrackingCommandQueue.enqueue(outingId: outingId, kind: "another",
+                                         accountId: nil, entryId: nil, label: nil)
         }
         NotificationCenter.default.post(name: TrackingCommandQueue.queued, object: nil)
         return .result()

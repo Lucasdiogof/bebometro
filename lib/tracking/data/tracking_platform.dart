@@ -66,10 +66,21 @@ class TrackingLink {
 /// (durable, with its own unique [id]); the app registers it from its own
 /// records, so prices, ABV and portions are never taken from the command.
 class TrackingCommand {
-  const TrackingCommand(this.id, this.outingId, this.kind, this.at);
+  const TrackingCommand(this.id, this.outingId, this.kind, this.at,
+      {this.accountId, this.entryId, this.label});
 
   final String id;
   final String outingId;
+
+  /// Account that owned the outing at the tap (null from an older build).
+  final String? accountId;
+
+  /// Record the button was showing at the tap: the drink to repeat (null
+  /// from an older build or when the activity had none).
+  final String? entryId;
+
+  /// What the button said ("Chopp 400 ml"), for the person to recognise it.
+  final String? label;
 
   /// `another` ("Mais uma").
   final String kind;
@@ -184,7 +195,10 @@ class TrackingPlatform {
       final secs = item['at'];
       if (id == null || outing == null || kind == null || secs is! num) continue;
       out.add(TrackingCommand(id, outing, kind,
-          DateTime.fromMillisecondsSinceEpoch((secs * 1000).round())));
+          DateTime.fromMillisecondsSinceEpoch((secs * 1000).round()),
+          accountId: item['accountId'] as String?,
+          entryId: item['entryId'] as String?,
+          label: item['label'] as String?));
     }
     return out;
   }

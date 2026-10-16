@@ -88,11 +88,15 @@ class _ShareCardPageState extends State<ShareCardPage> {
       if (mounted) setState(() => _busy = false);
     }
     if (problem != null) {
-      // Whatever failed, the text still reaches the person (clipboard).
-      await Clipboard.setData(ClipboardData(text: _summaryText()));
+      // Nothing is copied on its own: the person chooses "Copiar texto".
+      // Closing the share sheet without sharing is not a failure.
       messenger
         ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(problem)));
+        ..showSnackBar(SnackBar(
+          content: Text(problem),
+          duration: const Duration(seconds: 8),
+          action: SnackBarAction(label: tr.tabCopyText, onPressed: _copy),
+        ));
     }
   }
 

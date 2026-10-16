@@ -187,7 +187,10 @@ final class TrackingChannel {
             unpricedCount: (a["unpricedCount"] as? NSNumber)?.intValue ?? 0,
             place: (a["place"] as? String).flatMap { $0.isEmpty ? nil : $0 },
             nextLabel: (a["nextLabel"] as? String).flatMap { $0.isEmpty ? nil : $0 },
-            texts: Self.texts(from: a["texts"])
+            quickLogged: ((a["pendingCommands"] as? NSNumber)?.intValue).flatMap { $0 > 0 ? $0 : nil },
+            texts: Self.texts(from: a["texts"]),
+            repeatEntryId: (a["repeatEntryId"] as? String).flatMap { $0.isEmpty ? nil : $0 },
+            accountId: (a["accountId"] as? String).flatMap { $0.isEmpty ? nil : $0 }
         )
         let content = ActivityContent(state: state, staleDate: nil)
 
@@ -235,7 +238,8 @@ final class TrackingChannel {
             another: s("another"),
             anotherWith: s("anotherWith"),
             anotherA11y: s("anotherA11y"),
-            water: s("water")
+            water: s("water"),
+            pending: s("pending")
         )
     }
 

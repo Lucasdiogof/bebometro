@@ -825,11 +825,16 @@ Pacote `Bebometro_Correcoes_Viagem.zip` (prompt + screenshots). O commit `94ffd1
 - **BEB-003:** "Encerrar rolê" virou botão de largura total com contorno âmbar (sem vermelho) no fim do conteúdo + ícone de bandeira sempre visível na barra superior; atalho "Encerrar rolê" no card do rolê ativo da Home
   (`OutingFlow.open(finish: true)` abre direto a folha de encerramento: mesma confirmação). "Mais uma" menor (altura 52, texto 16/800), sem perder o acesso rápido. Nada de dado muda sem confirmar.
 - **BEB-004:** ver `docs/lock-screen-one-tap.md`. Botão interativo iOS 17+ (`AnotherDrinkIntent`) enfileira comando e o Dart registra (idempotente, offline); iOS < 17 abre o app e registra sem diálogo.
-  **Depende de validação no iPhone** (compilação Xcode e roteiro do doc). Limitação real: se o Dart não rodar, o registro só entra ao abrir o app (o "✓ +N" na atividade é o aviso).
+  **Depende de validação no iPhone** (compilação Xcode e roteiro do doc). Limitação real: se o Dart não rodar, o registro só entra ao abrir o app (a atividade mostra "+N aguardando registro").
+  **Revisão 16/10/2026:** o comando agora guarda, no toque, conta, rolê, horário real e o registro que o botão mostrava (`repeatEntryId` publicado pelo app na atividade);
+  o processamento repete esse registro no horário do toque, nunca a última bebida nem a hora de abertura. Conta/rolê/registro/horário incompatíveis deixam o comando
+  **pendente na fila** (sem confirmação, sem descarte, sem registrar em outro lugar; ainda sem tela para resolver). Fila sem limite de 100. Idempotência: id do registro
+  derivado do comando + confirmação só depois de gravar + não regrava se o registro já existe. Selo "+N aguardando registro" (pt/en/es) em vez de "✓ +N".
 - **BEB-005:** a Comanda **já tinha** taxa de serviço opcional (desligada por padrão, percentual editável, base e valor mostrados, rateio e arredondamento em `tab_calc.dart`, persistida e sincronizada com o documento da comanda).
   Faltava só o atalho: agora **5%, 10% e 20%** em um toque, além do campo livre; desligar remove a taxa de todos os totais.
 - **BEB-006:** `_ShareActions` em `share_card_page.dart`: "Compartilhar" sem ícone (pedido), `maxLines: 1`/`softWrap: false`, proporção 5:6 e, com tela estreita (< 330 px) ou texto ampliado (> 125%), os botões se empilham em vez de quebrar a palavra.
 - **BEB-007:** causa **não reproduzida** (a captura não mostra erro). Corrigido o que era frágil: captura sem `catch`, `ShareResultStatus.unavailable` contado como sucesso, nome de arquivo com acento. Mensagens distintas (imagem x compartilhamento),
-  texto sempre copiado como alternativa, `ShareService.lastFailure` para diagnóstico. Roteiro de validação em `docs/lock-screen-one-tap.md`.
+  `ShareService.lastFailure` para diagnóstico. **Revisão 16/10/2026:** nada é copiado automaticamente; em falha/indisponível o aviso oferece "Copiar texto" (resumo e exportação);
+  cancelar a folha não é erro. O problema original **não foi reproduzido nem confirmado no aparelho**: foram corrigidas as fragilidades encontradas. Roteiro de validação em `docs/lock-screen-one-tap.md`.
 - **Pendências:** compilar/validar no Xcode e no iPhone (BEB-004, BEB-006, BEB-007), rodar `flutter analyze`/testes numa fase posterior; textos antigos da confirmação da tela bloqueada (`outingConfirmAnother`, `outingConfirmWater`, `outingLockScreenRequest`) ficaram sem uso nos .arb.
 

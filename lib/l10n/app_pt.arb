@@ -3119,7 +3119,7 @@
   "exportButton": "Exportar",
   "exportCopy": "Copiar",
   "exportCopied": "Copiado",
-  "exportShareUnavailable": "Compartilhar não está disponível aqui. O conteúdo foi copiado: cole em um arquivo para guardar.",
+  "exportShareUnavailable": "Compartilhar não está disponível aqui. Use \"Copiar texto\" para guardar o conteúdo.",
   "exportFailed": "Não foi possível gerar o arquivo.",
   "exportJsonNote": "Dados pessoais exportados pela própria pessoa. Valores em centavos, volumes em ml, horários em UTC. Campos nulos são desconhecidos, não zero.",
   "shareCardTitle": "Compartilhar resumo",
@@ -3128,8 +3128,8 @@
   "shareCardPlaceName": "Nome do local",
   "shareCardPlaceNameHint": "Só o nome, nunca o endereço.",
   "shareCardSpendHint": "Há bebidas sem preço: o total é parcial.",
-  "shareCardFailed": "Não foi possível abrir o compartilhamento. O texto do resumo foi copiado.",
-  "shareCardCaptureFailed": "Não foi possível gerar a imagem. O texto do resumo foi copiado.",
+  "shareCardFailed": "Não foi possível abrir o compartilhamento. Você pode copiar o texto do resumo.",
+  "shareCardCaptureFailed": "Não foi possível gerar a imagem. Você pode copiar o texto do resumo.",
   "shareCardMyOuting": "Meu rolê",
   "shareCardOthers": "+ {count} outros",
   "@shareCardOthers": {
@@ -3237,6 +3237,7 @@
   },
   "trackingOpen": "Abrir",
   "trackingAnother": "Mais uma",
+  "trackingPending": "aguardando registro",
   "trackingAnotherWith": "Mais uma · {next}",
   "@trackingAnotherWith": {
     "placeholders": {

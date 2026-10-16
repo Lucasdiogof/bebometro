@@ -72,11 +72,17 @@ class _ExportPageState extends State<ExportPage> {
         mimeType: mime,
       );
       if (!ok) {
-        await Clipboard.setData(ClipboardData(text: text));
+        // Copied only if the person asks; cancelling the sheet is not a
+        // failure (see ShareService).
         messenger
           ..hideCurrentSnackBar()
           ..showSnackBar(SnackBar(
             content: Text(tr.exportShareUnavailable),
+            duration: const Duration(seconds: 8),
+            action: SnackBarAction(
+              label: tr.tabCopyText,
+              onPressed: () => _copy(() => text),
+            ),
           ));
       }
     } catch (_) {

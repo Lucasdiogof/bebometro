@@ -4925,7 +4925,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportShareUnavailable =>
-      'Sharing is not available here. The content was copied: paste it into a file to keep it.';
+      'Sharing is not available here. Use \"Copy text\" to keep the content.';
 
   @override
   String get exportFailed => 'Could not create the file.';
@@ -4956,11 +4956,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareCardFailed =>
-      'Could not open sharing. The summary text was copied.';
+      'Could not open sharing. You can copy the summary text.';
 
   @override
   String get shareCardCaptureFailed =>
-      'Could not create the image. The summary text was copied.';
+      'Could not create the image. You can copy the summary text.';
 
   @override
   String get shareCardMyOuting => 'My outing';
@@ -5033,8 +5033,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trackingActive => 'Active now.';
 
   @override
-  String get trackingPending =>
-      'On, but it has not appeared yet. On iPhone it only starts with the app open; open the outing.';
+  String get trackingPending => 'waiting to be saved';
 
   @override
   String get trackingNoPermissionToast =>
