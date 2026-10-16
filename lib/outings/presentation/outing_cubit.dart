@@ -133,9 +133,20 @@ class OutingCubit extends Cubit<OutingState> {
 
   Future<void> repeatLast() async {
     final last = state.lastAlcoholic;
-    if (last == null || state.outing?.isActive != true || !_acquire()) return;
+    if (last != null) await repeatEntry(last);
+  }
+
+  /// Repeats ANY earlier record of this outing (same composition, portion,
+  /// origin of the ABV and price), logged now. "Mais uma" is this for the
+  /// last alcoholic drink; the row menu uses it for the others.
+  Future<void> repeatEntry(DrinkEntry source) async {
+    if (source.outingId != outingId ||
+        state.outing?.isActive != true ||
+        !_acquire()) {
+      return;
+    }
     try {
-      final entry = last.repeated(newId: _drinks.newId(), at: DateTime.now());
+      final entry = source.repeated(newId: _drinks.newId(), at: DateTime.now());
       await _drinks.save(entry);
       _notices.add(OutingNotice(
         [

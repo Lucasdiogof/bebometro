@@ -461,6 +461,9 @@ class _OutingViewState extends State<_OutingView> {
                               entry: e,
                               onTap: () => _edit(e),
                               onDelete: () => cubit.deleteEntry(e),
+                              onRepeat: outing.isActive
+                                  ? () => cubit.repeatEntry(e)
+                                  : null,
                             ),
                           ),
                     ],
@@ -641,11 +644,15 @@ class EntryTile extends StatelessWidget {
     required this.entry,
     required this.onTap,
     this.onDelete,
+    this.onRepeat,
   });
 
   final DrinkEntry entry;
   final VoidCallback onTap;
   final VoidCallback? onDelete;
+
+  /// Only in the running outing: logs this same drink again, now.
+  final VoidCallback? onRepeat;
 
   String get _priceText => switch (entry.priceKind) {
         PriceKind.informed => formatCents(entry.paidCents ?? 0),
@@ -707,10 +714,13 @@ class EntryTile extends StatelessWidget {
               color: AppColors.textMuted),
           onSelected: (v) {
             if (v == 'edit') onTap();
+            if (v == 'repeat') onRepeat?.call();
             if (v == 'delete') onDelete?.call();
           },
           itemBuilder: (_) => [
             PopupMenuItem(value: 'edit', child: Text(tr.entryCorrect)),
+            if (onRepeat != null)
+              PopupMenuItem(value: 'repeat', child: Text(tr.entryRepeat)),
             if (onDelete != null)
               PopupMenuItem(value: 'delete', child: Text(tr.commonDelete)),
           ],

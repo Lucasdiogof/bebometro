@@ -743,6 +743,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get entryCorrect => 'Corregir';
 
   @override
+  String get entryRepeat => 'Repetir';
+
+  @override
   String get entryOptions => 'Opciones del registro';
 
   @override

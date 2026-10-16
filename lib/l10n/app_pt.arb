@@ -437,6 +437,7 @@
   },
   "entryAlcoholIncomplete": "álcool incompleto",
   "entryCorrect": "Corrigir",
+  "entryRepeat": "Repetir",
   "entryOptions": "Opções do registro",
   "entrySharedPart": "{count, plural, =1{sua parte {mine} de {total} (1 pessoa)} other{sua parte {mine} de {total} ({count} pessoas)}}",
   "@entrySharedPart": {

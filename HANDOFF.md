@@ -802,3 +802,16 @@ em aparelho e conferir no painel do Supabase que as linhas chegam. Depois: teste
   quatro bases só no leitor de código de barras; nada do AlcoLog foi copiado. Sem fonte gratuita suficiente para o Brasil (ver `docs/catalog-coverage.md`).
 - **Nada compilado, analisado, testado nem executado** (só `selftest` do script Python e `catalog_tool.py check`).
 
+## Registro rápido de bebidas: o que já existia e o que entrou (16/10/2026)
+- **Já implementado por sessões anteriores (conferido por leitura, nada refeito):** tamanhos rápidos + volume livre, teor opcional, formulário com
+  "Só minha/Compartilhada" e "Sua parte: X ml" imediato, parcela/sobra recolhida, preço (valor/cortesia/não sei) (`b0f75d1` addOutingFlow, `f2452a8`
+  polishRoleExperience); "Mais uma · <bebida tamanho>" (`repeatLast`, `b0f75d1`, ampliado em `5e25e6d` com a tela de bloqueio); textos "Sua parte" em
+  pt/en/es (`ecdb989`). Decisões de UX mantidas: "Mais uma" só para a última bebida alcoólica elegível, sem confirmação no app aberto (desfazer em
+  snackbar), confirmação só quando vem da tela de bloqueio.
+- **Novo (esta rodada):** **repetir qualquer outra bebida do mesmo rolê**. Menu de cada registro do rolê ativo ganhou "Repetir" (pt/en/es) →
+  `OutingCubit.repeatEntry(entry)`: copia composição, porção/"Sua parte", origem do teor, ingredientes e preço (mesma regra do "Mais uma", que agora
+  só chama `repeatEntry`), registra agora, com aviso e **Desfazer**, uma ação por vez (trava de toque duplo `_acquire`). Só aparece com o rolê ativo
+  (`EntryTile.onRepeat`; no resumo de rolê encerrado o menu continua só com Corrigir/Excluir). Recusa registro de outro rolê. Texto novo: `entryRepeat`.
+- **Não feito:** nenhuma tela de "seleção rápida" nova nem mudança no formulário (já cobertos acima). **Nada compilado, analisado, testado nem
+  executado**; só `flutter gen-l10n` (código gerado versionado).
+

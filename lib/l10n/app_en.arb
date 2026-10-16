@@ -186,6 +186,7 @@
   "durationMinutes": "{minutes} min",
   "entryAlcoholIncomplete": "incomplete alcohol",
   "entryCorrect": "Correct",
+  "entryRepeat": "Repeat",
   "entryOptions": "Record options",
   "entrySharedPart": "{count, plural, =1{your part {mine} of {total} (1 person)} other{your part {mine} of {total} ({count} people)}}",
   "feedbackDontAsk": "Don't ask",

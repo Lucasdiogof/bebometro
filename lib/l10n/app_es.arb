@@ -186,6 +186,7 @@
   "durationMinutes": "{minutes} min",
   "entryAlcoholIncomplete": "alcohol incompleto",
   "entryCorrect": "Corregir",
+  "entryRepeat": "Repetir",
   "entryOptions": "Opciones del registro",
   "entrySharedPart": "{count, plural, =1{tu parte {mine} de {total} (1 persona)} other{tu parte {mine} de {total} ({count} personas)}}",
   "feedbackDontAsk": "No preguntar",

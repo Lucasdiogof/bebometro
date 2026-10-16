@@ -1216,6 +1216,12 @@ abstract class AppLocalizations {
   /// **'Corrigir'**
   String get entryCorrect;
 
+  /// No description provided for @entryRepeat.
+  ///
+  /// In pt, this message translates to:
+  /// **'Repetir'**
+  String get entryRepeat;
+
   /// No description provided for @entryOptions.
   ///
   /// In pt, this message translates to:
