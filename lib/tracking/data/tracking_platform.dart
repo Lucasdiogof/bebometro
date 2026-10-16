@@ -61,6 +61,23 @@ class TrackingLink {
   final String action;
 }
 
+/// A command the person gave on the lock screen / Dynamic Island with ONE tap
+/// (iOS 17+ interactive Live Activity). The native side only queues it
+/// (durable, with its own unique [id]); the app registers it from its own
+/// records, so prices, ABV and portions are never taken from the command.
+class TrackingCommand {
+  const TrackingCommand(this.id, this.outingId, this.kind, this.at);
+
+  final String id;
+  final String outingId;
+
+  /// `another` ("Mais uma").
+  final String kind;
+
+  /// When the person tapped (device clock).
+  final DateTime at;
+}
+
 /// Bridge to the native surfaces (ActivityKit on iOS, a notification on
 /// Android). Everything here is best effort: a missing plugin (web, desktop,
 /// tests) means "not supported", never an exception into the app. The native
@@ -73,6 +90,9 @@ class TrackingPlatform {
   /// Called when the native side received a tap while the app was running.
   VoidCallback? onLink;
 
+  /// Called when the native side queued a lock-screen command.
+  VoidCallback? onCommands;
+
   bool get isNativePlatform =>
       !kIsWeb &&
       (defaultTargetPlatform == TargetPlatform.iOS ||
@@ -84,6 +104,7 @@ class TrackingPlatform {
     if (!isNativePlatform) return;
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'linkReceived') onLink?.call();
+      if (call.method == 'commandsAvailable') onCommands?.call();
       return null;
     });
   }
@@ -147,6 +168,29 @@ class TrackingPlatform {
   /// Lets the native side forget a manual removal, so it can show again.
   Future<void> clearDismissed(String outingId) =>
       _call<void>('clearDismissed', {'outingId': outingId});
+
+  /// Commands queued natively and not yet acknowledged (iOS 17+). The queue is
+  /// durable: a command stays until [ackCommands], so a crash in between
+  /// replays it instead of losing it.
+  Future<List<TrackingCommand>> peekCommands() async {
+    final raw = await _call<List<Object?>>('peekCommands');
+    if (raw == null) return const [];
+    final out = <TrackingCommand>[];
+    for (final item in raw) {
+      if (item is! Map) continue;
+      final id = item['id'] as String?;
+      final outing = item['outingId'] as String?;
+      final kind = item['kind'] as String?;
+      final secs = item['at'];
+      if (id == null || outing == null || kind == null || secs is! num) continue;
+      out.add(TrackingCommand(id, outing, kind,
+          DateTime.fromMillisecondsSinceEpoch((secs * 1000).round())));
+    }
+    return out;
+  }
+
+  Future<void> ackCommands(List<String> ids) =>
+      _call<void>('ackCommands', {'ids': ids});
 
   /// The tap that opened or woke the app, once.
   Future<TrackingLink?> consumeLink() async {

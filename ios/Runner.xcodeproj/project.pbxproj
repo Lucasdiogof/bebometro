@@ -25,6 +25,8 @@
 		BE0B00010000000000000011 /* BebometroLiveActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BE0B00010000000000000002 /* BebometroLiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BE0B00010000000000000012 /* OutingActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B00010000000000000009 /* OutingActivityAttributes.swift */; };
 		BE0B00010000000000000013 /* TrackingChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B0001000000000000000C /* TrackingChannel.swift */; };
+		BE0B0001000000000000001C /* AnotherDrinkIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B0001000000000000001B /* AnotherDrinkIntent.swift */; };
+		BE0B0001000000000000001D /* AnotherDrinkIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B0001000000000000001B /* AnotherDrinkIntent.swift */; };
 		BE0B00020000000000000005 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE0B00020000000000000001 /* InfoPlist.strings */; };
 		F3F6F92AF94D8A8D67DFB577 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FA8A2F60C6C98AA1F4C5AE5 /* Pods_RunnerTests.framework */; };
 /* End PBXBuildFile section */
@@ -102,6 +104,7 @@
 		BE0B00010000000000000009 /* OutingActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutingActivityAttributes.swift; sourceTree = "<group>"; };
 		BE0B0001000000000000000A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BE0B0001000000000000000B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BE0B0001000000000000001B /* AnotherDrinkIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherDrinkIntent.swift; sourceTree = "<group>"; };
 		BE0B0001000000000000000C /* TrackingChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingChannel.swift; sourceTree = "<group>"; };
 		BE0B00020000000000000002 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BE0B00020000000000000003 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -214,6 +217,7 @@
 				BE0B00010000000000000007 /* BebometroLiveActivityBundle.swift */,
 				BE0B00010000000000000008 /* OutingLiveActivity.swift */,
 				BE0B00010000000000000009 /* OutingActivityAttributes.swift */,
+				BE0B0001000000000000001B /* AnotherDrinkIntent.swift */,
 				BE0B0001000000000000000B /* Assets.xcassets */,
 				BE0B0001000000000000000A /* Info.plist */,
 			);
@@ -510,6 +514,7 @@
 				7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */,
 				BE0B00010000000000000013 /* TrackingChannel.swift in Sources */,
 				BE0B00010000000000000012 /* OutingActivityAttributes.swift in Sources */,
+				BE0B0001000000000000001C /* AnotherDrinkIntent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,6 +525,7 @@
 				BE0B0001000000000000000D /* BebometroLiveActivityBundle.swift in Sources */,
 				BE0B0001000000000000000E /* OutingLiveActivity.swift in Sources */,
 				BE0B0001000000000000000F /* OutingActivityAttributes.swift in Sources */,
+				BE0B0001000000000000001D /* AnotherDrinkIntent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

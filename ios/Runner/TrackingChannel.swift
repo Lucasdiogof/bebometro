@@ -27,6 +27,14 @@ final class TrackingChannel {
     func register(messenger: FlutterBinaryMessenger) {
         let ch = FlutterMethodChannel(name: "bebometro/tracking", binaryMessenger: messenger)
         channel = ch
+        // A one-tap command queued by the Live Activity button (iOS 17+): tell
+        // Flutter, which reads the durable queue itself (it also reads it at
+        // startup and on resume, in case Dart was not running).
+        NotificationCenter.default.addObserver(
+            forName: TrackingCommandQueue.queued, object: nil, queue: .main
+        ) { [weak self] _ in
+            self?.channel?.invokeMethod("commandsAvailable", arguments: nil)
+        }
         ch.setMethodCallHandler { [weak self] call, result in
             self?.enqueue { await self?.handle(call, result) }
         }
@@ -73,6 +81,11 @@ final class TrackingChannel {
             result(await status())
         case "clearDismissed":
             if let id = args?["outingId"] as? String { setDismissed(id, false) }
+            result(nil)
+        case "peekCommands":
+            result(TrackingCommandQueue.peek())
+        case "ackCommands":
+            TrackingCommandQueue.ack((args?["ids"] as? [String]) ?? [])
             result(nil)
         case "consumeLink":
             let link = pendingLink

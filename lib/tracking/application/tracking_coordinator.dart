@@ -241,6 +241,57 @@ class TrackingCoordinator {
     }
   }
 
+  bool _processingCommands = false;
+
+  /// Registers what the person tapped on the lock screen ("Mais uma", iOS 17+),
+  /// without opening the app and without asking again. Each command repeats the
+  /// outing's last alcoholic drink exactly as it was recorded (same composition,
+  /// portion, ABV origin and price) and is acknowledged only after it was
+  /// handled; the record id comes from the command id, so a replay never
+  /// duplicates a drink while two real taps stay two drinks. Commands for an
+  /// outing that is over, or without a drink to repeat, are dropped. A command
+  /// for an outing this account does not have is kept for a day (it may belong to
+  /// another account on this device) and then dropped.
+  Future<int> processCommands() async {
+    if (_processingCommands || !_platform.isNativePlatform) return 0;
+    _processingCommands = true;
+    try {
+      final commands = await _platform.peekCommands();
+      if (commands.isEmpty) return 0;
+      final done = <String>[];
+      var registered = 0;
+      final now = DateTime.now();
+      for (final c in commands) {
+        if (c.kind != 'another') {
+          done.add(c.id);
+          continue;
+        }
+        final outing = _outings.byId(c.outingId);
+        if (outing == null) {
+          if (now.difference(c.at) > const Duration(days: 1)) done.add(c.id);
+          continue;
+        }
+        done.add(c.id);
+        if (!outing.isActive) continue;
+        final last = _drinks.lastAlcoholic(outing.id);
+        if (last == null) continue;
+        var at = c.at;
+        if (at.isBefore(outing.startedAt) ||
+            at.isAfter(now.add(const Duration(minutes: 1)))) {
+          at = now;
+        }
+        await _drinks.save(
+            last.repeated(newId: _drinks.entryIdForCommand(c.id), at: at));
+        registered++;
+      }
+      if (done.isNotEmpty) await _platform.ackCommands(done);
+      if (registered > 0) schedule(immediate: true);
+      return registered;
+    } finally {
+      _processingCommands = false;
+    }
+  }
+
   /// Account closing (sign out or switch): takes this account's surfaces off
   /// the lock screen and stops reacting. A run already in flight sees a new
   /// generation and gives up.

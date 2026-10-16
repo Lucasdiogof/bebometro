@@ -61,18 +61,55 @@ private struct Elapsed: View {
 }
 
 @available(iOS 16.2, *)
+private struct ChipLabel: View {
+    let title: String
+    var body: some View {
+        Text(title)
+            .font(.caption.weight(.semibold))
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .background(Capsule().fill(Palette.surface))
+            .foregroundColor(Palette.amber)
+    }
+}
+
+@available(iOS 16.2, *)
 private struct Chip: View {
     let title: String
     let url: URL
     var body: some View {
-        Link(destination: url) {
-            Text(title)
-                .font(.caption.weight(.semibold))
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 7)
-                .background(Capsule().fill(Palette.surface))
+        Link(destination: url) { ChipLabel(title: title) }
+    }
+}
+
+/// "Mais uma": a real button on iOS 17+ (one tap registers, the app does not
+/// open); a link that opens the app on iOS 16.2-16.x.
+@available(iOS 16.2, *)
+private struct AnotherChip: View {
+    let title: String
+    let outingId: String
+    var body: some View {
+        if #available(iOS 17.0, *) {
+            Button(intent: AnotherDrinkIntent(outingId: outingId)) {
+                ChipLabel(title: title)
+            }
+            .buttonStyle(.plain)
+        } else {
+            Chip(title: title, url: link(outingId, "another"))
+        }
+    }
+}
+
+/// Discreet confirmation of a one-tap command still being applied by the app.
+@available(iOS 16.2, *)
+private struct QuickLoggedBadge: View {
+    let count: Int?
+    var body: some View {
+        if let n = count, n > 0 {
+            Text("✓ +\(n)")
+                .font(.caption.weight(.bold))
                 .foregroundColor(Palette.amber)
         }
     }
@@ -96,11 +133,14 @@ private struct LockScreenView: View {
                         .font(.headline)
                         .foregroundColor(Palette.text)
                         .lineLimit(1)
-                    Text(countText(s))
-                        .font(.subheadline)
-                        .foregroundColor(Palette.muted)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
+                    HStack(spacing: 6) {
+                        Text(countText(s))
+                            .font(.subheadline)
+                            .foregroundColor(Palette.muted)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                        QuickLoggedBadge(count: s.quickLogged)
+                    }
                 }
                 Spacer(minLength: 8)
                 Elapsed(since: s.startedAt)
@@ -118,7 +158,7 @@ private struct LockScreenView: View {
             HStack(spacing: 8) {
                 Chip(title: s.texts?.open ?? "Abrir", url: link(id, "open"))
                 if let next = s.nextLabel {
-                    Chip(title: s.texts?.anotherWith ?? "Mais uma · \(next)", url: link(id, "another"))
+                    AnotherChip(title: s.texts?.anotherWith ?? "Mais uma · \(next)", outingId: id)
                 }
                 Chip(title: s.texts?.water ?? "Água", url: link(id, "water"))
             }
@@ -158,10 +198,13 @@ struct OutingLiveActivity: Widget {
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(countText(s))
-                            .font(.subheadline)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.8)
+                        HStack(spacing: 6) {
+                            Text(countText(s))
+                                .font(.subheadline)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                            QuickLoggedBadge(count: s.quickLogged)
+                        }
                         if let spend = spendText(s) {
                             Text(spend)
                                 .font(.subheadline.weight(.medium))
@@ -171,7 +214,7 @@ struct OutingLiveActivity: Widget {
                         HStack(spacing: 8) {
                             Chip(title: s.texts?.open ?? "Abrir", url: link(id, "open"))
                             if let next = s.nextLabel {
-                                Chip(title: s.texts?.another ?? "Mais uma", url: link(id, "another"))
+                                AnotherChip(title: s.texts?.another ?? "Mais uma", outingId: id)
                                     .accessibilityLabel(s.texts?.anotherA11y ?? "Mais uma, \(next)")
                             }
                             Chip(title: s.texts?.water ?? "Água", url: link(id, "water"))

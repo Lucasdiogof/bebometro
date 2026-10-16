@@ -16,8 +16,9 @@ class AppNavigator {
   static final key = GlobalKey<NavigatorState>();
 }
 
-/// A quick action asked from the lock screen, waiting for the person to
-/// confirm it inside the app. Nothing is registered by opening a link.
+/// A quick action asked from the lock screen by a LINK (iOS before 17, or when
+/// the interactive button is unavailable). The running-outing screen registers
+/// it right away, with the usual Undo: the tap itself was the decision.
 class PendingTrackingAction {
   const PendingTrackingAction(this.outingId, this.action);
 
@@ -60,13 +61,16 @@ class TrackingLinks {
 
   void start() {
     _platform.onLink = () => unawaited(poll());
+    _platform.onCommands = () => unawaited(_coordinator.processCommands());
     unawaited(poll());
+    unawaited(_coordinator.processCommands());
   }
 
   /// Account closed: taps from now on belong to the next account.
   void stop() {
     _stopped = true;
     _platform.onLink = null;
+    _platform.onCommands = null;
   }
 
   /// Asks the native side for a tap that arrived while the app was closed or
@@ -75,6 +79,7 @@ class TrackingLinks {
     if (_polling || _stopped) return;
     _polling = true;
     try {
+      await _coordinator.processCommands();
       final link = await _platform.consumeLink();
       if (link != null) await _handle(link);
     } finally {
