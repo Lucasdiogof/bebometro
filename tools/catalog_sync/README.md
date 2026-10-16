@@ -37,9 +37,10 @@ nome parecido só gera `possible_duplicate`. Ids existentes nunca mudam.
 ## Licença e reutilização (retenção)
 `licenseHold: true` ⇒ o candidato é classificado mas **nunca** entra em `research_safe.json`, exceto como citação
 (`citationOnly`: URL, rótulo e data, sem trecho copiado) de um valor que o catálogo já tinha.
-- **HEINEKEN Brasil (Eisenbahn, Devassa, Kaiser, Baden Baden):** Termos de Uso da Devassa (HNK BR, 11/06/2024, item 4): "O
-  armazenamento ou a reprodução no todo ou em parte do conteúdo disponibilizado no Site não é permitido". Termos dos outros três
-  sites não localizados. Por isso: só citação de fonte.
+- **HEINEKEN Brasil:** a restrição foi **encontrada só na Devassa** (Termos de Uso, HNK BR, 11/06/2024, item 4: o armazenamento ou a
+  reprodução, no todo ou em parte, do conteúdo do site não é permitido). Eisenbahn e Baden Baden: termos não localizados (404 nas URLs testadas);
+  Kaiser: página de termos sem texto legível. Não está demonstrado que os termos da Devassa valham para os outros domínios; eles recebem o mesmo
+  tratamento (só citação de fonte) por cautela, até alguém ler os termos de cada site.
 - **Open Food Facts:** ODbL (base) + DbCL (conteúdo) + CC BY-SA (imagens). Atribuição e compartilhamento nas mesmas condições
   para bases derivadas; dados colaborativos sem garantia. Candidatos mantidos separados; decisão sobre ODbL pendente.
   Valores de álcool do OFF vêm de campos nutricionais sem unidade garantida (`approx`).

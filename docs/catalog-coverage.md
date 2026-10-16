@@ -129,16 +129,23 @@ Processo: `collect` → `import-off` → `compare` → revisão de `proposal.md`
 **Cobertura de dados antes/depois: sem mudança** (136 produtos; teor 112; teor variável 3; ingredientes 36; apresentações 78; estilo 86).
 Nenhum campo vazio foi preenchido: as 17 páginas das marcas HEINEKEN Brasil (Eisenbahn, Devassa, Kaiser, Baden Baden) trouxeram os mesmos
 valores que o catálogo já tinha (9 de 9 teores iguais; ingredientes da Devassa e tamanhos iguais).
-**Procedência por campo: 47 → 55 produtos com `fieldSources`** (+15 entradas, sem valor novo): teor de Eisenbahn Pilsen, American IPA,
-Pale Ale e Weizenbier; teor e tamanhos de Baden Baden Cristal, Golden, IPA e Witbier; tamanhos 350 ml e 1 L da Kaiser; ingredientes da
-Devassa (página de lata). Entradas só com URL, rótulo e data (sem trecho copiado), por causa dos termos do site (abaixo).
+**Procedência por campo: 10 produtos alterados, 15 entradas novas em `fieldSources`, nenhum valor novo.** IDs: `eisenbahn-pilsen`, `eisenbahn-american-ipa`, `eisenbahn-pale-ale`, `eisenbahn-weizenbier` (teor), `baden-baden-cristal`, `baden-baden-golden`, `baden-baden-ipa`, `baden-baden-witbier` (teor e tamanhos), `kaiser-lager` (tamanhos 350 ml e 1 L) e `devassa-tropical` (ingredientes).
+Desses 10, **8 não tinham `fieldSources` e passaram a ter** (47 → 55 produtos com procedência por campo: 4 Eisenbahn + 4 Baden Baden);
+`kaiser-lager` e `devassa-tropical` já tinham e ganharam entradas (2 + 1). Conferido por diff contra `1dc870e`: nenhum outro campo mudou.
+Entradas só com URL, rótulo e data (sem trecho copiado), por cautela com os termos de uso (abaixo).
 
 ### Candidatos retidos (não aplicados)
 - **Open Food Facts (14 registros do cache, mapeados à mão a 9 produtos):** 4 tamanhos que o catálogo não tem (Heineken 350 e 250 ml,
-  Heineken 0.0 350 ml, Colorado Appia 600 ml). Retidos: ODbL exige atribuição e compartilhamento nas mesmas condições, o dado é
-  colaborativo e a unidade do campo de álcool não é garantida. Nenhum teor ou ingrediente do OFF foi proposto como exato.
-- **Páginas HEINEKEN Brasil:** Termos de Uso da Devassa (item 4) proíbem armazenar ou reproduzir o conteúdo do site; os outros três sites não têm
-  termos localizados. Nenhum dado novo seria incorporado por elas (e nenhum apareceu); só citação de fonte.
+  Heineken 0.0 350 ml, Colorado Appia 600 ml) ficam **pendentes** (não incorporados nesta rodada, sem bloquear o app): ODbL exige atribuição
+  e compartilhamento nas mesmas condições, o dado é colaborativo e a unidade do campo de álcool não é garantida. Nenhum teor ou ingrediente
+  do OFF foi proposto como exato.
+- **Páginas HEINEKEN Brasil, evidência por domínio:**
+  - `devassa.com.br`: restrição **encontrada**. Termos de Uso (HNK BR Indústria de Bebidas Ltda, atualizado em 11/06/2024), item 4: o armazenamento
+    ou a reprodução, no todo ou em parte, do conteúdo do site não é permitido.
+  - `eisenbahn.com.br` e `badenbaden.com.br`: termos **não localizados** (as URLs testadas, `/termos-de-uso/`, deram 404; não procurei por outros caminhos).
+  - `kaiser.com.br`: a página `/informacoes-legais/termos-de-uso/` existe, mas o texto não veio na leitura (conteúdo vazio no HTML); **não lido**.
+  - Não há demonstração de que os termos da Devassa se apliquem aos outros domínios. Por cautela (sem evidência em contrário), os quatro foram tratados
+    igual no processo: nenhum dado novo é incorporado por eles e só se cita a fonte de valores que o catálogo já tinha. Nenhum dado novo apareceu de qualquer forma.
 - Sem teor na página (ficam desconhecidos): Kaiser (todas), Eisenbahn Session IPA e Unfiltered.
 
 ### Pesquisa de fontes (resumo)

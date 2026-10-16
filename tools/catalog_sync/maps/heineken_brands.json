@@ -5,7 +5,7 @@
   "status": "restricted",
   "hold": true,
   "citationOnly": true,
-  "evidence": "Devassa Termos de Uso (HNK BR, atualizado 11/06/2024), item 4: \"O armazenamento ou a reprodução no todo ou em parte do conteúdo disponibilizado no Site não é permitido\". Termos dos outros sites da marca não localizados (URLs testadas deram 404 ou página vazia) -> tratados igual.",
+  "evidence": "Devassa Termos de Uso (HNK BR, atualizado 11/06/2024), item 4: \"O armazenamento ou a reprodução no todo ou em parte do conteúdo disponibilizado no Site não é permitido\". Eisenbahn/Baden Baden: termos não localizados (404 nas URLs testadas); Kaiser: página de termos sem texto legível. A restrição da Devassa não está demonstrada para esses domínios; tratados igual só por cautela.",
   "consequence": "Nenhum dado novo é incorporado a partir destas páginas; só é proposta a citação (URL, rótulo e data, sem trecho copiado) para valores que o catálogo já tinha."
  },
  "robots": "Allow: / (verificado em 14/10/2026 nos 4 domínios)",

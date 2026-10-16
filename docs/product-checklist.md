@@ -13,7 +13,9 @@ para as últimas etapas e não foram começados.
 | Item | Código | Externo | Execução | Situação |
 |------|--------|---------|----------|----------|
 | Rolê: iniciar, editar, encerrar, feedback, orçamento, preços ausentes | Sim | n/a | Não | Pendente validar |
-| Catálogo (v6: 136 produtos, 20 bebidas prontas; atualização por `tools/catalog_sync`, procedência por campo em 55 produtos), "Sobre estes dados" por campo, filtros, favoritos, recentes, "Mais uma", água, desfazer | Sim | Migration `20261019000000` (categoria nova) **pendente** | Não | Pendente validar |
+| Catálogo (v6: 136 produtos, 20 bebidas prontas; sem ampliação nesta rodada), "Sobre estes dados" por campo (procedência por campo: implementada; 55 produtos com `fieldSources`), filtros, favoritos, recentes, "Mais uma", água, desfazer | Sim | Migration `20261019000000` (categoria nova) **pendente** | Não | Pendente validar |
+| Pipeline de atualização do catálogo (`tools/catalog_sync`: coletar → comparar → proposta → `catalog_tool.py merge`) | Sim (exercitado por script: `selftest`, `check`, `ids HEAD`) | n/a | Não (Flutter) | Parcial: um coletor (HEINEKEN Brasil); fontes adicionais são melhoria futura e não bloqueiam o app |
+| Flutter nesta rodada | n/a | n/a | Não validado (sem `pub get`, `analyze`, testes ou builds) | Pendente validar |
 | Receitas de referência e próprias, composição, avisos de dado incompleto | Sim | n/a | Não | Pendente validar |
 | Bebidas por foto (rótulo/cardápio), itens só do rolê, rascunhos | Sim | Migration `20261015000000` aplicada pelo dono | Não | Heurísticas de OCR não validadas |
 | Locais salvos e mapa (Geoapify) | Sim | Chave `GEOAPIFY_KEY` **não configurada**; migration `20261017000000` aplicada | Não | Parcial (depende da chave) |
