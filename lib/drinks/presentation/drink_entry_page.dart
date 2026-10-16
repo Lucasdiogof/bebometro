@@ -39,6 +39,13 @@ class DrinkEntryPage extends StatelessWidget {
         key: key,
       );
 
+  /// Review of a pending lock-screen tap (see [DrinkFormCubit.forReview]).
+  factory DrinkEntryPage.review({
+    Key? key,
+    required DrinkFormCubit Function() create,
+  }) =>
+      DrinkEntryPage._(create, key: key);
+
   factory DrinkEntryPage.edit({Key? key, required DrinkEntry entry}) =>
       DrinkEntryPage._(
         () => getIt<DrinkFormCubit>(param1: entry, instanceName: 'edit'),
@@ -197,6 +204,12 @@ class _DrinkEntryView extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(
                         AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
                     children: [
+                      if (cubit.reviewNote != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: AppSpace.sm),
+                          child: InfoPill(cubit.reviewNote!,
+                              icon: Icons.lock_clock_outlined),
+                        ),
                       _Header(draft: d),
                       if (d.isRecipe)
                         ...[

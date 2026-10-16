@@ -89,10 +89,14 @@ class DrinkDraft {
     );
   }
 
+  /// [asNew]: a NEW record prefilled from [e] (lock-screen review), not a
+  /// correction of [e]; [consumedAt] then replaces its time.
   factory DrinkDraft.fromEntry(
     DrinkEntry e, {
     DateTime? notBefore,
     DateTime? notAfter,
+    bool asNew = false,
+    DateTime? consumedAt,
   }) =>
       DrinkDraft(
         name: e.name,
@@ -101,7 +105,7 @@ class DrinkDraft {
         style: e.style,
         catalogItemId: e.catalogItemId,
         ingredients: e.ingredients,
-        consumedAt: e.consumedAt,
+        consumedAt: consumedAt ?? e.consumedAt,
         presentationLabel: e.presentation,
         containerMl: e.containerMl,
         abvPercent: e.abvPercent,
@@ -115,7 +119,7 @@ class DrinkDraft {
         personalMl: e.personalMl,
         leftoverMl: e.leftoverMl,
         personalEdited: true,
-        existing: e,
+        existing: asNew ? null : e,
         notBefore: notBefore,
         notAfter: notAfter,
         composition: e.composition,

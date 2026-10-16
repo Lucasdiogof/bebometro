@@ -1436,23 +1436,37 @@
   "priceBulkBody": "{name} por {price}. Neste rolê há {total} registros iguais: {unpriced} sem preço e {differing} com outro preço. Nada muda sem a sua escolha.",
   "@priceBulkBody": {
     "placeholders": {
-      "name": { "type": "String" },
-      "price": { "type": "String" },
-      "total": { "type": "int" },
-      "unpriced": { "type": "int" },
-      "differing": { "type": "int" }
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "total": {
+        "type": "int"
+      },
+      "unpriced": {
+        "type": "int"
+      },
+      "differing": {
+        "type": "int"
+      }
     }
   },
   "priceBulkUnpriced": "Aplicar aos {count} sem preço",
   "@priceBulkUnpriced": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "priceBulkAll": "Aplicar a todos os {count} iguais",
   "@priceBulkAll": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "priceBulkOnlyThis": "Só este registro",
@@ -1460,14 +1474,18 @@
   "priceBulkConfirmBody": "Isso troca o preço de {count} registros que já tinham outro valor. Os demais rolês não mudam.",
   "@priceBulkConfirmBody": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "priceBulkReplace": "Substituir",
   "priceBulkApplied": "Preço aplicado a {count} registros.",
   "@priceBulkApplied": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "formDeleteFailed": "Não foi possível excluir. Tente de novo.",
@@ -3197,6 +3215,7 @@
   },
   "trackingActive": "Ativo agora.",
   "trackingPending": "Ligado, mas ainda não apareceu. No iPhone ele só começa com o app aberto; abra o rolê.",
+  "trackingAwaitingSave": "aguardando registro",
   "trackingNoPermissionToast": "Sem permissão de notificações. Dá para liberar nas configurações do aparelho.",
   "trackingEnable": "Ativar acompanhamento",
   "trackingEnableHint": "Mostra o tempo e a contagem do rolê em andamento na tela bloqueada. Sem som nem vibração.",
@@ -3237,7 +3256,6 @@
   },
   "trackingOpen": "Abrir",
   "trackingAnother": "Mais uma",
-  "trackingPending": "aguardando registro",
   "trackingAnotherWith": "Mais uma · {next}",
   "@trackingAnotherWith": {
     "placeholders": {
@@ -3616,6 +3634,59 @@
   "@aboutDataConsulted": {
     "placeholders": {
       "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pendingTitle": "Registros pendentes",
+  "pendingIntro": "Toques em \"Mais uma\" na tela bloqueada que não puderam ser registrados sozinhos. Nada entra no seu histórico sem você confirmar aqui.",
+  "pendingEmpty": "Nenhum registro pendente.",
+  "pendingReasonEnded": "O rolê foi encerrado antes do registro. Revise para adicionar a ele.",
+  "pendingReasonOutside": "O horário do toque está fora do período do rolê. Ajuste o horário na revisão.",
+  "pendingReasonNoDrink": "Não dá para saber qual bebida repetir. Escolha a bebida e revise.",
+  "pendingReasonFailed": "Não foi possível salvar. Você pode tentar novamente.",
+  "pendingReasonUnsupported": "Esta versão do app não reconhece este pedido. Você pode descartá-lo.",
+  "pendingReasonInReview": "Em revisão.",
+  "pendingDrinkUnknown": "Bebida não identificada",
+  "pendingRetry": "Tentar novamente",
+  "pendingRetryFailed": "Ainda não foi possível registrar.",
+  "pendingSaved": "Registrado.",
+  "pendingDiscard": "Descartar",
+  "pendingDiscardTitle": "Descartar este toque?",
+  "pendingDiscardBody": "O pedido some desta lista. Nenhum registro já salvo é apagado.",
+  "pendingDiscarded": "Descartado.",
+  "pendingNoDrinkToChoose": "Este rolê não tem bebida alcoólica registrada para repetir.",
+  "pendingChooseTitle": "Qual bebida era?",
+  "pendingChooseDrink": "Escolher bebida",
+  "pendingReviewAdd": "Revisar e adicionar",
+  "pendingNotice": "{count, plural, =1{1 toque da tela bloqueada aguarda você} other{{count} toques da tela bloqueada aguardam você}}",
+  "@pendingNotice": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingOutingOn": "Rolê de {date}",
+  "@pendingOutingOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pendingTappedAt": "Toque em {time}",
+  "@pendingTappedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "pendingReviewNote": "Toque original na tela bloqueada: {time}",
+  "@pendingReviewNote": {
+    "placeholders": {
+      "time": {
         "type": "String"
       }
     }

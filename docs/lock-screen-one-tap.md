@@ -21,7 +21,7 @@ o que depende do iOS e o roteiro para validar em aparelho.
     (feito por versão anterior), registro de origem ausente ou de outro rolê, horário antes do início/depois do fim do rolê (ou mais de 5 min no futuro) ou tipo
     desconhecido → o comando **fica na fila**, sem confirmação, contado em `TrackingCoordinator.unresolvedCommands` e mostrado na atividade daquele rolê como
     "+N aguardando registro". Um toque feito com o rolê aberto entra mesmo que o rolê tenha sido encerrado antes do processamento.
-  - **Não existe ainda tela para resolver** comandos pendentes (escolher outro rolê ou descartar): eles ficam guardados até isso existir ou até a conta/rolê certos abrirem.
+  - Resolução pela tela **"Registros pendentes"** (ver seção abaixo, 16/10/2026).
   - O registro cai na fila de sincronização normal (funciona offline).
 - **iOS 16.2 a 16.x:** o botão continua sendo um **link** que abre o app; a diferença é que agora o app **registra direto**, sem o diálogo "Pedido da tela bloqueada",
   e mostra o aviso com "Desfazer". "Água" segue o mesmo caminho.
@@ -57,3 +57,33 @@ que aconteceu (imagem x compartilhamento) e oferece **"Copiar texto"**: nada vai
 também na exportação). Fechar a folha sem compartilhar não é erro; o arquivo é `bebometro-role.png` com `fileNameOverrides`. A causa real, se continuar, fica em `ShareService.lastFailure`
 (visível no log de debug como `[share] ... failed`).
 Validar: tocar **Compartilhar** no resumo com o switch do nome ligado e desligado, com o local sem conexão, e com o texto grande (Ajustes > Tamanho do texto). Se ainda falhar, enviar a linha `[share]` do log.
+
+## Registros pendentes (16/10/2026) — implementado, **não validado em aparelho**
+- **Quando registra sozinho:** comando desta conta, rolê **em andamento**, registro de origem presente no mesmo rolê e horário do toque dentro do período.
+  Qualquer outro caso vira pendência com motivo (`PendingReason`):
+  - `outingEnded`: rolê encerrado antes do registro (antes entrava sozinho; agora exige ação explícita).
+  - `outsidePeriod`: horário do toque fora do período do rolê.
+  - `missingDrink`: comando de versão antiga (sem `entryId`) ou registro de origem que não existe mais nesse rolê.
+  - `saveFailed`: a gravação falhou; uma falha não interrompe os demais comandos.
+  - `unsupported`: tipo de comando desconhecido.
+  - `inReview`: aberto num formulário de revisão agora.
+- **Outra conta / rolê que esta conta não tem:** fica na fila, **não aparece nem conta** nesta conta.
+- **Acesso:** card discreto na Home ("N toques da tela bloqueada aguardam você"), só quando há pendências da conta atual; nada abre sozinho.
+  A tela `PendingCommandsPage` mostra bebida, local (apelido/nome do lugar ou data do rolê), horário original do toque e motivo, sem IDs.
+- **Ações:**
+  - "Tentar novamente" (`saveFailed`) roda o mesmo processamento idempotente.
+  - "Revisar e adicionar" (encerrado, fora do período, falha) abre o **formulário normal** já preenchido com o registro de origem, no rolê original e no
+    horário do toque. O formulário só aceita horário dentro do período do rolê (validação já existente); o horário original aparece no topo
+    ("Toque original na tela bloqueada: …"). O rolê nunca é reaberto nem tem o período alterado.
+  - "Escolher bebida" (`missingDrink`) lista as bebidas alcoólicas distintas daquele rolê e abre a mesma revisão.
+  - "Descartar" pede confirmação e só remove o comando da fila: **nunca apaga um registro** já salvo.
+- **Consistência:**
+  - A revisão salva com o mesmo id derivado do comando (`entryIdFor`).
+  - O comando só é confirmado depois que o registro existe no disco (`acknowledgeSaved`).
+  - Enquanto a revisão está aberta o processamento automático pula aquele comando (`beginReview`/`endReview`); mesmo numa corrida, o id é o mesmo, então
+    não há dois registros.
+  - Todas as operações da fila rodam em série (`_serial`).
+  - Lista e contador da Live Activity ("+N aguardando registro") são recalculados depois de registrar ou descartar.
+- **Validar no iPhone:** (a) tocar com o rolê aberto, encerrar o rolê antes de abrir o app → card na Home, "Revisar e adicionar" registra no horário do toque;
+  (b) apagar a bebida de origem antes de abrir o app → "Escolher bebida"; (c) descartar → some da lista e do selo, nada apagado; (d) trocar de conta → a
+  pendência da outra conta não aparece; (e) matar o app durante a revisão → ao voltar, a pendência continua e não há registro duplicado.

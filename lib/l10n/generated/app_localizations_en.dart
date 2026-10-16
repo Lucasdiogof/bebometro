@@ -5033,7 +5033,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trackingActive => 'Active now.';
 
   @override
-  String get trackingPending => 'waiting to be saved';
+  String get trackingPending =>
+      'On, but it has not appeared yet. On iPhone it only starts with the app open; open the outing.';
+
+  @override
+  String get trackingAwaitingSave => 'waiting to be saved';
 
   @override
   String get trackingNoPermissionToast =>
@@ -5669,5 +5673,101 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String aboutDataConsulted(String date) {
     return 'Consulted on $date';
+  }
+
+  @override
+  String get pendingTitle => 'Pending records';
+
+  @override
+  String get pendingIntro =>
+      '\"One more\" taps on the lock screen that could not be saved on their own. Nothing goes into your history until you confirm it here.';
+
+  @override
+  String get pendingEmpty => 'No pending records.';
+
+  @override
+  String get pendingReasonEnded =>
+      'The outing ended before this was saved. Review it to add it there.';
+
+  @override
+  String get pendingReasonOutside =>
+      'The tap time is outside the outing\'s period. Adjust the time in the review.';
+
+  @override
+  String get pendingReasonNoDrink =>
+      'It is not possible to tell which drink to repeat. Choose the drink and review it.';
+
+  @override
+  String get pendingReasonFailed => 'It could not be saved. You can try again.';
+
+  @override
+  String get pendingReasonUnsupported =>
+      'This version of the app does not recognise this request. You can discard it.';
+
+  @override
+  String get pendingReasonInReview => 'Being reviewed.';
+
+  @override
+  String get pendingDrinkUnknown => 'Unidentified drink';
+
+  @override
+  String get pendingRetry => 'Try again';
+
+  @override
+  String get pendingRetryFailed => 'It still could not be saved.';
+
+  @override
+  String get pendingSaved => 'Saved.';
+
+  @override
+  String get pendingDiscard => 'Discard';
+
+  @override
+  String get pendingDiscardTitle => 'Discard this tap?';
+
+  @override
+  String get pendingDiscardBody =>
+      'The request leaves this list. No record already saved is deleted.';
+
+  @override
+  String get pendingDiscarded => 'Discarded.';
+
+  @override
+  String get pendingNoDrinkToChoose =>
+      'This outing has no alcoholic drink recorded to repeat.';
+
+  @override
+  String get pendingChooseTitle => 'Which drink was it?';
+
+  @override
+  String get pendingChooseDrink => 'Choose drink';
+
+  @override
+  String get pendingReviewAdd => 'Review and add';
+
+  @override
+  String pendingNotice(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lock-screen taps need you',
+      one: '1 lock-screen tap needs you',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pendingOutingOn(String date) {
+    return 'Outing on $date';
+  }
+
+  @override
+  String pendingTappedAt(String time) {
+    return 'Tapped on $time';
+  }
+
+  @override
+  String pendingReviewNote(String time) {
+    return 'Original lock-screen tap: $time';
   }
 }

@@ -838,3 +838,17 @@ Pacote `Bebometro_Correcoes_Viagem.zip` (prompt + screenshots). O commit `94ffd1
   cancelar a folha não é erro. O problema original **não foi reproduzido nem confirmado no aparelho**: foram corrigidas as fragilidades encontradas. Roteiro de validação em `docs/lock-screen-one-tap.md`.
 - **Pendências:** compilar/validar no Xcode e no iPhone (BEB-004, BEB-006, BEB-007), rodar `flutter analyze`/testes numa fase posterior; textos antigos da confirmação da tela bloqueada (`outingConfirmAnother`, `outingConfirmWater`, `outingLockScreenRequest`) ficaram sem uso nos .arb.
 
+## Registros pendentes da tela bloqueada (16/10/2026)
+
+Implementado (nada compilado, analisado, testado nem visto em aparelho). Detalhes e roteiro em `docs/lock-screen-one-tap.md`.
+- **`TrackingCoordinator`:**
+  - `pendingCommands` (só da conta atual) com `PendingReason`.
+  - `processCommands` em série; uma falha não bloqueia as outras.
+  - **Rolê encerrado deixou de registrar sozinho:** agora pede revisão explícita.
+  - `acknowledgeSaved`: confirma o comando só se o registro existe. `discard`: só remove o comando.
+  - `beginReview`/`endReview` evitam a concorrência com o processamento automático.
+- **Formulário:** `DrinkFormCubit.forReview` + `DrinkEntryPage.review`. É um registro NOVO, preenchido a partir da bebida de origem, com id fixo
+  derivado do comando, no rolê original e no horário do toque, editável só dentro do período; tem o aviso do horário original. `DrinkDraft.fromEntry(asNew:, consumedAt:)`.
+- **UI:** `lib/tracking/presentation/pending_commands_page.dart` (`PendingCommandsNotice` na Home e `PendingCommandsPage`). Textos `pending*` em pt/en/es.
+- **Correção:** a rodada anterior criou uma **chave duplicada** `trackingPending` nos .arb, que sobrescrevia o status "Ligado, mas ainda não apareceu…"
+  das Configurações. O selo da Live Activity agora usa `trackingAwaitingSave`, e o texto original voltou.

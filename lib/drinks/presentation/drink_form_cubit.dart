@@ -118,8 +118,12 @@ class DrinkFormState {
 }
 
 class DrinkFormCubit extends Cubit<DrinkFormState> {
-  DrinkFormCubit._(this._drinks, this._outingId, this._candidates, super.initial)
-      : _entryId = _drinks.newId();
+  DrinkFormCubit._(this._drinks, this._outingId, this._candidates, super.initial,
+      {String? entryId, this.reviewNote})
+      : _entryId = entryId ?? _drinks.newId();
+
+  /// Shown on top of the form when it reviews a lock-screen tap.
+  final String? reviewNote;
 
   static ComparableKey _keyOf(DrinkDraft d) => ComparableKey(
         item: d.catalogItemId ?? 'name:${d.name}',
@@ -186,6 +190,50 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       return (list: item.presentations, generic: true);
     }
     return (list: commonSizesFor(item.category), generic: true);
+  }
+
+  /// Review of a lock-screen "Mais uma" that could not be saved on its own:
+  /// a NEW record prefilled from [template], saved with [entryId] (derived
+  /// from the command, so it can never be saved twice) in [outing], at [at]
+  /// unless the person changes it within the outing's period.
+  factory DrinkFormCubit.forReview(
+    DrinkRepository drinks,
+    Outing outing,
+    DrinkEntry template,
+    List<DrinkEntry> candidates, {
+    required String entryId,
+    required DateTime at,
+    required String note,
+  }) {
+    final item = drinks.itemById(template.catalogItemId);
+    return DrinkFormCubit._(
+      drinks,
+      outing.id,
+      candidates,
+      DrinkFormState(
+        draft: DrinkDraft.fromEntry(
+          template,
+          notBefore: outing.startedAt,
+          notAfter: outing.endedAt,
+          asNew: true,
+          consumedAt: at,
+        ),
+        presentations: template.isMixed
+            ? const []
+            : (item != null
+                ? _sizesFor(item).list
+                : commonSizesFor(template.category)),
+        sizesAreGeneric:
+            template.isMixed ? false : (item == null || _sizesFor(item).generic),
+        abvVariants: item?.abvVariants ?? const [],
+        bottles: item == null ? const [] : _bottlesOf(item),
+        // Shown with its errors at once: a time outside the outing must be
+        // fixed before saving.
+        showErrors: true,
+      ),
+      entryId: entryId,
+      reviewNote: note,
+    );
   }
 
   /// Correction of an existing entry.

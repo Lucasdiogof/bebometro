@@ -8130,8 +8130,14 @@ abstract class AppLocalizations {
   /// No description provided for @trackingPending.
   ///
   /// In pt, this message translates to:
-  /// **'aguardando registro'**
+  /// **'Ligado, mas ainda não apareceu. No iPhone ele só começa com o app aberto; abra o rolê.'**
   String get trackingPending;
+
+  /// No description provided for @trackingAwaitingSave.
+  ///
+  /// In pt, this message translates to:
+  /// **'aguardando registro'**
+  String get trackingAwaitingSave;
 
   /// No description provided for @trackingNoPermissionToast.
   ///
@@ -9122,6 +9128,156 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Consultado em {date}'**
   String aboutDataConsulted(String date);
+
+  /// No description provided for @pendingTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registros pendentes'**
+  String get pendingTitle;
+
+  /// No description provided for @pendingIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toques em \"Mais uma\" na tela bloqueada que não puderam ser registrados sozinhos. Nada entra no seu histórico sem você confirmar aqui.'**
+  String get pendingIntro;
+
+  /// No description provided for @pendingEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum registro pendente.'**
+  String get pendingEmpty;
+
+  /// No description provided for @pendingReasonEnded.
+  ///
+  /// In pt, this message translates to:
+  /// **'O rolê foi encerrado antes do registro. Revise para adicionar a ele.'**
+  String get pendingReasonEnded;
+
+  /// No description provided for @pendingReasonOutside.
+  ///
+  /// In pt, this message translates to:
+  /// **'O horário do toque está fora do período do rolê. Ajuste o horário na revisão.'**
+  String get pendingReasonOutside;
+
+  /// No description provided for @pendingReasonNoDrink.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não dá para saber qual bebida repetir. Escolha a bebida e revise.'**
+  String get pendingReasonNoDrink;
+
+  /// No description provided for @pendingReasonFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível salvar. Você pode tentar novamente.'**
+  String get pendingReasonFailed;
+
+  /// No description provided for @pendingReasonUnsupported.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esta versão do app não reconhece este pedido. Você pode descartá-lo.'**
+  String get pendingReasonUnsupported;
+
+  /// No description provided for @pendingReasonInReview.
+  ///
+  /// In pt, this message translates to:
+  /// **'Em revisão.'**
+  String get pendingReasonInReview;
+
+  /// No description provided for @pendingDrinkUnknown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebida não identificada'**
+  String get pendingDrinkUnknown;
+
+  /// No description provided for @pendingRetry.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tentar novamente'**
+  String get pendingRetry;
+
+  /// No description provided for @pendingRetryFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não foi possível registrar.'**
+  String get pendingRetryFailed;
+
+  /// No description provided for @pendingSaved.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registrado.'**
+  String get pendingSaved;
+
+  /// No description provided for @pendingDiscard.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descartar'**
+  String get pendingDiscard;
+
+  /// No description provided for @pendingDiscardTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descartar este toque?'**
+  String get pendingDiscardTitle;
+
+  /// No description provided for @pendingDiscardBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'O pedido some desta lista. Nenhum registro já salvo é apagado.'**
+  String get pendingDiscardBody;
+
+  /// No description provided for @pendingDiscarded.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descartado.'**
+  String get pendingDiscarded;
+
+  /// No description provided for @pendingNoDrinkToChoose.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este rolê não tem bebida alcoólica registrada para repetir.'**
+  String get pendingNoDrinkToChoose;
+
+  /// No description provided for @pendingChooseTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Qual bebida era?'**
+  String get pendingChooseTitle;
+
+  /// No description provided for @pendingChooseDrink.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolher bebida'**
+  String get pendingChooseDrink;
+
+  /// No description provided for @pendingReviewAdd.
+  ///
+  /// In pt, this message translates to:
+  /// **'Revisar e adicionar'**
+  String get pendingReviewAdd;
+
+  /// No description provided for @pendingNotice.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 toque da tela bloqueada aguarda você} other{{count} toques da tela bloqueada aguardam você}}'**
+  String pendingNotice(int count);
+
+  /// No description provided for @pendingOutingOn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rolê de {date}'**
+  String pendingOutingOn(String date);
+
+  /// No description provided for @pendingTappedAt.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque em {time}'**
+  String pendingTappedAt(String time);
+
+  /// No description provided for @pendingReviewNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque original na tela bloqueada: {time}'**
+  String pendingReviewNote(String time);
 }
 
 class _AppLocalizationsDelegate

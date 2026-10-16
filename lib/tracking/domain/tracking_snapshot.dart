@@ -83,7 +83,7 @@ class TrackingSnapshot {
         'anotherWith': next == null ? null : tr.trackingAnotherWith(next),
         'anotherA11y': next == null ? null : tr.trackingAnotherA11y(next),
         'water': tr.trackingWater,
-        'pending': tr.trackingPending,
+        'pending': tr.trackingAwaitingSave,
         'channelName': tr.trackingTitleFallback,
         'channelDescription': tr.trackingChannelDescription,
       };

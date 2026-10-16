@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../tracking/presentation/pending_commands_page.dart';
+
 import '../../core/di/injector.dart';
 import '../../core/navigation/app_routes.dart';
 import '../../core/navigation/outing_flow.dart';
@@ -143,6 +145,9 @@ class _HomeViewState extends State<_HomeView> {
                     )
                   else
                     _IdleCard(onStart: _startOuting),
+                  // Lock-screen taps that need the person: a discreet card,
+                  // never a sheet that opens by itself.
+                  const PendingCommandsNotice(),
                   if (state.lastOuting != null && state.active == null) ...[
                     SectionTitle(tr.homeLastOuting),
                     _LastOutingCard(

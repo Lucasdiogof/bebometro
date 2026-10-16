@@ -5048,7 +5048,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get trackingActive => 'Ativo agora.';
 
   @override
-  String get trackingPending => 'aguardando registro';
+  String get trackingPending =>
+      'Ligado, mas ainda não apareceu. No iPhone ele só começa com o app aberto; abra o rolê.';
+
+  @override
+  String get trackingAwaitingSave => 'aguardando registro';
 
   @override
   String get trackingNoPermissionToast =>
@@ -5684,5 +5688,102 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String aboutDataConsulted(String date) {
     return 'Consultado em $date';
+  }
+
+  @override
+  String get pendingTitle => 'Registros pendentes';
+
+  @override
+  String get pendingIntro =>
+      'Toques em \"Mais uma\" na tela bloqueada que não puderam ser registrados sozinhos. Nada entra no seu histórico sem você confirmar aqui.';
+
+  @override
+  String get pendingEmpty => 'Nenhum registro pendente.';
+
+  @override
+  String get pendingReasonEnded =>
+      'O rolê foi encerrado antes do registro. Revise para adicionar a ele.';
+
+  @override
+  String get pendingReasonOutside =>
+      'O horário do toque está fora do período do rolê. Ajuste o horário na revisão.';
+
+  @override
+  String get pendingReasonNoDrink =>
+      'Não dá para saber qual bebida repetir. Escolha a bebida e revise.';
+
+  @override
+  String get pendingReasonFailed =>
+      'Não foi possível salvar. Você pode tentar novamente.';
+
+  @override
+  String get pendingReasonUnsupported =>
+      'Esta versão do app não reconhece este pedido. Você pode descartá-lo.';
+
+  @override
+  String get pendingReasonInReview => 'Em revisão.';
+
+  @override
+  String get pendingDrinkUnknown => 'Bebida não identificada';
+
+  @override
+  String get pendingRetry => 'Tentar novamente';
+
+  @override
+  String get pendingRetryFailed => 'Ainda não foi possível registrar.';
+
+  @override
+  String get pendingSaved => 'Registrado.';
+
+  @override
+  String get pendingDiscard => 'Descartar';
+
+  @override
+  String get pendingDiscardTitle => 'Descartar este toque?';
+
+  @override
+  String get pendingDiscardBody =>
+      'O pedido some desta lista. Nenhum registro já salvo é apagado.';
+
+  @override
+  String get pendingDiscarded => 'Descartado.';
+
+  @override
+  String get pendingNoDrinkToChoose =>
+      'Este rolê não tem bebida alcoólica registrada para repetir.';
+
+  @override
+  String get pendingChooseTitle => 'Qual bebida era?';
+
+  @override
+  String get pendingChooseDrink => 'Escolher bebida';
+
+  @override
+  String get pendingReviewAdd => 'Revisar e adicionar';
+
+  @override
+  String pendingNotice(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count toques da tela bloqueada aguardam você',
+      one: '1 toque da tela bloqueada aguarda você',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pendingOutingOn(String date) {
+    return 'Rolê de $date';
+  }
+
+  @override
+  String pendingTappedAt(String time) {
+    return 'Toque em $time';
+  }
+
+  @override
+  String pendingReviewNote(String time) {
+    return 'Toque original na tela bloqueada: $time';
   }
 }
