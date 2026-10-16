@@ -81,3 +81,6 @@ autenticação nos três idiomas com conta própria.
 Não iniciada além do que já existe: ícones/branding presentes; faltam textos de loja em en/es, política de privacidade
 publicada, capturas reais, assinatura, descrições de permissão revisadas e revisão de classificação etária (conteúdo
 sobre bebidas alcoólicas e modo +18 dos jogos).
+
+## Migrations aplicadas pelo responsável (16/10/2026)
+- `20261019000000_ready_to_drink_category.sql` e `20261020000000_drink_entry_origin.sql`: **aplicadas pelo responsável** no SQL Editor (informado em 16/10/2026; não lidas de volta daqui). Sincronização de bebidas prontas e da origem dos registros da tela bloqueada ainda não observada no app.

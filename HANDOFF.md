@@ -861,3 +861,6 @@ Resumo (detalhes em `docs/lock-screen-one-tap.md`):
 - Colunas opcionais na sincronização e exportação JSON automática.
 - Migration aditiva `20261020000000_drink_entry_origin.sql` **pendente**.
 - Nada compilado, analisado, testado nem visto em aparelho.
+
+## Migrations aplicadas pelo responsável (16/10/2026)
+- `20261019000000_ready_to_drink_category.sql` e `20261020000000_drink_entry_origin.sql`: **aplicadas pelo responsável** no SQL Editor (informado em 16/10/2026; não lidas de volta daqui). Sincronização de bebidas prontas e da origem dos registros da tela bloqueada ainda não observada no app.
