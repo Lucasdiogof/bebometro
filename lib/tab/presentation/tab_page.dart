@@ -167,18 +167,17 @@ class _TabView extends StatelessWidget {
 // ---- Totals ------------------------------------------------------------------
 
 class _Row extends StatelessWidget {
-  const _Row(this.label, this.value, {this.strong = false, this.muted = false});
+  const _Row(this.label, this.value, {this.strong = false});
 
   final String label;
   final String value;
   final bool strong;
-  final bool muted;
 
   @override
   Widget build(BuildContext context) {
     final style = strong
         ? AppText.title
-        : (muted ? AppText.caption : AppText.body);
+        : AppText.body;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(children: [
@@ -604,7 +603,7 @@ class _LineRow extends StatelessWidget {
           if (canQuickFill)
             PopupMenuItem(
               value: 'fill',
-              child: Text(entry!.isShared ? tr.tabFillTotal : tr.tabFillPrice),
+              child: Text(entry.isShared ? tr.tabFillTotal : tr.tabFillPrice),
             ),
           PopupMenuItem(
             value: 'edit',

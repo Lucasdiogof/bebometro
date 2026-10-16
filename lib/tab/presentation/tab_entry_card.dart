@@ -9,7 +9,6 @@ import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../data/tab_repository.dart';
 import '../domain/tab_calc.dart';
-import '../domain/tab_models.dart';
 import 'tab_page.dart';
 import '../../l10n/l10n.dart';
 

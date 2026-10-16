@@ -8,7 +8,7 @@ enum ProvenanceKind {
   official('official'),
 
   /// A label transcribed or photographed in a secondary source.
-  label('label'),
+  labelPhoto('label'),
 
   /// Public package registry (barcode records). Proves a package existed in
   /// the market, not that it is sold today.
@@ -39,7 +39,7 @@ enum ProvenanceKind {
 
   String get label => switch (this) {
         ProvenanceKind.official => tr.provenanceOfficial,
-        ProvenanceKind.label => tr.provenanceLabel,
+        ProvenanceKind.labelPhoto => tr.provenanceLabel,
         ProvenanceKind.packagingRegistry => tr.provenancePackagingRegistry,
         ProvenanceKind.secondary => tr.provenanceSecondary,
         ProvenanceKind.recipe => tr.provenanceRecipe,
@@ -180,7 +180,7 @@ List<FieldProvenance> provenanceOf(CatalogItem item) {
       return FieldProvenance(f, [
         FieldSource(
           field: f,
-          kind: ProvenanceKind.label,
+          kind: ProvenanceKind.labelPhoto,
           label: s.label,
           labelI18n: s.labelI18n,
           url: s.url,

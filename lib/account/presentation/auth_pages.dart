@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
-import '../../core/widgets/common.dart';
 import '../application/auth_controller.dart';
 import 'auth_widgets.dart';
 import '../../l10n/l10n.dart';
