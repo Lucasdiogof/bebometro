@@ -28,6 +28,13 @@ class DrinkRepository {
 
   String newId() => _uuid.v4();
 
+  /// Stable id of the record created by a lock-screen command: replaying the
+  /// same command (e.g. after a crash before it was acknowledged) saves the
+  /// same row again instead of a second drink. Distinct taps have distinct
+  /// command ids, so they stay distinct records.
+  String entryIdForCommand(String commandId) =>
+      _uuid.v5(Namespace.url.value, 'bebometro:lockscreen:$commandId');
+
   /// Emits whenever entries, custom drinks or favorites change.
   Stream<void> get changes => _changes.stream;
 
@@ -74,6 +81,13 @@ class DrinkRepository {
   Future<void> save(DrinkEntry entry) async {
     await _store.put(LocalStore.drinkEntries, entry.toJson());
   }
+
+  /// Other records of the same outing that are the same drink as [entry]
+  /// (see [DrinkEntry.isEquivalentTo]).
+  List<DrinkEntry> equivalentsOf(DrinkEntry entry) => [
+        for (final e in entriesFor(entry.outingId))
+          if (entry.isEquivalentTo(e)) e,
+      ];
 
   /// Applies payments to several records at once (batch price fix). Each
   /// record is saved on its own, so a failure never loses the ones before it.

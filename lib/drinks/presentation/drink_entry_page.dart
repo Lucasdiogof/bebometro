@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -78,6 +80,52 @@ class _DrinkEntryView extends StatelessWidget {
     if (ok == true) await cubit.delete();
   }
 
+  /// One price for equal drinks of this outing: asks once, after saving, and
+  /// only when there are other equal records. Nothing changes without a choice.
+  Future<void> _afterSave(BuildContext context) async {
+    final cubit = context.read<DrinkFormCubit>();
+    final offer = cubit.priceOffer();
+    if (offer != null) {
+      final choice = await showModalBottomSheet<_BulkChoice>(
+        context: context,
+        isScrollControlled: true,
+        builder: (_) => _BulkPriceSheet(offer: offer),
+      );
+      if (choice != null && choice != _BulkChoice.onlyThis) {
+        var replace = false;
+        var go = true;
+        if (choice == _BulkChoice.all && context.mounted) {
+          go = await _confirmReplace(context, offer.differing.length);
+          replace = go;
+        }
+        if (go) {
+          final n = await cubit.applyPriceOffer(offer, replaceExisting: replace);
+          if (context.mounted) showToast(context, tr.priceBulkApplied(n));
+        }
+      }
+    }
+    if (context.mounted) Navigator.of(context).pop(EntryOutcome.saved);
+  }
+
+  Future<bool> _confirmReplace(BuildContext context, int count) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(tr.priceBulkConfirmTitle),
+        content: Text(tr.priceBulkConfirmBody(count)),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(tr.commonCancel)),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text(tr.priceBulkReplace)),
+        ],
+      ),
+    );
+    return ok == true;
+  }
+
   Future<void> _confirmDiscard(BuildContext context) async {
     final leave = await showDialog<bool>(
       context: context,
@@ -108,7 +156,7 @@ class _DrinkEntryView extends StatelessWidget {
           (c.error != null && c.error != p.error),
       listener: (context, state) {
         if (state.saved) {
-          Navigator.of(context).pop(EntryOutcome.saved);
+          unawaited(_afterSave(context));
         } else if (state.deleted) {
           Navigator.of(context).pop(EntryOutcome.deleted);
         } else if (state.error != null) {
@@ -1201,6 +1249,60 @@ class _SuggestionBanner extends StatelessWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+enum _BulkChoice { onlyThis, unpriced, all }
+
+/// "Same price for the equal drinks?": only this one, the ones still without a
+/// price, or all of them (replacing, which is confirmed once more).
+class _BulkPriceSheet extends StatelessWidget {
+  const _BulkPriceSheet({required this.offer});
+
+  final PriceOffer offer;
+
+  @override
+  Widget build(BuildContext context) {
+    final price = offer.saved.priceKind == PriceKind.complimentary
+        ? tr.priceComplimentary
+        : formatCents(offer.saved.effectivePaidCents);
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(
+            AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(tr.priceBulkTitle, style: AppText.title),
+            const SizedBox(height: AppSpace.xs),
+            Text(
+              tr.priceBulkBody(offer.saved.name, price, offer.total,
+                  offer.unpriced.length, offer.differing.length),
+              style: AppText.caption,
+            ),
+            const SizedBox(height: AppSpace.lg),
+            if (offer.unpriced.isNotEmpty)
+              FilledButton(
+                onPressed: () => Navigator.pop(context, _BulkChoice.unpriced),
+                child: Text(tr.priceBulkUnpriced(offer.unpriced.length)),
+              ),
+            if (offer.differing.isNotEmpty) ...[
+              const SizedBox(height: AppSpace.sm),
+              OutlinedButton(
+                onPressed: () => Navigator.pop(context, _BulkChoice.all),
+                child: Text(tr.priceBulkAll(offer.total)),
+              ),
+            ],
+            const SizedBox(height: AppSpace.sm),
+            TextButton(
+              onPressed: () => Navigator.pop(context, _BulkChoice.onlyThis),
+              child: Text(tr.priceBulkOnlyThis),
+            ),
+          ],
+        ),
       ),
     );
   }

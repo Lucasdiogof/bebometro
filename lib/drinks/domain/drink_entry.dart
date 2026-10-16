@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'abv_source.dart';
 import 'drink_category.dart';
 import 'recipe.dart';
@@ -104,6 +106,28 @@ class DrinkEntry {
   }
 
   bool get hasPrice => priceKind != PriceKind.unknown;
+
+  /// Same drink as [o] in the same outing, for applying one price to several
+  /// records. It compares the identity (catalog id or name), brand, category,
+  /// presentation, container volume, sharing (people and the person's portion),
+  /// ABV and the composition (a cocktail with other ingredients or amounts is NOT
+  /// the same drink). Time, price and leftovers do not matter.
+  bool isEquivalentTo(DrinkEntry o) =>
+      o.id != id &&
+      !o.isDeleted &&
+      o.outingId == outingId &&
+      _identity == o._identity &&
+      category == o.category &&
+      (brand ?? '') == (o.brand ?? '') &&
+      (presentation ?? '') == (o.presentation ?? '') &&
+      containerMl == o.containerMl &&
+      isShared == o.isShared &&
+      peopleCount == o.peopleCount &&
+      personalMl == o.personalMl &&
+      abvPercent == o.abvPercent &&
+      jsonEncode(composition?.toJson()) == jsonEncode(o.composition?.toJson());
+
+  String get _identity => catalogItemId ?? 'name:${name.trim().toLowerCase()}';
 
   int get effectivePaidCents => priceKind == PriceKind.informed ? (paidCents ?? 0) : 0;
 

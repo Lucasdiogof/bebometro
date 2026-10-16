@@ -12,6 +12,27 @@ import '../domain/price_history.dart';
 import '../domain/recipe.dart';
 import '../../l10n/l10n.dart';
 
+/// The saved price could also go to equal drinks of the same outing. Nothing is
+/// applied without the person choosing.
+class PriceOffer {
+  const PriceOffer({
+    required this.saved,
+    required this.unpriced,
+    required this.differing,
+  });
+
+  /// The record just saved (its price is the one on offer).
+  final DrinkEntry saved;
+
+  /// Equal records with no price yet.
+  final List<DrinkEntry> unpriced;
+
+  /// Equal records that already have a DIFFERENT price (kind or value).
+  final List<DrinkEntry> differing;
+
+  int get total => unpriced.length + differing.length;
+}
+
 class DrinkFormState {
   const DrinkFormState({
     required this.draft,
@@ -293,6 +314,47 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     }
   }
 
+  DrinkEntry? _saved;
+
+  /// After a successful save: equal drinks in this outing that the saved price
+  /// could be applied to, or null when it has no price or there is nothing to
+  /// offer. Records already at that exact price are left out.
+  PriceOffer? priceOffer() {
+    final saved = _saved;
+    if (saved == null || !saved.hasPrice) return null;
+    if (saved.priceKind == PriceKind.informed && (saved.paidCents ?? 0) <= 0) {
+      return null;
+    }
+    final unpriced = <DrinkEntry>[];
+    final differing = <DrinkEntry>[];
+    for (final e in _drinks.equivalentsOf(saved)) {
+      if (!e.hasPrice) {
+        unpriced.add(e);
+      } else if (e.priceKind != saved.priceKind ||
+          e.effectivePaidCents != saved.effectivePaidCents) {
+        differing.add(e);
+      }
+    }
+    if (unpriced.isEmpty && differing.isEmpty) return null;
+    return PriceOffer(saved: saved, unpriced: unpriced, differing: differing);
+  }
+
+  /// Applies the offered price to the records without price and, only when
+  /// [replaceExisting], also to those that had another one. Returns how many
+  /// records changed. Only the payment changes (never volumes or the bill total).
+  Future<int> applyPriceOffer(PriceOffer offer,
+      {required bool replaceExisting}) async {
+    final targets = [
+      ...offer.unpriced,
+      if (replaceExisting) ...offer.differing,
+    ];
+    await _drinks.applyPrices({
+      for (final e in targets)
+        e.id: (kind: offer.saved.priceKind, paidCents: offer.saved.paidCents),
+    });
+    return targets.length;
+  }
+
   Future<void> submit() async {
     if (state.saving || state.saved || state.deleted) return;
     if (!state.draft.isValid) {
@@ -307,6 +369,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
         now: DateTime.now(),
       );
       await _drinks.save(entry);
+      _saved = entry;
       emit(state.copyWith(saving: false, saved: true));
     } catch (e) {
       if (kDebugMode) debugPrint('[drink form] save failed: $e');
