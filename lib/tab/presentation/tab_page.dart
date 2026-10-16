@@ -317,18 +317,23 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
             value: d.serviceOn,
             onChanged: (v) => cubit.setService(on: v),
           ),
-          if (d.serviceOn)
+          if (d.serviceOn) ...[
+            // Common rates in one tap; any other value in the field below.
+            // Switching the charge off removes it from every total again.
+            Wrap(spacing: AppSpace.sm, children: [
+              for (final bp in const [500, 1000, 2000])
+                ChoiceChip(
+                  label: Text('${bp ~/ 100}%'),
+                  selected: d.serviceBp == bp,
+                  showCheckmark: false,
+                  onSelected: (_) {
+                    _pct.text = _bpText(bp);
+                    cubit.setService(on: true, bp: bp);
+                  },
+                ),
+            ]),
+            const SizedBox(height: AppSpace.sm),
             Row(children: [
-              ChoiceChip(
-                label: const Text('10%'),
-                selected: d.serviceBp == 1000,
-                showCheckmark: false,
-                onSelected: (_) {
-                  _pct.text = _bpText(1000);
-                  cubit.setService(on: true, bp: 1000);
-                },
-              ),
-              const SizedBox(width: AppSpace.md),
               SizedBox(
                 width: 120,
                 child: TextField(
@@ -355,6 +360,7 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
                 ),
               ),
             ]),
+          ],
           const Divider(height: 24),
           Text(tr.tabDiscount, style: AppText.subtitle),
           const SizedBox(height: AppSpace.sm),
