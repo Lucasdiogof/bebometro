@@ -19,7 +19,6 @@ import '../../table/data/table_prefs_cubit.dart';
 import '../../table/presentation/table_scene.dart';
 import '../../table/presentation/table_sheets.dart';
 import '../../glass/presentation/accumulated_glass.dart';
-import '../../glass/presentation/tip_glass_page.dart';
 import '../../tab/presentation/tab_entry_card.dart';
 import '../../tracking/application/tracking_coordinator.dart';
 import '../../tracking/application/tracking_links.dart';
@@ -32,21 +31,26 @@ import '../../drinks/domain/presentation_label.dart';
 /// Running outing. Pops with the outing id after it is finished, so the
 /// caller can show the summary.
 class OutingPage extends StatelessWidget {
-  const OutingPage({super.key, required this.outingId});
+  const OutingPage({super.key, required this.outingId, this.finishOnOpen = false});
 
   final String outingId;
+
+  /// Opens the finish confirmation right away (Home shortcut).
+  final bool finishOnOpen;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<OutingCubit>(param1: outingId),
-      child: const _OutingView(),
+      child: _OutingView(finishOnOpen: finishOnOpen),
     );
   }
 }
 
 class _OutingView extends StatefulWidget {
-  const _OutingView();
+  const _OutingView({this.finishOnOpen = false});
+
+  final bool finishOnOpen;
 
   @override
   State<_OutingView> createState() => _OutingViewState();
@@ -69,6 +73,11 @@ class _OutingViewState extends State<_OutingView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _onPending();
+      if (widget.finishOnOpen &&
+          cubit.state.outing?.isActive == true) {
+        unawaited(_finish());
+        return;
+      }
       // One-time explanation of the lock-screen tracking, first outing only.
       if (cubit.state.outing?.isActive == true) {
         unawaited(offerTrackingIfNeeded(context));
@@ -86,52 +95,27 @@ class _OutingViewState extends State<_OutingView> {
     super.dispose();
   }
 
-  /// A quick action asked from the lock screen. It only opens a question:
-  /// nothing is registered until the person confirms here.
+  /// A quick action asked from the lock screen (link). Registered at once.
   void _onPending() {
     final p = TrackingActions.pending.value;
     if (p == null || !mounted || p.outingId != _outingId) return;
     TrackingActions.pending.value = null; // consumed once
-    unawaited(_confirmQuick(p.action));
+    unawaited(_runQuick(p.action));
   }
 
-  Future<void> _confirmQuick(String action) async {
+  /// The tap on the lock screen was the decision: registers right away (with
+  /// the usual Undo notice) instead of asking again.
+  Future<void> _runQuick(String action) async {
     final cubit = context.read<OutingCubit>();
     if (cubit.state.outing?.isActive != true) {
       showToast(context, tr.outingAlreadyEnded);
       return;
     }
-    final String question;
     if (action == 'another') {
-      final last = cubit.state.lastAlcoholic;
-      if (last == null) {
+      if (cubit.state.lastAlcoholic == null) {
         showToast(context, tr.outingNothingToRepeat);
         return;
       }
-      question = tr.outingConfirmAnother([
-        last.name,
-        if (last.containerMl != null) formatMl(last.containerMl!),
-      ].join(' '));
-    } else {
-      question = tr.outingConfirmWater;
-    }
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(tr.outingLockScreenRequest),
-        content: Text(question),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.commonNotNow)),
-          TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.outingLog)),
-        ],
-      ),
-    );
-    if (ok != true || !mounted) return;
-    if (action == 'another') {
       await cubit.repeatLast();
     } else {
       await cubit.addWater();
@@ -259,6 +243,12 @@ class _OutingViewState extends State<_OutingView> {
             ),
             actions: [
               const SyncBadge(),
+              if (outing.isActive)
+                IconButton(
+                  tooltip: tr.outingFinish,
+                  onPressed: _finishing ? null : _finish,
+                  icon: const Icon(Icons.flag_outlined),
+                ),
               PopupMenuButton<String>(
                 tooltip: tr.commonMoreOptions,
                 onSelected: (v) {
@@ -487,18 +477,6 @@ class _OutingViewState extends State<_OutingView> {
                               otherMl: summary.otherMl,
                               unknownVolumeCount: summary.unknownVolumeCount,
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: TextButton.icon(
-                                onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => const TipGlassPage()),
-                                ),
-                                icon: const Icon(Icons.rotate_right_rounded,
-                                    size: 18),
-                                label: Text(tr.glassTipPlay),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -506,12 +484,19 @@ class _OutingViewState extends State<_OutingView> {
                     const SizedBox(height: AppSpace.md),
                     TabEntryCard(outingId: outing.id),
                     const SizedBox(height: AppSpace.lg),
-                    Center(
-                      child: TextButton.icon(
-                        onPressed: _finishing ? null : _finish,
-                        icon: const Icon(Icons.flag_outlined),
-                        label: Text(tr.outingFinish),
+                    // A real, findable button (not a lost link). Amber outline, no
+                    // red: finishing is normal, and the sheet still asks.
+                    OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(52),
+                        foregroundColor: AppColors.amber,
+                        side: const BorderSide(color: AppColors.amber, width: 1.5),
+                        textStyle: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700),
                       ),
+                      onPressed: _finishing ? null : _finish,
+                      icon: const Icon(Icons.flag_outlined),
+                      label: Text(tr.outingFinish),
                     ),
                   ],
                 ),
@@ -592,13 +577,13 @@ class _RepeatButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.md),
           onTap: onPressed,
           child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 60),
+            constraints: const BoxConstraints(minHeight: 52),
             child: Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: AppSpace.lg, vertical: AppSpace.sm),
               child: Row(children: [
                 const Icon(Icons.replay_rounded,
-                    color: Color(0xFF241800), size: 26),
+                    color: Color(0xFF241800), size: 22),
                 const SizedBox(width: AppSpace.md),
                 Expanded(
                   child: Column(
@@ -609,8 +594,8 @@ class _RepeatButton extends StatelessWidget {
                         tr.repeatButton,
                         style: const TextStyle(
                           color: Color(0xFF241800),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                       Text(

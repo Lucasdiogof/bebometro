@@ -138,6 +138,8 @@ class _HomeViewState extends State<_HomeView> {
                     _ActiveCard(
                       state: state,
                       onContinue: () => _openOuting(state.active!.id),
+                      onFinish: () => OutingFlow.open(context, state.active!.id,
+                          finish: true),
                     )
                   else
                     _IdleCard(onStart: _startOuting),
@@ -216,10 +218,17 @@ class _IdleCard extends StatelessWidget {
 }
 
 class _ActiveCard extends StatelessWidget {
-  const _ActiveCard({required this.state, required this.onContinue});
+  const _ActiveCard({
+    required this.state,
+    required this.onContinue,
+    required this.onFinish,
+  });
 
   final HomeState state;
   final VoidCallback onContinue;
+
+  /// Opens the outing straight into the finish confirmation.
+  final VoidCallback onFinish;
 
   @override
   Widget build(BuildContext context) {
@@ -289,6 +298,12 @@ class _ActiveCard extends StatelessWidget {
             onPressed: onContinue,
             icon: const Icon(Icons.sports_bar_rounded),
             label: Text(tr.homeContinueOuting),
+          ),
+          const SizedBox(height: AppSpace.sm),
+          OutlinedButton.icon(
+            onPressed: onFinish,
+            icon: const Icon(Icons.flag_outlined),
+            label: Text(tr.outingFinish),
           ),
         ],
       ),
