@@ -109,3 +109,24 @@ Validar: tocar **Compartilhar** no resumo com o switch do nome ligado e desligad
 - **Validar no iPhone:** (a) toque processado sozinho → abrir o registro mostra "Adicionado pela tela bloqueada"; (b) revisar um pendente corrigindo o
   horário → o registro mostra "Horário corrigido. Toque original: …"; (c) editar o preço desse registro → a origem continua; (d) "Mais uma" no app a partir
   dele → o novo registro não mostra a origem; (e) com a migration aplicada, o registro sincroniza e volta de outro aparelho com a origem.
+
+## Revisão de integração (16/10/2026) — por leitura, **não validada em aparelho**
+- **Defeito corrigido (sincronização):** quando o servidor ainda não tinha uma coluna opcional, a linha subia sem ela, mas a revisão devolvida pelo
+  servidor não era guardada. Num registro já existente e editado, o reenvio completo ia com a revisão antiga e podia aparecer um **conflito falso** em
+  "Alterações para resolver". Agora o envio parcial usa o mesmo `_upsert` e grava a revisão. A linha continua pendente até o envio completo ser
+  confirmado.
+- **Conferido sem mudança:**
+  - A confirmação só limpa a pendência se a versão local não mudou (`clearPending`).
+  - A leitura da nuvem não sobrescreve linha pendente (`putRemote`) e pede todas as colunas (`select()`), incluindo as três de origem.
+  - Registros sem origem leem `entryOrigin = null`.
+  - Apagar e restaurar mantêm a origem.
+  - Um comando cujo registro já existe (mesmo apagado) só é confirmado.
+  - A revisão sem salvar não confirma o comando.
+  - A troca de conta fecha o escopo do coordenador.
+  - O selo da atividade usa a contagem de pendentes da conta.
+- **Fila nativa x Flutter:**
+  - `AnotherDrinkIntent` é um `LiveActivityIntent` compilado nos dois alvos. Pela documentação da Apple, o sistema executa `perform()` no processo do
+    **app**, e a fila é `UserDefaults.standard` desse processo, a mesma que o `TrackingChannel` lê.
+  - **Não há App Group** configurado e nenhum foi inventado (exigiria Team/assinatura).
+  - Confirmar no aparelho que o toque aparece na fila com o app fechado (passo 6 do roteiro). Se o iOS executar o intent na extensão, será preciso criar um
+    App Group no Xcode (alvos Runner e BebometroLiveActivity) e trocar `UserDefaults.standard` por `UserDefaults(suiteName:)` nos dois lados.

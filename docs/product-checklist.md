@@ -84,3 +84,17 @@ sobre bebidas alcoólicas e modo +18 dos jogos).
 
 ## Migrations aplicadas pelo responsável (16/10/2026)
 - `20261019000000_ready_to_drink_category.sql` e `20261020000000_drink_entry_origin.sql`: **aplicadas pelo responsável** no SQL Editor (informado em 16/10/2026; não lidas de volta daqui). Sincronização de bebidas prontas e da origem dos registros da tela bloqueada ainda não observada no app.
+
+## Itens BEB-001 a BEB-007 (estado em 16/10/2026)
+
+Nenhum item foi **validado em execução**: nada foi compilado, analisado, testado nem aberto em aparelho.
+
+| Item | Implementado | Conferido por leitura | Validado em execução | Pendente de aparelho |
+|---|---|---|---|---|
+| BEB-001 propagação de preço para bebidas iguais | Sim (`bb65e02`) | Sim | Não | Salvar com preço e aplicar a "sem preço"/"todos" |
+| BEB-002 remoção do CTA do Copão | Sim (`623da6a`) | Sim | Não | Conferir o card Copão |
+| BEB-003 destaque para Encerrar rolê | Sim (`623da6a`) | Sim | Não | Botão, ícone na barra e atalho na Home |
+| BEB-004 Mais uma na tela bloqueada | Sim (`bf29c90`, `c932b0b`, `bbb7698`, `cb4fe29`, revisão de sincronização em 16/10) | Sim | Não | iOS 17+: toque, fila, pendentes, origem (roteiro em `lock-screen-one-tap.md`) |
+| BEB-005 taxa de serviço 5/10/20% | Sim (`862e310`) | Sim | Não | Comanda com taxa ligada/desligada |
+| BEB-006 layout do Compartilhar | Sim (`7b986bb`) | Sim | Não | Tela estreita e fonte ampliada |
+| BEB-007 falha no compartilhamento | Fragilidades corrigidas (`7b986bb`, `c932b0b`, âncora da folha em 16/10); **causa original não reproduzida** | Sim | Não | Compartilhar cartão, comanda e exportação no iPhone (e no iPad, se houver) |

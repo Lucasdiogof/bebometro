@@ -429,7 +429,11 @@ class SyncCubit extends Cubit<SyncState> {
                 final core = _withoutOptionalColumns(collection, row);
                 if (core != null) {
                   try {
-                    await client.from(collection).upsert(core);
+                    // Same path as a full upload, so the revision the server
+                    // gave this partial write is recorded: the full row sent
+                    // later is then based on it and is not refused as a
+                    // (false) concurrent edit.
+                    await _upsert(client, collection, [core]);
                     schemaGaps++; // not acked: the full row is retried later
                     continue;
                   } on PostgrestException catch (e2) {

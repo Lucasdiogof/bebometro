@@ -78,6 +78,7 @@ class _ShareCardPageState extends State<ShareCardPage> {
           name: 'bebometro-role.png',
           mimeType: 'image/png',
           text: _summaryText(),
+          origin: mounted ? ShareService.originOf(context) : null,
         );
         if (!ok) problem = tr.shareCardFailed;
       }

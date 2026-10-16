@@ -70,6 +70,7 @@ class _ExportPageState extends State<ExportPage> {
         bytes: bytes,
         name: name,
         mimeType: mime,
+        origin: mounted ? ShareService.originOf(context) : null,
       );
       if (!ok) {
         // Copied only if the person asks; cancelling the sheet is not a

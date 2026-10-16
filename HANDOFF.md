@@ -864,3 +864,11 @@ Resumo (detalhes em `docs/lock-screen-one-tap.md`):
 
 ## Migrations aplicadas pelo responsável (16/10/2026)
 - `20261019000000_ready_to_drink_category.sql` e `20261020000000_drink_entry_origin.sql`: **aplicadas pelo responsável** no SQL Editor (informado em 16/10/2026; não lidas de volta daqui). Sincronização de bebidas prontas e da origem dos registros da tela bloqueada ainda não observada no app.
+
+## Integração e revisão (16/10/2026)
+- **Sincronização:** o envio parcial (servidor sem uma coluna opcional) agora grava a revisão devolvida. Antes, o reenvio completo podia gerar conflito falso.
+- **Compartilhamento:**
+  - Passa a âncora da folha (`sharePositionOrigin`) nas três telas. O `share_plus` 10.1.4 recusa apresentar no iPad sem ela; no iPhone normalmente não
+    é exigida, então **não é a causa confirmada** do BEB-007.
+  - A captura do cartão espera o fim do quadro (`endOfFrame`).
+- Checklist BEB-001..007: `docs/product-checklist.md` (única tabela). Fila nativa e App Group: `docs/lock-screen-one-tap.md`.

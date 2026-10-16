@@ -30,11 +30,21 @@ class ShareService {
 
   /// Shares a file from memory. Returns false when sharing is not available or
   /// failed, so the caller can offer a copy-to-clipboard alternative.
+  /// Where the share sheet is anchored, in global coordinates. iOS needs it
+  /// whenever the sheet is shown as a popover (iPad): share_plus 10 refuses
+  /// to present without a non-empty rect. Null/empty = no anchor.
+  static Rect? originOf(BuildContext context) {
+    final box = context.findRenderObject();
+    if (box is! RenderBox || !box.hasSize || box.size.isEmpty) return null;
+    return box.localToGlobal(Offset.zero) & box.size;
+  }
+
   static Future<bool> shareFile({
     required Uint8List bytes,
     required String name,
     required String mimeType,
     String? text,
+    Rect? origin,
   }) async {
     try {
       final result = await Share.shareXFiles(
@@ -43,6 +53,7 @@ class ShareService {
         // the file has no path.
         fileNameOverrides: [name],
         text: text,
+        sharePositionOrigin: origin,
       );
       return _presented(result);
     } catch (e) {
@@ -52,9 +63,11 @@ class ShareService {
     }
   }
 
-  static Future<bool> shareText(String text, {String? subject}) async {
+  static Future<bool> shareText(String text,
+      {String? subject, Rect? origin}) async {
     try {
-      final result = await Share.share(text, subject: subject);
+      final result = await Share.share(text,
+          subject: subject, sharePositionOrigin: origin);
       return _presented(result);
     } catch (e) {
       lastFailure = 'share: ${e.runtimeType}: $e';
@@ -68,6 +81,8 @@ class ShareService {
   static Future<Uint8List?> capturePng(GlobalKey key,
       {double pixelRatio = 3}) async {
     try {
+      // Captured only after the frame that paints the card is done.
+      await WidgetsBinding.instance.endOfFrame;
       final boundary =
           key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
       if (boundary == null) {

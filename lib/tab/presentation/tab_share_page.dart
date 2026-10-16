@@ -45,7 +45,8 @@ class _TabSharePageState extends State<TabSharePage> {
   }
 
   Future<void> _share() async {
-    final ok = await ShareService.shareText(_text, subject: tr.tabShareSubject);
+    final ok = await ShareService.shareText(_text,
+        subject: tr.tabShareSubject, origin: ShareService.originOf(context));
     if (!ok && mounted) {
       showToast(context, tr.tabShareFailed);
     }
