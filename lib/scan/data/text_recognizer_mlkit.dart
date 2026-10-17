@@ -1,5 +1,7 @@
 import 'dart:io' show Platform;
 
+import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
+
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart'
     as mlkit;
 
@@ -41,7 +43,9 @@ class _MlKitRecognizer implements TextRecognizer {
         }
       }
       return OcrResult(lines);
-    } catch (_) {
+    } catch (e) {
+      // Only the type, never the image path or content.
+      if (kDebugMode) debugPrint('ocr failed: ${e.runtimeType} $e');
       throw OcrFailure(tr.ocrReadFailed);
     } finally {
       await recognizer.close();
