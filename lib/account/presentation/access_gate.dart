@@ -42,6 +42,9 @@ class _AccessGateState extends State<AccessGate> {
     if (uid == _readyFor && uid != null) return;
     // Anything open belongs to the previous state.
     AppNavigator.key.currentState?.popUntil((r) => r.isFirst);
+    // A snackbar (e.g. "Undo") of the previous session must not survive it:
+    // it would sit over the sign-in button and undo nothing meaningful.
+    if (mounted) ScaffoldMessenger.maybeOf(context)?.clearSnackBars();
     if (uid == null) {
       if (_readyFor != null || AccountScope.isOpen) {
         setState(() => _readyFor = null);

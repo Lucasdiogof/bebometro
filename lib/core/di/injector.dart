@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../account/application/auth_callback.dart';
 import '../../account/application/auth_controller.dart';
 import '../../drinks/data/catalog_loader.dart';
 import '../../games/data/game_repository.dart';
@@ -87,8 +88,9 @@ Future<void> configureDependencies() async {
         detectSessionInUri: true,
         // Only the auth callback is an auth link; bebometro://outing/... taps
         // from the lock screen are handled by the app itself.
-        detectSessionInUriPredicate: (uri) =>
-            kIsWeb || uri.host == Uri.parse(Env.authRedirectUrl).host,
+        detectSessionInUriPredicate: (uri) => kIsWeb
+            ? hasAuthCallbackParams(uri)
+            : uri.host == Uri.parse(Env.authRedirectUrl).host,
       ),
     );
     _cloudEnabled = true;
