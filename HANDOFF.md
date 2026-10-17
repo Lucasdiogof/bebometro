@@ -872,3 +872,15 @@ Resumo (detalhes em `docs/lock-screen-one-tap.md`):
     é exigida, então **não é a causa confirmada** do BEB-007.
   - A captura do cartão espera o fim do quadro (`endOfFrame`).
 - Checklist BEB-001..007: `docs/product-checklist.md` (única tabela). Fila nativa e App Group: `docs/lock-screen-one-tap.md`.
+
+## QA com execução real (16 e 17/10/2026)
+
+Relatório completo e atualizado: [`docs/qa-report.md`](docs/qa-report.md). Resumo:
+- Executado: analyze, 42 testes, build Android release e web, emulador Android (rolê, comanda, divisão, catálogo, receita, OCR
+  por galeria, notificação, jogos, estatísticas, EN/ES, fonte 1,6x), web em duas origens, conflito entre sessões, recuperação da
+  nuvem, isolamento entre contas.
+- Corrigido: aviso falso de link expirado na web, avisos "Desfazer" que não sumiam, R8 quebrando o build release e o OCR em release,
+  texto antigo dos jogos ("sem conta").
+- **Aberto:** `delete-account` publicada mas responde `partial_failure` (nada apagado). Rodar `supabase/queries/check_account_deletions.sql`
+  no SQL Editor e olhar `last_error`; a função do repositório agora informa `step` (republicar).
+- Contas de QA mantidas: A (`qa.bebometro.a.fc6438`) e B (`qa.bebometro.b.50eb5f`, exclusão falhou).

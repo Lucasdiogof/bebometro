@@ -102,6 +102,7 @@ Deno.serve(async (req) => {
     updated_at: new Date().toISOString(),
   });
 
+  let step = "files";
   try {
     // 1. Files: every object under <uid>/ (outing folders, plus anything at
     //    the root), repeated until nothing is left. A page is at most 1000
@@ -137,6 +138,7 @@ Deno.serve(async (req) => {
       if (removed === 0) break;
     }
     await mark("files_removed");
+    step = "rows";
 
     // 2. Rows, children first (cascades would also do it, but explicit
     //    deletion keeps the order and works even if a FK changes).
@@ -147,6 +149,7 @@ Deno.serve(async (req) => {
     await mark("rows_removed");
 
     // 3. The identity, last.
+    step = "identity";
     const { error: delErr } = await admin.auth.admin.deleteUser(uid);
     if (delErr && !/not.?found/i.test(delErr.message)) {
       throw new Error(`auth: ${delErr.message}`);
@@ -157,6 +160,7 @@ Deno.serve(async (req) => {
     const msg = e instanceof Error ? e.message.slice(0, 200) : "unknown";
     console.error(`delete-account failed: ${msg}`);
     await mark("failed", msg);
-    return json({ error: "partial_failure", retry: true }, 500);
+    // Only the step name goes back (no message, no ids): enough to tell where it stopped.
+    return json({ error: "partial_failure", retry: true, step }, 500);
   }
 });
