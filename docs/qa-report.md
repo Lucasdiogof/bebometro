@@ -80,6 +80,48 @@ Locais/mapa (rede e permissão negada), simulador em modo manual na web, rascunh
 com aviso de total, importação de CSV (não existe), restauração após exclusão (depende da exclusão funcionar), duas instalações do mesmo
 usuário com exclusão de conta.
 
+## Rodada 3 (17/10/2026, a partir de `824afc0`)
+
+### Migration das permissões do `service_role`
+- Versionada: `supabase/migrations/20261021000000_service_role_table_grants.sql` (8 tabelas, só `service_role`, sem tocar em `anon`/`authenticated`
+  nem em RLS; idempotente). Commit `2e87ca5`.
+- **Estado do banco:** o mesmo GRANT foi aplicado à mão no projeto pelo responsável (informado "Success"; efeito comprovado). **Histórico de
+  migrations:** a execução manual não registra a migration em `supabase_migrations.schema_migrations`; não se presume que o painel a liste.
+- Consulta de conferência, somente leitura e sem dados fixos: `supabase/queries/diagnose_delete_account.sql` (versionada).
+
+### Exclusão de conta pela interface (QA C, Android release, espanhol)
+| Passo | Resultado observado |
+|---|---|
+| Cadastro da C pela interface; dados: rolê, 2 registros (Heineken R$ 12 + água sem preço), comanda com os 2 itens, item de foto lido por OCR salvo "só desta saída" | Aprovado. Antes de excluir, a sessão da própria C via REST mostrou 1 rolê, 2 registros, 1 item, 1 foto, 1 comanda, 1 local e 1 pasta no Storage |
+| Identidade conferida na tela de conta (nome e e-mail da C) | Aprovado |
+| Confirmação exigida | Sem marcar: "Marca la confirmación para continuar." |
+| Senha exigida | Vazia: "Confirma tu contraseña."; errada: "Correo o contraseña incorrectos." (nada excluído) |
+| Estado de carregamento e toque duplo | Dois toques seguidos: o botão virou cinza, desabilitado, com indicador de progresso (captura); uma única exclusão |
+| Sucesso e retorno | Voltou à tela de acesso, sem erro residual e com o e-mail vazio |
+| Reabrir o app (fechar à força) | Continua na tela de acesso |
+| Dados da C no aparelho | Não verificável por arquivo (release não depurável); a tela de acesso e o login da A mostram só dados da A |
+| **Servidor e Storage da C** | **Pendente de leitura no banco** (sem acesso daqui): ver SQL entregue ao responsável. Diagnóstico por API (não valida a interface): login da C devolve `invalid_credentials`; a A manteve 3 rolês, 14 registros, 1 item, 1 comanda, 1 receita, 3 locais |
+
+### Demais cenários desta rodada
+| Cenário | Resultado |
+|---|---|
+| Locais: busca por endereço (Geoapify, atribuições visíveis); permissão de localização negada (mensagem e busca manual continuam); sem internet ("Sin internet ahora" com "Intentar de nuevo") | Aprovado (emulador) |
+| Cálculo incompleto: "Caipirinha" de referência gera "volume desconhecido · álcool incompleto" e o total do rolê "1 con alcohol incompleto" | Aprovado |
+| Receita própria sem teor e sem "contém álcool": o registro só acusa volume desconhecido | Observação: coerente com a regra, o aviso de álcool depende de marcar o ingrediente como alcoólico |
+| Simulador na web, modo manual ("Arraste para inclinar"): o líquido inclina com o arrasto | Aprovado (navegador) |
+| Texto de Jogos corrigido ("funcionam sem internet") já na web | Aprovado |
+| Login da A em instalação nova da web e depois no emulador após sair e entrar | Aprovado: mesmos totais, sem duplicar |
+
+### Builds e testes desta rodada
+`flutter analyze`: sem erros (10 avisos de estilo antigos). `flutter test`: 42 passaram. `flutter build web --release` (duas vezes) e `flutter build apk --release`/`--debug`: gerados.
+O build release foi reinstalado no emulador e usado nos testes acima.
+
+### Contas de QA restantes
+**A** (`qa.bebometro.a.fc6438`) mantida. **B** e **C** excluídas (B pela função com a sessão dela; C pela interface).
+
+### Ainda não executado
+Rascunho de OCR recuperado após fechar o app; restauração após exclusão; iPhone, Live Activity e sensor físico (bloqueados); código de 6 dígitos (sem caixa de QA).
+
 ## Contas de QA
 Mantida: **A** (`qa.bebometro.a.fc6438`). **B excluída** pela função `delete-account` em 17/10 (comprovado no banco).
 
