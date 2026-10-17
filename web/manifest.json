@@ -1,11 +1,11 @@
 {
-    "name": "bebometro",
-    "short_name": "bebometro",
+    "name": "Bebômetro",
+    "short_name": "Bebômetro",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Bebometro",
+    "description": "Registre o rolê, acompanhe o gasto e o álcool puro declarado das bebidas.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

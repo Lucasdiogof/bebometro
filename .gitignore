@@ -49,3 +49,4 @@ app.*.map.json
 
 # Local build configuration (keys); copy env.example.json
 env.json
+.wrangler/
