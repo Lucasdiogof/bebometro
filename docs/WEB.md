@@ -33,3 +33,9 @@ Pendência externa: confirmar SMTP custom no projeto Supabase (embutido = 2 e-ma
 ## Conteúdo
 App sobre bebidas alcoólicas: definir classificação etária e aviso de 18+ antes de divulgar a URL pública. Os cálculos
 mostram álcool puro declarado, nunca alcoolemia nem recomendação médica.
+
+
+## QA local no navegador (2026-10-17, build servido por wrangler dev em localhost)
+Carregamento, tela inicial, ausência de erros de console, mobile (375x812) e desktop verificados. Sem chaves privilegiadas no bundle.
+**Não testado por mim**: login/logout/persistência, recuperação por código, isolamento entre usuários (exigem conta de QA e caixa de e-mail de QA, que não tenho; digitar senhas fora de localhost também é vedado).
+Deploy de teste em workers.dev: **bloqueado** (login do wrangler expirou e não há `CLOUDFLARE_API_TOKEN`). Workflow `deploy-web.yml` pronto, desativado até existir o token e a variável `AUTO_DEPLOY=true`.
