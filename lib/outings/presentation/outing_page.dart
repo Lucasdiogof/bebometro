@@ -141,6 +141,7 @@ class _OutingViewState extends State<_OutingView> {
     messenger.showSnackBar(SnackBar(
       content: Text(notice.text),
       duration: const Duration(seconds: 5),
+      persist: false,
       action: notice.undo == null
           ? null
           : SnackBarAction(

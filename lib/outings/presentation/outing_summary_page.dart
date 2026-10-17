@@ -61,6 +61,7 @@ class _SummaryViewState extends State<_SummaryView> {
       m.showSnackBar(SnackBar(
         content: Text(n.text),
         duration: const Duration(seconds: 5),
+        persist: false,
         action: n.undo == null
             ? null
             : SnackBarAction(

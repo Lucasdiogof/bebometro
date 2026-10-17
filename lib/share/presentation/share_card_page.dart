@@ -96,6 +96,7 @@ class _ShareCardPageState extends State<ShareCardPage> {
         ..showSnackBar(SnackBar(
           content: Text(problem),
           duration: const Duration(seconds: 8),
+          persist: false,
           action: SnackBarAction(label: tr.tabCopyText, onPressed: _copy),
         ));
     }

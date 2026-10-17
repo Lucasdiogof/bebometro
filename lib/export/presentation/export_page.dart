@@ -80,6 +80,7 @@ class _ExportPageState extends State<ExportPage> {
           ..showSnackBar(SnackBar(
             content: Text(tr.exportShareUnavailable),
             duration: const Duration(seconds: 8),
+            persist: false,
             action: SnackBarAction(
               label: tr.tabCopyText,
               onPressed: () => _copy(() => text),

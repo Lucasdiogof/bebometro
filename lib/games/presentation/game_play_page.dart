@@ -305,6 +305,7 @@ class _Scoreboard extends StatelessWidget {
                       ..showSnackBar(SnackBar(
                         content: Text(tr.gamePlusOne(p)),
                         duration: const Duration(seconds: 3),
+                        persist: false,
                         action: SnackBarAction(
                           label: tr.commonUndo,
                           onPressed: () => cubit.removePoint(p),
