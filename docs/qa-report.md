@@ -119,8 +119,10 @@ O build release foi reinstalado no emulador e usado nos testes acima.
 ### Contas de QA restantes
 **A** (`qa.bebometro.a.fc6438`) mantida. **B** e **C** excluídas (B pela função com a sessão dela; C pela interface).
 
+| Rascunho de OCR recuperado: leitura interpretada, app fechado à força antes de salvar; ao reabrir "Leer etiqueta" a foto e o texto lido voltaram (com "Descartar lectura") | Aprovado (emulador). O aviso "leitura aberta" aparece só ao encerrar o rolê |
+
 ### Ainda não executado
-Rascunho de OCR recuperado após fechar o app; restauração após exclusão; iPhone, Live Activity e sensor físico (bloqueados); código de 6 dígitos (sem caixa de QA).
+Restauração após exclusão (o app não tem esse fluxo de restauração de conta); iPhone, Live Activity e sensor físico (bloqueados); código de 6 dígitos (sem caixa de QA).
 
 ## Contas de QA
 Mantida: **A** (`qa.bebometro.a.fc6438`). **B excluída** pela função `delete-account` em 17/10 (comprovado no banco).
