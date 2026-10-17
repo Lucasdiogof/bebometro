@@ -100,7 +100,7 @@ usuário com exclusão de conta.
 | Sucesso e retorno | Voltou à tela de acesso, sem erro residual e com o e-mail vazio |
 | Reabrir o app (fechar à força) | Continua na tela de acesso |
 | Dados da C no aparelho | Não verificável por arquivo (release não depurável); a tela de acesso e o login da A mostram só dados da A |
-| **Servidor e Storage da C** | **Pendente de leitura no banco** (sem acesso daqui): ver SQL entregue ao responsável. Diagnóstico por API (não valida a interface): login da C devolve `invalid_credentials`; a A manteve 3 rolês, 14 registros, 1 item, 1 comanda, 1 receita, 3 locais |
+| **Servidor e Storage da C** | **Aprovado**, lido no banco pelo responsável após a exclusão pela interface: 0 registros, 0 rolês, 0 itens, 0 fotos, 0 comandas, 0 locais, 0 usuário de autenticação, 0 arquivos no Storage, `account_deletions = done attempts=1`, e a A preservada. Diagnóstico por API (não valida a interface): login da C devolve `invalid_credentials`; a A manteve 3 rolês, 14 registros, 1 item, 1 comanda, 1 receita, 3 locais |
 
 ### Demais cenários desta rodada
 | Cenário | Resultado |
