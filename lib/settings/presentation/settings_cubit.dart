@@ -26,10 +26,9 @@ class SettingsCubit extends Cubit<SettingsState> {
   final DrinkRepository _drinks;
   late final List<StreamSubscription<void>> _subs;
 
-  void _load() => emit(SettingsState(
-        outings: _outings.count(),
-        drinks: _drinks.liveEntryCount(),
-      ));
+  void _load() => emit(
+    SettingsState(outings: _outings.count(), drinks: _drinks.liveEntryCount()),
+  );
 
   @override
   Future<void> close() {

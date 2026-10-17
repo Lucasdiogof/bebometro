@@ -41,13 +41,16 @@ class PhotoThumb extends StatelessWidget {
               builder: (context, snap) {
                 final bytes = snap.data;
                 if (bytes != null) {
-                  return Image.memory(bytes,
-                      fit: BoxFit.cover,
-                      gaplessPlayback: true,
-                      errorBuilder: (_, _, _) => _placeholder());
+                  return Image.memory(
+                    bytes,
+                    fit: BoxFit.cover,
+                    gaplessPlayback: true,
+                    errorBuilder: (_, _, _) => _placeholder(),
+                  );
                 }
                 return _placeholder(
-                    loading: snap.connectionState != ConnectionState.done);
+                  loading: snap.connectionState != ConnectionState.done,
+                );
               },
             ),
           ),
@@ -57,14 +60,14 @@ class PhotoThumb extends StatelessWidget {
   }
 
   Widget _placeholder({bool loading = false}) => ColoredBox(
-        color: AppColors.surfaceHigh,
-        child: Center(
-          child: Icon(
-            loading ? Icons.image_outlined : Icons.image_not_supported_outlined,
-            color: AppColors.textMuted,
-          ),
-        ),
-      );
+    color: AppColors.surfaceHigh,
+    child: Center(
+      child: Icon(
+        loading ? Icons.image_outlined : Icons.image_not_supported_outlined,
+        color: AppColors.textMuted,
+      ),
+    ),
+  );
 }
 
 /// Full-screen view of a photo, with an optional delete that keeps the
@@ -78,68 +81,82 @@ Future<void> showPhotoViewer(
     context: context,
     builder: (ctx) => Dialog.fullscreen(
       backgroundColor: Colors.black,
-      child: Stack(children: [
-        Positioned.fill(
-          child: FutureBuilder<Uint8List?>(
-            future: getIt<OutingDrinkRepository>().photoBytes(photoId),
-            builder: (context, snap) {
-              final bytes = snap.data;
-              if (bytes == null) {
-                return Center(
-                  child: Text(tr.photoUnavailable,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: FutureBuilder<Uint8List?>(
+              future: getIt<OutingDrinkRepository>().photoBytes(photoId),
+              builder: (context, snap) {
+                final bytes = snap.data;
+                if (bytes == null) {
+                  return Center(
+                    child: Text(
+                      tr.photoUnavailable,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: AppColors.textMuted)),
+                      style: const TextStyle(color: AppColors.textMuted),
+                    ),
+                  );
+                }
+                return InteractiveViewer(
+                  maxScale: 5,
+                  child: Center(child: Image.memory(bytes)),
                 );
-              }
-              return InteractiveViewer(
-                maxScale: 5,
-                child: Center(child: Image.memory(bytes)),
-              );
-            },
+              },
+            ),
           ),
-        ),
-        SafeArea(
-          child: Align(
-            alignment: Alignment.topRight,
-            child: Row(mainAxisSize: MainAxisSize.min, children: [
-              if (onDelete != null)
-                IconButton(
-                  tooltip: tr.photoDelete,
-                  onPressed: () async {
-                    final ok = await showDialog<bool>(
-                      context: ctx,
-                      builder: (c) => AlertDialog(
-                        title: Text(tr.photoDeleteTitle),
-                        content: Text(tr.photoDeleteBody),
-                        actions: [
-                          TextButton(
-                              onPressed: () => Navigator.pop(c, false),
-                              child: Text(tr.commonCancel)),
-                          TextButton(
-                              onPressed: () => Navigator.pop(c, true),
-                              child: Text(tr.commonDelete,
-                                  style:
-                                      const TextStyle(color: AppColors.danger))),
-                        ],
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (onDelete != null)
+                    IconButton(
+                      tooltip: tr.photoDelete,
+                      onPressed: () async {
+                        final ok = await showDialog<bool>(
+                          context: ctx,
+                          builder: (c) => AlertDialog(
+                            title: Text(tr.photoDeleteTitle),
+                            content: Text(tr.photoDeleteBody),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(c, false),
+                                child: Text(tr.commonCancel),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(c, true),
+                                child: Text(
+                                  tr.commonDelete,
+                                  style: const TextStyle(
+                                    color: AppColors.danger,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                        if (ok == true) {
+                          await onDelete();
+                          if (ctx.mounted) Navigator.pop(ctx);
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.delete_outline_rounded,
+                        color: AppColors.danger,
                       ),
-                    );
-                    if (ok == true) {
-                      await onDelete();
-                      if (ctx.mounted) Navigator.pop(ctx);
-                    }
-                  },
-                  icon: const Icon(Icons.delete_outline_rounded,
-                      color: AppColors.danger),
-                ),
-              IconButton(
-                tooltip: tr.commonClose,
-                onPressed: () => Navigator.pop(ctx),
-                icon: const Icon(Icons.close_rounded, color: Colors.white),
+                    ),
+                  IconButton(
+                    tooltip: tr.commonClose,
+                    onPressed: () => Navigator.pop(ctx),
+                    icon: const Icon(Icons.close_rounded, color: Colors.white),
+                  ),
+                ],
               ),
-            ]),
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     ),
   );
 }

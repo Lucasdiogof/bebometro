@@ -56,10 +56,14 @@ class _PlaceDetailView extends StatelessWidget {
             title: Text(tr.placeScreenTitle),
             actions: [
               IconButton(
-                tooltip: place.favorite ? tr.catalogUnfavorite : tr.catalogFavorite,
+                tooltip: place.favorite
+                    ? tr.catalogUnfavorite
+                    : tr.catalogFavorite,
                 onPressed: cubit.toggleFavorite,
                 icon: Icon(
-                  place.favorite ? Icons.star_rounded : Icons.star_outline_rounded,
+                  place.favorite
+                      ? Icons.star_rounded
+                      : Icons.star_outline_rounded,
                   color: place.favorite ? AppColors.amber : AppColors.textMuted,
                 ),
               ),
@@ -67,15 +71,20 @@ class _PlaceDetailView extends StatelessWidget {
                 tooltip: tr.commonOptions,
                 onSelected: (v) async {
                   if (v == 'edit') {
-                    await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => PlaceEditorPage(editing: place)));
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => PlaceEditorPage(editing: place),
+                      ),
+                    );
                   } else if (v == 'archive') {
                     await cubit.setArchived(!place.isArchived);
                     if (context.mounted) {
-                      showToast(context,
-                          place.isArchived
-                              ? tr.placeReactivated
-                              : tr.placeArchivedToast);
+                      showToast(
+                        context,
+                        place.isArchived
+                            ? tr.placeReactivated
+                            : tr.placeArchivedToast,
+                      );
                     }
                   }
                 },
@@ -84,7 +93,8 @@ class _PlaceDetailView extends StatelessWidget {
                   PopupMenuItem(
                     value: 'archive',
                     child: Text(
-                        place.isArchived ? tr.placeReactivate : tr.placeArchive),
+                      place.isArchived ? tr.placeReactivate : tr.placeArchive,
+                    ),
                   ),
                 ],
               ),
@@ -92,7 +102,11 @@ class _PlaceDetailView extends StatelessWidget {
           ),
           body: ListView(
             padding: const EdgeInsets.fromLTRB(
-                AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
+              AppSpace.gutter,
+              0,
+              AppSpace.gutter,
+              AppSpace.xxl,
+            ),
             children: [
               SurfaceCard(
                 highlight: true,
@@ -100,22 +114,26 @@ class _PlaceDetailView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(children: [
-                      Icon(place.type.icon, color: AppColors.amber, size: 20),
-                      const SizedBox(width: AppSpace.sm),
-                      Text(place.type.label, style: AppText.caption),
-                      if (place.isArchived) ...[
+                    Row(
+                      children: [
+                        Icon(place.type.icon, color: AppColors.amber, size: 20),
                         const SizedBox(width: AppSpace.sm),
-                        InfoPill(tr.placeArchivedPill),
+                        Text(place.type.label, style: AppText.caption),
+                        if (place.isArchived) ...[
+                          const SizedBox(width: AppSpace.sm),
+                          InfoPill(tr.placeArchivedPill),
+                        ],
                       ],
-                    ]),
+                    ),
                     const SizedBox(height: AppSpace.sm),
                     Text(place.displayName, style: AppText.headline),
                     if (place.providerSubtitle != null)
                       Padding(
                         padding: const EdgeInsets.only(top: AppSpace.xs),
-                        child: Text(place.providerSubtitle!,
-                            style: AppText.caption),
+                        child: Text(
+                          place.providerSubtitle!,
+                          style: AppText.caption,
+                        ),
                       ),
                     // Geoapify keeps the data free to store as long as the
                     // data-source credit stays visible where it is reused.
@@ -125,47 +143,56 @@ class _PlaceDetailView extends StatelessWidget {
                         child: MapAttribution(compact: true),
                       ),
                     const SizedBox(height: AppSpace.lg),
-                    Row(children: [
-                      Expanded(
-                        child: StatTile(
+                    Row(
+                      children: [
+                        Expanded(
+                          child: StatTile(
                             label: tr.placeStatOutings,
-                            value: '${state.visits.length}'),
-                      ),
-                      Expanded(
-                        child: StatTile(
-                            label: tr.placeStatDrinks,
-                            value: '${state.drinkCount}'),
-                      ),
-                      Expanded(
-                        child: StatTile(
-                          label: tr.placeStatSpent,
-                          value: formatCents(state.informedCents),
+                            value: '${state.visits.length}',
+                          ),
                         ),
-                      ),
-                    ]),
+                        Expanded(
+                          child: StatTile(
+                            label: tr.placeStatDrinks,
+                            value: '${state.drinkCount}',
+                          ),
+                        ),
+                        Expanded(
+                          child: StatTile(
+                            label: tr.placeStatSpent,
+                            value: formatCents(state.informedCents),
+                          ),
+                        ),
+                      ],
+                    ),
                     if (state.visits.isNotEmpty) ...[
                       const SizedBox(height: AppSpace.sm),
                       Text(
                         tr.placeLastVisit(
-                            formatDate(state.visits.first.outing.startedAt)),
+                          formatDate(state.visits.first.outing.startedAt),
+                        ),
                         style: AppText.caption,
                       ),
                     ],
                     const SizedBox(height: AppSpace.md),
-                    Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
-                      if (!place.isArchived)
-                        FilledButton.icon(
-                          onPressed: () => _startHere(context, place),
-                          icon: const Icon(Icons.play_arrow_rounded),
-                          label: Text(tr.placeStartHere),
-                        ),
-                      if (_hasMapTarget(place))
-                        OutlinedButton.icon(
-                          onPressed: () => _openMaps(context, place),
-                          icon: const Icon(Icons.map_outlined),
-                          label: Text(tr.placeOpenMap),
-                        ),
-                    ]),
+                    Wrap(
+                      spacing: AppSpace.sm,
+                      runSpacing: AppSpace.sm,
+                      children: [
+                        if (!place.isArchived)
+                          FilledButton.icon(
+                            onPressed: () => _startHere(context, place),
+                            icon: const Icon(Icons.play_arrow_rounded),
+                            label: Text(tr.placeStartHere),
+                          ),
+                        if (_hasMapTarget(place))
+                          OutlinedButton.icon(
+                            onPressed: () => _openMaps(context, place),
+                            icon: const Icon(Icons.map_outlined),
+                            label: Text(tr.placeOpenMap),
+                          ),
+                      ],
+                    ),
                     if (state.unpricedCount > 0) ...[
                       const SizedBox(height: AppSpace.md),
                       InfoPill(
@@ -202,32 +229,39 @@ class _PlaceDetailView extends StatelessWidget {
                     child: SurfaceCard(
                       onTap: v.outing.isActive
                           ? null
-                          : () => Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) =>
-                                  OutingSummaryPage(outingId: v.outing.id))),
-                      child: Row(children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${formatDate(v.outing.startedAt)} · '
-                                '${formatTime(v.outing.startedAt)}'
-                                '${v.outing.isActive ? ' · ${tr.placeVisitInProgress}' : ''}',
-                                style: AppText.subtitle,
+                          : () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    OutingSummaryPage(outingId: v.outing.id),
                               ),
-                              Text(
-                                '${tr.drinkCount(v.summary.entryCount)}'
-                                ' · ${v.summary.pricedCount == 0 ? tr.placeNoValues : formatCents(v.summary.informedCents)}',
-                                style: AppText.caption,
-                              ),
-                            ],
+                            ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${formatDate(v.outing.startedAt)} · '
+                                  '${formatTime(v.outing.startedAt)}'
+                                  '${v.outing.isActive ? ' · ${tr.placeVisitInProgress}' : ''}',
+                                  style: AppText.subtitle,
+                                ),
+                                Text(
+                                  '${tr.drinkCount(v.summary.entryCount)}'
+                                  ' · ${v.summary.pricedCount == 0 ? tr.placeNoValues : formatCents(v.summary.informedCents)}',
+                                  style: AppText.caption,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        if (!v.outing.isActive)
-                          const Icon(Icons.chevron_right_rounded,
-                              color: AppColors.textMuted),
-                      ]),
+                          if (!v.outing.isActive)
+                            const Icon(
+                              Icons.chevron_right_rounded,
+                              color: AppColors.textMuted,
+                            ),
+                        ],
+                      ),
                     ),
                   ),
             ],
@@ -248,7 +282,8 @@ class _PriceTile extends StatelessWidget {
     final range = stats.minCents == stats.maxCents
         ? formatCents(stats.minCents)
         : tr.rangeTo(formatCents(stats.minCents), formatCents(stats.maxCents));
-    final period = stats.firstAt.year == stats.lastAt.year &&
+    final period =
+        stats.firstAt.year == stats.lastAt.year &&
             stats.firstAt.month == stats.lastAt.month &&
             stats.firstAt.day == stats.lastAt.day
         ? formatDate(stats.lastAt)
@@ -264,9 +299,13 @@ class _PriceTile extends StatelessWidget {
             Text(
               stats.shared
                   ? tr.placePriceLastShared(
-                      formatCents(stats.lastCents), formatDate(stats.lastAt))
+                      formatCents(stats.lastCents),
+                      formatDate(stats.lastAt),
+                    )
                   : tr.placePriceLast(
-                      formatCents(stats.lastCents), formatDate(stats.lastAt)),
+                      formatCents(stats.lastCents),
+                      formatDate(stats.lastAt),
+                    ),
               style: AppText.body,
             ),
             Text(
@@ -325,12 +364,15 @@ class _PlaceDetailsState extends State<_PlaceDetails> {
       if (p.providerName != null) (tr.placeFieldMapName, p.providerName!),
       if (p.address != null) (tr.placeFieldAddress, p.address!),
       if (p.cityState != null) (tr.placeFieldCity, p.cityState!),
-      (tr.placeFieldOrigin, switch (p.source) {
-        LocationSource.search => tr.placeSourceSearch,
-        LocationSource.currentLocation => tr.placeSourceLocation,
-        LocationSource.adjusted => tr.placeSourceAdjusted,
-        null => tr.placeSourceManual,
-      }),
+      (
+        tr.placeFieldOrigin,
+        switch (p.source) {
+          LocationSource.search => tr.placeSourceSearch,
+          LocationSource.currentLocation => tr.placeSourceLocation,
+          LocationSource.adjusted => tr.placeSourceAdjusted,
+          null => tr.placeSourceManual,
+        },
+      ),
     ];
     final point = p.point;
     return Column(

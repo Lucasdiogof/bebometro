@@ -24,9 +24,9 @@ class OcrLine {
   double get centerY => (top + bottom) / 2;
 
   Map<String, dynamic> toJson() => {
-        't': text,
-        if (hasBox) ...{'l': left, 'u': top, 'r': right, 'b': bottom},
-      };
+    't': text,
+    if (hasBox) ...{'l': left, 'u': top, 'r': right, 'b': bottom},
+  };
 
   factory OcrLine.fromJson(Map<String, dynamic> j) {
     final hasBox = j['l'] != null;
@@ -47,9 +47,9 @@ class OcrResult {
 
   /// Text without geometry: one line per text line, in the given order.
   factory OcrResult.fromText(String text) => OcrResult([
-        for (final raw in text.split(RegExp(r'\r?\n')))
-          if (raw.trim().isNotEmpty) OcrLine(raw.trim()),
-      ]);
+    for (final raw in text.split(RegExp(r'\r?\n')))
+      if (raw.trim().isNotEmpty) OcrLine(raw.trim()),
+  ]);
 
   final List<OcrLine> lines;
 
@@ -60,9 +60,8 @@ class OcrResult {
   List<Map<String, dynamic>> toJson() => [for (final l in lines) l.toJson()];
 
   factory OcrResult.fromJson(List<dynamic> json) => OcrResult([
-        for (final l in json)
-          OcrLine.fromJson(Map<String, dynamic>.from(l as Map)),
-      ]);
+    for (final l in json) OcrLine.fromJson(Map<String, dynamic>.from(l as Map)),
+  ]);
 }
 
 /// Why a reading could not be done. Never replaced by made-up text.

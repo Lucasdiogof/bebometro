@@ -44,7 +44,7 @@ class StatsState {
 
 class StatsCubit extends Cubit<StatsState> {
   StatsCubit(this._outings, this._drinks, this._places)
-      : super(const StatsState()) {
+    : super(const StatsState()) {
     _subs = [
       _outings.changes.listen((_) => _load()),
       _drinks.changes.listen((_) => _load()),
@@ -75,22 +75,24 @@ class StatsCubit extends Cubit<StatsState> {
   }
 
   StatsReport _report(StatsRange range) => buildStats(
-        range: range,
-        allOutings: _outings.all(),
-        entriesOf: _drinks.entriesFor,
-        placeName: (id) => _places.byId(id)?.displayName,
-      );
+    range: range,
+    allOutings: _outings.all(),
+    entriesOf: _drinks.entriesFor,
+    placeName: (id) => _places.byId(id)?.displayName,
+  );
 
   void _load() {
     final range = _preset == StatsPreset.custom
         ? _custom!
         : StatsRange.lastDays(_preset.days!, DateTime.now());
-    emit(StatsState(
-      preset: _preset,
-      range: range,
-      report: _report(range),
-      previous: _report(range.previous),
-    ));
+    emit(
+      StatsState(
+        preset: _preset,
+        range: range,
+        report: _report(range),
+        previous: _report(range.previous),
+      ),
+    );
   }
 
   @override

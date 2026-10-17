@@ -22,10 +22,10 @@ enum HistoryPeriod {
   last90Days;
 
   String get label => switch (this) {
-        HistoryPeriod.all => tr.historyPeriodAll,
-        HistoryPeriod.thisMonth => tr.historyPeriodMonth,
-        HistoryPeriod.last90Days => tr.statsPresetDays('${90}'),
-      };
+    HistoryPeriod.all => tr.historyPeriodAll,
+    HistoryPeriod.thisMonth => tr.historyPeriodMonth,
+    HistoryPeriod.last90Days => tr.statsPresetDays('${90}'),
+  };
 }
 
 class HistoryState {
@@ -118,17 +118,19 @@ class HistoryCubit extends Cubit<HistoryState> {
       return true;
     });
 
-    emit(HistoryState(
-      loading: false,
-      total: ended.length,
-      items: [
-        for (final o in filtered)
-          HistoryItem(o, OutingSummary.of(_drinks.entriesFor(o.id))),
-      ],
-      query: _query,
-      period: _period,
-      type: _type,
-    ));
+    emit(
+      HistoryState(
+        loading: false,
+        total: ended.length,
+        items: [
+          for (final o in filtered)
+            HistoryItem(o, OutingSummary.of(_drinks.entriesFor(o.id))),
+        ],
+        query: _query,
+        period: _period,
+        type: _type,
+      ),
+    );
   }
 
   @override

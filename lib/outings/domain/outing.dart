@@ -21,17 +21,19 @@ enum OutingType {
 
   /// Name in the language on screen.
   String get label => switch (this) {
-        OutingType.bar => tr.outingTypeBar,
-        OutingType.club => tr.outingTypeClub,
-        OutingType.barbecue => tr.outingTypeBarbecue,
-        OutingType.home => tr.outingTypeHome,
-        OutingType.restaurant => tr.outingTypeRestaurant,
-        OutingType.beach => tr.outingTypeBeach,
-        OutingType.other => tr.outingTypeOther,
-      };
+    OutingType.bar => tr.outingTypeBar,
+    OutingType.club => tr.outingTypeClub,
+    OutingType.barbecue => tr.outingTypeBarbecue,
+    OutingType.home => tr.outingTypeHome,
+    OutingType.restaurant => tr.outingTypeRestaurant,
+    OutingType.beach => tr.outingTypeBeach,
+    OutingType.other => tr.outingTypeOther,
+  };
 
-  static OutingType fromCode(String code) => OutingType.values
-      .firstWhere((t) => t.code == code, orElse: () => OutingType.other);
+  static OutingType fromCode(String code) => OutingType.values.firstWhere(
+    (t) => t.code == code,
+    orElse: () => OutingType.other,
+  );
 }
 
 enum FeedbackMood {
@@ -46,11 +48,11 @@ enum FeedbackMood {
   final IconData icon;
 
   String get label => switch (this) {
-        FeedbackMood.smooth => tr.moodSmooth,
-        FeedbackMood.cheerful => tr.moodCheerful,
-        FeedbackMood.drunk => tr.moodDrunk,
-        FeedbackMood.wasted => tr.moodWasted,
-      };
+    FeedbackMood.smooth => tr.moodSmooth,
+    FeedbackMood.cheerful => tr.moodCheerful,
+    FeedbackMood.drunk => tr.moodDrunk,
+    FeedbackMood.wasted => tr.moodWasted,
+  };
 
   static FeedbackMood? fromCode(String? code) {
     for (final m in FeedbackMood.values) {
@@ -86,11 +88,11 @@ enum WakeFeeling {
   final String code;
 
   String get label => switch (this) {
-        WakeFeeling.great => tr.wakeGreat,
-        WakeFeeling.ok => tr.wakeOk,
-        WakeFeeling.tired => tr.wakeTired,
-        WakeFeeling.bad => tr.wakeBad,
-      };
+    WakeFeeling.great => tr.wakeGreat,
+    WakeFeeling.ok => tr.wakeOk,
+    WakeFeeling.tired => tr.wakeTired,
+    WakeFeeling.bad => tr.wakeBad,
+  };
 
   static WakeFeeling? fromCode(String? code) {
     for (final w in WakeFeeling.values) {
@@ -111,11 +113,11 @@ enum Hangover {
   final String code;
 
   String get label => switch (this) {
-        Hangover.none => tr.hangoverNone,
-        Hangover.mild => tr.hangoverMild,
-        Hangover.moderate => tr.hangoverModerate,
-        Hangover.strong => tr.hangoverStrong,
-      };
+    Hangover.none => tr.hangoverNone,
+    Hangover.mild => tr.hangoverMild,
+    Hangover.moderate => tr.hangoverModerate,
+    Hangover.strong => tr.hangoverStrong,
+  };
 
   static Hangover? fromCode(String? code) {
     for (final h in Hangover.values) {
@@ -191,15 +193,19 @@ class Outing {
   bool get isActive => endedAt == null;
 
   String get displayName => placeTitle(
-      nickname: nickname, providerName: placeName, address: address,
-      point: point, fallback: tr.outingFallbackName);
+    nickname: nickname,
+    providerName: placeName,
+    address: address,
+    point: point,
+    fallback: tr.outingFallbackName,
+  );
 
   /// The address is only a subtitle when a name already titles the place.
   String? get subtitleAddress =>
       ((nickname?.trim().isNotEmpty ?? false) ||
-              (placeName?.trim().isNotEmpty ?? false))
-          ? address
-          : null;
+          (placeName?.trim().isNotEmpty ?? false))
+      ? address
+      : null;
 
   /// Replaces only this outing's own copy of the place (explicit correction).
   /// Drinks, photos, tab and everything else stay on the same outing id.
@@ -212,29 +218,28 @@ class Outing {
     required String? state,
     required GeoPoint? point,
     required DateTime updatedAt,
-  }) =>
-      Outing(
-        id: id,
-        type: type,
-        nickname: nickname,
-        address: address,
-        placeId: placeId,
-        city: city,
-        state: state,
-        placeName: placeName,
-        point: point,
-        startedAt: startedAt,
-        endedAt: endedAt,
-        feedbackMood: feedbackMood,
-        feedbackStatus: feedbackStatus,
-        feedbackSnoozedUntil: feedbackSnoozedUntil,
-        budgetCents: budgetCents,
-        wakeFeeling: wakeFeeling,
-        hangover: hangover,
-        feedbackNote: feedbackNote,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
+  }) => Outing(
+    id: id,
+    type: type,
+    nickname: nickname,
+    address: address,
+    placeId: placeId,
+    city: city,
+    state: state,
+    placeName: placeName,
+    point: point,
+    startedAt: startedAt,
+    endedAt: endedAt,
+    feedbackMood: feedbackMood,
+    feedbackStatus: feedbackStatus,
+    feedbackSnoozedUntil: feedbackSnoozedUntil,
+    budgetCents: budgetCents,
+    wakeFeeling: wakeFeeling,
+    hangover: hangover,
+    feedbackNote: feedbackNote,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+  );
 
   Duration durationAt(DateTime now) => (endedAt ?? now).difference(startedAt);
 
@@ -263,87 +268,82 @@ class Outing {
     Hangover? Function()? hangover,
     String? Function()? feedbackNote,
     required DateTime updatedAt,
-  }) =>
-      Outing(
-        id: id,
-        type: type,
-        nickname: nickname,
-        address: address,
-        placeId: placeId,
-        city: city,
-        state: state,
-        placeName: placeName,
-        point: point,
-        startedAt: startedAt,
-        endedAt: endedAt ?? this.endedAt,
-        feedbackMood: feedbackMood ?? this.feedbackMood,
-        feedbackStatus: feedbackStatus ?? this.feedbackStatus,
-        feedbackSnoozedUntil: clearSnooze
-            ? null
-            : (feedbackSnoozedUntil ?? this.feedbackSnoozedUntil),
-        budgetCents: budgetCents != null ? budgetCents() : this.budgetCents,
-        wakeFeeling: wakeFeeling != null ? wakeFeeling() : this.wakeFeeling,
-        hangover: hangover != null ? hangover() : this.hangover,
-        feedbackNote:
-            feedbackNote != null ? feedbackNote() : this.feedbackNote,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
+  }) => Outing(
+    id: id,
+    type: type,
+    nickname: nickname,
+    address: address,
+    placeId: placeId,
+    city: city,
+    state: state,
+    placeName: placeName,
+    point: point,
+    startedAt: startedAt,
+    endedAt: endedAt ?? this.endedAt,
+    feedbackMood: feedbackMood ?? this.feedbackMood,
+    feedbackStatus: feedbackStatus ?? this.feedbackStatus,
+    feedbackSnoozedUntil: clearSnooze
+        ? null
+        : (feedbackSnoozedUntil ?? this.feedbackSnoozedUntil),
+    budgetCents: budgetCents != null ? budgetCents() : this.budgetCents,
+    wakeFeeling: wakeFeeling != null ? wakeFeeling() : this.wakeFeeling,
+    hangover: hangover != null ? hangover() : this.hangover,
+    feedbackNote: feedbackNote != null ? feedbackNote() : this.feedbackNote,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'type': type.code,
-        'nickname': nickname,
-        'address': address,
-        'started_at': startedAt.toUtc().toIso8601String(),
-        'ended_at': endedAt?.toUtc().toIso8601String(),
-        'status': isActive ? 'active' : 'ended',
-        'feedback_mood': feedbackMood?.code,
-        'feedback_status': feedbackStatus.code,
-        'feedback_snoozed_until':
-            feedbackSnoozedUntil?.toUtc().toIso8601String(),
-        'created_at': createdAt.toUtc().toIso8601String(),
-        'updated_at': updatedAt.toUtc().toIso8601String(),
-        // Newer fields are only sent when set, so outings keep syncing to a
-        // database that does not have those columns yet.
-        if (placeId != null) 'place_id': placeId,
-        if (city != null) 'city': city,
-        if (state != null) 'state': state,
-        if (budgetCents != null) 'budget_cents': budgetCents,
-        if (wakeFeeling != null) 'feedback_wake': wakeFeeling!.code,
-        if (hangover != null) 'feedback_hangover': hangover!.code,
-        if (feedbackNote != null) 'feedback_note': feedbackNote,
-        if (placeName != null) 'place_name': placeName,
-        if (point != null) 'latitude': point!.lat,
-        if (point != null) 'longitude': point!.lng,
-      };
+    'id': id,
+    'type': type.code,
+    'nickname': nickname,
+    'address': address,
+    'started_at': startedAt.toUtc().toIso8601String(),
+    'ended_at': endedAt?.toUtc().toIso8601String(),
+    'status': isActive ? 'active' : 'ended',
+    'feedback_mood': feedbackMood?.code,
+    'feedback_status': feedbackStatus.code,
+    'feedback_snoozed_until': feedbackSnoozedUntil?.toUtc().toIso8601String(),
+    'created_at': createdAt.toUtc().toIso8601String(),
+    'updated_at': updatedAt.toUtc().toIso8601String(),
+    // Newer fields are only sent when set, so outings keep syncing to a
+    // database that does not have those columns yet.
+    if (placeId != null) 'place_id': placeId,
+    if (city != null) 'city': city,
+    if (state != null) 'state': state,
+    if (budgetCents != null) 'budget_cents': budgetCents,
+    if (wakeFeeling != null) 'feedback_wake': wakeFeeling!.code,
+    if (hangover != null) 'feedback_hangover': hangover!.code,
+    if (feedbackNote != null) 'feedback_note': feedbackNote,
+    if (placeName != null) 'place_name': placeName,
+    if (point != null) 'latitude': point!.lat,
+    if (point != null) 'longitude': point!.lng,
+  };
 
   factory Outing.fromJson(Map<String, dynamic> json) => Outing(
-        id: json['id'] as String,
-        type: OutingType.fromCode(json['type'] as String),
-        nickname: json['nickname'] as String?,
-        address: json['address'] as String?,
-        startedAt: DateTime.parse(json['started_at'] as String).toLocal(),
-        endedAt: json['ended_at'] == null
-            ? null
-            : DateTime.parse(json['ended_at'] as String).toLocal(),
-        feedbackMood: FeedbackMood.fromCode(json['feedback_mood'] as String?),
-        feedbackStatus:
-            FeedbackStatus.fromCode(json['feedback_status'] as String?),
-        feedbackSnoozedUntil: json['feedback_snoozed_until'] == null
-            ? null
-            : DateTime.parse(json['feedback_snoozed_until'] as String)
-                .toLocal(),
-        createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
-        updatedAt: DateTime.parse(json['updated_at'] as String).toLocal(),
-        placeId: json['place_id'] as String?,
-        city: json['city'] as String?,
-        state: json['state'] as String?,
-        budgetCents: (json['budget_cents'] as num?)?.toInt(),
-        wakeFeeling: WakeFeeling.fromCode(json['feedback_wake'] as String?),
-        hangover: Hangover.fromCode(json['feedback_hangover'] as String?),
-        feedbackNote: json['feedback_note'] as String?,
-        placeName: json['place_name'] as String?,
-        point: GeoPoint.tryCreate(json['latitude'], json['longitude']),
-      );
+    id: json['id'] as String,
+    type: OutingType.fromCode(json['type'] as String),
+    nickname: json['nickname'] as String?,
+    address: json['address'] as String?,
+    startedAt: DateTime.parse(json['started_at'] as String).toLocal(),
+    endedAt: json['ended_at'] == null
+        ? null
+        : DateTime.parse(json['ended_at'] as String).toLocal(),
+    feedbackMood: FeedbackMood.fromCode(json['feedback_mood'] as String?),
+    feedbackStatus: FeedbackStatus.fromCode(json['feedback_status'] as String?),
+    feedbackSnoozedUntil: json['feedback_snoozed_until'] == null
+        ? null
+        : DateTime.parse(json['feedback_snoozed_until'] as String).toLocal(),
+    createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
+    updatedAt: DateTime.parse(json['updated_at'] as String).toLocal(),
+    placeId: json['place_id'] as String?,
+    city: json['city'] as String?,
+    state: json['state'] as String?,
+    budgetCents: (json['budget_cents'] as num?)?.toInt(),
+    wakeFeeling: WakeFeeling.fromCode(json['feedback_wake'] as String?),
+    hangover: Hangover.fromCode(json['feedback_hangover'] as String?),
+    feedbackNote: json['feedback_note'] as String?,
+    placeName: json['place_name'] as String?,
+    point: GeoPoint.tryCreate(json['latitude'], json['longitude']),
+  );
 }

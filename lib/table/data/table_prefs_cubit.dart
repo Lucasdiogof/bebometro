@@ -28,12 +28,11 @@ class TablePrefs {
     TableView? view,
     bool? animations,
     Map<String, String>? scenarios,
-  }) =>
-      TablePrefs(
-        view: view ?? this.view,
-        animations: animations ?? this.animations,
-        scenarios: scenarios ?? this.scenarios,
-      );
+  }) => TablePrefs(
+    view: view ?? this.view,
+    animations: animations ?? this.animations,
+    scenarios: scenarios ?? this.scenarios,
+  );
 
   TableScenario scenarioFor(String outingId, OutingType type) =>
       TableScenario.fromCode(scenarios[outingId]) ??

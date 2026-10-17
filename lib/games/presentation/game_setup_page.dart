@@ -21,8 +21,9 @@ class GameSetupPage extends StatefulWidget {
 
 class _GameSetupPageState extends State<GameSetupPage> {
   final _name = TextEditingController();
-  late final List<String> _players =
-      List.of(getIt<GameRepository>().lastPlayers);
+  late final List<String> _players = List.of(
+    getIt<GameRepository>().lastPlayers,
+  );
   GameMode _mode = GameMode.light;
   bool _adultsConfirmed = false;
   bool _points = false;
@@ -83,36 +84,39 @@ class _GameSetupPageState extends State<GameSetupPage> {
             child: ListView(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                AppSpace.gutter,
+                0,
+                AppSpace.gutter,
+                AppSpace.xl,
+              ),
               children: [
                 Text(g.description, style: AppText.caption),
                 SectionTitle(tr.gameWhoPlays),
-                Row(children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _name,
-                      textCapitalization: TextCapitalization.words,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (_) => _add(),
-                      decoration: InputDecoration(
-                        labelText: tr.pickerManualNickname,
-                        errorText: _error,
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _name,
+                        textCapitalization: TextCapitalization.words,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (_) => _add(),
+                        decoration: InputDecoration(
+                          labelText: tr.pickerManualNickname,
+                          errorText: _error,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: AppSpace.sm),
-                  IconButton.filled(
-                    tooltip: tr.gameAddPlayerTooltip,
-                    onPressed: _add,
-                    icon: const Icon(Icons.add_rounded),
-                  ),
-                ]),
+                    const SizedBox(width: AppSpace.sm),
+                    IconButton.filled(
+                      tooltip: tr.gameAddPlayerTooltip,
+                      onPressed: _add,
+                      icon: const Icon(Icons.add_rounded),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: AppSpace.md),
                 if (_players.isEmpty)
-                  Text(
-                    tr.gameNeedPlayers(g.minPlayers),
-                    style: AppText.caption,
-                  )
+                  Text(tr.gameNeedPlayers(g.minPlayers), style: AppText.caption)
                 else
                   Wrap(
                     spacing: AppSpace.sm,
@@ -133,11 +137,13 @@ class _GameSetupPageState extends State<GameSetupPage> {
                     showSelectedIcon: false,
                     segments: [
                       ButtonSegment(
-                          value: GameMode.light,
-                          label: Text(GameMode.light.label)),
+                        value: GameMode.light,
+                        label: Text(GameMode.light.label),
+                      ),
                       ButtonSegment(
-                          value: GameMode.adult,
-                          label: Text(GameMode.adult.label)),
+                        value: GameMode.adult,
+                        label: Text(GameMode.adult.label),
+                      ),
                     ],
                     selected: {_mode},
                     onSelectionChanged: (s) => setState(() {

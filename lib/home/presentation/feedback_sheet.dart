@@ -44,7 +44,11 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+          AppSpace.xl,
+          0,
+          AppSpace.xl,
+          AppSpace.lg,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,26 +57,30 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
             const SizedBox(height: AppSpace.sm),
             SurfaceCard(
               padding: const EdgeInsets.all(AppSpace.md),
-              child: Row(children: [
-                Icon(outing.type.icon, color: AppColors.amber, size: 20),
-                const SizedBox(width: AppSpace.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(outing.displayName,
+              child: Row(
+                children: [
+                  Icon(outing.type.icon, color: AppColors.amber, size: 20),
+                  const SizedBox(width: AppSpace.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          outing.displayName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: AppText.subtitle),
-                      Text(
-                        '${formatDate(outing.startedAt)} · '
-                        '${formatDuration(outing.durationAt(DateTime.now()))}',
-                        style: AppText.caption,
-                      ),
-                    ],
+                          style: AppText.subtitle,
+                        ),
+                        Text(
+                          '${formatDate(outing.startedAt)} · '
+                          '${formatDuration(outing.durationAt(DateTime.now()))}',
+                          style: AppText.caption,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ),
             const SizedBox(height: AppSpace.lg),
             GridView.count(
@@ -101,23 +109,27 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
               child: Text(tr.feedbackSave),
             ),
             const SizedBox(height: AppSpace.xs),
-            Row(children: [
-              Expanded(
-                child: TextButton(
-                  onPressed: () =>
-                      Navigator.pop(context, const FeedbackSnoozed()),
-                  child: Text(tr.commonLater),
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () =>
+                        Navigator.pop(context, const FeedbackSnoozed()),
+                    child: Text(tr.commonLater),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: TextButton(
-                  onPressed: () =>
-                      Navigator.pop(context, const FeedbackDismissed()),
-                  child: Text(tr.feedbackDontAsk,
-                      style: TextStyle(color: AppColors.textMuted)),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () =>
+                        Navigator.pop(context, const FeedbackDismissed()),
+                    child: Text(
+                      tr.feedbackDontAsk,
+                      style: TextStyle(color: AppColors.textMuted),
+                    ),
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
           ],
         ),
       ),
@@ -149,8 +161,10 @@ class _MoodTile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(mood.icon,
-                color: selected ? AppColors.amber : AppColors.textMuted),
+            Icon(
+              mood.icon,
+              color: selected ? AppColors.amber : AppColors.textMuted,
+            ),
             const SizedBox(width: AppSpace.sm),
             Flexible(
               child: Text(

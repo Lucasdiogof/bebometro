@@ -32,19 +32,28 @@ class PendingCommandsNotice extends StatelessWidget {
           padding: const EdgeInsets.only(top: AppSpace.md),
           child: SurfaceCard(
             padding: const EdgeInsets.symmetric(
-                horizontal: AppSpace.lg, vertical: AppSpace.md),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => const PendingCommandsPage())),
-            child: Row(children: [
-              const Icon(Icons.lock_clock_outlined, color: AppColors.amber),
-              const SizedBox(width: AppSpace.md),
-              Expanded(
-                child: Text(tr.pendingNotice(list.length),
-                    style: AppText.body),
-              ),
-              const Icon(Icons.chevron_right_rounded,
-                  color: AppColors.textMuted),
-            ]),
+              horizontal: AppSpace.lg,
+              vertical: AppSpace.md,
+            ),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const PendingCommandsPage()),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.lock_clock_outlined, color: AppColors.amber),
+                const SizedBox(width: AppSpace.md),
+                Expanded(
+                  child: Text(
+                    tr.pendingNotice(list.length),
+                    style: AppText.body,
+                  ),
+                ),
+                const Icon(
+                  Icons.chevron_right_rounded,
+                  color: AppColors.textMuted,
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -72,13 +81,13 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
   }
 
   String _reasonText(PendingCommand p) => switch (p.reason) {
-        PendingReason.outingEnded => tr.pendingReasonEnded,
-        PendingReason.outsidePeriod => tr.pendingReasonOutside,
-        PendingReason.missingDrink => tr.pendingReasonNoDrink,
-        PendingReason.saveFailed => tr.pendingReasonFailed,
-        PendingReason.unsupported => tr.pendingReasonUnsupported,
-        PendingReason.inReview => tr.pendingReasonInReview,
-      };
+    PendingReason.outingEnded => tr.pendingReasonEnded,
+    PendingReason.outsidePeriod => tr.pendingReasonOutside,
+    PendingReason.missingDrink => tr.pendingReasonNoDrink,
+    PendingReason.saveFailed => tr.pendingReasonFailed,
+    PendingReason.unsupported => tr.pendingReasonUnsupported,
+    PendingReason.inReview => tr.pendingReasonInReview,
+  };
 
   String _placeOf(PendingCommand p) {
     final o = p.outing;
@@ -97,7 +106,9 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
       return size == null ? s.name : '${s.name} · $size';
     }
     final label = p.command.label;
-    return (label == null || label.trim().isEmpty) ? tr.pendingDrinkUnknown : label;
+    return (label == null || label.trim().isEmpty)
+        ? tr.pendingDrinkUnknown
+        : label;
   }
 
   Future<void> _run(PendingCommand p, Future<void> Function() op) async {
@@ -111,12 +122,13 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
   }
 
   Future<void> _retry(PendingCommand p) => _run(p, () async {
-        await _coordinator.processCommands();
-        if (!mounted) return;
-        final still = _coordinator.pendingCommands.value
-            .any((x) => x.command.id == p.command.id);
-        showToast(context, still ? tr.pendingRetryFailed : tr.pendingSaved);
-      });
+    await _coordinator.processCommands();
+    if (!mounted) return;
+    final still = _coordinator.pendingCommands.value.any(
+      (x) => x.command.id == p.command.id,
+    );
+    showToast(context, still ? tr.pendingRetryFailed : tr.pendingSaved);
+  });
 
   Future<void> _discard(PendingCommand p) async {
     final ok = await showDialog<bool>(
@@ -126,12 +138,16 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
         content: Text(tr.pendingDiscardBody),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.commonCancel)),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.commonCancel),
+          ),
           TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.pendingDiscard,
-                  style: const TextStyle(color: AppColors.danger))),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              tr.pendingDiscard,
+              style: const TextStyle(color: AppColors.danger),
+            ),
+          ),
         ],
       ),
     );
@@ -149,7 +165,8 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
     final out = <DrinkEntry>[];
     for (final e in getIt<DrinkRepository>().entriesFor(p.outing.id).reversed) {
       if (!e.isAlcoholic) continue;
-      final key = '${e.catalogItemId ?? e.name}|${e.presentation}|${e.containerMl}|${e.isShared}';
+      final key =
+          '${e.catalogItemId ?? e.name}|${e.presentation}|${e.containerMl}|${e.isShared}';
       if (seen.add(key)) out.add(e);
     }
     return out;
@@ -176,10 +193,13 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
                 contentPadding: EdgeInsets.zero,
                 leading: Icon(e.category.icon, color: AppColors.amber),
                 title: Text(e.name),
-                subtitle: Text([
-                  if (e.presentation != null) localizePresentation(e.presentation!),
-                  if (e.paidCents != null) formatCents(e.paidCents!),
-                ].join(' · ')),
+                subtitle: Text(
+                  [
+                    if (e.presentation != null)
+                      localizePresentation(e.presentation!),
+                    if (e.paidCents != null) formatCents(e.paidCents!),
+                  ].join(' · '),
+                ),
                 onTap: () => Navigator.pop(ctx, e),
               ),
           ],
@@ -213,7 +233,8 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
       );
       if (outcome == EntryOutcome.saved) {
         final ok = await _coordinator.acknowledgeSaved(p);
-        if (mounted) showToast(context, ok ? tr.pendingSaved : tr.pendingRetryFailed);
+        if (mounted)
+          showToast(context, ok ? tr.pendingSaved : tr.pendingRetryFailed);
       }
     } finally {
       _coordinator.endReview(p);
@@ -236,7 +257,11 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
           }
           return ListView(
             padding: const EdgeInsets.fromLTRB(
-                AppSpace.gutter, AppSpace.sm, AppSpace.gutter, AppSpace.xxl),
+              AppSpace.gutter,
+              AppSpace.sm,
+              AppSpace.gutter,
+              AppSpace.xxl,
+            ),
             children: [
               Text(tr.pendingIntro, style: AppText.caption),
               const SizedBox(height: AppSpace.md),
@@ -261,37 +286,46 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
           Text(_drinkOf(p), style: AppText.title),
           const SizedBox(height: AppSpace.xs),
           Text(_placeOf(p), style: AppText.caption),
-          Text(tr.pendingTappedAt(formatDateTime(p.command.at)),
-              style: AppText.caption),
+          Text(
+            tr.pendingTappedAt(formatDateTime(p.command.at)),
+            style: AppText.caption,
+          ),
           const SizedBox(height: AppSpace.sm),
-          InfoPill(_reasonText(p),
-              icon: Icons.info_outline_rounded, warning: !p.canRetry),
+          InfoPill(
+            _reasonText(p),
+            icon: Icons.info_outline_rounded,
+            warning: !p.canRetry,
+          ),
           if (!inReview) ...[
             const SizedBox(height: AppSpace.md),
-            Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
-              if (p.canRetry)
-                FilledButton(
-                  onPressed: busy ? null : () => _retry(p),
-                  child: Text(tr.pendingRetry),
+            Wrap(
+              spacing: AppSpace.sm,
+              runSpacing: AppSpace.sm,
+              children: [
+                if (p.canRetry)
+                  FilledButton(
+                    onPressed: busy ? null : () => _retry(p),
+                    child: Text(tr.pendingRetry),
+                  ),
+                if (p.source != null &&
+                    (p.reason == PendingReason.outingEnded ||
+                        p.reason == PendingReason.outsidePeriod ||
+                        p.reason == PendingReason.saveFailed))
+                  FilledButton(
+                    onPressed: busy ? null : () => _review(p, p.source!),
+                    child: Text(tr.pendingReviewAdd),
+                  ),
+                if (p.reason == PendingReason.missingDrink)
+                  FilledButton(
+                    onPressed: busy ? null : () => _chooseAndReview(p),
+                    child: Text(tr.pendingChooseDrink),
+                  ),
+                OutlinedButton(
+                  onPressed: busy ? null : () => _discard(p),
+                  child: Text(tr.pendingDiscard),
                 ),
-              if (p.source != null &&
-                  (p.reason == PendingReason.outingEnded ||
-                      p.reason == PendingReason.outsidePeriod ||
-                      p.reason == PendingReason.saveFailed))
-                FilledButton(
-                  onPressed: busy ? null : () => _review(p, p.source!),
-                  child: Text(tr.pendingReviewAdd),
-                ),
-              if (p.reason == PendingReason.missingDrink)
-                FilledButton(
-                  onPressed: busy ? null : () => _chooseAndReview(p),
-                  child: Text(tr.pendingChooseDrink),
-                ),
-              OutlinedButton(
-                onPressed: busy ? null : () => _discard(p),
-                child: Text(tr.pendingDiscard),
-              ),
-            ]),
+              ],
+            ),
           ],
         ],
       ),

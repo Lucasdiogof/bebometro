@@ -92,7 +92,9 @@ class _TrackingSettingsSectionState extends State<TrackingSettingsSection> {
         final available = status != TrackingStatus.unsupported;
         return SurfaceCard(
           padding: const EdgeInsets.symmetric(
-              horizontal: AppSpace.lg, vertical: AppSpace.sm),
+            horizontal: AppSpace.lg,
+            vertical: AppSpace.sm,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

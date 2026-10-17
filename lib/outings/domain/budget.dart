@@ -15,10 +15,10 @@ class BudgetStatus {
   });
 
   factory BudgetStatus.of(int budgetCents, OutingSummary s) => BudgetStatus(
-        budgetCents: budgetCents,
-        informedCents: s.informedCents,
-        unpricedCount: s.unpricedCount,
-      );
+    budgetCents: budgetCents,
+    informedCents: s.informedCents,
+    unpricedCount: s.unpricedCount,
+  );
 
   final int budgetCents;
   final int informedCents;
@@ -53,7 +53,7 @@ class BudgetStatus {
 
   /// Percent thresholds already reached (80 and 100).
   List<int> get reachedThresholds => [
-        for (final t in const [80, 100])
-          if (informedCents * 100 >= budgetCents * t) t,
-      ];
+    for (final t in const [80, 100])
+      if (informedCents * 100 >= budgetCents * t) t,
+  ];
 }

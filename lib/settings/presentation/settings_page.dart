@@ -50,14 +50,14 @@ class _SettingsViewState extends State<_SettingsView> {
     setState(() => _running = false);
     final s = sync.state;
     final text = switch (s.status) {
-      SyncStatus.synced => s.conflicts > 0
-          ? tr.settingsSyncDoneConflicts(s.conflicts)
-          : tr.settingsSyncDone,
+      SyncStatus.synced =>
+        s.conflicts > 0
+            ? tr.settingsSyncDoneConflicts(s.conflicts)
+            : tr.settingsSyncDone,
       SyncStatus.pending => tr.settingsSyncStillPending(s.pending),
       SyncStatus.syncing => tr.syncLabelSyncing,
       SyncStatus.failed ||
-      SyncStatus.localOnly =>
-        s.message ?? tr.settingsSyncFailed,
+      SyncStatus.localOnly => s.message ?? tr.settingsSyncFailed,
     };
     messenger
       ..hideCurrentSnackBar()
@@ -71,42 +71,56 @@ class _SettingsViewState extends State<_SettingsView> {
       body: SafeArea(
         child: BlocBuilder<SyncCubit, SyncState>(
           builder: (context, sync) {
-            final onlyHere = sync.status == SyncStatus.localOnly ||
+            final onlyHere =
+                sync.status == SyncStatus.localOnly ||
                 sync.status == SyncStatus.failed ||
                 sync.status == SyncStatus.pending;
             final busy = _running || sync.status == SyncStatus.syncing;
             return ListView(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
+                AppSpace.gutter,
+                0,
+                AppSpace.gutter,
+                AppSpace.xxl,
+              ),
               children: [
                 SectionTitle(tr.settingsAccount),
                 SurfaceCard(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const AccountPage()),
                   ),
-                  child: Row(children: [
-                    const Icon(Icons.account_circle_outlined,
-                        color: AppColors.amber),
-                    const SizedBox(width: AppSpace.md),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            context.watch<AuthController>().state.displayName ??
-                                tr.settingsAccount,
-                            style: AppText.subtitle,
-                          ),
-                          Text(
-                            context.watch<AuthController>().state.email ?? '',
-                            style: AppText.caption,
-                          ),
-                        ],
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.account_circle_outlined,
+                        color: AppColors.amber,
                       ),
-                    ),
-                    const Icon(Icons.chevron_right_rounded,
-                        color: AppColors.textMuted),
-                  ]),
+                      const SizedBox(width: AppSpace.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context
+                                      .watch<AuthController>()
+                                      .state
+                                      .displayName ??
+                                  tr.settingsAccount,
+                              style: AppText.subtitle,
+                            ),
+                            Text(
+                              context.watch<AuthController>().state.email ?? '',
+                              style: AppText.caption,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(
+                        Icons.chevron_right_rounded,
+                        color: AppColors.textMuted,
+                      ),
+                    ],
+                  ),
                 ),
                 SectionTitle(tr.settingsLanguage),
                 const LanguageSettingsSection(),
@@ -118,28 +132,35 @@ class _SettingsViewState extends State<_SettingsView> {
                     final cubit = context.read<TablePrefsCubit>();
                     return SurfaceCard(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpace.sm, vertical: AppSpace.xs),
-                      child: Column(children: [
-                        SwitchListTile(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: AppSpace.sm),
-                          title: Text(tr.settingsTableDefault),
-                          subtitle: Text(tr.settingsTableDefaultHint),
-                          value: prefs.view == TableView.table,
-                          activeThumbColor: AppColors.amber,
-                          onChanged: (v) => cubit
-                              .setView(v ? TableView.table : TableView.list),
-                        ),
-                        SwitchListTile(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: AppSpace.sm),
-                          title: Text(tr.settingsTableAnimations),
-                          subtitle: Text(tr.settingsTableAnimationsHint),
-                          value: prefs.animations,
-                          activeThumbColor: AppColors.amber,
-                          onChanged: cubit.setAnimations,
-                        ),
-                      ]),
+                        horizontal: AppSpace.sm,
+                        vertical: AppSpace.xs,
+                      ),
+                      child: Column(
+                        children: [
+                          SwitchListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: AppSpace.sm,
+                            ),
+                            title: Text(tr.settingsTableDefault),
+                            subtitle: Text(tr.settingsTableDefaultHint),
+                            value: prefs.view == TableView.table,
+                            activeThumbColor: AppColors.amber,
+                            onChanged: (v) => cubit.setView(
+                              v ? TableView.table : TableView.list,
+                            ),
+                          ),
+                          SwitchListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: AppSpace.sm,
+                            ),
+                            title: Text(tr.settingsTableAnimations),
+                            subtitle: Text(tr.settingsTableAnimationsHint),
+                            value: prefs.animations,
+                            activeThumbColor: AppColors.amber,
+                            onChanged: cubit.setAnimations,
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -150,66 +171,88 @@ class _SettingsViewState extends State<_SettingsView> {
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const MyDrinksPage()),
                   ),
-                  child: Row(children: [
-                    Icon(Icons.bookmark_border_rounded, color: AppColors.amber),
-                    SizedBox(width: AppSpace.md),
-                    Expanded(
-                      child: Text(tr.settingsMyDrinksAndRecipes,
-                          style: AppText.subtitle),
-                    ),
-                    Icon(Icons.chevron_right_rounded,
-                        color: AppColors.textMuted),
-                  ]),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.bookmark_border_rounded,
+                        color: AppColors.amber,
+                      ),
+                      SizedBox(width: AppSpace.md),
+                      Expanded(
+                        child: Text(
+                          tr.settingsMyDrinksAndRecipes,
+                          style: AppText.subtitle,
+                        ),
+                      ),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        color: AppColors.textMuted,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: AppSpace.sm),
                 SurfaceCard(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const PlacesPage()),
+                  onTap: () => Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (_) => const PlacesPage())),
+                  child: Row(
+                    children: [
+                      Icon(Icons.place_outlined, color: AppColors.amber),
+                      SizedBox(width: AppSpace.md),
+                      Expanded(
+                        child: Text(
+                          tr.settingsSavedPlaces,
+                          style: AppText.subtitle,
+                        ),
+                      ),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        color: AppColors.textMuted,
+                      ),
+                    ],
                   ),
-                  child: Row(children: [
-                    Icon(Icons.place_outlined, color: AppColors.amber),
-                    SizedBox(width: AppSpace.md),
-                    Expanded(
-                      child: Text(tr.settingsSavedPlaces, style: AppText.subtitle),
-                    ),
-                    Icon(Icons.chevron_right_rounded,
-                        color: AppColors.textMuted),
-                  ]),
                 ),
                 const SizedBox(height: AppSpace.sm),
                 SurfaceCard(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const ExportPage()),
+                  onTap: () => Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (_) => const ExportPage())),
+                  child: Row(
+                    children: [
+                      Icon(Icons.download_outlined, color: AppColors.amber),
+                      SizedBox(width: AppSpace.md),
+                      Expanded(
+                        child: Text(tr.settingsExport, style: AppText.subtitle),
+                      ),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        color: AppColors.textMuted,
+                      ),
+                    ],
                   ),
-                  child: Row(children: [
-                    Icon(Icons.download_outlined, color: AppColors.amber),
-                    SizedBox(width: AppSpace.md),
-                    Expanded(
-                      child: Text(tr.settingsExport, style: AppText.subtitle),
-                    ),
-                    Icon(Icons.chevron_right_rounded,
-                        color: AppColors.textMuted),
-                  ]),
                 ),
                 SectionTitle(tr.settingsStorage),
                 BlocBuilder<SettingsCubit, SettingsState>(
                   builder: (context, s) => SurfaceCard(
-                    child: Row(children: [
-                      Expanded(
-                        child: StatTile(
-                          label: tr.settingsOutingsHere,
-                          value: '${s.outings}',
-                          icon: Icons.nightlife_rounded,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: StatTile(
+                            label: tr.settingsOutingsHere,
+                            value: '${s.outings}',
+                            icon: Icons.nightlife_rounded,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: StatTile(
-                          label: tr.settingsDrinkRecords,
-                          value: '${s.drinks}',
-                          icon: Icons.local_bar_rounded,
+                        Expanded(
+                          child: StatTile(
+                            label: tr.settingsDrinkRecords,
+                            value: '${s.drinks}',
+                            icon: Icons.local_bar_rounded,
+                          ),
                         ),
-                      ),
-                    ]),
+                      ],
+                    ),
                   ),
                 ),
                 SectionTitle(tr.settingsSync),
@@ -227,7 +270,8 @@ class _SettingsViewState extends State<_SettingsView> {
                         sync.lastSyncAt == null
                             ? tr.settingsLastSyncNever
                             : tr.settingsLastSync(
-                                formatDateTime(sync.lastSyncAt!)),
+                                formatDateTime(sync.lastSyncAt!),
+                              ),
                         style: AppText.caption,
                       ),
                       if (sync.pending > 0)
@@ -245,12 +289,14 @@ class _SettingsViewState extends State<_SettingsView> {
                             ? const SizedBox(
                                 width: 18,
                                 height: 18,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
                               )
                             : const Icon(Icons.sync_rounded),
                         label: Text(
-                            busy ? tr.syncLabelSyncing : tr.settingsSyncNow),
+                          busy ? tr.syncLabelSyncing : tr.settingsSyncNow,
+                        ),
                       ),
                     ],
                   ),
@@ -262,8 +308,10 @@ class _SettingsViewState extends State<_SettingsView> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.info_outline_rounded,
-                            color: AppColors.amber),
+                        const Icon(
+                          Icons.info_outline_rounded,
+                          color: AppColors.amber,
+                        ),
                         const SizedBox(width: AppSpace.md),
                         Expanded(
                           child: Text(
@@ -285,7 +333,6 @@ class _SettingsViewState extends State<_SettingsView> {
   }
 }
 
-
 /// Turns the budget warnings (80% and 100% of the informed spending) on or off.
 class _BudgetAlertsTile extends StatefulWidget {
   const _BudgetAlertsTile();
@@ -301,7 +348,9 @@ class _BudgetAlertsTileState extends State<_BudgetAlertsTile> {
   Widget build(BuildContext context) {
     return SurfaceCard(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpace.sm, vertical: AppSpace.xs),
+        horizontal: AppSpace.sm,
+        vertical: AppSpace.xs,
+      ),
       child: SwitchListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: AppSpace.sm),
         title: Text(tr.settingsBudgetAlerts),

@@ -29,9 +29,9 @@ class _ExportPageState extends State<ExportPage> {
   String _json() {
     final store = getIt<LocalStore>();
     List<Map<String, dynamic>> live(String c) => [
-          for (final j in store.all(c))
-            if (j['deleted_at'] == null) j,
-        ];
+      for (final j in store.all(c))
+        if (j['deleted_at'] == null) j,
+    ];
     return ExportBuilder.json(
       exportedAt: DateTime.now(),
       places: store.all(LocalStore.places),
@@ -77,15 +77,17 @@ class _ExportPageState extends State<ExportPage> {
         // failure (see ShareService).
         messenger
           ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(
-            content: Text(tr.exportShareUnavailable),
-            duration: const Duration(seconds: 8),
-            persist: false,
-            action: SnackBarAction(
-              label: tr.tabCopyText,
-              onPressed: () => _copy(() => text),
+          ..showSnackBar(
+            SnackBar(
+              content: Text(tr.exportShareUnavailable),
+              duration: const Duration(seconds: 8),
+              persist: false,
+              action: SnackBarAction(
+                label: tr.tabCopyText,
+                onPressed: () => _copy(() => text),
+              ),
             ),
-          ));
+          );
       }
     } catch (_) {
       messenger
@@ -115,31 +117,38 @@ class _ExportPageState extends State<ExportPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(children: [
-              Icon(icon),
-              const SizedBox(width: AppSpace.md),
-              Expanded(child: Text(title, style: AppText.subtitle)),
-            ]),
+            Row(
+              children: [
+                Icon(icon),
+                const SizedBox(width: AppSpace.md),
+                Expanded(child: Text(title, style: AppText.subtitle)),
+              ],
+            ),
             const SizedBox(height: AppSpace.xs),
             Text(subtitle, style: AppText.caption),
             const SizedBox(height: AppSpace.md),
-            Row(children: [
-              Expanded(
-                child: FilledButton.icon(
-                  onPressed: _busy
-                      ? null
-                      : () => _export(name: fileName, mime: mime, build: build),
-                  icon: const Icon(Icons.ios_share_rounded),
-                  label: Text(tr.exportButton),
+            Row(
+              children: [
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: _busy
+                        ? null
+                        : () =>
+                              _export(name: fileName, mime: mime, build: build),
+                    icon: const Icon(Icons.ios_share_rounded),
+                    label: Text(tr.exportButton),
+                  ),
                 ),
-              ),
-              const SizedBox(width: AppSpace.sm),
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(minimumSize: const Size(0, 52)),
-                onPressed: () => _copy(build),
-                child: Text(tr.exportCopy),
-              ),
-            ]),
+                const SizedBox(width: AppSpace.sm),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(0, 52),
+                  ),
+                  onPressed: () => _copy(build),
+                  child: Text(tr.exportCopy),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -152,7 +161,11 @@ class _ExportPageState extends State<ExportPage> {
       appBar: AppBar(title: Text(tr.exportTitle)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
+          AppSpace.gutter,
+          0,
+          AppSpace.gutter,
+          AppSpace.xxl,
+        ),
         children: [
           Text(tr.exportIntro, style: AppText.caption),
           const SizedBox(height: AppSpace.lg),

@@ -71,9 +71,13 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
                   showSelectedIcon: false,
                   segments: [
                     ButtonSegment(
-                        value: GameMode.light, label: Text(GameMode.light.label)),
+                      value: GameMode.light,
+                      label: Text(GameMode.light.label),
+                    ),
                     ButtonSegment(
-                        value: GameMode.adult, label: Text(GameMode.adult.label)),
+                      value: GameMode.adult,
+                      label: Text(GameMode.adult.label),
+                    ),
                   ],
                   selected: {mode},
                   onSelectionChanged: (s) => setState(() => mode = s.first),
@@ -84,10 +88,13 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
                     showSelectedIcon: false,
                     segments: [
                       ButtonSegment(
-                          value: CardKind.truth,
-                          label: Text(CardKind.truth.label)),
+                        value: CardKind.truth,
+                        label: Text(CardKind.truth.label),
+                      ),
                       ButtonSegment(
-                          value: CardKind.dare, label: Text(CardKind.dare.label)),
+                        value: CardKind.dare,
+                        label: Text(CardKind.dare.label),
+                      ),
                     ],
                     selected: {kind},
                     onSelectionChanged: (s) => setState(() => kind = s.first),
@@ -105,8 +112,8 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
                     hintText: game == GameType.neverHaveIEver
                         ? tr.gameCardHintNever
                         : (game == GameType.mostLikely
-                            ? tr.gameCardHintMost
-                            : null),
+                              ? tr.gameCardHintMost
+                              : null),
                     errorText: error,
                   ),
                 ),
@@ -117,13 +124,18 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
           ),
           actions: [
             TextButton(
-                onPressed: () => Navigator.pop(ctx, false),
-                child: Text(tr.commonCancel)),
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(tr.commonCancel),
+            ),
             TextButton(
               onPressed: () async {
                 try {
                   await _repo.addCustom(
-                      game: game, mode: mode, kind: kind, text: text.text);
+                    game: game,
+                    mode: mode,
+                    kind: kind,
+                    text: text.text,
+                  );
                   if (ctx.mounted) Navigator.pop(ctx, true);
                 } on ArgumentError catch (e) {
                   setState(() => error = '${e.message}');
@@ -147,12 +159,16 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
         content: Text(card.text),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.commonCancel)),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.commonCancel),
+          ),
           TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.commonDelete,
-                  style: const TextStyle(color: AppColors.danger))),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              tr.commonDelete,
+              style: const TextStyle(color: AppColors.danger),
+            ),
+          ),
         ],
       ),
     );
@@ -175,37 +191,51 @@ class _CustomCardsPageState extends State<CustomCardsPage> {
                   )
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(
-                        AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                      AppSpace.gutter,
+                      0,
+                      AppSpace.gutter,
+                      AppSpace.xl,
+                    ),
                     children: [
                       for (final c in cards)
                         Padding(
                           padding: const EdgeInsets.only(bottom: AppSpace.sm),
                           child: SurfaceCard(
-                            child: Row(children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(c.text, style: AppText.body),
-                                    const SizedBox(height: AppSpace.xs),
-                                    Text(
-                                      c.game == GameType.truthOrDare
-                                          ? tr.gameCardLineKind(c.game.title,
-                                              c.mode.label, c.kind.label)
-                                          : tr.gameCardLine(
-                                              c.game.title, c.mode.label),
-                                      style: AppText.caption,
-                                    ),
-                                  ],
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(c.text, style: AppText.body),
+                                      const SizedBox(height: AppSpace.xs),
+                                      Text(
+                                        c.game == GameType.truthOrDare
+                                            ? tr.gameCardLineKind(
+                                                c.game.title,
+                                                c.mode.label,
+                                                c.kind.label,
+                                              )
+                                            : tr.gameCardLine(
+                                                c.game.title,
+                                                c.mode.label,
+                                              ),
+                                        style: AppText.caption,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              IconButton(
-                                tooltip: tr.gameCardDelete,
-                                onPressed: () => _delete(c),
-                                icon: const Icon(Icons.delete_outline_rounded,
-                                    color: AppColors.danger),
-                              ),
-                            ]),
+                                IconButton(
+                                  tooltip: tr.gameCardDelete,
+                                  onPressed: () => _delete(c),
+                                  icon: const Icon(
+                                    Icons.delete_outline_rounded,
+                                    color: AppColors.danger,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                     ],

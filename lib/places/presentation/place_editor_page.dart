@@ -56,8 +56,12 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
   }
 
   Future<void> _locate() async {
-    final d = await PlacePickerPage.open(context,
-        mode: PlacePickerMode.locate, type: _type, editing: widget.editing);
+    final d = await PlacePickerPage.open(
+      context,
+      mode: PlacePickerMode.locate,
+      type: _type,
+      editing: widget.editing,
+    );
     if (d == null || !mounted) return;
     setState(() {
       _providerName = d.providerName;
@@ -77,12 +81,12 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
   }
 
   void _clearLocation() => setState(() {
-        _providerName = null;
-        _point = null;
-        _source = null;
-        _provider = null;
-        _providerPlaceId = null;
-      });
+    _providerName = null;
+    _point = null;
+    _source = null;
+    _provider = null;
+    _providerPlaceId = null;
+  });
 
   @override
   void dispose() {
@@ -140,10 +144,13 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
             child: ListView(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                AppSpace.gutter,
+                0,
+                AppSpace.gutter,
+                AppSpace.xl,
+              ),
               children: [
-                if (editing)
-                  Text(tr.placeEditorNote, style: AppText.caption),
+                if (editing) Text(tr.placeEditorNote, style: AppText.caption),
                 SectionTitle(tr.customType),
                 OutingTypePicker(
                   selected: _type,
@@ -165,60 +172,65 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(children: [
-                        Icon(
-                          _point != null
-                              ? Icons.location_on_rounded
-                              : Icons.location_off_outlined,
-                          color: _point != null
-                              ? AppColors.amber
-                              : AppColors.textMuted,
-                        ),
-                        const SizedBox(width: AppSpace.md),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _providerName ??
-                                    (_point != null
-                                        ? tr.placePointOnMap
-                                        : tr.placeEditorNoPoint),
-                                style: AppText.subtitle,
-                              ),
-                              Text(
-                                switch (_source) {
+                      Row(
+                        children: [
+                          Icon(
+                            _point != null
+                                ? Icons.location_on_rounded
+                                : Icons.location_off_outlined,
+                            color: _point != null
+                                ? AppColors.amber
+                                : AppColors.textMuted,
+                          ),
+                          const SizedBox(width: AppSpace.md),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _providerName ??
+                                      (_point != null
+                                          ? tr.placePointOnMap
+                                          : tr.placeEditorNoPoint),
+                                  style: AppText.subtitle,
+                                ),
+                                Text(switch (_source) {
                                   LocationSource.search =>
                                     tr.placeEditorSourceSearch,
                                   LocationSource.currentLocation =>
                                     tr.placeSourceLocation,
                                   LocationSource.adjusted =>
                                     tr.placeEditorSourceAdjusted,
-                                  null => _point == null
-                                      ? tr.placeEditorNoPointHint
-                                      : tr.placeEditorPointSaved,
-                                },
-                                style: AppText.caption,
-                              ),
-                            ],
+                                  null =>
+                                    _point == null
+                                        ? tr.placeEditorNoPointHint
+                                        : tr.placeEditorPointSaved,
+                                }, style: AppText.caption),
+                              ],
+                            ),
                           ),
-                        ),
-                      ]),
+                        ],
+                      ),
                       const SizedBox(height: AppSpace.sm),
-                      Wrap(spacing: AppSpace.sm, children: [
-                        OutlinedButton.icon(
-                          onPressed: _locate,
-                          icon: const Icon(Icons.search_rounded),
-                          label: Text(_point == null
-                              ? tr.placeEditorSearchMap
-                              : tr.placeEditorSearchAdjust),
-                        ),
-                        if (_point != null || _providerName != null)
-                          TextButton(
-                            onPressed: _clearLocation,
-                            child: Text(tr.placeEditorRemoveFromMap),
+                      Wrap(
+                        spacing: AppSpace.sm,
+                        children: [
+                          OutlinedButton.icon(
+                            onPressed: _locate,
+                            icon: const Icon(Icons.search_rounded),
+                            label: Text(
+                              _point == null
+                                  ? tr.placeEditorSearchMap
+                                  : tr.placeEditorSearchAdjust,
+                            ),
                           ),
-                      ]),
+                          if (_point != null || _providerName != null)
+                            TextButton(
+                              onPressed: _clearLocation,
+                              child: Text(tr.placeEditorRemoveFromMap),
+                            ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -241,8 +253,9 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                       child: TextField(
                         controller: _city,
                         textCapitalization: TextCapitalization.words,
-                        decoration:
-                            InputDecoration(labelText: tr.startCityLabel),
+                        decoration: InputDecoration(
+                          labelText: tr.startCityLabel,
+                        ),
                       ),
                     ),
                     const SizedBox(width: AppSpace.sm),
@@ -252,7 +265,9 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                         textCapitalization: TextCapitalization.characters,
                         maxLength: 2,
                         decoration: InputDecoration(
-                            labelText: tr.startStateLabel, counterText: ''),
+                          labelText: tr.startStateLabel,
+                          counterText: '',
+                        ),
                       ),
                     ),
                   ],
@@ -261,8 +276,11 @@ class _PlaceEditorPageState extends State<PlaceEditorPage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.lock_outline_rounded,
-                        size: 16, color: AppColors.textMuted),
+                    const Icon(
+                      Icons.lock_outline_rounded,
+                      size: 16,
+                      color: AppColors.textMuted,
+                    ),
                     const SizedBox(width: AppSpace.sm),
                     Expanded(
                       child: Text(

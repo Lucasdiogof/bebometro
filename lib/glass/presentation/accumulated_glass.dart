@@ -32,7 +32,10 @@ class AccumulatedGlass extends StatelessWidget {
     final scale = glassScaleMl(total);
     return Semantics(
       label: tr.glassSemantics(
-          formatVolume(total), formatVolume(scale), unknownVolumeCount),
+        formatVolume(total),
+        formatVolume(scale),
+        unknownVolumeCount,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -55,16 +58,20 @@ class AccumulatedGlass extends StatelessWidget {
                 Text(tr.glassVolumeReported, style: AppText.caption),
                 Text(formatVolume(total), style: AppText.headline),
                 const SizedBox(height: AppSpace.xs),
-                Text(tr.glassScale(formatVolume(scale)),
-                    style: AppText.caption),
+                Text(
+                  tr.glassScale(formatVolume(scale)),
+                  style: AppText.caption,
+                ),
                 const SizedBox(height: AppSpace.md),
                 _Legend(
-                    color: AppColors.amber,
-                    text: tr.glassAlcoholic(formatVolume(alcoholicMl))),
+                  color: AppColors.amber,
+                  text: tr.glassAlcoholic(formatVolume(alcoholicMl)),
+                ),
                 const SizedBox(height: AppSpace.xs),
                 _Legend(
-                    color: const Color(0xFF6EC1E4),
-                    text: tr.glassOther(formatVolume(otherMl))),
+                  color: const Color(0xFF6EC1E4),
+                  text: tr.glassOther(formatVolume(otherMl)),
+                ),
                 if (unknownVolumeCount > 0) ...[
                   const SizedBox(height: AppSpace.md),
                   InfoPill(
@@ -91,18 +98,20 @@ class _Legend extends StatelessWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context) => Row(children: [
-        Container(
-          width: 12,
-          height: 12,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(3),
-          ),
+  Widget build(BuildContext context) => Row(
+    children: [
+      Container(
+        width: 12,
+        height: 12,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(3),
         ),
-        const SizedBox(width: AppSpace.sm),
-        Expanded(child: Text(text, style: AppText.caption)),
-      ]);
+      ),
+      const SizedBox(width: AppSpace.sm),
+      Expanded(child: Text(text, style: AppText.caption)),
+    ],
+  );
 }
 
 class _GlassPainter extends CustomPainter {
@@ -132,7 +141,10 @@ class _GlassPainter extends CustomPainter {
       ..quadraticBezierTo(left + 10, bottom, left + 10, bottom - 4)
       ..close();
 
-    canvas.drawPath(glass, Paint()..color = Colors.white.withValues(alpha: 0.08));
+    canvas.drawPath(
+      glass,
+      Paint()..color = Colors.white.withValues(alpha: 0.08),
+    );
 
     final h = bottom - top;
     double yFor(int ml) => bottom - h * (ml / scaleMl).clamp(0.0, 1.0);

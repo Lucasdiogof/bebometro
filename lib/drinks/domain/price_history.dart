@@ -15,11 +15,11 @@ class ComparableKey {
   });
 
   factory ComparableKey.of(DrinkEntry e) => ComparableKey(
-        item: e.catalogItemId ?? 'name:${e.name}',
-        containerMl: e.containerMl,
-        presentation: e.presentation,
-        shared: e.isShared,
-      );
+    item: e.catalogItemId ?? 'name:${e.name}',
+    containerMl: e.containerMl,
+    presentation: e.presentation,
+    shared: e.isShared,
+  );
 
   final String item;
   final int? containerMl;
@@ -139,20 +139,23 @@ List<PriceGroupStats> priceStatsFor(List<DrinkEntry> entries) {
     g.sort((a, b) => a.consumedAt.compareTo(b.consumedAt));
     final prices = [for (final e in g) _packageCents(e)!];
     final last = g.last;
-    final size = (last.presentation == null
+    final size =
+        (last.presentation == null
             ? null
             : localizePresentation(last.presentation!)) ??
         (last.containerMl == null ? null : formatMl(last.containerMl!));
-    result.add(PriceGroupStats(
-      label: [last.name, ?size].join(' · '),
-      count: g.length,
-      lastCents: _packageCents(last)!,
-      lastAt: last.consumedAt,
-      minCents: prices.reduce((a, b) => a < b ? a : b),
-      maxCents: prices.reduce((a, b) => a > b ? a : b),
-      firstAt: g.first.consumedAt,
-      shared: last.isShared,
-    ));
+    result.add(
+      PriceGroupStats(
+        label: [last.name, ?size].join(' · '),
+        count: g.length,
+        lastCents: _packageCents(last)!,
+        lastAt: last.consumedAt,
+        minCents: prices.reduce((a, b) => a < b ? a : b),
+        maxCents: prices.reduce((a, b) => a > b ? a : b),
+        firstAt: g.first.consumedAt,
+        shared: last.isShared,
+      ),
+    );
   }
   result.sort((a, b) => b.count.compareTo(a.count));
   return result;

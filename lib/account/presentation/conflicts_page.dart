@@ -66,14 +66,21 @@ class _ConflictsPageState extends State<ConflictsPage> {
             return Center(
               child: Padding(
                 padding: EdgeInsets.all(AppSpace.xl),
-                child: Text(tr.conflictNone,
-                    style: AppText.body, textAlign: TextAlign.center),
+                child: Text(
+                  tr.conflictNone,
+                  style: AppText.body,
+                  textAlign: TextAlign.center,
+                ),
               ),
             );
           }
           return ListView(
             padding: const EdgeInsets.fromLTRB(
-                AppSpace.gutter, AppSpace.sm, AppSpace.gutter, AppSpace.xxl),
+              AppSpace.gutter,
+              AppSpace.sm,
+              AppSpace.gutter,
+              AppSpace.xxl,
+            ),
             children: [
               Text(tr.conflictIntro, style: AppText.caption),
               const SizedBox(height: AppSpace.md),
@@ -94,8 +101,9 @@ class _ConflictsPageState extends State<ConflictsPage> {
   Widget _activeCard(SyncConflict c) {
     final store = getIt<LocalStore>();
     final local = store.get(LocalStore.outings, c.id) ?? c.local;
-    final other =
-        c.otherId == null ? null : store.get(LocalStore.outings, c.otherId!);
+    final other = c.otherId == null
+        ? null
+        : store.get(LocalStore.outings, c.otherId!);
     return SurfaceCard(
       highlight: true,
       child: Column(
@@ -108,21 +116,29 @@ class _ConflictsPageState extends State<ConflictsPage> {
           _outingLine(tr.conflictFromHere, local),
           if (other != null) _outingLine(tr.conflictFromOther, other),
           const SizedBox(height: AppSpace.sm),
-          Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
-            OutlinedButton(
-              onPressed: _busy
-                  ? null
-                  : () => _run(() => _endOne(c, c.id), tr.conflictOutingEnded),
-              child: Text(tr.conflictEndHere),
-            ),
-            if (other != null)
+          Wrap(
+            spacing: AppSpace.sm,
+            runSpacing: AppSpace.sm,
+            children: [
               OutlinedButton(
                 onPressed: _busy
                     ? null
-                    : () => _run(() => _endOne(c, c.otherId!), tr.conflictOutingEnded),
-                child: Text(tr.conflictEndOther),
+                    : () =>
+                          _run(() => _endOne(c, c.id), tr.conflictOutingEnded),
+                child: Text(tr.conflictEndHere),
               ),
-          ]),
+              if (other != null)
+                OutlinedButton(
+                  onPressed: _busy
+                      ? null
+                      : () => _run(
+                          () => _endOne(c, c.otherId!),
+                          tr.conflictOutingEnded,
+                        ),
+                  child: Text(tr.conflictEndOther),
+                ),
+            ],
+          ),
         ],
       ),
     );
@@ -134,7 +150,8 @@ class _ConflictsPageState extends State<ConflictsPage> {
         .all(LocalStore.drinkEntries)
         .where((e) => e['outing_id'] == o['id'] && e['deleted_at'] == null)
         .length;
-    final name = (o['nickname'] as String?) ??
+    final name =
+        (o['nickname'] as String?) ??
         (o['place_name'] as String?) ??
         (o['address'] as String?) ??
         tr.outingFallbackName;
@@ -165,49 +182,67 @@ class _ConflictsPageState extends State<ConflictsPage> {
           if (remote == null)
             Text(tr.conflictRemoteUnreadable, style: AppText.caption)
           else
-            _version(c.remoteDeleted ? tr.conflictCloudDeleted : tr.conflictCloud,
-                c.collection, remote),
-          const SizedBox(height: AppSpace.md),
-          Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
-            FilledButton.tonal(
-              onPressed: _busy
-                  ? null
-                  : () => _run(() => _conflicts.keepLocal(c),
-                      c.remoteDeleted ? tr.conflictRestored : tr.conflictKeptLocal),
-              child: Text(c.remoteDeleted
-                  ? tr.conflictRestore
-                  : tr.conflictKeepLocal),
+            _version(
+              c.remoteDeleted ? tr.conflictCloudDeleted : tr.conflictCloud,
+              c.collection,
+              remote,
             ),
-            if (remote != null)
-              OutlinedButton(
+          const SizedBox(height: AppSpace.md),
+          Wrap(
+            spacing: AppSpace.sm,
+            runSpacing: AppSpace.sm,
+            children: [
+              FilledButton.tonal(
                 onPressed: _busy
                     ? null
-                    : () => _run(() => _conflicts.useRemote(c),
-                        c.remoteDeleted ? tr.conflictDeletionAccepted : tr.conflictUsedRemote),
-                child: Text(c.remoteDeleted
-                    ? tr.conflictAcceptDeletion
-                    : tr.conflictUseRemote),
+                    : () => _run(
+                        () => _conflicts.keepLocal(c),
+                        c.remoteDeleted
+                            ? tr.conflictRestored
+                            : tr.conflictKeptLocal,
+                      ),
+                child: Text(
+                  c.remoteDeleted ? tr.conflictRestore : tr.conflictKeepLocal,
+                ),
               ),
-          ]),
+              if (remote != null)
+                OutlinedButton(
+                  onPressed: _busy
+                      ? null
+                      : () => _run(
+                          () => _conflicts.useRemote(c),
+                          c.remoteDeleted
+                              ? tr.conflictDeletionAccepted
+                              : tr.conflictUsedRemote,
+                        ),
+                  child: Text(
+                    c.remoteDeleted
+                        ? tr.conflictAcceptDeletion
+                        : tr.conflictUseRemote,
+                  ),
+                ),
+            ],
+          ),
         ],
       ),
     );
   }
 
   String _title(SyncConflict c) => switch (c.collection) {
-        LocalStore.drinkEntries => tr.conflictDrink,
-        LocalStore.outingTabs => tr.conflictTab,
-        LocalStore.outings => tr.conflictOuting,
-        LocalStore.places => tr.conflictPlace,
-        LocalStore.customDrinks => tr.conflictCustomDrink,
-        _ => tr.conflictItem,
-      };
+    LocalStore.drinkEntries => tr.conflictDrink,
+    LocalStore.outingTabs => tr.conflictTab,
+    LocalStore.outings => tr.conflictOuting,
+    LocalStore.places => tr.conflictPlace,
+    LocalStore.customDrinks => tr.conflictCustomDrink,
+    _ => tr.conflictItem,
+  };
 
   Widget _version(String label, String collection, Map<String, dynamic> j) {
     final updated = DateTime.tryParse(j['updated_at'] as String? ?? '');
     final lines = <String>[
       ..._describe(collection, j),
-      if (updated != null) tr.conflictEditedAt(formatDateTime(updated.toLocal())),
+      if (updated != null)
+        tr.conflictEditedAt(formatDateTime(updated.toLocal())),
     ];
     return Container(
       width: double.infinity,
@@ -228,7 +263,8 @@ class _ConflictsPageState extends State<ConflictsPage> {
 
   /// A few readable facts of each version (never ids or column names).
   List<String> _describe(String collection, Map<String, dynamic> j) {
-    String money(Object? c) => c is num ? formatCents(c.toInt()) : tr.priceUnknown;
+    String money(Object? c) =>
+        c is num ? formatCents(c.toInt()) : tr.priceUnknown;
     switch (collection) {
       case LocalStore.drinkEntries:
         return [
@@ -240,7 +276,9 @@ class _ConflictsPageState extends State<ConflictsPage> {
         final data = j['data'] is Map ? j['data'] as Map : const {};
         final payments = (data['payments'] as List?) ?? const [];
         final paid = payments.fold<int>(
-            0, (s, p) => s + ((p is Map ? p['cents'] : 0) as num? ?? 0).toInt());
+          0,
+          (s, p) => s + ((p is Map ? p['cents'] : 0) as num? ?? 0).toInt(),
+        );
         final people = (data['participants'] as List?)?.length ?? 0;
         return [
           tr.conflictTabPeople(people, (data['extras'] as List?)?.length ?? 0),
@@ -250,13 +288,24 @@ class _ConflictsPageState extends State<ConflictsPage> {
         final started = DateTime.tryParse(j['started_at'] as String? ?? '');
         final ended = DateTime.tryParse(j['ended_at'] as String? ?? '');
         return [
-          (j['nickname'] ?? j['place_name'] ?? j['address'] ?? tr.outingFallbackName).toString(),
-          if (started != null) tr.conflictStart(formatDateTime(started.toLocal())),
-          ended != null ? tr.conflictEnd(formatDateTime(ended.toLocal())) : tr.outingInProgress,
+          (j['nickname'] ??
+                  j['place_name'] ??
+                  j['address'] ??
+                  tr.outingFallbackName)
+              .toString(),
+          if (started != null)
+            tr.conflictStart(formatDateTime(started.toLocal())),
+          ended != null
+              ? tr.conflictEnd(formatDateTime(ended.toLocal()))
+              : tr.outingInProgress,
         ];
       default:
         return [
-          (j['nickname'] ?? j['name'] ?? j['provider_name'] ?? j['address'] ?? tr.itemFallbackName)
+          (j['nickname'] ??
+                  j['name'] ??
+                  j['provider_name'] ??
+                  j['address'] ??
+                  tr.itemFallbackName)
               .toString(),
         ];
     }

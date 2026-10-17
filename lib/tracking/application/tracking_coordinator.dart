@@ -39,12 +39,7 @@ enum TrackingStatus {
 /// surface for an outing that has ended: every run re-checks the outing after
 /// each await and a newer run cancels the older one.
 class TrackingCoordinator {
-  TrackingCoordinator(
-    this._platform,
-    this._prefs,
-    this._outings,
-    this._drinks,
-  );
+  TrackingCoordinator(this._platform, this._prefs, this._outings, this._drinks);
 
   final TrackingPlatform _platform;
   final TrackingPrefs _prefs;
@@ -278,7 +273,8 @@ class TrackingCoordinator {
 
   /// Record id a command creates; the same for the automatic path and for a
   /// review, which is what makes both idempotent.
-  String entryIdFor(PendingCommand p) => _drinks.entryIdForCommand(p.command.id);
+  String entryIdFor(PendingCommand p) =>
+      _drinks.entryIdForCommand(p.command.id);
 
   /// Origin written by BOTH the automatic path and a review.
   EntryOrigin originOf(PendingCommand p) =>
@@ -325,30 +321,37 @@ class TrackingCoordinator {
           continue;
         }
         if (c.kind != 'another') {
-          pending.add(PendingCommand(c, outing, null, PendingReason.unsupported));
+          pending.add(
+            PendingCommand(c, outing, null, PendingReason.unsupported),
+          );
           continue;
         }
         final found = c.entryId == null ? null : _drinks.entryById(c.entryId!);
-        final source =
-            found != null && found.outingId == outing.id ? found : null;
-        final inPeriod = !c.at.isBefore(outing.startedAt) &&
+        final source = found != null && found.outingId == outing.id
+            ? found
+            : null;
+        final inPeriod =
+            !c.at.isBefore(outing.startedAt) &&
             (outing.endedAt == null || !c.at.isAfter(outing.endedAt!)) &&
             !c.at.isAfter(now.add(const Duration(minutes: 5)));
         final reason = source == null
             ? PendingReason.missingDrink
             : !inPeriod
-                ? PendingReason.outsidePeriod
-                : !outing.isActive
-                    ? PendingReason.outingEnded
-                    : null;
+            ? PendingReason.outsidePeriod
+            : !outing.isActive
+            ? PendingReason.outingEnded
+            : null;
         if (reason != null) {
           pending.add(PendingCommand(c, outing, source, reason));
           continue;
         }
-        await _drinks.save(source!.repeated(
+        await _drinks.save(
+          source!.repeated(
             newId: newId,
             at: c.at,
-            origin: EntryOrigin.lockScreen(commandId: c.id, tappedAt: c.at)));
+            origin: EntryOrigin.lockScreen(commandId: c.id, tappedAt: c.at),
+          ),
+        );
         done.add(c.id);
         registered++;
       } catch (e) {
@@ -359,8 +362,7 @@ class TrackingCoordinator {
         try {
           found = c.entryId == null ? null : _drinks.entryById(c.entryId!);
         } catch (_) {}
-        pending.add(
-            PendingCommand(c, outing, found, PendingReason.saveFailed));
+        pending.add(PendingCommand(c, outing, found, PendingReason.saveFailed));
       }
     }
     if (done.isNotEmpty) await _platform.ackCommands(done);
@@ -377,7 +379,8 @@ class TrackingCoordinator {
     for (final p in pending) {
       byOuting[p.outing.id] = (byOuting[p.outing.id] ?? 0) + 1;
     }
-    final changed = byOuting.length != _pendingByOuting.length ||
+    final changed =
+        byOuting.length != _pendingByOuting.length ||
         byOuting.entries.any((e) => _pendingByOuting[e.key] != e.value);
     _pendingByOuting = byOuting;
     if (changed) schedule(immediate: true);

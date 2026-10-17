@@ -134,8 +134,9 @@ class OutingSummary {
   /// E.g. "R$ 90,00 informados · 2 bebidas sem preço".
   String get financeLine {
     if (entryCount == 0) return tr.financeNoRecords;
-    final unpricedText =
-        unpricedCount == 0 ? null : tr.financeUnpriced(unpricedCount);
+    final unpricedText = unpricedCount == 0
+        ? null
+        : tr.financeUnpriced(unpricedCount);
     final informedText = pricedCount == 0
         ? tr.financeNoValue
         : tr.financeInformed(formatCents(informedCents));

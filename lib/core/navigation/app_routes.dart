@@ -14,9 +14,9 @@ class AppRoutes {
     if (_settingsOpen) return;
     _settingsOpen = true;
     try {
-      await Navigator.of(context).push<void>(
-        MaterialPageRoute(builder: (_) => const SettingsPage()),
-      );
+      await Navigator.of(
+        context,
+      ).push<void>(MaterialPageRoute(builder: (_) => const SettingsPage()));
     } finally {
       _settingsOpen = false;
     }
@@ -29,8 +29,8 @@ class SettingsAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconButton(
-        tooltip: tr.settingsTitle,
-        onPressed: () => AppRoutes.openSettings(context),
-        icon: const Icon(Icons.settings_outlined),
-      );
+    tooltip: tr.settingsTitle,
+    onPressed: () => AppRoutes.openSettings(context),
+    icon: const Icon(Icons.settings_outlined),
+  );
 }

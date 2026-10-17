@@ -49,8 +49,7 @@ class CloudPull {
 
   /// PostgREST prints `+00:00`; a `+` would be read as a space in the query
   /// string, so filters use the `Z` form.
-  static String _z(String ts) =>
-      DateTime.parse(ts).toUtc().toIso8601String();
+  static String _z(String ts) => DateTime.parse(ts).toUtc().toIso8601String();
 
   Future<int> run(
     SupabaseClient client,
@@ -72,8 +71,10 @@ class CloudPull {
         if (cancelled()) return received;
         var q = client.from(collection).select().eq('owner_id', userId);
         if (lastTs != null) {
-          q = q.or('server_updated_at.gt.$lastTs,'
-              'and(server_updated_at.eq.$lastTs,id.gt.$lastId)');
+          q = q.or(
+            'server_updated_at.gt.$lastTs,'
+            'and(server_updated_at.eq.$lastTs,id.gt.$lastId)',
+          );
         } else if (since != null) {
           q = q.gte('server_updated_at', since);
         }

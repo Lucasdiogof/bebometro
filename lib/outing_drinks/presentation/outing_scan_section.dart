@@ -83,10 +83,14 @@ class _OutingScanSectionState extends State<OutingScanSection> {
         MaterialPageRoute(builder: (_) => ScanLabelPage(outingId: id)),
       );
       if (result != null && result.register && mounted) {
-        await Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) =>
-              DrinkEntryPage.create(outingId: id, item: result.drink.toCatalogItem()),
-        ));
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => DrinkEntryPage.create(
+              outingId: id,
+              item: result.drink.toCatalogItem(),
+            ),
+          ),
+        );
       }
     }
     if (mounted) setState(_load);
@@ -100,12 +104,16 @@ class _OutingScanSectionState extends State<OutingScanSection> {
         content: Text(tr.scanMenuDiscardBody),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.commonCancel)),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.commonCancel),
+          ),
           TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.entryDiscard,
-                  style: const TextStyle(color: AppColors.danger))),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              tr.entryDiscard,
+              style: const TextStyle(color: AppColors.danger),
+            ),
+          ),
         ],
       ),
     );
@@ -143,16 +151,22 @@ class _OutingScanSectionState extends State<OutingScanSection> {
                   ),
                   const SizedBox(height: AppSpace.xs),
                   Text(tr.outingScanUnfinishedNote, style: AppText.caption),
-                  Wrap(spacing: AppSpace.sm, children: [
-                    TextButton(
+                  Wrap(
+                    spacing: AppSpace.sm,
+                    children: [
+                      TextButton(
                         onPressed: () => _resume(d),
-                        child: Text(tr.commonContinue)),
-                    TextButton(
-                      onPressed: () => _dropDraft(d),
-                      child: Text(tr.entryDiscard,
-                          style: const TextStyle(color: AppColors.danger)),
-                    ),
-                  ]),
+                        child: Text(tr.commonContinue),
+                      ),
+                      TextButton(
+                        onPressed: () => _dropDraft(d),
+                        child: Text(
+                          tr.entryDiscard,
+                          style: const TextStyle(color: AppColors.danger),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -165,62 +179,78 @@ class _OutingScanSectionState extends State<OutingScanSection> {
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpace.sm),
               child: SurfaceCard(
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => OutingDrinkReviewPage(
-                      outingId: widget.outingId, existing: d),
-                )),
-                padding: const EdgeInsets.fromLTRB(
-                    AppSpace.md, AppSpace.sm, AppSpace.md, AppSpace.sm),
-                child: Row(children: [
-                  if (d.photoIds.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(right: AppSpace.md),
-                      child: PhotoThumb(photoId: d.photoIds.first, size: 44),
-                    ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(d.displayName, style: AppText.subtitle),
-                        Text(
-                          [
-                            d.origin.label,
-                            if (d.volumeMl != null) formatMl(d.volumeMl!),
-                            if (d.abvPercent != null) formatAbv(d.abvPercent!),
-                            if (d.advertisedCents != null)
-                              tr.outingDrinksMenuPrice(
-                                  formatCents(d.advertisedCents!)),
-                          ].join(' · '),
-                          style: AppText.caption,
-                        ),
-                      ],
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => OutingDrinkReviewPage(
+                      outingId: widget.outingId,
+                      existing: d,
                     ),
                   ),
-                ]),
+                ),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpace.md,
+                  AppSpace.sm,
+                  AppSpace.md,
+                  AppSpace.sm,
+                ),
+                child: Row(
+                  children: [
+                    if (d.photoIds.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(right: AppSpace.md),
+                        child: PhotoThumb(photoId: d.photoIds.first, size: 44),
+                      ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(d.displayName, style: AppText.subtitle),
+                          Text(
+                            [
+                              d.origin.label,
+                              if (d.volumeMl != null) formatMl(d.volumeMl!),
+                              if (d.abvPercent != null)
+                                formatAbv(d.abvPercent!),
+                              if (d.advertisedCents != null)
+                                tr.outingDrinksMenuPrice(
+                                  formatCents(d.advertisedCents!),
+                                ),
+                            ].join(' · '),
+                            style: AppText.caption,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
         ],
         if (_photos.isNotEmpty) ...[
           SectionTitle(tr.outingScanPhotosTitle),
-          Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
-            for (final p in _photos)
-              PhotoThumb(
-                photoId: p.id,
-                size: 76,
-                onTap: () => showPhotoViewer(
-                  context,
+          Wrap(
+            spacing: AppSpace.sm,
+            runSpacing: AppSpace.sm,
+            children: [
+              for (final p in _photos)
+                PhotoThumb(
                   photoId: p.id,
-                  onDelete: () => _repo.deletePhoto(p.id),
+                  size: 76,
+                  onTap: () => showPhotoViewer(
+                    context,
+                    photoId: p.id,
+                    onDelete: () => _repo.deletePhoto(p.id),
+                  ),
                 ),
-              ),
-          ]),
+            ],
+          ),
           const SizedBox(height: AppSpace.xs),
           Text(
             localOnly == 0
                 ? tr.outingScanAllUploaded
                 : cloudSync
-                    ? tr.outingScanPending(localOnly)
-                    : tr.outingScanLocalOnly(localOnly),
+                ? tr.outingScanPending(localOnly)
+                : tr.outingScanLocalOnly(localOnly),
             style: AppText.caption,
           ),
         ],

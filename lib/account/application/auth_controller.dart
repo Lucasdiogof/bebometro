@@ -55,7 +55,8 @@ class AccessState {
 
   bool get canUseProduct => status == AccessStatus.authenticated;
 
-  AccessState copyWith({String? notice, bool clearNotice = false}) => AccessState(
+  AccessState copyWith({String? notice, bool clearNotice = false}) =>
+      AccessState(
         status: status,
         userId: userId,
         email: email,
@@ -86,7 +87,7 @@ class AuthFailure implements Exception {
 /// and nothing local is deleted.
 class AuthController extends Cubit<AccessState> {
   AuthController(this._device, {required this.cloudEnabled})
-      : super(const AccessState(status: AccessStatus.initializing));
+    : super(const AccessState(status: AccessStatus.initializing));
 
   final DeviceStore _device;
   final bool cloudEnabled;
@@ -111,15 +112,19 @@ class AuthController extends Cubit<AccessState> {
       // Configuration or start-up failure: a known account keeps working on
       // its local data; nobody new can sign in until the cloud is back.
       final uid = _device.getString(_lastUidKey);
-      emit(uid != null
-          ? AccessState(
-              status: AccessStatus.authenticated,
-              userId: uid,
-              email: _device.getString(_lastEmailKey),
-              cloudUnavailable: true,
-            )
-          : const AccessState(
-              status: AccessStatus.signedOut, cloudUnavailable: true));
+      emit(
+        uid != null
+            ? AccessState(
+                status: AccessStatus.authenticated,
+                userId: uid,
+                email: _device.getString(_lastEmailKey),
+                cloudUnavailable: true,
+              )
+            : const AccessState(
+                status: AccessStatus.signedOut,
+                cloudUnavailable: true,
+              ),
+      );
       return;
     }
     var session = _auth.currentSession;
@@ -154,8 +159,7 @@ class AuthController extends Cubit<AccessState> {
         // another device (PKCE needs the device that asked for it). Never
         // logged with the URL.
         _log('auth link error: ${e.runtimeType}');
-        emit(state.copyWith(
-            notice: tr.authLinkInvalid));
+        emit(state.copyWith(notice: tr.authLinkInvalid));
       },
     );
     await _enqueue(() => _apply(session));
@@ -166,23 +170,29 @@ class AuthController extends Cubit<AccessState> {
       case AuthChangeEvent.passwordRecovery:
         final email = data.session?.user.email;
         await _device.setString(
-            _recoveryKey,
-            jsonEncode({
-              'email': email,
-              'at': DateTime.now().toUtc().toIso8601String(),
-            }));
+          _recoveryKey,
+          jsonEncode({
+            'email': email,
+            'at': DateTime.now().toUtc().toIso8601String(),
+          }),
+        );
         await _apply(data.session);
       case AuthChangeEvent.signedOut:
-        final asked = _device.getString(_signingOutKey) == '1' ||
+        final asked =
+            _device.getString(_signingOutKey) == '1' ||
             data.signOutReason == SignOutReason.userInitiated;
         await _device.remove(_signingOutKey);
         final last = _device.getString(_lastUidKey);
-        if (!asked && last != null && state.status == AccessStatus.authenticated) {
-          emit(AccessState(
-            status: AccessStatus.reauthRequired,
-            userId: last,
-            email: _device.getString(_lastEmailKey),
-          ));
+        if (!asked &&
+            last != null &&
+            state.status == AccessStatus.authenticated) {
+          emit(
+            AccessState(
+              status: AccessStatus.reauthRequired,
+              userId: last,
+              email: _device.getString(_lastEmailKey),
+            ),
+          );
         } else {
           await _apply(null);
         }
@@ -197,41 +207,49 @@ class AuthController extends Cubit<AccessState> {
     if (isClosed) return;
     final user = session?.user;
     if (user == null) {
-      emit(AccessState(
-        status: AccessStatus.signedOut,
-        email: _device.getString(_lastEmailKey),
-        notice: state.notice,
-      ));
+      emit(
+        AccessState(
+          status: AccessStatus.signedOut,
+          email: _device.getString(_lastEmailKey),
+          notice: state.notice,
+        ),
+      );
       return;
     }
     final name = user.userMetadata?['display_name'] as String?;
     final confirmed = user.emailConfirmedAt != null;
 
     if (user.isAnonymous) {
-      emit(AccessState(
-        status: AccessStatus.signedOut,
-        email: _device.getString(_lastEmailKey),
-        notice: state.notice,
-      ));
+      emit(
+        AccessState(
+          status: AccessStatus.signedOut,
+          email: _device.getString(_lastEmailKey),
+          notice: state.notice,
+        ),
+      );
       return;
     }
 
     final recovery = _jsonKey(_recoveryKey);
     if (recovery != null) {
       final at = DateTime.tryParse(recovery['at'] as String? ?? '');
-      final fresh = at != null &&
+      final fresh =
+          at != null &&
           DateTime.now().toUtc().difference(at) < const Duration(hours: 2);
-      final sameEmail = recovery['email'] == null ||
+      final sameEmail =
+          recovery['email'] == null ||
           (recovery['email'] as String).toLowerCase() ==
               (user.email ?? '').toLowerCase();
       if (fresh && sameEmail) {
-        emit(AccessState(
-          status: AccessStatus.passwordRecovery,
-          userId: user.id,
-          email: user.email,
-          displayName: name,
-          emailConfirmed: confirmed,
-        ));
+        emit(
+          AccessState(
+            status: AccessStatus.passwordRecovery,
+            userId: user.id,
+            email: user.email,
+            displayName: name,
+            emailConfirmed: confirmed,
+          ),
+        );
         return;
       }
       // A recovery session whose new password was never saved (marker too
@@ -242,23 +260,27 @@ class AuthController extends Cubit<AccessState> {
         await _auth.signOut(scope: SignOutScope.local);
       } catch (_) {}
       await _device.remove(_lastUidKey);
-      emit(AccessState(
-        status: AccessStatus.signedOut,
-        email: _device.getString(_lastEmailKey),
-      ));
+      emit(
+        AccessState(
+          status: AccessStatus.signedOut,
+          email: _device.getString(_lastEmailKey),
+        ),
+      );
       return;
     }
 
     await _device.setString(_lastUidKey, user.id);
     if (user.email != null) await _device.setString(_lastEmailKey, user.email!);
-    emit(AccessState(
-      status: AccessStatus.authenticated,
-      userId: user.id,
-      email: user.email,
-      displayName: name,
-      emailConfirmed: confirmed,
-      notice: state.notice,
-    ));
+    emit(
+      AccessState(
+        status: AccessStatus.authenticated,
+        userId: user.id,
+        email: user.email,
+        displayName: name,
+        emailConfirmed: confirmed,
+        notice: state.notice,
+      ),
+    );
   }
 
   Map<String, dynamic>? _jsonKey(String key) {
@@ -274,8 +296,6 @@ class AuthController extends Cubit<AccessState> {
   void clearNotice() {
     if (state.notice != null) emit(state.copyWith(clearNotice: true));
   }
-
-  // ------------------------------------------------------------------ calls
 
   Future<void> signIn(String email, String password) async {
     _requireCloud();
@@ -335,11 +355,12 @@ class AuthController extends Cubit<AccessState> {
   Future<void> verifyRecoveryCode(String email, String code) async {
     _requireCloud();
     await _device.setString(
-        _recoveryKey,
-        jsonEncode({
-          'email': email.trim().toLowerCase(),
-          'at': DateTime.now().toUtc().toIso8601String(),
-        }));
+      _recoveryKey,
+      jsonEncode({
+        'email': email.trim().toLowerCase(),
+        'at': DateTime.now().toUtc().toIso8601String(),
+      }),
+    );
     try {
       await _auth.verifyOTP(
         type: OtpType.recovery,
@@ -405,7 +426,10 @@ class AuthController extends Cubit<AccessState> {
     final email = _auth.currentUser?.email;
     if (email == null) throw AuthFailure(tr.authSignInAgainToContinue);
     try {
-      final res = await _auth.signInWithPassword(email: email, password: password);
+      final res = await _auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
       if (res.user?.id != state.userId) {
         throw AuthFailure(tr.authDifferentAccount);
       }
@@ -429,7 +453,9 @@ class AuthController extends Cubit<AccessState> {
   Future<void> updateName(String name) async {
     _requireCloud();
     try {
-      await _auth.updateUser(UserAttributes(data: {'display_name': name.trim()}));
+      await _auth.updateUser(
+        UserAttributes(data: {'display_name': name.trim()}),
+      );
       await _apply(_auth.currentSession);
     } on AuthException catch (e) {
       throw _map(e);
@@ -468,26 +494,32 @@ class AuthController extends Cubit<AccessState> {
     }
     final code = e.code ?? '';
     return switch (code) {
-      'invalid_credentials' =>
-        AuthFailure(tr.authWrongCredentials, field: 'password'),
+      'invalid_credentials' => AuthFailure(
+        tr.authWrongCredentials,
+        field: 'password',
+      ),
       'email_not_confirmed' => AuthFailure(tr.authEmailNotConfirmed),
-      'user_already_exists' || 'email_exists' => AuthFailure(tr.authEmailExists,
-          field: 'email'),
-      'weak_password' => AuthFailure(tr.authWeakPassword,
-          field: 'password'),
-      'same_password' => AuthFailure(tr.authSamePassword,
-          field: 'password'),
-      'over_email_send_rate_limit' || 'over_request_rate_limit' => AuthFailure(tr.authTooManyAttempts),
-      'email_address_invalid' || 'validation_failed' =>
-        AuthFailure(tr.authCheckEmail, field: 'email'),
-      'otp_expired' || 'invalid_otp' => AuthFailure(tr.authCodeInvalid, field: 'code'),
-      'reauthentication_needed' || 'reauthentication_not_valid' => AuthFailure(tr.authNeedsCode, field: 'code'),
+      'user_already_exists' ||
+      'email_exists' => AuthFailure(tr.authEmailExists, field: 'email'),
+      'weak_password' => AuthFailure(tr.authWeakPassword, field: 'password'),
+      'same_password' => AuthFailure(tr.authSamePassword, field: 'password'),
+      'over_email_send_rate_limit' ||
+      'over_request_rate_limit' => AuthFailure(tr.authTooManyAttempts),
+      'email_address_invalid' ||
+      'validation_failed' => AuthFailure(tr.authCheckEmail, field: 'email'),
+      'otp_expired' ||
+      'invalid_otp' => AuthFailure(tr.authCodeInvalid, field: 'code'),
+      'reauthentication_needed' || 'reauthentication_not_valid' => AuthFailure(
+        tr.authNeedsCode,
+        field: 'code',
+      ),
       'signup_disabled' => AuthFailure(tr.authSignupDisabled),
-      'session_not_found' || 'refresh_token_not_found' =>
-        AuthFailure(tr.authSessionEnded),
-      _ => (e.statusCode == '429')
-          ? AuthFailure(tr.authTooManyShort)
-          : AuthFailure(tr.authGenericError),
+      'session_not_found' ||
+      'refresh_token_not_found' => AuthFailure(tr.authSessionEnded),
+      _ =>
+        (e.statusCode == '429')
+            ? AuthFailure(tr.authTooManyShort)
+            : AuthFailure(tr.authGenericError),
     };
   }
 

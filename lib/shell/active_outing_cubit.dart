@@ -17,7 +17,7 @@ class ActiveOutingState {
 /// Feeds the discreet "rolê em andamento" bar shown over the main tabs.
 class ActiveOutingCubit extends Cubit<ActiveOutingState> {
   ActiveOutingCubit(this._outings, this._drinks)
-      : super(const ActiveOutingState()) {
+    : super(const ActiveOutingState()) {
     _subs = [
       _outings.changes.listen((_) => _load()),
       _drinks.changes.listen((_) => _load()),
@@ -31,10 +31,12 @@ class ActiveOutingCubit extends Cubit<ActiveOutingState> {
 
   void _load() {
     final outing = _outings.active;
-    emit(ActiveOutingState(
-      outing: outing,
-      entryCount: outing == null ? 0 : _drinks.entriesFor(outing.id).length,
-    ));
+    emit(
+      ActiveOutingState(
+        outing: outing,
+        entryCount: outing == null ? 0 : _drinks.entriesFor(outing.id).length,
+      ),
+    );
   }
 
   @override

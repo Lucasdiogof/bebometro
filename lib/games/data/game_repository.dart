@@ -31,8 +31,9 @@ class GameRepository {
   /// Reads the bundled cards; an unreadable file just means no bundled cards.
   static Future<List<GameCard>> loadBundled() async {
     try {
-      final doc = jsonDecode(await rootBundle.loadString(cardsAsset))
-          as Map<String, dynamic>;
+      final doc = jsonDecode(
+        await rootBundle.loadString(cardsAsset),
+      ) as Map<String, dynamic>;
       return [
         for (final j in (doc['cards'] as List))
           ?GameCard.fromJson(Map<String, dynamic>.from(j as Map)),
@@ -49,8 +50,10 @@ class GameRepository {
     if (raw == null) return;
     try {
       for (final j in jsonDecode(raw) as List) {
-        final card = GameCard.fromJson(Map<String, dynamic>.from(j as Map),
-            custom: true);
+        final card = GameCard.fromJson(
+          Map<String, dynamic>.from(j as Map),
+          custom: true,
+        );
         if (card != null) _custom.add(card);
       }
     } catch (_) {
@@ -93,11 +96,11 @@ class GameRepository {
 
   Future<void> _persistCustom() async {
     await _store.setString(
-        _customKey, jsonEncode([for (final c in _custom) c.toJson()]));
+      _customKey,
+      jsonEncode([for (final c in _custom) c.toJson()]),
+    );
     _changes.add(null);
   }
-
-  // ---- last participants (to start the next match quickly) ---------------------
 
   List<String> get lastPlayers {
     final raw = _store.getString('games.last_players');
@@ -111,8 +114,6 @@ class GameRepository {
 
   Future<void> saveLastPlayers(List<String> names) =>
       _store.setString('games.last_players', jsonEncode(names));
-
-  // ---- match in progress ------------------------------------------------------
 
   GameSession? get savedSession {
     final raw = _store.getString(_sessionKey);

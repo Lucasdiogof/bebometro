@@ -54,38 +54,38 @@ class HomeState {
   bool get hasHistory => totalOutings > 0;
 
   HomeState withStale(Outing outing, DateTime end) => HomeState(
-        loading: false,
-        active: active,
-        activeSummary: activeSummary,
-        lastOuting: lastOuting,
-        lastSummary: lastSummary,
-        totalOutings: totalOutings,
-        monthOutings: monthOutings,
-        monthDrinks: monthDrinks,
-        monthInformedCents: monthInformedCents,
-        monthUnpriced: monthUnpriced,
-        staleOuting: outing,
-        staleEnd: end,
-      );
+    loading: false,
+    active: active,
+    activeSummary: activeSummary,
+    lastOuting: lastOuting,
+    lastSummary: lastSummary,
+    totalOutings: totalOutings,
+    monthOutings: monthOutings,
+    monthDrinks: monthDrinks,
+    monthInformedCents: monthInformedCents,
+    monthUnpriced: monthUnpriced,
+    staleOuting: outing,
+    staleEnd: end,
+  );
 
   HomeState withFeedback(Outing outing) => HomeState(
-        loading: false,
-        active: active,
-        activeSummary: activeSummary,
-        lastOuting: lastOuting,
-        lastSummary: lastSummary,
-        totalOutings: totalOutings,
-        monthOutings: monthOutings,
-        monthDrinks: monthDrinks,
-        monthInformedCents: monthInformedCents,
-        monthUnpriced: monthUnpriced,
-        feedbackOuting: outing,
-      );
+    loading: false,
+    active: active,
+    activeSummary: activeSummary,
+    lastOuting: lastOuting,
+    lastSummary: lastSummary,
+    totalOutings: totalOutings,
+    monthOutings: monthOutings,
+    monthDrinks: monthDrinks,
+    monthInformedCents: monthInformedCents,
+    monthUnpriced: monthUnpriced,
+    feedbackOuting: outing,
+  );
 }
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._outings, this._drinks, this._prefs)
-      : super(const HomeState()) {
+    : super(const HomeState()) {
     _subs = [
       _outings.changes.listen((_) => load()),
       _drinks.changes.listen((_) => load()),
@@ -115,7 +115,8 @@ class HomeCubit extends Cubit<HomeState> {
     OutingSummary? lastSummary;
 
     for (final outing in ended) {
-      final inMonth = outing.startedAt.year == now.year &&
+      final inMonth =
+          outing.startedAt.year == now.year &&
           outing.startedAt.month == now.month;
       final needsSummary = inMonth || last == null;
       if (!needsSummary) {
@@ -134,20 +135,22 @@ class HomeCubit extends Cubit<HomeState> {
       }
     }
 
-    emit(HomeState(
-      loading: false,
-      active: active,
-      activeSummary: active == null
-          ? null
-          : OutingSummary.of(_drinks.entriesFor(active.id)),
-      lastOuting: last,
-      lastSummary: lastSummary,
-      totalOutings: ended.length,
-      monthOutings: monthOutings,
-      monthDrinks: monthDrinks,
-      monthInformedCents: monthCents,
-      monthUnpriced: monthUnpriced,
-    ));
+    emit(
+      HomeState(
+        loading: false,
+        active: active,
+        activeSummary: active == null
+            ? null
+            : OutingSummary.of(_drinks.entriesFor(active.id)),
+        lastOuting: last,
+        lastSummary: lastSummary,
+        totalOutings: ended.length,
+        monthOutings: monthOutings,
+        monthDrinks: monthDrinks,
+        monthInformedCents: monthCents,
+        monthUnpriced: monthUnpriced,
+      ),
+    );
   }
 
   /// Called once when the home screen opens. Offers the post-outing feedback

@@ -37,7 +37,8 @@ class LabelReading {
 }
 
 final _nutritionStart = RegExp(
-    r'informacao nutricional|informacoes nutricionais|valor energetico|valores diarios|% ?vd|nutrition facts|nutritional information|nutrition information|informacion nutricional|daily value');
+  r'informacao nutricional|informacoes nutricionais|valor energetico|valores diarios|% ?vd|nutrition facts|nutritional information|nutrition information|informacion nutricional|daily value',
+);
 final _ingredientsWord = RegExp(r'ingredient(?:es|s)');
 final _servingWord = RegExp(r'porcao|por 100|serving|per 100|racion');
 final _volumeRx = RegExp(
@@ -87,8 +88,8 @@ LabelReading parseLabel(OcrResult ocr) {
         final ml = unit == 'ml'
             ? value
             : unit == 'cl'
-                ? value * 10
-                : value * 1000;
+            ? value * 10
+            : value * 1000;
         final rounded = ml.round();
         if (rounded >= 10 && rounded <= 20000 && !volumes.contains(rounded)) {
           volumes.add(rounded);
@@ -202,8 +203,8 @@ List<int> volumesInText(String text) {
     final ml = unit == 'ml'
         ? value
         : unit == 'cl'
-            ? value * 10
-            : value * 1000;
+        ? value * 10
+        : value * 1000;
     final rounded = ml.round();
     if (rounded >= 10 && rounded <= 20000 && !out.contains(rounded)) {
       out.add(rounded);
@@ -218,7 +219,9 @@ DrinkCategory? guessCategory(String text) {
   bool has(String pattern) => RegExp(pattern).hasMatch(normalized);
   if (has(r'chopp|chope')) return DrinkCategory.draft;
   // Only what the label states about the product type (never the flavour).
-  if (has(r'bebida (alcoolica )?mista|mista alcoolica|hard seltzer|seltzer alcoolic|pronto para (beber|consumo)|lista para beber|ready to drink|\bice\b|drink pronto|coquetel pronto|coctel listo')) {
+  if (has(
+    r'bebida (alcoolica )?mista|mista alcoolica|hard seltzer|seltzer alcoolic|pronto para (beber|consumo)|lista para beber|ready to drink|\bice\b|drink pronto|coquetel pronto|coctel listo',
+  )) {
     return DrinkCategory.readyToDrink;
   }
   if (has(r'cerveja|cerveza|beer|pilsen|lager|\bipa\b|stout|weiss|witbier')) {
@@ -227,14 +230,23 @@ DrinkCategory? guessCategory(String text) {
   if (has(r'vinho|vino|wine|espumante|prosecco|cabernet|merlot|malbec')) {
     return DrinkCategory.wine;
   }
-  if (has(r'caipirinha|caipiroska|mojito|margarita|negroni|gin tonica|drink|drinque|sour|spritz|moscow|cosmopolitan|cocktail|coctel')) {
+  if (has(
+    r'caipirinha|caipiroska|mojito|margarita|negroni|gin tonica|drink|drinque|sour|spritz|moscow|cosmopolitan|cocktail|coctel',
+  )) {
     return DrinkCategory.cocktail;
   }
-  if (has(r'vodka|\bgin\b|ginebra|whisk|\brum\b|\bron\b|cachaca|tequila|licor|liqueur|conhaque|brandy|aguardente|dose')) {
+  if (has(
+    r'vodka|\bgin\b|ginebra|whisk|\brum\b|\bron\b|cachaca|tequila|licor|liqueur|conhaque|brandy|aguardente|dose',
+  )) {
     return DrinkCategory.spirit;
   }
-  if (has(r'agua mineral|agua sem gas|agua com gas|agua sin gas|mineral water|sparkling water')) return DrinkCategory.water;
-  if (has(r'refrigerante|refresco|gaseosa|soda|suco|jugo|juice|guarana|energetico|sem alcool|sin alcohol|alcohol free')) {
+  if (has(
+    r'agua mineral|agua sem gas|agua com gas|agua sin gas|mineral water|sparkling water',
+  ))
+    return DrinkCategory.water;
+  if (has(
+    r'refrigerante|refresco|gaseosa|soda|suco|jugo|juice|guarana|energetico|sem alcool|sin alcohol|alcohol free',
+  )) {
     return DrinkCategory.nonAlcoholic;
   }
   return null;

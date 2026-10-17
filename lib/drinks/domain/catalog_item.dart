@@ -36,13 +36,13 @@ enum InfoOrigin {
   final String code;
 
   String get label => switch (this) {
-        InfoOrigin.generic => tr.originGeneric,
-        InfoOrigin.user => tr.originUser,
-        InfoOrigin.verified => tr.originVerified,
-        InfoOrigin.mixed => tr.originMixed,
-        InfoOrigin.secondary => tr.originSecondary,
-        InfoOrigin.recipe => tr.originRecipe,
-      };
+    InfoOrigin.generic => tr.originGeneric,
+    InfoOrigin.user => tr.originUser,
+    InfoOrigin.verified => tr.originVerified,
+    InfoOrigin.mixed => tr.originMixed,
+    InfoOrigin.secondary => tr.originSecondary,
+    InfoOrigin.recipe => tr.originRecipe,
+  };
 }
 
 /// The physical form a drink is served or sold in.
@@ -64,12 +64,12 @@ enum PresentationKind {
 
   /// Name in the language on screen.
   String get label => switch (this) {
-        PresentationKind.can => tr.kindCan,
-        PresentationKind.longNeck => tr.kindLongNeck,
-        PresentationKind.bottle => tr.kindBottle,
-        PresentationKind.glass => tr.kindGlass,
-        PresentationKind.shot => tr.kindShot,
-      };
+    PresentationKind.can => tr.kindCan,
+    PresentationKind.longNeck => tr.kindLongNeck,
+    PresentationKind.bottle => tr.kindBottle,
+    PresentationKind.glass => tr.kindGlass,
+    PresentationKind.shot => tr.kindShot,
+  };
 
   static PresentationKind? fromCode(String? code) {
     for (final k in PresentationKind.values) {
@@ -83,21 +83,27 @@ enum PresentationKind {
 /// The package volume is not what the user drank: that is decided when the
 /// drink is registered (individual or shared).
 class Presentation {
-  const Presentation(this.label, this.volumeMl,
-      {this.kind, this.isSuggestion = false});
+  const Presentation(
+    this.label,
+    this.volumeMl, {
+    this.kind,
+    this.isSuggestion = false,
+  });
 
   /// Builds the label from the kind and volume ("Lata 350 ml"), or just the
   /// volume when the source does not say what the package is.
-  factory Presentation.of(PresentationKind? kind, int volumeMl,
-          {String? label}) =>
-      Presentation(
-        label ??
-            (kind == null
-                ? '${_ptNumber(volumeMl)} ml'
-                : '${kind.canonical} ${_ptNumber(volumeMl)} ml'),
-        volumeMl,
-        kind: kind,
-      );
+  factory Presentation.of(
+    PresentationKind? kind,
+    int volumeMl, {
+    String? label,
+  }) => Presentation(
+    label ??
+        (kind == null
+            ? '${_ptNumber(volumeMl)} ml'
+            : '${kind.canonical} ${_ptNumber(volumeMl)} ml'),
+    volumeMl,
+    kind: kind,
+  );
 
   /// Canonical text (pt-BR wording and number format). It is what a record
   /// saves as its presentation and what chips compare with, so it never
@@ -115,9 +121,10 @@ class Presentation {
   String get displayLabel => localizePresentation(label);
 }
 
-String _ptNumber(num value) => value
-    .toString()
-    .replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => '.');
+String _ptNumber(num value) => value.toString().replaceAllMapped(
+  RegExp(r'\B(?=(\d{3})+(?!\d))'),
+  (_) => '.',
+);
 
 /// An ABV that differs between sources, presentations or markets. Kept as
 /// documented variants instead of silently choosing one.
@@ -184,8 +191,8 @@ class CatalogItem {
     this.advertisedCents,
     this.fieldSources = const [],
     this.market,
-  })  : _name = name,
-        _note = note;
+  }) : _name = name,
+       _note = note;
 
   final String id;
   final String _name;
@@ -312,33 +319,35 @@ class CatalogItem {
   /// Everything a search should match, normalised once. Category names and
   /// styles are included in every language, so a search in English finds the
   /// same items as one in Portuguese or Spanish.
-  String get searchText => normalizeText([
-        displayName,
-        brand ?? '',
-        style ?? '',
-        styleGroup ?? '',
-        ...category.searchLabels,
-        if (style != null) ...styleSearchLabels(style!),
-        ...aliases,
-        ...documentedPresentations.map((p) => p.label),
-        ...(recipe?.searchComponents ?? const <String>[]),
-      ].join(' '));
+  String get searchText => normalizeText(
+    [
+      displayName,
+      brand ?? '',
+      style ?? '',
+      styleGroup ?? '',
+      ...category.searchLabels,
+      if (style != null) ...styleSearchLabels(style!),
+      ...aliases,
+      ...documentedPresentations.map((p) => p.label),
+      ...(recipe?.searchComponents ?? const <String>[]),
+    ].join(' '),
+  );
 }
 
 /// Style as shown to the person. Most styles are international names and are
 /// kept; the few written in Portuguese are translated.
 String styleLabel(String style) => switch (style) {
-      'Lager/Pilsen' => tr.styleLagerPilsen,
-      'Pilsen/Lager' => tr.styleLagerPilsen,
-      'Escura' => tr.styleDark,
-      'Rum branco' => tr.styleWhiteRum,
-      'Aperitivo' => tr.styleAperitif,
-      'Aperitivo bitter' => tr.styleBitterAperitif,
-      'Vermute doce' => tr.styleSweetVermouth,
-      'Vermute seco' => tr.styleDryVermouth,
-      'Tequila 100% agave' => tr.styleAgaveTequila,
-      _ => style,
-    };
+  'Lager/Pilsen' => tr.styleLagerPilsen,
+  'Pilsen/Lager' => tr.styleLagerPilsen,
+  'Escura' => tr.styleDark,
+  'Rum branco' => tr.styleWhiteRum,
+  'Aperitivo' => tr.styleAperitif,
+  'Aperitivo bitter' => tr.styleBitterAperitif,
+  'Vermute doce' => tr.styleSweetVermouth,
+  'Vermute seco' => tr.styleDryVermouth,
+  'Tequila 100% agave' => tr.styleAgaveTequila,
+  _ => style,
+};
 
 /// A style in every language, for search.
 List<String> styleSearchLabels(String style) {

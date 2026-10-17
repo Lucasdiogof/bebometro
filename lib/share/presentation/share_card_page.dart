@@ -40,8 +40,9 @@ class _ShareCardPageState extends State<ShareCardPage> {
   bool _busy = false;
 
   late final Outing? _outing = getIt<OutingRepository>().byId(widget.outingId);
-  late final List<DrinkEntry> _entries =
-      getIt<DrinkRepository>().entriesFor(widget.outingId);
+  late final List<DrinkEntry> _entries = getIt<DrinkRepository>().entriesFor(
+    widget.outingId,
+  );
 
   /// Plain-text version, also the fallback when image sharing is unavailable.
   String _summaryText() {
@@ -93,12 +94,14 @@ class _ShareCardPageState extends State<ShareCardPage> {
       // Closing the share sheet without sharing is not a failure.
       messenger
         ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(
-          content: Text(problem),
-          duration: const Duration(seconds: 8),
-          persist: false,
-          action: SnackBarAction(label: tr.tabCopyText, onPressed: _copy),
-        ));
+        ..showSnackBar(
+          SnackBar(
+            content: Text(problem),
+            duration: const Duration(seconds: 8),
+            persist: false,
+            action: SnackBarAction(label: tr.tabCopyText, onPressed: _copy),
+          ),
+        );
     }
   }
 
@@ -114,10 +117,10 @@ class _ShareCardPageState extends State<ShareCardPage> {
       return Scaffold(appBar: AppBar(), body: const SizedBox.shrink());
     }
     final summary = OutingSummary.of(_entries);
-    final scenario = context
-        .read<TablePrefsCubit>()
-        .state
-        .scenarioFor(outing.id, outing.type);
+    final scenario = context.read<TablePrefsCubit>().state.scenarioFor(
+      outing.id,
+      outing.type,
+    );
     return Scaffold(
       appBar: AppBar(title: Text(tr.shareCardTitle)),
       body: Column(
@@ -125,7 +128,11 @@ class _ShareCardPageState extends State<ShareCardPage> {
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                AppSpace.gutter,
+                0,
+                AppSpace.gutter,
+                AppSpace.xl,
+              ),
               children: [
                 Text(tr.shareCardIntro, style: AppText.caption),
                 const SizedBox(height: AppSpace.md),
@@ -183,10 +190,7 @@ class _ShareCardPageState extends State<ShareCardPage> {
             ),
           ),
           BottomActionBar(
-            child: _ShareActions(
-              onCopy: _copy,
-              onShare: _busy ? null : _share,
-            ),
+            child: _ShareActions(onCopy: _copy, onShare: _busy ? null : _share),
           ),
         ],
       ),
@@ -216,21 +220,28 @@ class _ShareActions extends StatelessWidget {
       onPressed: onShare,
       child: Text(tr.tabShareButton, maxLines: 1, softWrap: false),
     );
-    return LayoutBuilder(builder: (context, c) {
-      final stack = c.maxWidth < 330 || scale > 1.25;
-      if (stack) {
-        return Column(mainAxisSize: MainAxisSize.min, children: [
-          SizedBox(width: double.infinity, child: share),
-          const SizedBox(height: AppSpace.sm),
-          SizedBox(width: double.infinity, child: copy),
-        ]);
-      }
-      return Row(children: [
-        Expanded(flex: 5, child: copy),
-        const SizedBox(width: AppSpace.sm),
-        Expanded(flex: 6, child: share),
-      ]);
-    });
+    return LayoutBuilder(
+      builder: (context, c) {
+        final stack = c.maxWidth < 330 || scale > 1.25;
+        if (stack) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(width: double.infinity, child: share),
+              const SizedBox(height: AppSpace.sm),
+              SizedBox(width: double.infinity, child: copy),
+            ],
+          );
+        }
+        return Row(
+          children: [
+            Expanded(flex: 5, child: copy),
+            const SizedBox(width: AppSpace.sm),
+            Expanded(flex: 6, child: share),
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -274,24 +285,31 @@ class _Card extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
-            const BrandCap(size: 34),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                formatWeekdayDate(outing.startedAt),
-                style: const TextStyle(
-                    color: AppColors.textMuted, fontWeight: FontWeight.w600),
+          Row(
+            children: [
+              const BrandCap(size: 34),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  formatWeekdayDate(outing.startedAt),
+                  style: const TextStyle(
+                    color: AppColors.textMuted,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
-            ),
-          ]),
+            ],
+          ),
           const SizedBox(height: 10),
           Text(
             showPlace ? outing.displayName : tr.shareCardMyOuting,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-                color: AppColors.text, fontSize: 26, fontWeight: FontWeight.w900),
+              color: AppColors.text,
+              fontSize: 26,
+              fontWeight: FontWeight.w900,
+            ),
           ),
           const SizedBox(height: 12),
           if (showTable)
@@ -315,18 +333,23 @@ class _Card extends StatelessWidget {
                 style: const TextStyle(color: AppColors.text, fontSize: 15),
               ),
             if (summary.groups.length > 5)
-              Text(tr.shareCardOthers('${summary.groups.length - 5}'),
-                  style: const TextStyle(color: AppColors.textMuted)),
+              Text(
+                tr.shareCardOthers('${summary.groups.length - 5}'),
+                style: const TextStyle(color: AppColors.textMuted),
+              ),
           ],
           const Spacer(),
           if (showSpending)
             Text(
               summary.unpricedCount > 0
                   ? tr.shareCardSpendCardPartial(
-                      formatCents(summary.informedCents))
+                      formatCents(summary.informedCents),
+                    )
                   : tr.shareCardSpendCard(formatCents(summary.informedCents)),
               style: const TextStyle(
-                  color: AppColors.amber, fontWeight: FontWeight.w800),
+                color: AppColors.amber,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           const SizedBox(height: 6),
           const BrandWordmark(height: 22),

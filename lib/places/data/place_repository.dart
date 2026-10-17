@@ -36,8 +36,9 @@ class PlaceRepository {
       return a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase());
     });
 
-  List<Place> archived() => _all().where((p) => p.isArchived).toList()
-    ..sort((a, b) => b.archivedAt!.compareTo(a.archivedAt!));
+  List<Place> archived() =>
+      _all().where((p) => p.isArchived).toList()
+        ..sort((a, b) => b.archivedAt!.compareTo(a.archivedAt!));
 
   /// Active places ordered by the latest outing held there (then creation).
   List<Place> recent(List<Outing> outings, {int limit = 6}) {
@@ -86,14 +87,15 @@ class PlaceRepository {
     String? provider,
     String? providerPlaceId,
   }) async {
-    String? clean(String? v) => (v == null || v.trim().isEmpty) ? null : v.trim();
+    String? clean(String? v) =>
+        (v == null || v.trim().isEmpty) ? null : v.trim();
     final nick = clean(nickname);
     final addr = clean(address);
     final name = clean(providerName);
     if (nick == null && addr == null && name == null) {
-      throw ArgumentError(point != null
-          ? tr.repoPointNeedsName
-          : tr.repoNicknameOrAddress);
+      throw ArgumentError(
+        point != null ? tr.repoPointNeedsName : tr.repoNicknameOrAddress,
+      );
     }
     final uf = clean(state)?.toUpperCase();
     if (uf != null && !RegExp(r'^[A-Z]{2}$').hasMatch(uf)) {
@@ -101,7 +103,10 @@ class PlaceRepository {
     }
     final now = DateTime.now();
     final existing = byId(id);
-    final linked = point != null && clean(provider) != null && clean(providerPlaceId) != null;
+    final linked =
+        point != null &&
+        clean(provider) != null &&
+        clean(providerPlaceId) != null;
     final place = Place(
       id: existing?.id ?? _uuid.v4(),
       type: type,
@@ -140,7 +145,9 @@ class PlaceRepository {
     final saved = await save(
       id: existing?.id,
       type: existing?.type ?? type,
-      nickname: (typed != null && typed.isNotEmpty) ? typed : existing?.nickname,
+      nickname: (typed != null && typed.isNotEmpty)
+          ? typed
+          : existing?.nickname,
       address: d.address,
       city: d.city,
       state: d.state,
@@ -169,7 +176,9 @@ class PlaceRepository {
     final now = DateTime.now();
     await _store.put(
       LocalStore.places,
-      p.copyWith(archivedAt: () => archived ? now : null, updatedAt: now).toJson(),
+      p
+          .copyWith(archivedAt: () => archived ? now : null, updatedAt: now)
+          .toJson(),
     );
   }
 }

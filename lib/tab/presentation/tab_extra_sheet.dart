@@ -62,7 +62,8 @@ class _ExtraFormState extends State<_ExtraForm> {
     _description = TextEditingController(text: e?.description ?? '');
     _quantity = TextEditingController(text: '${e?.quantity ?? 1}');
     _price = TextEditingController(
-        text: e?.cents == null ? '' : centsToInput(e!.cents!));
+      text: e?.cents == null ? '' : centsToInput(e!.cents!),
+    );
     _category = e?.category ?? ExtraCategory.food;
     _kind = e?.priceKind ?? PriceKind.informed;
     _basis = e?.basis ?? PriceBasis.total;
@@ -94,8 +95,9 @@ class _ExtraFormState extends State<_ExtraForm> {
     if (_kind == PriceKind.informed) {
       cents = parseCents(_price.text);
       if (cents == null) {
-        setState(() => _error =
-            numberInputError(_price.text) ?? tr.tabExtraNeedValue);
+        setState(
+          () => _error = numberInputError(_price.text) ?? tr.tabExtraNeedValue,
+        );
         return;
       }
     }
@@ -104,24 +106,24 @@ class _ExtraFormState extends State<_ExtraForm> {
     Map<String, int>? assign;
     if (widget.participants.isNotEmpty &&
         _who.length != widget.participants.length) {
-      assign = {
-        for (final id in _who) id: old?.assign?[id] ?? 1,
-      };
+      assign = {for (final id in _who) id: old?.assign?[id] ?? 1};
     } else if (old?.assign != null && widget.participants.isNotEmpty) {
       assign = null;
     }
-    Navigator.of(context).pop(TabExtra(
-      id: old?.id ?? widget.newId,
-      description: description,
-      category: _category,
-      createdAt: old?.createdAt ?? DateTime.now(),
-      quantity: _qty,
-      priceKind: _kind,
-      basis: _basis,
-      cents: cents,
-      service: _service,
-      assign: assign,
-    ));
+    Navigator.of(context).pop(
+      TabExtra(
+        id: old?.id ?? widget.newId,
+        description: description,
+        category: _category,
+        createdAt: old?.createdAt ?? DateTime.now(),
+        quantity: _qty,
+        priceKind: _kind,
+        basis: _basis,
+        cents: cents,
+        service: _service,
+        assign: assign,
+      ),
+    );
   }
 
   @override
@@ -133,13 +135,19 @@ class _ExtraFormState extends State<_ExtraForm> {
       child: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(
-              AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+            AppSpace.xl,
+            0,
+            AppSpace.xl,
+            AppSpace.lg,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.existing == null ? tr.tabExtraNew : tr.scanMenuEditItem,
-                  style: AppText.title),
+              Text(
+                widget.existing == null ? tr.tabExtraNew : tr.scanMenuEditItem,
+                style: AppText.title,
+              ),
               const SizedBox(height: AppSpace.xs),
               Text(tr.tabExtraNote, style: AppText.caption),
               const SizedBox(height: AppSpace.md),
@@ -172,36 +180,42 @@ class _ExtraFormState extends State<_ExtraForm> {
                 ),
               ),
               const SizedBox(height: AppSpace.md),
-              Row(children: [
-                SizedBox(
-                  width: 110,
-                  child: TextField(
-                    controller: _quantity,
-                    keyboardType: TextInputType.number,
-                    onChanged: (_) => setState(() {}),
-                    decoration: InputDecoration(labelText: tr.entryAmount),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 110,
+                    child: TextField(
+                      controller: _quantity,
+                      keyboardType: TextInputType.number,
+                      onChanged: (_) => setState(() {}),
+                      decoration: InputDecoration(labelText: tr.entryAmount),
+                    ),
                   ),
-                ),
-                const SizedBox(width: AppSpace.md),
-                Expanded(
-                  child: SegmentedButton<PriceKind>(
-                    showSelectedIcon: false,
-                    segments: [
-                      ButtonSegment(
+                  const SizedBox(width: AppSpace.md),
+                  Expanded(
+                    child: SegmentedButton<PriceKind>(
+                      showSelectedIcon: false,
+                      segments: [
+                        ButtonSegment(
                           value: PriceKind.informed,
-                          label: Text(tr.entryPriceValue)),
-                      ButtonSegment(
+                          label: Text(tr.entryPriceValue),
+                        ),
+                        ButtonSegment(
                           value: PriceKind.complimentary,
-                          label: Text(tr.priceComplimentary)),
-                      ButtonSegment(
+                          label: Text(tr.priceComplimentary),
+                        ),
+                        ButtonSegment(
                           value: PriceKind.unknown,
-                          label: Text(tr.entryPriceDontKnow)),
-                    ],
-                    selected: {_kind},
-                    onSelectionChanged: (s) => setState(() => _kind = s.first),
+                          label: Text(tr.entryPriceDontKnow),
+                        ),
+                      ],
+                      selected: {_kind},
+                      onSelectionChanged: (s) =>
+                          setState(() => _kind = s.first),
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
               if (_kind == PriceKind.informed) ...[
                 const SizedBox(height: AppSpace.md),
                 if (qty > 1)
@@ -209,11 +223,13 @@ class _ExtraFormState extends State<_ExtraForm> {
                     showSelectedIcon: false,
                     segments: [
                       ButtonSegment(
-                          value: PriceBasis.unit,
-                          label: Text(tr.tabBasisUnit)),
+                        value: PriceBasis.unit,
+                        label: Text(tr.tabBasisUnit),
+                      ),
                       ButtonSegment(
-                          value: PriceBasis.total,
-                          label: Text(tr.tabBasisTotal('$qty'))),
+                        value: PriceBasis.total,
+                        label: Text(tr.tabBasisTotal('$qty')),
+                      ),
                     ],
                     selected: {_basis},
                     onSelectionChanged: (s) => setState(() => _basis = s.first),
@@ -224,7 +240,9 @@ class _ExtraFormState extends State<_ExtraForm> {
                   onChanged: (_) => setState(() {}),
                   label: qty > 1 && _basis == PriceBasis.unit
                       ? tr.tabValueEach
-                      : (qty > 1 ? tr.tabValueTotalQty('$qty') : tr.entryPriceValue),
+                      : (qty > 1
+                            ? tr.tabValueTotalQty('$qty')
+                            : tr.entryPriceValue),
                   helper: _helper(qty),
                 ),
               ] else
@@ -255,7 +273,10 @@ class _ExtraFormState extends State<_ExtraForm> {
                   subtitle: Text(
                     _who.length == widget.participants.length
                         ? tr.tabExtraAll
-                        : tr.tabExtraSome('${_who.length}', '${widget.participants.length}'),
+                        : tr.tabExtraSome(
+                            '${_who.length}',
+                            '${widget.participants.length}',
+                          ),
                     style: AppText.caption,
                   ),
                   children: [
@@ -280,14 +301,18 @@ class _ExtraFormState extends State<_ExtraForm> {
               if (_error != null)
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpace.sm),
-                  child: Text(_error!,
-                      style: const TextStyle(color: AppColors.danger)),
+                  child: Text(
+                    _error!,
+                    style: const TextStyle(color: AppColors.danger),
+                  ),
                 ),
               const SizedBox(height: AppSpace.lg),
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                    onPressed: _save, child: Text(tr.tabExtraSave)),
+                  onPressed: _save,
+                  child: Text(tr.tabExtraSave),
+                ),
               ),
             ],
           ),
@@ -301,7 +326,10 @@ class _ExtraFormState extends State<_ExtraForm> {
     if (cents == null || qty <= 1) return null;
     return _basis == PriceBasis.unit
         ? tr.tabExtraHelperUnit(
-            '$qty', formatCents(cents), formatCents(cents * qty))
+            '$qty',
+            formatCents(cents),
+            formatCents(cents * qty),
+          )
         : tr.tabExtraHelperLine(formatCents(cents));
   }
 }

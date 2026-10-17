@@ -16,22 +16,49 @@ class CatalogSource {
   };
 
   static const items = <CatalogItem>[
-    // Cerveja
     CatalogItem(
       id: 'generic-cerveja-pilsen',
       name: 'Cerveja Pilsen/Lager',
       nameI18n: {'en': 'Pilsner/Lager beer', 'es': 'Cerveza Pilsen/Lager'},
-      aliases: ['beer', 'pilsner', 'lager', 'cerveza', 'cerveja', 'pilsen', 'cerveja comum'],
+      aliases: [
+        'beer',
+        'pilsner',
+        'lager',
+        'cerveza',
+        'cerveja',
+        'pilsen',
+        'cerveja comum',
+      ],
       category: DrinkCategory.beer,
       style: 'Pilsen/Lager',
       abvPercent: 4.8,
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Lata 350 ml', 350, kind: PresentationKind.can, isSuggestion: true),
-        Presentation('Lata 473 ml', 473, kind: PresentationKind.can, isSuggestion: true),
-        Presentation('Long neck 355 ml', 355, kind: PresentationKind.longNeck, isSuggestion: true),
-        Presentation('Garrafa 600 ml', 600, kind: PresentationKind.bottle, isSuggestion: true),
+        Presentation(
+          'Lata 350 ml',
+          350,
+          kind: PresentationKind.can,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Lata 473 ml',
+          473,
+          kind: PresentationKind.can,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Long neck 355 ml',
+          355,
+          kind: PresentationKind.longNeck,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Garrafa 600 ml',
+          600,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
       ],
     ),
     CatalogItem(
@@ -45,9 +72,24 @@ class CatalogSource {
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Lata 350 ml', 350, kind: PresentationKind.can, isSuggestion: true),
-        Presentation('Lata 473 ml', 473, kind: PresentationKind.can, isSuggestion: true),
-        Presentation('Garrafa 500 ml', 500, kind: PresentationKind.bottle, isSuggestion: true),
+        Presentation(
+          'Lata 350 ml',
+          350,
+          kind: PresentationKind.can,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Lata 473 ml',
+          473,
+          kind: PresentationKind.can,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Garrafa 500 ml',
+          500,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
       ],
     ),
     CatalogItem(
@@ -61,26 +103,63 @@ class CatalogSource {
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Long neck 355 ml', 355, kind: PresentationKind.longNeck, isSuggestion: true),
-        Presentation('Garrafa 500 ml', 500, kind: PresentationKind.bottle, isSuggestion: true),
+        Presentation(
+          'Long neck 355 ml',
+          355,
+          kind: PresentationKind.longNeck,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Garrafa 500 ml',
+          500,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
       ],
     ),
-    // Chopp
     CatalogItem(
       id: 'generic-chopp-claro',
       name: 'Chopp claro',
       nameI18n: {'en': 'Light draft beer', 'es': 'Cerveza de barril clara'},
-      aliases: ['chope claro', 'draft', 'draught', 'tap beer', 'chopp', 'barril', 'caña'],
+      aliases: [
+        'chope claro',
+        'draft',
+        'draught',
+        'tap beer',
+        'chopp',
+        'barril',
+        'caña',
+      ],
       category: DrinkCategory.draft,
       style: 'Pilsen/Lager',
       abvPercent: 4.8,
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Tulipa 300 ml', 300, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Copo 400 ml', 400, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Caneca 500 ml', 500, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Tulipa 1 L', 1000, kind: PresentationKind.glass, isSuggestion: true),
+        Presentation(
+          'Tulipa 300 ml',
+          300,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Copo 400 ml',
+          400,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Caneca 500 ml',
+          500,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Tulipa 1 L',
+          1000,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
       ],
     ),
     CatalogItem(
@@ -94,49 +173,108 @@ class CatalogSource {
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Tulipa 300 ml', 300, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Copo 400 ml', 400, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Caneca 500 ml', 500, kind: PresentationKind.glass, isSuggestion: true),
+        Presentation(
+          'Tulipa 300 ml',
+          300,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Copo 400 ml',
+          400,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Caneca 500 ml',
+          500,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
       ],
     ),
-    // Drinks (ABV unknown: depends on the recipe and the bar)
+    // ABV unknown for drinks: depends on the recipe and the bar.
     CatalogItem(
       id: 'generic-drink-outro',
       name: 'Drink (genérico)',
       nameI18n: {'en': 'Cocktail (generic)', 'es': 'Cóctel (genérico)'},
       aliases: ['cocktail', 'coctel', 'cóctel', 'drink'],
-      noteI18n: {'en': 'Ingredients and ABV unknown.', 'es': 'Ingredientes y graduación desconocidos.'},
+      noteI18n: {
+        'en': 'Ingredients and ABV unknown.',
+        'es': 'Ingredientes y graduación desconocidos.',
+      },
       category: DrinkCategory.cocktail,
       note: 'Ingredientes e teor desconhecidos.',
       presentations: [
-        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Copo 400 ml', 400, kind: PresentationKind.glass, isSuggestion: true),
+        Presentation(
+          'Copo 300 ml',
+          300,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Copo 400 ml',
+          400,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
       ],
     ),
-    // Mixed drink built from scratch (components, amounts and ABV filled in by the user)
     CatalogItem(
       id: 'recipe:custom-blank',
       name: 'Drink personalizado',
       nameI18n: {'en': 'Custom cocktail', 'es': 'Cóctel personalizado'},
-      aliases: ['cocktail', 'coctel', 'cóctel', 'custom', 'personalizado', 'my own'],
-      noteI18n: {'en': 'Build the composition: the ingredients, amounts and ABV you know.', 'es': 'Arma la composición: los ingredientes, cantidades y graduaciones que conozcas.'},
+      aliases: [
+        'cocktail',
+        'coctel',
+        'cóctel',
+        'custom',
+        'personalizado',
+        'my own',
+      ],
+      noteI18n: {
+        'en':
+            'Build the composition: the ingredients, amounts and ABV you know.',
+        'es':
+            'Arma la composición: los ingredientes, cantidades y graduaciones que conozcas.',
+      },
       category: DrinkCategory.cocktail,
       presentations: [],
-      note: 'Monte a composição: ingredientes, quantidades e teores que você souber.',
-      recipe: Recipe(id: 'recipe:custom-blank', name: 'Drink personalizado', components: []),
+      note:
+          'Monte a composição: ingredientes, quantidades e teores que você souber.',
+      recipe: Recipe(
+        id: 'recipe:custom-blank',
+        name: 'Drink personalizado',
+        components: [],
+      ),
     ),
-    // Destilados
     CatalogItem(
       id: 'generic-cachaca',
       name: 'Cachaça',
-      aliases: ['pinga', 'aguardente', 'cana', 'sugarcane spirit', 'aguardiente de caña'],
+      aliases: [
+        'pinga',
+        'aguardente',
+        'cana',
+        'sugarcane spirit',
+        'aguardiente de caña',
+      ],
       category: DrinkCategory.spirit,
       abvPercent: 40,
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Dose 50 ml', 50, kind: PresentationKind.shot, isSuggestion: true),
-        Presentation('Dose dupla 100 ml', 100, kind: PresentationKind.shot, isSuggestion: true),
+        Presentation(
+          'Dose 50 ml',
+          50,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Dose dupla 100 ml',
+          100,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
       ],
     ),
     CatalogItem(
@@ -148,8 +286,18 @@ class CatalogSource {
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Dose 50 ml', 50, kind: PresentationKind.shot, isSuggestion: true),
-        Presentation('Dose dupla 100 ml', 100, kind: PresentationKind.shot, isSuggestion: true),
+        Presentation(
+          'Dose 50 ml',
+          50,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Dose dupla 100 ml',
+          100,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
       ],
     ),
     CatalogItem(
@@ -161,8 +309,18 @@ class CatalogSource {
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Dose 50 ml', 50, kind: PresentationKind.shot, isSuggestion: true),
-        Presentation('Dose dupla 100 ml', 100, kind: PresentationKind.shot, isSuggestion: true),
+        Presentation(
+          'Dose 50 ml',
+          50,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Dose dupla 100 ml',
+          100,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
       ],
     ),
     CatalogItem(
@@ -175,11 +333,20 @@ class CatalogSource {
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Dose 50 ml', 50, kind: PresentationKind.shot, isSuggestion: true),
-        Presentation('Dose dupla 100 ml', 100, kind: PresentationKind.shot, isSuggestion: true),
+        Presentation(
+          'Dose 50 ml',
+          50,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Dose dupla 100 ml',
+          100,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
       ],
     ),
-    // Vinho
     CatalogItem(
       id: 'generic-vinho-tinto',
       name: 'Vinho tinto',
@@ -190,9 +357,24 @@ class CatalogSource {
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Taça 150 ml', 150, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Taça 200 ml', 200, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Garrafa 750 ml', 750, kind: PresentationKind.bottle, isSuggestion: true),
+        Presentation(
+          'Taça 150 ml',
+          150,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Taça 200 ml',
+          200,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Garrafa 750 ml',
+          750,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
       ],
     ),
     CatalogItem(
@@ -205,22 +387,59 @@ class CatalogSource {
       note: _typical,
       noteI18n: _typicalI18n,
       presentations: [
-        Presentation('Taça 150 ml', 150, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Taça 200 ml', 200, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Garrafa 750 ml', 750, kind: PresentationKind.bottle, isSuggestion: true),
+        Presentation(
+          'Taça 150 ml',
+          150,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Taça 200 ml',
+          200,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Garrafa 750 ml',
+          750,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
       ],
     ),
-    // Sem álcool
     CatalogItem(
       id: 'generic-refrigerante',
       name: 'Refrigerante',
       nameI18n: {'en': 'Soft drink', 'es': 'Refresco'},
-      aliases: ['soda', 'cola', 'guaraná', 'guarana', 'coca', 'gaseosa', 'refresco'],
+      aliases: [
+        'soda',
+        'cola',
+        'guaraná',
+        'guarana',
+        'coca',
+        'gaseosa',
+        'refresco',
+      ],
       category: DrinkCategory.nonAlcoholic,
       presentations: [
-        Presentation('Lata 350 ml', 350, kind: PresentationKind.can, isSuggestion: true),
-        Presentation('Garrafa 600 ml', 600, kind: PresentationKind.bottle, isSuggestion: true),
-        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass, isSuggestion: true),
+        Presentation(
+          'Lata 350 ml',
+          350,
+          kind: PresentationKind.can,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Garrafa 600 ml',
+          600,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Copo 300 ml',
+          300,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
       ],
     ),
     CatalogItem(
@@ -230,22 +449,48 @@ class CatalogSource {
       aliases: ['zumo', 'juice', 'suco'],
       category: DrinkCategory.nonAlcoholic,
       presentations: [
-        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Copo 500 ml', 500, kind: PresentationKind.glass, isSuggestion: true),
+        Presentation(
+          'Copo 300 ml',
+          300,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Copo 500 ml',
+          500,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
       ],
     ),
     CatalogItem(
       id: 'generic-cerveja-sem-alcool',
       name: 'Cerveja sem álcool',
       nameI18n: {'en': 'Non-alcoholic beer', 'es': 'Cerveza sin alcohol'},
-      aliases: ['zero', '0,0', 'sem alcool', 'alcohol free', 'sin alcohol', 'non alcoholic beer'],
+      aliases: [
+        'zero',
+        '0,0',
+        'sem alcool',
+        'alcohol free',
+        'sin alcohol',
+        'non alcoholic beer',
+      ],
       category: DrinkCategory.nonAlcoholic,
       presentations: [
-        Presentation('Long neck 355 ml', 355, kind: PresentationKind.longNeck, isSuggestion: true),
-        Presentation('Lata 350 ml', 350, kind: PresentationKind.can, isSuggestion: true),
+        Presentation(
+          'Long neck 355 ml',
+          355,
+          kind: PresentationKind.longNeck,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Lata 350 ml',
+          350,
+          kind: PresentationKind.can,
+          isSuggestion: true,
+        ),
       ],
     ),
-    // Água
     CatalogItem(
       id: waterItemId,
       name: 'Água sem gás',
@@ -253,9 +498,24 @@ class CatalogSource {
       aliases: ['water', 'agua', 'still water', 'mineral'],
       category: DrinkCategory.water,
       presentations: [
-        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Garrafa 500 ml', 500, kind: PresentationKind.bottle, isSuggestion: true),
-        Presentation('Garrafa 1 L', 1000, kind: PresentationKind.bottle, isSuggestion: true),
+        Presentation(
+          'Copo 300 ml',
+          300,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Garrafa 500 ml',
+          500,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Garrafa 1 L',
+          1000,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
       ],
     ),
     CatalogItem(
@@ -265,8 +525,18 @@ class CatalogSource {
       aliases: ['soda water', 'sparkling', 'agua con gas', 'mineral com gas'],
       category: DrinkCategory.water,
       presentations: [
-        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Garrafa 500 ml', 500, kind: PresentationKind.bottle, isSuggestion: true),
+        Presentation(
+          'Copo 300 ml',
+          300,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Garrafa 500 ml',
+          500,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
       ],
     ),
   ];

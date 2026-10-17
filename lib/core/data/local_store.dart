@@ -43,7 +43,8 @@ class LocalStore {
       }
       _revisions[name] = revs;
     }
-    for (final key in _prefs.getStringList(_k(_pendingKey)) ?? const <String>[]) {
+    for (final key
+        in _prefs.getStringList(_k(_pendingKey)) ?? const <String>[]) {
       _pending[key] = ++_seq;
     }
   }
@@ -82,8 +83,10 @@ class LocalStore {
   static const _pendingKey = 'sync.pending';
 
   /// The account space of [userId].
-  static Future<LocalStore> openAccount(String userId) async =>
-      LocalStore._(await SharedPreferences.getInstance(), accountPrefix(userId));
+  static Future<LocalStore> openAccount(String userId) async => LocalStore._(
+    await SharedPreferences.getInstance(),
+    accountPrefix(userId),
+  );
 
   static String accountPrefix(String userId) => 'acct.$userId.';
 
@@ -156,7 +159,9 @@ class LocalStore {
       final id = r.json['id'] as String;
       if (_pending.containsKey('$collection|$id')) continue;
       final known = _revisions[collection]![id];
-      if (known != null && known >= r.revision && _data[collection]![id] != null) {
+      if (known != null &&
+          known >= r.revision &&
+          _data[collection]![id] != null) {
         continue; // already have this (or a newer) version
       }
       _data[collection]![id] = r.json;
@@ -196,7 +201,10 @@ class LocalStore {
   /// Replaces a row with the server version chosen by the person, without
   /// queueing it.
   Future<void> replaceWithRemote(
-      String collection, Map<String, dynamic> json, int revision) async {
+    String collection,
+    Map<String, dynamic> json,
+    int revision,
+  ) async {
     if (_closed) return;
     final id = json['id'] as String;
     _pending.remove('$collection|$id');
@@ -209,14 +217,14 @@ class LocalStore {
   }
 
   Future<void> _persist(String collection) => _prefs.setString(
-        _k('col.$collection'),
-        jsonEncode(_data[collection]!.values.toList()),
-      );
+    _k('col.$collection'),
+    jsonEncode(_data[collection]!.values.toList()),
+  );
 
   Future<void> _persistRevisions(String collection) => _prefs.setString(
-        _k('rev.$collection'),
-        jsonEncode(_revisions[collection]),
-      );
+    _k('rev.$collection'),
+    jsonEncode(_revisions[collection]),
+  );
 
   Set<String> getStringSet(String key) =>
       (_prefs.getStringList(_k(key)) ?? const <String>[]).toSet();

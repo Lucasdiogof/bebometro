@@ -46,10 +46,9 @@ class CatalogMatch {
   final double rank;
 }
 
-List<String> _tokens(String text) => normalizeText(text)
-    .split(RegExp(r'[^a-z0-9]+'))
-    .where((t) => t.length >= 3)
-    .toList();
+List<String> _tokens(String text) => normalizeText(
+  text,
+).split(RegExp(r'[^a-z0-9]+')).where((t) => t.length >= 3).toList();
 
 /// Up to [limit] products that share words with the query, best first.
 List<CatalogMatch> matchCatalog(
@@ -74,7 +73,9 @@ List<CatalogMatch> matchCatalog(
     }
     final recipe = item.recipe;
     if (recipe != null && query.ingredients.isNotEmpty) {
-      final names = recipe.components.map((c) => normalizeText(c.name)).toList();
+      final names = recipe.components
+          .map((c) => normalizeText(c.name))
+          .toList();
       var shared = 0;
       for (final ing in query.ingredients) {
         final n = normalizeText(ing);
@@ -96,8 +97,9 @@ List<CatalogMatch> matchCatalog(
 List<MatchNote> _notesFor(CatalogItem item, MatchQuery q) {
   final notes = <MatchNote>[];
   if (q.category != null && q.category != item.category) {
-    notes.add(MatchNote(tr.matchOtherCategory(item.category.label),
-        difference: true));
+    notes.add(
+      MatchNote(tr.matchOtherCategory(item.category.label), difference: true),
+    );
   }
   final volume = q.volumeMl;
   final documented = item.documentedPresentations;
@@ -105,10 +107,14 @@ List<MatchNote> _notesFor(CatalogItem item, MatchQuery q) {
     if (documented.any((p) => p.volumeMl == volume)) {
       notes.add(MatchNote(tr.matchSameSize(formatMl(volume))));
     } else {
-      notes.add(MatchNote(
+      notes.add(
+        MatchNote(
           tr.matchOtherSize(
-              documented.map((p) => formatMl(p.volumeMl)).join(', ')),
-          difference: true));
+            documented.map((p) => formatMl(p.volumeMl)).join(', '),
+          ),
+          difference: true,
+        ),
+      );
     }
   }
   final abv = q.abvPercent;
@@ -117,9 +123,12 @@ List<MatchNote> _notesFor(CatalogItem item, MatchQuery q) {
       if ((item.abvPercent! - abv).abs() < 0.05) {
         notes.add(MatchNote(tr.matchSameAbv(formatAbv(abv))));
       } else {
-        notes.add(MatchNote(
+        notes.add(
+          MatchNote(
             tr.matchOtherAbv(formatAbv(item.abvPercent!), formatAbv(abv)),
-            difference: true));
+            difference: true,
+          ),
+        );
       }
     } else if (item.abvVariants.isNotEmpty) {
       notes.add(MatchNote(tr.matchAbvVaries, difference: true));

@@ -100,23 +100,26 @@ class TrackingLinks {
     _lastAt = now;
 
     final navigator = await _readyNavigator();
-    // The account may have closed while waiting: the tap was for it.
-    if (navigator == null || _stopped) return;
+    if (navigator == null || _stopped || !navigator.mounted) return;
     final context = navigator.context;
 
     final outing = _outings.byId(link.outingId);
     if (outing == null) {
+      if (!navigator.mounted) return;
       showToast(context, 'Esse rolê não existe mais neste aparelho.');
       _coordinator.schedule(immediate: true);
       return;
     }
     if (!outing.isActive) {
-      // Old tap on an outing that is over: no consumption, just the summary,
-      // and the stale surface is taken down.
       _coordinator.schedule(immediate: true);
-      unawaited(navigator.push(MaterialPageRoute<void>(
-        builder: (_) => OutingSummaryPage(outingId: outing.id),
-      )));
+      if (!navigator.mounted) return;
+      unawaited(
+        navigator.push(
+          MaterialPageRoute<void>(
+            builder: (_) => OutingSummaryPage(outingId: outing.id),
+          ),
+        ),
+      );
       return;
     }
     final action = link.action;
@@ -124,6 +127,7 @@ class TrackingLinks {
       TrackingActions.pending.value = PendingTrackingAction(outing.id, action);
     }
     if (TrackingActions.visibleOuting.value != outing.id) {
+      if (!navigator.mounted) return;
       unawaited(OutingFlow.open(context, outing.id));
     }
   }

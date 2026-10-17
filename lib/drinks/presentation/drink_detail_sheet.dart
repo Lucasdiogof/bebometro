@@ -33,7 +33,11 @@ class OriginBadge extends StatelessWidget {
       InfoOrigin.generic => Icons.layers_outlined,
       InfoOrigin.user => Icons.person_outline_rounded,
     };
-    return InfoPill(origin.label, icon: icon, warning: origin == InfoOrigin.generic);
+    return InfoPill(
+      origin.label,
+      icon: icon,
+      warning: origin == InfoOrigin.generic,
+    );
   }
 }
 
@@ -74,51 +78,64 @@ class _DrinkDetailSheet extends StatelessWidget {
               child: ListView(
                 controller: controller,
                 padding: const EdgeInsets.fromLTRB(
-                    AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+                  AppSpace.xl,
+                  0,
+                  AppSpace.xl,
+                  AppSpace.lg,
+                ),
                 children: [
-                  Row(children: [
-                    Container(
-                      width: 52,
-                      height: 52,
-                      decoration: BoxDecoration(
-                        color: AppColors.surfaceHigh,
-                        borderRadius: BorderRadius.circular(AppRadius.md),
+                  Row(
+                    children: [
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          color: AppColors.surfaceHigh,
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                        ),
+                        child: Icon(
+                          item.category.icon,
+                          color: AppColors.amber,
+                          size: 28,
+                        ),
                       ),
-                      child: Icon(item.category.icon,
-                          color: AppColors.amber, size: 28),
-                    ),
-                    const SizedBox(width: AppSpace.md),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.displayName, style: AppText.title),
-                          Text(
-                            [
-                              if (item.brand != null) item.brand!,
-                              item.category.label,
-                            ].join(' · '),
-                            style: AppText.caption,
-                          ),
-                        ],
+                      const SizedBox(width: AppSpace.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item.displayName, style: AppText.title),
+                            Text(
+                              [
+                                if (item.brand != null) item.brand!,
+                                item.category.label,
+                              ].join(' · '),
+                              style: AppText.caption,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    BlocBuilder<CatalogCubit, CatalogState>(
-                      builder: (context, state) {
-                        final fav = state.favorites.contains(item.id);
-                        return IconButton(
-                          tooltip: fav ? tr.catalogUnfavorite : tr.catalogFavorite,
-                          onPressed: () => catalog.toggleFavorite(item.id),
-                          icon: Icon(
-                            fav
-                                ? Icons.star_rounded
-                                : Icons.star_outline_rounded,
-                            color: fav ? AppColors.amber : AppColors.textMuted,
-                          ),
-                        );
-                      },
-                    ),
-                  ]),
+                      BlocBuilder<CatalogCubit, CatalogState>(
+                        builder: (context, state) {
+                          final fav = state.favorites.contains(item.id);
+                          return IconButton(
+                            tooltip: fav
+                                ? tr.catalogUnfavorite
+                                : tr.catalogFavorite,
+                            onPressed: () => catalog.toggleFavorite(item.id),
+                            icon: Icon(
+                              fav
+                                  ? Icons.star_rounded
+                                  : Icons.star_outline_rounded,
+                              color: fav
+                                  ? AppColors.amber
+                                  : AppColors.textMuted,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: AppSpace.md),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -128,7 +145,10 @@ class _DrinkDetailSheet extends StatelessWidget {
                   if (item.isRecipe)
                     _RecipeBlock(item: item)
                   else ...[
-                    _Row(tr.catalogStyle, item.displayStyle ?? tr.detailNotGiven),
+                    _Row(
+                      tr.catalogStyle,
+                      item.displayStyle ?? tr.detailNotGiven,
+                    ),
                     _Row(tr.detailAbv, _abvText(item)),
                     if (item.abvSource != null)
                       Padding(
@@ -148,8 +168,10 @@ class _DrinkDetailSheet extends StatelessWidget {
                     if (item.category == DrinkCategory.spirit)
                       Padding(
                         padding: const EdgeInsets.only(bottom: AppSpace.sm),
-                        child: Text(tr.detailBottleNotDose,
-                            style: AppText.caption),
+                        child: Text(
+                          tr.detailBottleNotDose,
+                          style: AppText.caption,
+                        ),
                       ),
                     if (item.documentedPresentations.isEmpty)
                       Text(tr.detailUnverifiedPackages, style: AppText.caption)
@@ -164,8 +186,10 @@ class _DrinkDetailSheet extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: AppSpace.sm),
-                        child: Text(tr.detailPackagesNote,
-                            style: AppText.caption),
+                        child: Text(
+                          tr.detailPackagesNote,
+                          style: AppText.caption,
+                        ),
                       ),
                     ],
                   ],
@@ -176,8 +200,11 @@ class _DrinkDetailSheet extends StatelessWidget {
                   if (!item.isRecipe && item.abvVariants.isNotEmpty) ...[
                     const SizedBox(height: AppSpace.md),
                     // Divergence stays visible; the details are folded below.
-                    InfoPill(tr.aboutDataDivergence,
-                        icon: Icons.compare_arrows_rounded, warning: true),
+                    InfoPill(
+                      tr.aboutDataDivergence,
+                      icon: Icons.compare_arrows_rounded,
+                      warning: true,
+                    ),
                   ],
                   const SizedBox(height: AppSpace.md),
                   _AboutDataTile(item: item),
@@ -193,30 +220,41 @@ class _DrinkDetailSheet extends StatelessWidget {
                     ),
                   if (item.isCustom) ...[
                     const SizedBox(height: AppSpace.md),
-                    Row(children: [
-                      if (!item.isRecipe)
+                    Row(
+                      children: [
+                        if (!item.isRecipe)
+                          TextButton.icon(
+                            onPressed: () =>
+                                Navigator.pop(context, DetailAction.edit),
+                            icon: const Icon(Icons.edit_outlined, size: 18),
+                            label: Text(tr.commonEdit),
+                          ),
                         TextButton.icon(
                           onPressed: () =>
-                              Navigator.pop(context, DetailAction.edit),
-                          icon: const Icon(Icons.edit_outlined, size: 18),
-                          label: Text(tr.commonEdit),
+                              Navigator.pop(context, DetailAction.delete),
+                          icon: const Icon(
+                            Icons.delete_outline_rounded,
+                            size: 18,
+                            color: AppColors.danger,
+                          ),
+                          label: Text(
+                            tr.commonDelete,
+                            style: const TextStyle(color: AppColors.danger),
+                          ),
                         ),
-                      TextButton.icon(
-                        onPressed: () =>
-                            Navigator.pop(context, DetailAction.delete),
-                        icon: const Icon(Icons.delete_outline_rounded,
-                            size: 18, color: AppColors.danger),
-                        label: Text(tr.commonDelete,
-                            style: const TextStyle(color: AppColors.danger)),
-                      ),
-                    ]),
+                      ],
+                    ),
                   ],
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.xl, AppSpace.sm, AppSpace.xl, AppSpace.sm),
+                AppSpace.xl,
+                AppSpace.sm,
+                AppSpace.xl,
+                AppSpace.sm,
+              ),
               child: FilledButton(
                 onPressed: () => Navigator.pop(context, DetailAction.register),
                 child: Text(tr.entryLogDrink),
@@ -277,21 +315,25 @@ class _AboutDataTile extends StatelessWidget {
           if (item.abvVariants.isNotEmpty) ...[
             Text(tr.aboutDataVariantsTitle, style: AppText.caption),
             for (final v in item.abvVariants)
-              Text('${formatAbv(v.value)}: ${v.displayScope}',
-                  style: AppText.caption),
+              Text(
+                '${formatAbv(v.value)}: ${v.displayScope}',
+                style: AppText.caption,
+              ),
             const SizedBox(height: AppSpace.sm),
           ],
           if (item.source != null) ...[
             Text(tr.aboutDataGeneralTitle, style: AppText.caption),
-            _SourceLines(FieldSource(
-              field: ProvenanceField.abv,
-              kind: ProvenanceKind.general,
-              label: item.source!.label,
-              labelI18n: item.source!.labelI18n,
-              url: item.source!.url,
-              consultedOn: item.source!.consultedOn,
-              market: item.market,
-            )),
+            _SourceLines(
+              FieldSource(
+                field: ProvenanceField.abv,
+                kind: ProvenanceKind.general,
+                label: item.source!.label,
+                labelI18n: item.source!.labelI18n,
+                url: item.source!.url,
+                consultedOn: item.source!.consultedOn,
+                market: item.market,
+              ),
+            ),
           ],
           Text(tr.detailMayVary, style: AppText.caption),
         ],
@@ -312,10 +354,11 @@ class _FieldBlock extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(p.field.label,
-              style: AppText.body.copyWith(fontWeight: FontWeight.w600)),
-          if (p.fallback)
-            Text(tr.aboutDataFallback, style: AppText.caption),
+          Text(
+            p.field.label,
+            style: AppText.body.copyWith(fontWeight: FontWeight.w600),
+          ),
+          if (p.fallback) Text(tr.aboutDataFallback, style: AppText.caption),
           for (final (i, s) in p.sources.indexed) ...[
             if ((p.presentations[i] ?? const []).isNotEmpty)
               Padding(
@@ -354,8 +397,10 @@ class _SourceLines extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(s.kind.label,
-              style: AppText.caption.copyWith(color: AppColors.amber)),
+          Text(
+            s.kind.label,
+            style: AppText.caption.copyWith(color: AppColors.amber),
+          ),
           Text(s.displayLabel, style: AppText.caption),
           if (s.market != null || _date != null)
             Text(
@@ -370,39 +415,43 @@ class _SourceLines extends StatelessWidget {
           if (s.kind == ProvenanceKind.packagingRegistry)
             Text(tr.aboutDataRegistryNote, style: AppText.caption),
           if (url != null)
-            Row(children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () async {
-                    final uri = Uri.tryParse(url);
-                    if (uri == null) return;
-                    final ok = await launchUrl(uri,
-                        mode: LaunchMode.externalApplication);
-                    if (!ok && context.mounted) {
-                      showToast(context, tr.aboutDataOpenFailed);
-                    }
-                  },
-                  child: Text(
-                    url,
-                    style: AppText.caption.copyWith(
-                      fontSize: 12,
-                      color: AppColors.amber,
-                      decoration: TextDecoration.underline,
+            Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      final uri = Uri.tryParse(url);
+                      if (uri == null) return;
+                      final ok = await launchUrl(
+                        uri,
+                        mode: LaunchMode.externalApplication,
+                      );
+                      if (!ok && context.mounted) {
+                        showToast(context, tr.aboutDataOpenFailed);
+                      }
+                    },
+                    child: Text(
+                      url,
+                      style: AppText.caption.copyWith(
+                        fontSize: 12,
+                        color: AppColors.amber,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              IconButton(
-                tooltip: tr.detailCopyAddress,
-                onPressed: () async {
-                  await Clipboard.setData(ClipboardData(text: url));
-                  if (context.mounted) {
-                    showToast(context, tr.detailAddressCopied);
-                  }
-                },
-                icon: const Icon(Icons.copy_rounded, size: 18),
-              ),
-            ]),
+                IconButton(
+                  tooltip: tr.detailCopyAddress,
+                  onPressed: () async {
+                    await Clipboard.setData(ClipboardData(text: url));
+                    if (context.mounted) {
+                      showToast(context, tr.detailAddressCopied);
+                    }
+                  },
+                  icon: const Icon(Icons.copy_rounded, size: 18),
+                ),
+              ],
+            ),
         ],
       ),
     );
@@ -445,21 +494,26 @@ class _RecipeBlock extends StatelessWidget {
           for (final c in recipe.components)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 3),
-              child: Row(children: [
-                Expanded(
-                  child: Text(
-                    c.optional ? tr.entryOptionalMark(c.name) : c.name,
-                    style: AppText.body,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      c.optional ? tr.entryOptionalMark(c.name) : c.name,
+                      style: AppText.body,
+                    ),
                   ),
-                ),
-                Text(c.amountLabel, style: AppText.caption),
-                if (c.alcoholic)
-                  const Padding(
-                    padding: EdgeInsets.only(left: AppSpace.sm),
-                    child: Icon(Icons.local_bar_outlined,
-                        size: 14, color: AppColors.amber),
-                  ),
-              ]),
+                  Text(c.amountLabel, style: AppText.caption),
+                  if (c.alcoholic)
+                    const Padding(
+                      padding: EdgeInsets.only(left: AppSpace.sm),
+                      child: Icon(
+                        Icons.local_bar_outlined,
+                        size: 14,
+                        color: AppColors.amber,
+                      ),
+                    ),
+                ],
+              ),
             ),
         const SizedBox(height: AppSpace.sm),
         Text(tr.detailAlcoholLegend, style: AppText.caption),

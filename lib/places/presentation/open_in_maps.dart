@@ -28,23 +28,42 @@ Future<bool> openInMaps({
   // Universal fallback: opens any installed maps app that handles it, or the
   // browser.
   final web = point != null
-      ? Uri.https('www.google.com', '/maps/search/', {'api': '1', 'query': '$lat,$lng'})
-      : Uri.https('www.google.com', '/maps/search/', {'api': '1', 'query': query});
+      ? Uri.https('www.google.com', '/maps/search/', {
+          'api': '1',
+          'query': '$lat,$lng',
+        })
+      : Uri.https('www.google.com', '/maps/search/', {
+          'api': '1',
+          'query': query,
+        });
 
   final candidates = <Uri>[];
   if (kIsWeb) {
-    candidates.add(point != null
-        ? Uri.parse('https://www.openstreetmap.org/?mlat=$lat&mlon=$lng#map=18/$lat/$lng')
-        : Uri.https('www.openstreetmap.org', '/search', {'query': query}));
+    candidates.add(
+      point != null
+          ? Uri.parse(
+              'https://www.openstreetmap.org/?mlat=$lat&mlon=$lng#map=18/$lat/$lng',
+            )
+          : Uri.https('www.openstreetmap.org', '/search', {'query': query}),
+    );
   } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-    candidates.add(point != null
-        ? Uri.https('maps.apple.com', '/', {'ll': '$lat,$lng', 'q': name ?? tr.placeFallbackName})
-        : Uri.https('maps.apple.com', '/', {'q': query}));
+    candidates.add(
+      point != null
+          ? Uri.https('maps.apple.com', '/', {
+              'll': '$lat,$lng',
+              'q': name ?? tr.placeFallbackName,
+            })
+          : Uri.https('maps.apple.com', '/', {'q': query}),
+    );
   } else if (defaultTargetPlatform == TargetPlatform.android) {
     // geo: lets the person pick any installed maps app.
-    candidates.add(point != null
-        ? Uri.parse('geo:$lat,$lng?q=$lat,$lng${name != null ? '(${Uri.encodeComponent(name)})' : ''}')
-        : Uri.parse('geo:0,0?q=${Uri.encodeComponent(query)}'));
+    candidates.add(
+      point != null
+          ? Uri.parse(
+              'geo:$lat,$lng?q=$lat,$lng${name != null ? '(${Uri.encodeComponent(name)})' : ''}',
+            )
+          : Uri.parse('geo:0,0?q=${Uri.encodeComponent(query)}'),
+    );
   }
   candidates.add(web);
 

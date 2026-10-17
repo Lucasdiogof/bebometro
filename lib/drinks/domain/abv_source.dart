@@ -21,11 +21,11 @@ enum AbvSource {
   final String code;
 
   String get label => switch (this) {
-        AbvSource.photoLabel => tr.abvSourceLabel,
-        AbvSource.menu => tr.abvSourceMenu,
-        AbvSource.typed => tr.abvSourceTyped,
-        AbvSource.catalog => tr.abvSourceCatalog,
-      };
+    AbvSource.photoLabel => tr.abvSourceLabel,
+    AbvSource.menu => tr.abvSourceMenu,
+    AbvSource.typed => tr.abvSourceTyped,
+    AbvSource.catalog => tr.abvSourceCatalog,
+  };
 
   static AbvSource? fromCode(String? code) {
     for (final s in AbvSource.values) {

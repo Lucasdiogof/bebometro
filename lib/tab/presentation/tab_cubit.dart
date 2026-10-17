@@ -51,10 +51,10 @@ class TabCubit extends Cubit<TabState> {
     TabRepository tabs,
     DrinkRepository drinks,
     OutingRepository outings,
-  )   : _tabs = tabs,
-        _drinks = drinks,
-        _outings = outings,
-        super(_build(outingId, tabs, outings)) {
+  ) : _tabs = tabs,
+      _drinks = drinks,
+      _outings = outings,
+      super(_build(outingId, tabs, outings)) {
     _subs
       ..add(_tabs.changes.listen((_) => _refresh()))
       ..add(_outings.changes.listen((_) => _refresh()));
@@ -92,23 +92,24 @@ class TabCubit extends Cubit<TabState> {
 
   String newId() => _uuid.v4();
 
-  // ---- Extras ----------------------------------------------------------------
-
   Future<void> saveExtra(TabExtra extra) => _edit((d) {
-        final exists = d.extras.any((x) => x.id == extra.id);
-        return d.copyWith(extras: [
-          for (final x in d.extras) x.id == extra.id ? extra : x,
-          if (!exists) extra,
-        ]);
-      });
+    final exists = d.extras.any((x) => x.id == extra.id);
+    return d.copyWith(
+      extras: [
+        for (final x in d.extras) x.id == extra.id ? extra : x,
+        if (!exists) extra,
+      ],
+    );
+  });
 
-  Future<void> removeExtra(String id) =>
-      _edit((d) => d.copyWith(extras: [
-            for (final x in d.extras)
-              if (x.id != id) x,
-          ]));
-
-  // ---- Linked drink records --------------------------------------------------
+  Future<void> removeExtra(String id) => _edit(
+    (d) => d.copyWith(
+      extras: [
+        for (final x in d.extras)
+          if (x.id != id) x,
+      ],
+    ),
+  );
 
   /// Puts records on the tab. A record can be there only once; [merged] maps
   /// a linked record to other records the user confirmed to be the same
@@ -116,27 +117,29 @@ class TabCubit extends Cubit<TabState> {
   Future<void> linkEntries(
     List<String> ids, {
     Map<String, List<String>> merged = const {},
-  }) =>
-      _edit((d) {
-        final covered = d.coveredEntryIds;
-        final links = [...d.links];
-        for (final id in ids) {
-          if (covered.contains(id)) continue;
-          final extra = [
-            for (final m in merged[id] ?? const <String>[])
-              if (!covered.contains(m) && !ids.contains(m)) m,
-          ];
-          links.add(TabLink(entryId: id, mergedIds: extra));
-          covered.add(id);
-        }
-        return d.copyWith(links: links);
-      });
+  }) => _edit((d) {
+    final covered = d.coveredEntryIds;
+    final links = [...d.links];
+    for (final id in ids) {
+      if (covered.contains(id)) continue;
+      final extra = [
+        for (final m in merged[id] ?? const <String>[])
+          if (!covered.contains(m) && !ids.contains(m)) m,
+      ];
+      links.add(TabLink(entryId: id, mergedIds: extra));
+      covered.add(id);
+    }
+    return d.copyWith(links: links);
+  });
 
-  Future<void> unlink(String entryId) =>
-      _edit((d) => d.copyWith(links: [
-            for (final l in d.links)
-              if (l.entryId != entryId) l,
-          ]));
+  Future<void> unlink(String entryId) => _edit(
+    (d) => d.copyWith(
+      links: [
+        for (final l in d.links)
+          if (l.entryId != entryId) l,
+      ],
+    ),
+  );
 
   /// Price for a linked record whose price is missing. It is written on the
   /// record itself, so there is a single charge and the summary agrees.
@@ -144,47 +147,52 @@ class TabCubit extends Cubit<TabState> {
     if (e.isShared) {
       await _drinks.setBillTotal(e.id, cents);
     } else {
-      await _drinks.applyPrices({e.id: (kind: PriceKind.informed, paidCents: cents)});
+      await _drinks.applyPrices({
+        e.id: (kind: PriceKind.informed, paidCents: cents),
+      });
     }
   }
 
-  // ---- Service and discount --------------------------------------------------
-
-  Future<void> setService({required bool on, int? bp}) => _edit(
-      (d) => d.copyWith(serviceOn: on, serviceBp: bp ?? d.serviceBp));
+  Future<void> setService({required bool on, int? bp}) =>
+      _edit((d) => d.copyWith(serviceOn: on, serviceBp: bp ?? d.serviceBp));
 
   Future<void> setDiscount(DiscountKind kind, int value) =>
       _edit((d) => d.copyWith(discountKind: kind, discountValue: value));
 
   Future<void> setLineService(TabLine line, bool on) => _edit((d) {
-        if (line.source == LineSource.entry) {
-          return d.copyWith(links: [
-            for (final l in d.links)
-              l.entryId == line.id ? l.copyWith(service: on) : l,
-          ]);
-        }
-        return d.copyWith(extras: [
-          for (final x in d.extras)
-            x.id == line.id ? x.copyWith(service: on) : x,
-        ]);
-      });
+    if (line.source == LineSource.entry) {
+      return d.copyWith(
+        links: [
+          for (final l in d.links)
+            l.entryId == line.id ? l.copyWith(service: on) : l,
+        ],
+      );
+    }
+    return d.copyWith(
+      extras: [
+        for (final x in d.extras) x.id == line.id ? x.copyWith(service: on) : x,
+      ],
+    );
+  });
 
   /// Who takes part in a line, with weights; null = everybody.
   Future<void> setLineAssign(TabLine line, Map<String, int>? assign) =>
       _edit((d) {
         if (line.source == LineSource.entry) {
-          return d.copyWith(links: [
-            for (final l in d.links)
-              l.entryId == line.id ? l.copyWith(assign: () => assign) : l,
-          ]);
+          return d.copyWith(
+            links: [
+              for (final l in d.links)
+                l.entryId == line.id ? l.copyWith(assign: () => assign) : l,
+            ],
+          );
         }
-        return d.copyWith(extras: [
-          for (final x in d.extras)
-            x.id == line.id ? x.copyWith(assign: () => assign) : x,
-        ]);
+        return d.copyWith(
+          extras: [
+            for (final x in d.extras)
+              x.id == line.id ? x.copyWith(assign: () => assign) : x,
+          ],
+        );
       });
-
-  // ---- Participants ----------------------------------------------------------
 
   /// Creates "Você" the first time the split is used.
   Future<void> ensureMe() async {
@@ -208,7 +216,10 @@ class TabCubit extends Cubit<TabState> {
     return _edit((d) {
       final id = newId();
       return d.copyWith(
-        participants: [...d.participants, Participant(id: id, name: clean)],
+        participants: [
+          ...d.participants,
+          Participant(id: id, name: clean),
+        ],
         // Whoever is added joins the equal split, which is what most people
         // expect; it can be unticked.
         equalIds: [...d.equalIds, id],
@@ -219,10 +230,14 @@ class TabCubit extends Cubit<TabState> {
   Future<void> renameParticipant(String id, String name) {
     final clean = name.trim();
     if (clean.isEmpty) return Future.value();
-    return _edit((d) => d.copyWith(participants: [
+    return _edit(
+      (d) => d.copyWith(
+        participants: [
           for (final p in d.participants)
             p.id == id ? p.copyWith(name: clean) : p,
-        ]));
+        ],
+      ),
+    );
   }
 
   /// True when removing the participant would change shares or payments.
@@ -240,90 +255,87 @@ class TabCubit extends Cubit<TabState> {
   /// Removes a participant. With [transferTo] their shares, weights and
   /// payments go to that person; without it the shares go back to the others
   /// and their payments are deleted. The caller asks the user first.
-  Future<void> removeParticipant(String id, {String? transferTo}) =>
-      _edit((d) {
-        if (d.participant(id)?.isMe ?? true) return d;
-        Map<String, int>? fix(Map<String, int>? a) {
-          if (a == null || !a.containsKey(id)) return a;
-          final next = {...a};
-          final w = next.remove(id)!;
-          if (transferTo != null) next[transferTo] = (next[transferTo] ?? 0) + w;
-          return next.isEmpty ? null : next;
-        }
+  Future<void> removeParticipant(String id, {String? transferTo}) => _edit((d) {
+    if (d.participant(id)?.isMe ?? true) return d;
+    Map<String, int>? fix(Map<String, int>? a) {
+      if (a == null || !a.containsKey(id)) return a;
+      final next = {...a};
+      final w = next.remove(id)!;
+      if (transferTo != null) next[transferTo] = (next[transferTo] ?? 0) + w;
+      return next.isEmpty ? null : next;
+    }
 
-        final custom = {...d.custom};
-        final typed = custom.remove(id);
-        if (transferTo != null && typed != null) {
-          custom[transferTo] = (custom[transferTo] ?? 0) + typed;
-        }
-        final equal = [
-          for (final e in d.equalIds)
-            if (e != id) e,
-        ];
-        if (transferTo != null &&
-            d.equalIds.contains(id) &&
-            !equal.contains(transferTo)) {
-          equal.add(transferTo);
-        }
-        return d.copyWith(
-          participants: [
-            for (final p in d.participants)
-              if (p.id != id) p,
-          ],
-          equalIds: equal,
-          custom: custom,
-          extras: [
-            for (final x in d.extras)
-              x.copyWith(assign: () => fix(x.assign)),
-          ],
-          links: [
-            for (final l in d.links) l.copyWith(assign: () => fix(l.assign)),
-          ],
-          payments: [
-            for (final p in d.payments)
-              if (p.participantId != id)
-                p
-              else if (transferTo != null)
-                p.copyWith(participantId: transferTo),
-          ],
-        );
-      });
-
-  // ---- Split -----------------------------------------------------------------
+    final custom = {...d.custom};
+    final typed = custom.remove(id);
+    if (transferTo != null && typed != null) {
+      custom[transferTo] = (custom[transferTo] ?? 0) + typed;
+    }
+    final equal = [
+      for (final e in d.equalIds)
+        if (e != id) e,
+    ];
+    if (transferTo != null &&
+        d.equalIds.contains(id) &&
+        !equal.contains(transferTo)) {
+      equal.add(transferTo);
+    }
+    return d.copyWith(
+      participants: [
+        for (final p in d.participants)
+          if (p.id != id) p,
+      ],
+      equalIds: equal,
+      custom: custom,
+      extras: [
+        for (final x in d.extras) x.copyWith(assign: () => fix(x.assign)),
+      ],
+      links: [for (final l in d.links) l.copyWith(assign: () => fix(l.assign))],
+      payments: [
+        for (final p in d.payments)
+          if (p.participantId != id)
+            p
+          else if (transferTo != null)
+            p.copyWith(participantId: transferTo),
+      ],
+    );
+  });
 
   Future<void> setMode(SplitMode mode) => _edit((d) => d.copyWith(mode: mode));
 
   Future<void> toggleEqual(String id) => _edit((d) {
-        final ids = [...d.equalIds];
-        if (!ids.remove(id)) ids.add(id);
-        return d.copyWith(equalIds: ids);
-      });
+    final ids = [...d.equalIds];
+    if (!ids.remove(id)) ids.add(id);
+    return d.copyWith(equalIds: ids);
+  });
 
   Future<void> setCustom(String id, int? cents) => _edit((d) {
-        final next = {...d.custom};
-        if (cents == null) {
-          next.remove(id);
-        } else {
-          next[id] = cents;
-        }
-        return d.copyWith(custom: next);
-      });
-
-  // ---- Payments --------------------------------------------------------------
+    final next = {...d.custom};
+    if (cents == null) {
+      next.remove(id);
+    } else {
+      next[id] = cents;
+    }
+    return d.copyWith(custom: next);
+  });
 
   Future<void> savePayment(TabPayment payment) => _edit((d) {
-        final exists = d.payments.any((p) => p.id == payment.id);
-        return d.copyWith(payments: [
-          for (final p in d.payments) p.id == payment.id ? payment : p,
-          if (!exists) payment,
-        ]);
-      });
+    final exists = d.payments.any((p) => p.id == payment.id);
+    return d.copyWith(
+      payments: [
+        for (final p in d.payments) p.id == payment.id ? payment : p,
+        if (!exists) payment,
+      ],
+    );
+  });
 
-  Future<void> removePayment(String id) =>
-      _edit((d) => d.copyWith(payments: [
-            for (final p in d.payments)
-              if (p.id != id) p,
-          ]));
+  Future<void> removePayment(String id) => _edit(
+    (d) => d.copyWith(
+      payments: [
+        for (final p in d.payments)
+          if (p.id != id) p,
+      ],
+    ),
+  );
 
   @override
   Future<void> close() {

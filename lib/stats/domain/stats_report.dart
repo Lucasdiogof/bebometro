@@ -15,9 +15,9 @@ class StatsRange {
 
   /// [first] and [last] are calendar days, both included.
   factory StatsRange.custom(DateTime first, DateTime last) => StatsRange(
-        DateTime(first.year, first.month, first.day),
-        DateTime(last.year, last.month, last.day).add(const Duration(days: 1)),
-      );
+    DateTime(first.year, first.month, first.day),
+    DateTime(last.year, last.month, last.day).add(const Duration(days: 1)),
+  );
 
   final DateTime start;
   final DateTime end;
@@ -158,12 +158,12 @@ StatsReport buildStats({
   }
 
   CategoryStat stat(DrinkCategory c, List<DrinkEntry> list) => CategoryStat(
-        category: c,
-        count: list.length,
-        knownMl: list.fold(0, (s, e) => s + (e.personalMl ?? 0)),
-        unknownVolumeCount: list.where((e) => e.personalMl == null).length,
-        entries: list,
-      );
+    category: c,
+    count: list.length,
+    knownMl: list.fold(0, (s, e) => s + (e.personalMl ?? 0)),
+    unknownVolumeCount: list.where((e) => e.personalMl == null).length,
+    entries: list,
+  );
 
   // A category can hold both: e.g. an unknown-ABV beer counts as alcoholic,
   // a "cerveja sem álcool" is its own category.
@@ -172,8 +172,14 @@ StatsReport buildStats({
   for (final c in DrinkCategory.values) {
     final list = byCategory[c];
     if (list == null) continue;
-    final a = [for (final e in list) if (e.isAlcoholic) e];
-    final n = [for (final e in list) if (!e.isAlcoholic) e];
+    final a = [
+      for (final e in list)
+        if (e.isAlcoholic) e,
+    ];
+    final n = [
+      for (final e in list)
+        if (!e.isAlcoholic) e,
+    ];
     if (a.isNotEmpty) alcoholic.add(stat(c, a));
     if (n.isNotEmpty) nonAlcoholic.add(stat(c, n));
   }

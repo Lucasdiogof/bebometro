@@ -64,8 +64,8 @@ class ReviewResult {
 
 class _CompRow {
   _CompRow(this.base)
-      : name = TextEditingController(text: base.name),
-        alcoholic = base.alcoholic;
+    : name = TextEditingController(text: base.name),
+      alcoholic = base.alcoholic;
 
   final EntryComponent base;
   final TextEditingController name;
@@ -138,7 +138,8 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
     final ingredients = e != null ? e.ingredients : p.ingredients;
     _ingredients = TextEditingController(text: ingredients?.join(', ') ?? '');
     _price = TextEditingController(
-        text: e?.advertisedCents == null ? '' : centsToInput(e!.advertisedCents!));
+      text: e?.advertisedCents == null ? '' : centsToInput(e!.advertisedCents!),
+    );
     _category = e?.category ?? p.category;
     _abvSource = abv == null ? null : (e?.abvSource ?? p.abvSource);
     _referenceId = e?.referenceItemId;
@@ -151,8 +152,11 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
     for (final i in (e == null ? p.ingredients : null) ?? const <String>[]) {
       // Only drinks (cocktails) get an ingredient list; others keep the text.
       if (_category == DrinkCategory.cocktail) {
-        _rows.add(_CompRow(EntryComponent(
-            name: i, alcoholic: ingredientLooksAlcoholic(i))));
+        _rows.add(
+          _CompRow(
+            EntryComponent(name: i, alcoholic: ingredientLooksAlcoholic(i)),
+          ),
+        );
       }
     }
     if (_category == DrinkCategory.cocktail && _rows.isNotEmpty) {
@@ -164,7 +168,14 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
   @override
   void dispose() {
     for (final c in [
-      _name, _brand, _style, _description, _volume, _abv, _ingredients, _price
+      _name,
+      _brand,
+      _style,
+      _description,
+      _volume,
+      _abv,
+      _ingredients,
+      _price,
     ]) {
       c.dispose();
     }
@@ -233,16 +244,21 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
     setState(() {
       _category = DrinkCategory.cocktail;
       for (final c in recipe.components) {
-        if (_rows.any((r) =>
-            r.name.text.trim().toLowerCase() == c.name.toLowerCase())) {
+        if (_rows.any(
+          (r) => r.name.text.trim().toLowerCase() == c.name.toLowerCase(),
+        )) {
           continue;
         }
-        _rows.add(_CompRow(EntryComponent(
-          name: c.name,
-          alcoholic: c.alcoholic,
-          role: c.role,
-          unit: c.unit,
-        )));
+        _rows.add(
+          _CompRow(
+            EntryComponent(
+              name: c.name,
+              alcoholic: c.alcoholic,
+              role: c.role,
+              unit: c.unit,
+            ),
+          ),
+        );
       }
       _referenceId = item.id;
       _dirty = true;
@@ -288,12 +304,13 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
           ? [for (final r in _rows) r.toComponent()]
           : null;
       final abv = parseDecimal(_abv.text);
-      final ingredientList = (comps == null && _ingredients.text.trim().isNotEmpty)
+      final ingredientList =
+          (comps == null && _ingredients.text.trim().isNotEmpty)
           ? _ingredients.text
-              .split(RegExp(r'[,;\n]'))
-              .map((s) => s.trim())
-              .where((s) => s.isNotEmpty)
-              .toList()
+                .split(RegExp(r'[,;\n]'))
+                .map((s) => s.trim())
+                .where((s) => s.isNotEmpty)
+                .toList()
           : null;
       final volume = parseInteger(_volume.text);
       // Only photos that still exist are linked: a lost file (web session
@@ -346,12 +363,16 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
         content: Text(tr.entryDiscardBody),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.entryKeepEditing)),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.entryKeepEditing),
+          ),
           TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.entryDiscard,
-                  style: const TextStyle(color: AppColors.danger))),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              tr.entryDiscard,
+              style: const TextStyle(color: AppColors.danger),
+            ),
+          ),
         ],
       ),
     );
@@ -374,15 +395,21 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-              editing ? tr.outingReviewEditTitle : tr.outingReviewTitle),
+            editing ? tr.outingReviewEditTitle : tr.outingReviewTitle,
+          ),
         ),
         body: Column(
           children: [
             Expanded(
               child: ListView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 padding: const EdgeInsets.fromLTRB(
-                    AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                  AppSpace.gutter,
+                  0,
+                  AppSpace.gutter,
+                  AppSpace.xl,
+                ),
                 children: [
                   Text(tr.outingReviewIsolation, style: AppText.caption),
                   if (ended) ...[
@@ -402,7 +429,9 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                         children: [
                           for (final id in _photoIds)
                             Padding(
-                              padding: const EdgeInsets.only(right: AppSpace.sm),
+                              padding: const EdgeInsets.only(
+                                right: AppSpace.sm,
+                              ),
                               child: PhotoThumb(
                                 photoId: id,
                                 size: 88,
@@ -419,8 +448,11 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                     for (final n in notes)
                       Padding(
                         padding: const EdgeInsets.only(bottom: AppSpace.xs),
-                        child: InfoPill(n,
-                            icon: Icons.help_outline_rounded, warning: true),
+                        child: InfoPill(
+                          n,
+                          icon: Icons.help_outline_rounded,
+                          warning: true,
+                        ),
                       ),
                   ],
                   SectionTitle(tr.outingReviewDrinkSection),
@@ -475,15 +507,21 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                   if (_showErrors && _category == null)
                     Padding(
                       padding: const EdgeInsets.only(top: AppSpace.xs),
-                      child: Text(tr.outingReviewPickType,
-                          style: const TextStyle(
-                              color: AppColors.danger, fontSize: 12)),
+                      child: Text(
+                        tr.outingReviewPickType,
+                        style: const TextStyle(
+                          color: AppColors.danger,
+                          fontSize: 12,
+                        ),
+                      ),
                     )
                   else if (_category == null)
                     Padding(
                       padding: const EdgeInsets.only(top: AppSpace.xs),
-                      child: Text(tr.outingReviewTypeUnknown,
-                          style: AppText.caption),
+                      child: Text(
+                        tr.outingReviewTypeUnknown,
+                        style: AppText.caption,
+                      ),
                     ),
                   const SizedBox(height: AppSpace.md),
                   TextField(
@@ -511,7 +549,8 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                       textCapitalization: TextCapitalization.sentences,
                       onChanged: (_) => _touch(),
                       decoration: InputDecoration(
-                          labelText: tr.outingReviewDescription),
+                        labelText: tr.outingReviewDescription,
+                      ),
                     ),
                   ],
                   SectionTitle(tr.customSizeAndAbv),
@@ -530,8 +569,9 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                     const SizedBox(height: AppSpace.md),
                     TextField(
                       controller: _abv,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       onChanged: (v) => setState(() {
                         _abvSource = v.trim().isEmpty ? null : AbvSource.typed;
                         _dirty = true;
@@ -544,54 +584,63 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                         helperText: _abv.text.trim().isEmpty
                             ? tr.customAbvHelper
                             : tr.outingReviewAbvSource(
-                                (_abvSource ?? AbvSource.typed).label),
+                                (_abvSource ?? AbvSource.typed).label,
+                              ),
                         helperMaxLines: 2,
                       ),
                     ),
                   ],
                   if (cocktail) ...[
                     SectionTitle(tr.recipeEditorIngredients),
-                    Text(tr.outingReviewIngredientsIntro,
-                        style: AppText.caption),
+                    Text(
+                      tr.outingReviewIngredientsIntro,
+                      style: AppText.caption,
+                    ),
                     const SizedBox(height: AppSpace.sm),
                     for (var i = 0; i < _rows.length; i++)
                       Padding(
                         padding: const EdgeInsets.only(bottom: AppSpace.sm),
-                        child: Row(children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _rows[i].name,
-                              onChanged: (_) => _touch(),
-                              decoration: InputDecoration(
-                                  labelText: tr.entryIngredientField),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _rows[i].name,
+                                onChanged: (_) => _touch(),
+                                decoration: InputDecoration(
+                                  labelText: tr.entryIngredientField,
+                                ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: AppSpace.sm),
-                          FilterChip(
-                            label: Text(tr.outingReviewAlcoholChip),
-                            selected: _rows[i].alcoholic,
-                            showCheckmark: false,
-                            onSelected: (v) => setState(() {
-                              _rows[i].alcoholic = v;
-                              _dirty = true;
-                            }),
-                          ),
-                          IconButton(
-                            tooltip: tr.entryRemoveIngredient,
-                            onPressed: () => setState(() {
-                              _rows.removeAt(i).name.dispose();
-                              _dirty = true;
-                            }),
-                            icon: const Icon(Icons.close_rounded),
-                          ),
-                        ]),
+                            const SizedBox(width: AppSpace.sm),
+                            FilterChip(
+                              label: Text(tr.outingReviewAlcoholChip),
+                              selected: _rows[i].alcoholic,
+                              showCheckmark: false,
+                              onSelected: (v) => setState(() {
+                                _rows[i].alcoholic = v;
+                                _dirty = true;
+                              }),
+                            ),
+                            IconButton(
+                              tooltip: tr.entryRemoveIngredient,
+                              onPressed: () => setState(() {
+                                _rows.removeAt(i).name.dispose();
+                                _dirty = true;
+                              }),
+                              icon: const Icon(Icons.close_rounded),
+                            ),
+                          ],
+                        ),
                       ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton.icon(
                         onPressed: () => setState(() {
-                          _rows.add(_CompRow(
-                              const EntryComponent(name: '', alcoholic: false)));
+                          _rows.add(
+                            _CompRow(
+                              const EntryComponent(name: '', alcoholic: false),
+                            ),
+                          );
                           _dirty = true;
                         }),
                         icon: const Icon(Icons.add_rounded),
@@ -623,16 +672,17 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                       onChanged: (_) => _touch(),
                     ),
                   ],
-                  SectionTitle(tr.outingReviewSimilar,
-                      trailing: TextButton(
-                        onPressed: _name.text.trim().isEmpty ? null : _search,
-                        child: Text(tr.outingReviewSearch),
-                      )),
+                  SectionTitle(
+                    tr.outingReviewSimilar,
+                    trailing: TextButton(
+                      onPressed: _name.text.trim().isEmpty ? null : _search,
+                      child: Text(tr.outingReviewSearch),
+                    ),
+                  ),
                   Text(tr.outingReviewSimilarNote, style: AppText.caption),
                   const SizedBox(height: AppSpace.sm),
                   if (_searched && _matches.isEmpty)
-                    Text(tr.outingReviewNothingSimilar,
-                        style: AppText.caption),
+                    Text(tr.outingReviewNothingSimilar, style: AppText.caption),
                   for (final m in _matches)
                     Padding(
                       padding: const EdgeInsets.only(bottom: AppSpace.sm),
@@ -661,32 +711,43 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                                     ),
                                     const SizedBox(width: AppSpace.xs),
                                     Expanded(
-                                        child: Text(n.text, style: AppText.caption)),
+                                      child: Text(
+                                        n.text,
+                                        style: AppText.caption,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
                             const SizedBox(height: AppSpace.sm),
-                            Wrap(spacing: AppSpace.sm, children: [
-                              OutlinedButton(
-                                onPressed: () => setState(() {
-                                  _referenceId =
-                                      _referenceId == m.item.id ? null : m.item.id;
-                                  _dirty = true;
-                                }),
-                                child: Text(_referenceId == m.item.id
-                                    ? tr.outingReviewReferenceChosen
-                                    : tr.outingReviewUseReference),
-                              ),
-                              TextButton(
-                                onPressed: () => _fillEmptyFrom(m.item),
-                                child: Text(tr.outingReviewFillEmpty),
-                              ),
-                              if (m.item.isRecipe)
-                                TextButton(
-                                  onPressed: () => _fillIngredientsFrom(m.item),
-                                  child: Text(tr.outingReviewCopyIngredients),
+                            Wrap(
+                              spacing: AppSpace.sm,
+                              children: [
+                                OutlinedButton(
+                                  onPressed: () => setState(() {
+                                    _referenceId = _referenceId == m.item.id
+                                        ? null
+                                        : m.item.id;
+                                    _dirty = true;
+                                  }),
+                                  child: Text(
+                                    _referenceId == m.item.id
+                                        ? tr.outingReviewReferenceChosen
+                                        : tr.outingReviewUseReference,
+                                  ),
                                 ),
-                            ]),
+                                TextButton(
+                                  onPressed: () => _fillEmptyFrom(m.item),
+                                  child: Text(tr.outingReviewFillEmpty),
+                                ),
+                                if (m.item.isRecipe)
+                                  TextButton(
+                                    onPressed: () =>
+                                        _fillIngredientsFrom(m.item),
+                                    child: Text(tr.outingReviewCopyIngredients),
+                                  ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -707,25 +768,32 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                         if (_referenceId != null)
                           Padding(
                             padding: const EdgeInsets.only(top: AppSpace.xs),
-                            child: Text(tr.outingReviewReferenceNote,
-                                style: AppText.caption),
+                            child: Text(
+                              tr.outingReviewReferenceNote,
+                              style: AppText.caption,
+                            ),
                           ),
                       ],
                     ),
                   ),
                   if (_sourceText != null && _sourceText!.trim().isNotEmpty)
                     Theme(
-                      data: Theme.of(context)
-                          .copyWith(dividerColor: Colors.transparent),
+                      data: Theme.of(
+                        context,
+                      ).copyWith(dividerColor: Colors.transparent),
                       child: ExpansionTile(
                         tilePadding: EdgeInsets.zero,
-                        title: Text(tr.outingReviewSourceText,
-                            style: AppText.subtitle),
+                        title: Text(
+                          tr.outingReviewSourceText,
+                          style: AppText.subtitle,
+                        ),
                         children: [
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: SelectableText(_sourceText!,
-                                style: AppText.caption),
+                            child: SelectableText(
+                              _sourceText!,
+                              style: AppText.caption,
+                            ),
                           ),
                         ],
                       ),
@@ -743,12 +811,16 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         FilledButton(
-                          onPressed: _saving ? null : () => _save(register: true),
+                          onPressed: _saving
+                              ? null
+                              : () => _save(register: true),
                           child: Text(tr.outingReviewConfirmContinue),
                         ),
                         const SizedBox(height: AppSpace.sm),
                         OutlinedButton(
-                          onPressed: _saving ? null : () => _save(register: false),
+                          onPressed: _saving
+                              ? null
+                              : () => _save(register: false),
                           child: Text(tr.outingReviewSaveOnly),
                         ),
                       ],

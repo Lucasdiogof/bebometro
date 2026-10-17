@@ -45,8 +45,11 @@ class _StartOutingViewState extends State<_StartOutingView> {
   bool _showAddress = false;
 
   Future<void> _pick(StartOutingCubit cubit) async {
-    final draft = await PlacePickerPage.open(context,
-        mode: PlacePickerMode.start, type: cubit.state.type);
+    final draft = await PlacePickerPage.open(
+      context,
+      mode: PlacePickerMode.start,
+      type: cubit.state.type,
+    );
     if (draft != null) cubit.choosePlace(draft);
   }
 
@@ -71,7 +74,11 @@ class _StartOutingViewState extends State<_StartOutingView> {
                       keyboardDismissBehavior:
                           ScrollViewKeyboardDismissBehavior.onDrag,
                       padding: const EdgeInsets.fromLTRB(
-                          AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                        AppSpace.gutter,
+                        0,
+                        AppSpace.gutter,
+                        AppSpace.xl,
+                      ),
                       children: [
                         SectionTitle(tr.startWhatKind),
                         OutingTypePicker(
@@ -87,24 +94,35 @@ class _StartOutingViewState extends State<_StartOutingView> {
                         else ...[
                           SurfaceCard(
                             onTap: () => _pick(cubit),
-                            child: Row(children: [
-                              const Icon(Icons.search_rounded,
-                                  color: AppColors.amber),
-                              const SizedBox(width: AppSpace.md),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(tr.startSearchPlace,
-                                        style: AppText.subtitle),
-                                    Text(tr.startSearchPlaceHint,
-                                        style: AppText.caption),
-                                  ],
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.search_rounded,
+                                  color: AppColors.amber,
                                 ),
-                              ),
-                              const Icon(Icons.chevron_right_rounded,
-                                  color: AppColors.textMuted),
-                            ]),
+                                const SizedBox(width: AppSpace.md),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        tr.startSearchPlace,
+                                        style: AppText.subtitle,
+                                      ),
+                                      Text(
+                                        tr.startSearchPlaceHint,
+                                        style: AppText.caption,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.chevron_right_rounded,
+                                  color: AppColors.textMuted,
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: AppSpace.md),
                           if (shortcuts.isNotEmpty) ...[
@@ -128,11 +146,14 @@ class _StartOutingViewState extends State<_StartOutingView> {
                                       color: AppColors.amber,
                                     ),
                                     label: ConstrainedBox(
-                                      constraints:
-                                          const BoxConstraints(maxWidth: 180),
-                                      child: Text(p.displayName,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis),
+                                      constraints: const BoxConstraints(
+                                        maxWidth: 180,
+                                      ),
+                                      child: Text(
+                                        p.displayName,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                     onPressed: () => cubit.selectPlace(p),
                                   );
@@ -164,51 +185,53 @@ class _StartOutingViewState extends State<_StartOutingView> {
                               ),
                             )
                           else ...[
-                          const SizedBox(height: AppSpace.md),
-                          TextField(
-                            textCapitalization: TextCapitalization.words,
-                            textInputAction: TextInputAction.next,
-                            decoration: InputDecoration(
-                              labelText: tr.startAddressLabel,
-                              hintText: tr.startAddressHint,
-                              helperText: tr.startAddressHelper,
-                              errorText: placeError == null ? null : ' ',
+                            const SizedBox(height: AppSpace.md),
+                            TextField(
+                              textCapitalization: TextCapitalization.words,
+                              textInputAction: TextInputAction.next,
+                              decoration: InputDecoration(
+                                labelText: tr.startAddressLabel,
+                                hintText: tr.startAddressHint,
+                                helperText: tr.startAddressHelper,
+                                errorText: placeError == null ? null : ' ',
+                              ),
+                              onChanged: cubit.setAddress,
                             ),
-                            onChanged: cubit.setAddress,
-                          ),
-                          const SizedBox(height: AppSpace.md),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: TextField(
-                                  textCapitalization: TextCapitalization.words,
-                                  textInputAction: TextInputAction.next,
-                                  decoration: InputDecoration(
-                                      labelText: tr.startCityLabel),
-                                  onChanged: cubit.setCity,
-                                ),
-                              ),
-                              const SizedBox(width: AppSpace.sm),
-                              Expanded(
-                                flex: 1,
-                                child: TextField(
-                                  textCapitalization:
-                                      TextCapitalization.characters,
-                                  maxLength: 2,
-                                  decoration: InputDecoration(
-                                    labelText: tr.startStateLabel,
-                                    counterText: '',
-                                    errorText: state.showErrors
-                                        ? state.stateError
-                                        : null,
+                            const SizedBox(height: AppSpace.md),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: TextField(
+                                    textCapitalization:
+                                        TextCapitalization.words,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: InputDecoration(
+                                      labelText: tr.startCityLabel,
+                                    ),
+                                    onChanged: cubit.setCity,
                                   ),
-                                  onChanged: cubit.setState,
                                 ),
-                              ),
-                            ],
-                          ),
+                                const SizedBox(width: AppSpace.sm),
+                                Expanded(
+                                  flex: 1,
+                                  child: TextField(
+                                    textCapitalization:
+                                        TextCapitalization.characters,
+                                    maxLength: 2,
+                                    decoration: InputDecoration(
+                                      labelText: tr.startStateLabel,
+                                      counterText: '',
+                                      errorText: state.showErrors
+                                          ? state.stateError
+                                          : null,
+                                    ),
+                                    onChanged: cubit.setState,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                           SwitchListTile(
                             contentPadding: EdgeInsets.zero,
@@ -222,22 +245,31 @@ class _StartOutingViewState extends State<_StartOutingView> {
                         SectionTitle(tr.startWhen),
                         SurfaceCard(
                           onTap: () async {
-                            final picked =
-                                await pickDateTime(context, state.startedAt);
+                            final picked = await pickDateTime(
+                              context,
+                              state.startedAt,
+                            );
                             if (picked != null) cubit.setStartedAt(picked);
                           },
-                          child: Row(children: [
-                            const Icon(Icons.schedule_rounded,
-                                color: AppColors.amber),
-                            const SizedBox(width: AppSpace.md),
-                            Expanded(
-                              child: Text(formatDateTime(state.startedAt),
-                                  style: AppText.subtitle),
-                            ),
-                            Text(tr.commonEdit,
-                                style:
-                                    const TextStyle(color: AppColors.amber)),
-                          ]),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.schedule_rounded,
+                                color: AppColors.amber,
+                              ),
+                              const SizedBox(width: AppSpace.md),
+                              Expanded(
+                                child: Text(
+                                  formatDateTime(state.startedAt),
+                                  style: AppText.subtitle,
+                                ),
+                              ),
+                              Text(
+                                tr.commonEdit,
+                                style: const TextStyle(color: AppColors.amber),
+                              ),
+                            ],
+                          ),
                         ),
                         SectionTitle(tr.startBudgetSection),
                         MoneyField(
@@ -248,9 +280,10 @@ class _StartOutingViewState extends State<_StartOutingView> {
                         if (state.error != null)
                           Padding(
                             padding: const EdgeInsets.only(top: AppSpace.md),
-                            child: Text(state.error!,
-                                style:
-                                    const TextStyle(color: AppColors.danger)),
+                            child: Text(
+                              state.error!,
+                              style: const TextStyle(color: AppColors.danger),
+                            ),
                           ),
                       ],
                     ),
@@ -297,29 +330,35 @@ class _ChosenPlace extends StatelessWidget {
     final willSave = saved == null && (place.saved != null || place.save);
     return SurfaceCard(
       highlight: true,
-      child: Row(children: [
-        Icon(saved?.type.icon ?? Icons.place_rounded, color: AppColors.amber),
-        const SizedBox(width: AppSpace.md),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(place.title,
+      child: Row(
+        children: [
+          Icon(saved?.type.icon ?? Icons.place_rounded, color: AppColors.amber),
+          const SizedBox(width: AppSpace.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  place.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppText.subtitle),
-              for (final line in extra)
-                Text(line,
+                  style: AppText.subtitle,
+                ),
+                for (final line in extra)
+                  Text(
+                    line,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: AppText.caption),
-              if (willSave)
-                Text(tr.startWillSavePlace, style: AppText.caption),
-            ],
+                    style: AppText.caption,
+                  ),
+                if (willSave)
+                  Text(tr.startWillSavePlace, style: AppText.caption),
+              ],
+            ),
           ),
-        ),
-        TextButton(onPressed: onClear, child: Text(tr.startChangePlace)),
-      ]),
+          TextButton(onPressed: onClear, child: Text(tr.startChangePlace)),
+        ],
+      ),
     );
   }
 }

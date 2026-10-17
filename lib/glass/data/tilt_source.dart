@@ -49,11 +49,7 @@ class TiltSource {
     try {
       _sub = accelerometerEventStream(
         samplingPeriod: SensorInterval.gameInterval,
-      ).listen(
-        _onEvent,
-        onError: (Object _) => _fail(),
-        cancelOnError: true,
-      );
+      ).listen(_onEvent, onError: (Object _) => _fail(), cancelOnError: true);
     } catch (_) {
       _fail();
     }

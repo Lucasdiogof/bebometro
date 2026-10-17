@@ -58,7 +58,11 @@ class _ResenhaPageState extends State<ResenhaPage> {
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(
-              AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
+            AppSpace.gutter,
+            0,
+            AppSpace.gutter,
+            AppSpace.xxl,
+          ),
           children: [
             Text(tr.resenhaIntro, style: AppText.caption),
             if (saved != null) ...[
@@ -75,22 +79,24 @@ class _ResenhaPageState extends State<ResenhaPage> {
                       style: AppText.caption,
                     ),
                     const SizedBox(height: AppSpace.md),
-                    Row(children: [
-                      Expanded(
-                        child: FilledButton(
-                          onPressed: () => _open(const GamePlayPage.resume()),
-                          child: Text(tr.resenhaResume),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton(
+                            onPressed: () => _open(const GamePlayPage.resume()),
+                            child: Text(tr.resenhaResume),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: AppSpace.sm),
-                      TextButton(
-                        onPressed: () async {
-                          await _repo.clearSession();
-                          if (mounted) setState(() {});
-                        },
-                        child: Text(tr.entryDiscard),
-                      ),
-                    ]),
+                        const SizedBox(width: AppSpace.sm),
+                        TextButton(
+                          onPressed: () async {
+                            await _repo.clearSession();
+                            if (mounted) setState(() {});
+                          },
+                          child: Text(tr.entryDiscard),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -101,63 +107,78 @@ class _ResenhaPageState extends State<ResenhaPage> {
                 padding: const EdgeInsets.only(bottom: AppSpace.sm),
                 child: SurfaceCard(
                   onTap: () => _open(GameSetupPage(game: g)),
-                  child: Row(children: [
-                    Icon(_icon(g), color: AppColors.amber, size: 30),
-                    const SizedBox(width: AppSpace.md),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(g.title, style: AppText.subtitle),
-                          Text(g.description, style: AppText.caption),
-                        ],
+                  child: Row(
+                    children: [
+                      Icon(_icon(g), color: AppColors.amber, size: 30),
+                      const SizedBox(width: AppSpace.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(g.title, style: AppText.subtitle),
+                            Text(g.description, style: AppText.caption),
+                          ],
+                        ),
                       ),
-                    ),
-                    const Icon(Icons.chevron_right_rounded,
-                        color: AppColors.textMuted),
-                  ]),
+                      const Icon(
+                        Icons.chevron_right_rounded,
+                        color: AppColors.textMuted,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             SectionTitle(tr.resenhaPlay),
             SurfaceCard(
               onTap: () => _open(const TipGlassPage()),
-              child: Row(children: [
-                const Icon(Icons.rotate_right_rounded, color: AppColors.amber),
-                const SizedBox(width: AppSpace.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(tr.resenhaTipTitle, style: AppText.subtitle),
-                      Text(tr.resenhaTipBody, style: AppText.caption),
-                    ],
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.rotate_right_rounded,
+                    color: AppColors.amber,
                   ),
-                ),
-                const Icon(Icons.chevron_right_rounded,
-                    color: AppColors.textMuted),
-              ]),
+                  const SizedBox(width: AppSpace.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(tr.resenhaTipTitle, style: AppText.subtitle),
+                        Text(tr.resenhaTipBody, style: AppText.caption),
+                      ],
+                    ),
+                  ),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.textMuted,
+                  ),
+                ],
+              ),
             ),
             SectionTitle(tr.resenhaCards),
             SurfaceCard(
               onTap: () => _open(const CustomCardsPage()),
-              child: Row(children: [
-                const Icon(Icons.edit_note_rounded, color: AppColors.amber),
-                const SizedBox(width: AppSpace.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(tr.resenhaMyCards, style: AppText.subtitle),
-                      Text(
-                        tr.resenhaMyCardsCount(_repo.customCards.length),
-                        style: AppText.caption,
-                      ),
-                    ],
+              child: Row(
+                children: [
+                  const Icon(Icons.edit_note_rounded, color: AppColors.amber),
+                  const SizedBox(width: AppSpace.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(tr.resenhaMyCards, style: AppText.subtitle),
+                        Text(
+                          tr.resenhaMyCardsCount(_repo.customCards.length),
+                          style: AppText.caption,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const Icon(Icons.chevron_right_rounded,
-                    color: AppColors.textMuted),
-              ]),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.textMuted,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -166,8 +187,8 @@ class _ResenhaPageState extends State<ResenhaPage> {
   }
 
   IconData _icon(GameType g) => switch (g) {
-        GameType.neverHaveIEver => Icons.do_not_disturb_alt_rounded,
-        GameType.mostLikely => Icons.how_to_vote_rounded,
-        GameType.truthOrDare => Icons.help_center_rounded,
-      };
+    GameType.neverHaveIEver => Icons.do_not_disturb_alt_rounded,
+    GameType.mostLikely => Icons.how_to_vote_rounded,
+    GameType.truthOrDare => Icons.help_center_rounded,
+  };
 }

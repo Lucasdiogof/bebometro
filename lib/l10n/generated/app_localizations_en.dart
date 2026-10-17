@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -3034,7 +3033,8 @@ class AppLocalizationsEn extends AppLocalizations {
       locale: localeName,
       other:
           '$count prices with no clear item were ignored. Add the item manually if you need them.',
-      one: '1 price with no clear item was ignored. Add the item manually if you need it.',
+      one:
+          '1 price with no clear item was ignored. Add the item manually if you need it.',
     );
     return '$_temp0';
   }
@@ -3053,7 +3053,8 @@ class AppLocalizationsEn extends AppLocalizations {
       locale: localeName,
       other:
           '$count photos of this reading are no longer available. Their items were kept for you to check.',
-      one: 'One photo of this reading is no longer available. Its items were kept for you to check.',
+      one:
+          'One photo of this reading is no longer available. Its items were kept for you to check.',
     );
     return '$_temp0';
   }
@@ -3437,7 +3438,8 @@ class AppLocalizationsEn extends AppLocalizations {
       locale: localeName,
       other:
           '$count photos are still only on this device; the upload is retried automatically.',
-      one: '1 photo is still only on this device; the upload is retried automatically.',
+      one:
+          '1 photo is still only on this device; the upload is retried automatically.',
     );
     return '$_temp0';
   }
@@ -4825,7 +4827,8 @@ class AppLocalizationsEn extends AppLocalizations {
       locale: localeName,
       other:
           'No basis for comparison: no outings logged in the $days days before this period.',
-      one: 'No basis for comparison: no outings logged on the day before this period.',
+      one:
+          'No basis for comparison: no outings logged on the day before this period.',
     );
     return '$_temp0';
   }

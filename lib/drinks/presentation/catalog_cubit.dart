@@ -49,14 +49,13 @@ class CatalogFilters {
     bool clearBrand = false,
     bool clearStyle = false,
     bool clearKind = false,
-  }) =>
-      CatalogFilters(
-        category: clearCategory ? null : (category ?? this.category),
-        brand: clearBrand ? null : (brand ?? this.brand),
-        styleGroup: clearStyle ? null : (styleGroup ?? this.styleGroup),
-        kind: clearKind ? null : (kind ?? this.kind),
-        nonAlcoholic: nonAlcoholic ?? this.nonAlcoholic,
-      );
+  }) => CatalogFilters(
+    category: clearCategory ? null : (category ?? this.category),
+    brand: clearBrand ? null : (brand ?? this.brand),
+    styleGroup: clearStyle ? null : (styleGroup ?? this.styleGroup),
+    kind: clearKind ? null : (kind ?? this.kind),
+    nonAlcoholic: nonAlcoholic ?? this.nonAlcoholic,
+  );
 }
 
 class CatalogState {
@@ -83,7 +82,6 @@ class CatalogState {
   final List<CatalogItem> favoriteItems;
   final Set<String> favorites;
 
-  // Options offered by the filter sheet.
   final List<String> brands;
   final List<String> styleGroups;
   final List<PresentationKind> kinds;
@@ -155,7 +153,8 @@ class CatalogCubit extends Cubit<CatalogState> {
     if (f.category != null && i.category != f.category) return false;
     if (f.brand != null && i.brand != f.brand) return false;
     if (f.styleGroup != null && i.styleGroup != f.styleGroup) return false;
-    if (f.kind != null && !i.documentedPresentations.any((p) => p.kind == f.kind)) {
+    if (f.kind != null &&
+        !i.documentedPresentations.any((p) => p.kind == f.kind)) {
       return false;
     }
     if (f.nonAlcoholic &&
@@ -175,13 +174,15 @@ class CatalogCubit extends Cubit<CatalogState> {
     final all = _drinks.catalog();
     final byId = {for (final i in all) i.id: i};
 
-    final tokens =
-        normalizeText(_query).split(' ').where((t) => t.isNotEmpty).toList();
+    final tokens = normalizeText(
+      _query,
+    ).split(' ').where((t) => t.isNotEmpty).toList();
     final items = all.where((i) => _matches(i, _filters, tokens)).toList()
       ..sort((a, b) {
         if (a.isCustom != b.isCustom) return a.isCustom ? -1 : 1;
-        return normalizeText(a.displayName)
-            .compareTo(normalizeText(b.displayName));
+        return normalizeText(
+          a.displayName,
+        ).compareTo(normalizeText(b.displayName));
       });
 
     const preferredStyles = [
@@ -192,39 +193,43 @@ class CatalogCubit extends Cubit<CatalogState> {
       'Witbier',
       'Stout/Porter',
     ];
-    final styleGroups = {
-      for (final i in all)
-        if (i.styleGroup != null) i.styleGroup!,
-    }.toList()
-      ..sort((a, b) {
-        final ia = preferredStyles.indexOf(a);
-        final ib = preferredStyles.indexOf(b);
-        if (ia != ib) {
-          return (ia < 0 ? 999 : ia).compareTo(ib < 0 ? 999 : ib);
-        }
-        return a.compareTo(b);
-      });
+    final styleGroups =
+        {
+          for (final i in all)
+            if (i.styleGroup != null) i.styleGroup!,
+        }.toList()..sort((a, b) {
+          final ia = preferredStyles.indexOf(a);
+          final ib = preferredStyles.indexOf(b);
+          if (ia != ib) {
+            return (ia < 0 ? 999 : ia).compareTo(ib < 0 ? 999 : ib);
+          }
+          return a.compareTo(b);
+        });
 
-    emit(CatalogState(
-      query: _query,
-      filters: _filters,
-      items: items,
-      recents: [
-        for (final id in _drinks.recentItemIds(limit: 6)) ?byId[id],
-      ],
-      favoriteItems: all.where((i) => favorites.contains(i.id)).toList(),
-      favorites: favorites,
-      brands: ({
-        for (final i in all)
-          if (i.brand != null && i.brand!.isNotEmpty) i.brand!,
-      }.toList()
-        ..sort((a, b) => normalizeText(a).compareTo(normalizeText(b)))),
-      styleGroups: styleGroups,
-      kinds: [
-        for (final k in PresentationKind.values)
-          if (all.any((i) => i.documentedPresentations.any((p) => p.kind == k))) k,
-      ],
-    ));
+    emit(
+      CatalogState(
+        query: _query,
+        filters: _filters,
+        items: items,
+        recents: [for (final id in _drinks.recentItemIds(limit: 6)) ?byId[id]],
+        favoriteItems: all.where((i) => favorites.contains(i.id)).toList(),
+        favorites: favorites,
+        brands:
+            ({
+                for (final i in all)
+                  if (i.brand != null && i.brand!.isNotEmpty) i.brand!,
+              }.toList()
+              ..sort((a, b) => normalizeText(a).compareTo(normalizeText(b)))),
+        styleGroups: styleGroups,
+        kinds: [
+          for (final k in PresentationKind.values)
+            if (all.any(
+              (i) => i.documentedPresentations.any((p) => p.kind == k),
+            ))
+              k,
+        ],
+      ),
+    );
   }
 
   @override

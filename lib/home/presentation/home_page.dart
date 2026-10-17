@@ -130,18 +130,23 @@ class _HomeViewState extends State<_HomeView> {
               if (state.loading) return const LoadingView();
               return ListView(
                 padding: const EdgeInsets.fromLTRB(
-                    AppSpace.gutter, AppSpace.sm, AppSpace.gutter, AppSpace.xxl),
+                  AppSpace.gutter,
+                  AppSpace.sm,
+                  AppSpace.gutter,
+                  AppSpace.xxl,
+                ),
                 children: [
-                  _Header(
-                    onSettings: () => AppRoutes.openSettings(context),
-                  ),
+                  _Header(onSettings: () => AppRoutes.openSettings(context)),
                   const SizedBox(height: AppSpace.lg),
                   if (state.active != null)
                     _ActiveCard(
                       state: state,
                       onContinue: () => _openOuting(state.active!.id),
-                      onFinish: () => OutingFlow.open(context, state.active!.id,
-                          finish: true),
+                      onFinish: () => OutingFlow.open(
+                        context,
+                        state.active!.id,
+                        finish: true,
+                      ),
                     )
                   else
                     _IdleCard(onStart: _startOuting),
@@ -176,19 +181,21 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      const Padding(
-        padding: EdgeInsets.only(left: AppSpace.xs),
-        child: BrandWordmark(height: 30),
-      ),
-      const Spacer(),
-      IconButton(
-        tooltip: tr.settingsTitle,
-        onPressed: onSettings,
-        icon: const Icon(Icons.settings_outlined),
-      ),
-      SyncBadge(onTap: onSettings),
-    ]);
+    return Row(
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(left: AppSpace.xs),
+          child: BrandWordmark(height: 30),
+        ),
+        const Spacer(),
+        IconButton(
+          tooltip: tr.settingsTitle,
+          onPressed: onSettings,
+          icon: const Icon(Icons.settings_outlined),
+        ),
+        SyncBadge(onTap: onSettings),
+      ],
+    );
   }
 }
 
@@ -245,51 +252,59 @@ class _ActiveCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
-            Container(
-              width: 8,
-              height: 8,
-              decoration: const BoxDecoration(
-                  color: AppColors.success, shape: BoxShape.circle),
-            ),
-            const SizedBox(width: AppSpace.sm),
-            Text(tr.homeOutingRunning, style: AppText.caption),
-          ]),
+          Row(
+            children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: const BoxDecoration(
+                  color: AppColors.success,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: AppSpace.sm),
+              Text(tr.homeOutingRunning, style: AppText.caption),
+            ],
+          ),
           const SizedBox(height: AppSpace.sm),
-          Row(children: [
-            Icon(outing.type.icon, color: AppColors.amber),
-            const SizedBox(width: AppSpace.sm),
-            Expanded(
-              child: Text(
-                outing.displayName,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: AppText.headline.copyWith(fontSize: 26),
+          Row(
+            children: [
+              Icon(outing.type.icon, color: AppColors.amber),
+              const SizedBox(width: AppSpace.sm),
+              Expanded(
+                child: Text(
+                  outing.displayName,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.headline.copyWith(fontSize: 26),
+                ),
               ),
-            ),
-          ]),
+            ],
+          ),
           const SizedBox(height: AppSpace.lg),
-          Row(children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(tr.homeTime, style: AppText.caption),
-                  const SizedBox(height: AppSpace.xs),
-                  ElapsedText(since: outing.startedAt, style: AppText.value),
-                ],
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(tr.homeTime, style: AppText.caption),
+                    const SizedBox(height: AppSpace.xs),
+                    ElapsedText(since: outing.startedAt, style: AppText.value),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: StatTile(label: tr.homeDrinks, value: '${s.entryCount}'),
-            ),
-            Expanded(
-              child: StatTile(
-                label: tr.homeSpent,
-                value: formatCents(s.informedCents),
+              Expanded(
+                child: StatTile(label: tr.homeDrinks, value: '${s.entryCount}'),
               ),
-            ),
-          ]),
+              Expanded(
+                child: StatTile(
+                  label: tr.homeSpent,
+                  value: formatCents(s.informedCents),
+                ),
+              ),
+            ],
+          ),
           if (s.unpricedCount > 0) ...[
             const SizedBox(height: AppSpace.md),
             InfoPill(
@@ -328,39 +343,43 @@ class _LastOutingCard extends StatelessWidget {
     final s = state.lastSummary!;
     return SurfaceCard(
       onTap: onTap,
-      child: Row(children: [
-        Container(
-          width: 46,
-          height: 46,
-          decoration: BoxDecoration(
-            color: AppColors.surfaceHigh,
-            borderRadius: BorderRadius.circular(AppRadius.md),
+      child: Row(
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceHigh,
+              borderRadius: BorderRadius.circular(AppRadius.md),
+            ),
+            child: Icon(o.type.icon, color: AppColors.amber),
           ),
-          child: Icon(o.type.icon, color: AppColors.amber),
-        ),
-        const SizedBox(width: AppSpace.md),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(o.displayName,
+          const SizedBox(width: AppSpace.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  o.displayName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppText.subtitle),
-              const SizedBox(height: 2),
-              Text(
-                [
-                  formatDate(o.startedAt),
-                  tr.drinkCount(s.entryCount),
-                  if (s.pricedCount > 0) formatCents(s.informedCents),
-                ].join(' · '),
-                style: AppText.caption,
-              ),
-            ],
+                  style: AppText.subtitle,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  [
+                    formatDate(o.startedAt),
+                    tr.drinkCount(s.entryCount),
+                    if (s.pricedCount > 0) formatCents(s.informedCents),
+                  ].join(' · '),
+                  style: AppText.caption,
+                ),
+              ],
+            ),
           ),
-        ),
-        const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
-      ]),
+          const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
+        ],
+      ),
     );
   }
 }
@@ -383,8 +402,7 @@ class _MonthCard extends StatelessWidget {
     }
     if (state.monthOutings == 0) {
       return SurfaceCard(
-        child: Text(tr.homeNoneThisMonth,
-            style: AppText.caption),
+        child: Text(tr.homeNoneThisMonth, style: AppText.caption),
       );
     }
     final unpriced = state.monthUnpriced;
@@ -392,22 +410,28 @@ class _MonthCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
-            Expanded(
-              child:
-                  StatTile(label: tr.homeOutings, value: '${state.monthOutings}'),
-            ),
-            Expanded(
-              child:
-                  StatTile(label: tr.homeDrinks, value: '${state.monthDrinks}'),
-            ),
-            Expanded(
-              child: StatTile(
-                label: tr.homeInformedSpent,
-                value: formatCents(state.monthInformedCents),
+          Row(
+            children: [
+              Expanded(
+                child: StatTile(
+                  label: tr.homeOutings,
+                  value: '${state.monthOutings}',
+                ),
               ),
-            ),
-          ]),
+              Expanded(
+                child: StatTile(
+                  label: tr.homeDrinks,
+                  value: '${state.monthDrinks}',
+                ),
+              ),
+              Expanded(
+                child: StatTile(
+                  label: tr.homeInformedSpent,
+                  value: formatCents(state.monthInformedCents),
+                ),
+              ),
+            ],
+          ),
           if (unpriced > 0) ...[
             const SizedBox(height: AppSpace.md),
             InfoPill(
@@ -422,7 +446,6 @@ class _MonthCard extends StatelessWidget {
   }
 }
 
-
 enum _StaleAction { keep, end }
 
 /// "Esse rolê ainda está acontecendo?" Never ends the outing by itself.
@@ -436,7 +459,11 @@ class _StaleSheet extends StatelessWidget {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+          AppSpace.xl,
+          0,
+          AppSpace.xl,
+          AppSpace.lg,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

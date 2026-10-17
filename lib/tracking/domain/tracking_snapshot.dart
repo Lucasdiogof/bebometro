@@ -68,25 +68,24 @@ class TrackingSnapshot {
     required int? spendCents,
     required int unpriced,
     required String? next,
-  }) =>
-      {
-        'language': trLanguage,
-        'title': tr.trackingTitleFallback,
-        'count': tr.trackingCount(count),
-        'spend': spendCents == null
-            ? null
-            : (unpriced > 0
-                ? tr.trackingSpendUnpriced(formatCents(spendCents), '$unpriced')
-                : tr.trackingSpend(formatCents(spendCents))),
-        'open': tr.trackingOpen,
-        'another': tr.trackingAnother,
-        'anotherWith': next == null ? null : tr.trackingAnotherWith(next),
-        'anotherA11y': next == null ? null : tr.trackingAnotherA11y(next),
-        'water': tr.trackingWater,
-        'pending': tr.trackingAwaitingSave,
-        'channelName': tr.trackingTitleFallback,
-        'channelDescription': tr.trackingChannelDescription,
-      };
+  }) => {
+    'language': trLanguage,
+    'title': tr.trackingTitleFallback,
+    'count': tr.trackingCount(count),
+    'spend': spendCents == null
+        ? null
+        : (unpriced > 0
+              ? tr.trackingSpendUnpriced(formatCents(spendCents), '$unpriced')
+              : tr.trackingSpend(formatCents(spendCents))),
+    'open': tr.trackingOpen,
+    'another': tr.trackingAnother,
+    'anotherWith': next == null ? null : tr.trackingAnotherWith(next),
+    'anotherA11y': next == null ? null : tr.trackingAnotherA11y(next),
+    'water': tr.trackingWater,
+    'pending': tr.trackingAwaitingSave,
+    'channelName': tr.trackingTitleFallback,
+    'channelDescription': tr.trackingChannelDescription,
+  };
 
   final String outingId;
   final DateTime startedAt;
@@ -124,18 +123,18 @@ class TrackingSnapshot {
   }
 
   Map<String, Object?> toMap() => {
-        'outingId': outingId,
-        'startedAtMs': startedAt.millisecondsSinceEpoch,
-        'alcoholicCount': alcoholicCount,
-        'unpricedCount': unpricedCount,
-        'spendCents': spendCents,
-        'place': place,
-        'nextLabel': nextLabel,
-        'repeatEntryId': repeatEntryId,
-        'accountId': accountId,
-        'pendingCommands': pendingCommands,
-        'texts': texts,
-      };
+    'outingId': outingId,
+    'startedAtMs': startedAt.millisecondsSinceEpoch,
+    'alcoholicCount': alcoholicCount,
+    'unpricedCount': unpricedCount,
+    'spendCents': spendCents,
+    'place': place,
+    'nextLabel': nextLabel,
+    'repeatEntryId': repeatEntryId,
+    'accountId': accountId,
+    'pendingCommands': pendingCommands,
+    'texts': texts,
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -161,6 +160,14 @@ class TrackingSnapshot {
   }
 
   @override
-  int get hashCode => Object.hash(outingId, startedAt, alcoholicCount,
-      unpricedCount, spendCents, place, nextLabel, texts['language']);
+  int get hashCode => Object.hash(
+    outingId,
+    startedAt,
+    alcoholicCount,
+    unpricedCount,
+    spendCents,
+    place,
+    nextLabel,
+    texts['language'],
+  );
 }

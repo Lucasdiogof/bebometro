@@ -33,8 +33,10 @@ class AccountService {
   /// The function takes the user from the JWT; no id is sent.
   Future<DeleteOutcome> deleteOnServer() async {
     try {
-      final res = await Supabase.instance.client.functions
-          .invoke('delete-account', method: HttpMethod.post);
+      final res = await Supabase.instance.client.functions.invoke(
+        'delete-account',
+        method: HttpMethod.post,
+      );
       return res.status == 200 ? DeleteOutcome.done : DeleteOutcome.partial;
     } on FunctionsFetchException {
       return DeleteOutcome.offline;
@@ -65,7 +67,8 @@ class AccountService {
       } catch (_) {}
     }
     final prefix = LocalStore.accountPrefix(userId);
-    for (final key in _device.keys().where((k) => k.startsWith(prefix)).toList()) {
+    for (final key
+        in _device.keys().where((k) => k.startsWith(prefix)).toList()) {
       await _device.remove(key);
     }
   }

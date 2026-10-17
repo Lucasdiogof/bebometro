@@ -51,11 +51,13 @@ class OutingRepository {
         ..sort((a, b) => b.startedAt.compareTo(a.startedAt));
 
   /// Every outing, newest first.
-  List<Outing> all() => _all()..sort((a, b) => b.startedAt.compareTo(a.startedAt));
+  List<Outing> all() =>
+      _all()..sort((a, b) => b.startedAt.compareTo(a.startedAt));
 
   /// Finished outings, newest first.
-  List<Outing> ended() => _all().where((o) => !o.isActive).toList()
-    ..sort((a, b) => b.startedAt.compareTo(a.startedAt));
+  List<Outing> ended() =>
+      _all().where((o) => !o.isActive).toList()
+        ..sort((a, b) => b.startedAt.compareTo(a.startedAt));
 
   /// The most recent finished outing still waiting for the post-outing
   /// feedback (pending, or snoozed and past its snooze time).
@@ -113,16 +115,18 @@ class OutingRepository {
     final outing = byId(id);
     if (outing == null) return;
     _checkPlace(place);
-    await _save(outing.withPlace(
-      placeId: place.placeId,
-      nickname: _clean(place.nickname),
-      placeName: _clean(place.placeName),
-      address: _clean(place.address),
-      city: _clean(place.city),
-      state: _clean(place.state)?.toUpperCase(),
-      point: place.point,
-      updatedAt: DateTime.now(),
-    ));
+    await _save(
+      outing.withPlace(
+        placeId: place.placeId,
+        nickname: _clean(place.nickname),
+        placeName: _clean(place.placeName),
+        address: _clean(place.address),
+        city: _clean(place.city),
+        state: _clean(place.state)?.toUpperCase(),
+        point: place.point,
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 
   Future<void> finish(String id, DateTime endedAt) async {
@@ -141,10 +145,12 @@ class OutingRepository {
   Future<void> setBudget(String id, int? cents) async {
     final outing = byId(id);
     if (outing == null) return;
-    await _save(outing.copyWith(
-      budgetCents: () => (cents != null && cents > 0) ? cents : null,
-      updatedAt: DateTime.now(),
-    ));
+    await _save(
+      outing.copyWith(
+        budgetCents: () => (cents != null && cents > 0) ? cents : null,
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 
   /// Optional details of the personal account (all of them can be left out).
@@ -157,44 +163,53 @@ class OutingRepository {
     final outing = byId(id);
     if (outing == null) return;
     final trimmed = note?.trim();
-    await _save(outing.copyWith(
-      wakeFeeling: () => wake,
-      hangover: () => hangover,
-      feedbackNote: () => (trimmed == null || trimmed.isEmpty) ? null : trimmed,
-      updatedAt: DateTime.now(),
-    ));
+    await _save(
+      outing.copyWith(
+        wakeFeeling: () => wake,
+        hangover: () => hangover,
+        feedbackNote: () =>
+            (trimmed == null || trimmed.isEmpty) ? null : trimmed,
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 
   Future<void> answerFeedback(String id, FeedbackMood mood) async {
     final outing = byId(id);
     if (outing == null) return;
-    await _save(outing.copyWith(
-      feedbackMood: mood,
-      feedbackStatus: FeedbackStatus.answered,
-      clearSnooze: true,
-      updatedAt: DateTime.now(),
-    ));
+    await _save(
+      outing.copyWith(
+        feedbackMood: mood,
+        feedbackStatus: FeedbackStatus.answered,
+        clearSnooze: true,
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 
   Future<void> snoozeFeedback(String id, Duration by) async {
     final outing = byId(id);
     if (outing == null) return;
     final now = DateTime.now();
-    await _save(outing.copyWith(
-      feedbackStatus: FeedbackStatus.snoozed,
-      feedbackSnoozedUntil: now.add(by),
-      updatedAt: now,
-    ));
+    await _save(
+      outing.copyWith(
+        feedbackStatus: FeedbackStatus.snoozed,
+        feedbackSnoozedUntil: now.add(by),
+        updatedAt: now,
+      ),
+    );
   }
 
   Future<void> dismissFeedback(String id) async {
     final outing = byId(id);
     if (outing == null) return;
-    await _save(outing.copyWith(
-      feedbackStatus: FeedbackStatus.dismissed,
-      clearSnooze: true,
-      updatedAt: DateTime.now(),
-    ));
+    await _save(
+      outing.copyWith(
+        feedbackStatus: FeedbackStatus.dismissed,
+        clearSnooze: true,
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 
   Future<void> _save(Outing outing) =>

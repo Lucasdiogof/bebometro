@@ -38,8 +38,6 @@ class DrinkRepository {
   /// Emits whenever entries, custom drinks or favorites change.
   Stream<void> get changes => _changes.stream;
 
-  // ---- Entries -----------------------------------------------------------
-
   /// Live (not deleted) entries of an outing, oldest first.
   List<DrinkEntry> entriesFor(String outingId) {
     return _store
@@ -57,12 +55,13 @@ class DrinkRepository {
       .length;
 
   /// Every live (not deleted) record on the device, oldest first.
-  List<DrinkEntry> allEntries() => _store
-      .all(LocalStore.drinkEntries)
-      .where((j) => j['deleted_at'] == null)
-      .map(DrinkEntry.fromJson)
-      .toList()
-    ..sort((a, b) => a.consumedAt.compareTo(b.consumedAt));
+  List<DrinkEntry> allEntries() =>
+      _store
+          .all(LocalStore.drinkEntries)
+          .where((j) => j['deleted_at'] == null)
+          .map(DrinkEntry.fromJson)
+          .toList()
+        ..sort((a, b) => a.consumedAt.compareTo(b.consumedAt));
 
   DrinkEntry? entryById(String id) {
     final json = _store.get(LocalStore.drinkEntries, id);
@@ -85,9 +84,9 @@ class DrinkRepository {
   /// Other records of the same outing that are the same drink as [entry]
   /// (see [DrinkEntry.isEquivalentTo]).
   List<DrinkEntry> equivalentsOf(DrinkEntry entry) => [
-        for (final e in entriesFor(entry.outingId))
-          if (entry.isEquivalentTo(e)) e,
-      ];
+    for (final e in entriesFor(entry.outingId))
+      if (entry.isEquivalentTo(e)) e,
+  ];
 
   /// Applies payments to several records at once (batch price fix). Each
   /// record is saved on its own, so a failure never loses the ones before it.
@@ -98,11 +97,13 @@ class DrinkRepository {
     for (final e in updates.entries) {
       final entry = entryById(e.key);
       if (entry == null || entry.isDeleted) continue;
-      await save(entry.copyWithPrice(
-        kind: e.value.kind,
-        paidCents: e.value.paidCents,
-        updatedAt: now,
-      ));
+      await save(
+        entry.copyWithPrice(
+          kind: e.value.kind,
+          paidCents: e.value.paidCents,
+          updatedAt: now,
+        ),
+      );
     }
   }
 
@@ -110,8 +111,9 @@ class DrinkRepository {
   Future<void> setBillTotal(String id, int? cents) async {
     final entry = entryById(id);
     if (entry == null || entry.isDeleted || !entry.isShared) return;
-    await save(entry.copyWithBillTotal(
-        billTotalCents: cents, updatedAt: DateTime.now()));
+    await save(
+      entry.copyWithBillTotal(billTotalCents: cents, updatedAt: DateTime.now()),
+    );
   }
 
   Future<void> delete(String id) async {
@@ -127,18 +129,20 @@ class DrinkRepository {
     await save(entry.copyWith(clearDeleted: true, updatedAt: DateTime.now()));
   }
 
-  // ---- Catalog -----------------------------------------------------------
-
-  List<CatalogItem> customItems() => _store
-      .all(LocalStore.customDrinks)
-      .where((j) => j['deleted_at'] == null)
-      .map(_customFromJson)
-      .toList()
-    ..sort((a, b) => a.name.compareTo(b.name));
+  List<CatalogItem> customItems() =>
+      _store
+          .all(LocalStore.customDrinks)
+          .where((j) => j['deleted_at'] == null)
+          .map(_customFromJson)
+          .toList()
+        ..sort((a, b) => a.name.compareTo(b.name));
 
   /// The user's own drinks first, then the bundled products, then generics.
-  List<CatalogItem> catalog() =>
-      [...customItems(), ..._bundled, ...CatalogSource.items];
+  List<CatalogItem> catalog() => [
+    ...customItems(),
+    ..._bundled,
+    ...CatalogSource.items,
+  ];
 
   CatalogItem? itemById(String? id) {
     if (id == null) return null;
@@ -203,8 +207,9 @@ class DrinkRepository {
     if (recipe != null) {
       return saveCustomRecipe(name: copyName, components: recipe.components);
     }
-    final volume =
-        item.presentations.isEmpty ? 1 : item.presentations.first.volumeMl;
+    final volume = item.presentations.isEmpty
+        ? 1
+        : item.presentations.first.volumeMl;
     return saveCustomDrink(
       name: copyName,
       category: item.category,
@@ -299,8 +304,6 @@ class DrinkRepository {
     );
   }
 
-  // ---- Favorites & recents (kept per device) -------------------------------
-
   Set<String> favorites() => _store.getStringSet(_favoritesKey);
 
   Future<void> toggleFavorite(String itemId) async {
@@ -312,17 +315,21 @@ class DrinkRepository {
 
   /// Item ids from the most recent entries, newest first, without repeats.
   List<String> recentItemIds({int limit = 12}) {
-    final entries = _store
-        .all(LocalStore.drinkEntries)
-        .where((j) =>
-            j['deleted_at'] == null &&
-            j['catalog_item_id'] != null &&
-            // Items that exist only inside one outing are never "recent".
-            !(j['catalog_item_id'] as String)
-                .startsWith(CatalogItem.outingPrefix))
-        .map(DrinkEntry.fromJson)
-        .toList()
-      ..sort((a, b) => b.consumedAt.compareTo(a.consumedAt));
+    final entries =
+        _store
+            .all(LocalStore.drinkEntries)
+            .where(
+              (j) =>
+                  j['deleted_at'] == null &&
+                  j['catalog_item_id'] != null &&
+                  // Items that exist only inside one outing are never "recent".
+                  !(j['catalog_item_id'] as String).startsWith(
+                    CatalogItem.outingPrefix,
+                  ),
+            )
+            .map(DrinkEntry.fromJson)
+            .toList()
+          ..sort((a, b) => b.consumedAt.compareTo(a.consumedAt));
     final seen = <String>{};
     for (final e in entries) {
       seen.add(e.catalogItemId!);

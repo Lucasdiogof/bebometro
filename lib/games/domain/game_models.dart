@@ -13,16 +13,16 @@ enum GameType {
   final String code;
 
   String get title => switch (this) {
-        GameType.neverHaveIEver => tr.gameNeverTitle,
-        GameType.mostLikely => tr.gameMostTitle,
-        GameType.truthOrDare => tr.gameTruthTitle,
-      };
+    GameType.neverHaveIEver => tr.gameNeverTitle,
+    GameType.mostLikely => tr.gameMostTitle,
+    GameType.truthOrDare => tr.gameTruthTitle,
+  };
 
   String get description => switch (this) {
-        GameType.neverHaveIEver => tr.gameNeverDesc,
-        GameType.mostLikely => tr.gameMostDesc,
-        GameType.truthOrDare => tr.gameTruthDesc,
-      };
+    GameType.neverHaveIEver => tr.gameNeverDesc,
+    GameType.mostLikely => tr.gameMostDesc,
+    GameType.truthOrDare => tr.gameTruthDesc,
+  };
 
   /// Fewest participants needed to start.
   final int minPlayers;
@@ -46,9 +46,9 @@ enum GameMode {
   final String code;
 
   String get label => switch (this) {
-        GameMode.light => tr.gameModeLight,
-        GameMode.adult => tr.gameModeAdult,
-      };
+    GameMode.light => tr.gameModeLight,
+    GameMode.adult => tr.gameModeAdult,
+  };
 
   static GameMode? fromCode(String? code) {
     for (final m in GameMode.values) {
@@ -68,15 +68,15 @@ enum CardKind {
   final String code;
 
   String get label => switch (this) {
-        CardKind.statement => tr.gameKindCard,
-        CardKind.truth => tr.gameKindTruth,
-        CardKind.dare => tr.gameKindDare,
-      };
+    CardKind.statement => tr.gameKindCard,
+    CardKind.truth => tr.gameKindTruth,
+    CardKind.dare => tr.gameKindDare,
+  };
 
   static CardKind fromCode(String? code) => CardKind.values.firstWhere(
-        (k) => k.code == code,
-        orElse: () => CardKind.statement,
-      );
+    (k) => k.code == code,
+    orElse: () => CardKind.statement,
+  );
 }
 
 class GameCard {
@@ -112,13 +112,13 @@ class GameCard {
   final bool isCustom;
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'game': game.code,
-        'mode': mode.code,
-        'kind': kind.code,
-        'text': _text,
-        'optional': optional,
-      };
+    'id': id,
+    'game': game.code,
+    'mode': mode.code,
+    'kind': kind.code,
+    'text': _text,
+    'optional': optional,
+  };
 
   static GameCard? fromJson(Map<String, dynamic> j, {bool custom = false}) {
     final game = GameType.fromCode(j['game'] as String?);
@@ -149,9 +149,10 @@ class GameCard {
 /// The cards eligible for a game and mode. Leve = light cards; +18 = the
 /// +18 cards mixed with the light ones.
 List<GameCard> deckFor(List<GameCard> all, GameType game, GameMode mode) => [
-      for (final c in all)
-        if (c.game == game && (mode == GameMode.adult || c.mode == GameMode.light)) c,
-    ];
+  for (final c in all)
+    if (c.game == game && (mode == GameMode.adult || c.mode == GameMode.light))
+      c,
+];
 
 /// Picks a card that was not used yet (never repeats until the set runs out).
 /// Returns null when every eligible card was used.
@@ -204,31 +205,29 @@ class GameSession {
     String? Function()? currentCardId,
     int? turn,
     Map<String, int>? scores,
-  }) =>
-      GameSession(
-        game: game,
-        mode: mode,
-        players: players,
-        usePoints: usePoints,
-        startedAt: startedAt,
-        usedIds: usedIds ?? this.usedIds,
-        currentCardId:
-            currentCardId != null ? currentCardId() : this.currentCardId,
-        turn: turn ?? this.turn,
-        scores: scores ?? this.scores,
-      );
+  }) => GameSession(
+    game: game,
+    mode: mode,
+    players: players,
+    usePoints: usePoints,
+    startedAt: startedAt,
+    usedIds: usedIds ?? this.usedIds,
+    currentCardId: currentCardId != null ? currentCardId() : this.currentCardId,
+    turn: turn ?? this.turn,
+    scores: scores ?? this.scores,
+  );
 
   Map<String, dynamic> toJson() => {
-        'game': game.code,
-        'mode': mode.code,
-        'players': players,
-        'use_points': usePoints,
-        'started_at': startedAt.toIso8601String(),
-        'used_ids': usedIds,
-        'current_card_id': currentCardId,
-        'turn': turn,
-        'scores': scores,
-      };
+    'game': game.code,
+    'mode': mode.code,
+    'players': players,
+    'use_points': usePoints,
+    'started_at': startedAt.toIso8601String(),
+    'used_ids': usedIds,
+    'current_card_id': currentCardId,
+    'turn': turn,
+    'scores': scores,
+  };
 
   static GameSession? fromJson(Map<String, dynamic> j) {
     final game = GameType.fromCode(j['game'] as String?);
@@ -240,13 +239,14 @@ class GameSession {
       mode: mode,
       players: players,
       usePoints: j['use_points'] as bool? ?? false,
-      startedAt: DateTime.tryParse(j['started_at'] as String? ?? '') ??
-          DateTime.now(),
+      startedAt:
+          DateTime.tryParse(j['started_at'] as String? ?? '') ?? DateTime.now(),
       usedIds: (j['used_ids'] as List?)?.cast<String>() ?? const [],
       currentCardId: j['current_card_id'] as String?,
       turn: (j['turn'] as num?)?.toInt() ?? 0,
-      scores: ((j['scores'] as Map?) ?? const {})
-          .map((k, v) => MapEntry(k as String, (v as num).toInt())),
+      scores: ((j['scores'] as Map?) ?? const {}).map(
+        (k, v) => MapEntry(k as String, (v as num).toInt()),
+      ),
     );
   }
 }

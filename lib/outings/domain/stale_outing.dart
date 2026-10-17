@@ -11,7 +11,8 @@ const Duration kStaleSnooze = Duration(hours: 24);
 /// start) in the last [kStaleAfter].
 bool isStaleOuting(Outing outing, DateTime? lastEntryAt, DateTime now) {
   if (!outing.isActive) return false;
-  final reference = (lastEntryAt != null && lastEntryAt.isAfter(outing.startedAt))
+  final reference =
+      (lastEntryAt != null && lastEntryAt.isAfter(outing.startedAt))
       ? lastEntryAt
       : outing.startedAt;
   return now.difference(reference) >= kStaleAfter;

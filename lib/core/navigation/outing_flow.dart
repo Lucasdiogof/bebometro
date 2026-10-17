@@ -17,21 +17,25 @@ class OutingFlow {
   ///
   /// [finish] opens it straight into the finish confirmation (the Home
   /// shortcut): the same sheet, the same confirmation, nothing ends by itself.
-  static Future<void> open(BuildContext context, String outingId,
-      {bool finish = false}) async {
+  static Future<void> open(
+    BuildContext context,
+    String outingId, {
+    bool finish = false,
+  }) async {
     if (_busy) return;
     _busy = true;
     try {
       final navigator = Navigator.of(context);
       final finishedId = await navigator.push<String>(
         MaterialPageRoute(
-            builder: (_) =>
-                OutingPage(outingId: outingId, finishOnOpen: finish)),
+          builder: (_) => OutingPage(outingId: outingId, finishOnOpen: finish),
+        ),
       );
       if (finishedId != null && context.mounted) {
         await Navigator.of(context).push<void>(
           MaterialPageRoute(
-              builder: (_) => OutingSummaryPage(outingId: finishedId)),
+            builder: (_) => OutingSummaryPage(outingId: finishedId),
+          ),
         );
       }
     } finally {

@@ -27,8 +27,8 @@ import 'beer_materials.dart';
 /// disposed with it. Repaints come from [BeerSim] alone.
 class BeerRenderer {
   BeerRenderer(this.m)
-      : _beerPass = m.program?.fragmentShader(),
-        _foamPass = m.program?.fragmentShader() {
+    : _beerPass = m.program?.fragmentShader(),
+      _foamPass = m.program?.fragmentShader() {
     for (final s in [_beerPass, _foamPass]) {
       if (s == null) continue;
       // Bilinear: the default sampler filter is nearest-neighbour.
@@ -68,7 +68,8 @@ class BeerRenderer {
   Int32List _colors = Int32List(0);
 
   /// Surface wave amplitude, matching the shader.
-  double _amp(BeerSim sim) => sim.waveAmp + (sim.effects && !sim.calm ? 1.2 : 0);
+  double _amp(BeerSim sim) =>
+      sim.waveAmp + (sim.effects && !sim.calm ? 1.2 : 0);
 
   double _foamBase(BeerSim sim, Size size) {
     final fade = (sim.volume / 0.08).clamp(0.0, 1.0).toDouble();
@@ -104,8 +105,14 @@ class BeerRenderer {
     final deep = math.max(1.0, sim.maxProj - sim.level);
 
     // Surface samples (for the bubble clip and the fallback paths).
-    final u0 = math.min(math.min(0.0, tx * w), math.min(ty * h, tx * w + ty * h));
-    final u1 = math.max(math.max(0.0, tx * w), math.max(ty * h, tx * w + ty * h));
+    final u0 = math.min(
+      math.min(0.0, tx * w),
+      math.min(ty * h, tx * w + ty * h),
+    );
+    final u1 = math.max(
+      math.max(0.0, tx * w),
+      math.max(ty * h, tx * w + ty * h),
+    );
     final span = (u1 - u0) + 40;
     final uStart = u0 - 20;
     for (var i = 0; i <= _samples; i++) {
@@ -126,7 +133,6 @@ class BeerRenderer {
       ..lineTo(_sx[0] + nx * far, _sy[0] + ny * far)
       ..close();
 
-    // ---- 1. air + beer
     final beerPass = _beerPass;
     if (beerPass != null) {
       _setUniforms(beerPass, size, sim, k1, amp, foamBase, deep, 0, hasBeer);
@@ -135,7 +141,6 @@ class BeerRenderer {
       _fallbackBeer(canvas, size, sim, hasBeer, deep);
     }
 
-    // ---- 2. carbonation sprites, inside the liquid only
     if (hasBeer && sim.effects) {
       canvas.save();
       canvas.clipPath(_liquid);
@@ -143,7 +148,6 @@ class BeerRenderer {
       canvas.restore();
     }
 
-    // ---- 3 + 4. foam and glass
     final foamPass = _foamPass;
     if (foamPass != null) {
       _setUniforms(foamPass, size, sim, k1, amp, foamBase, deep, 1, hasBeer);
@@ -156,8 +160,17 @@ class BeerRenderer {
     }
   }
 
-  void _setUniforms(ui.FragmentShader s, Size size, BeerSim sim, double k1,
-      double amp, double foam, double deep, double pass, bool hasBeer) {
+  void _setUniforms(
+    ui.FragmentShader s,
+    Size size,
+    BeerSim sim,
+    double k1,
+    double amp,
+    double foam,
+    double deep,
+    double pass,
+    bool hasBeer,
+  ) {
     s
       ..setFloat(0, size.width)
       ..setFloat(1, size.height)
@@ -173,8 +186,6 @@ class BeerRenderer {
       ..setFloat(11, pass)
       ..setFloat(12, hasBeer ? 1 : 0);
   }
-
-  // ---------------------------------------------------------------- bubbles
 
   void _drawBubbles(Canvas canvas, BeerSim sim) {
     final count = sim.bubbleCount;
@@ -194,7 +205,9 @@ class BeerRenderer {
       final depth = nx * x + ny * y - sim.level;
       // Dissolve as they reach the foam; fainter deep down (smaller, farther).
       final reach = (depth / 16).clamp(0.0, 1.0).toDouble();
-      final near = (1 - depth / (sim.size.height * 0.6)).clamp(0.25, 1.0).toDouble();
+      final near = (1 - depth / (sim.size.height * 0.6))
+          .clamp(0.25, 1.0)
+          .toDouble();
       final a = (reach * (0.55 + 0.45 * near)).clamp(0.0, 1.0).toDouble();
       if (a <= 0.01) continue;
       final onScreen = r * 1.35 * 2 / 0.92; // sprite size on screen (px)
@@ -235,28 +248,35 @@ class BeerRenderer {
     );
   }
 
-  // --------------------------------------------------------------- fallback
-  // Same textures and tile sizes as the shader, drawn with image shaders.
+  Float64List _scale(double s) =>
+      Float64List.fromList([s, 0, 0, 0, 0, s, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
 
-  Float64List _scale(double s) => Float64List.fromList(
-      [s, 0, 0, 0, 0, s, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
-
-  void _fallbackBeer(Canvas canvas, Size size, BeerSim sim, bool hasBeer,
-      double deep) {
+  void _fallbackBeer(
+    Canvas canvas,
+    Size size,
+    BeerSim sim,
+    bool hasBeer,
+    double deep,
+  ) {
     final rect = Offset.zero & size;
     _paint
-      ..shader = ui.Gradient.linear(Offset.zero, Offset(0, size.height),
-          const [Color(0xFF070707), Color(0xFF131211)])
+      ..shader = ui.Gradient.linear(Offset.zero, Offset(0, size.height), const [
+        Color(0xFF070707),
+        Color(0xFF131211),
+      ])
       ..style = PaintingStyle.fill;
     canvas.drawRect(rect, _paint);
     if (!hasBeer) {
       _paint.shader = null;
       return;
     }
-    _paint
-      ..shader = ImageShader(m.beer, TileMode.repeated, TileMode.repeated,
-          _scale(beerTile / m.beer.width),
-          filterQuality: FilterQuality.medium);
+    _paint.shader = ImageShader(
+      m.beer,
+      TileMode.repeated,
+      TileMode.repeated,
+      _scale(beerTile / m.beer.width),
+      filterQuality: FilterQuality.medium,
+    );
     canvas.drawPath(_liquid, _paint);
     // Depth tint (multiply) and the lacing under the foam.
     final nx = sim.nx, ny = sim.ny;
@@ -265,24 +285,34 @@ class BeerRenderer {
     canvas.save();
     canvas.clipPath(_liquid);
     _paint
-      ..shader = ui.Gradient.linear(from, to, const [
-        Color(0xFFFFFFFF),
-        Color(0xFFE3C79A),
-        Color(0xFF9A6629),
-      ], const [0.0, 0.35, 1.0])
+      ..shader = ui.Gradient.linear(
+        from,
+        to,
+        const [Color(0xFFFFFFFF), Color(0xFFE3C79A), Color(0xFF9A6629)],
+        const [0.0, 0.35, 1.0],
+      )
       ..blendMode = BlendMode.multiply;
     canvas.drawRect(rect, _paint);
     _paint
       ..blendMode = BlendMode.srcOver
-      ..shader = ui.Gradient.linear(from, from + Offset(nx, ny) * 40,
-          const [Color(0x4DFFEDBD), Color(0x00FFEDBD)]);
+      ..shader = ui.Gradient.linear(from, from + Offset(nx, ny) * 40, const [
+        Color(0x4DFFEDBD),
+        Color(0x00FFEDBD),
+      ]);
     canvas.drawRect(rect, _paint);
     canvas.restore();
     _paint.shader = null;
   }
 
-  void _fallbackFoam(Canvas canvas, BeerSim sim, double k1, double amp,
-      double base, double uStart, double span) {
+  void _fallbackFoam(
+    Canvas canvas,
+    BeerSim sim,
+    double k1,
+    double amp,
+    double base,
+    double uStart,
+    double span,
+  ) {
     final nx = sim.nx, ny = sim.ny;
     final tx = ny, ty = -nx;
     Offset at(double u, double lift) {
@@ -325,26 +355,39 @@ class BeerRenderer {
       ox, oy, 0, 1,
     ]);
     _paint.shader = ImageShader(
-        m.foam, TileMode.repeated, TileMode.clamp, matrix,
-        filterQuality: FilterQuality.medium);
+      m.foam,
+      TileMode.repeated,
+      TileMode.clamp,
+      matrix,
+      filterQuality: FilterQuality.medium,
+    );
     canvas.drawPath(_foam, _paint);
     _paint.shader = null;
   }
 
   void _fallbackGlass(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
-    _paint.shader = ImageShader(m.glass, TileMode.repeated, TileMode.repeated,
-        _scale(glassTile / m.glass.width),
-        filterQuality: FilterQuality.medium);
+    _paint.shader = ImageShader(
+      m.glass,
+      TileMode.repeated,
+      TileMode.repeated,
+      _scale(glassTile / m.glass.width),
+      filterQuality: FilterQuality.medium,
+    );
     canvas.drawRect(rect, _paint);
     final w = size.width, h = size.height;
     void band(double x0, double x1, int alpha) {
       final r = Rect.fromLTRB(w * x0, 0, w * x1, h);
-      _paint.shader = ui.Gradient.linear(r.centerLeft, r.centerRight, [
-        const Color(0x00FFFFFF),
-        Color.fromARGB(alpha, 255, 255, 255),
-        const Color(0x00FFFFFF),
-      ], const [0.0, 0.5, 1.0]);
+      _paint.shader = ui.Gradient.linear(
+        r.centerLeft,
+        r.centerRight,
+        [
+          const Color(0x00FFFFFF),
+          Color.fromARGB(alpha, 255, 255, 255),
+          const Color(0x00FFFFFF),
+        ],
+        const [0.0, 0.5, 1.0],
+      );
       canvas.drawRect(r, _paint);
     }
 
@@ -352,12 +395,17 @@ class BeerRenderer {
     band(0.075, 0.088, 38);
     band(0.86, 0.95, 16);
     band(0.915, 0.923, 24);
-    _paint.shader = ui.Gradient.linear(Offset.zero, Offset(w, 0), const [
-      Color(0x33000000),
-      Color(0x00000000),
-      Color(0x00000000),
-      Color(0x33000000),
-    ], const [0.0, 0.08, 0.92, 1.0]);
+    _paint.shader = ui.Gradient.linear(
+      Offset.zero,
+      Offset(w, 0),
+      const [
+        Color(0x33000000),
+        Color(0x00000000),
+        Color(0x00000000),
+        Color(0x33000000),
+      ],
+      const [0.0, 0.08, 0.92, 1.0],
+    );
     canvas.drawRect(rect, _paint);
     _paint.shader = null;
   }

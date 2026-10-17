@@ -115,8 +115,6 @@ class _AccountHomeState extends State<_AccountHome> {
   /// Straight to the home: the cloud is read in the background (the sync
   /// started with the account scope) and the screens update as rows arrive.
   @override
-  Widget build(BuildContext context) => BlocProvider.value(
-        value: getIt<SyncCubit>(),
-        child: const MainShell(),
-      );
+  Widget build(BuildContext context) =>
+      BlocProvider.value(value: getIt<SyncCubit>(), child: const MainShell());
 }

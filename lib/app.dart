@@ -81,7 +81,11 @@ class _BebometroAppState extends State<BebometroApp>
         themeMode: ThemeMode.dark,
         // Device preference (Settings > Idioma); pt-BR is the final fallback.
         locale: getIt<LocaleController>().locale,
-        supportedLocales: const [Locale('pt', 'BR'), Locale('en'), Locale('es')],
+        supportedLocales: const [
+          Locale('pt', 'BR'),
+          Locale('en'),
+          Locale('es'),
+        ],
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

@@ -33,7 +33,11 @@ enum _Action { register, edit, duplicate, delete }
 class _MyDrinksView extends StatelessWidget {
   const _MyDrinksView();
 
-  Future<void> _run(BuildContext context, _Action action, CatalogItem item) async {
+  Future<void> _run(
+    BuildContext context,
+    _Action action,
+    CatalogItem item,
+  ) async {
     final cubit = context.read<MyDrinksCubit>();
     switch (action) {
       case _Action.register:
@@ -70,12 +74,16 @@ class _MyDrinksView extends StatelessWidget {
             content: Text(tr.myDrinksDeleteBody),
             actions: [
               TextButton(
-                  onPressed: () => Navigator.pop(ctx, false),
-                  child: Text(tr.commonCancel)),
+                onPressed: () => Navigator.pop(ctx, false),
+                child: Text(tr.commonCancel),
+              ),
               TextButton(
-                  onPressed: () => Navigator.pop(ctx, true),
-                  child: Text(tr.commonDelete,
-                      style: const TextStyle(color: AppColors.danger))),
+                onPressed: () => Navigator.pop(ctx, true),
+                child: Text(
+                  tr.commonDelete,
+                  style: const TextStyle(color: AppColors.danger),
+                ),
+              ),
             ],
           ),
         );
@@ -116,13 +124,18 @@ class _MyDrinksView extends StatelessWidget {
                         message: tr.myDrinksEmptyBody,
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(AppSpace.gutter, 0,
-                            AppSpace.gutter, AppSpace.xl),
+                        padding: const EdgeInsets.fromLTRB(
+                          AppSpace.gutter,
+                          0,
+                          AppSpace.gutter,
+                          AppSpace.xl,
+                        ),
                         children: [
                           if (state.activeOutingId == null)
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: AppSpace.md),
+                              padding: const EdgeInsets.only(
+                                bottom: AppSpace.md,
+                              ),
                               child: Text(
                                 tr.myDrinksStartFirst,
                                 style: AppText.caption,
@@ -130,90 +143,110 @@ class _MyDrinksView extends StatelessWidget {
                             ),
                           for (final item in state.items)
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: AppSpace.sm),
+                              padding: const EdgeInsets.only(
+                                bottom: AppSpace.sm,
+                              ),
                               child: SurfaceCard(
                                 onTap: state.activeOutingId == null
                                     ? () => _run(context, _Action.edit, item)
-                                    : () => _run(context, _Action.register, item),
+                                    : () =>
+                                          _run(context, _Action.register, item),
                                 padding: const EdgeInsets.fromLTRB(
-                                    AppSpace.md,
-                                    AppSpace.sm,
-                                    AppSpace.xs,
-                                    AppSpace.sm),
-                                child: Row(children: [
-                                  Icon(
-                                    item.isRecipe
-                                        ? Icons.receipt_long_outlined
-                                        : item.category.icon,
-                                    color: AppColors.amber,
-                                  ),
-                                  const SizedBox(width: AppSpace.md),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(item.displayName,
+                                  AppSpace.md,
+                                  AppSpace.sm,
+                                  AppSpace.xs,
+                                  AppSpace.sm,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      item.isRecipe
+                                          ? Icons.receipt_long_outlined
+                                          : item.category.icon,
+                                      color: AppColors.amber,
+                                    ),
+                                    const SizedBox(width: AppSpace.md),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            item.displayName,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
-                                            style: AppText.subtitle),
-                                        Text(_subtitle(item),
-                                            style: AppText.caption),
+                                            style: AppText.subtitle,
+                                          ),
+                                          Text(
+                                            _subtitle(item),
+                                            style: AppText.caption,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    PopupMenuButton<_Action>(
+                                      tooltip: tr.commonOptions,
+                                      icon: const Icon(
+                                        Icons.more_vert_rounded,
+                                        color: AppColors.textMuted,
+                                      ),
+                                      onSelected: (a) => _run(context, a, item),
+                                      itemBuilder: (_) => [
+                                        PopupMenuItem(
+                                          value: _Action.register,
+                                          child: Text(tr.myDrinksActionLog),
+                                        ),
+                                        PopupMenuItem(
+                                          value: _Action.edit,
+                                          child: Text(tr.commonEdit),
+                                        ),
+                                        PopupMenuItem(
+                                          value: _Action.duplicate,
+                                          child: Text(
+                                            tr.myDrinksActionDuplicate,
+                                          ),
+                                        ),
+                                        PopupMenuItem(
+                                          value: _Action.delete,
+                                          child: Text(tr.commonDelete),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  PopupMenuButton<_Action>(
-                                    tooltip: tr.commonOptions,
-                                    icon: const Icon(Icons.more_vert_rounded,
-                                        color: AppColors.textMuted),
-                                    onSelected: (a) => _run(context, a, item),
-                                    itemBuilder: (_) => [
-                                      PopupMenuItem(
-                                          value: _Action.register,
-                                          child: Text(tr.myDrinksActionLog)),
-                                      PopupMenuItem(
-                                          value: _Action.edit,
-                                          child: Text(tr.commonEdit)),
-                                      PopupMenuItem(
-                                          value: _Action.duplicate,
-                                          child:
-                                              Text(tr.myDrinksActionDuplicate)),
-                                      PopupMenuItem(
-                                          value: _Action.delete,
-                                          child: Text(tr.commonDelete)),
-                                    ],
-                                  ),
-                                ]),
+                                  ],
+                                ),
                               ),
                             ),
                         ],
                       ),
               ),
               BottomActionBar(
-                child: Row(children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (_) => const CustomDrinkPage()),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const CustomDrinkPage(),
+                          ),
+                        ),
+                        icon: const Icon(Icons.add_rounded),
+                        label: Text(tr.myDrinksNewDrink),
                       ),
-                      icon: const Icon(Icons.add_rounded),
-                      label: Text(tr.myDrinksNewDrink),
                     ),
-                  ),
-                  const SizedBox(width: AppSpace.sm),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (_) => const RecipeEditorPage()),
+                    const SizedBox(width: AppSpace.sm),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const RecipeEditorPage(),
+                          ),
+                        ),
+                        icon: const Icon(Icons.receipt_long_outlined),
+                        label: Text(tr.myDrinksNewRecipe),
                       ),
-                      icon: const Icon(Icons.receipt_long_outlined),
-                      label: Text(tr.myDrinksNewRecipe),
                     ),
-                  ),
-                ]),
+                  ],
+                ),
               ),
             ],
           );

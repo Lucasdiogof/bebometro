@@ -64,17 +64,19 @@ class _TipGlassPageState extends State<TipGlassPage>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _ticker = createTicker(_onTick);
-    BeerMaterials.load().then((m) {
-      if (!mounted) {
-        m.dispose();
-        return;
-      }
-      setState(() => _renderer = BeerRenderer(m));
-    }).catchError((Object e) {
-      // Assets missing or undecodable: the dark background stays, the
-      // controls keep working; reported in debug only.
-      if (kDebugMode) debugPrint('[beer] materials failed: $e');
-    });
+    BeerMaterials.load()
+        .then((m) {
+          if (!mounted) {
+            m.dispose();
+            return;
+          }
+          setState(() => _renderer = BeerRenderer(m));
+        })
+        .catchError((Object e) {
+          // Assets missing or undecodable: the dark background stays, the
+          // controls keep working; reported in debug only.
+          if (kDebugMode) debugPrint('[beer] materials failed: $e');
+        });
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     SystemChrome.setPreferredOrientations(const [DeviceOrientation.portraitUp]);
     _tilt.onUnavailable = () {
@@ -194,8 +196,6 @@ class _TipGlassPageState extends State<TipGlassPage>
     super.dispose();
   }
 
-  // ---- Actions -------------------------------------------------------------
-
   void _refill() {
     _sim.refill();
     _empty.value = false;
@@ -212,8 +212,8 @@ class _TipGlassPageState extends State<TipGlassPage>
     final p = d.localPosition - Offset(size.width / 2, size.height / 2);
     final r2 = math.max(p.distanceSquared, 80.0 * 80.0);
     final cross = p.dx * d.delta.dy - p.dy * d.delta.dx;
-    _manualAngle = (_manualAngle + cross / r2 + math.pi) % (2 * math.pi) -
-        math.pi;
+    _manualAngle =
+        (_manualAngle + cross / r2 + math.pi) % (2 * math.pi) - math.pi;
     if (!_dragged) {
       _dragged = true;
       _hint.value = null;
@@ -274,8 +274,7 @@ class _TipGlassPageState extends State<TipGlassPage>
                   padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
                   child: Text(
                     tr.tipVisualNote,
-                    style:
-                        const TextStyle(fontSize: 12, color: Colors.white60),
+                    style: const TextStyle(fontSize: 12, color: Colors.white60),
                   ),
                 ),
               ],
@@ -285,8 +284,6 @@ class _TipGlassPageState extends State<TipGlassPage>
       ),
     );
   }
-
-  // ---- UI ------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -323,25 +320,27 @@ class _TipGlassPageState extends State<TipGlassPage>
                     padding: const EdgeInsets.all(8),
                     child: Align(
                       alignment: Alignment.topCenter,
-                      child: Row(children: [
-                        _RoundButton(
-                          icon: Icons.close_rounded,
-                          tooltip: tr.commonClose,
-                          onPressed: () => Navigator.of(context).maybePop(),
-                        ),
-                        const Spacer(),
-                        _RoundButton(
-                          icon: Icons.refresh_rounded,
-                          tooltip: tr.tipRefill,
-                          onPressed: _refill,
-                        ),
-                        const SizedBox(width: 8),
-                        _RoundButton(
-                          icon: Icons.tune_rounded,
-                          tooltip: tr.commonOptions,
-                          onPressed: _options,
-                        ),
-                      ]),
+                      child: Row(
+                        children: [
+                          _RoundButton(
+                            icon: Icons.close_rounded,
+                            tooltip: tr.commonClose,
+                            onPressed: () => Navigator.of(context).maybePop(),
+                          ),
+                          const Spacer(),
+                          _RoundButton(
+                            icon: Icons.refresh_rounded,
+                            tooltip: tr.tipRefill,
+                            onPressed: _refill,
+                          ),
+                          const SizedBox(width: 8),
+                          _RoundButton(
+                            icon: Icons.tune_rounded,
+                            tooltip: tr.commonOptions,
+                            onPressed: _options,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -421,8 +420,10 @@ class _Pill extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Text(text,
-            style: const TextStyle(color: Colors.white, fontSize: 14)),
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white, fontSize: 14),
+        ),
       ),
     );
   }

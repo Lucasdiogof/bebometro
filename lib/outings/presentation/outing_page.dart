@@ -31,7 +31,11 @@ import '../../drinks/domain/presentation_label.dart';
 /// Running outing. Pops with the outing id after it is finished, so the
 /// caller can show the summary.
 class OutingPage extends StatelessWidget {
-  const OutingPage({super.key, required this.outingId, this.finishOnOpen = false});
+  const OutingPage({
+    super.key,
+    required this.outingId,
+    this.finishOnOpen = false,
+  });
 
   final String outingId;
 
@@ -73,8 +77,7 @@ class _OutingViewState extends State<_OutingView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _onPending();
-      if (widget.finishOnOpen &&
-          cubit.state.outing?.isActive == true) {
+      if (widget.finishOnOpen && cubit.state.outing?.isActive == true) {
         unawaited(_finish());
         return;
       }
@@ -128,34 +131,35 @@ class _OutingViewState extends State<_OutingView> {
     await coordinator.setHiddenFor(_outingId, !suppressed);
     if (!mounted) return;
     showToast(
-        context,
-        suppressed
-            ? tr.outingTrackingBack
-            : tr.outingTrackingHidden);
+      context,
+      suppressed ? tr.outingTrackingBack : tr.outingTrackingHidden,
+    );
   }
 
   void _showNotice(OutingNotice notice) {
     if (!mounted) return;
     final messenger = ScaffoldMessenger.of(context);
     messenger.hideCurrentSnackBar();
-    messenger.showSnackBar(SnackBar(
-      content: Text(notice.text),
-      duration: const Duration(seconds: 5),
-      persist: false,
-      action: notice.undo == null
-          ? null
-          : SnackBarAction(
-              label: notice.undoLabel ?? tr.commonUndo,
-              onPressed: () => notice.undo!(),
-            ),
-    ));
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(notice.text),
+        duration: const Duration(seconds: 5),
+        persist: false,
+        action: notice.undo == null
+            ? null
+            : SnackBarAction(
+                label: notice.undoLabel ?? tr.commonUndo,
+                onPressed: () => notice.undo!(),
+              ),
+      ),
+    );
   }
 
   Future<void> _addDrink() async {
     final id = context.read<OutingCubit>().outingId;
-    final saved = await Navigator.of(context).push<bool>(
-      MaterialPageRoute(builder: (_) => AddDrinkPage(outingId: id)),
-    );
+    final saved = await Navigator.of(
+      context,
+    ).push<bool>(MaterialPageRoute(builder: (_) => AddDrinkPage(outingId: id)));
     if (saved == true && mounted) showToast(context, tr.outingDrinkLogged);
   }
 
@@ -189,13 +193,9 @@ class _OutingViewState extends State<_OutingView> {
     setState(() => _finishing = true);
     try {
       await cubit.finish(endedAt);
-      if (mounted &&
-          getIt<ScanDraftStore>().openFor(outing.id).isNotEmpty) {
+      if (mounted && getIt<ScanDraftStore>().openFor(outing.id).isNotEmpty) {
         // An unfinished label/menu reading stays tied to this outing.
-        showToast(
-          context,
-          tr.outingOpenScan,
-        );
+        showToast(context, tr.outingOpenScan);
       }
       if (mounted) Navigator.of(context).pop(outing.id);
     } on ArgumentError catch (e) {
@@ -232,12 +232,17 @@ class _OutingViewState extends State<_OutingView> {
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(outing.displayName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppText.title),
                 Text(
-                  tr.outingTypeSince(outing.type.label, formatTime(outing.startedAt)),
+                  outing.displayName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.title,
+                ),
+                Text(
+                  tr.outingTypeSince(
+                    outing.type.label,
+                    formatTime(outing.startedAt),
+                  ),
                   style: AppText.caption,
                 ),
               ],
@@ -260,23 +265,29 @@ class _OutingViewState extends State<_OutingView> {
                 },
                 itemBuilder: (_) {
                   final tracking = getIt<TrackingCoordinator>();
-                  final offer = tracking.prefs.enabled &&
+                  final offer =
+                      tracking.prefs.enabled &&
                       tracking.status.value != TrackingStatus.unsupported;
                   return [
                     if (offer)
                       PopupMenuItem(
                         value: 'tracking',
-                        child: Text(tracking.isSuppressed(_outingId)
-                            ? tr.outingShowOnLock
-                            : tr.outingHideHere),
+                        child: Text(
+                          tracking.isSuppressed(_outingId)
+                              ? tr.outingShowOnLock
+                              : tr.outingHideHere,
+                        ),
                       ),
                     if (outingHasMapTarget(outing))
                       PopupMenuItem(
-                          value: 'map', child: Text(tr.placeOpenInMaps)),
+                        value: 'map',
+                        child: Text(tr.placeOpenInMaps),
+                      ),
+                    PopupMenuItem(value: 'place', child: Text(tr.placeCorrect)),
                     PopupMenuItem(
-                        value: 'place', child: Text(tr.placeCorrect)),
-                    PopupMenuItem(
-                        value: 'finish', child: Text(tr.outingFinish)),
+                      value: 'finish',
+                      child: Text(tr.outingFinish),
+                    ),
                   ];
                 },
               ),
@@ -287,85 +298,102 @@ class _OutingViewState extends State<_OutingView> {
               Expanded(
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(
-                      AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                    AppSpace.gutter,
+                    0,
+                    AppSpace.gutter,
+                    AppSpace.xl,
+                  ),
                   children: [
                     SurfaceCard(
-                      child: Column(children: [
-                        Row(children: [
-                          BeerGlass(
-                            size: 64,
-                            fill: summary.alcoholicCount == 0
-                                ? 0.15
-                                : (0.25 + summary.alcoholicCount * 0.12),
-                          ),
-                          const SizedBox(width: AppSpace.lg),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(tr.outingRunningFor, style: AppText.caption),
-                                ElapsedText(
-                                  since: outing.startedAt,
-                                  style: AppText.headline,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              BeerGlass(
+                                size: 64,
+                                fill: summary.alcoholicCount == 0
+                                    ? 0.15
+                                    : (0.25 + summary.alcoholicCount * 0.12),
+                              ),
+                              const SizedBox(width: AppSpace.lg),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      tr.outingRunningFor,
+                                      style: AppText.caption,
+                                    ),
+                                    ElapsedText(
+                                      since: outing.startedAt,
+                                      style: AppText.headline,
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ]),
-                        const SizedBox(height: AppSpace.lg),
-                        Row(children: [
-                          Expanded(
-                            child: StatTile(
-                              label: tr.homeDrinks,
-                              value: '${summary.entryCount}',
-                            ),
+                          const SizedBox(height: AppSpace.lg),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: StatTile(
+                                  label: tr.homeDrinks,
+                                  value: '${summary.entryCount}',
+                                ),
+                              ),
+                              Expanded(
+                                child: StatTile(
+                                  label: tr.outingYourVolume,
+                                  value: summary.volumeLabel,
+                                ),
+                              ),
+                              Expanded(
+                                child: StatTile(
+                                  label: tr.homeInformedSpent,
+                                  value: formatCents(summary.informedCents),
+                                ),
+                              ),
+                            ],
                           ),
-                          Expanded(
-                            child: StatTile(
-                              label: tr.outingYourVolume,
-                              value: summary.volumeLabel,
+                          if (summary.unpricedCount > 0 ||
+                              summary.unknownVolumeCount > 0 ||
+                              summary.incompleteAlcoholCount > 0) ...[
+                            const SizedBox(height: AppSpace.md),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Wrap(
+                                spacing: AppSpace.sm,
+                                runSpacing: AppSpace.sm,
+                                children: [
+                                  if (summary.unpricedCount > 0)
+                                    InfoPill(
+                                      tr.homeUnpriced(summary.unpricedCount),
+                                      icon: Icons.sell_outlined,
+                                      warning: true,
+                                    ),
+                                  if (summary.unknownVolumeCount > 0)
+                                    InfoPill(
+                                      tr.outingNoVolume(
+                                        summary.unknownVolumeCount,
+                                      ),
+                                      icon: Icons.opacity_outlined,
+                                      warning: true,
+                                    ),
+                                  if (summary.incompleteAlcoholCount > 0)
+                                    InfoPill(
+                                      tr.outingAlcoholIncomplete(
+                                        summary.incompleteAlcoholCount,
+                                      ),
+                                      icon: Icons.help_outline_rounded,
+                                      warning: true,
+                                    ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: StatTile(
-                              label: tr.homeInformedSpent,
-                              value: formatCents(summary.informedCents),
-                            ),
-                          ),
-                        ]),
-                        if (summary.unpricedCount > 0 ||
-                            summary.unknownVolumeCount > 0 ||
-                            summary.incompleteAlcoholCount > 0) ...[
-                          const SizedBox(height: AppSpace.md),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Wrap(
-                              spacing: AppSpace.sm,
-                              runSpacing: AppSpace.sm,
-                              children: [
-                                if (summary.unpricedCount > 0)
-                                  InfoPill(
-                                    tr.homeUnpriced(summary.unpricedCount),
-                                    icon: Icons.sell_outlined,
-                                    warning: true,
-                                  ),
-                                if (summary.unknownVolumeCount > 0)
-                                  InfoPill(
-                                    tr.outingNoVolume(summary.unknownVolumeCount),
-                                    icon: Icons.opacity_outlined,
-                                    warning: true,
-                                  ),
-                                if (summary.incompleteAlcoholCount > 0)
-                                  InfoPill(
-                                    tr.outingAlcoholIncomplete(summary.incompleteAlcoholCount),
-                                    icon: Icons.help_outline_rounded,
-                                    warning: true,
-                                  ),
-                              ],
-                            ),
-                          ),
+                          ],
                         ],
-                      ]),
+                      ),
                     ),
                     const SizedBox(height: AppSpace.sm),
                     BudgetSection(
@@ -374,50 +402,55 @@ class _OutingViewState extends State<_OutingView> {
                       onChange: cubit.setBudget,
                     ),
                     const SizedBox(height: AppSpace.sm),
-                    Row(children: [
-                      Expanded(
-                        child: SegmentedButton<TableView>(
-                          showSelectedIcon: false,
-                          segments: [
-                            ButtonSegment(
-                              value: TableView.table,
-                              icon: Icon(Icons.table_restaurant_outlined),
-                              label: Text(tr.tableViewTable),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SegmentedButton<TableView>(
+                            showSelectedIcon: false,
+                            segments: [
+                              ButtonSegment(
+                                value: TableView.table,
+                                icon: Icon(Icons.table_restaurant_outlined),
+                                label: Text(tr.tableViewTable),
+                              ),
+                              ButtonSegment(
+                                value: TableView.list,
+                                icon: Icon(Icons.view_list_rounded),
+                                label: Text(tr.tableViewList),
+                              ),
+                            ],
+                            selected: {prefs.view},
+                            onSelectionChanged: (s) =>
+                                prefsCubit.setView(s.first),
+                          ),
+                        ),
+                        PopupMenuButton<String>(
+                          tooltip: tr.tableOptions,
+                          onSelected: (v) {
+                            if (v == 'scenario') {
+                              showScenarioPicker(
+                                context,
+                                current: scenario,
+                                onSelected: (s) =>
+                                    prefsCubit.setScenario(outing.id, s),
+                              );
+                            } else if (v == 'about') {
+                              showTableAbout(context);
+                            }
+                          },
+                          itemBuilder: (_) => [
+                            PopupMenuItem(
+                              value: 'scenario',
+                              child: Text(tr.tableChangeScene),
                             ),
-                            ButtonSegment(
-                              value: TableView.list,
-                              icon: Icon(Icons.view_list_rounded),
-                              label: Text(tr.tableViewList),
+                            PopupMenuItem(
+                              value: 'about',
+                              child: Text(tr.tableAboutMenu),
                             ),
                           ],
-                          selected: {prefs.view},
-                          onSelectionChanged: (s) =>
-                              prefsCubit.setView(s.first),
                         ),
-                      ),
-                      PopupMenuButton<String>(
-                        tooltip: tr.tableOptions,
-                        onSelected: (v) {
-                          if (v == 'scenario') {
-                            showScenarioPicker(
-                              context,
-                              current: scenario,
-                              onSelected: (s) =>
-                                  prefsCubit.setScenario(outing.id, s),
-                            );
-                          } else if (v == 'about') {
-                            showTableAbout(context);
-                          }
-                        },
-                        itemBuilder: (_) => [
-                          PopupMenuItem(
-                              value: 'scenario', child: Text(tr.tableChangeScene)),
-                          PopupMenuItem(
-                              value: 'about',
-                              child: Text(tr.tableAboutMenu)),
-                        ],
-                      ),
-                    ]),
+                      ],
+                    ),
                     if (prefs.view == TableView.table) ...[
                       const SizedBox(height: AppSpace.sm),
                       TableScene(
@@ -430,8 +463,10 @@ class _OutingViewState extends State<_OutingView> {
                       if (state.entries.isEmpty)
                         Padding(
                           padding: EdgeInsets.only(top: AppSpace.sm),
-                          child: Text(tr.outingFirstDrinkHint,
-                              style: AppText.caption),
+                          child: Text(
+                            tr.outingFirstDrinkHint,
+                            style: AppText.caption,
+                          ),
                         ),
                     ] else ...[
                       SectionTitle(tr.outingRecords(entries.length)),
@@ -460,18 +495,26 @@ class _OutingViewState extends State<_OutingView> {
                     ],
                     const SizedBox(height: AppSpace.md),
                     SurfaceCard(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpace.md),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpace.md,
+                      ),
                       child: Theme(
-                        data: Theme.of(context)
-                            .copyWith(dividerColor: Colors.transparent),
+                        data: Theme.of(
+                          context,
+                        ).copyWith(dividerColor: Colors.transparent),
                         child: ExpansionTile(
                           tilePadding: EdgeInsets.zero,
-                          childrenPadding:
-                              const EdgeInsets.only(bottom: AppSpace.md),
-                          title: Text(tr.glassBigTitle,
-                              style: AppText.subtitle),
-                          subtitle: Text(tr.glassBigSubtitle,
-                              style: AppText.caption),
+                          childrenPadding: const EdgeInsets.only(
+                            bottom: AppSpace.md,
+                          ),
+                          title: Text(
+                            tr.glassBigTitle,
+                            style: AppText.subtitle,
+                          ),
+                          subtitle: Text(
+                            tr.glassBigSubtitle,
+                            style: AppText.caption,
+                          ),
                           children: [
                             AccumulatedGlass(
                               alcoholicMl: summary.alcoholicMl,
@@ -491,9 +534,14 @@ class _OutingViewState extends State<_OutingView> {
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size.fromHeight(52),
                         foregroundColor: AppColors.amber,
-                        side: const BorderSide(color: AppColors.amber, width: 1.5),
+                        side: const BorderSide(
+                          color: AppColors.amber,
+                          width: 1.5,
+                        ),
                         textStyle: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w700),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       onPressed: _finishing ? null : _finish,
                       icon: const Icon(Icons.flag_outlined),
@@ -510,31 +558,35 @@ class _OutingViewState extends State<_OutingView> {
                       _RepeatButton(entry: last, onPressed: cubit.repeatLast),
                       const SizedBox(height: AppSpace.sm),
                     ],
-                    Row(children: [
-                      Expanded(
-                        child: last == null
-                            ? FilledButton.icon(
-                                onPressed: _addDrink,
-                                icon: const Icon(Icons.add_rounded),
-                                label: Text(tr.outingAddDrink),
-                              )
-                            : OutlinedButton.icon(
-                                onPressed: _addDrink,
-                                icon: const Icon(Icons.add_rounded),
-                                label: Text(tr.outingAddDrink),
-                              ),
-                      ),
-                      const SizedBox(width: AppSpace.sm),
-                      OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size(0, 52),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: last == null
+                              ? FilledButton.icon(
+                                  onPressed: _addDrink,
+                                  icon: const Icon(Icons.add_rounded),
+                                  label: Text(tr.outingAddDrink),
+                                )
+                              : OutlinedButton.icon(
+                                  onPressed: _addDrink,
+                                  icon: const Icon(Icons.add_rounded),
+                                  label: Text(tr.outingAddDrink),
+                                ),
                         ),
-                        onPressed: cubit.addWater,
-                        icon: const Icon(Icons.water_drop_outlined,
-                            color: Color(0xFF6EC1E4)),
-                        label: Text(tr.drinkWater),
-                      ),
-                    ]),
+                        const SizedBox(width: AppSpace.sm),
+                        OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(0, 52),
+                          ),
+                          onPressed: cubit.addWater,
+                          icon: const Icon(
+                            Icons.water_drop_outlined,
+                            color: Color(0xFF6EC1E4),
+                          ),
+                          label: Text(tr.drinkWater),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -581,40 +633,49 @@ class _RepeatButton extends StatelessWidget {
             constraints: const BoxConstraints(minHeight: 52),
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpace.lg, vertical: AppSpace.sm),
-              child: Row(children: [
-                const Icon(Icons.replay_rounded,
-                    color: Color(0xFF241800), size: 22),
-                const SizedBox(width: AppSpace.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        tr.repeatButton,
-                        style: const TextStyle(
-                          color: Color(0xFF241800),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        [
-                          _what,
-                          if (entry.priceKind == PriceKind.informed &&
-                              entry.paidCents != null)
-                            formatCents(entry.paidCents!),
-                        ].join(' · '),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            color: Color(0xCC241800), fontSize: 13),
-                      ),
-                    ],
+                horizontal: AppSpace.lg,
+                vertical: AppSpace.sm,
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.replay_rounded,
+                    color: Color(0xFF241800),
+                    size: 22,
                   ),
-                ),
-              ]),
+                  const SizedBox(width: AppSpace.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          tr.repeatButton,
+                          style: const TextStyle(
+                            color: Color(0xFF241800),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        Text(
+                          [
+                            _what,
+                            if (entry.priceKind == PriceKind.informed &&
+                                entry.paidCents != null)
+                              formatCents(entry.paidCents!),
+                          ].join(' · '),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Color(0xCC241800),
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -641,10 +702,10 @@ class EntryTile extends StatelessWidget {
   final VoidCallback? onRepeat;
 
   String get _priceText => switch (entry.priceKind) {
-        PriceKind.informed => formatCents(entry.paidCents ?? 0),
-        PriceKind.complimentary => tr.priceComplimentary,
-        PriceKind.unknown => tr.priceNone,
-      };
+    PriceKind.informed => formatCents(entry.paidCents ?? 0),
+    PriceKind.complimentary => tr.priceComplimentary,
+    PriceKind.unknown => tr.priceNone,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -653,12 +714,16 @@ class EntryTile extends StatelessWidget {
     final alcohol = entry.alcohol;
     final meta = <String>[
       formatTime(entry.consumedAt),
-      if (entry.isMixed && entry.composition!.customized) tr.groupRecipeAdjusted,
+      if (entry.isMixed && entry.composition!.customized)
+        tr.groupRecipeAdjusted,
       if (entry.presentation != null && !entry.isShared)
         localizePresentation(entry.presentation!),
       if (entry.isShared && personal != null && container != null)
         tr.entrySharedPart(
-            entry.peopleCount, formatMl(personal), formatMl(container))
+          entry.peopleCount,
+          formatMl(personal),
+          formatMl(container),
+        )
       else if (personal == null)
         tr.groupVolumeUnknown
       else if (entry.presentation == null)
@@ -669,49 +734,59 @@ class EntryTile extends StatelessWidget {
     return SurfaceCard(
       onTap: onTap,
       padding: const EdgeInsets.fromLTRB(
-          AppSpace.md, AppSpace.sm, AppSpace.xs, AppSpace.sm),
-      child: Row(children: [
-        Icon(entry.category.icon, color: AppColors.amber),
-        const SizedBox(width: AppSpace.md),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(entry.name,
+        AppSpace.md,
+        AppSpace.sm,
+        AppSpace.xs,
+        AppSpace.sm,
+      ),
+      child: Row(
+        children: [
+          Icon(entry.category.icon, color: AppColors.amber),
+          const SizedBox(width: AppSpace.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  entry.name,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppText.subtitle),
-              const SizedBox(height: 2),
-              Text(meta.join(' · '), style: AppText.caption),
+                  style: AppText.subtitle,
+                ),
+                const SizedBox(height: 2),
+                Text(meta.join(' · '), style: AppText.caption),
+              ],
+            ),
+          ),
+          const SizedBox(width: AppSpace.sm),
+          Text(
+            _priceText,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: entry.hasPrice ? AppColors.text : AppColors.textMuted,
+            ),
+          ),
+          PopupMenuButton<String>(
+            tooltip: tr.entryOptions,
+            icon: const Icon(
+              Icons.more_vert_rounded,
+              color: AppColors.textMuted,
+            ),
+            onSelected: (v) {
+              if (v == 'edit') onTap();
+              if (v == 'repeat') onRepeat?.call();
+              if (v == 'delete') onDelete?.call();
+            },
+            itemBuilder: (_) => [
+              PopupMenuItem(value: 'edit', child: Text(tr.entryCorrect)),
+              if (onRepeat != null)
+                PopupMenuItem(value: 'repeat', child: Text(tr.entryRepeat)),
+              if (onDelete != null)
+                PopupMenuItem(value: 'delete', child: Text(tr.commonDelete)),
             ],
           ),
-        ),
-        const SizedBox(width: AppSpace.sm),
-        Text(
-          _priceText,
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            color: entry.hasPrice ? AppColors.text : AppColors.textMuted,
-          ),
-        ),
-        PopupMenuButton<String>(
-          tooltip: tr.entryOptions,
-          icon: const Icon(Icons.more_vert_rounded,
-              color: AppColors.textMuted),
-          onSelected: (v) {
-            if (v == 'edit') onTap();
-            if (v == 'repeat') onRepeat?.call();
-            if (v == 'delete') onDelete?.call();
-          },
-          itemBuilder: (_) => [
-            PopupMenuItem(value: 'edit', child: Text(tr.entryCorrect)),
-            if (onRepeat != null)
-              PopupMenuItem(value: 'repeat', child: Text(tr.entryRepeat)),
-            if (onDelete != null)
-              PopupMenuItem(value: 'delete', child: Text(tr.commonDelete)),
-          ],
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -735,8 +810,12 @@ class _FinishSheetState extends State<_FinishSheet> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(AppSpace.xl, 0, AppSpace.xl,
-            AppSpace.lg + MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.fromLTRB(
+          AppSpace.xl,
+          0,
+          AppSpace.xl,
+          AppSpace.lg + MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -750,27 +829,34 @@ class _FinishSheetState extends State<_FinishSheet> {
                 final picked = await pickDateTime(context, _endedAt);
                 if (picked != null) setState(() => _endedAt = picked);
               },
-              child: Row(children: [
-                const Icon(Icons.flag_rounded, color: AppColors.amber),
-                const SizedBox(width: AppSpace.md),
-                Expanded(
-                  child: Text(tr.finishEnd(formatDateTime(_endedAt)),
-                      style: AppText.subtitle),
-                ),
-                Text(tr.commonAdjust,
-                    style: const TextStyle(color: AppColors.amber)),
-              ]),
+              child: Row(
+                children: [
+                  const Icon(Icons.flag_rounded, color: AppColors.amber),
+                  const SizedBox(width: AppSpace.md),
+                  Expanded(
+                    child: Text(
+                      tr.finishEnd(formatDateTime(_endedAt)),
+                      style: AppText.subtitle,
+                    ),
+                  ),
+                  Text(
+                    tr.commonAdjust,
+                    style: const TextStyle(color: AppColors.amber),
+                  ),
+                ],
+              ),
             ),
             if (!_valid)
               Padding(
                 padding: EdgeInsets.only(top: AppSpace.sm),
-                child: Text(tr.repoEndBeforeStart,
-                    style: const TextStyle(color: AppColors.danger)),
+                child: Text(
+                  tr.repoEndBeforeStart,
+                  style: const TextStyle(color: AppColors.danger),
+                ),
               ),
             const SizedBox(height: AppSpace.xl),
             FilledButton(
-              onPressed:
-                  _valid ? () => Navigator.pop(context, _endedAt) : null,
+              onPressed: _valid ? () => Navigator.pop(context, _endedAt) : null,
               child: Text(tr.finishAndSummary),
             ),
             const SizedBox(height: AppSpace.xs),

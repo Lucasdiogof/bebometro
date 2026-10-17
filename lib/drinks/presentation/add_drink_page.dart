@@ -111,18 +111,20 @@ class _AddDrinkView extends StatelessWidget {
         content: Text(tr.catalogNeedOutingBody),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.commonNotNow)),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.commonNotNow),
+          ),
           TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.startTitle)),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(tr.startTitle),
+          ),
         ],
       ),
     );
     if (start != true || !context.mounted) return null;
-    return Navigator.of(context).push<String>(
-      MaterialPageRoute(builder: (_) => const StartOutingPage()),
-    );
+    return Navigator.of(
+      context,
+    ).push<String>(MaterialPageRoute(builder: (_) => const StartOutingPage()));
   }
 
   Future<void> _afterReview(
@@ -177,7 +179,8 @@ class _AddDrinkView extends StatelessWidget {
         builder: (_) => OutingDrinkReviewPage(
           outingId: id,
           prefill: ReviewPrefill(
-              name: suggestedName.isEmpty ? null : suggestedName),
+            name: suggestedName.isEmpty ? null : suggestedName,
+          ),
         ),
       ),
     );
@@ -213,8 +216,7 @@ class _AddDrinkView extends StatelessWidget {
 
   Future<void> _details(BuildContext context, CatalogItem item) async {
     final cubit = context.read<CatalogCubit>();
-    final action =
-        await showDrinkDetail(context, item: item, catalog: cubit);
+    final action = await showDrinkDetail(context, item: item, catalog: cubit);
     if (!context.mounted) return;
     switch (action) {
       case DetailAction.register:
@@ -236,12 +238,16 @@ class _AddDrinkView extends StatelessWidget {
             content: Text(tr.catalogDeleteBody),
             actions: [
               TextButton(
-                  onPressed: () => Navigator.pop(ctx, false),
-                  child: Text(tr.commonCancel)),
+                onPressed: () => Navigator.pop(ctx, false),
+                child: Text(tr.commonCancel),
+              ),
               TextButton(
-                  onPressed: () => Navigator.pop(ctx, true),
-                  child: Text(tr.commonDelete,
-                      style: const TextStyle(color: AppColors.danger))),
+                onPressed: () => Navigator.pop(ctx, true),
+                child: Text(
+                  tr.commonDelete,
+                  style: const TextStyle(color: AppColors.danger),
+                ),
+              ),
             ],
           ),
         );
@@ -277,39 +283,49 @@ class _AddDrinkView extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(
-                    AppSpace.gutter, 0, AppSpace.sm, AppSpace.sm),
-                child: Row(children: [
-                  Expanded(
-                    child: TextField(
-                      onChanged: cubit.setQuery,
-                      textInputAction: TextInputAction.search,
-                      decoration: InputDecoration(
-                        hintText: tr.catalogSearchHint,
-                        prefixIcon: const Icon(Icons.search_rounded),
+                  AppSpace.gutter,
+                  0,
+                  AppSpace.sm,
+                  AppSpace.sm,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        onChanged: cubit.setQuery,
+                        textInputAction: TextInputAction.search,
+                        decoration: InputDecoration(
+                          hintText: tr.catalogSearchHint,
+                          prefixIcon: const Icon(Icons.search_rounded),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: AppSpace.xs),
-                  Badge(
-                    isLabelVisible: f.advancedCount > 0,
-                    label: Text('${f.advancedCount}'),
-                    child: IconButton(
-                      tooltip: tr.catalogMoreFilters,
-                      onPressed: () => _openFilters(context, cubit),
-                      icon: const Icon(Icons.tune_rounded),
+                    const SizedBox(width: AppSpace.xs),
+                    Badge(
+                      isLabelVisible: f.advancedCount > 0,
+                      label: Text('${f.advancedCount}'),
+                      child: IconButton(
+                        tooltip: tr.catalogMoreFilters,
+                        onPressed: () => _openFilters(context, cubit),
+                        icon: const Icon(Icons.tune_rounded),
+                      ),
                     ),
-                  ),
-                ]),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 48,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpace.gutter,
+                  ),
                   children: [
-                    _chip(tr.catalogAll, f.category == null,
-                        () => cubit.setCategory(null)),
+                    _chip(
+                      tr.catalogAll,
+                      f.category == null,
+                      () => cubit.setCategory(null),
+                    ),
                     for (final c in DrinkCategory.values)
                       _chip(
                         c.label,
@@ -319,37 +335,43 @@ class _AddDrinkView extends StatelessWidget {
                   ],
                 ),
               ),
-              if (f.advancedCount > 0) _ActiveFilters(state: state, cubit: cubit),
+              if (f.advancedCount > 0)
+                _ActiveFilters(state: state, cubit: cubit),
               Expanded(child: _body(context, state, cubit)),
               BottomActionBar(
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  Row(children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () => _scanLabel(context),
-                        icon: const Icon(Icons.qr_code_scanner_rounded),
-                        label: Text(tr.catalogScanLabel),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () => _scanLabel(context),
+                            icon: const Icon(Icons.qr_code_scanner_rounded),
+                            label: Text(tr.catalogScanLabel),
+                          ),
+                        ),
+                        const SizedBox(width: AppSpace.sm),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () => _scanMenu(context),
+                            icon: const Icon(Icons.menu_book_outlined),
+                            label: Text(tr.catalogScanMenu),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpace.sm),
+                    OutlinedButton.icon(
+                      onPressed: () =>
+                          _custom(context, suggestedName: state.query.trim()),
+                      icon: const Icon(Icons.add_rounded),
+                      label: Text(
+                        _explore ? tr.catalogCreate : tr.catalogCreateOuting,
                       ),
                     ),
-                    const SizedBox(width: AppSpace.sm),
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () => _scanMenu(context),
-                        icon: const Icon(Icons.menu_book_outlined),
-                        label: Text(tr.catalogScanMenu),
-                      ),
-                    ),
-                  ]),
-                  const SizedBox(height: AppSpace.sm),
-                  OutlinedButton.icon(
-                    onPressed: () =>
-                        _custom(context, suggestedName: state.query.trim()),
-                    icon: const Icon(Icons.add_rounded),
-                    label: Text(_explore
-                        ? tr.catalogCreate
-                        : tr.catalogCreateOuting),
-                  ),
-                ]),
+                  ],
+                ),
               ),
             ],
           ),
@@ -362,22 +384,20 @@ class _AddDrinkView extends StatelessWidget {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      builder: (_) => BlocProvider.value(
-        value: cubit,
-        child: const _FilterSheet(),
-      ),
+      builder: (_) =>
+          BlocProvider.value(value: cubit, child: const _FilterSheet()),
     );
   }
 
   Widget _chip(String label, bool selected, VoidCallback onTap) => Padding(
-        padding: const EdgeInsets.only(right: AppSpace.sm, top: 4, bottom: 4),
-        child: ChoiceChip(
-          label: Text(label),
-          selected: selected,
-          showCheckmark: false,
-          onSelected: (_) => onTap(),
-        ),
-      );
+    padding: const EdgeInsets.only(right: AppSpace.sm, top: 4, bottom: 4),
+    child: ChoiceChip(
+      label: Text(label),
+      selected: selected,
+      showCheckmark: false,
+      onSelected: (_) => onTap(),
+    ),
+  );
 
   Widget _body(BuildContext context, CatalogState state, CatalogCubit cubit) {
     if (state.items.isEmpty) {
@@ -387,8 +407,8 @@ class _AddDrinkView extends StatelessWidget {
         message: !_explore
             ? tr.catalogEmptyOuting
             : (state.filters.isEmpty
-                ? tr.catalogEmptyNoFilter
-                : tr.catalogEmptyFilter),
+                  ? tr.catalogEmptyNoFilter
+                  : tr.catalogEmptyFilter),
         actionLabel: _explore ? tr.catalogCreate : tr.catalogCreateOuting,
         onAction: () => _custom(context, suggestedName: state.query.trim()),
       );
@@ -396,29 +416,37 @@ class _AddDrinkView extends StatelessWidget {
     final showShortcuts = !state.isFiltering;
     return ListView(
       padding: const EdgeInsets.fromLTRB(
-          AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+        AppSpace.gutter,
+        0,
+        AppSpace.gutter,
+        AppSpace.xl,
+      ),
       children: [
         if (!_explore && showShortcuts)
           OutingDrinksSection(
             outingId: outingId!,
-            onRegister: (d) => _once(
-                () => _register(context, outingId!, d.toCatalogItem())),
+            onRegister: (d) =>
+                _once(() => _register(context, outingId!, d.toCatalogItem())),
           ),
         if (showShortcuts && state.recents.isNotEmpty) ...[
           SectionTitle(tr.catalogRecents),
           _Shortcuts(
-              items: state.recents,
-              onTap: (i) => _explore ? _details(context, i) : _pick(context, i)),
+            items: state.recents,
+            onTap: (i) => _explore ? _details(context, i) : _pick(context, i),
+          ),
         ],
         if (showShortcuts && state.favoriteItems.isNotEmpty) ...[
           SectionTitle(tr.catalogFavorites),
           _Shortcuts(
-              items: state.favoriteItems,
-              onTap: (i) => _explore ? _details(context, i) : _pick(context, i)),
+            items: state.favoriteItems,
+            onTap: (i) => _explore ? _details(context, i) : _pick(context, i),
+          ),
         ],
-        SectionTitle(showShortcuts
-            ? tr.catalogAllDrinks
-            : tr.catalogResults(state.items.length)),
+        SectionTitle(
+          showShortcuts
+              ? tr.catalogAllDrinks
+              : tr.catalogResults(state.items.length),
+        ),
         for (final item in state.items)
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpace.sm),
@@ -453,15 +481,12 @@ class _ActiveFilters extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
         children: [
-          if (f.brand != null)
-            _chip(f.brand!, () => cubit.setBrand(null)),
+          if (f.brand != null) _chip(f.brand!, () => cubit.setBrand(null)),
           if (f.styleGroup != null)
             _chip(styleLabel(f.styleGroup!), () => cubit.setStyleGroup(null)),
-          if (f.kind != null)
-            _chip(f.kind!.label, () => cubit.setKind(null)),
+          if (f.kind != null) _chip(f.kind!.label, () => cubit.setKind(null)),
           if (f.nonAlcoholic)
-            _chip(tr.categoryNonAlcoholic,
-                () => cubit.setNonAlcoholic(false)),
+            _chip(tr.categoryNonAlcoholic, () => cubit.setNonAlcoholic(false)),
           TextButton(
             onPressed: cubit.clearFilters,
             child: Text(tr.catalogClearFilters),
@@ -472,14 +497,14 @@ class _ActiveFilters extends StatelessWidget {
   }
 
   Widget _chip(String label, VoidCallback onRemove) => Padding(
-        padding: const EdgeInsets.only(right: AppSpace.sm, top: 4, bottom: 4),
-        child: InputChip(
-          label: Text(label),
-          onDeleted: onRemove,
-          deleteIcon: const Icon(Icons.close_rounded, size: 16),
-          deleteButtonTooltipMessage: tr.catalogRemoveFilter,
-        ),
-      );
+    padding: const EdgeInsets.only(right: AppSpace.sm, top: 4, bottom: 4),
+    child: InputChip(
+      label: Text(label),
+      onDeleted: onRemove,
+      deleteIcon: const Icon(Icons.close_rounded, size: 16),
+      deleteButtonTooltipMessage: tr.catalogRemoveFilter,
+    ),
+  );
 }
 
 class _FilterSheet extends StatelessWidget {
@@ -517,8 +542,7 @@ class _FilterSheet extends StatelessWidget {
                         label: Text(label(o)),
                         selected: selected == o,
                         showCheckmark: false,
-                        onSelected: (_) =>
-                            onChanged(selected == o ? null : o),
+                        onSelected: (_) => onChanged(selected == o ? null : o),
                       ),
                   ],
                 ),
@@ -527,48 +551,79 @@ class _FilterSheet extends StatelessWidget {
           }
 
           return SafeArea(
-            child: Column(children: [
-              Expanded(
-                child: ListView(
-                  controller: controller,
-                  padding: const EdgeInsets.fromLTRB(
-                      AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
-                  children: [
-                    Row(children: [
-                      Expanded(
-                          child: Text(tr.catalogFilters, style: AppText.title)),
-                      TextButton(
-                        onPressed: f.advancedCount == 0
-                            ? null
-                            : cubit.clearFilters,
-                        child: Text(tr.catalogClearFilters),
-                      ),
-                    ]),
-                    SwitchListTile(
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(tr.catalogOnlyNoAlcohol),
-                      value: f.nonAlcoholic,
-                      activeThumbColor: AppColors.amber,
-                      onChanged: cubit.setNonAlcoholic,
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    controller: controller,
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpace.xl,
+                      0,
+                      AppSpace.xl,
+                      AppSpace.lg,
                     ),
-                    group<String>(tr.catalogStyle, state.styleGroups,
-                        f.styleGroup, styleLabel, cubit.setStyleGroup),
-                    group<PresentationKind>(tr.catalogPresentation, state.kinds,
-                        f.kind, (k) => k.label, cubit.setKind),
-                    group<String>(tr.catalogBrand, state.brands, f.brand,
-                        (s) => s, cubit.setBrand),
-                  ],
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              tr.catalogFilters,
+                              style: AppText.title,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: f.advancedCount == 0
+                                ? null
+                                : cubit.clearFilters,
+                            child: Text(tr.catalogClearFilters),
+                          ),
+                        ],
+                      ),
+                      SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(tr.catalogOnlyNoAlcohol),
+                        value: f.nonAlcoholic,
+                        activeThumbColor: AppColors.amber,
+                        onChanged: cubit.setNonAlcoholic,
+                      ),
+                      group<String>(
+                        tr.catalogStyle,
+                        state.styleGroups,
+                        f.styleGroup,
+                        styleLabel,
+                        cubit.setStyleGroup,
+                      ),
+                      group<PresentationKind>(
+                        tr.catalogPresentation,
+                        state.kinds,
+                        f.kind,
+                        (k) => k.label,
+                        cubit.setKind,
+                      ),
+                      group<String>(
+                        tr.catalogBrand,
+                        state.brands,
+                        f.brand,
+                        (s) => s,
+                        cubit.setBrand,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                    AppSpace.xl, AppSpace.sm, AppSpace.xl, AppSpace.sm),
-                child: FilledButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(tr.catalogSeeCount(state.items.length)),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpace.xl,
+                    AppSpace.sm,
+                    AppSpace.xl,
+                    AppSpace.sm,
+                  ),
+                  child: FilledButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(tr.catalogSeeCount(state.items.length)),
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
           );
         },
       ),
@@ -596,8 +651,11 @@ class _Shortcuts extends StatelessWidget {
             avatar: Icon(item.category.icon, size: 18, color: AppColors.amber),
             label: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 200),
-              child: Text(item.displayName,
-                  maxLines: 1, overflow: TextOverflow.ellipsis),
+              child: Text(
+                item.displayName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             onPressed: () => onTap(item),
           );
@@ -628,56 +686,68 @@ class _ItemTile extends StatelessWidget {
     return SurfaceCard(
       onTap: onTap,
       padding: const EdgeInsets.fromLTRB(
-          AppSpace.md, AppSpace.sm, AppSpace.xs, AppSpace.sm),
-      child: Row(children: [
-        Icon(item.category.icon, color: AppColors.amber),
-        const SizedBox(width: AppSpace.md),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(item.displayName,
+        AppSpace.md,
+        AppSpace.sm,
+        AppSpace.xs,
+        AppSpace.sm,
+      ),
+      child: Row(
+        children: [
+          Icon(item.category.icon, color: AppColors.amber),
+          const SizedBox(width: AppSpace.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.displayName,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppText.subtitle),
-              Text(
-                item.subtitle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppText.caption,
-              ),
-              const SizedBox(height: AppSpace.xs),
-              // Wrap: a long origin label plus the sizes count must break
-              // to a second line instead of overflowing the card.
-              Wrap(
-                spacing: AppSpace.sm,
-                runSpacing: AppSpace.xs,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  OriginBadge(item.origin),
-                  if (count > 1)
-                    Text(tr.catalogSizes('$count'),
-                        style: AppText.caption.copyWith(fontSize: 12)),
-                ],
-              ),
-            ],
+                  style: AppText.subtitle,
+                ),
+                Text(
+                  item.subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.caption,
+                ),
+                const SizedBox(height: AppSpace.xs),
+                // Wrap: a long origin label plus the sizes count must break
+                // to a second line instead of overflowing the card.
+                Wrap(
+                  spacing: AppSpace.sm,
+                  runSpacing: AppSpace.xs,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    OriginBadge(item.origin),
+                    if (count > 1)
+                      Text(
+                        tr.catalogSizes('$count'),
+                        style: AppText.caption.copyWith(fontSize: 12),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-        IconButton(
-          tooltip: tr.catalogDetails,
-          onPressed: onDetails,
-          icon: const Icon(Icons.info_outline_rounded,
-              color: AppColors.textMuted),
-        ),
-        IconButton(
-          tooltip: favorite ? tr.catalogUnfavorite : tr.catalogFavorite,
-          onPressed: onFavorite,
-          icon: Icon(
-            favorite ? Icons.star_rounded : Icons.star_outline_rounded,
-            color: favorite ? AppColors.amber : AppColors.textMuted,
+          IconButton(
+            tooltip: tr.catalogDetails,
+            onPressed: onDetails,
+            icon: const Icon(
+              Icons.info_outline_rounded,
+              color: AppColors.textMuted,
+            ),
           ),
-        ),
-      ]),
+          IconButton(
+            tooltip: favorite ? tr.catalogUnfavorite : tr.catalogFavorite,
+            onPressed: onFavorite,
+            icon: Icon(
+              favorite ? Icons.star_rounded : Icons.star_outline_rounded,
+              color: favorite ? AppColors.amber : AppColors.textMuted,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

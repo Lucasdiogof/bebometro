@@ -46,7 +46,11 @@ class _GlassPainter extends CustomPainter {
       ..lineTo(bodyRight - topInset, h * 0.08)
       ..lineTo(bodyRight - bottomInset, h * 0.96)
       ..quadraticBezierTo(
-          bodyRight - bottomInset, h, bodyRight - bottomInset - 6, h)
+        bodyRight - bottomInset,
+        h,
+        bodyRight - bottomInset - 6,
+        h,
+      )
       ..lineTo(bottomInset + 6, h)
       ..quadraticBezierTo(bottomInset, h, bottomInset, h * 0.96)
       ..close();
@@ -64,10 +68,7 @@ class _GlassPainter extends CustomPainter {
       handle,
     );
 
-    canvas.drawPath(
-      body,
-      Paint()..color = AppColors.surfaceHigh,
-    );
+    canvas.drawPath(body, Paint()..color = AppColors.surfaceHigh);
 
     canvas.save();
     canvas.clipPath(body);

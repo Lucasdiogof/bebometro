@@ -56,29 +56,36 @@ class _PriceFixView extends StatelessWidget {
                 ListTile(
                   dense: true,
                   contentPadding: EdgeInsets.zero,
-                  title: Text(r.entry.name,
-                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                  title: Text(
+                    r.entry.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   subtitle: Text(
                     '${formatTime(r.entry.consumedAt)}'
                     '${r.entry.isShared ? ' · ${tr.priceFixYourShare}' : ''}',
                     style: AppText.caption,
                   ),
-                  trailing: Text('${r.before} → ${r.after}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: r.replaces ? AppColors.amber : AppColors.text,
-                      )),
+                  trailing: Text(
+                    '${r.before} → ${r.after}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: r.replaces ? AppColors.amber : AppColors.text,
+                    ),
+                  ),
                 ),
             ],
           ),
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.commonCancel)),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.commonCancel),
+          ),
           TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.commonSave)),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(tr.commonSave),
+          ),
         ],
       ),
     );
@@ -108,7 +115,9 @@ class _PriceFixView extends StatelessWidget {
               MoneyField(
                 controller: controller,
                 autofocus: true,
-                label: e.isShared ? tr.priceFixPaidShared : tr.priceFixPaidLabel,
+                label: e.isShared
+                    ? tr.priceFixPaidShared
+                    : tr.priceFixPaidLabel,
                 errorText: error,
                 onChanged: (_) {
                   if (error != null) setState(() => error = null);
@@ -123,17 +132,22 @@ class _PriceFixView extends StatelessWidget {
           ),
           actions: [
             TextButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: Text(tr.commonCancel)),
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(tr.commonCancel),
+            ),
             TextButton(
-                onPressed: () => Navigator.pop(ctx, const _One.complimentary()),
-                child: Text(tr.priceComplimentary)),
+              onPressed: () => Navigator.pop(ctx, const _One.complimentary()),
+              child: Text(tr.priceComplimentary),
+            ),
             TextButton(
               onPressed: () {
                 final cents = parseCents(controller.text);
                 if (cents == null) {
-                  setState(() => error = numberInputError(controller.text) ??
-                      tr.priceFixEnterValue);
+                  setState(
+                    () => error =
+                        numberInputError(controller.text) ??
+                        tr.priceFixEnterValue,
+                  );
                   return;
                 }
                 Navigator.pop(ctx, _One(cents));
@@ -146,8 +160,11 @@ class _PriceFixView extends StatelessWidget {
     );
     controller.dispose();
     if (result == null) return;
-    await cubit.applyTo(e,
-        cents: result.cents, complimentary: result.complimentary);
+    await cubit.applyTo(
+      e,
+      cents: result.cents,
+      complimentary: result.complimentary,
+    );
   }
 
   @override
@@ -167,8 +184,12 @@ class _PriceFixView extends StatelessWidget {
                         message: tr.priceFixNoneBody,
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(AppSpace.gutter, 0,
-                            AppSpace.gutter, AppSpace.xl),
+                        padding: const EdgeInsets.fromLTRB(
+                          AppSpace.gutter,
+                          0,
+                          AppSpace.gutter,
+                          AppSpace.xl,
+                        ),
                         children: [
                           Text(tr.priceFixIntro, style: AppText.caption),
                           SwitchListTile(
@@ -200,21 +221,27 @@ class _PriceFixView extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: AppSpace.xs),
-                            child: Text(tr.priceFixSharedHint,
-                                style: AppText.caption),
+                            child: Text(
+                              tr.priceFixSharedHint,
+                              style: AppText.caption,
+                            ),
                           ),
                           for (final g in state.groups) ...[
                             SectionTitle(g.label),
-                            Row(children: [
-                              TextButton(
-                                onPressed: () => cubit.selectGroup(g, true),
-                                child: Text(tr.priceFixSelectAll('${g.entries.length}')),
-                              ),
-                              TextButton(
-                                onPressed: () => cubit.selectGroup(g, false),
-                                child: Text(tr.priceFixClear),
-                              ),
-                            ]),
+                            Row(
+                              children: [
+                                TextButton(
+                                  onPressed: () => cubit.selectGroup(g, true),
+                                  child: Text(
+                                    tr.priceFixSelectAll('${g.entries.length}'),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () => cubit.selectGroup(g, false),
+                                  child: Text(tr.priceFixClear),
+                                ),
+                              ],
+                            ),
                             for (final e in g.entries)
                               CheckboxListTile(
                                 contentPadding: EdgeInsets.zero,
@@ -222,16 +249,14 @@ class _PriceFixView extends StatelessWidget {
                                 value: state.selected.contains(e.id),
                                 onChanged: (_) => cubit.toggle(e.id),
                                 title: Text(formatDateTime(e.consumedAt)),
-                                subtitle: Text(
-                                  switch (e.priceKind) {
-                                    PriceKind.informed =>
-                                      tr.priceFixCurrent(formatCents(e.paidCents ?? 0)),
-                                    PriceKind.complimentary =>
-                                      tr.priceComplimentary,
-                                    PriceKind.unknown => tr.priceNone,
-                                  },
-                                  style: AppText.caption,
-                                ),
+                                subtitle: Text(switch (e.priceKind) {
+                                  PriceKind.informed => tr.priceFixCurrent(
+                                    formatCents(e.paidCents ?? 0),
+                                  ),
+                                  PriceKind.complimentary =>
+                                    tr.priceComplimentary,
+                                  PriceKind.unknown => tr.priceNone,
+                                }, style: AppText.caption),
                                 secondary: IconButton(
                                   tooltip: tr.priceFixOnlyThis,
                                   onPressed: () => _editOne(context, e),
@@ -245,9 +270,11 @@ class _PriceFixView extends StatelessWidget {
               BottomActionBar(
                 child: FilledButton(
                   onPressed: state.canApply ? () => _applyBatch(context) : null,
-                  child: Text(state.selected.isEmpty
-                      ? tr.priceFixSelectRecords
-                      : tr.priceFixPreview('${state.selected.length}')),
+                  child: Text(
+                    state.selected.isEmpty
+                        ? tr.priceFixSelectRecords
+                        : tr.priceFixPreview('${state.selected.length}'),
+                  ),
                 ),
               ),
             ],
@@ -260,9 +287,7 @@ class _PriceFixView extends StatelessWidget {
 
 class _One {
   const _One(this.cents) : complimentary = false;
-  const _One.complimentary()
-      : cents = null,
-        complimentary = true;
+  const _One.complimentary() : cents = null, complimentary = true;
 
   final int? cents;
   final bool complimentary;

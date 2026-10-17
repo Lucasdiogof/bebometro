@@ -57,7 +57,8 @@ class PlaceDraft {
           providerName: providerName,
           address: address,
           point: point,
-          fallback: tr.placeFallbackName);
+          fallback: tr.placeFallbackName,
+        );
 
   /// Something to show and store: a name, an address or a point.
   bool get isEmpty =>
@@ -84,23 +85,23 @@ class PlaceSnapshot {
   });
 
   factory PlaceSnapshot.ofPlace(Place p) => PlaceSnapshot(
-        placeId: p.id,
-        nickname: p.nickname,
-        placeName: p.providerName,
-        address: p.address,
-        city: p.city,
-        state: p.state,
-        point: p.point,
-      );
+    placeId: p.id,
+    nickname: p.nickname,
+    placeName: p.providerName,
+    address: p.address,
+    city: p.city,
+    state: p.state,
+    point: p.point,
+  );
 
   factory PlaceSnapshot.ofDraft(PlaceDraft d) => PlaceSnapshot(
-        nickname: d.nickname,
-        placeName: d.providerName,
-        address: d.address,
-        city: d.city,
-        state: d.state,
-        point: d.point,
-      );
+    nickname: d.nickname,
+    placeName: d.providerName,
+    address: d.address,
+    city: d.city,
+    state: d.state,
+    point: d.point,
+  );
 
   final String? placeId;
   final String? nickname;

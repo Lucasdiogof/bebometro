@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Map<String, dynamic> row(String id, String name) => {
-      'id': id,
-      'outing_id': 'o',
-      'name': name,
-      'deleted_at': null,
-    };
+  'id': id,
+  'outing_id': 'o',
+  'name': name,
+  'deleted_at': null,
+};
 
 void main() {
   setUp(() => SharedPreferences.setMockInitialValues({}));

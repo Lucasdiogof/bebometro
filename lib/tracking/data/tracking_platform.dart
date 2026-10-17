@@ -66,8 +66,15 @@ class TrackingLink {
 /// (durable, with its own unique [id]); the app registers it from its own
 /// records, so prices, ABV and portions are never taken from the command.
 class TrackingCommand {
-  const TrackingCommand(this.id, this.outingId, this.kind, this.at,
-      {this.accountId, this.entryId, this.label});
+  const TrackingCommand(
+    this.id,
+    this.outingId,
+    this.kind,
+    this.at, {
+    this.accountId,
+    this.entryId,
+    this.label,
+  });
 
   final String id;
   final String outingId;
@@ -193,12 +200,19 @@ class TrackingPlatform {
       final outing = item['outingId'] as String?;
       final kind = item['kind'] as String?;
       final secs = item['at'];
-      if (id == null || outing == null || kind == null || secs is! num) continue;
-      out.add(TrackingCommand(id, outing, kind,
+      if (id == null || outing == null || kind == null || secs is! num)
+        continue;
+      out.add(
+        TrackingCommand(
+          id,
+          outing,
+          kind,
           DateTime.fromMillisecondsSinceEpoch((secs * 1000).round()),
           accountId: item['accountId'] as String?,
           entryId: item['entryId'] as String?,
-          label: item['label'] as String?));
+          label: item['label'] as String?,
+        ),
+      );
     }
     return out;
   }

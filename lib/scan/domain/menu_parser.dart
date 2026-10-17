@@ -15,14 +15,17 @@ class MenuPrice {
   /// Written without cents or currency, or far from its item.
   final bool uncertain;
 
-  Map<String, dynamic> toJson() =>
-      {'c': cents, 's': snippet, if (uncertain) 'u': true};
+  Map<String, dynamic> toJson() => {
+    'c': cents,
+    's': snippet,
+    if (uncertain) 'u': true,
+  };
 
   factory MenuPrice.fromJson(Map<String, dynamic> j) => MenuPrice(
-        (j['c'] as num).toInt(),
-        j['s'] as String? ?? '',
-        uncertain: j['u'] as bool? ?? false,
-      );
+    (j['c'] as num).toInt(),
+    j['s'] as String? ?? '',
+    uncertain: j['u'] as bool? ?? false,
+  );
 }
 
 /// One menu item as read, before the user confirmed anything.
@@ -79,59 +82,58 @@ class MenuCandidate {
     bool? discarded,
     int? sourceIndex,
     List<MenuPrice>? priceOptions,
-  }) =>
-      MenuCandidate(
-        id: id,
-        name: name ?? this.name,
-        description: description != null ? description() : this.description,
-        category: category != null ? category() : this.category,
-        volumeMl: volumeMl != null ? volumeMl() : this.volumeMl,
-        priceOptions: priceOptions ?? this.priceOptions,
-        priceCents: priceCents != null ? priceCents() : this.priceCents,
-        promo: promo,
-        ingredients: ingredients ?? this.ingredients,
-        snippets: snippets,
-        sourceIndex: sourceIndex ?? this.sourceIndex,
-        duplicate: duplicate ?? this.duplicate,
-        discarded: discarded ?? this.discarded,
-      );
+  }) => MenuCandidate(
+    id: id,
+    name: name ?? this.name,
+    description: description != null ? description() : this.description,
+    category: category != null ? category() : this.category,
+    volumeMl: volumeMl != null ? volumeMl() : this.volumeMl,
+    priceOptions: priceOptions ?? this.priceOptions,
+    priceCents: priceCents != null ? priceCents() : this.priceCents,
+    promo: promo,
+    ingredients: ingredients ?? this.ingredients,
+    snippets: snippets,
+    sourceIndex: sourceIndex ?? this.sourceIndex,
+    duplicate: duplicate ?? this.duplicate,
+    discarded: discarded ?? this.discarded,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'description': description,
-        'category': category?.code,
-        'volume_ml': volumeMl,
-        'price_options': [for (final p in priceOptions) p.toJson()],
-        'price_cents': priceCents,
-        'promo': promo,
-        'ingredients': ingredients,
-        'snippets': snippets,
-        'source': sourceIndex,
-        'duplicate': duplicate,
-        'discarded': discarded,
-      };
+    'id': id,
+    'name': name,
+    'description': description,
+    'category': category?.code,
+    'volume_ml': volumeMl,
+    'price_options': [for (final p in priceOptions) p.toJson()],
+    'price_cents': priceCents,
+    'promo': promo,
+    'ingredients': ingredients,
+    'snippets': snippets,
+    'source': sourceIndex,
+    'duplicate': duplicate,
+    'discarded': discarded,
+  };
 
   factory MenuCandidate.fromJson(Map<String, dynamic> j) => MenuCandidate(
-        id: j['id'] as String,
-        name: j['name'] as String,
-        description: j['description'] as String?,
-        category: j['category'] == null
-            ? null
-            : DrinkCategory.fromCode(j['category'] as String),
-        volumeMl: (j['volume_ml'] as num?)?.toInt(),
-        priceOptions: [
-          for (final p in (j['price_options'] as List? ?? const []))
-            MenuPrice.fromJson(Map<String, dynamic>.from(p as Map)),
-        ],
-        priceCents: (j['price_cents'] as num?)?.toInt(),
-        promo: j['promo'] as bool? ?? false,
-        ingredients: (j['ingredients'] as List?)?.cast<String>() ?? const [],
-        snippets: (j['snippets'] as List?)?.cast<String>() ?? const [],
-        sourceIndex: (j['source'] as num?)?.toInt() ?? 0,
-        duplicate: j['duplicate'] as bool? ?? false,
-        discarded: j['discarded'] as bool? ?? false,
-      );
+    id: j['id'] as String,
+    name: j['name'] as String,
+    description: j['description'] as String?,
+    category: j['category'] == null
+        ? null
+        : DrinkCategory.fromCode(j['category'] as String),
+    volumeMl: (j['volume_ml'] as num?)?.toInt(),
+    priceOptions: [
+      for (final p in (j['price_options'] as List? ?? const []))
+        MenuPrice.fromJson(Map<String, dynamic>.from(p as Map)),
+    ],
+    priceCents: (j['price_cents'] as num?)?.toInt(),
+    promo: j['promo'] as bool? ?? false,
+    ingredients: (j['ingredients'] as List?)?.cast<String>() ?? const [],
+    snippets: (j['snippets'] as List?)?.cast<String>() ?? const [],
+    sourceIndex: (j['source'] as num?)?.toInt() ?? 0,
+    duplicate: j['duplicate'] as bool? ?? false,
+    discarded: j['discarded'] as bool? ?? false,
+  );
 }
 
 /// Text of a menu note. Notes are saved with the draft as codes ("columns:2",
@@ -164,22 +166,26 @@ class _Tok {
   final bool certain;
 }
 
-final _priceDecimalRx =
-    RegExp(r'(?:R\$\s*)?(\d{1,3}(?:\.\d{3})*|\d+)[.,](\d{2})(?![\d])');
+final _priceDecimalRx = RegExp(
+  r'(?:R\$\s*)?(\d{1,3}(?:\.\d{3})*|\d+)[.,](\d{2})(?![\d])',
+);
 final _priceRsIntRx = RegExp(r'R\$\s*(\d{1,4})(?![\d.,])');
 final _volTokenRx = RegExp(
   r'(?<![\d.,])(\d{1,4}(?:[.,]\d{1,3})?)\s*(ml|cl|lt|l|litros?)(?![a-zA-ZÀ-ú])',
   caseSensitive: false,
 );
 final _promoRx = RegExp(
-    r'promo|2x1|leve \d|pague|combo|happy|oferta|desconto|balde|jarra|rodada');
+  r'promo|2x1|leve \d|pague|combo|happy|oferta|desconto|balde|jarra|rodada',
+);
 
 List<_Tok> _pricesIn(String text) {
   final out = <_Tok>[];
   for (final m in _priceDecimalRx.allMatches(text)) {
     final after = text.substring(m.end);
-    if (RegExp(r'^\s*(%|ml\b|cl\b|l\b|lt\b|litro)', caseSensitive: false)
-        .hasMatch(after)) {
+    if (RegExp(
+      r'^\s*(%|ml\b|cl\b|l\b|lt\b|litro)',
+      caseSensitive: false,
+    ).hasMatch(after)) {
       continue; // an ABV or a volume, not a price
     }
     final whole = m.group(1)!.replaceAll('.', '');
@@ -205,8 +211,7 @@ String _textOnly(String text, List<_Tok> prices) {
   return rest.replaceAll(RegExp(r'\s+'), ' ').trim();
 }
 
-bool _hasLetters(String t) =>
-    RegExp(r'[A-Za-zÀ-ú]{2,}').hasMatch(t);
+bool _hasLetters(String t) => RegExp(r'[A-Za-zÀ-ú]{2,}').hasMatch(t);
 
 bool _looksLikeDescription(String text) {
   final t = text.trim();
@@ -215,15 +220,33 @@ bool _looksLikeDescription(String text) {
   final first = t[0];
   if (first == first.toLowerCase() && first != first.toUpperCase()) return true;
   if (t.split(RegExp(r'\s+')).length >= 5) return true;
-  return RegExp(r'^(com|de|e|ou|feito|servid|acompanh)\b',
-          caseSensitive: false)
-      .hasMatch(normalizeText(t));
+  return RegExp(
+    r'^(com|de|e|ou|feito|servid|acompanh)\b',
+    caseSensitive: false,
+  ).hasMatch(normalizeText(t));
 }
 
 const _spiritWords = [
-  'cachaca', 'vodka', 'gin', 'rum', 'whisky', 'whiskey', 'tequila',
-  'licor', 'campari', 'aperol', 'vermute', 'espumante', 'prosecco',
-  'cerveja', 'vinho', 'conhaque', 'sake', 'saque', 'amaretto', 'bourbon',
+  'cachaca',
+  'vodka',
+  'gin',
+  'rum',
+  'whisky',
+  'whiskey',
+  'tequila',
+  'licor',
+  'campari',
+  'aperol',
+  'vermute',
+  'espumante',
+  'prosecco',
+  'cerveja',
+  'vinho',
+  'conhaque',
+  'sake',
+  'saque',
+  'amaretto',
+  'bourbon',
 ];
 
 bool _alcoholicWord(String ingredient) {
@@ -238,7 +261,9 @@ List<String> ingredientsFromDescription(String? description) {
   var text = description.trim();
   text = text.replaceAll(RegExp(r'^[(\[]|[)\]]$'), '');
   text = text.replaceFirst(
-      RegExp(r'^(feito|preparado|servido)?\s*com\s+', caseSensitive: false), '');
+    RegExp(r'^(feito|preparado|servido)?\s*com\s+', caseSensitive: false),
+    '',
+  );
   final parts = text
       .split(RegExp(r'[,;]|\se\s|\s\+\s'))
       .map((s) => s.trim().replaceAll(RegExp(r'[.\s]+$'), ''))
@@ -266,11 +291,7 @@ class _Item {
 
 /// [idPrefix] makes the candidate ids unique across several images (the
 /// photo id); it defaults to the image index.
-MenuReading parseMenu(
-  OcrResult ocr, {
-  int sourceIndex = 0,
-  String? idPrefix,
-}) {
+MenuReading parseMenu(OcrResult ocr, {int sourceIndex = 0, String? idPrefix}) {
   final lines = [
     for (final l in ocr.lines)
       if (l.text.trim().isNotEmpty) l,
@@ -299,9 +320,7 @@ MenuReading parseMenu(
       final prices = _pricesIn(text);
       final standaloneInt =
           prices.isEmpty && RegExp(r'^\d{1,3}$').hasMatch(text);
-      final volumes = [
-        for (final m in _volTokenRx.allMatches(text)) m,
-      ];
+      final volumes = [for (final m in _volTokenRx.allMatches(text)) m];
       final rest = _textOnly(text, prices);
       final isPromo = _promoRx.hasMatch(lower);
 
@@ -314,11 +333,14 @@ MenuReading parseMenu(
         final item = current!;
         item.snippets.add(text);
         if (isPromo) item.promo = true;
-        final far = line.hasBox &&
+        final far =
+            line.hasBox &&
             item.height > 0 &&
             (line.top - item.bottom) > item.height * 2.2;
         if (standaloneInt) {
-          item.prices.add(MenuPrice(int.parse(text) * 100, text, uncertain: true));
+          item.prices.add(
+            MenuPrice(int.parse(text) * 100, text, uncertain: true),
+          );
         } else if (volumes.isNotEmpty && prices.length == volumes.length) {
           for (var i = 0; i < prices.length; i++) {
             final vm = volumesInText(volumes[i].group(0)!);
@@ -348,8 +370,9 @@ MenuReading parseMenu(
         } else if (!_looksLikeDescription(rest)) {
           flush();
         } else {
-          item.description =
-              item.description == null ? rest : '${item.description} $rest';
+          item.description = item.description == null
+              ? rest
+              : '${item.description} $rest';
           item.snippets.add(text);
           if (isPromo) item.promo = true;
           for (final p in prices) {
@@ -370,8 +393,10 @@ MenuReading parseMenu(
         for (var i = 0; i < prices.length; i++) {
           final vm = volumesInText(volumes[i].group(0)!);
           if (vm.isNotEmpty) {
-            item.sizePrices
-                .add((volumeMl: vm.first, price: MenuPrice(prices[i].cents, text)));
+            item.sizePrices.add((
+              volumeMl: vm.first,
+              price: MenuPrice(prices[i].cents, text),
+            ));
           }
         }
       } else {
@@ -394,7 +419,8 @@ MenuReading parseMenu(
     final opts = options ?? item.prices;
     final certain = opts.length == 1 && !opts.first.uncertain && !item.promo;
     final ingredients = ingredientsFromDescription(item.description);
-    final category = guessCategory(item.name) ??
+    final category =
+        guessCategory(item.name) ??
         (ingredients.length >= 2 && ingredients.any(_alcoholicWord)
             ? DrinkCategory.cocktail
             : guessCategory(item.description ?? ''));
@@ -451,9 +477,8 @@ List<List<OcrLine>> _splitColumns(List<OcrLine> lines) {
       right.add(l);
     }
   }
-  final twoColumns = left.length >= 3 &&
-      right.length >= 3 &&
-      crossing <= lines.length * 0.25;
+  final twoColumns =
+      left.length >= 3 && right.length >= 3 && crossing <= lines.length * 0.25;
   if (!twoColumns) return [_readingOrder(lines, true)];
   return [_readingOrder(left, true), _readingOrder(right, true)];
 }

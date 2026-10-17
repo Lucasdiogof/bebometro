@@ -85,8 +85,6 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     super.dispose();
   }
 
-  // ---- Draft -------------------------------------------------------------
-
   Future<void> _restore() async {
     final draft = _drafts.load(widget.outingId, OutingPhotoKind.menu);
     if (draft != null) {
@@ -122,8 +120,9 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
       _candidates = [
         for (final c in (p['candidates'] as List? ?? const []))
           _remapped(
-              MenuCandidate.fromJson(Map<String, dynamic>.from(c as Map)),
-              remap),
+            MenuCandidate.fromJson(Map<String, dynamic>.from(c as Map)),
+            remap,
+          ),
       ];
       _notes = (p['notes'] as List?)?.cast<String>() ?? <String>[];
       _reviewing = p['reviewing'] as bool? ?? false;
@@ -147,12 +146,14 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
 
   Future<void> _saveDraft() async {
     if (_done) return;
-    await _drafts.save(ScanDraft(
+    await _drafts.save(
+      ScanDraft(
         outingId: widget.outingId,
         kind: OutingPhotoKind.menu,
         photoIds: List.of(_photoIds),
         text: _pasted.text,
-        payload: _candidates.isEmpty && _photoIds.isEmpty && _pasted.text.isEmpty
+        payload:
+            _candidates.isEmpty && _photoIds.isEmpty && _pasted.text.isEmpty
             ? const {}
             : {
                 'session': _session,
@@ -161,15 +162,14 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
                 'ocr': {for (final e in _ocr.entries) e.key: e.value.toJson()},
                 'candidates': [for (final c in _candidates) c.toJson()],
               },
-      ));
+      ),
+    );
   }
 
   void _changed(VoidCallback fn) {
     setState(fn);
     _saveDraftSoon();
   }
-
-  // ---- Photos ------------------------------------------------------------
 
   Future<void> _pick(CaptureSource source) async {
     setState(() => _error = null);
@@ -238,8 +238,6 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     });
   }
 
-  // ---- Reading -----------------------------------------------------------
-
   Future<void> _read() async {
     if (_reading) return;
     final run = ++_runId;
@@ -248,7 +246,10 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
       _error = null;
     });
     try {
-      final pending = [for (final id in _photoIds) if (!_ocr.containsKey(id)) id];
+      final pending = [
+        for (final id in _photoIds)
+          if (!_ocr.containsKey(id)) id,
+      ];
       for (final id in pending) {
         final path = await _repo.files.pathOf(id);
         if (path == null) continue;
@@ -281,7 +282,10 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
   /// already present (same name, size and price) are flagged, never doubled.
   void _merge(int index, String idPrefix, OcrResult result) {
     final parsed = parseMenu(result, sourceIndex: index, idPrefix: idPrefix);
-    final others = [for (final c in _candidates) if (c.sourceIndex != index) c];
+    final others = [
+      for (final c in _candidates)
+        if (c.sourceIndex != index) c,
+    ];
     final marked = markDuplicates(others, parsed.candidates);
     _candidates = [...others, ...marked];
     _notes = {..._notes, ...parsed.notes}.toList();
@@ -290,9 +294,15 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
   void _interpretPasted() {
     final text = _pasted.text.trim();
     if (text.isEmpty) return;
-    final parsed = parseMenu(OcrResult.fromText(text),
-        sourceIndex: -1, idPrefix: 'text');
-    final others = [for (final c in _candidates) if (c.sourceIndex != -1) c];
+    final parsed = parseMenu(
+      OcrResult.fromText(text),
+      sourceIndex: -1,
+      idPrefix: 'text',
+    );
+    final others = [
+      for (final c in _candidates)
+        if (c.sourceIndex != -1) c,
+    ];
     _changed(() {
       _candidates = [...others, ...markDuplicates(others, parsed.candidates)];
       _notes = {..._notes, ...parsed.notes}.toList();
@@ -301,11 +311,9 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     });
   }
 
-  // ---- Items -------------------------------------------------------------
-
   void _update(MenuCandidate old, MenuCandidate next) => _changed(() {
-        _candidates = [for (final c in _candidates) c.id == old.id ? next : c];
-      });
+    _candidates = [for (final c in _candidates) c.id == old.id ? next : c];
+  });
 
   Future<void> _edit(MenuCandidate c) async {
     final edited = await showModalBottomSheet<MenuCandidate>(
@@ -335,8 +343,10 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     }
   }
 
-  List<MenuCandidate> get _kept =>
-      [for (final c in _candidates) if (!c.discarded) c];
+  List<MenuCandidate> get _kept => [
+    for (final c in _candidates)
+      if (!c.discarded) c,
+  ];
 
   Future<void> _confirm() async {
     if (_saving) return;
@@ -356,42 +366,51 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     setState(() => _saving = true);
     try {
       await _repo.confirmPhotos(
-          widget.outingId, OutingPhotoKind.menu, List.of(_photoIds));
+        widget.outingId,
+        OutingPhotoKind.menu,
+        List.of(_photoIds),
+      );
       final now = DateTime.now();
       for (final c in kept) {
         // Stable per draft session and item: confirming again after a failure
         // updates the same drink instead of creating a second one.
         final id = _uuid.v5(
-            Namespace.url.value, '${widget.outingId}|$_session|${c.id}');
+          Namespace.url.value,
+          '${widget.outingId}|$_session|${c.id}',
+        );
         final cocktail = c.category == DrinkCategory.cocktail;
         final photo = c.sourceIndex >= 0 && c.sourceIndex < _photoIds.length
             ? [_photoIds[c.sourceIndex]]
             : <String>[];
-        await _repo.save(OutingDrink(
-          id: id,
-          outingId: widget.outingId,
-          name: c.name.trim(),
-          category: c.category!,
-          origin: OutingDrinkOrigin.menu,
-          description: c.description,
-          volumeMl: c.volumeMl,
-          // The menu rarely states the ABV; it stays unknown here.
-          ingredients: !cocktail && c.ingredients.isNotEmpty
-              ? c.ingredients
-              : null,
-          components: cocktail && c.ingredients.isNotEmpty
-              ? [
-                  for (final i in c.ingredients)
-                    EntryComponent(
-                        name: i, alcoholic: ingredientLooksAlcoholic(i)),
-                ]
-              : null,
-          advertisedCents: c.priceCents,
-          photoIds: photo,
-          sourceText: c.snippets.join('\n'),
-          createdAt: now,
-          updatedAt: now,
-        ));
+        await _repo.save(
+          OutingDrink(
+            id: id,
+            outingId: widget.outingId,
+            name: c.name.trim(),
+            category: c.category!,
+            origin: OutingDrinkOrigin.menu,
+            description: c.description,
+            volumeMl: c.volumeMl,
+            // The menu rarely states the ABV; it stays unknown here.
+            ingredients: !cocktail && c.ingredients.isNotEmpty
+                ? c.ingredients
+                : null,
+            components: cocktail && c.ingredients.isNotEmpty
+                ? [
+                    for (final i in c.ingredients)
+                      EntryComponent(
+                        name: i,
+                        alcoholic: ingredientLooksAlcoholic(i),
+                      ),
+                  ]
+                : null,
+            advertisedCents: c.priceCents,
+            photoIds: photo,
+            sourceText: c.snippets.join('\n'),
+            createdAt: now,
+            updatedAt: now,
+          ),
+        );
       }
       _done = true;
       _debounce?.cancel();
@@ -412,12 +431,16 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
         content: Text(tr.scanMenuDiscardBody),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.commonCancel)),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.commonCancel),
+          ),
           TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.entryDiscard,
-                  style: const TextStyle(color: AppColors.danger))),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              tr.entryDiscard,
+              style: const TextStyle(color: AppColors.danger),
+            ),
+          ),
         ],
       ),
     );
@@ -430,8 +453,6 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     await _drafts.clear(widget.outingId, OutingPhotoKind.menu);
     if (mounted) Navigator.of(context).pop();
   }
-
-  // ---- UI ----------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -457,11 +478,13 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
     return ListView(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       padding: const EdgeInsets.fromLTRB(
-          AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+        AppSpace.gutter,
+        0,
+        AppSpace.gutter,
+        AppSpace.xl,
+      ),
       children: [
-        SurfaceCard(
-          child: Text(tr.scanMenuTip, style: AppText.body),
-        ),
+        SurfaceCard(child: Text(tr.scanMenuTip, style: AppText.body)),
         if (getIt<OutingRepository>().byId(widget.outingId)?.endedAt !=
             null) ...[
           const SizedBox(height: AppSpace.sm),
@@ -485,67 +508,84 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
             padding: const EdgeInsets.only(bottom: AppSpace.sm),
             child: SurfaceCard(
               padding: const EdgeInsets.all(AppSpace.sm),
-              child: Row(children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
-                  child: SizedBox(
-                    width: 84,
-                    height: 84,
-                    child: _bytes[_photoIds[i]] == null
-                        ? const ColoredBox(color: AppColors.surfaceHigh)
-                        : Image.memory(_bytes[_photoIds[i]]!,
-                            fit: BoxFit.cover, gaplessPlayback: true),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                    child: SizedBox(
+                      width: 84,
+                      height: 84,
+                      child: _bytes[_photoIds[i]] == null
+                          ? const ColoredBox(color: AppColors.surfaceHigh)
+                          : Image.memory(
+                              _bytes[_photoIds[i]]!,
+                              fit: BoxFit.cover,
+                              gaplessPlayback: true,
+                            ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: AppSpace.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(tr.scanMenuPhotoN('${i + 1}'), style: AppText.subtitle),
-                      Text(
-                        _ocr.containsKey(_photoIds[i])
-                            ? tr.scanMenuRead
-                            : tr.scanMenuUnread,
-                        style: AppText.caption,
-                      ),
-                    ],
+                  const SizedBox(width: AppSpace.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          tr.scanMenuPhotoN('${i + 1}'),
+                          style: AppText.subtitle,
+                        ),
+                        Text(
+                          _ocr.containsKey(_photoIds[i])
+                              ? tr.scanMenuRead
+                              : tr.scanMenuUnread,
+                          style: AppText.caption,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                IconButton(
-                  tooltip: tr.scanRotateLeft,
-                  onPressed: () => _rotate(_photoIds[i], 270),
-                  icon: const Icon(Icons.rotate_left_rounded),
-                ),
-                IconButton(
-                  tooltip: tr.scanRotateRight,
-                  onPressed: () => _rotate(_photoIds[i], 90),
-                  icon: const Icon(Icons.rotate_right_rounded),
-                ),
-                IconButton(
-                  tooltip: tr.scanRemovePhoto,
-                  onPressed: _reading ? null : () => _removePhoto(_photoIds[i]),
-                  icon: const Icon(Icons.close_rounded,
-                      color: AppColors.danger),
-                ),
-              ]),
+                  IconButton(
+                    tooltip: tr.scanRotateLeft,
+                    onPressed: () => _rotate(_photoIds[i], 270),
+                    icon: const Icon(Icons.rotate_left_rounded),
+                  ),
+                  IconButton(
+                    tooltip: tr.scanRotateRight,
+                    onPressed: () => _rotate(_photoIds[i], 90),
+                    icon: const Icon(Icons.rotate_right_rounded),
+                  ),
+                  IconButton(
+                    tooltip: tr.scanRemovePhoto,
+                    onPressed: _reading
+                        ? null
+                        : () => _removePhoto(_photoIds[i]),
+                    icon: const Icon(
+                      Icons.close_rounded,
+                      color: AppColors.danger,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
-          if (_capture.supports(CaptureSource.camera))
-            OutlinedButton.icon(
-              onPressed: _reading ? null : () => _pick(CaptureSource.camera),
-              icon: const Icon(Icons.photo_camera_outlined),
-              label: Text(
-                  _photoIds.isEmpty ? tr.scanTakePhoto : tr.scanAnotherPhoto),
-            ),
-          if (_capture.supports(CaptureSource.gallery))
-            OutlinedButton.icon(
-              onPressed: _reading ? null : () => _pick(CaptureSource.gallery),
-              icon: const Icon(Icons.photo_library_outlined),
-              label: Text(tr.scanChooseGallery),
-            ),
-        ]),
+        Wrap(
+          spacing: AppSpace.sm,
+          runSpacing: AppSpace.sm,
+          children: [
+            if (_capture.supports(CaptureSource.camera))
+              OutlinedButton.icon(
+                onPressed: _reading ? null : () => _pick(CaptureSource.camera),
+                icon: const Icon(Icons.photo_camera_outlined),
+                label: Text(
+                  _photoIds.isEmpty ? tr.scanTakePhoto : tr.scanAnotherPhoto,
+                ),
+              ),
+            if (_capture.supports(CaptureSource.gallery))
+              OutlinedButton.icon(
+                onPressed: _reading ? null : () => _pick(CaptureSource.gallery),
+                icon: const Icon(Icons.photo_library_outlined),
+                label: Text(tr.scanChooseGallery),
+              ),
+          ],
+        ),
         if (_photoIds.isNotEmpty && canRead) ...[
           const SizedBox(height: AppSpace.md),
           if (_reading) ...[
@@ -553,21 +593,21 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
             const SizedBox(height: AppSpace.sm),
             Text(tr.scanMenuReadingMany, style: AppText.caption),
             TextButton(
-                onPressed: _cancelReading,
-                child: Text(tr.scanCancelReading)),
+              onPressed: _cancelReading,
+              child: Text(tr.scanCancelReading),
+            ),
           ] else
             FilledButton.icon(
-              onPressed: unread ? _read : () => setState(() => _reviewing = true),
+              onPressed: unread
+                  ? _read
+                  : () => setState(() => _reviewing = true),
               icon: const Icon(Icons.text_snippet_outlined),
               label: Text(unread ? tr.catalogScanMenu : tr.scanMenuSeeRead),
             ),
         ],
         if (!canRead) ...[
           const SizedBox(height: AppSpace.md),
-          InfoPill(
-            tr.scanMenuOcrUnavailable,
-            icon: Icons.info_outline_rounded,
-          ),
+          InfoPill(tr.scanMenuOcrUnavailable, icon: Icons.info_outline_rounded),
         ],
         SectionTitle(tr.scanMenuPastedSection),
         TextField(
@@ -578,81 +618,97 @@ class _ScanMenuPageState extends State<ScanMenuPage> {
             setState(() {});
             _saveDraftSoon();
           },
-          decoration: InputDecoration(
-            hintText: tr.scanMenuPastedHint,
-          ),
+          decoration: InputDecoration(hintText: tr.scanMenuPastedHint),
         ),
         const SizedBox(height: AppSpace.md),
-        Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
-          if (_pasted.text.trim().isNotEmpty)
-            FilledButton(
-              onPressed: _reading ? null : _interpretPasted,
-              child: Text(tr.scanInterpret),
+        Wrap(
+          spacing: AppSpace.sm,
+          runSpacing: AppSpace.sm,
+          children: [
+            if (_pasted.text.trim().isNotEmpty)
+              FilledButton(
+                onPressed: _reading ? null : _interpretPasted,
+                child: Text(tr.scanInterpret),
+              ),
+            OutlinedButton(
+              onPressed: _reading ? null : _addManual,
+              child: Text(tr.scanMenuAddManual),
             ),
-          OutlinedButton(
-            onPressed: _reading ? null : _addManual,
-            child: Text(tr.scanMenuAddManual),
-          ),
-          if (_candidates.isNotEmpty)
-            TextButton(
-              onPressed: () => setState(() => _reviewing = true),
-              child: Text(tr.scanMenuSeeCount(_candidates.length)),
-            ),
-        ]),
+            if (_candidates.isNotEmpty)
+              TextButton(
+                onPressed: () => setState(() => _reviewing = true),
+                child: Text(tr.scanMenuSeeCount(_candidates.length)),
+              ),
+          ],
+        ),
       ],
     );
   }
 
   Widget _reviewBody() {
     final kept = _kept.length;
-    return Column(children: [
-      Expanded(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(
-              AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
-          children: [
-            Text(tr.scanMenuReviewIntro, style: AppText.caption),
-            for (final n in _notes)
-              Padding(
-                padding: const EdgeInsets.only(top: AppSpace.sm),
-                child: InfoPill(menuNoteText(n),
-                    icon: Icons.help_outline_rounded, warning: true),
-              ),
-            const SizedBox(height: AppSpace.md),
-            Wrap(spacing: AppSpace.sm, children: [
-              TextButton.icon(
-                onPressed: () => setState(() => _reviewing = false),
-                icon: const Icon(Icons.photo_outlined),
-                label: Text(tr.scanMenuPhotosAndReading),
-              ),
-              TextButton.icon(
-                onPressed: _addManual,
-                icon: const Icon(Icons.add_rounded),
-                label: Text(tr.scanMenuAddItem),
-              ),
-            ]),
-            for (final c in _candidates)
-              Padding(
-                padding: const EdgeInsets.only(bottom: AppSpace.sm),
-                child: _CandidateCard(
-                  candidate: c,
-                  onToggle: () => _update(c, c.copyWith(discarded: !c.discarded)),
-                  onEdit: () => _edit(c),
-                  onCategory: (cat) => _update(c, c.copyWith(category: () => cat)),
-                  onPrice: (cents) =>
-                      _update(c, c.copyWith(priceCents: () => cents)),
+    return Column(
+      children: [
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpace.gutter,
+              0,
+              AppSpace.gutter,
+              AppSpace.xl,
+            ),
+            children: [
+              Text(tr.scanMenuReviewIntro, style: AppText.caption),
+              for (final n in _notes)
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpace.sm),
+                  child: InfoPill(
+                    menuNoteText(n),
+                    icon: Icons.help_outline_rounded,
+                    warning: true,
+                  ),
                 ),
+              const SizedBox(height: AppSpace.md),
+              Wrap(
+                spacing: AppSpace.sm,
+                children: [
+                  TextButton.icon(
+                    onPressed: () => setState(() => _reviewing = false),
+                    icon: const Icon(Icons.photo_outlined),
+                    label: Text(tr.scanMenuPhotosAndReading),
+                  ),
+                  TextButton.icon(
+                    onPressed: _addManual,
+                    icon: const Icon(Icons.add_rounded),
+                    label: Text(tr.scanMenuAddItem),
+                  ),
+                ],
               ),
-          ],
+              for (final c in _candidates)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                  child: _CandidateCard(
+                    candidate: c,
+                    onToggle: () =>
+                        _update(c, c.copyWith(discarded: !c.discarded)),
+                    onEdit: () => _edit(c),
+                    onCategory: (cat) =>
+                        _update(c, c.copyWith(category: () => cat)),
+                    onPrice: (cents) =>
+                        _update(c, c.copyWith(priceCents: () => cents)),
+                  ),
+                ),
+            ],
+          ),
         ),
-      ),
-      BottomActionBar(
-        child: FilledButton(
-          onPressed: _saving || kept == 0 ? null : _confirm,
-          child: Text(tr.scanMenuSave(kept)),
+        BottomActionBar(
+          child: FilledButton(
+            onPressed: _saving || kept == 0 ? null : _confirm,
+            child: Text(tr.scanMenuSave(kept)),
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
 
@@ -679,42 +735,57 @@ class _CandidateCard extends StatelessWidget {
       opacity: dim ? 0.55 : 1,
       child: SurfaceCard(
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.xs, AppSpace.sm, AppSpace.md, AppSpace.md),
+          AppSpace.xs,
+          AppSpace.sm,
+          AppSpace.md,
+          AppSpace.md,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Checkbox(
-                value: !c.discarded,
-                onChanged: (_) => onToggle(),
-                activeColor: AppColors.amber,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(c.name.isEmpty ? tr.scanMenuNoName : c.name,
-                          style: AppText.subtitle),
-                      if (c.description != null)
-                        Text(c.description!, style: AppText.caption),
-                      if (c.volumeMl != null)
-                        Text(tr.scanMenuSize(formatMl(c.volumeMl!)),
-                            style: AppText.caption),
-                      if (c.ingredients.isNotEmpty)
-                        Text(tr.scanMenuIngredientsCited(c.ingredients.join(', ')),
-                            style: AppText.caption),
-                    ],
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Checkbox(
+                  value: !c.discarded,
+                  onChanged: (_) => onToggle(),
+                  activeColor: AppColors.amber,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          c.name.isEmpty ? tr.scanMenuNoName : c.name,
+                          style: AppText.subtitle,
+                        ),
+                        if (c.description != null)
+                          Text(c.description!, style: AppText.caption),
+                        if (c.volumeMl != null)
+                          Text(
+                            tr.scanMenuSize(formatMl(c.volumeMl!)),
+                            style: AppText.caption,
+                          ),
+                        if (c.ingredients.isNotEmpty)
+                          Text(
+                            tr.scanMenuIngredientsCited(
+                              c.ingredients.join(', '),
+                            ),
+                            style: AppText.caption,
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              IconButton(
-                tooltip: tr.scanMenuEditItem,
-                onPressed: onEdit,
-                icon: const Icon(Icons.edit_outlined),
-              ),
-            ]),
+                IconButton(
+                  tooltip: tr.scanMenuEditItem,
+                  onPressed: onEdit,
+                  icon: const Icon(Icons.edit_outlined),
+                ),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.only(left: AppSpace.md),
               child: Wrap(
@@ -736,11 +807,16 @@ class _CandidateCard extends StatelessWidget {
                   if (c.duplicate)
                     InfoPill(tr.scanMenuDuplicate, icon: Icons.copy_rounded),
                   if (c.promo)
-                    InfoPill(tr.scanMenuPromo,
-                        icon: Icons.local_offer_outlined, warning: true),
+                    InfoPill(
+                      tr.scanMenuPromo,
+                      icon: Icons.local_offer_outlined,
+                      warning: true,
+                    ),
                   if (c.priceCents != null)
-                    InfoPill(tr.scanMenuPriceOnMenu(formatCents(c.priceCents!)),
-                        icon: Icons.sell_outlined)
+                    InfoPill(
+                      tr.scanMenuPriceOnMenu(formatCents(c.priceCents!)),
+                      icon: Icons.sell_outlined,
+                    )
                   else if (c.priceOptions.isEmpty)
                     InfoPill(tr.scanMenuNoPriceRead, icon: Icons.sell_outlined),
                 ],
@@ -754,16 +830,21 @@ class _CandidateCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: AppSpace.md),
-                child: Wrap(spacing: AppSpace.sm, children: [
-                  for (final p in c.priceOptions)
-                    Tooltip(
-                      message: p.snippet,
-                      child: ActionChip(
-                        label: Text('${formatCents(p.cents)} · "${_short(p.snippet)}"'),
-                        onPressed: () => onPrice(p.cents),
+                child: Wrap(
+                  spacing: AppSpace.sm,
+                  children: [
+                    for (final p in c.priceOptions)
+                      Tooltip(
+                        message: p.snippet,
+                        child: ActionChip(
+                          label: Text(
+                            '${formatCents(p.cents)} · "${_short(p.snippet)}"',
+                          ),
+                          onPressed: () => onPrice(p.cents),
+                        ),
                       ),
-                    ),
-                ]),
+                  ],
+                ),
               ),
             ] else if (c.priceCents != null && c.priceOptions.length > 1) ...[
               Padding(
@@ -780,7 +861,8 @@ class _CandidateCard extends StatelessWidget {
     );
   }
 
-  static String _short(String s) => s.length > 26 ? '${s.substring(0, 25)}…' : s;
+  static String _short(String s) =>
+      s.length > 26 ? '${s.substring(0, 25)}…' : s;
 }
 
 class _CandidateEditor extends StatefulWidget {
@@ -810,7 +892,8 @@ class _CandidateEditorState extends State<_CandidateEditor> {
     _description = TextEditingController(text: c.description ?? '');
     _volume = TextEditingController(text: c.volumeMl?.toString() ?? '');
     _price = TextEditingController(
-        text: c.priceCents == null ? '' : centsToInput(c.priceCents!));
+      text: c.priceCents == null ? '' : centsToInput(c.priceCents!),
+    );
     _ingredients = TextEditingController(text: c.ingredients.join(', '));
     _category = c.category;
   }
@@ -838,23 +921,26 @@ class _CandidateEditorState extends State<_CandidateEditor> {
     final priceText = _price.text.trim();
     final price = parseCents(priceText);
     if (priceText.isNotEmpty && price == null) {
-      setState(() => _problem =
-          numberInputError(priceText) ?? tr.scanMenuInvalidPrice);
+      setState(
+        () => _problem = numberInputError(priceText) ?? tr.scanMenuInvalidPrice,
+      );
       return;
     }
     final description = _description.text.trim();
-    Navigator.of(context).pop(widget.candidate.copyWith(
-      name: name,
-      description: () => description.isEmpty ? null : description,
-      category: () => _category,
-      volumeMl: () => volume,
-      priceCents: () => price,
-      ingredients: _ingredients.text
-          .split(RegExp(r'[,;\n]'))
-          .map((s) => s.trim())
-          .where((s) => s.isNotEmpty)
-          .toList(),
-    ));
+    Navigator.of(context).pop(
+      widget.candidate.copyWith(
+        name: name,
+        description: () => description.isEmpty ? null : description,
+        category: () => _category,
+        volumeMl: () => volume,
+        priceCents: () => price,
+        ingredients: _ingredients.text
+            .split(RegExp(r'[,;\n]'))
+            .map((s) => s.trim())
+            .where((s) => s.isNotEmpty)
+            .toList(),
+      ),
+    );
   }
 
   @override
@@ -869,8 +955,10 @@ class _CandidateEditorState extends State<_CandidateEditor> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.isNew ? tr.scanMenuNewItem : tr.scanMenuEditItem,
-                  style: AppText.title),
+              Text(
+                widget.isNew ? tr.scanMenuNewItem : tr.scanMenuEditItem,
+                style: AppText.title,
+              ),
               const SizedBox(height: AppSpace.md),
               TextField(
                 controller: _name,
@@ -883,8 +971,7 @@ class _CandidateEditorState extends State<_CandidateEditor> {
                 minLines: 1,
                 maxLines: 3,
                 textCapitalization: TextCapitalization.sentences,
-                decoration:
-                    InputDecoration(labelText: tr.scanMenuDescription),
+                decoration: InputDecoration(labelText: tr.scanMenuDescription),
               ),
               const SizedBox(height: AppSpace.md),
               Wrap(
@@ -901,26 +988,33 @@ class _CandidateEditorState extends State<_CandidateEditor> {
                 ],
               ),
               const SizedBox(height: AppSpace.md),
-              Row(children: [
-                Expanded(
-                  child: TextField(
-                    controller: _volume,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        labelText: tr.scanMenuSizeOptional, suffixText: 'ml'),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _volume,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: tr.scanMenuSizeOptional,
+                        suffixText: 'ml',
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: AppSpace.md),
-                Expanded(
-                  child: TextField(
-                    controller: _price,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        labelText: tr.scanMenuPriceOptional, prefixText: r'R$ '),
+                  const SizedBox(width: AppSpace.md),
+                  Expanded(
+                    child: TextField(
+                      controller: _price,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: tr.scanMenuPriceOptional,
+                        prefixText: r'R$ ',
+                      ),
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
               const SizedBox(height: AppSpace.md),
               TextField(
                 controller: _ingredients,
@@ -933,8 +1027,10 @@ class _CandidateEditorState extends State<_CandidateEditor> {
               ),
               if (_problem != null) ...[
                 const SizedBox(height: AppSpace.sm),
-                Text(_problem!,
-                    style: const TextStyle(color: AppColors.danger)),
+                Text(
+                  _problem!,
+                  style: const TextStyle(color: AppColors.danger),
+                ),
               ],
               const SizedBox(height: AppSpace.lg),
               FilledButton(onPressed: _apply, child: Text(tr.commonApply)),

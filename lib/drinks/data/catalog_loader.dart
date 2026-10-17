@@ -61,60 +61,66 @@ class CatalogLoader {
       try {
         items.add(_recipe(json, consultedOn));
       } catch (e) {
-        if (kDebugMode) debugPrint('[catalog] skipped recipe ${json['id']}: $e');
+        if (kDebugMode)
+          debugPrint('[catalog] skipped recipe ${json['id']}: $e');
       }
     }
     return items;
   }
 
-  static SourceRef? _source(Map<String, dynamic>? s, String? consultedOn,
-          [Map<String, String> labelI18n = const {}]) =>
-      s == null
-          ? null
-          : SourceRef(
-              url: s['url'] as String,
-              label: s['label'] as String,
-              consultedOn: consultedOn,
-              labelI18n: labelI18n,
-            );
+  static SourceRef? _source(
+    Map<String, dynamic>? s,
+    String? consultedOn, [
+    Map<String, String> labelI18n = const {},
+  ]) => s == null
+      ? null
+      : SourceRef(
+          url: s['url'] as String,
+          label: s['label'] as String,
+          consultedOn: consultedOn,
+          labelI18n: labelI18n,
+        );
 
-  // ---- Editorial translations ("i18n" next to each product or recipe) ------
-  //
-  // The files are written in Portuguese. `i18n` holds, per language code, the
-  // editorial texts that were translated (notes, source names, recipe methods
-  // and ingredient names) and extra search names. Manufacturer-declared
-  // ingredient lists and product names are not translated.
+  // The catalog files are written in Portuguese. `i18n` holds, per language
+  // code, the editorial texts that were translated (notes, source names,
+  // recipe methods and ingredient names) and extra search names.
+  // Manufacturer-declared ingredient lists and product names are not
+  // translated.
 
   static Map<String, Map<String, dynamic>> _i18n(Map<String, dynamic> j) => {
-        for (final e in ((j['i18n'] as Map?) ?? const {}).entries)
-          e.key as String: Map<String, dynamic>.from(e.value as Map),
-      };
+    for (final e in ((j['i18n'] as Map?) ?? const {}).entries)
+      e.key as String: Map<String, dynamic>.from(e.value as Map),
+  };
 
   /// One text field of every language that has it.
   static Map<String, String> _texts(
-          Map<String, Map<String, dynamic>> i18n, String field) =>
-      {
-        for (final e in i18n.entries)
-          if (e.value[field] is String) e.key: e.value[field] as String,
-      };
+    Map<String, Map<String, dynamic>> i18n,
+    String field,
+  ) => {
+    for (final e in i18n.entries)
+      if (e.value[field] is String) e.key: e.value[field] as String,
+  };
 
   static List<String> _extraAliases(Map<String, Map<String, dynamic>> i18n) => [
-        for (final t in i18n.values)
-          ...((t['aliases'] as List?) ?? const []).cast<String>(),
-      ];
+    for (final t in i18n.values)
+      ...((t['aliases'] as List?) ?? const []).cast<String>(),
+  ];
 
   static CatalogItem _product(Map<String, dynamic> j, String? fileDate) {
     // Each product may carry its own consultation date; the file's is the default.
     final consultedOn = (j['retrieved'] as String?) ?? fileDate;
-    final abvSource = _source(j['abvSource'] as Map<String, dynamic>?,
-        consultedOn, _texts(_i18n(j), 'abvSourceLabel'));
+    final abvSource = _source(
+      j['abvSource'] as Map<String, dynamic>?,
+      consultedOn,
+      _texts(_i18n(j), 'abvSourceLabel'),
+    );
     final i18n = _i18n(j);
     final secondaryProduct = j['evidence'] == 'secondary';
     final origin = secondaryProduct
         ? InfoOrigin.secondary
         : (j['abvEvidence'] == 'secondary'
-            ? InfoOrigin.mixed
-            : InfoOrigin.verified);
+              ? InfoOrigin.mixed
+              : InfoOrigin.verified);
     return CatalogItem(
       id: j['id'] as String,
       name: j['name'] as String,
@@ -144,8 +150,11 @@ class CatalogLoader {
         ..._extraAliases(i18n),
       ],
       roles: ((j['roles'] as List?) ?? const []).cast<String>(),
-      source: _source(j['source'] as Map<String, dynamic>?, consultedOn,
-          _texts(i18n, 'sourceLabel')),
+      source: _source(
+        j['source'] as Map<String, dynamic>?,
+        consultedOn,
+        _texts(i18n, 'sourceLabel'),
+      ),
       presentations: [
         for (final p in ((j['presentations'] as List?) ?? const []))
           Presentation.of(
@@ -164,7 +173,9 @@ class CatalogLoader {
   /// `i18n.<lang>.fieldSources.<field>[i]` as `{label, note}`. Unknown fields
   /// or types are skipped, never guessed.
   static List<FieldSource> _fieldSources(
-      Map<String, dynamic> j, Map<String, Map<String, dynamic>> i18n) {
+    Map<String, dynamic> j,
+    Map<String, Map<String, dynamic>> i18n,
+  ) {
     final raw = (j['fieldSources'] as Map?) ?? const {};
     final out = <FieldSource>[];
     for (final e in raw.entries) {
@@ -172,7 +183,8 @@ class CatalogLoader {
       if (field == null) continue;
       for (final (i, s) in ((e.value as List?) ?? const []).indexed) {
         final m = Map<String, dynamic>.from(s as Map);
-        final kind = ProvenanceKind.fromCode(m['type'] as String?) ??
+        final kind =
+            ProvenanceKind.fromCode(m['type'] as String?) ??
             (m['evidence'] == 'primary'
                 ? ProvenanceKind.official
                 : ProvenanceKind.secondary);
@@ -182,24 +194,26 @@ class CatalogLoader {
           return (list[i] as Map)[key] as String?;
         }
 
-        out.add(FieldSource(
-          field: field,
-          kind: kind,
-          label: m['label'] as String,
-          url: m['url'] as String?,
-          consultedOn: m['retrieved'] as String?,
-          market: m['market'] as String?,
-          variant: m['variant'] as String?,
-          note: m['note'] as String?,
-          labelI18n: {
-            for (final lang in i18n.keys)
-              if (text(lang, 'label') != null) lang: text(lang, 'label')!,
-          },
-          noteI18n: {
-            for (final lang in i18n.keys)
-              if (text(lang, 'note') != null) lang: text(lang, 'note')!,
-          },
-        ));
+        out.add(
+          FieldSource(
+            field: field,
+            kind: kind,
+            label: m['label'] as String,
+            url: m['url'] as String?,
+            consultedOn: m['retrieved'] as String?,
+            market: m['market'] as String?,
+            variant: m['variant'] as String?,
+            note: m['note'] as String?,
+            labelI18n: {
+              for (final lang in i18n.keys)
+                if (text(lang, 'label') != null) lang: text(lang, 'label')!,
+            },
+            noteI18n: {
+              for (final lang in i18n.keys)
+                if (text(lang, 'note') != null) lang: text(lang, 'note')!,
+            },
+          ),
+        );
       }
     }
     return out;
@@ -208,10 +222,14 @@ class CatalogLoader {
   static CatalogItem _recipe(Map<String, dynamic> j, String? consultedOn) {
     final id = 'recipe:${j['id']}';
     final i18n = _i18n(j);
-    final source = _source(j['source'] as Map<String, dynamic>?, consultedOn,
-        _texts(i18n, 'sourceLabel'));
+    final source = _source(
+      j['source'] as Map<String, dynamic>?,
+      consultedOn,
+      _texts(i18n, 'sourceLabel'),
+    );
     final components = [
-      for (final c in (j['components'] as List)) _component(c as Map<String, dynamic>),
+      for (final c in (j['components'] as List))
+        _component(c as Map<String, dynamic>),
     ];
     final method = j['method'] as String?;
     final garnish = j['garnish'] as String?;
@@ -309,8 +327,8 @@ class CatalogLoader {
   /// The JSON uses camelCase ("nonAlcoholic", "readyToDrink"); the app's code
   /// is snake_case.
   static String _categoryCode(String raw) => switch (raw) {
-        'nonAlcoholic' => DrinkCategory.nonAlcoholic.code,
-        'readyToDrink' => DrinkCategory.readyToDrink.code,
-        _ => raw,
-      };
+    'nonAlcoholic' => DrinkCategory.nonAlcoholic.code,
+    'readyToDrink' => DrinkCategory.readyToDrink.code,
+    _ => raw,
+  };
 }

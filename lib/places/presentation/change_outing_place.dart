@@ -14,8 +14,11 @@ import '../../l10n/l10n.dart';
 /// outing id. The lock-screen tracking follows from the outing change (and
 /// still shows only the name, never the address).
 Future<void> changeOutingPlace(BuildContext context, Outing outing) async {
-  final draft = await PlacePickerPage.open(context,
-      mode: PlacePickerMode.change, type: outing.type);
+  final draft = await PlacePickerPage.open(
+    context,
+    mode: PlacePickerMode.change,
+    type: outing.type,
+  );
   if (draft == null || !context.mounted) return;
   final ok = await showDialog<bool>(
     context: context,
@@ -24,11 +27,13 @@ Future<void> changeOutingPlace(BuildContext context, Outing outing) async {
       content: Text(tr.changePlaceBody(draft.title)),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(tr.commonCancel)),
+          onPressed: () => Navigator.pop(ctx, false),
+          child: Text(tr.commonCancel),
+        ),
         FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text(tr.changePlaceConfirm)),
+          onPressed: () => Navigator.pop(ctx, true),
+          child: Text(tr.changePlaceConfirm),
+        ),
       ],
     ),
   );

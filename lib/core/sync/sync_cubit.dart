@@ -41,16 +41,16 @@ enum SyncNotice {
   photosPending;
 
   String get text => switch (this) {
-        SyncNotice.localOnly => tr.syncNoticeLocalOnly,
-        SyncNotice.signInAgain => tr.syncNoticeSignInAgain,
-        SyncNotice.activeConflict => tr.syncNoticeActiveConflict,
-        SyncNotice.placeLink => tr.syncNoticePlaceLink,
-        SyncNotice.rejected => tr.syncNoticeRejected,
-        SyncNotice.waitingPlace => tr.syncNoticeWaitingPlace,
-        SyncNotice.schemaGap => tr.syncNoticeSchemaGap,
-        SyncNotice.offline => tr.syncNoticeOffline,
-        SyncNotice.photosPending => tr.syncNoticePhotos,
-      };
+    SyncNotice.localOnly => tr.syncNoticeLocalOnly,
+    SyncNotice.signInAgain => tr.syncNoticeSignInAgain,
+    SyncNotice.activeConflict => tr.syncNoticeActiveConflict,
+    SyncNotice.placeLink => tr.syncNoticePlaceLink,
+    SyncNotice.rejected => tr.syncNoticeRejected,
+    SyncNotice.waitingPlace => tr.syncNoticeWaitingPlace,
+    SyncNotice.schemaGap => tr.syncNoticeSchemaGap,
+    SyncNotice.offline => tr.syncNoticeOffline,
+    SyncNotice.photosPending => tr.syncNoticePhotos,
+  };
 }
 
 class SyncState {
@@ -98,7 +98,9 @@ class SyncState {
   String get label {
     switch (status) {
       case SyncStatus.synced:
-        return conflicts > 0 ? tr.syncLabelConflicts(conflicts) : tr.syncLabelSynced;
+        return conflicts > 0
+            ? tr.syncLabelConflicts(conflicts)
+            : tr.syncLabelSynced;
       case SyncStatus.pending:
         return tr.syncLabelPending(pending);
       case SyncStatus.syncing:
@@ -126,8 +128,8 @@ class SyncCubit extends Cubit<SyncState> {
     required this.userId,
     required this.conflicts,
     this.uploads,
-  })  : _pull = CloudPull(_store),
-        super(const SyncState(SyncStatus.synced)) {
+  }) : _pull = CloudPull(_store),
+       super(const SyncState(SyncStatus.synced)) {
     _lastSyncAt = _parseTime(_store.getString(_lastSyncKey));
     _sub = _store.changes.listen((_) => schedule());
     _conflictSub = conflicts.changes.listen((_) => _emitIdle());
@@ -217,57 +219,72 @@ class SyncCubit extends Cubit<SyncState> {
   @override
   void emit(SyncState state) {
     if (isClosed) return;
-    super.emit(SyncState(
-      state.status,
-      pending: state.pending,
-      lastSyncAt: state.lastSyncAt,
-      notice: state.notice,
-      conflicts: conflicts.count,
-      restoring: _restoring,
-      restoredRows: _restoredRows,
-      restoreFailed: _restoreFailed,
-      historyRestored:
-          _pull.everCompleted || !cloudEnabled || (_probed && !_serverRevisions),
-    ));
+    super.emit(
+      SyncState(
+        state.status,
+        pending: state.pending,
+        lastSyncAt: state.lastSyncAt,
+        notice: state.notice,
+        conflicts: conflicts.count,
+        restoring: _restoring,
+        restoredRows: _restoredRows,
+        restoreFailed: _restoreFailed,
+        historyRestored:
+            _pull.everCompleted ||
+            !cloudEnabled ||
+            (_probed && !_serverRevisions),
+      ),
+    );
   }
 
   void _emitIdle() {
     if (isClosed) return;
     final pending = _pendingTotal;
     if (!cloudEnabled) {
-      emit(SyncState(
-        SyncStatus.localOnly,
-        pending: pending,
-        lastSyncAt: _lastSyncAt,
-        notice: SyncNotice.localOnly,
-      ));
+      emit(
+        SyncState(
+          SyncStatus.localOnly,
+          pending: pending,
+          lastSyncAt: _lastSyncAt,
+          notice: SyncNotice.localOnly,
+        ),
+      );
     } else if (_lastProblem != null &&
         (pending > 0 || _lastProblem == SyncStatus.localOnly)) {
-      emit(SyncState(
-        _lastProblem!,
-        pending: pending,
-        lastSyncAt: _lastSyncAt,
-        notice: _lastMessage,
-      ));
+      emit(
+        SyncState(
+          _lastProblem!,
+          pending: pending,
+          lastSyncAt: _lastSyncAt,
+          notice: _lastMessage,
+        ),
+      );
     } else {
-      emit(SyncState(
-        pending > 0 ? SyncStatus.pending : SyncStatus.synced,
-        pending: pending,
-        lastSyncAt: _lastSyncAt,
-      ));
+      emit(
+        SyncState(
+          pending > 0 ? SyncStatus.pending : SyncStatus.synced,
+          pending: pending,
+          lastSyncAt: _lastSyncAt,
+        ),
+      );
     }
   }
 
-  void _problem(SyncStatus status, SyncNotice notice,
-      {required Duration retryIn}) {
+  void _problem(
+    SyncStatus status,
+    SyncNotice notice, {
+    required Duration retryIn,
+  }) {
     _lastProblem = status;
     _lastMessage = notice;
-    emit(SyncState(
-      status,
-      pending: _pendingTotal,
-      lastSyncAt: _lastSyncAt,
-      notice: notice,
-    ));
+    emit(
+      SyncState(
+        status,
+        pending: _pendingTotal,
+        lastSyncAt: _lastSyncAt,
+        notice: notice,
+      ),
+    );
     _retry?.cancel();
     _retry = Timer(retryIn, () => flush());
   }
@@ -289,8 +306,11 @@ class SyncCubit extends Cubit<SyncState> {
       // Never signs in by itself (no anonymous fallback). No session for THIS
       // account means: keep everything local until the person signs in again.
       if (user == null || user.id != userId || user.isAnonymous) {
-        _problem(SyncStatus.localOnly, SyncNotice.signInAgain,
-            retryIn: const Duration(minutes: 5));
+        _problem(
+          SyncStatus.localOnly,
+          SyncNotice.signInAgain,
+          retryIn: const Duration(minutes: 5),
+        );
         return;
       }
       bool stale() => isClosed || client.auth.currentUser?.id != userId;
@@ -305,8 +325,13 @@ class SyncCubit extends Cubit<SyncState> {
         _finishAfterUploads();
         return;
       }
-      emit(SyncState(SyncStatus.syncing,
-          pending: snapshot.length, lastSyncAt: _lastSyncAt));
+      emit(
+        SyncState(
+          SyncStatus.syncing,
+          pending: snapshot.length,
+          lastSyncAt: _lastSyncAt,
+        ),
+      );
 
       final failedOutings = <String>{};
       var rejected = 0;
@@ -336,7 +361,8 @@ class SyncCubit extends Cubit<SyncState> {
             await _store.clearPending(entry.key, entry.value);
             continue;
           }
-          if (conflicts.isHeld(collection, id)) continue; // waiting for a choice
+          if (conflicts.isHeld(collection, id))
+            continue; // waiting for a choice
           if (LocalStore.outingChildren.contains(collection) &&
               failedOutings.contains(row['outing_id'])) {
             rejected++; // its outing is not on the server yet
@@ -362,9 +388,11 @@ class SyncCubit extends Cubit<SyncState> {
         if (collection == LocalStore.outings) {
           // Finish old outings before an active one is written, so the
           // "one active outing" rule is never violated by ordering.
-          rows.sort((a, b) =>
-              (a['status'] == 'active' ? 1 : 0) -
-              (b['status'] == 'active' ? 1 : 0));
+          rows.sort(
+            (a, b) =>
+                (a['status'] == 'active' ? 1 : 0) -
+                (b['status'] == 'active' ? 1 : 0),
+          );
         }
 
         final acked = <String>{};
@@ -469,8 +497,8 @@ class SyncCubit extends Cubit<SyncState> {
           activeConflict
               ? SyncNotice.activeConflict
               : placeLinkError
-                  ? SyncNotice.placeLink
-                  : SyncNotice.rejected,
+              ? SyncNotice.placeLink
+              : SyncNotice.rejected,
           retryIn: _backoff,
         );
         return;
@@ -501,13 +529,11 @@ class SyncCubit extends Cubit<SyncState> {
     } on AuthException catch (e) {
       _log('auth/network error: ${e.message}');
       _failures++;
-      _problem(SyncStatus.failed, SyncNotice.offline,
-          retryIn: _backoff);
+      _problem(SyncStatus.failed, SyncNotice.offline, retryIn: _backoff);
     } catch (e, st) {
       _log('sync error: $e\n$st');
       _failures++;
-      _problem(SyncStatus.failed, SyncNotice.offline,
-          retryIn: _backoff);
+      _problem(SyncStatus.failed, SyncNotice.offline, retryIn: _backoff);
     }
   }
 
@@ -522,11 +548,7 @@ class SyncCubit extends Cubit<SyncState> {
     }
     if ((uploads?.waiting ?? 0) > 0) {
       _failures++;
-      _problem(
-        SyncStatus.pending,
-        SyncNotice.photosPending,
-        retryIn: _backoff,
-      );
+      _problem(SyncStatus.pending, SyncNotice.photosPending, retryIn: _backoff);
       return;
     }
     _finishOk();
@@ -585,7 +607,11 @@ class SyncCubit extends Cubit<SyncState> {
   /// Row as sent: local-only keys out, owner and the revision this edit was
   /// based on in (only when the server checks revisions).
   Map<String, dynamic> _wire(
-      String collection, String id, Map<String, dynamic> row, String owner) {
+    String collection,
+    String id,
+    Map<String, dynamic> row,
+    String owner,
+  ) {
     final out = <String, dynamic>{
       for (final e in row.entries)
         if (!e.key.startsWith('_') && !_serverOnly.contains(e.key))
@@ -607,11 +633,12 @@ class SyncCubit extends Cubit<SyncState> {
       await client.from(collection).upsert(rows);
       return;
     }
-    final back =
-        await client.from(collection).upsert(rows).select('id, revision');
+    final back = await client
+        .from(collection)
+        .upsert(rows)
+        .select('id, revision');
     await _store.setRevisions(collection, {
-      for (final r in back)
-        r['id'] as String: (r['revision'] as num).toInt(),
+      for (final r in back) r['id'] as String: (r['revision'] as num).toInt(),
     });
   }
 
@@ -629,17 +656,24 @@ class SyncCubit extends Cubit<SyncState> {
   }
 
   Map<String, dynamic> _clean(Map<String, dynamic> r) =>
-      Map<String, dynamic>.from(r)..removeWhere((k, _) => _serverOnly.contains(k));
+      Map<String, dynamic>.from(r)
+        ..removeWhere((k, _) => _serverOnly.contains(k));
 
   Future<void> _recordRowConflict(
-      SupabaseClient client, String collection, String id) async {
+    SupabaseClient client,
+    String collection,
+    String id,
+  ) async {
     final local = _store.get(collection, id);
     if (local == null) return;
     Map<String, dynamic>? remote;
     int? rev;
     try {
-      final r =
-          await client.from(collection).select().eq('id', id).maybeSingle();
+      final r = await client
+          .from(collection)
+          .select()
+          .eq('id', id)
+          .maybeSingle();
       if (r != null) {
         rev = (r['revision'] as num?)?.toInt();
         remote = _clean(r);
@@ -647,20 +681,25 @@ class SyncCubit extends Cubit<SyncState> {
     } catch (e) {
       _log('could not read remote $collection/$id: $e');
     }
-    await conflicts.add(SyncConflict(
-      kind: ConflictKind.row,
-      collection: collection,
-      id: id,
-      local: local,
-      remote: remote,
-      remoteRevision: rev,
-      at: DateTime.now(),
-    ));
+    await conflicts.add(
+      SyncConflict(
+        kind: ConflictKind.row,
+        collection: collection,
+        id: id,
+        local: local,
+        remote: remote,
+        remoteRevision: rev,
+        at: DateTime.now(),
+      ),
+    );
     await _store.dropPending(collection, id);
   }
 
   Future<void> _recordActiveConflict(
-      SupabaseClient client, String localId, String owner) async {
+    SupabaseClient client,
+    String localId,
+    String owner,
+  ) async {
     final local = _store.get(LocalStore.outings, localId);
     if (local == null) return;
     String? otherId;
@@ -676,20 +715,23 @@ class SyncCubit extends Cubit<SyncState> {
         otherId = r['id'] as String;
         final rev = (r['revision'] as num?)?.toInt() ?? 0;
         // Brought here so the person can see and choose it.
-        await _store.putRemote(
-            LocalStore.outings, [(json: _clean(r), revision: rev)]);
+        await _store.putRemote(LocalStore.outings, [
+          (json: _clean(r), revision: rev),
+        ]);
       }
     } catch (e) {
       _log('could not read the other active outing: $e');
     }
-    await conflicts.add(SyncConflict(
-      kind: ConflictKind.activeOuting,
-      collection: LocalStore.outings,
-      id: localId,
-      local: local,
-      otherId: otherId,
-      at: DateTime.now(),
-    ));
+    await conflicts.add(
+      SyncConflict(
+        kind: ConflictKind.activeOuting,
+        collection: LocalStore.outings,
+        id: localId,
+        local: local,
+        otherId: otherId,
+        at: DateTime.now(),
+      ),
+    );
     await _store.dropPending(LocalStore.outings, localId);
   }
 
@@ -720,7 +762,6 @@ class SyncCubit extends Cubit<SyncState> {
 
   /// "Tentar de novo" on the restore screen.
   Future<void> retryRestore() => syncNow();
-
 
   bool _tableMissing(PostgrestException e) =>
       e.code == 'PGRST205' || e.code == '42P01';

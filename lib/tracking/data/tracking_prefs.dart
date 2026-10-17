@@ -42,8 +42,6 @@ class TrackingPrefs {
   Future<void> setShowPlace(bool on) => _set(_showPlace, on);
   Future<void> markOfferHandled() => _set(_offerHandled, true);
 
-  // ---- per outing ----------------------------------------------------------
-
   bool isHidden(String outingId) =>
       _store.getStringSet(_hidden).contains(outingId);
 

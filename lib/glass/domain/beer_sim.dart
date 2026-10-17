@@ -16,25 +16,23 @@ import 'package:flutter/foundation.dart';
 /// sit above the lowest point of that edge leaves through it.
 class BeerSim extends ChangeNotifier {
   BeerSim({this.initialFill = 0.78, int bubbleCount = 72})
-      : volume = initialFill,
-        _bx = Float32List(bubbleCount),
-        _by = Float32List(bubbleCount),
-        _br = Float32List(bubbleCount),
-        _bs = Float32List(bubbleCount),
-        _bp = Float32List(bubbleCount),
-        _balive = Uint8List(bubbleCount);
+    : volume = initialFill,
+      _bx = Float32List(bubbleCount),
+      _by = Float32List(bubbleCount),
+      _br = Float32List(bubbleCount),
+      _bs = Float32List(bubbleCount),
+      _bp = Float32List(bubbleCount),
+      _balive = Uint8List(bubbleCount);
 
   /// Fraction of the screen filled by a fresh glass (leaves air on top).
   final double initialFill;
 
-  // ---- Settings ------------------------------------------------------------
   /// Waves, wobble and bubbles. Off = calm, critically damped surface.
   bool effects = true;
 
   /// Fewer bubbles, smaller waves, no oscillation (reduce-motion preference).
   bool calm = false;
 
-  // ---- State ---------------------------------------------------------------
   Size size = Size.zero;
   double angle = 0;
   double angularVelocity = 0;
@@ -62,7 +60,6 @@ class BeerSim extends ChangeNotifier {
   double get time => _time;
   double get phase => _phase;
 
-  // ---- Bubbles (struct of arrays, no per-frame allocation) -----------------
   final Float32List _bx, _by, _br, _bs, _bp;
   final Uint8List _balive;
   final _rand = math.Random(7);
@@ -74,8 +71,6 @@ class BeerSim extends ChangeNotifier {
   double bubbleR(int i) => _br[i];
 
   final _poly = Float64List(24);
-
-  // ---- Geometry ------------------------------------------------------------
 
   /// Fraction of the screen where `n·p >= s`.
   double areaFraction(double s) {
@@ -154,8 +149,6 @@ class BeerSim extends ChangeNotifier {
     maxProj = math.max(math.max(a, b), math.max(c, d));
   }
 
-  // ---- Actions -------------------------------------------------------------
-
   void setSize(Size s) {
     if (s == size) return;
     final first = size == Size.zero;
@@ -182,8 +175,6 @@ class BeerSim extends ChangeNotifier {
     angularVelocity = 0;
     waveAmp = 0;
   }
-
-  // ---- Step ----------------------------------------------------------------
 
   /// Advances the simulation by [dt] seconds towards [targetAngle].
   void step(double dt, double targetAngle) {
@@ -237,8 +228,6 @@ class BeerSim extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ---- Bubbles -------------------------------------------------------------
-
   void _respawn(int i, {bool anywhere = false}) {
     final w = size.width, h = size.height;
     for (var tries = 0; tries < 6; tries++) {
@@ -277,7 +266,8 @@ class BeerSim extends ChangeNotifier {
       _bx[i] += (-nx * speed + ny * wob) * dt;
       _by[i] += (-ny * speed - nx * wob) * dt;
       final depth = nx * _bx[i] + ny * _by[i] - level;
-      final out = _bx[i] < -8 ||
+      final out =
+          _bx[i] < -8 ||
           _bx[i] > size.width + 8 ||
           _by[i] < -8 ||
           _by[i] > size.height + 8;

@@ -40,10 +40,9 @@ class EmptyView extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
             ),
             if (message != null) ...[
               const SizedBox(height: 8),
@@ -72,10 +71,10 @@ class ErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => EmptyView(
-        icon: Icons.error_outline_rounded,
-        title: tr.commonError,
-        message: message,
-        actionLabel: onRetry == null ? null : tr.commonRetry,
-        onAction: onRetry,
-      );
+    icon: Icons.error_outline_rounded,
+    title: tr.commonError,
+    message: message,
+    actionLabel: onRetry == null ? null : tr.commonRetry,
+    onAction: onRetry,
+  );
 }

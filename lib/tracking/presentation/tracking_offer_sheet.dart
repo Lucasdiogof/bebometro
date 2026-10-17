@@ -21,7 +21,11 @@ Future<void> offerTrackingIfNeeded(BuildContext context) async {
     builder: (ctx) => SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+          AppSpace.xl,
+          0,
+          AppSpace.xl,
+          AppSpace.lg,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

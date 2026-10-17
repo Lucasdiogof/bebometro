@@ -7,11 +7,11 @@ import '../../l10n/l10n.dart';
 // different language never converts or relabels the currency.
 
 String formatCents(int cents) => NumberFormat.currency(
-      locale: trLocaleTag,
-      name: 'BRL',
-      symbol: r'R$',
-      decimalDigits: 2,
-    ).format(cents / 100).replaceAll(' ', ' ');
+  locale: trLocaleTag,
+  name: 'BRL',
+  symbol: r'R$',
+  decimalDigits: 2,
+).format(cents / 100).replaceAll(' ', ' ');
 
 String formatNumber(num value) =>
     NumberFormat.decimalPattern(trLocaleTag).format(value);
@@ -50,7 +50,9 @@ String formatMonthYear(DateTime dt) =>
     _capitalized(DateFormat.yMMMM(trLocaleTag).format(dt));
 
 String formatDateTime(DateTime dt) => tr.dateAtTime(
-    DateFormat.Md(trLocaleTag).format(dt), DateFormat.Hm(trLocaleTag).format(dt));
+  DateFormat.Md(trLocaleTag).format(dt),
+  DateFormat.Hm(trLocaleTag).format(dt),
+);
 
 String formatWeekdayDate(DateTime dt) =>
     _capitalized(DateFormat.MMMMEEEEd(trLocaleTag).format(dt));
@@ -58,13 +60,11 @@ String formatWeekdayDate(DateTime dt) =>
 String _capitalized(String text) =>
     text.isEmpty ? text : text[0].toUpperCase() + text.substring(1);
 
-// ---------------------------------------------------------------- parsing
-//
-// One parser for every numeric field. Accepted: digits with ONE decimal mark,
-// comma or dot ("15", "15,5", "15.50"), optionally with thousands groups when
-// both marks appear ("1.500,00", "1,500.00"). A lone mark followed by exactly
-// three digits ("1.500", "1,500") is ambiguous (thousand or decimal?) and is
-// refused, so the field asks for a correction instead of guessing.
+// Accepted: digits with ONE decimal mark, comma or dot ("15", "15,5",
+// "15.50"), optionally with thousands groups when both marks appear
+// ("1.500,00", "1,500.00"). A lone mark followed by exactly three digits
+// ("1.500", "1,500") is ambiguous (thousand or decimal?) and is refused, so
+// the field asks for a correction instead of guessing.
 
 /// Why a numeric text was refused.
 enum NumberInputProblem { invalid, ambiguous }
@@ -87,7 +87,9 @@ _Parsed _parse(String input) {
     final cut = cleaned.lastIndexOf(decimal);
     final intPart = cleaned.substring(0, cut);
     if (intPart.contains(decimal) ||
-        !RegExp(r'^\d{1,3}(' + RegExp.escape(group) + r'\d{3})*$').hasMatch(intPart)) {
+        !RegExp(
+          r'^\d{1,3}(' + RegExp.escape(group) + r'\d{3})*$',
+        ).hasMatch(intPart)) {
       return const _Parsed(null, NumberInputProblem.invalid);
     }
     text = '${intPart.replaceAll(group, '')}.${cleaned.substring(cut + 1)}';
@@ -96,7 +98,9 @@ _Parsed _parse(String input) {
     final parts = cleaned.split(mark);
     if (parts.length > 2) {
       // "1.500.000": only valid as thousands groups.
-      if (!RegExp(r'^\d{1,3}(' + RegExp.escape(mark) + r'\d{3})+$').hasMatch(cleaned)) {
+      if (!RegExp(
+        r'^\d{1,3}(' + RegExp.escape(mark) + r'\d{3})+$',
+      ).hasMatch(cleaned)) {
         return const _Parsed(null, NumberInputProblem.invalid);
       }
       text = parts.join();
@@ -159,12 +163,30 @@ String decimalToInput(double value) {
 }
 
 const _accents = {
-  'á': 'a', 'à': 'a', 'â': 'a', 'ã': 'a', 'ä': 'a',
-  'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
-  'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i',
-  'ó': 'o', 'ò': 'o', 'ô': 'o', 'õ': 'o', 'ö': 'o',
-  'ú': 'u', 'ù': 'u', 'û': 'u', 'ü': 'u',
-  'ç': 'c', 'ñ': 'n',
+  'á': 'a',
+  'à': 'a',
+  'â': 'a',
+  'ã': 'a',
+  'ä': 'a',
+  'é': 'e',
+  'è': 'e',
+  'ê': 'e',
+  'ë': 'e',
+  'í': 'i',
+  'ì': 'i',
+  'î': 'i',
+  'ï': 'i',
+  'ó': 'o',
+  'ò': 'o',
+  'ô': 'o',
+  'õ': 'o',
+  'ö': 'o',
+  'ú': 'u',
+  'ù': 'u',
+  'û': 'u',
+  'ü': 'u',
+  'ç': 'c',
+  'ñ': 'n',
 };
 
 /// Lower-cases and strips accents so searches match "cachaça" with "cachaca".

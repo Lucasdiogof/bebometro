@@ -42,8 +42,9 @@ class BudgetSection extends StatelessWidget {
               TextField(
                 controller: controller,
                 autofocus: true,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 decoration: InputDecoration(
                   labelText: tr.budgetValue,
                   prefixText: r'R$ ',
@@ -61,18 +62,24 @@ class BudgetSection extends StatelessWidget {
             if (budgetCents != null)
               TextButton(
                 onPressed: () => Navigator.pop(ctx, const _BudgetResult(null)),
-                child: Text(tr.commonRemove,
-                    style: const TextStyle(color: AppColors.danger)),
+                child: Text(
+                  tr.commonRemove,
+                  style: const TextStyle(color: AppColors.danger),
+                ),
               ),
             TextButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: Text(tr.commonCancel)),
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(tr.commonCancel),
+            ),
             TextButton(
               onPressed: () {
                 final cents = parseCents(controller.text);
                 if (cents == null || cents <= 0) {
-                  setState(() => error = numberInputError(controller.text) ??
-                      tr.budgetMustBePositive);
+                  setState(
+                    () => error =
+                        numberInputError(controller.text) ??
+                        tr.budgetMustBePositive,
+                  );
                   return;
                 }
                 Navigator.pop(ctx, _BudgetResult(cents));
@@ -106,21 +113,25 @@ class BudgetSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(children: [
-          Expanded(
-            child: Text(
-              tr.budgetLine(
-                  formatCents(budget), formatCents(status.informedCents)),
-              style: AppText.subtitle,
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                tr.budgetLine(
+                  formatCents(budget),
+                  formatCents(status.informedCents),
+                ),
+                style: AppText.subtitle,
+              ),
             ),
-          ),
-          if (editable)
-            IconButton(
-              tooltip: tr.budgetEdit,
-              onPressed: () => _edit(context),
-              icon: const Icon(Icons.edit_outlined, size: 18),
-            ),
-        ]),
+            if (editable)
+              IconButton(
+                tooltip: tr.budgetEdit,
+                onPressed: () => _edit(context),
+                icon: const Icon(Icons.edit_outlined, size: 18),
+              ),
+          ],
+        ),
         const SizedBox(height: AppSpace.xs),
         ClipRRect(
           borderRadius: BorderRadius.circular(6),

@@ -34,7 +34,9 @@ class TabRepository {
     if (row == null) return TabDoc.empty(outingId);
     try {
       return TabDoc.fromJson(
-          outingId, Map<String, dynamic>.from(row['data'] as Map? ?? const {}));
+        outingId,
+        Map<String, dynamic>.from(row['data'] as Map? ?? const {}),
+      );
     } catch (_) {
       return TabDoc.empty(outingId);
     }
@@ -46,8 +48,9 @@ class TabRepository {
   }
 
   /// Live drink records of the outing by id.
-  Map<String, DrinkEntry> entriesOf(String outingId) =>
-      {for (final e in _drinks.entriesFor(outingId)) e.id: e};
+  Map<String, DrinkEntry> entriesOf(String outingId) => {
+    for (final e in _drinks.entriesFor(outingId)) e.id: e,
+  };
 
   TabResult compute(String outingId) =>
       TabCalculator.compute(load(outingId), entriesOf(outingId));

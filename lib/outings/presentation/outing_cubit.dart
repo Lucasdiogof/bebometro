@@ -43,7 +43,7 @@ class OutingNotice {
 
 class OutingCubit extends Cubit<OutingState> {
   OutingCubit(this.outingId, this._outings, this._drinks, this._prefs)
-      : super(const OutingState()) {
+    : super(const OutingState()) {
     _subs = [
       _outings.changes.listen((_) => load()),
       _drinks.changes.listen((_) => load()),
@@ -66,13 +66,15 @@ class OutingCubit extends Cubit<OutingState> {
   void load() {
     final outing = _outings.byId(outingId);
     final entries = _drinks.entriesFor(outingId);
-    emit(OutingState(
-      loading: false,
-      outing: outing,
-      entries: entries,
-      summary: OutingSummary.of(entries),
-      lastAlcoholic: _drinks.lastAlcoholic(outingId),
-    ));
+    emit(
+      OutingState(
+        loading: false,
+        outing: outing,
+        entries: entries,
+        summary: OutingSummary.of(entries),
+        lastAlcoholic: _drinks.lastAlcoholic(outingId),
+      ),
+    );
     _checkBudget(outing, OutingSummary.of(entries));
   }
 
@@ -96,13 +98,18 @@ class OutingCubit extends Cubit<OutingState> {
       await _prefs.markFired(outing.id, budget, {...fired, ...reached});
       if (!_prefs.budgetAlerts || _notices.isClosed) return;
       final top = fresh.reduce((a, b) => a > b ? a : b);
-      _notices.add(OutingNotice(
-        [
-          tr.budgetReached(
-              top, formatCents(status.informedCents), formatCents(budget)),
-          if (status.incomplete) tr.budgetReachedIncomplete,
-        ].join(' '),
-      ));
+      _notices.add(
+        OutingNotice(
+          [
+            tr.budgetReached(
+              top,
+              formatCents(status.informedCents),
+              formatCents(budget),
+            ),
+            if (status.incomplete) tr.budgetReachedIncomplete,
+          ].join(' '),
+        ),
+      );
     } finally {
       _checkingBudget = false;
     }
@@ -148,14 +155,16 @@ class OutingCubit extends Cubit<OutingState> {
     try {
       final entry = source.repeated(newId: _drinks.newId(), at: DateTime.now());
       await _drinks.save(entry);
-      _notices.add(OutingNotice(
-        [
-          tr.noticeAnotherOne(entry.name),
-          if (entry.personalMl != null) formatMl(entry.personalMl!),
-        ].join(' · '),
-        undoLabel: tr.commonUndo,
-        undo: () => _drinks.delete(entry.id),
-      ));
+      _notices.add(
+        OutingNotice(
+          [
+            tr.noticeAnotherOne(entry.name),
+            if (entry.personalMl != null) formatMl(entry.personalMl!),
+          ].join(' · '),
+          undoLabel: tr.commonUndo,
+          undo: () => _drinks.delete(entry.id),
+        ),
+      );
     } finally {
       _busy = false;
     }
@@ -172,14 +181,16 @@ class OutingCubit extends Cubit<OutingState> {
         now: now,
       );
       await _drinks.save(entry);
-      _notices.add(OutingNotice(
-        [
-          tr.noticeWater,
-          if (entry.personalMl != null) formatMl(entry.personalMl!),
-        ].join(' · '),
-        undoLabel: tr.commonUndo,
-        undo: () => _drinks.delete(entry.id),
-      ));
+      _notices.add(
+        OutingNotice(
+          [
+            tr.noticeWater,
+            if (entry.personalMl != null) formatMl(entry.personalMl!),
+          ].join(' · '),
+          undoLabel: tr.commonUndo,
+          undo: () => _drinks.delete(entry.id),
+        ),
+      );
     } finally {
       _busy = false;
     }
@@ -187,11 +198,13 @@ class OutingCubit extends Cubit<OutingState> {
 
   Future<void> deleteEntry(DrinkEntry entry) async {
     await _drinks.delete(entry.id);
-    _notices.add(OutingNotice(
-      tr.noticeEntryDeleted,
-      undoLabel: tr.commonUndo,
-      undo: () => _drinks.restore(entry.id),
-    ));
+    _notices.add(
+      OutingNotice(
+        tr.noticeEntryDeleted,
+        undoLabel: tr.commonUndo,
+        undo: () => _drinks.restore(entry.id),
+      ),
+    );
   }
 
   Future<void> finish(DateTime endedAt) => _outings.finish(outingId, endedAt);

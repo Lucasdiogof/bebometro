@@ -54,6 +54,7 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
   final _clock = ValueNotifier<DateTime>(DateTime.now());
   Timer? _timer;
   bool _resumed = true;
+
   /// Entrance animation start per item key, decided once when the item is
   /// first seen: 1 (no animation) for what was already on the table.
   final _begins = <String, double>{};
@@ -118,8 +119,12 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
   void _open(TableItem item) {
     if (widget.retrospective || widget.onEdit == null) return;
     if (item.count == 1) {
-      showEntryDetailSheet(context, item.entries.first,
-          onEdit: _edit, onDelete: _delete);
+      showEntryDetailSheet(
+        context,
+        item.entries.first,
+        onEdit: _edit,
+        onDelete: _delete,
+      );
     } else {
       showEntryGroupSheet(
         context,
@@ -135,56 +140,58 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      final plan = planTable(
-        widget.entries,
-        constraints.maxWidth,
-        compact: widget.compact,
-      );
-      final initial = _firstPlan;
-      _firstPlan = false;
-      final active = _active;
-      final staticNow = DateTime.now();
-      final reduce = reduceMotion(context);
-      return Semantics(
-        container: true,
-        label: widget.retrospective
-            ? tr.tableSemanticsOuting(widget.entries.length)
-            : tr.tableSemanticsTable(widget.entries.length),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: SizedBox(
-            height: plan.height,
-            width: double.infinity,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: RepaintBoundary(
-                    child: CustomPaint(
-                      painter: ScenePainter(widget.scenario, plan.tableTop),
-                    ),
-                  ),
-                ),
-                if (widget.entries.isEmpty)
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final plan = planTable(
+          widget.entries,
+          constraints.maxWidth,
+          compact: widget.compact,
+        );
+        final initial = _firstPlan;
+        _firstPlan = false;
+        final active = _active;
+        final staticNow = DateTime.now();
+        final reduce = reduceMotion(context);
+        return Semantics(
+          container: true,
+          label: widget.retrospective
+              ? tr.tableSemanticsOuting(widget.entries.length)
+              : tr.tableSemanticsTable(widget.entries.length),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: SizedBox(
+              height: plan.height,
+              width: double.infinity,
+              child: Stack(
+                children: [
                   Positioned.fill(
-                    child: Center(
-                      child: Text(
-                        tr.tableEmpty,
-                        style: const TextStyle(
-                          color: AppColors.textMuted,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    child: RepaintBoundary(
+                      child: CustomPaint(
+                        painter: ScenePainter(widget.scenario, plan.tableTop),
                       ),
                     ),
                   ),
-                for (var i = 0; i < plan.items.length; i++)
-                  _positioned(plan, i, active, staticNow, reduce, initial),
-              ],
+                  if (widget.entries.isEmpty)
+                    Positioned.fill(
+                      child: Center(
+                        child: Text(
+                          tr.tableEmpty,
+                          style: const TextStyle(
+                            color: AppColors.textMuted,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  for (var i = 0; i < plan.items.length; i++)
+                    _positioned(plan, i, active, staticNow, reduce, initial),
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 
   Widget _positioned(
@@ -218,7 +225,10 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
           child: Text(
             '+${item.count}',
             style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w800, fontSize: 15),
+              color: Colors.white,
+              fontWeight: FontWeight.w800,
+              fontSize: 15,
+            ),
           ),
         ),
       );
@@ -269,9 +279,10 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
                 child: Text(
                   '×${item.count}',
                   style: const TextStyle(
-                      color: Color(0xFF241800),
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800),
+                    color: Color(0xFF241800),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
             ),
@@ -290,7 +301,9 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
                   color: Colors.white,
                   shadows: [
                     Shadow(
-                        color: Colors.black.withValues(alpha: 0.7), blurRadius: 3),
+                      color: Colors.black.withValues(alpha: 0.7),
+                      blurRadius: 3,
+                    ),
                   ],
                 ),
               ),
@@ -312,7 +325,9 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
 
     // New records pop in (not the ones already on the table when it opened).
     final begin = _begins.putIfAbsent(
-        item.key, () => (initial || reduce) ? 1.0 : 0.0);
+      item.key,
+      () => (initial || reduce) ? 1.0 : 0.0,
+    );
     return Positioned(
       key: ValueKey(item.key),
       left: slot.cx - w / 2,

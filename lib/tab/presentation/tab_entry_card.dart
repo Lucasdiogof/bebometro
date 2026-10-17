@@ -16,7 +16,11 @@ import '../../l10n/l10n.dart';
 /// tab of the main navigation. Totals here are the tab's own: they are never
 /// added to the spending recorded on drinks, which keeps its own meaning.
 class TabEntryCard extends StatefulWidget {
-  const TabEntryCard({super.key, required this.outingId, this.detailed = false});
+  const TabEntryCard({
+    super.key,
+    required this.outingId,
+    this.detailed = false,
+  });
 
   final String outingId;
 
@@ -60,41 +64,51 @@ class _TabEntryCardState extends State<TabEntryCard> {
     if (r == null) {
       lines.add(tr.tabCardHint);
     } else if (widget.detailed) {
-      lines.add(r.isPartial
-          ? tr.tabCardTotalPartial(formatCents(r.total))
-          : tr.tabCardTotal(formatCents(r.total)));
+      lines.add(
+        r.isPartial
+            ? tr.tabCardTotalPartial(formatCents(r.total))
+            : tr.tabCardTotal(formatCents(r.total)),
+      );
       if (mine != null) {
-        lines.add(partial
-            ? tr.tabCardShareProv(formatCents(mine))
-            : tr.tabCardShare(formatCents(mine)));
+        lines.add(
+          partial
+              ? tr.tabCardShareProv(formatCents(mine))
+              : tr.tabCardShare(formatCents(mine)),
+        );
       }
     } else {
       final total = formatCents(r.total);
-      lines.add(mine == null
-          ? (r.isPartial ? tr.tabCardLineKnown(total) : tr.tabCardLineTotal(total))
-          : (r.isPartial
-              ? tr.tabCardLineKnownShare(total, formatCents(mine))
-              : tr.tabCardLineTotalShare(total, formatCents(mine))));
+      lines.add(
+        mine == null
+            ? (r.isPartial
+                  ? tr.tabCardLineKnown(total)
+                  : tr.tabCardLineTotal(total))
+            : (r.isPartial
+                  ? tr.tabCardLineKnownShare(total, formatCents(mine))
+                  : tr.tabCardLineTotalShare(total, formatCents(mine))),
+      );
     }
 
     return SurfaceCard(
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => TabPage(outingId: widget.outingId),
-      )),
-      child: Row(children: [
-        const Icon(Icons.receipt_long_outlined, color: AppColors.amber),
-        const SizedBox(width: AppSpace.md),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(tr.tabTitle, style: AppText.subtitle),
-              for (final l in lines) Text(l, style: AppText.caption),
-            ],
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => TabPage(outingId: widget.outingId)),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.receipt_long_outlined, color: AppColors.amber),
+          const SizedBox(width: AppSpace.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(tr.tabTitle, style: AppText.subtitle),
+                for (final l in lines) Text(l, style: AppText.caption),
+              ],
+            ),
           ),
-        ),
-        const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
-      ]),
+          const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
+        ],
+      ),
     );
   }
 }

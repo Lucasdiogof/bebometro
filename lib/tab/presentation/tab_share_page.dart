@@ -33,11 +33,11 @@ class _TabSharePageState extends State<TabSharePage> {
   bool _payments = false;
 
   String get _text => TabShareText.build(
-        outing: widget.outing,
-        doc: widget.doc,
-        result: widget.result,
-        includePayments: _payments,
-      );
+    outing: widget.outing,
+    doc: widget.doc,
+    result: widget.result,
+    includePayments: _payments,
+  );
 
   Future<void> _copy() async {
     await Clipboard.setData(ClipboardData(text: _text));
@@ -45,8 +45,11 @@ class _TabSharePageState extends State<TabSharePage> {
   }
 
   Future<void> _share() async {
-    final ok = await ShareService.shareText(_text,
-        subject: tr.tabShareSubject, origin: ShareService.originOf(context));
+    final ok = await ShareService.shareText(
+      _text,
+      subject: tr.tabShareSubject,
+      origin: ShareService.originOf(context),
+    );
     if (!ok && mounted) {
       showToast(context, tr.tabShareFailed);
     }
@@ -58,7 +61,11 @@ class _TabSharePageState extends State<TabSharePage> {
       appBar: AppBar(title: Text(tr.tabShareSplitTooltip)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
+          AppSpace.gutter,
+          0,
+          AppSpace.gutter,
+          AppSpace.xxl,
+        ),
         children: [
           Text(tr.tabSharePreview, style: AppText.caption),
           const SizedBox(height: AppSpace.md),

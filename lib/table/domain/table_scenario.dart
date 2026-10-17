@@ -20,13 +20,13 @@ enum TableScenario {
   final IconData icon;
 
   String get label => switch (this) {
-        TableScenario.bar => tr.scenarioBar,
-        TableScenario.club => tr.scenarioClub,
-        TableScenario.barbecue => tr.scenarioBarbecue,
-        TableScenario.home => tr.scenarioHome,
-        TableScenario.beach => tr.scenarioBeach,
-        TableScenario.restaurant => tr.scenarioRestaurant,
-      };
+    TableScenario.bar => tr.scenarioBar,
+    TableScenario.club => tr.scenarioClub,
+    TableScenario.barbecue => tr.scenarioBarbecue,
+    TableScenario.home => tr.scenarioHome,
+    TableScenario.beach => tr.scenarioBeach,
+    TableScenario.restaurant => tr.scenarioRestaurant,
+  };
 
   static TableScenario? fromCode(String? code) {
     for (final s in TableScenario.values) {

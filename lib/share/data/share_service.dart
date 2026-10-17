@@ -63,11 +63,17 @@ class ShareService {
     }
   }
 
-  static Future<bool> shareText(String text,
-      {String? subject, Rect? origin}) async {
+  static Future<bool> shareText(
+    String text, {
+    String? subject,
+    Rect? origin,
+  }) async {
     try {
-      final result = await Share.share(text,
-          subject: subject, sharePositionOrigin: origin);
+      final result = await Share.share(
+        text,
+        subject: subject,
+        sharePositionOrigin: origin,
+      );
       return _presented(result);
     } catch (e) {
       lastFailure = 'share: ${e.runtimeType}: $e';
@@ -78,8 +84,10 @@ class ShareService {
 
   /// Renders the [RepaintBoundary] behind [key] to PNG bytes. Never throws:
   /// null means the image could not be produced ([lastFailure] says why).
-  static Future<Uint8List?> capturePng(GlobalKey key,
-      {double pixelRatio = 3}) async {
+  static Future<Uint8List?> capturePng(
+    GlobalKey key, {
+    double pixelRatio = 3,
+  }) async {
     try {
       // Captured only after the frame that paints the card is done.
       await WidgetsBinding.instance.endOfFrame;

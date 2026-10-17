@@ -39,26 +39,26 @@ class _RowModel {
     this.optional = false,
     this.productId,
     this.productName,
-  })  : name = TextEditingController(text: name),
-        amount = TextEditingController(
-          text: amount == null ? '' : decimalToInput(amount),
-        ),
-        abv = TextEditingController(
-          text: abv == null ? '' : decimalToInput(abv),
-        );
+  }) : name = TextEditingController(text: name),
+       amount = TextEditingController(
+         text: amount == null ? '' : decimalToInput(amount),
+       ),
+       abv = TextEditingController(
+         text: abv == null ? '' : decimalToInput(abv),
+       );
 
   factory _RowModel.from(EntryComponent c) => _RowModel(
-        name: c.name,
-        amount: c.amount,
-        unit: c.unit,
-        abv: c.abvPercent,
-        alcoholic: c.alcoholic,
-        role: c.role,
-        amountText: c.amountText,
-        optional: c.optional,
-        productId: c.productId,
-        productName: c.productName,
-      );
+    name: c.name,
+    amount: c.amount,
+    unit: c.unit,
+    abv: c.abvPercent,
+    alcoholic: c.alcoholic,
+    role: c.role,
+    amountText: c.amountText,
+    optional: c.optional,
+    productId: c.productId,
+    productName: c.productName,
+  );
 
   final TextEditingController name;
   final TextEditingController amount;
@@ -113,8 +113,8 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
     final defaultName = widget.editing != null
         ? widget.editing!.name
         : (widget.copyFrom != null
-            ? tr.recipeEditorNameCopy(widget.copyFrom!.name)
-            : '');
+              ? tr.recipeEditorNameCopy(widget.copyFrom!.name)
+              : '');
     _name = TextEditingController(text: defaultName);
     for (final c in source?.recipe?.components ?? const <EntryComponent>[]) {
       _rows.add(_RowModel.from(c));
@@ -130,8 +130,9 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
     super.dispose();
   }
 
-  List<EntryComponent> get _components =>
-      [for (final r in _rows) r.toComponent()];
+  List<EntryComponent> get _components => [
+    for (final r in _rows) r.toComponent(),
+  ];
 
   String? _problem() {
     if (_name.text.trim().isEmpty) return tr.recipeEditorNeedName;
@@ -202,16 +203,21 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
         : null;
     return Scaffold(
       appBar: AppBar(
-          title: Text(editing
-              ? tr.recipeEditorEditTitle
-              : tr.recipeEditorNewTitle)),
+        title: Text(
+          editing ? tr.recipeEditorEditTitle : tr.recipeEditorNewTitle,
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
             child: ListView(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                AppSpace.gutter,
+                0,
+                AppSpace.gutter,
+                AppSpace.xl,
+              ),
               children: [
                 Text(tr.recipeEditorIntro, style: AppText.caption),
                 SectionTitle(tr.recipeEditorNameSection),
@@ -281,7 +287,8 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
             child: FilledButton(
               onPressed: _saving ? null : _save,
               child: Text(
-                  editing ? tr.entrySaveChanges : tr.recipeEditorSaveRecipe),
+                editing ? tr.entrySaveChanges : tr.recipeEditorSaveRecipe,
+              ),
             ),
           ),
         ],
@@ -314,30 +321,36 @@ class _RowCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
-            Expanded(
-              child: TextField(
-                controller: row.name,
-                textCapitalization: TextCapitalization.sentences,
-                decoration: InputDecoration(labelText: tr.entryIngredientField),
-                onChanged: (_) => onChanged(),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: row.name,
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: InputDecoration(
+                    labelText: tr.entryIngredientField,
+                  ),
+                  onChanged: (_) => onChanged(),
+                ),
               ),
-            ),
-            Column(children: [
-              IconButton(
-                tooltip: tr.recipeEditorMoveUp,
-                visualDensity: VisualDensity.compact,
-                onPressed: index == 0 ? null : () => onMove(-1),
-                icon: const Icon(Icons.keyboard_arrow_up_rounded),
+              Column(
+                children: [
+                  IconButton(
+                    tooltip: tr.recipeEditorMoveUp,
+                    visualDensity: VisualDensity.compact,
+                    onPressed: index == 0 ? null : () => onMove(-1),
+                    icon: const Icon(Icons.keyboard_arrow_up_rounded),
+                  ),
+                  IconButton(
+                    tooltip: tr.recipeEditorMoveDown,
+                    visualDensity: VisualDensity.compact,
+                    onPressed: index == count - 1 ? null : () => onMove(1),
+                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                  ),
+                ],
               ),
-              IconButton(
-                tooltip: tr.recipeEditorMoveDown,
-                visualDensity: VisualDensity.compact,
-                onPressed: index == count - 1 ? null : () => onMove(1),
-                icon: const Icon(Icons.keyboard_arrow_down_rounded),
-              ),
-            ]),
-          ]),
+            ],
+          ),
           const SizedBox(height: AppSpace.sm),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,8 +360,9 @@ class _RowCard extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     controller: row.amount,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     decoration: InputDecoration(
                       labelText: tr.entryAmount,
                       suffixText: row.unit.shortLabel,
@@ -379,8 +393,10 @@ class _RowCard extends StatelessWidget {
           if (row.unit == RecipeUnit.other && row.amountText != null)
             Padding(
               padding: const EdgeInsets.only(top: AppSpace.xs),
-              child: Text(tr.recipeEditorOriginal(row.amountText!),
-                  style: AppText.caption),
+              child: Text(
+                tr.recipeEditorOriginal(row.amountText!),
+                style: AppText.caption,
+              ),
             ),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
@@ -395,8 +411,9 @@ class _RowCard extends StatelessWidget {
           if (row.alcoholic) ...[
             TextField(
               controller: row.abv,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               decoration: InputDecoration(
                 labelText: tr.entryComponentAbv,
                 suffixText: '% vol.',
@@ -409,15 +426,17 @@ class _RowCard extends StatelessWidget {
             const SizedBox(height: AppSpace.sm),
             DropdownButtonFormField<String?>(
               initialValue: row.role,
-              decoration: InputDecoration(
-                labelText: tr.recipeEditorRole,
-              ),
+              decoration: InputDecoration(labelText: tr.recipeEditorRole),
               items: [
                 DropdownMenuItem<String?>(
-                    value: null, child: Text(tr.recipeEditorNoRole)),
+                  value: null,
+                  child: Text(tr.recipeEditorNoRole),
+                ),
                 for (final role in ingredientRoles)
                   DropdownMenuItem<String?>(
-                      value: role, child: Text(ingredientRoleLabel(role))),
+                    value: role,
+                    child: Text(ingredientRoleLabel(role)),
+                  ),
               ],
               onChanged: (v) {
                 row.role = v;
@@ -429,10 +448,15 @@ class _RowCard extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: TextButton.icon(
               onPressed: onRemove,
-              icon: const Icon(Icons.delete_outline_rounded,
-                  size: 18, color: AppColors.danger),
-              label: Text(tr.recipeEditorRemove,
-                  style: const TextStyle(color: AppColors.danger)),
+              icon: const Icon(
+                Icons.delete_outline_rounded,
+                size: 18,
+                color: AppColors.danger,
+              ),
+              label: Text(
+                tr.recipeEditorRemove,
+                style: const TextStyle(color: AppColors.danger),
+              ),
             ),
           ),
         ],

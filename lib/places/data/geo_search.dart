@@ -118,8 +118,8 @@ class GeoResult {
 /// repeated queries answered from a small in-memory cache.
 class GeoSearch {
   GeoSearch({http.Client? client, String? apiKey})
-      : _client = client ?? http.Client(),
-        _key = apiKey ?? Env.geoapifyKey;
+    : _client = client ?? http.Client(),
+      _key = apiKey ?? Env.geoapifyKey;
 
   final http.Client _client;
   final String _key;
@@ -141,50 +141,42 @@ class GeoSearch {
   Future<List<GeoResult>> autocomplete(String text, {GeoPoint? near}) {
     final q = text.trim();
     if (q.length < minChars) return Future.value(const []);
-    return _get(
-      'https://api.geoapify.com/v1/geocode/autocomplete',
-      {
-        'text': q,
-        'lang': 'pt',
-        'limit': '8',
-        'filter': 'countrycode:br',
-        'format': 'json',
-        if (near != null) 'bias': 'proximity:${near.lng},${near.lat}',
-      },
-      (body) => body['results'],
-    );
+    return _get('https://api.geoapify.com/v1/geocode/autocomplete', {
+      'text': q,
+      'lang': 'pt',
+      'limit': '8',
+      'filter': 'countrycode:br',
+      'format': 'json',
+      if (near != null) 'bias': 'proximity:${near.lng},${near.lat}',
+    }, (body) => body['results']);
   }
 
   /// Bars, pubs, restaurants and clubs within [radiusMeters] of [p], closest
   /// first. Being near one does not mean being in it: the person chooses.
   Future<List<GeoResult>> nearby(GeoPoint p, {int radiusMeters = 300}) => _get(
-        'https://api.geoapify.com/v2/places',
-        {
-          'categories':
-              'catering.bar,catering.pub,catering.biergarten,catering.restaurant,adult.nightclub',
-          'filter': 'circle:${p.lng},${p.lat},$radiusMeters',
-          'bias': 'proximity:${p.lng},${p.lat}',
-          'lang': 'pt',
-          'limit': '20',
-        },
-        (body) => [
-          for (final f in (body['features'] as List? ?? const []))
-            if (f is Map && f['properties'] is Map) f['properties'],
-        ],
-      );
+    'https://api.geoapify.com/v2/places',
+    {
+      'categories':
+          'catering.bar,catering.pub,catering.biergarten,catering.restaurant,adult.nightclub',
+      'filter': 'circle:${p.lng},${p.lat},$radiusMeters',
+      'bias': 'proximity:${p.lng},${p.lat}',
+      'lang': 'pt',
+      'limit': '20',
+    },
+    (body) => [
+      for (final f in (body['features'] as List? ?? const []))
+        if (f is Map && f['properties'] is Map) f['properties'],
+    ],
+  );
 
   /// The address at [p], asked only when the person taps for it.
   Future<GeoResult?> reverse(GeoPoint p) async {
-    final list = await _get(
-      'https://api.geoapify.com/v1/geocode/reverse',
-      {
-        'lat': '${p.lat}',
-        'lon': '${p.lng}',
-        'lang': 'pt',
-        'format': 'json',
-      },
-      (body) => body['results'],
-    );
+    final list = await _get('https://api.geoapify.com/v1/geocode/reverse', {
+      'lat': '${p.lat}',
+      'lon': '${p.lng}',
+      'lang': 'pt',
+      'format': 'json',
+    }, (body) => body['results']);
     return list.isEmpty ? null : list.first;
   }
 
@@ -193,9 +185,14 @@ class GeoSearch {
     Map<String, String> params,
     Object? Function(Map<String, dynamic>) pick,
   ) async {
-    if (!configured) throw const GeoSearchException(GeoSearchError.notConfigured);
-    final uri = Uri.parse(base).replace(queryParameters: {...params, 'apiKey': _key});
-    final cacheKey = Uri.parse(base).replace(queryParameters: params).toString();
+    if (!configured)
+      throw const GeoSearchException(GeoSearchError.notConfigured);
+    final uri = Uri.parse(
+      base,
+    ).replace(queryParameters: {...params, 'apiKey': _key});
+    final cacheKey = Uri.parse(
+      base,
+    ).replace(queryParameters: params).toString();
     final hit = _cache.remove(cacheKey);
     if (hit != null) return _cache[cacheKey] = hit; // most recent last
 

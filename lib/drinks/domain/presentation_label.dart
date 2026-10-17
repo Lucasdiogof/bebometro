@@ -5,8 +5,9 @@ import '../../l10n/l10n.dart';
 /// number format, e.g. "Lata 350 ml", "Garrafa 1.000 ml") so the saved text,
 /// the chips that compare with it and the vessel detection never depend on
 /// the language. This file only translates the canonical text for display.
-final _presentationText =
-    RegExp(r'^(Lata|Long neck|Garrafa|Copo|Caneca|Tulipa|Taça|Dose dupla|Dose) ([\d.]+) (ml|L)$');
+final _presentationText = RegExp(
+  r'^(Lata|Long neck|Garrafa|Copo|Caneca|Tulipa|Taça|Dose dupla|Dose) ([\d.]+) (ml|L)$',
+);
 final _plainVolume = RegExp(r'^([\d.]+) ml$');
 
 /// Shows a saved presentation label ("Lata 350 ml", "350 ml") in the

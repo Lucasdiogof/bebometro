@@ -22,21 +22,21 @@ const ingredientRoles = [
 
 /// Name of a role in the language on screen (the code itself when unknown).
 String ingredientRoleLabel(String role) => switch (role) {
-      'cachaca' => tr.roleCachaca,
-      'vodka' => tr.roleVodka,
-      'gin' => tr.roleGin,
-      'rum' => tr.roleRum,
-      'tequila' => tr.roleTequila,
-      'whisky' => tr.roleWhisky,
-      'orange-liqueur' => tr.roleOrangeLiqueur,
-      'campari' => tr.roleCampari,
-      'aperol' => tr.roleAperol,
-      'vermouth-sweet' => tr.roleSweetVermouth,
-      'vermouth-dry' => tr.roleDryVermouth,
-      'sparkling-wine' => tr.roleSparklingWine,
-      'bitters' => tr.roleBitters,
-      _ => role,
-    };
+  'cachaca' => tr.roleCachaca,
+  'vodka' => tr.roleVodka,
+  'gin' => tr.roleGin,
+  'rum' => tr.roleRum,
+  'tequila' => tr.roleTequila,
+  'whisky' => tr.roleWhisky,
+  'orange-liqueur' => tr.roleOrangeLiqueur,
+  'campari' => tr.roleCampari,
+  'aperol' => tr.roleAperol,
+  'vermouth-sweet' => tr.roleSweetVermouth,
+  'vermouth-dry' => tr.roleDryVermouth,
+  'sparkling-wine' => tr.roleSparklingWine,
+  'bitters' => tr.roleBitters,
+  _ => role,
+};
 
 /// Unit of an ingredient amount. Only [ml] is a liquid volume: the others are
 /// never converted into ml, so they never enter the alcohol calculation.
@@ -60,28 +60,28 @@ enum RecipeUnit {
   final String code;
 
   String get label => switch (this) {
-        RecipeUnit.ml => tr.recipeUnitMl,
-        RecipeUnit.g => tr.recipeUnitG,
-        RecipeUnit.unit => tr.recipeUnitUnit,
-        RecipeUnit.tsp => tr.recipeUnitTsp,
-        RecipeUnit.tbsp => tr.recipeUnitTbsp,
-        RecipeUnit.leaf => tr.recipeUnitLeaf,
-        RecipeUnit.drop => tr.recipeUnitDrop,
-        RecipeUnit.toTaste => tr.recipeUnitToTaste,
-        RecipeUnit.other => tr.recipeUnitOther,
-      };
+    RecipeUnit.ml => tr.recipeUnitMl,
+    RecipeUnit.g => tr.recipeUnitG,
+    RecipeUnit.unit => tr.recipeUnitUnit,
+    RecipeUnit.tsp => tr.recipeUnitTsp,
+    RecipeUnit.tbsp => tr.recipeUnitTbsp,
+    RecipeUnit.leaf => tr.recipeUnitLeaf,
+    RecipeUnit.drop => tr.recipeUnitDrop,
+    RecipeUnit.toTaste => tr.recipeUnitToTaste,
+    RecipeUnit.other => tr.recipeUnitOther,
+  };
 
   String get shortLabel => switch (this) {
-        RecipeUnit.ml => 'ml',
-        RecipeUnit.g => 'g',
-        RecipeUnit.unit => tr.recipeShortUnit,
-        RecipeUnit.tsp => tr.recipeShortTsp,
-        RecipeUnit.tbsp => tr.recipeShortTbsp,
-        RecipeUnit.leaf => tr.recipeShortLeaf,
-        RecipeUnit.drop => tr.recipeShortDrop,
-        RecipeUnit.toTaste => tr.recipeUnitToTaste,
-        RecipeUnit.other => '',
-      };
+    RecipeUnit.ml => 'ml',
+    RecipeUnit.g => 'g',
+    RecipeUnit.unit => tr.recipeShortUnit,
+    RecipeUnit.tsp => tr.recipeShortTsp,
+    RecipeUnit.tbsp => tr.recipeShortTbsp,
+    RecipeUnit.leaf => tr.recipeShortLeaf,
+    RecipeUnit.drop => tr.recipeShortDrop,
+    RecipeUnit.toTaste => tr.recipeUnitToTaste,
+    RecipeUnit.other => '',
+  };
 
   /// Units the editor offers (the original wording is not selectable).
   static const editable = [ml, g, unit, tsp, tbsp, leaf, drop, toTaste];
@@ -161,8 +161,8 @@ class EntryComponent {
   /// known.
   double? get pureAlcoholMl =>
       (alcoholic && amountMl != null && abvPercent != null)
-          ? amountMl! * abvPercent! / 100
-          : null;
+      ? amountMl! * abvPercent! / 100
+      : null;
 
   EntryComponent copyWith({
     String? name,
@@ -173,34 +173,33 @@ class EntryComponent {
     double? Function()? abvPercent,
     String? Function()? productId,
     String? Function()? productName,
-  }) =>
-      EntryComponent(
-        name: name ?? this.name,
-        alcoholic: alcoholic ?? this.alcoholic,
-        role: role,
-        amount: amount != null ? amount() : this.amount,
-        unit: unit ?? this.unit,
-        amountText: amountText != null ? amountText() : this.amountText,
-        abvPercent: abvPercent != null ? abvPercent() : this.abvPercent,
-        productId: productId != null ? productId() : this.productId,
-        productName: productName != null ? productName() : this.productName,
-        optional: optional,
-      );
+  }) => EntryComponent(
+    name: name ?? this.name,
+    alcoholic: alcoholic ?? this.alcoholic,
+    role: role,
+    amount: amount != null ? amount() : this.amount,
+    unit: unit ?? this.unit,
+    amountText: amountText != null ? amountText() : this.amountText,
+    abvPercent: abvPercent != null ? abvPercent() : this.abvPercent,
+    productId: productId != null ? productId() : this.productId,
+    productName: productName != null ? productName() : this.productName,
+    optional: optional,
+  );
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'alcoholic': alcoholic,
-        if (role != null) 'role': role,
-        // Kept for readers that only know millilitres.
-        'amount_ml': amountMl,
-        'amount': amount,
-        'unit': unit.code,
-        if (amountText != null) 'amount_text': amountText,
-        'abv_percent': abvPercent,
-        if (productId != null) 'product_id': productId,
-        if (productName != null) 'product_name': productName,
-        if (optional) 'optional': true,
-      };
+    'name': name,
+    'alcoholic': alcoholic,
+    if (role != null) 'role': role,
+    // Kept for readers that only know millilitres.
+    'amount_ml': amountMl,
+    'amount': amount,
+    'unit': unit.code,
+    if (amountText != null) 'amount_text': amountText,
+    'abv_percent': abvPercent,
+    if (productId != null) 'product_id': productId,
+    if (productName != null) 'product_name': productName,
+    if (optional) 'optional': true,
+  };
 
   /// Reads current snapshots and older ones (which only had `amount_ml` and
   /// `amount_text`, no unit).
@@ -209,7 +208,8 @@ class EntryComponent {
     unit ??= (j['amount_ml'] != null || j['amount_text'] == null)
         ? RecipeUnit.ml
         : RecipeUnit.other;
-    final amount = (j['amount'] as num?)?.toDouble() ??
+    final amount =
+        (j['amount'] as num?)?.toDouble() ??
         (unit == RecipeUnit.ml ? (j['amount_ml'] as num?)?.toDouble() : null);
     return EntryComponent(
       name: j['name'] as String,
@@ -262,10 +262,10 @@ class Recipe {
     String? garnish,
     String? note,
     this.translations = const {},
-  })  : _components = components,
-        _method = method,
-        _garnish = garnish,
-        _note = note;
+  }) : _components = components,
+       _method = method,
+       _garnish = garnish,
+       _note = note;
 
   final String id;
   final String name;
@@ -299,10 +299,10 @@ class Recipe {
 
   /// Component names in every language, for search.
   List<String> get searchComponents => [
-        for (final c in _components) c.name,
-        for (final t in translations.values)
-          for (final n in t.componentNames) ?n,
-      ];
+    for (final c in _components) c.name,
+    for (final t in translations.values)
+      for (final n in t.componentNames) ?n,
+  ];
 }
 
 /// Snapshot of what was registered for a mixed drink. It lives in the record,
@@ -339,25 +339,25 @@ class Composition {
       );
 
   Map<String, dynamic> toJson() => {
-        if (recipeId != null) 'recipe_id': recipeId,
-        if (recipeName != null) 'recipe_name': recipeName,
-        if (sourceLabel != null) 'source_label': sourceLabel,
-        if (sourceUrl != null) 'source_url': sourceUrl,
-        'customized': customized,
-        'components': [for (final c in components) c.toJson()],
-      };
+    if (recipeId != null) 'recipe_id': recipeId,
+    if (recipeName != null) 'recipe_name': recipeName,
+    if (sourceLabel != null) 'source_label': sourceLabel,
+    if (sourceUrl != null) 'source_url': sourceUrl,
+    'customized': customized,
+    'components': [for (final c in components) c.toJson()],
+  };
 
   factory Composition.fromJson(Map<String, dynamic> j) => Composition(
-        recipeId: j['recipe_id'] as String?,
-        recipeName: j['recipe_name'] as String?,
-        sourceLabel: j['source_label'] as String?,
-        sourceUrl: j['source_url'] as String?,
-        customized: j['customized'] as bool? ?? false,
-        components: [
-          for (final c in (j['components'] as List))
-            EntryComponent.fromJson(Map<String, dynamic>.from(c as Map)),
-        ],
-      );
+    recipeId: j['recipe_id'] as String?,
+    recipeName: j['recipe_name'] as String?,
+    sourceLabel: j['source_label'] as String?,
+    sourceUrl: j['source_url'] as String?,
+    customized: j['customized'] as bool? ?? false,
+    components: [
+      for (final c in (j['components'] as List))
+        EntryComponent.fromJson(Map<String, dynamic>.from(c as Map)),
+    ],
+  );
 }
 
 /// Pure alcohol that can be computed from what is known. Components with an

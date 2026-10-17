@@ -98,39 +98,43 @@ class DrinkFormState {
     bool? dirty,
     String? error,
     PriceSuggestion? suggestion,
-  }) =>
-      DrinkFormState(
-        draft: draft ?? this.draft,
-        presentations: presentations,
-        sizesAreGeneric: sizesAreGeneric,
-        abvVariants: abvVariants,
-        bottles: bottles,
-        suggestion: suggestion ?? this.suggestion,
-        suggestionAtPlace: suggestionAtPlace,
-        advertisedCents: advertisedCents,
-        showErrors: showErrors ?? this.showErrors,
-        saving: saving ?? this.saving,
-        saved: saved ?? this.saved,
-        deleted: deleted ?? this.deleted,
-        dirty: dirty ?? this.dirty,
-        error: error,
-      );
+  }) => DrinkFormState(
+    draft: draft ?? this.draft,
+    presentations: presentations,
+    sizesAreGeneric: sizesAreGeneric,
+    abvVariants: abvVariants,
+    bottles: bottles,
+    suggestion: suggestion ?? this.suggestion,
+    suggestionAtPlace: suggestionAtPlace,
+    advertisedCents: advertisedCents,
+    showErrors: showErrors ?? this.showErrors,
+    saving: saving ?? this.saving,
+    saved: saved ?? this.saved,
+    deleted: deleted ?? this.deleted,
+    dirty: dirty ?? this.dirty,
+    error: error,
+  );
 }
 
 class DrinkFormCubit extends Cubit<DrinkFormState> {
-  DrinkFormCubit._(this._drinks, this._outingId, this._candidates, super.initial,
-      {String? entryId, this.reviewNote})
-      : _entryId = entryId ?? _drinks.newId();
+  DrinkFormCubit._(
+    this._drinks,
+    this._outingId,
+    this._candidates,
+    super.initial, {
+    String? entryId,
+    this.reviewNote,
+  }) : _entryId = entryId ?? _drinks.newId();
 
   /// Shown on top of the form when it reviews a lock-screen tap.
   final String? reviewNote;
 
   static ComparableKey _keyOf(DrinkDraft d) => ComparableKey(
-        item: d.catalogItemId ?? 'name:${d.name}',
-        containerMl: d.containerMl,
-        presentation: d.presentationLabel,
-        shared: d.isShared,
-      );
+    item: d.catalogItemId ?? 'name:${d.name}',
+    containerMl: d.containerMl,
+    presentation: d.presentationLabel,
+    shared: d.isShared,
+  );
 
   /// Records at the same place (or in the same outing) to look prices up in.
   final List<DrinkEntry> _candidates;
@@ -152,28 +156,28 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       notAfter: outing.endedAt,
     );
     return DrinkFormCubit._(
-        drinks,
-        outing.id,
-        candidates,
-        DrinkFormState(
-          draft: draft,
-          suggestionAtPlace: outing.placeId != null,
-          suggestion: suggestPrice(candidates, _keyOf(draft)),
-          advertisedCents: item.advertisedCents,
-          presentations: _sizesFor(item).list,
-          sizesAreGeneric: _sizesFor(item).generic,
-          abvVariants: item.abvVariants,
-          bottles: _bottlesOf(item),
-        ),
-      );
+      drinks,
+      outing.id,
+      candidates,
+      DrinkFormState(
+        draft: draft,
+        suggestionAtPlace: outing.placeId != null,
+        suggestion: suggestPrice(candidates, _keyOf(draft)),
+        advertisedCents: item.advertisedCents,
+        presentations: _sizesFor(item).list,
+        sizesAreGeneric: _sizesFor(item).generic,
+        abvVariants: item.abvVariants,
+        bottles: _bottlesOf(item),
+      ),
+    );
   }
 
   static List<Presentation> _bottlesOf(CatalogItem item) =>
       item.category == DrinkCategory.spirit
-          ? item.documentedPresentations
-              .where((p) => p.kind == PresentationKind.bottle)
-              .toList()
-          : const [];
+      ? item.documentedPresentations
+            .where((p) => p.kind == PresentationKind.bottle)
+            .toList()
+      : const [];
 
   /// Sizes shown as chips. Documented packages are kept apart from plain
   /// suggestions; spirits get dose suggestions plus their documented bottles
@@ -223,10 +227,11 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
         presentations: template.isMixed
             ? const []
             : (item != null
-                ? _sizesFor(item).list
-                : commonSizesFor(template.category)),
-        sizesAreGeneric:
-            template.isMixed ? false : (item == null || _sizesFor(item).generic),
+                  ? _sizesFor(item).list
+                  : commonSizesFor(template.category)),
+        sizesAreGeneric: template.isMixed
+            ? false
+            : (item == null || _sizesFor(item).generic),
         abvVariants: item?.abvVariants ?? const [],
         bottles: item == null ? const [] : _bottlesOf(item),
         // Shown with its errors at once: a time outside the outing must be
@@ -246,7 +251,10 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     List<DrinkEntry> candidates,
   ) {
     final item = drinks.itemById(entry.catalogItemId);
-    final others = [for (final c in candidates) if (c.id != entry.id) c];
+    final others = [
+      for (final c in candidates)
+        if (c.id != entry.id) c,
+    ];
     return DrinkFormCubit._(
       drinks,
       entry.outingId,
@@ -260,9 +268,11 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
         presentations: entry.isMixed
             ? const []
             : (item != null
-                ? _sizesFor(item).list
-                : commonSizesFor(entry.category)),
-        sizesAreGeneric: entry.isMixed ? false : (item == null || _sizesFor(item).generic),
+                  ? _sizesFor(item).list
+                  : commonSizesFor(entry.category)),
+        sizesAreGeneric: entry.isMixed
+            ? false
+            : (item == null || _sizesFor(item).generic),
         abvVariants: item?.abvVariants ?? const [],
         bottles: item == null ? const [] : _bottlesOf(item),
       ),
@@ -275,11 +285,13 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
   /// Stable per form, so a repeated "save" never creates a second row.
   final String _entryId;
 
-  void _set(DrinkDraft draft) => emit(state.copyWith(
-        draft: draft,
-        dirty: true,
-        suggestion: suggestPrice(_candidates, _keyOf(draft)),
-      ));
+  void _set(DrinkDraft draft) => emit(
+    state.copyWith(
+      draft: draft,
+      dirty: true,
+      suggestion: suggestPrice(_candidates, _keyOf(draft)),
+    ),
+  );
 
   /// The user confirmed the suggested price (their own last paid value).
   void applySuggestedPaid() {
@@ -292,9 +304,9 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
   void applySuggestedTotal() {
     final cents = state.suggestion.totalCents;
     if (cents == null) return;
-    _set(state.draft
-        .withPriceKind(PriceKind.informed)
-        .withBillTotalCents(cents));
+    _set(
+      state.draft.withPriceKind(PriceKind.informed).withBillTotalCents(cents),
+    );
   }
 
   /// The user confirmed the menu's advertised price as what they paid (or as
@@ -323,12 +335,11 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
   void suggestPayment() => _set(state.draft.withSuggestedPayment());
   void setConsumedAt(DateTime at) => _set(state.draft.withConsumedAt(at));
 
-  // ---- Mixed drinks ------------------------------------------------------------
-
   void setComponentAmount(int i, double? amount, [RecipeUnit? unit]) =>
       _set(state.draft.withComponentAmount(i, amount, unit));
-  void setComponentUnit(int i, RecipeUnit unit) => _set(state.draft
-      .withComponentAmount(i, state.draft.components[i].amount, unit));
+  void setComponentUnit(int i, RecipeUnit unit) => _set(
+    state.draft.withComponentAmount(i, state.draft.components[i].amount, unit),
+  );
   void setComponentAbv(int i, double? abv) =>
       _set(state.draft.withComponentAbv(i, abv));
   void pickComponentProduct(int i, CatalogItem? product) =>
@@ -337,16 +348,18 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
   void addComponent(String name, {required bool alcoholic}) {
     final trimmed = name.trim();
     if (trimmed.isEmpty) return;
-    _set(state.draft.addComponent(
-      EntryComponent(name: trimmed, alcoholic: alcoholic),
-    ));
+    _set(
+      state.draft.addComponent(
+        EntryComponent(name: trimmed, alcoholic: alcoholic),
+      ),
+    );
   }
 
   /// Products (brands) that can fill an ingredient with this role.
   List<CatalogItem> productsForRole(String role) => [
-        for (final i in _drinks.catalog())
-          if (i.roles.contains(role)) i,
-      ];
+    for (final i in _drinks.catalog())
+      if (i.roles.contains(role)) i,
+  ];
 
   /// Saves the composition as the user's own reusable recipe. Returns an
   /// error message, or null on success.
@@ -392,8 +405,10 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
   /// Applies the offered price to the records without price and, only when
   /// [replaceExisting], also to those that had another one. Returns how many
   /// records changed. Only the payment changes (never volumes or the bill total).
-  Future<int> applyPriceOffer(PriceOffer offer,
-      {required bool replaceExisting}) async {
+  Future<int> applyPriceOffer(
+    PriceOffer offer, {
+    required bool replaceExisting,
+  }) async {
     final targets = [
       ...offer.unpriced,
       if (replaceExisting) ...offer.differing,
@@ -423,10 +438,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       emit(state.copyWith(saving: false, saved: true));
     } catch (e) {
       if (kDebugMode) debugPrint('[drink form] save failed: $e');
-      emit(state.copyWith(
-        saving: false,
-        error: tr.formSaveFailed,
-      ));
+      emit(state.copyWith(saving: false, error: tr.formSaveFailed));
     }
   }
 
@@ -439,10 +451,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       emit(state.copyWith(saving: false, deleted: true));
     } catch (e) {
       if (kDebugMode) debugPrint('[drink form] delete failed: $e');
-      emit(state.copyWith(
-        saving: false,
-        error: tr.formDeleteFailed,
-      ));
+      emit(state.copyWith(saving: false, error: tr.formDeleteFailed));
     }
   }
 }

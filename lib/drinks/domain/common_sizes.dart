@@ -11,44 +11,144 @@ List<Presentation> commonSizesFor(DrinkCategory category) {
     case DrinkCategory.beer:
     case DrinkCategory.nonAlcoholic:
       return const [
-        Presentation('350 ml', 350, kind: PresentationKind.can, isSuggestion: true),
-        Presentation('355 ml', 355, kind: PresentationKind.longNeck, isSuggestion: true),
-        Presentation('473 ml', 473, kind: PresentationKind.can, isSuggestion: true),
-        Presentation('600 ml', 600, kind: PresentationKind.bottle, isSuggestion: true),
+        Presentation(
+          '350 ml',
+          350,
+          kind: PresentationKind.can,
+          isSuggestion: true,
+        ),
+        Presentation(
+          '355 ml',
+          355,
+          kind: PresentationKind.longNeck,
+          isSuggestion: true,
+        ),
+        Presentation(
+          '473 ml',
+          473,
+          kind: PresentationKind.can,
+          isSuggestion: true,
+        ),
+        Presentation(
+          '600 ml',
+          600,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
       ];
     case DrinkCategory.draft:
       return const [
-        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Copo 400 ml', 400, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Caneca 500 ml', 500, kind: PresentationKind.glass, isSuggestion: true),
+        Presentation(
+          'Copo 300 ml',
+          300,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Copo 400 ml',
+          400,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Caneca 500 ml',
+          500,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
       ];
     case DrinkCategory.cocktail:
       return const [
-        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Copo 400 ml', 400, kind: PresentationKind.glass, isSuggestion: true),
+        Presentation(
+          'Copo 300 ml',
+          300,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Copo 400 ml',
+          400,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
       ];
     case DrinkCategory.spirit:
       return const [
-        Presentation('Dose 30 ml', 30, kind: PresentationKind.shot, isSuggestion: true),
-        Presentation('Dose 50 ml', 50, kind: PresentationKind.shot, isSuggestion: true),
-        Presentation('Dose dupla 100 ml', 100, kind: PresentationKind.shot, isSuggestion: true),
+        Presentation(
+          'Dose 30 ml',
+          30,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Dose 50 ml',
+          50,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Dose dupla 100 ml',
+          100,
+          kind: PresentationKind.shot,
+          isSuggestion: true,
+        ),
       ];
     case DrinkCategory.readyToDrink:
       return const [
-        Presentation('269 ml', 269, kind: PresentationKind.can, isSuggestion: true),
-        Presentation('275 ml', 275, kind: PresentationKind.longNeck, isSuggestion: true),
-        Presentation('350 ml', 350, kind: PresentationKind.can, isSuggestion: true),
+        Presentation(
+          '269 ml',
+          269,
+          kind: PresentationKind.can,
+          isSuggestion: true,
+        ),
+        Presentation(
+          '275 ml',
+          275,
+          kind: PresentationKind.longNeck,
+          isSuggestion: true,
+        ),
+        Presentation(
+          '350 ml',
+          350,
+          kind: PresentationKind.can,
+          isSuggestion: true,
+        ),
       ];
     case DrinkCategory.wine:
       return const [
-        Presentation('Taça 150 ml', 150, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('Taça 200 ml', 200, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('750 ml', 750, kind: PresentationKind.bottle, isSuggestion: true),
+        Presentation(
+          'Taça 150 ml',
+          150,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Taça 200 ml',
+          200,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          '750 ml',
+          750,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
       ];
     case DrinkCategory.water:
       return const [
-        Presentation('Copo 300 ml', 300, kind: PresentationKind.glass, isSuggestion: true),
-        Presentation('500 ml', 500, kind: PresentationKind.bottle, isSuggestion: true),
+        Presentation(
+          'Copo 300 ml',
+          300,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          '500 ml',
+          500,
+          kind: PresentationKind.bottle,
+          isSuggestion: true,
+        ),
       ];
   }
 }

@@ -67,12 +67,16 @@ class _OutingDrinksSectionState extends State<OutingDrinksSection> {
         content: Text(tr.outingDrinksRemoveBody),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.commonCancel)),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.commonCancel),
+          ),
           TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.outingDrinksRemove,
-                  style: const TextStyle(color: AppColors.danger))),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              tr.outingDrinksRemove,
+              style: const TextStyle(color: AppColors.danger),
+            ),
+          ),
         ],
       ),
     );
@@ -94,47 +98,58 @@ class _OutingDrinksSectionState extends State<OutingDrinksSection> {
             child: SurfaceCard(
               onTap: () => widget.onRegister(d),
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.md, AppSpace.sm, AppSpace.xs, AppSpace.sm),
-              child: Row(children: [
-                if (d.photoIds.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(right: AppSpace.md),
-                    child: PhotoThumb(photoId: d.photoIds.first, size: 44),
-                  )
-                else
-                  Padding(
-                    padding: const EdgeInsets.only(right: AppSpace.md),
-                    child: Icon(d.category.icon, color: AppColors.amber),
+                AppSpace.md,
+                AppSpace.sm,
+                AppSpace.xs,
+                AppSpace.sm,
+              ),
+              child: Row(
+                children: [
+                  if (d.photoIds.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(right: AppSpace.md),
+                      child: PhotoThumb(photoId: d.photoIds.first, size: 44),
+                    )
+                  else
+                    Padding(
+                      padding: const EdgeInsets.only(right: AppSpace.md),
+                      child: Icon(d.category.icon, color: AppColors.amber),
+                    ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          d.displayName,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppText.subtitle,
+                        ),
+                        Text(
+                          _subtitle(d),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppText.caption,
+                        ),
+                      ],
+                    ),
                   ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(d.displayName,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppText.subtitle),
-                      Text(_subtitle(d),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppText.caption),
+                  PopupMenuButton<String>(
+                    tooltip: tr.outingDrinksMoreActions,
+                    onSelected: (v) {
+                      if (v == 'edit') _edit(d);
+                      if (v == 'remove') _remove(d);
+                    },
+                    itemBuilder: (_) => [
+                      PopupMenuItem(value: 'edit', child: Text(tr.commonEdit)),
+                      PopupMenuItem(
+                        value: 'remove',
+                        child: Text(tr.outingDrinksRemoveFromList),
+                      ),
                     ],
                   ),
-                ),
-                PopupMenuButton<String>(
-                  tooltip: tr.outingDrinksMoreActions,
-                  onSelected: (v) {
-                    if (v == 'edit') _edit(d);
-                    if (v == 'remove') _remove(d);
-                  },
-                  itemBuilder: (_) => [
-                    PopupMenuItem(value: 'edit', child: Text(tr.commonEdit)),
-                    PopupMenuItem(
-                        value: 'remove',
-                        child: Text(tr.outingDrinksRemoveFromList)),
-                  ],
-                ),
-              ]),
+                ],
+              ),
             ),
           ),
       ],

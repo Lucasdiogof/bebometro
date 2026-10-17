@@ -79,8 +79,9 @@ class DrinkDraft {
       origin: item.origin,
       note: item.note,
       consumedAt: now,
-      presentationLabel:
-          (first == null || first.isSuggestion) ? null : first.label,
+      presentationLabel: (first == null || first.isSuggestion)
+          ? null
+          : first.label,
       containerMl: first?.volumeMl,
       abvPercent: item.abvPercent,
       abvSource: item.abvOrigin,
@@ -99,36 +100,35 @@ class DrinkDraft {
     bool asNew = false,
     DateTime? consumedAt,
     EntryOrigin? origin,
-  }) =>
-      DrinkDraft(
-        name: e.name,
-        category: e.category,
-        brand: e.brand,
-        style: e.style,
-        catalogItemId: e.catalogItemId,
-        ingredients: e.ingredients,
-        consumedAt: consumedAt ?? e.consumedAt,
-        presentationLabel: e.presentation,
-        containerMl: e.containerMl,
-        abvPercent: e.abvPercent,
-        abvSource: e.abvSource,
-        priceKind: e.priceKind,
-        paidCents: e.paidCents,
-        billTotalCents: e.billTotalCents,
-        paidEdited: true,
-        isShared: e.isShared,
-        peopleCount: e.peopleCount < 2 ? 2 : e.peopleCount,
-        personalMl: e.personalMl,
-        leftoverMl: e.leftoverMl,
-        personalEdited: true,
-        existing: asNew ? null : e,
-        notBefore: notBefore,
-        notAfter: notAfter,
-        composition: e.composition,
-        // A correction keeps the record's origin; a new record gets only the
-        // origin it is given (never the template's).
-        entryOrigin: asNew ? origin : e.entryOrigin,
-      );
+  }) => DrinkDraft(
+    name: e.name,
+    category: e.category,
+    brand: e.brand,
+    style: e.style,
+    catalogItemId: e.catalogItemId,
+    ingredients: e.ingredients,
+    consumedAt: consumedAt ?? e.consumedAt,
+    presentationLabel: e.presentation,
+    containerMl: e.containerMl,
+    abvPercent: e.abvPercent,
+    abvSource: e.abvSource,
+    priceKind: e.priceKind,
+    paidCents: e.paidCents,
+    billTotalCents: e.billTotalCents,
+    paidEdited: true,
+    isShared: e.isShared,
+    peopleCount: e.peopleCount < 2 ? 2 : e.peopleCount,
+    personalMl: e.personalMl,
+    leftoverMl: e.leftoverMl,
+    personalEdited: true,
+    existing: asNew ? null : e,
+    notBefore: notBefore,
+    notAfter: notAfter,
+    composition: e.composition,
+    // A correction keeps the record's origin; a new record gets only the
+    // origin it is given (never the template's).
+    entryOrigin: asNew ? origin : e.entryOrigin,
+  );
 
   /// Lock-screen origin carried to the saved record (see [EntryOrigin]).
   final EntryOrigin? entryOrigin;
@@ -182,8 +182,8 @@ class DrinkDraft {
   /// Pure alcohol of the composition as it stands, with what is missing.
   AlcoholEstimate? get alcoholEstimate =>
       composition == null || !components.any((c) => c.alcoholic)
-          ? null
-          : estimateComponents(components);
+      ? null
+      : estimateComponents(components);
 
   DrinkDraft _copy({
     String? Function()? presentationLabel,
@@ -201,40 +201,40 @@ class DrinkDraft {
     bool? personalEdited,
     DateTime? consumedAt,
     Composition? composition,
-  }) =>
-      DrinkDraft(
-        name: name,
-        category: category,
-        brand: brand,
-        style: style,
-        catalogItemId: catalogItemId,
-        ingredients: ingredients,
-        origin: origin,
-        note: note,
-        existing: existing,
-        notBefore: notBefore,
-        notAfter: notAfter,
-        reference: reference,
-        entryOrigin: entryOrigin,
-        composition: composition ?? this.composition,
-        consumedAt: consumedAt ?? this.consumedAt,
-        presentationLabel: presentationLabel != null
-            ? presentationLabel()
-            : this.presentationLabel,
-        containerMl: containerMl != null ? containerMl() : this.containerMl,
-        abvPercent: abvPercent != null ? abvPercent() : this.abvPercent,
-        abvSource: abvSource != null ? abvSource() : this.abvSource,
-        priceKind: priceKind ?? this.priceKind,
-        paidCents: paidCents != null ? paidCents() : this.paidCents,
-        billTotalCents:
-            billTotalCents != null ? billTotalCents() : this.billTotalCents,
-        paidEdited: paidEdited ?? this.paidEdited,
-        isShared: isShared ?? this.isShared,
-        peopleCount: peopleCount ?? this.peopleCount,
-        personalMl: personalMl != null ? personalMl() : this.personalMl,
-        leftoverMl: leftoverMl ?? this.leftoverMl,
-        personalEdited: personalEdited ?? this.personalEdited,
-      );
+  }) => DrinkDraft(
+    name: name,
+    category: category,
+    brand: brand,
+    style: style,
+    catalogItemId: catalogItemId,
+    ingredients: ingredients,
+    origin: origin,
+    note: note,
+    existing: existing,
+    notBefore: notBefore,
+    notAfter: notAfter,
+    reference: reference,
+    entryOrigin: entryOrigin,
+    composition: composition ?? this.composition,
+    consumedAt: consumedAt ?? this.consumedAt,
+    presentationLabel: presentationLabel != null
+        ? presentationLabel()
+        : this.presentationLabel,
+    containerMl: containerMl != null ? containerMl() : this.containerMl,
+    abvPercent: abvPercent != null ? abvPercent() : this.abvPercent,
+    abvSource: abvSource != null ? abvSource() : this.abvSource,
+    priceKind: priceKind ?? this.priceKind,
+    paidCents: paidCents != null ? paidCents() : this.paidCents,
+    billTotalCents: billTotalCents != null
+        ? billTotalCents()
+        : this.billTotalCents,
+    paidEdited: paidEdited ?? this.paidEdited,
+    isShared: isShared ?? this.isShared,
+    peopleCount: peopleCount ?? this.peopleCount,
+    personalMl: personalMl != null ? personalMl() : this.personalMl,
+    leftoverMl: leftoverMl ?? this.leftoverMl,
+    personalEdited: personalEdited ?? this.personalEdited,
+  );
 
   /// Re-derives the user's portion and the suggested payment.
   DrinkDraft _rebalance() {
@@ -262,36 +262,40 @@ class DrinkDraft {
   /// A documented package is saved as the record's presentation; a size
   /// suggestion only fills the volume.
   DrinkDraft withPresentation(Presentation p) => _copy(
-        presentationLabel: () => p.isSuggestion ? null : p.label,
-        containerMl: () => p.volumeMl,
-      )._rebalance();
+    presentationLabel: () => p.isSuggestion ? null : p.label,
+    containerMl: () => p.volumeMl,
+  )._rebalance();
 
   DrinkDraft withContainerMl(int? ml, List<Presentation> known) {
     String? label;
     for (final p in known) {
       if (!p.isSuggestion && p.volumeMl == ml) label = p.label;
     }
-    return _copy(containerMl: () => ml, presentationLabel: () => label)
-        ._rebalance();
+    return _copy(
+      containerMl: () => ml,
+      presentationLabel: () => label,
+    )._rebalance();
   }
 
   /// Changing the ABV makes the user its source; the same value keeps the
   /// source it already had (label, menu, catalog).
   DrinkDraft withAbv(double? abv) => _copy(
-        abvPercent: () => abv,
-        abvSource: () =>
-            abv == abvPercent ? abvSource : (abv == null ? null : AbvSource.typed),
-      );
+    abvPercent: () => abv,
+    abvSource: () =>
+        abv == abvPercent ? abvSource : (abv == null ? null : AbvSource.typed),
+  );
 
-  DrinkDraft withShared(bool shared) =>
-      _copy(isShared: shared, personalEdited: false, paidEdited: false)
-          ._rebalance();
+  DrinkDraft withShared(bool shared) => _copy(
+    isShared: shared,
+    personalEdited: false,
+    paidEdited: false,
+  )._rebalance();
 
   DrinkDraft withPeople(int people) => _copy(
-        peopleCount: people.clamp(2, maxPeople).toInt(),
-        personalEdited: false,
-        paidEdited: false,
-      )._rebalance();
+    peopleCount: people.clamp(2, maxPeople).toInt(),
+    personalEdited: false,
+    paidEdited: false,
+  )._rebalance();
 
   DrinkDraft withPersonalMl(int? ml) =>
       _copy(personalMl: () => ml, personalEdited: true);
@@ -321,12 +325,9 @@ class DrinkDraft {
       _copy(billTotalCents: () => cents)._rebalance();
 
   /// Back to the equal split suggested from the bill total.
-  DrinkDraft withSuggestedPayment() =>
-      _copy(paidEdited: false)._rebalance();
+  DrinkDraft withSuggestedPayment() => _copy(paidEdited: false)._rebalance();
 
   DrinkDraft withConsumedAt(DateTime at) => _copy(consumedAt: at);
-
-  // ---- Mixed drinks (components) ---------------------------------------------
 
   bool _sameAsReference(List<EntryComponent> list) {
     final ref = reference;
@@ -360,7 +361,11 @@ class DrinkDraft {
 
   /// Sets the amount (and optionally the unit) of a component. Nothing is
   /// converted: an amount in spoons stays in spoons.
-  DrinkDraft withComponentAmount(int index, double? amount, [RecipeUnit? unit]) {
+  DrinkDraft withComponentAmount(
+    int index,
+    double? amount, [
+    RecipeUnit? unit,
+  ]) {
     final list = [...components];
     list[index] = list[index].copyWith(
       amount: () => amount,
@@ -420,7 +425,8 @@ class DrinkDraft {
           result['component_abv_$i'] = tr.draftAbvRange;
         }
         final qty = components[i].amount;
-        if (qty != null && qty < 0) result['component_ml_$i'] = tr.draftAmountInvalid;
+        if (qty != null && qty < 0)
+          result['component_ml_$i'] = tr.draftAmountInvalid;
       }
     } else if (container == null || container <= 0) {
       result['volume'] = tr.draftVolumeRequired;

@@ -39,16 +39,16 @@ class _HistoryView extends StatelessWidget {
         actions: [
           IconButton(
             tooltip: tr.statsTitle,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const StatsPage()),
-            ),
+            onPressed: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const StatsPage())),
             icon: const Icon(Icons.insights_outlined),
           ),
           IconButton(
             tooltip: tr.settingsSavedPlaces,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const PlacesPage()),
-            ),
+            onPressed: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const PlacesPage())),
             icon: const Icon(Icons.place_outlined),
           ),
           const SettingsAction(),
@@ -68,7 +68,11 @@ class _HistoryView extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(
-                    AppSpace.gutter, 0, AppSpace.gutter, AppSpace.sm),
+                  AppSpace.gutter,
+                  0,
+                  AppSpace.gutter,
+                  AppSpace.sm,
+                ),
                 child: TextField(
                   onChanged: cubit.setQuery,
                   textInputAction: TextInputAction.search,
@@ -106,44 +110,52 @@ class _Filters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      SizedBox(
-        height: 48,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
-          children: [
-            for (final p in HistoryPeriod.values)
-              _chip(p.label, state.period == p, () => cubit.setPeriod(p)),
-          ],
+    return Column(
+      children: [
+        SizedBox(
+          height: 48,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
+            children: [
+              for (final p in HistoryPeriod.values)
+                _chip(p.label, state.period == p, () => cubit.setPeriod(p)),
+            ],
+          ),
         ),
-      ),
-      SizedBox(
-        height: 48,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
-          children: [
-            _chip(tr.historyAllTypes, state.type == null,
-                () => cubit.setType(null)),
-            for (final t in OutingType.values)
-              _chip(t.label, state.type == t,
-                  () => cubit.setType(state.type == t ? null : t)),
-          ],
+        SizedBox(
+          height: 48,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
+            children: [
+              _chip(
+                tr.historyAllTypes,
+                state.type == null,
+                () => cubit.setType(null),
+              ),
+              for (final t in OutingType.values)
+                _chip(
+                  t.label,
+                  state.type == t,
+                  () => cubit.setType(state.type == t ? null : t),
+                ),
+            ],
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 
   Widget _chip(String label, bool selected, VoidCallback onTap) => Padding(
-        padding: const EdgeInsets.only(right: AppSpace.sm, top: 4, bottom: 4),
-        child: ChoiceChip(
-          label: Text(label),
-          selected: selected,
-          showCheckmark: false,
-          onSelected: (_) => onTap(),
-        ),
-      );
+    padding: const EdgeInsets.only(right: AppSpace.sm, top: 4, bottom: 4),
+    child: ChoiceChip(
+      label: Text(label),
+      selected: selected,
+      showCheckmark: false,
+      onSelected: (_) => onTap(),
+    ),
+  );
 }
 
 class _List extends StatelessWidget {
@@ -167,7 +179,11 @@ class _List extends StatelessWidget {
     }
     return ListView.builder(
       padding: const EdgeInsets.fromLTRB(
-          AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
+        AppSpace.gutter,
+        0,
+        AppSpace.gutter,
+        AppSpace.xxl,
+      ),
       itemCount: rows.length,
       itemBuilder: (context, i) {
         final row = rows[i];
@@ -194,55 +210,61 @@ class _OutingCard extends StatelessWidget {
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => OutingSummaryPage(outingId: o.id)),
       ),
-      child: Row(children: [
-        Container(
-          width: 46,
-          height: 46,
-          decoration: BoxDecoration(
-            color: AppColors.surfaceHigh,
-            borderRadius: BorderRadius.circular(AppRadius.md),
+      child: Row(
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceHigh,
+              borderRadius: BorderRadius.circular(AppRadius.md),
+            ),
+            child: Icon(o.type.icon, color: AppColors.amber),
           ),
-          child: Icon(o.type.icon, color: AppColors.amber),
-        ),
-        const SizedBox(width: AppSpace.md),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(o.displayName,
+          const SizedBox(width: AppSpace.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  o.displayName,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppText.subtitle),
-              const SizedBox(height: 2),
+                  style: AppText.subtitle,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${formatDate(o.startedAt)} · ${formatTime(o.startedAt)}',
+                  style: AppText.caption,
+                ),
+                const SizedBox(height: AppSpace.xs),
+                Text(
+                  '${tr.drinkCount(s.entryCount)}'
+                  ' · ${s.volumeLabel}',
+                  style: AppText.caption.copyWith(color: AppColors.text),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: AppSpace.sm),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
               Text(
-                '${formatDate(o.startedAt)} · ${formatTime(o.startedAt)}',
-                style: AppText.caption,
+                s.pricedCount == 0
+                    ? tr.historyNoValues
+                    : formatCents(s.informedCents),
+                style: AppText.subtitle,
               ),
-              const SizedBox(height: AppSpace.xs),
-              Text(
-                '${tr.drinkCount(s.entryCount)}'
-                ' · ${s.volumeLabel}',
-                style: AppText.caption.copyWith(color: AppColors.text),
-              ),
+              if (s.unpricedCount > 0)
+                Text(
+                  tr.homeUnpriced(s.unpricedCount),
+                  style: AppText.caption.copyWith(fontSize: 12),
+                ),
             ],
           ),
-        ),
-        const SizedBox(width: AppSpace.sm),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              s.pricedCount == 0
-                  ? tr.historyNoValues
-                  : formatCents(s.informedCents),
-              style: AppText.subtitle,
-            ),
-            if (s.unpricedCount > 0)
-              Text(tr.homeUnpriced(s.unpricedCount),
-                  style: AppText.caption.copyWith(fontSize: 12)),
-          ],
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }

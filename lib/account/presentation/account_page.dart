@@ -42,11 +42,13 @@ class _AccountPageState extends State<AccountPage> {
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: Text(tr.commonCancel)),
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(tr.commonCancel),
+          ),
           FilledButton(
-              onPressed: () => Navigator.pop(ctx, controller.text),
-              child: Text(tr.commonSave)),
+            onPressed: () => Navigator.pop(ctx, controller.text),
+            child: Text(tr.commonSave),
+          ),
         ],
       ),
     );
@@ -74,23 +76,29 @@ class _AccountPageState extends State<AccountPage> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(tr.accountSignOutTitle),
-        content: Text(waiting
-            ? [
-                tr.accountSignOutPending(sync.pending),
-                if (sync.conflicts > 0) tr.accountSignOutConflicts(sync.conflicts),
-              ].join(' ')
-            : tr.accountSignOutClean),
+        content: Text(
+          waiting
+              ? [
+                  tr.accountSignOutPending(sync.pending),
+                  if (sync.conflicts > 0)
+                    tr.accountSignOutConflicts(sync.conflicts),
+                ].join(' ')
+              : tr.accountSignOutClean,
+        ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: Text(tr.commonCancel)),
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(tr.commonCancel),
+          ),
           if (waiting)
             TextButton(
-                onPressed: () => Navigator.pop(ctx, 'sync'),
-                child: Text(tr.accountSyncFirst)),
+              onPressed: () => Navigator.pop(ctx, 'sync'),
+              child: Text(tr.accountSyncFirst),
+            ),
           FilledButton(
-              onPressed: () => Navigator.pop(ctx, 'out'),
-              child: Text(tr.accountSignOut)),
+            onPressed: () => Navigator.pop(ctx, 'out'),
+            child: Text(tr.accountSignOut),
+          ),
         ],
       ),
     );
@@ -99,10 +107,9 @@ class _AccountPageState extends State<AccountPage> {
       if (mounted) {
         final s = context.read<SyncCubit>().state;
         showToast(
-            context,
-            s.allSaved
-                ? tr.accountAllSentNow
-                : tr.accountStillPending);
+          context,
+          s.allSaved ? tr.accountAllSentNow : tr.accountStillPending,
+        );
       }
       return;
     }
@@ -120,28 +127,38 @@ class _AccountPageState extends State<AccountPage> {
           final filesWaiting = (sync.pending - rowsWaiting).clamp(0, 1 << 30);
           return ListView(
             padding: const EdgeInsets.fromLTRB(
-                AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
+              AppSpace.gutter,
+              0,
+              AppSpace.gutter,
+              AppSpace.xxl,
+            ),
             children: [
               SurfaceCard(
                 highlight: true,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(children: [
-                      Expanded(
-                        child: Text(a.displayName ?? tr.accountNoName,
-                            style: AppText.headline),
-                      ),
-                      IconButton(
-                        tooltip: tr.accountEditName,
-                        icon: const Icon(Icons.edit_outlined),
-                        onPressed: () => _editName(a.displayName),
-                      ),
-                    ]),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            a.displayName ?? tr.accountNoName,
+                            style: AppText.headline,
+                          ),
+                        ),
+                        IconButton(
+                          tooltip: tr.accountEditName,
+                          icon: const Icon(Icons.edit_outlined),
+                          onPressed: () => _editName(a.displayName),
+                        ),
+                      ],
+                    ),
                     Text(a.email ?? '', style: AppText.body),
                     const SizedBox(height: AppSpace.sm),
                     InfoPill(
-                      a.emailConfirmed ? tr.accountEmailConfirmed : tr.accountEmailNotConfirmed,
+                      a.emailConfirmed
+                          ? tr.accountEmailConfirmed
+                          : tr.accountEmailNotConfirmed,
                       icon: a.emailConfirmed
                           ? Icons.verified_outlined
                           : Icons.mark_email_unread_outlined,
@@ -152,14 +169,25 @@ class _AccountPageState extends State<AccountPage> {
               ),
               const SizedBox(height: AppSpace.sm),
               SurfaceCard(
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => const ChangePasswordPage())),
-                child: Row(children: [
-                  Icon(Icons.password_rounded, color: AppColors.amber),
-                  SizedBox(width: AppSpace.md),
-                  Expanded(child: Text(tr.accountChangePassword, style: AppText.subtitle)),
-                  Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
-                ]),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const ChangePasswordPage()),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.password_rounded, color: AppColors.amber),
+                    SizedBox(width: AppSpace.md),
+                    Expanded(
+                      child: Text(
+                        tr.accountChangePassword,
+                        style: AppText.subtitle,
+                      ),
+                    ),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      color: AppColors.textMuted,
+                    ),
+                  ],
+                ),
               ),
               SectionTitle(tr.accountYourData),
               SurfaceCard(
@@ -171,15 +199,17 @@ class _AccountPageState extends State<AccountPage> {
                       value: sync.restoring
                           ? tr.accountRestoring
                           : sync.allSaved
-                              ? tr.accountAllConfirmed
-                              : sync.label,
+                          ? tr.accountAllConfirmed
+                          : sync.label,
                       icon: Icons.cloud_done_outlined,
                     ),
                     const SizedBox(height: AppSpace.md),
                     Text(
                       sync.lastSyncAt == null
                           ? tr.accountLastSyncNever
-                          : tr.accountLastSync(formatDateTime(sync.lastSyncAt!)),
+                          : tr.accountLastSync(
+                              formatDateTime(sync.lastSyncAt!),
+                            ),
                       style: AppText.caption,
                     ),
                     const SizedBox(height: AppSpace.xs),
@@ -196,8 +226,10 @@ class _AccountPageState extends State<AccountPage> {
                     if (!sync.historyRestored)
                       Padding(
                         padding: const EdgeInsets.only(top: AppSpace.xs),
-                        child: Text(tr.accountHistoryNotDone,
-                            style: AppText.caption),
+                        child: Text(
+                          tr.accountHistoryNotDone,
+                          style: AppText.caption,
+                        ),
                       ),
                     if (sync.message != null && !sync.allSaved)
                       Padding(
@@ -216,20 +248,28 @@ class _AccountPageState extends State<AccountPage> {
               if (sync.conflicts > 0) ...[
                 const SizedBox(height: AppSpace.sm),
                 SurfaceCard(
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const ConflictsPage())),
-                  child: Row(children: [
-                    const Icon(Icons.call_split_rounded, color: AppColors.amber),
-                    const SizedBox(width: AppSpace.md),
-                    Expanded(
-                      child: Text(
-                        tr.accountConflicts(sync.conflicts),
-                        style: AppText.subtitle,
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const ConflictsPage()),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.call_split_rounded,
+                        color: AppColors.amber,
                       ),
-                    ),
-                    const Icon(Icons.chevron_right_rounded,
-                        color: AppColors.textMuted),
-                  ]),
+                      const SizedBox(width: AppSpace.md),
+                      Expanded(
+                        child: Text(
+                          tr.accountConflicts(sync.conflicts),
+                          style: AppText.subtitle,
+                        ),
+                      ),
+                      const Icon(
+                        Icons.chevron_right_rounded,
+                        color: AppColors.textMuted,
+                      ),
+                    ],
+                  ),
                 ),
               ],
               SectionTitle(tr.accountSession),
@@ -241,8 +281,9 @@ class _AccountPageState extends State<AccountPage> {
               const SizedBox(height: AppSpace.sm),
               TextButton(
                 style: TextButton.styleFrom(foregroundColor: AppColors.danger),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => const DeleteAccountPage())),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const DeleteAccountPage()),
+                ),
                 child: Text(tr.accountDelete),
               ),
             ],
@@ -252,8 +293,6 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 }
-
-// --------------------------------------------------------- change password
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -297,19 +336,20 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Future<void> _submit() async {
     setState(() {
       _passwordError = validateNewPassword(_password.text);
-      _confirmError =
-          _confirm.text != _password.text ? tr.authPasswordsDiffer : null;
+      _confirmError = _confirm.text != _password.text
+          ? tr.authPasswordsDiffer
+          : null;
       _error = null;
     });
     if (_passwordError != null || _confirmError != null) return;
     setState(() => _busy = true);
     try {
       await context.read<AuthController>().changePassword(
-            _password.text,
-            nonce: _needsCode && _code.text.trim().isNotEmpty
-                ? _code.text.trim()
-                : null,
-          );
+        _password.text,
+        nonce: _needsCode && _code.text.trim().isNotEmpty
+            ? _code.text.trim()
+            : null,
+      );
       if (mounted) {
         showToast(context, tr.accountPasswordChanged);
         Navigator.of(context).pop();
@@ -337,7 +377,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return AuthScaffold(
       showBack: true,
       title: tr.accountChangePassword,
-      action: BusyButton(label: tr.accountSaveNewPassword, busy: _busy, onPressed: _submit),
+      action: BusyButton(
+        label: tr.accountSaveNewPassword,
+        busy: _busy,
+        onPressed: _submit,
+      ),
       children: [
         if (_error != null) FormMessage(_error!),
         if (_info != null) FormMessage(_info!, error: false),
@@ -376,8 +420,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     );
   }
 }
-
-// ------------------------------------------------------------ delete account
 
 class DeleteAccountPage extends StatefulWidget {
   const DeleteAccountPage({super.key});
@@ -466,7 +508,8 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
             ? const SizedBox(
                 width: 20,
                 height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2))
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
             : Text(tr.accountDelete),
       ),
       children: [

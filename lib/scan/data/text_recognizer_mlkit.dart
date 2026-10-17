@@ -23,23 +23,27 @@ class _MlKitRecognizer implements TextRecognizer {
     if (!isSupported) {
       throw OcrFailure(tr.ocrUnavailable);
     }
-    final recognizer =
-        mlkit.TextRecognizer(script: mlkit.TextRecognitionScript.latin);
+    final recognizer = mlkit.TextRecognizer(
+      script: mlkit.TextRecognitionScript.latin,
+    );
     try {
-      final result =
-          await recognizer.processImage(mlkit.InputImage.fromFilePath(path));
+      final result = await recognizer.processImage(
+        mlkit.InputImage.fromFilePath(path),
+      );
       final lines = <OcrLine>[];
       for (final block in result.blocks) {
         for (final line in block.lines) {
           final box = line.boundingBox;
-          lines.add(OcrLine(
-            line.text,
-            left: box.left,
-            top: box.top,
-            right: box.right,
-            bottom: box.bottom,
-            hasBox: true,
-          ));
+          lines.add(
+            OcrLine(
+              line.text,
+              left: box.left,
+              top: box.top,
+              right: box.right,
+              bottom: box.bottom,
+              hasBox: true,
+            ),
+          );
         }
       }
       return OcrResult(lines);

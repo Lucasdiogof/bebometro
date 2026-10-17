@@ -33,7 +33,6 @@ class GameState {
       card == null &&
       !exhausted &&
       !finished;
-
 }
 
 class GameCubit extends Cubit<GameState> {
@@ -98,11 +97,13 @@ class GameCubit extends Cubit<GameState> {
     final card = drawCard(_deck(s), s.usedIds.toSet(), _rng, kind: kind);
     if (card == null) {
       final nothingAtAll = drawCard(_deck(s), s.usedIds.toSet(), _rng) == null;
-      emit(GameState(
-        session: s,
-        exhausted: nothingAtAll,
-        noticeKind: nothingAtAll ? null : kind,
-      ));
+      emit(
+        GameState(
+          session: s,
+          exhausted: nothingAtAll,
+          noticeKind: nothingAtAll ? null : kind,
+        ),
+      );
       return;
     }
     final next = s.copyWith(

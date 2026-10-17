@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -176,7 +175,8 @@ class AppLocalizationsPt extends AppLocalizations {
       locale: localeName,
       other:
           '$count registros com teor ou quantidade desconhecidos: o total é um mínimo',
-      one: '1 registro com teor ou quantidade desconhecidos: o total é um mínimo',
+      one:
+          '1 registro com teor ou quantidade desconhecidos: o total é um mínimo',
     );
     return '$_temp0';
   }
@@ -3043,7 +3043,8 @@ class AppLocalizationsPt extends AppLocalizations {
       locale: localeName,
       other:
           '$count preços sem item claro foram ignorados. Adicione o item manualmente se precisar.',
-      one: '1 preço sem item claro foi ignorado. Adicione o item manualmente se precisar.',
+      one:
+          '1 preço sem item claro foi ignorado. Adicione o item manualmente se precisar.',
     );
     return '$_temp0';
   }
@@ -3062,7 +3063,8 @@ class AppLocalizationsPt extends AppLocalizations {
       locale: localeName,
       other:
           '$count fotos desta leitura não estão mais disponíveis. Os itens delas foram mantidos para você conferir.',
-      one: 'Uma foto desta leitura não está mais disponível. Os itens dela foram mantidos para você conferir.',
+      one:
+          'Uma foto desta leitura não está mais disponível. Os itens dela foram mantidos para você conferir.',
     );
     return '$_temp0';
   }
@@ -4840,7 +4842,8 @@ class AppLocalizationsPt extends AppLocalizations {
       locale: localeName,
       other:
           'Sem base de comparação: não há rolês registrados nos $days dias anteriores a este período.',
-      one: 'Sem base de comparação: não há rolês registrados no dia anterior a este período.',
+      one:
+          'Sem base de comparação: não há rolês registrados no dia anterior a este período.',
     );
     return '$_temp0';
   }

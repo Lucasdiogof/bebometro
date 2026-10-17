@@ -46,7 +46,8 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
   late LocationSource? _source = widget.draft.source;
   late Place? _match = widget.match;
   late final _nickname = TextEditingController(
-      text: widget.draft.nickname ?? widget.match?.nickname ?? '');
+    text: widget.draft.nickname ?? widget.match?.nickname ?? '',
+  );
   late bool _save = widget.allowSave;
 
   /// Name of the establishment before the point was moved.
@@ -119,26 +120,29 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
   void _use() {
     final nick = _nickname.text.trim();
     final saving = _match != null || (widget.allowSave && _save);
-    final hasName = nick.isNotEmpty ||
+    final hasName =
+        nick.isNotEmpty ||
         (_name?.isNotEmpty ?? false) ||
         (_address?.isNotEmpty ?? false);
     if (saving && !hasName) {
       setState(() => _error = tr.confirmNeedNickname);
       return;
     }
-    Navigator.of(context).pop(PlaceDraft(
-      saved: _match,
-      nickname: nick.isEmpty ? null : nick,
-      providerName: _name,
-      address: _address,
-      city: _city,
-      state: _state,
-      point: _point,
-      source: _source,
-      provider: _placeId == null ? null : _provider,
-      providerPlaceId: _placeId,
-      save: saving,
-    ));
+    Navigator.of(context).pop(
+      PlaceDraft(
+        saved: _match,
+        nickname: nick.isEmpty ? null : nick,
+        providerName: _name,
+        address: _address,
+        city: _city,
+        state: _state,
+        point: _point,
+        source: _source,
+        provider: _placeId == null ? null : _provider,
+        providerPlaceId: _placeId,
+        save: saving,
+      ),
+    );
   }
 
   @override
@@ -146,12 +150,14 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
     final point = _point;
     final showMap = point != null && PlaceMap.available && !_tilesFailed;
     final title = placeTitle(
-        nickname: null,
-        providerName: _name,
-        address: _address,
-        point: point,
-        fallback: tr.placeFallbackName);
-    final canReverse = point != null &&
+      nickname: null,
+      providerName: _name,
+      address: _address,
+      point: point,
+      fallback: tr.placeFallbackName,
+    );
+    final canReverse =
+        point != null &&
         getIt<GeoSearch>().configured &&
         _name == null &&
         (_address == null || _adjusted);
@@ -164,12 +170,18 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
             child: ListView(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                AppSpace.gutter,
+                0,
+                AppSpace.gutter,
+                AppSpace.xl,
+              ),
               children: [
                 if (showMap) ...[
                   SizedBox(
-                    height: (MediaQuery.sizeOf(context).height * 0.42)
-                        .clamp(240.0, 420.0),
+                    height: (MediaQuery.sizeOf(context).height * 0.42).clamp(
+                      240.0,
+                      420.0,
+                    ),
                     child: PlaceMap(
                       point: point,
                       onMoved: _moved,
@@ -204,8 +216,10 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                       if (_name == null && _address == null && point != null)
                         Padding(
                           padding: const EdgeInsets.only(top: AppSpace.xs),
-                          child: Text(tr.confirmNoAddress,
-                              style: AppText.caption),
+                          child: Text(
+                            tr.confirmNoAddress,
+                            style: AppText.caption,
+                          ),
                         ),
                       if (_adjusted)
                         Padding(
@@ -225,7 +239,10 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                               ? const SizedBox(
                                   width: 16,
                                   height: 16,
-                                  child: CircularProgressIndicator(strokeWidth: 2))
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
                               : const Icon(Icons.travel_explore_rounded),
                           label: Text(tr.confirmLookUp),
                         ),
@@ -233,8 +250,7 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                       if (_reverseMessage != null)
                         Padding(
                           padding: const EdgeInsets.only(top: AppSpace.xs),
-                          child:
-                              Text(_reverseMessage!, style: AppText.caption),
+                          child: Text(_reverseMessage!, style: AppText.caption),
                         ),
                     ],
                   ),
@@ -260,14 +276,16 @@ class _PlaceConfirmPageState extends State<PlaceConfirmPage> {
                     errorText: _error,
                   ),
                 ),
-                if (_previousName != null &&
-                    _nickname.text.trim().isEmpty) ...[
+                if (_previousName != null && _nickname.text.trim().isEmpty) ...[
                   const SizedBox(height: AppSpace.sm),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: ActionChip(
-                      avatar: const Icon(Icons.label_outline_rounded,
-                          size: 18, color: AppColors.amber),
+                      avatar: const Icon(
+                        Icons.label_outline_rounded,
+                        size: 18,
+                        color: AppColors.amber,
+                      ),
                       label: Text(tr.confirmUseAsNickname(_previousName!)),
                       onPressed: () => setState(() {
                         _nickname.text = _previousName!;

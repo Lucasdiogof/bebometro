@@ -23,10 +23,8 @@ enum LocationProblem {
 
 class LocationResult {
   const LocationResult.ok(this.point, {this.approximate = false})
-      : problem = null;
-  const LocationResult.failed(this.problem)
-      : point = null,
-        approximate = false;
+    : problem = null;
+  const LocationResult.failed(this.problem) : point = null, approximate = false;
 
   final GeoPoint? point;
 
@@ -66,7 +64,8 @@ class DeviceLocation {
       }
       var approximate = false;
       try {
-        approximate = await Geolocator.getLocationAccuracy() ==
+        approximate =
+            await Geolocator.getLocationAccuracy() ==
             LocationAccuracyStatus.reduced;
       } catch (_) {
         // Not reported on every platform (web).

@@ -38,16 +38,16 @@ enum ProvenanceKind {
   final String code;
 
   String get label => switch (this) {
-        ProvenanceKind.official => tr.provenanceOfficial,
-        ProvenanceKind.labelPhoto => tr.provenanceLabel,
-        ProvenanceKind.packagingRegistry => tr.provenancePackagingRegistry,
-        ProvenanceKind.secondary => tr.provenanceSecondary,
-        ProvenanceKind.recipe => tr.provenanceRecipe,
-        ProvenanceKind.user => tr.provenanceUser,
-        ProvenanceKind.suggestion => tr.provenanceSuggestion,
-        ProvenanceKind.generic => tr.provenanceGeneric,
-        ProvenanceKind.general => tr.provenanceGeneral,
-      };
+    ProvenanceKind.official => tr.provenanceOfficial,
+    ProvenanceKind.labelPhoto => tr.provenanceLabel,
+    ProvenanceKind.packagingRegistry => tr.provenancePackagingRegistry,
+    ProvenanceKind.secondary => tr.provenanceSecondary,
+    ProvenanceKind.recipe => tr.provenanceRecipe,
+    ProvenanceKind.user => tr.provenanceUser,
+    ProvenanceKind.suggestion => tr.provenanceSuggestion,
+    ProvenanceKind.generic => tr.provenanceGeneric,
+    ProvenanceKind.general => tr.provenanceGeneral,
+  };
 
   static ProvenanceKind? fromCode(String? code) {
     for (final k in ProvenanceKind.values) {
@@ -69,11 +69,11 @@ enum ProvenanceField {
   final String code;
 
   String get label => switch (this) {
-        ProvenanceField.abv => tr.detailAbv,
-        ProvenanceField.ingredients => tr.detailIngredients,
-        ProvenanceField.presentations => tr.detailPresentations,
-        ProvenanceField.style => tr.catalogStyle,
-      };
+    ProvenanceField.abv => tr.detailAbv,
+    ProvenanceField.ingredients => tr.detailIngredients,
+    ProvenanceField.presentations => tr.detailPresentations,
+    ProvenanceField.style => tr.catalogStyle,
+  };
 
   static ProvenanceField? fromCode(String code) {
     for (final f in ProvenanceField.values) {
@@ -119,19 +119,24 @@ class FieldSource {
   final Map<String, String> noteI18n;
 
   String get displayLabel => localizedText(label, labelI18n);
-  String? get displayNote => note == null ? null : localizedText(note!, noteI18n);
+  String? get displayNote =>
+      note == null ? null : localizedText(note!, noteI18n);
 
   /// Volume named in [variant] ("can 350 ml" -> 350), or null.
   Set<int> get variantVolumes => {
-        for (final m in RegExp(r'\d+').allMatches(variant ?? ''))
-          int.parse(m.group(0)!),
-      };
+    for (final m in RegExp(r'\d+').allMatches(variant ?? ''))
+      int.parse(m.group(0)!),
+  };
 }
 
 /// The sources shown for one field.
 class FieldProvenance {
-  const FieldProvenance(this.field, this.sources,
-      {this.fallback = false, this.presentations = const {}});
+  const FieldProvenance(
+    this.field,
+    this.sources, {
+    this.fallback = false,
+    this.presentations = const {},
+  });
 
   final ProvenanceField field;
   final List<FieldSource> sources;
@@ -163,14 +168,14 @@ List<FieldProvenance> provenanceOf(CatalogItem item) {
   final itemUser = item.isCustom || item.isOutingOnly;
 
   FieldSource general(ProvenanceField f) => FieldSource(
-        field: f,
-        kind: itemUser ? ProvenanceKind.user : (whole ?? ProvenanceKind.general),
-        label: item.source?.label ?? item.origin.label,
-        labelI18n: item.source?.labelI18n ?? const {},
-        url: item.source?.url,
-        consultedOn: item.source?.consultedOn,
-        market: item.market,
-      );
+    field: f,
+    kind: itemUser ? ProvenanceKind.user : (whole ?? ProvenanceKind.general),
+    label: item.source?.label ?? item.origin.label,
+    labelI18n: item.source?.labelI18n ?? const {},
+    url: item.source?.url,
+    consultedOn: item.source?.consultedOn,
+    market: item.market,
+  );
 
   FieldProvenance simple(ProvenanceField f) {
     final list = of(f);
@@ -218,16 +223,24 @@ List<FieldProvenance> provenanceOf(CatalogItem item) {
       covered[sources.length] = left;
       sources.add(general(ProvenanceField.presentations));
     }
-    out.add(FieldProvenance(ProvenanceField.presentations, sources,
-        fallback: list.isEmpty, presentations: covered));
-  } else if (item.presentations.isNotEmpty) {
-    out.add(FieldProvenance(ProvenanceField.presentations, [
-      FieldSource(
-        field: ProvenanceField.presentations,
-        kind: ProvenanceKind.suggestion,
-        label: tr.provenanceSuggestionLine,
+    out.add(
+      FieldProvenance(
+        ProvenanceField.presentations,
+        sources,
+        fallback: list.isEmpty,
+        presentations: covered,
       ),
-    ]));
+    );
+  } else if (item.presentations.isNotEmpty) {
+    out.add(
+      FieldProvenance(ProvenanceField.presentations, [
+        FieldSource(
+          field: ProvenanceField.presentations,
+          kind: ProvenanceKind.suggestion,
+          label: tr.provenanceSuggestionLine,
+        ),
+      ]),
+    );
   }
   return out;
 }

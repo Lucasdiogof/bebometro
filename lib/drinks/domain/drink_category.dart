@@ -27,25 +27,27 @@ enum DrinkCategory {
   /// Names in every language of the app, so a search finds the category
   /// whatever language it is written in.
   List<String> get searchLabels => [
-        for (final code in const ['pt', 'en', 'es'])
-          _labelIn(lookupAppLocalizations(Locale(code))),
-      ];
+    for (final code in const ['pt', 'en', 'es'])
+      _labelIn(lookupAppLocalizations(Locale(code))),
+  ];
 
   String _labelIn(AppLocalizations t) => switch (this) {
-        DrinkCategory.beer => t.categoryBeer,
-        DrinkCategory.draft => t.categoryDraft,
-        DrinkCategory.cocktail => t.categoryCocktail,
-        DrinkCategory.spirit => t.categorySpirit,
-        DrinkCategory.readyToDrink => t.categoryReadyToDrink,
-        DrinkCategory.wine => t.categoryWine,
-        DrinkCategory.nonAlcoholic => t.categoryNonAlcoholic,
-        DrinkCategory.water => t.categoryWater,
-      };
+    DrinkCategory.beer => t.categoryBeer,
+    DrinkCategory.draft => t.categoryDraft,
+    DrinkCategory.cocktail => t.categoryCocktail,
+    DrinkCategory.spirit => t.categorySpirit,
+    DrinkCategory.readyToDrink => t.categoryReadyToDrink,
+    DrinkCategory.wine => t.categoryWine,
+    DrinkCategory.nonAlcoholic => t.categoryNonAlcoholic,
+    DrinkCategory.water => t.categoryWater,
+  };
 
   /// Categories whose products may contain alcohol.
   bool get canBeAlcoholic =>
       this != DrinkCategory.nonAlcoholic && this != DrinkCategory.water;
 
-  static DrinkCategory fromCode(String code) => DrinkCategory.values
-      .firstWhere((c) => c.code == code, orElse: () => DrinkCategory.cocktail);
+  static DrinkCategory fromCode(String code) => DrinkCategory.values.firstWhere(
+    (c) => c.code == code,
+    orElse: () => DrinkCategory.cocktail,
+  );
 }

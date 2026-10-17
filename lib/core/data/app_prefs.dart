@@ -21,8 +21,6 @@ class AppPrefs {
   Future<void> setBudgetAlerts(bool on) =>
       _device.setString(_budgetAlertsKey, on ? '1' : '0');
 
-  // ---- budget thresholds already announced (per outing and budget value) -----
-
   String _firedKey(String outingId) => 'budget.fired.$outingId';
 
   /// Thresholds (80, 100) already announced for this outing at this budget. A
@@ -40,8 +38,6 @@ class AppPrefs {
 
   Future<void> markFired(String outingId, int budgetCents, Set<int> all) =>
       _store.setString(_firedKey(outingId), '$budgetCents|${all.join(',')}');
-
-  // ---- "is this outing still happening?" -------------------------------------
 
   String _staleKey(String outingId) => 'stale.snooze.$outingId';
 

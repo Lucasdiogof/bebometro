@@ -26,36 +26,36 @@ class ScanDraft {
   /// Screen-specific edits (label fields, menu items).
   final Map<String, dynamic> payload;
 
-  bool get isEmpty => photoIds.isEmpty && text.trim().isEmpty && payload.isEmpty;
+  bool get isEmpty =>
+      photoIds.isEmpty && text.trim().isEmpty && payload.isEmpty;
 
   ScanDraft copyWith({
     List<String>? photoIds,
     String? text,
     Map<String, dynamic>? payload,
-  }) =>
-      ScanDraft(
-        outingId: outingId,
-        kind: kind,
-        photoIds: photoIds ?? this.photoIds,
-        text: text ?? this.text,
-        payload: payload ?? this.payload,
-      );
+  }) => ScanDraft(
+    outingId: outingId,
+    kind: kind,
+    photoIds: photoIds ?? this.photoIds,
+    text: text ?? this.text,
+    payload: payload ?? this.payload,
+  );
 
   Map<String, dynamic> toJson() => {
-        'outing_id': outingId,
-        'kind': kind.code,
-        'photo_ids': photoIds,
-        'text': text,
-        'payload': payload,
-      };
+    'outing_id': outingId,
+    'kind': kind.code,
+    'photo_ids': photoIds,
+    'text': text,
+    'payload': payload,
+  };
 
   factory ScanDraft.fromJson(Map<String, dynamic> j) => ScanDraft(
-        outingId: j['outing_id'] as String,
-        kind: OutingPhotoKind.fromCode(j['kind'] as String?),
-        photoIds: (j['photo_ids'] as List?)?.cast<String>() ?? const [],
-        text: j['text'] as String? ?? '',
-        payload: Map<String, dynamic>.from(j['payload'] as Map? ?? const {}),
-      );
+    outingId: j['outing_id'] as String,
+    kind: OutingPhotoKind.fromCode(j['kind'] as String?),
+    photoIds: (j['photo_ids'] as List?)?.cast<String>() ?? const [],
+    text: j['text'] as String? ?? '',
+    payload: Map<String, dynamic>.from(j['payload'] as Map? ?? const {}),
+  );
 }
 
 /// Durable drafts on the device (not synced). One per outing and kind.
@@ -74,7 +74,8 @@ class ScanDraftStore {
     if (raw == null || raw.isEmpty) return null;
     try {
       return ScanDraft.fromJson(
-          Map<String, dynamic>.from(jsonDecode(raw) as Map));
+        Map<String, dynamic>.from(jsonDecode(raw) as Map),
+      );
     } catch (_) {
       return null;
     }
@@ -82,14 +83,16 @@ class ScanDraftStore {
 
   /// Drafts still open for an outing, so the outing can offer to resume.
   List<ScanDraft> openFor(String outingId) => [
-        for (final kind in OutingPhotoKind.values)
-          if (load(outingId, kind) case final d? when !d.isEmpty) d,
-      ];
+    for (final kind in OutingPhotoKind.values)
+      if (load(outingId, kind) case final d? when !d.isEmpty) d,
+  ];
 
   Future<void> save(ScanDraft draft) async {
     if (draft.isEmpty) return clear(draft.outingId, draft.kind);
     await _store.setString(
-        _key(draft.outingId, draft.kind), jsonEncode(draft.toJson()));
+      _key(draft.outingId, draft.kind),
+      jsonEncode(draft.toJson()),
+    );
     final index = _store.getStringSet(_indexKey)
       ..add(_key(draft.outingId, draft.kind));
     await _store.setStringSet(_indexKey, index);

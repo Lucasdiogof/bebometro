@@ -67,16 +67,24 @@ class VesselPainter extends CustomPainter {
       case VesselKind.can:
         _can(canvas, fill);
       case VesselKind.longNeck:
-        _bottle(canvas, _longNeckPath(), fill, const Rect.fromLTWH(15, 58, 26, 18),
-            capRect: const Rect.fromLTWH(23, 5, 10, 4));
+        _bottle(
+          canvas,
+          _longNeckPath(),
+          fill,
+          const Rect.fromLTWH(15, 58, 26, 18),
+          capRect: const Rect.fromLTWH(23, 5, 10, 4),
+        );
       case VesselKind.bottle:
-        _bottle(canvas, _bottlePath(), fill, const Rect.fromLTWH(12, 56, 32, 22),
-            capRect: const Rect.fromLTWH(22, 1, 12, 4));
+        _bottle(
+          canvas,
+          _bottlePath(),
+          fill,
+          const Rect.fromLTWH(12, 56, 32, 22),
+          capRect: const Rect.fromLTWH(22, 1, 12, 4),
+        );
     }
     canvas.restore();
   }
-
-  // ---- shared drawing helpers -------------------------------------------------
 
   Color _darker(Color c, [double amount = 0.14]) {
     final hsl = HSLColor.fromColor(c);
@@ -149,8 +157,6 @@ class VesselPainter extends CustomPainter {
     c.drawPath(p, _outline);
   }
 
-  // ---- silhouettes ------------------------------------------------------------
-
   Path _beerPath() => Path()
     ..moveTo(8, 18)
     ..lineTo(48, 18)
@@ -204,12 +210,14 @@ class VesselPainter extends CustomPainter {
     ..quadraticBezierTo(11, 40, 23, 28)
     ..close();
 
-  // ---- vessels with their own details --------------------------------------------
-
   void _mug(Canvas c, double fill) {
     final body = Path()
-      ..addRRect(RRect.fromRectAndRadius(
-          const Rect.fromLTWH(8, 22, 32, 64), const Radius.circular(4)));
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          const Rect.fromLTWH(8, 22, 32, 64),
+          const Radius.circular(4),
+        ),
+      );
     _glassBody(c, body);
     _fillLiquid(c, body, 26, 78, fill, foam: foam);
     c.drawRect(
@@ -336,8 +344,11 @@ class VesselPainter extends CustomPainter {
       const Rect.fromLTWH(14, 17, 28, 7),
       Paint()..color = const Color(0xFFD3D7DC),
     );
-    c.drawCircle(const Offset(28, 20.5), 2.4,
-        Paint()..color = const Color(0xFF8A9099));
+    c.drawCircle(
+      const Offset(28, 20.5),
+      2.4,
+      Paint()..color = const Color(0xFF8A9099),
+    );
     c.drawRRect(
       body,
       Paint()
@@ -347,20 +358,33 @@ class VesselPainter extends CustomPainter {
     );
     // A can is opaque, so its level is shown on a small gauge beside it.
     final track = RRect.fromRectAndRadius(
-        const Rect.fromLTWH(46, 22, 4, 62), const Radius.circular(2));
+      const Rect.fromLTWH(46, 22, 4, 62),
+      const Radius.circular(2),
+    );
     c.drawRRect(track, Paint()..color = Colors.white.withValues(alpha: 0.15));
     final h = 62 * fill;
     if (h > 0.5) {
       c.drawRRect(
         RRect.fromRectAndRadius(
-            Rect.fromLTWH(46, 84 - h, 4, h), const Radius.circular(2)),
+          Rect.fromLTWH(46, 84 - h, 4, h),
+          const Radius.circular(2),
+        ),
         Paint()..color = liquid,
       );
     }
   }
 
-  void _bottle(Canvas c, Path p, double fill, Rect label, {required Rect capRect}) {
-    c.drawPath(p, Paint()..color = const Color(0xFF4A2C12).withValues(alpha: 0.55));
+  void _bottle(
+    Canvas c,
+    Path p,
+    double fill,
+    Rect label, {
+    required Rect capRect,
+  }) {
+    c.drawPath(
+      p,
+      Paint()..color = const Color(0xFF4A2C12).withValues(alpha: 0.55),
+    );
     _fillLiquid(c, p, 12, 84, fill);
     c.drawRRect(
       RRect.fromRectAndRadius(label, const Radius.circular(2)),

@@ -46,9 +46,8 @@ class StartOutingState {
   final String? createdId;
 
   /// Needs a saved place, or at least a nickname or an address.
-  String? get placeError => (place == null &&
-          nickname.trim().isEmpty &&
-          address.trim().isEmpty)
+  String? get placeError =>
+      (place == null && nickname.trim().isEmpty && address.trim().isEmpty)
       ? tr.startPlaceError
       : null;
 
@@ -72,30 +71,26 @@ class StartOutingState {
     bool? showErrors,
     String? error,
     String? createdId,
-  }) =>
-      StartOutingState(
-        type: type ?? this.type,
-        startedAt: startedAt ?? this.startedAt,
-        nickname: nickname ?? this.nickname,
-        address: address ?? this.address,
-        city: city ?? this.city,
-        state: state ?? this.state,
-        place: place != null ? place() : this.place,
-        saveAsPlace: saveAsPlace ?? this.saveAsPlace,
-        budgetCents: budgetCents != null ? budgetCents() : this.budgetCents,
-        submitting: submitting ?? this.submitting,
-        showErrors: showErrors ?? this.showErrors,
-        error: error,
-        createdId: createdId ?? this.createdId,
-      );
+  }) => StartOutingState(
+    type: type ?? this.type,
+    startedAt: startedAt ?? this.startedAt,
+    nickname: nickname ?? this.nickname,
+    address: address ?? this.address,
+    city: city ?? this.city,
+    state: state ?? this.state,
+    place: place != null ? place() : this.place,
+    saveAsPlace: saveAsPlace ?? this.saveAsPlace,
+    budgetCents: budgetCents != null ? budgetCents() : this.budgetCents,
+    submitting: submitting ?? this.submitting,
+    showErrors: showErrors ?? this.showErrors,
+    error: error,
+    createdId: createdId ?? this.createdId,
+  );
 }
 
 class StartOutingCubit extends Cubit<StartOutingState> {
   StartOutingCubit(this._outings, this._places)
-      : super(StartOutingState(
-          type: OutingType.bar,
-          startedAt: DateTime.now(),
-        ));
+    : super(StartOutingState(type: OutingType.bar, startedAt: DateTime.now()));
 
   final OutingRepository _outings;
   final PlaceRepository _places;
@@ -121,16 +116,16 @@ class StartOutingCubit extends Cubit<StartOutingState> {
   void setBudgetCents(int? v) => emit(state.copyWith(budgetCents: () => v));
 
   /// Picks a saved place (its type becomes the outing type) or clears it.
-  void selectPlace(Place? place) => emit(state.copyWith(
-        place: () => place == null ? null : PlaceDraft.saved(place),
-        type: place?.type,
-      ));
+  void selectPlace(Place? place) => emit(
+    state.copyWith(
+      place: () => place == null ? null : PlaceDraft.saved(place),
+      type: place?.type,
+    ),
+  );
 
   /// Uses what the place picker returned.
-  void choosePlace(PlaceDraft draft) => emit(state.copyWith(
-        place: () => draft,
-        type: draft.saved?.type,
-      ));
+  void choosePlace(PlaceDraft draft) =>
+      emit(state.copyWith(place: () => draft, type: draft.saved?.type));
 
   Future<void> submit() async {
     if (state.submitting || state.createdId != null) return;
@@ -138,11 +133,10 @@ class StartOutingCubit extends Cubit<StartOutingState> {
       emit(state.copyWith(showErrors: true));
       return;
     }
-    if (state.startedAt.isAfter(DateTime.now().add(const Duration(minutes: 5)))) {
-      emit(state.copyWith(
-        showErrors: true,
-        error: tr.startFuture,
-      ));
+    if (state.startedAt.isAfter(
+      DateTime.now().add(const Duration(minutes: 5)),
+    )) {
+      emit(state.copyWith(showErrors: true, error: tr.startFuture));
       return;
     }
     emit(state.copyWith(submitting: true));
@@ -150,7 +144,8 @@ class StartOutingCubit extends Cubit<StartOutingState> {
       // Saved place as it is, a confirmed search result/point (saved only if
       // the person asked) or the inline nickname/address. The outing keeps
       // its own copy of the place data.
-      final draft = state.place ??
+      final draft =
+          state.place ??
           PlaceDraft(
             nickname: state.nickname,
             address: state.address,
@@ -172,11 +167,13 @@ class StartOutingCubit extends Cubit<StartOutingState> {
       // Recover the existing outing instead of creating a second one.
       emit(state.copyWith(submitting: false, createdId: active?.id));
     } catch (e) {
-      emit(state.copyWith(
-        submitting: false,
-        showErrors: true,
-        error: tr.startFailed,
-      ));
+      emit(
+        state.copyWith(
+          submitting: false,
+          showErrors: true,
+          error: tr.startFailed,
+        ),
+      );
     }
   }
 }

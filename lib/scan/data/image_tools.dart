@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
 
@@ -19,7 +18,8 @@ Uint8List _toJpeg(Uint8List bytes) {
   final decoded = img.decodeImage(bytes);
   if (decoded == null) throw const FormatException('not an image');
   return Uint8List.fromList(
-      img.encodeJpg(img.bakeOrientation(decoded), quality: 90));
+    img.encodeJpg(img.bakeOrientation(decoded), quality: 90),
+  );
 }
 
 /// The photos are stored and uploaded as JPEG (the private bucket only takes

@@ -10,5 +10,6 @@ class _UnsupportedRecognizer implements TextRecognizer {
 
   @override
   Future<OcrResult> recognizeFile(String path) async => throw const OcrFailure(
-      'A leitura automática não está disponível neste dispositivo.');
+    'A leitura automática não está disponível neste dispositivo.',
+  );
 }

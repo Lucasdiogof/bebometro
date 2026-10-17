@@ -20,7 +20,9 @@ class TableItem {
   /// Stable across updates so animations and positions are not reset.
   String get key => isOverflow
       ? 'overflow'
-      : (count == 1 ? 'e:${entries.first.id}' : 'g:${_groupKey(entries.first)}');
+      : (count == 1
+            ? 'e:${entries.first.id}'
+            : 'g:${_groupKey(entries.first)}');
 }
 
 String _groupKey(DrinkEntry e) =>

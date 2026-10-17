@@ -9,8 +9,6 @@ import '../application/auth_controller.dart';
 import 'auth_widgets.dart';
 import '../../l10n/l10n.dart';
 
-// ------------------------------------------------------------------ sign in
-
 /// Entry point without an account. Also used when the server asked to sign
 /// in again ([reauth]): the e-mail comes filled and the data of that account
 /// is still on the device.
@@ -24,8 +22,9 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  late final _email =
-      TextEditingController(text: context.read<AuthController>().state.email ?? '');
+  late final _email = TextEditingController(
+    text: context.read<AuthController>().state.email ?? '',
+  );
   final _password = TextEditingController();
   bool _busy = false;
   String? _emailError;
@@ -72,14 +71,11 @@ class _SignInPageState extends State<SignInPage> {
     final auth = context.watch<AuthController>().state;
     return AuthScaffold(
       title: widget.reauth ? tr.authSignInAgainTitle : tr.authSignIn,
-      subtitle: widget.reauth
-          ? tr.authSignInAgainBody
-          : tr.authSignInBody,
+      subtitle: widget.reauth ? tr.authSignInAgainBody : tr.authSignInBody,
       action: BusyButton(label: tr.authSignIn, busy: _busy, onPressed: _submit),
       children: [
         if (auth.notice != null) FormMessage(auth.notice!),
-        if (auth.cloudUnavailable)
-          FormMessage(tr.authCloudDown),
+        if (auth.cloudUnavailable) FormMessage(tr.authCloudDown),
         if (_error != null) FormMessage(_error!),
         EmailField(controller: _email, error: _emailError),
         const SizedBox(height: AppSpace.md),
@@ -92,23 +88,25 @@ class _SignInPageState extends State<SignInPage> {
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => ForgotPasswordPage(initialEmail: _email.text))),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ForgotPasswordPage(initialEmail: _email.text),
+              ),
+            ),
             child: Text(tr.authForgot),
           ),
         ),
         const SizedBox(height: AppSpace.md),
         OutlinedButton(
-          onPressed: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const SignUpPage())),
+          onPressed: () => Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (_) => const SignUpPage())),
           child: Text(tr.authCreateAccount),
         ),
       ],
     );
   }
 }
-
-// ------------------------------------------------------------------ sign up
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -139,12 +137,17 @@ class _SignUpPageState extends State<SignUpPage> {
       _nameError = _name.text.trim().isEmpty ? tr.authNameMissing : null;
       _emailError = validateEmail(_email.text);
       _passwordError = validateNewPassword(_password.text);
-      _confirmError =
-          _confirm.text != _password.text ? tr.authPasswordsDiffer : null;
+      _confirmError = _confirm.text != _password.text
+          ? tr.authPasswordsDiffer
+          : null;
       _error = null;
     });
-    if ([_nameError, _emailError, _passwordError, _confirmError]
-        .any((e) => e != null)) {
+    if ([
+      _nameError,
+      _emailError,
+      _passwordError,
+      _confirmError,
+    ].any((e) => e != null)) {
       return;
     }
     setState(() => _busy = true);
@@ -175,7 +178,10 @@ class _SignUpPageState extends State<SignUpPage> {
       showBack: true,
       title: tr.authCreateAccount,
       action: BusyButton(
-          label: tr.authCreateAccount, busy: _busy, onPressed: _submit),
+        label: tr.authCreateAccount,
+        busy: _busy,
+        onPressed: _submit,
+      ),
       children: [
         if (_error != null) FormMessage(_error!),
         TextField(
@@ -214,8 +220,6 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 }
 
-// ------------------------------------------------------------ forgot/reset
-
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key, this.initialEmail = ''});
 
@@ -238,8 +242,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   }
 
   void _openCodePage({required bool sent}) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => ResetCodePage(email: _email.text.trim(), sent: sent)));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ResetCodePage(email: _email.text.trim(), sent: sent),
+      ),
+    );
   }
 
   Future<void> _submit() async {
@@ -266,8 +273,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       showBack: true,
       title: tr.authRecoverTitle,
       subtitle: tr.authRecoverBody,
-      action:
-          BusyButton(label: tr.authSendLink, busy: _busy, onPressed: _submit),
+      action: BusyButton(
+        label: tr.authSendLink,
+        busy: _busy,
+        onPressed: _submit,
+      ),
       children: [
         if (_error != null) FormMessage(_error!),
         EmailField(
@@ -342,7 +352,10 @@ class _ResetCodePageState extends State<ResetCodePage> {
     if (emailErr != null || code.length != 6) return;
     setState(() => _busy = true);
     try {
-      await context.read<AuthController>().verifyRecoveryCode(_email.text, code);
+      await context.read<AuthController>().verifyRecoveryCode(
+        _email.text,
+        code,
+      );
       // The gate takes over (new-password screen).
     } on AuthFailure catch (e) {
       if (!mounted) return;
@@ -386,9 +399,13 @@ class _ResetCodePageState extends State<ResetCodePage> {
       showBack: true,
       title: tr.authCodeTitle,
       subtitle: tr.authCodeBody(
-          widget.email.isEmpty ? tr.authYourAccount : widget.email),
+        widget.email.isEmpty ? tr.authYourAccount : widget.email,
+      ),
       action: BusyButton(
-          label: tr.authCodeVerify, busy: _busy, onPressed: _verify),
+        label: tr.authCodeVerify,
+        busy: _busy,
+        onPressed: _verify,
+      ),
       children: [
         if (_info != null) FormMessage(_info!, error: false),
         if (_error != null) FormMessage(_error!),
@@ -447,8 +464,9 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
   Future<void> _submit() async {
     setState(() {
       _passwordError = validateNewPassword(_password.text);
-      _confirmError =
-          _confirm.text != _password.text ? tr.authPasswordsDiffer : null;
+      _confirmError = _confirm.text != _password.text
+          ? tr.authPasswordsDiffer
+          : null;
       _error = null;
     });
     if (_passwordError != null || _confirmError != null) return;
@@ -476,7 +494,11 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
     return AuthScaffold(
       title: tr.authNewPasswordTitle,
       subtitle: tr.authNewPasswordFor(s.email ?? tr.authYourAccount),
-      action: BusyButton(label: tr.authSavePassword, busy: _busy, onPressed: _submit),
+      action: BusyButton(
+        label: tr.authSavePassword,
+        busy: _busy,
+        onPressed: _submit,
+      ),
       children: [
         if (_error != null) FormMessage(_error!),
         PasswordField(

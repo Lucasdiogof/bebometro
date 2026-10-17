@@ -60,8 +60,12 @@ class Place {
 
   /// Nickname first, then the provider name, then the address.
   String get displayName => placeTitle(
-      nickname: nickname, providerName: providerName, address: address,
-      point: point, fallback: 'Local');
+    nickname: nickname,
+    providerName: providerName,
+    address: address,
+    point: point,
+    fallback: 'Local',
+  );
 
   /// The address is a subtitle only when a name already titles the place.
   String? get subtitleAddress =>
@@ -71,8 +75,8 @@ class Place {
   /// "Casa da Samara").
   String? get providerSubtitle =>
       _has(nickname) && _has(providerName) && providerName != nickname
-          ? providerName
-          : null;
+      ? providerName
+      : null;
 
   /// "São Paulo, SP", "SP", "São Paulo" or null.
   String? get cityState {
@@ -97,67 +101,66 @@ class Place {
     String? Function()? provider,
     String? Function()? providerPlaceId,
     required DateTime updatedAt,
-  }) =>
-      Place(
-        id: id,
-        type: type ?? this.type,
-        nickname: nickname != null ? nickname() : this.nickname,
-        address: address != null ? address() : this.address,
-        city: city != null ? city() : this.city,
-        state: state != null ? state() : this.state,
-        favorite: favorite ?? this.favorite,
-        archivedAt: archivedAt != null ? archivedAt() : this.archivedAt,
-        providerName:
-            providerName != null ? providerName() : this.providerName,
-        point: point != null ? point() : this.point,
-        source: source != null ? source() : this.source,
-        provider: provider != null ? provider() : this.provider,
-        providerPlaceId:
-            providerPlaceId != null ? providerPlaceId() : this.providerPlaceId,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
+  }) => Place(
+    id: id,
+    type: type ?? this.type,
+    nickname: nickname != null ? nickname() : this.nickname,
+    address: address != null ? address() : this.address,
+    city: city != null ? city() : this.city,
+    state: state != null ? state() : this.state,
+    favorite: favorite ?? this.favorite,
+    archivedAt: archivedAt != null ? archivedAt() : this.archivedAt,
+    providerName: providerName != null ? providerName() : this.providerName,
+    point: point != null ? point() : this.point,
+    source: source != null ? source() : this.source,
+    provider: provider != null ? provider() : this.provider,
+    providerPlaceId: providerPlaceId != null
+        ? providerPlaceId()
+        : this.providerPlaceId,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'type': type.code,
-        'nickname': nickname,
-        'address': address,
-        'city': city,
-        'state': state,
-        'favorite': favorite,
-        'archived_at': archivedAt?.toUtc().toIso8601String(),
-        'created_at': createdAt.toUtc().toIso8601String(),
-        'updated_at': updatedAt.toUtc().toIso8601String(),
-        // Newer, optional columns: only sent when set, so places keep syncing
-        // to a database that does not have them yet.
-        if (providerName != null) 'provider_name': providerName,
-        if (point != null) 'latitude': point!.lat,
-        if (point != null) 'longitude': point!.lng,
-        if (source != null) 'location_source': source!.code,
-        if (provider != null) 'provider': provider,
-        if (providerPlaceId != null) 'provider_place_id': providerPlaceId,
-      };
+    'id': id,
+    'type': type.code,
+    'nickname': nickname,
+    'address': address,
+    'city': city,
+    'state': state,
+    'favorite': favorite,
+    'archived_at': archivedAt?.toUtc().toIso8601String(),
+    'created_at': createdAt.toUtc().toIso8601String(),
+    'updated_at': updatedAt.toUtc().toIso8601String(),
+    // Newer, optional columns: only sent when set, so places keep syncing
+    // to a database that does not have them yet.
+    if (providerName != null) 'provider_name': providerName,
+    if (point != null) 'latitude': point!.lat,
+    if (point != null) 'longitude': point!.lng,
+    if (source != null) 'location_source': source!.code,
+    if (provider != null) 'provider': provider,
+    if (providerPlaceId != null) 'provider_place_id': providerPlaceId,
+  };
 
   factory Place.fromJson(Map<String, dynamic> j) => Place(
-        id: j['id'] as String,
-        type: OutingType.fromCode(j['type'] as String? ?? 'other'),
-        nickname: j['nickname'] as String?,
-        address: j['address'] as String?,
-        city: j['city'] as String?,
-        state: j['state'] as String?,
-        favorite: j['favorite'] as bool? ?? false,
-        archivedAt: j['archived_at'] == null
-            ? null
-            : DateTime.parse(j['archived_at'] as String).toLocal(),
-        createdAt: DateTime.parse(j['created_at'] as String).toLocal(),
-        updatedAt: DateTime.parse(j['updated_at'] as String).toLocal(),
-        providerName: j['provider_name'] as String?,
-        point: GeoPoint.tryCreate(j['latitude'], j['longitude']),
-        source: LocationSource.fromCode(j['location_source'] as String?),
-        provider: j['provider'] as String?,
-        providerPlaceId: j['provider_place_id'] as String?,
-      );
+    id: j['id'] as String,
+    type: OutingType.fromCode(j['type'] as String? ?? 'other'),
+    nickname: j['nickname'] as String?,
+    address: j['address'] as String?,
+    city: j['city'] as String?,
+    state: j['state'] as String?,
+    favorite: j['favorite'] as bool? ?? false,
+    archivedAt: j['archived_at'] == null
+        ? null
+        : DateTime.parse(j['archived_at'] as String).toLocal(),
+    createdAt: DateTime.parse(j['created_at'] as String).toLocal(),
+    updatedAt: DateTime.parse(j['updated_at'] as String).toLocal(),
+    providerName: j['provider_name'] as String?,
+    point: GeoPoint.tryCreate(j['latitude'], j['longitude']),
+    source: LocationSource.fromCode(j['location_source'] as String?),
+    provider: j['provider'] as String?,
+    providerPlaceId: j['provider_place_id'] as String?,
+  );
 }
 
 /// Shared title rule for places and outings: the personal nickname wins, then

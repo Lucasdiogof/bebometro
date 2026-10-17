@@ -102,12 +102,14 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
 
   Future<void> _saveDraft() async {
     if (_done) return;
-    await _drafts.save(ScanDraft(
+    await _drafts.save(
+      ScanDraft(
         outingId: widget.outingId,
         kind: OutingPhotoKind.photoLabel,
         photoIds: [?_photoId],
         text: _text.text,
-      ));
+      ),
+    );
   }
 
   Future<void> _pick(CaptureSource source) async {
@@ -284,11 +286,13 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
       body: ListView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+          AppSpace.gutter,
+          0,
+          AppSpace.gutter,
+          AppSpace.xl,
+        ),
         children: [
-          SurfaceCard(
-            child: Text(tr.scanLabelTip, style: AppText.body),
-          ),
+          SurfaceCard(child: Text(tr.scanLabelTip, style: AppText.body)),
           if (getIt<OutingRepository>().byId(widget.outingId)?.endedAt !=
               null) ...[
             const SizedBox(height: AppSpace.sm),
@@ -308,70 +312,92 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
           ],
           SectionTitle(tr.scanPhoto),
           if (!hasPhoto)
-            Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
-              if (_capture.supports(CaptureSource.camera))
-                FilledButton.icon(
-                  onPressed: () => _pick(CaptureSource.camera),
-                  icon: const Icon(Icons.photo_camera_outlined),
-                  label: Text(tr.scanTakePhoto),
-                ),
-              if (_capture.supports(CaptureSource.gallery))
-                OutlinedButton.icon(
-                  onPressed: () => _pick(CaptureSource.gallery),
-                  icon: const Icon(Icons.photo_library_outlined),
-                  label: Text(tr.scanChooseGallery),
-                ),
-            ])
+            Wrap(
+              spacing: AppSpace.sm,
+              runSpacing: AppSpace.sm,
+              children: [
+                if (_capture.supports(CaptureSource.camera))
+                  FilledButton.icon(
+                    onPressed: () => _pick(CaptureSource.camera),
+                    icon: const Icon(Icons.photo_camera_outlined),
+                    label: Text(tr.scanTakePhoto),
+                  ),
+                if (_capture.supports(CaptureSource.gallery))
+                  OutlinedButton.icon(
+                    onPressed: () => _pick(CaptureSource.gallery),
+                    icon: const Icon(Icons.photo_library_outlined),
+                    label: Text(tr.scanChooseGallery),
+                  ),
+              ],
+            )
           else ...[
             ClipRRect(
               borderRadius: BorderRadius.circular(AppRadius.md),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 320),
-                child: Stack(alignment: Alignment.center, children: [
-                  Image.memory(_bytes!, fit: BoxFit.contain, gaplessPlayback: true),
-                  if (_busy || _reading)
-                    const ColoredBox(
-                      color: Color(0x88000000),
-                      child: SizedBox.expand(
-                          child: Center(child: CircularProgressIndicator())),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.memory(
+                      _bytes!,
+                      fit: BoxFit.contain,
+                      gaplessPlayback: true,
                     ),
-                ]),
+                    if (_busy || _reading)
+                      const ColoredBox(
+                        color: Color(0x88000000),
+                        child: SizedBox.expand(
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: AppSpace.sm),
-            Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.xs, children: [
-              IconButton.outlined(
-                tooltip: tr.scanRotateLeft,
-                onPressed: _busy || _reading ? null : () => _rotate(270),
-                icon: const Icon(Icons.rotate_left_rounded),
-              ),
-              IconButton.outlined(
-                tooltip: tr.scanRotateRight,
-                onPressed: _busy || _reading ? null : () => _rotate(90),
-                icon: const Icon(Icons.rotate_right_rounded),
-              ),
-              if (_capture.supports(CaptureSource.camera))
-                OutlinedButton.icon(
-                  onPressed:
-                      _reading ? null : () => _pick(CaptureSource.camera),
-                  icon: const Icon(Icons.photo_camera_outlined),
-                  label: Text(tr.scanNewPhoto),
+            Wrap(
+              spacing: AppSpace.sm,
+              runSpacing: AppSpace.xs,
+              children: [
+                IconButton.outlined(
+                  tooltip: tr.scanRotateLeft,
+                  onPressed: _busy || _reading ? null : () => _rotate(270),
+                  icon: const Icon(Icons.rotate_left_rounded),
                 ),
-              if (_capture.supports(CaptureSource.gallery))
-                OutlinedButton.icon(
-                  onPressed:
-                      _reading ? null : () => _pick(CaptureSource.gallery),
-                  icon: const Icon(Icons.photo_library_outlined),
-                  label: Text(tr.scanReplacePhoto),
+                IconButton.outlined(
+                  tooltip: tr.scanRotateRight,
+                  onPressed: _busy || _reading ? null : () => _rotate(90),
+                  icon: const Icon(Icons.rotate_right_rounded),
                 ),
-              TextButton.icon(
-                onPressed: _reading ? null : _discard,
-                icon: const Icon(Icons.delete_outline_rounded,
-                    color: AppColors.danger),
-                label: Text(tr.scanDiscardReading,
-                    style: const TextStyle(color: AppColors.danger)),
-              ),
-            ]),
+                if (_capture.supports(CaptureSource.camera))
+                  OutlinedButton.icon(
+                    onPressed: _reading
+                        ? null
+                        : () => _pick(CaptureSource.camera),
+                    icon: const Icon(Icons.photo_camera_outlined),
+                    label: Text(tr.scanNewPhoto),
+                  ),
+                if (_capture.supports(CaptureSource.gallery))
+                  OutlinedButton.icon(
+                    onPressed: _reading
+                        ? null
+                        : () => _pick(CaptureSource.gallery),
+                    icon: const Icon(Icons.photo_library_outlined),
+                    label: Text(tr.scanReplacePhoto),
+                  ),
+                TextButton.icon(
+                  onPressed: _reading ? null : _discard,
+                  icon: const Icon(
+                    Icons.delete_outline_rounded,
+                    color: AppColors.danger,
+                  ),
+                  label: Text(
+                    tr.scanDiscardReading,
+                    style: const TextStyle(color: AppColors.danger),
+                  ),
+                ),
+              ],
+            ),
           ],
           if (hasPhoto && canRead) ...[
             const SizedBox(height: AppSpace.md),
@@ -380,22 +406,23 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
               const SizedBox(height: AppSpace.sm),
               Text(tr.scanReadingOnDevice, style: AppText.caption),
               TextButton(
-                  onPressed: _cancelReading, child: Text(tr.scanCancelReading)),
+                onPressed: _cancelReading,
+                child: Text(tr.scanCancelReading),
+              ),
             ] else
               FilledButton.icon(
                 onPressed: _read,
                 icon: const Icon(Icons.text_snippet_outlined),
-                label: Text(_text.text.trim().isEmpty
-                    ? tr.catalogScanLabel
-                    : tr.scanReadAgain),
+                label: Text(
+                  _text.text.trim().isEmpty
+                      ? tr.catalogScanLabel
+                      : tr.scanReadAgain,
+                ),
               ),
           ],
           if (!canRead) ...[
             const SizedBox(height: AppSpace.md),
-            InfoPill(
-              tr.scanOcrUnavailable,
-              icon: Icons.info_outline_rounded,
-            ),
+            InfoPill(tr.scanOcrUnavailable, icon: Icons.info_outline_rounded),
           ],
           SectionTitle(tr.scanLabelText),
           TextField(
@@ -407,21 +434,27 @@ class _ScanLabelPageState extends State<ScanLabelPage> {
               _saveDraftSoon();
             },
             decoration: InputDecoration(
-              hintText: canRead ? tr.scanTextHintCanRead : tr.scanTextHintManual,
+              hintText: canRead
+                  ? tr.scanTextHintCanRead
+                  : tr.scanTextHintManual,
             ),
           ),
           const SizedBox(height: AppSpace.md),
-          Wrap(spacing: AppSpace.sm, runSpacing: AppSpace.sm, children: [
-            if (_text.text.trim().isNotEmpty)
-              FilledButton(
-                onPressed: _reading ? null : () => _review(parse: true),
-                child: Text(tr.scanInterpret),
+          Wrap(
+            spacing: AppSpace.sm,
+            runSpacing: AppSpace.sm,
+            children: [
+              if (_text.text.trim().isNotEmpty)
+                FilledButton(
+                  onPressed: _reading ? null : () => _review(parse: true),
+                  child: Text(tr.scanInterpret),
+                ),
+              OutlinedButton(
+                onPressed: _reading ? null : () => _review(parse: false),
+                child: Text(tr.scanFillManually),
               ),
-            OutlinedButton(
-              onPressed: _reading ? null : () => _review(parse: false),
-              child: Text(tr.scanFillManually),
-            ),
-          ]),
+            ],
+          ),
         ],
       ),
     );

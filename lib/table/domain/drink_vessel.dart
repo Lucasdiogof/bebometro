@@ -22,17 +22,17 @@ enum VesselKind {
   genericGlass;
 
   String get label => switch (this) {
-        VesselKind.can => tr.vesselCan,
-        VesselKind.longNeck => tr.vesselLongNeck,
-        VesselKind.bottle => tr.vesselBottle,
-        VesselKind.beerGlass => tr.vesselBeerGlass,
-        VesselKind.draftMug => tr.vesselDraftMug,
-        VesselKind.shot => tr.vesselShot,
-        VesselKind.wineGlass => tr.vesselWineGlass,
-        VesselKind.cocktailGlass => tr.vesselCocktailGlass,
-        VesselKind.waterGlass => tr.vesselWaterGlass,
-        VesselKind.genericGlass => tr.vesselGlass,
-      };
+    VesselKind.can => tr.vesselCan,
+    VesselKind.longNeck => tr.vesselLongNeck,
+    VesselKind.bottle => tr.vesselBottle,
+    VesselKind.beerGlass => tr.vesselBeerGlass,
+    VesselKind.draftMug => tr.vesselDraftMug,
+    VesselKind.shot => tr.vesselShot,
+    VesselKind.wineGlass => tr.vesselWineGlass,
+    VesselKind.cocktailGlass => tr.vesselCocktailGlass,
+    VesselKind.waterGlass => tr.vesselWaterGlass,
+    VesselKind.genericGlass => tr.vesselGlass,
+  };
 
   /// How long the purely decorative "emptying" takes. It is an illustration
   /// of the registered drink, not an estimate of how fast anyone drinks.

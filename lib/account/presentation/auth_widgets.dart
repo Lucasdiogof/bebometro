@@ -38,7 +38,11 @@ class AuthScaffold extends StatelessWidget {
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   padding: const EdgeInsets.fromLTRB(
-                      AppSpace.gutter, AppSpace.xl, AppSpace.gutter, AppSpace.xl),
+                    AppSpace.gutter,
+                    AppSpace.xl,
+                    AppSpace.gutter,
+                    AppSpace.xl,
+                  ),
                   children: [
                     if (!showBack) ...[
                       const Center(child: BrandCap(size: 72)),
@@ -81,19 +85,19 @@ class EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TextField(
-        controller: controller,
-        autofocus: autofocus,
-        keyboardType: TextInputType.emailAddress,
-        autocorrect: false,
-        textInputAction: TextInputAction.next,
-        autofillHints: const [AutofillHints.email, AutofillHints.username],
-        onSubmitted: onSubmitted,
-        decoration: InputDecoration(
-          labelText: tr.authEmail,
-          prefixIcon: const Icon(Icons.mail_outline_rounded),
-          errorText: error,
-        ),
-      );
+    controller: controller,
+    autofocus: autofocus,
+    keyboardType: TextInputType.emailAddress,
+    autocorrect: false,
+    textInputAction: TextInputAction.next,
+    autofillHints: const [AutofillHints.email, AutofillHints.username],
+    onSubmitted: onSubmitted,
+    decoration: InputDecoration(
+      labelText: tr.authEmail,
+      prefixIcon: const Icon(Icons.mail_outline_rounded),
+      errorText: error,
+    ),
+  );
 }
 
 class PasswordField extends StatefulWidget {
@@ -109,6 +113,7 @@ class PasswordField extends StatefulWidget {
   });
 
   final TextEditingController controller;
+
   /// Defaults to "Senha" in the language on screen.
   final String? label;
   final String? error;
@@ -128,32 +133,31 @@ class _PasswordFieldState extends State<PasswordField> {
 
   @override
   Widget build(BuildContext context) => TextField(
-        controller: widget.controller,
-        obscureText: !_visible,
-        autocorrect: false,
-        enableSuggestions: false,
-        textInputAction:
-            widget.done ? TextInputAction.done : TextInputAction.next,
-        autofillHints: [
-          widget.newPassword ? AutofillHints.newPassword : AutofillHints.password,
-        ],
-        onSubmitted: widget.onSubmitted,
-        decoration: InputDecoration(
-          labelText: widget.label ?? tr.authPassword,
-          prefixIcon: const Icon(Icons.lock_outline_rounded),
-          helperText: widget.helper,
-          helperMaxLines: 2,
-          errorText: widget.error,
-          errorMaxLines: 3,
-          suffixIcon: IconButton(
-            tooltip: _visible ? tr.authHidePassword : tr.authShowPassword,
-            icon: Icon(_visible
-                ? Icons.visibility_off_outlined
-                : Icons.visibility_outlined),
-            onPressed: () => setState(() => _visible = !_visible),
-          ),
+    controller: widget.controller,
+    obscureText: !_visible,
+    autocorrect: false,
+    enableSuggestions: false,
+    textInputAction: widget.done ? TextInputAction.done : TextInputAction.next,
+    autofillHints: [
+      widget.newPassword ? AutofillHints.newPassword : AutofillHints.password,
+    ],
+    onSubmitted: widget.onSubmitted,
+    decoration: InputDecoration(
+      labelText: widget.label ?? tr.authPassword,
+      prefixIcon: const Icon(Icons.lock_outline_rounded),
+      helperText: widget.helper,
+      helperMaxLines: 2,
+      errorText: widget.error,
+      errorMaxLines: 3,
+      suffixIcon: IconButton(
+        tooltip: _visible ? tr.authHidePassword : tr.authShowPassword,
+        icon: Icon(
+          _visible ? Icons.visibility_off_outlined : Icons.visibility_outlined,
         ),
-      );
+        onPressed: () => setState(() => _visible = !_visible),
+      ),
+    ),
+  );
 }
 
 /// Message box for errors and confirmations inside a form.
@@ -178,8 +182,11 @@ class FormMessage extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(error ? Icons.error_outline_rounded : Icons.check_circle_outline,
-                color: color, size: 20),
+            Icon(
+              error ? Icons.error_outline_rounded : Icons.check_circle_outline,
+              color: color,
+              size: 20,
+            ),
             const SizedBox(width: AppSpace.sm),
             Expanded(child: Text(text, style: AppText.body)),
           ],
@@ -204,14 +211,15 @@ class BusyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FilledButton(
-        onPressed: busy ? null : onPressed,
-        child: busy
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2))
-            : Text(label),
-      );
+    onPressed: busy ? null : onPressed,
+    child: busy
+        ? const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          )
+        : Text(label),
+  );
 }
 
 /// Basic client-side checks; the server has the last word.

@@ -57,7 +57,9 @@ class PriceFixState {
   final bool saving;
 
   bool get canApply =>
-      selected.isNotEmpty && (complimentary || (priceCents ?? 0) > 0) && !saving;
+      selected.isNotEmpty &&
+      (complimentary || (priceCents ?? 0) > 0) &&
+      !saving;
 
   PriceFixState copyWith({
     List<PriceFixGroup>? groups,
@@ -66,15 +68,14 @@ class PriceFixState {
     int? Function()? priceCents,
     bool? complimentary,
     bool? saving,
-  }) =>
-      PriceFixState(
-        groups: groups ?? this.groups,
-        selected: selected ?? this.selected,
-        includePriced: includePriced ?? this.includePriced,
-        priceCents: priceCents != null ? priceCents() : this.priceCents,
-        complimentary: complimentary ?? this.complimentary,
-        saving: saving ?? this.saving,
-      );
+  }) => PriceFixState(
+    groups: groups ?? this.groups,
+    selected: selected ?? this.selected,
+    includePriced: includePriced ?? this.includePriced,
+    priceCents: priceCents != null ? priceCents() : this.priceCents,
+    complimentary: complimentary ?? this.complimentary,
+    saving: saving ?? this.saving,
+  );
 }
 
 /// Quick edit of missing prices in the summary: one by one, or one price for
@@ -103,18 +104,20 @@ class PriceFixCubit extends Cubit<PriceFixState> {
       byKey.putIfAbsent(ComparableKey.of(e), () => []).add(e);
     }
     final groups = [
-      for (final list in byKey.values)
-        PriceFixGroup(_label(list.first), list),
+      for (final list in byKey.values) PriceFixGroup(_label(list.first), list),
     ];
     final ids = {for (final e in visible) e.id};
-    emit(state.copyWith(
-      groups: groups,
-      selected: state.selected.intersection(ids),
-    ));
+    emit(
+      state.copyWith(
+        groups: groups,
+        selected: state.selected.intersection(ids),
+      ),
+    );
   }
 
   static String _label(DrinkEntry e) {
-    final size = (e.presentation == null
+    final size =
+        (e.presentation == null
             ? null
             : localizePresentation(e.presentation!)) ??
         (e.containerMl == null ? null : formatMl(e.containerMl!));
@@ -148,16 +151,18 @@ class PriceFixCubit extends Cubit<PriceFixState> {
   void setComplimentary(bool v) => emit(state.copyWith(complimentary: v));
 
   String _priceText(DrinkEntry e) => switch (e.priceKind) {
-        PriceKind.informed => _money(e.paidCents ?? 0),
-        PriceKind.complimentary => tr.priceComplimentary,
-        PriceKind.unknown => tr.priceNone,
-      };
+    PriceKind.informed => _money(e.paidCents ?? 0),
+    PriceKind.complimentary => tr.priceComplimentary,
+    PriceKind.unknown => tr.priceNone,
+  };
 
   static String _money(int cents) => formatCents(cents);
 
   /// What would change, to show before saving.
   List<PricePreviewRow> preview() {
-    final after = state.complimentary ? tr.priceComplimentary : _money(state.priceCents ?? 0);
+    final after = state.complimentary
+        ? tr.priceComplimentary
+        : _money(state.priceCents ?? 0);
     return [
       for (final g in state.groups)
         for (final e in g.entries)
@@ -174,8 +179,9 @@ class PriceFixCubit extends Cubit<PriceFixState> {
   Future<void> apply() async {
     if (!state.canApply) return;
     emit(state.copyWith(saving: true));
-    final kind =
-        state.complimentary ? PriceKind.complimentary : PriceKind.informed;
+    final kind = state.complimentary
+        ? PriceKind.complimentary
+        : PriceKind.informed;
     await _drinks.applyPrices({
       for (final id in state.selected)
         id: (kind: kind, paidCents: state.complimentary ? 0 : state.priceCents),
@@ -185,13 +191,16 @@ class PriceFixCubit extends Cubit<PriceFixState> {
   }
 
   /// One record on its own (no batch preview needed).
-  Future<void> applyTo(DrinkEntry e, {int? cents, bool complimentary = false}) =>
-      _drinks.applyPrices({
-        e.id: (
-          kind: complimentary ? PriceKind.complimentary : PriceKind.informed,
-          paidCents: complimentary ? 0 : cents,
-        ),
-      });
+  Future<void> applyTo(
+    DrinkEntry e, {
+    int? cents,
+    bool complimentary = false,
+  }) => _drinks.applyPrices({
+    e.id: (
+      kind: complimentary ? PriceKind.complimentary : PriceKind.informed,
+      paidCents: complimentary ? 0 : cents,
+    ),
+  });
 
   @override
   Future<void> close() {

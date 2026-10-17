@@ -58,8 +58,10 @@ class _TabView extends StatelessWidget {
   }
 
   Future<void> _link(BuildContext context, TabCubit cubit) async {
-    final choice =
-        await showTabLinkSheet(context, available: cubit.state.available);
+    final choice = await showTabLinkSheet(
+      context,
+      available: cubit.state.available,
+    );
     if (choice != null) {
       await cubit.linkEntries(choice.ids, merged: choice.merged);
     }
@@ -80,91 +82,98 @@ class _TabView extends StatelessWidget {
                 tooltip: tr.tabShareSplitTooltip,
                 onPressed: state.doc.isEmpty
                     ? null
-                    : () => Navigator.of(context).push(MaterialPageRoute(
+                    : () => Navigator.of(context).push(
+                        MaterialPageRoute(
                           builder: (_) => TabSharePage(
                             outing: state.outing!,
                             doc: state.doc,
                             result: state.result,
                           ),
-                        )),
+                        ),
+                      ),
                 icon: const Icon(Icons.ios_share_rounded),
               ),
             ],
           ),
-          body: Column(children: [
-            Expanded(
-              child: ListView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                padding: const EdgeInsets.fromLTRB(
-                    AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
-                children: [
-                  Text(tr.tabIntro, style: AppText.caption),
-                  if (ended) ...[
+          body: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpace.gutter,
+                    0,
+                    AppSpace.gutter,
+                    AppSpace.xl,
+                  ),
+                  children: [
+                    Text(tr.tabIntro, style: AppText.caption),
+                    if (ended) ...[
+                      const SizedBox(height: AppSpace.sm),
+                      InfoPill(tr.tabEnded, icon: Icons.info_outline_rounded),
+                    ],
+                    const SizedBox(height: AppSpace.md),
+                    _TotalsCard(state: state),
+                    const SizedBox(height: AppSpace.md),
+                    _ServiceDiscountCard(state: state),
+                    SectionTitle(
+                      tr.tabItemsTitle('${r.results.length}'),
+                      trailing: TextButton.icon(
+                        onPressed: () => _addExtra(context, cubit),
+                        icon: const Icon(Icons.add_rounded, size: 18),
+                        label: Text(tr.commonAdd),
+                      ),
+                    ),
+                    if (r.groups.isEmpty)
+                      EmptyView(
+                        icon: Icons.receipt_long_outlined,
+                        title: tr.tabEmptyTitle,
+                        message: tr.tabEmptyBody,
+                      )
+                    else
+                      for (final g in r.groups)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                          child: _GroupTile(group: g, state: state),
+                        ),
                     const SizedBox(height: AppSpace.sm),
-                    InfoPill(
-                      tr.tabEnded,
-                      icon: Icons.info_outline_rounded,
+                    OutlinedButton.icon(
+                      onPressed: state.available.isEmpty
+                          ? null
+                          : () => _link(context, cubit),
+                      icon: const Icon(Icons.local_bar_outlined),
+                      label: Text(
+                        state.available.isEmpty
+                            ? tr.tabNoDrinksToLink
+                            : tr.tabLinkDrinks('${state.available.length}'),
+                      ),
                     ),
                   ],
-                  const SizedBox(height: AppSpace.md),
-                  _TotalsCard(state: state),
-                  const SizedBox(height: AppSpace.md),
-                  _ServiceDiscountCard(state: state),
-                  SectionTitle(
-                    tr.tabItemsTitle('${r.results.length}'),
-                    trailing: TextButton.icon(
-                      onPressed: () => _addExtra(context, cubit),
-                      icon: const Icon(Icons.add_rounded, size: 18),
-                      label: Text(tr.commonAdd),
-                    ),
-                  ),
-                  if (r.groups.isEmpty)
-                    EmptyView(
-                      icon: Icons.receipt_long_outlined,
-                      title: tr.tabEmptyTitle,
-                      message: tr.tabEmptyBody,
-                    )
-                  else
-                    for (final g in r.groups)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: AppSpace.sm),
-                        child: _GroupTile(group: g, state: state),
+                ),
+              ),
+              BottomActionBar(
+                child: FilledButton.icon(
+                  onPressed: () async {
+                    await cubit.ensureMe();
+                    if (!context.mounted) return;
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => SplitPage(cubit: cubit),
                       ),
-                  const SizedBox(height: AppSpace.sm),
-                  OutlinedButton.icon(
-                    onPressed: state.available.isEmpty
-                        ? null
-                        : () => _link(context, cubit),
-                    icon: const Icon(Icons.local_bar_outlined),
-                    label: Text(state.available.isEmpty
-                        ? tr.tabNoDrinksToLink
-                        : tr.tabLinkDrinks('${state.available.length}')),
-                  ),
-                ],
+                    );
+                  },
+                  icon: const Icon(Icons.call_split_rounded),
+                  label: Text(tr.tabSplitBill),
+                ),
               ),
-            ),
-            BottomActionBar(
-              child: FilledButton.icon(
-                onPressed: () async {
-                  await cubit.ensureMe();
-                  if (!context.mounted) return;
-                  await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => SplitPage(cubit: cubit),
-                  ));
-                },
-                icon: const Icon(Icons.call_split_rounded),
-                label: Text(tr.tabSplitBill),
-              ),
-            ),
-          ]),
+            ],
+          ),
         );
       },
     );
   }
 }
-
-// ---- Totals ------------------------------------------------------------------
 
 class _Row extends StatelessWidget {
   const _Row(this.label, this.value, {this.strong = false});
@@ -175,15 +184,15 @@ class _Row extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = strong
-        ? AppText.title
-        : AppText.body;
+    final style = strong ? AppText.title : AppText.body;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),
-      child: Row(children: [
-        Expanded(child: Text(label, style: style)),
-        Text(value, style: style),
-      ]),
+      child: Row(
+        children: [
+          Expanded(child: Text(label, style: style)),
+          Text(value, style: style),
+        ],
+      ),
     );
   }
 }
@@ -204,19 +213,26 @@ class _TotalsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _Row(partial ? tr.tabSubtotalKnown : tr.tabSubtotal,
-              formatCents(r.subtotal)),
-          if (r.discount > 0) _Row(tr.tabDiscount, '− ${formatCents(r.discount)}'),
+          _Row(
+            partial ? tr.tabSubtotalKnown : tr.tabSubtotal,
+            formatCents(r.subtotal),
+          ),
+          if (r.discount > 0)
+            _Row(tr.tabDiscount, '− ${formatCents(r.discount)}'),
           if (d.serviceOn)
             _Row(
               tr.tabServiceLine(
-                  formatBp(d.serviceBp), formatCents(r.serviceBase)),
+                formatBp(d.serviceBp),
+                formatCents(r.serviceBase),
+              ),
               '+ ${formatCents(r.service)}',
             ),
           const Divider(height: 20),
-          _Row(partial ? tr.tabTotalKnown : tr.tabTotalTab,
-              formatCents(r.total),
-              strong: true),
+          _Row(
+            partial ? tr.tabTotalKnown : tr.tabTotalTab,
+            formatCents(r.total),
+            strong: true,
+          ),
           if (partial) ...[
             const SizedBox(height: AppSpace.sm),
             InfoPill(
@@ -242,8 +258,6 @@ class _TotalsCard extends StatelessWidget {
     );
   }
 }
-
-// ---- Service and discount ----------------------------------------------------
 
 class _ServiceDiscountCard extends StatefulWidget {
   const _ServiceDiscountCard({required this.state});
@@ -287,14 +301,18 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
     final cubit = context.read<TabCubit>();
     final d = widget.state.doc;
     final r = widget.state.result;
-    final capped = d.discountKind == DiscountKind.amount &&
-        d.discountValue > r.subtotal;
+    final capped =
+        d.discountKind == DiscountKind.amount && d.discountValue > r.subtotal;
     return SurfaceCard(
       padding: EdgeInsets.zero,
       child: ExpansionTile(
         tilePadding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
         childrenPadding: const EdgeInsets.fromLTRB(
-            AppSpace.lg, 0, AppSpace.lg, AppSpace.lg),
+          AppSpace.lg,
+          0,
+          AppSpace.lg,
+          AppSpace.lg,
+        ),
         shape: const Border(),
         collapsedShape: const Border(),
         title: Text(tr.tabServiceAndDiscount, style: AppText.subtitle),
@@ -319,46 +337,55 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
           if (d.serviceOn) ...[
             // Common rates in one tap; any other value in the field below.
             // Switching the charge off removes it from every total again.
-            Wrap(spacing: AppSpace.sm, children: [
-              for (final bp in const [500, 1000, 2000])
-                ChoiceChip(
-                  label: Text('${bp ~/ 100}%'),
-                  selected: d.serviceBp == bp,
-                  showCheckmark: false,
-                  onSelected: (_) {
-                    _pct.text = _bpText(bp);
-                    cubit.setService(on: true, bp: bp);
-                  },
-                ),
-            ]),
+            Wrap(
+              spacing: AppSpace.sm,
+              children: [
+                for (final bp in const [500, 1000, 2000])
+                  ChoiceChip(
+                    label: Text('${bp ~/ 100}%'),
+                    selected: d.serviceBp == bp,
+                    showCheckmark: false,
+                    onSelected: (_) {
+                      _pct.text = _bpText(bp);
+                      cubit.setService(on: true, bp: bp);
+                    },
+                  ),
+              ],
+            ),
             const SizedBox(height: AppSpace.sm),
-            Row(children: [
-              SizedBox(
-                width: 120,
-                child: TextField(
-                  controller: _pct,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
+            Row(
+              children: [
+                SizedBox(
+                  width: 120,
+                  child: TextField(
+                    controller: _pct,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    decoration: InputDecoration(
                       labelText: tr.tabPercent,
                       suffixText: '%',
                       errorText: numberInputError(_pct.text),
-                      errorMaxLines: 3),
-                  onChanged: (v) {
-                    final bp = parseBp(v);
-                    if (bp != null) cubit.setService(on: true, bp: bp);
-                  },
+                      errorMaxLines: 3,
+                    ),
+                    onChanged: (v) {
+                      final bp = parseBp(v);
+                      if (bp != null) cubit.setService(on: true, bp: bp);
+                    },
+                  ),
                 ),
-              ),
-              const SizedBox(width: AppSpace.md),
-              Expanded(
-                child: Text(
-                  tr.tabServiceBase(
-                      formatCents(r.serviceBase), formatCents(r.service)),
-                  style: AppText.caption,
+                const SizedBox(width: AppSpace.md),
+                Expanded(
+                  child: Text(
+                    tr.tabServiceBase(
+                      formatCents(r.serviceBase),
+                      formatCents(r.service),
+                    ),
+                    style: AppText.caption,
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
           ],
           const Divider(height: 24),
           Text(tr.tabDiscount, style: AppText.subtitle),
@@ -369,11 +396,17 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
               showSelectedIcon: false,
               segments: [
                 ButtonSegment(
-                    value: DiscountKind.none, label: Text(tr.tabDiscountNone)),
+                  value: DiscountKind.none,
+                  label: Text(tr.tabDiscountNone),
+                ),
                 const ButtonSegment(
-                    value: DiscountKind.amount, label: Text(r'R$')),
+                  value: DiscountKind.amount,
+                  label: Text(r'R$'),
+                ),
                 const ButtonSegment(
-                    value: DiscountKind.percent, label: Text('%')),
+                  value: DiscountKind.percent,
+                  label: Text('%'),
+                ),
               ],
               selected: {d.discountKind},
               onSelectionChanged: (s) {
@@ -386,15 +419,18 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
             const SizedBox(height: AppSpace.md),
             TextField(
               controller: _discount,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               decoration: InputDecoration(
                 labelText: d.discountKind == DiscountKind.amount
                     ? tr.tabDiscountAmountLabel
                     : tr.tabDiscountPercentLabel,
                 errorText: numberInputError(_discount.text),
                 errorMaxLines: 3,
-                prefixText: d.discountKind == DiscountKind.amount ? r'R$ ' : null,
+                prefixText: d.discountKind == DiscountKind.amount
+                    ? r'R$ '
+                    : null,
                 suffixText: d.discountKind == DiscountKind.percent ? '%' : null,
                 helperText: capped
                     ? tr.tabDiscountCapped(formatCents(r.subtotal))
@@ -415,8 +451,6 @@ class _ServiceDiscountCardState extends State<_ServiceDiscountCard> {
   }
 }
 
-// ---- Items -------------------------------------------------------------------
-
 class _GroupTile extends StatelessWidget {
   const _GroupTile({required this.group, required this.state});
 
@@ -426,14 +460,23 @@ class _GroupTile extends StatelessWidget {
   String _header() {
     final l = group.first;
     if (group.count > 1 && group.isPriced) {
-      return tr.tabGroupHeaderMulti(l.title, '${group.count}',
-          formatCents(group.unitCents!), formatCents(group.sumCents!));
+      return tr.tabGroupHeaderMulti(
+        l.title,
+        '${group.count}',
+        formatCents(group.unitCents!),
+        formatCents(group.sumCents!),
+      );
     }
-    if (group.count > 1) return tr.tabGroupHeaderNoPrice(l.title, '${group.count}');
+    if (group.count > 1)
+      return tr.tabGroupHeaderNoPrice(l.title, '${group.count}');
     if (l.quantity > 1) {
       return l.totalCents == null
           ? tr.tabGroupQtyNoPrice(l.title, '${l.quantity}')
-          : tr.tabGroupQtyTotal(l.title, '${l.quantity}', formatCents(l.totalCents!));
+          : tr.tabGroupQtyTotal(
+              l.title,
+              '${l.quantity}',
+              formatCents(l.totalCents!),
+            );
     }
     return l.title;
   }
@@ -478,7 +521,11 @@ class _GroupTile extends StatelessWidget {
         title: Text(_header(), style: AppText.subtitle),
         subtitle: _sub() == null ? null : Text(_sub()!, style: AppText.caption),
         childrenPadding: const EdgeInsets.fromLTRB(
-            AppSpace.lg, 0, AppSpace.sm, AppSpace.sm),
+          AppSpace.lg,
+          0,
+          AppSpace.sm,
+          AppSpace.sm,
+        ),
         children: [
           for (final line in group.lines)
             _LineRow(line: line, result: byId[line.id], state: state),
@@ -489,7 +536,11 @@ class _GroupTile extends StatelessWidget {
 }
 
 class _LineRow extends StatelessWidget {
-  const _LineRow({required this.line, required this.result, required this.state});
+  const _LineRow({
+    required this.line,
+    required this.result,
+    required this.state,
+  });
 
   final TabLine line;
   final LineResult? result;
@@ -514,8 +565,9 @@ class _LineRow extends StatelessWidget {
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: Text(tr.commonCancel)),
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(tr.commonCancel),
+          ),
           TextButton(
             onPressed: () {
               final cents = parseCents(c.text);
@@ -540,7 +592,9 @@ class _LineRow extends StatelessWidget {
     final parts = <String>[
       formatTime(line.at),
       if (line.totalCents != null)
-        line.complimentary ? tr.tabComplimentary : formatCents(line.totalCents!),
+        line.complimentary
+            ? tr.tabComplimentary
+            : formatCents(line.totalCents!),
       if (line.totalCents == null)
         line.isPersonalOnly
             ? tr.tabLineOnlyYourShare(formatCents(line.personalOnlyCents!))
@@ -550,7 +604,8 @@ class _LineRow extends StatelessWidget {
       if (result != null && result!.service > 0)
         tr.tabLineService(formatCents(result!.service)),
     ];
-    final canQuickFill = entry != null &&
+    final canQuickFill =
+        entry != null &&
         ((!entry.isShared && entry.priceKind == PriceKind.unknown) ||
             (entry.isShared &&
                 entry.priceKind == PriceKind.informed &&
@@ -578,8 +633,11 @@ class _LineRow extends StatelessWidget {
               if (cents != null) await cubit.fillEntryPrice(entry, cents);
             case 'edit':
               if (entry != null) {
-                await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => DrinkEntryPage.edit(entry: entry)));
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => DrinkEntryPage.edit(entry: entry),
+                  ),
+                );
               } else if (extra != null) {
                 final next = await showTabExtraSheet(
                   context,
@@ -611,13 +669,13 @@ class _LineRow extends StatelessWidget {
           ),
           PopupMenuItem(
             value: 'service',
-            child:
-                Text(line.service ? tr.tabNoServiceItem : tr.tabChargeService),
+            child: Text(
+              line.service ? tr.tabNoServiceItem : tr.tabChargeService,
+            ),
           ),
           PopupMenuItem(
             value: 'remove',
-            child:
-                Text(entry != null ? tr.tabRemoveFromTab : tr.tabDeleteItem),
+            child: Text(entry != null ? tr.tabRemoveFromTab : tr.tabDeleteItem),
           ),
         ],
       ),

@@ -36,42 +36,52 @@ class _PlacesView extends StatelessWidget {
           MaterialPageRoute(builder: (_) => PlaceDetailPage(placeId: p.id)),
         ),
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.md, AppSpace.sm, AppSpace.xs, AppSpace.sm),
-        child: Row(children: [
-          Icon(p.type.icon, color: AppColors.amber),
-          const SizedBox(width: AppSpace.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(p.displayName,
+          AppSpace.md,
+          AppSpace.sm,
+          AppSpace.xs,
+          AppSpace.sm,
+        ),
+        child: Row(
+          children: [
+            Icon(p.type.icon, color: AppColors.amber),
+            const SizedBox(width: AppSpace.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    p.displayName,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: AppText.subtitle),
-                if (p.providerSubtitle != null)
-                  Text(p.providerSubtitle!,
+                    style: AppText.subtitle,
+                  ),
+                  if (p.providerSubtitle != null)
+                    Text(
+                      p.providerSubtitle!,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppText.caption),
-                Text(
-                  [
-                    if (p.cityState != null) p.cityState!,
-                    tr.placesVisits(row.visits),
-                  ].join(' · '),
-                  style: AppText.caption,
-                ),
-              ],
+                      style: AppText.caption,
+                    ),
+                  Text(
+                    [
+                      if (p.cityState != null) p.cityState!,
+                      tr.placesVisits(row.visits),
+                    ].join(' · '),
+                    style: AppText.caption,
+                  ),
+                ],
+              ),
             ),
-          ),
-          IconButton(
-            tooltip: p.favorite ? tr.catalogUnfavorite : tr.catalogFavorite,
-            onPressed: () => cubit.toggleFavorite(p),
-            icon: Icon(
-              p.favorite ? Icons.star_rounded : Icons.star_outline_rounded,
-              color: p.favorite ? AppColors.amber : AppColors.textMuted,
+            IconButton(
+              tooltip: p.favorite ? tr.catalogUnfavorite : tr.catalogFavorite,
+              onPressed: () => cubit.toggleFavorite(p),
+              icon: Icon(
+                p.favorite ? Icons.star_rounded : Icons.star_outline_rounded,
+                color: p.favorite ? AppColors.amber : AppColors.textMuted,
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
@@ -93,10 +103,15 @@ class _PlacesView extends StatelessWidget {
                         message: tr.placesEmptyBody,
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(AppSpace.gutter, 0,
-                            AppSpace.gutter, AppSpace.xl),
+                        padding: const EdgeInsets.fromLTRB(
+                          AppSpace.gutter,
+                          0,
+                          AppSpace.gutter,
+                          AppSpace.xl,
+                        ),
                         children: [
-                          for (final r in state.active) _tile(context, r, cubit),
+                          for (final r in state.active)
+                            _tile(context, r, cubit),
                           if (state.archived.isNotEmpty) ...[
                             SectionTitle(tr.placesArchivedSection),
                             for (final r in state.archived)

@@ -7,21 +7,21 @@ final _tap = DateTime.utc(2026, 10, 16, 22, 30);
 final _later = DateTime.utc(2026, 10, 16, 23, 10);
 
 DrinkEntry source({EntryOrigin? origin}) => DrinkEntry(
-      id: 'src',
-      outingId: 'o1',
-      consumedAt: DateTime.utc(2026, 10, 16, 21),
-      name: 'Chopp',
-      category: DrinkCategory.draft,
-      presentation: 'Copo 400 ml',
-      containerMl: 400,
-      personalMl: 400,
-      abvPercent: 4.8,
-      priceKind: PriceKind.informed,
-      paidCents: 1500,
-      createdAt: DateTime.utc(2026, 10, 16, 21),
-      updatedAt: DateTime.utc(2026, 10, 16, 21),
-      entryOrigin: origin,
-    );
+  id: 'src',
+  outingId: 'o1',
+  consumedAt: DateTime.utc(2026, 10, 16, 21),
+  name: 'Chopp',
+  category: DrinkCategory.draft,
+  presentation: 'Copo 400 ml',
+  containerMl: 400,
+  personalMl: 400,
+  abvPercent: 4.8,
+  priceKind: PriceKind.informed,
+  paidCents: 1500,
+  createdAt: DateTime.utc(2026, 10, 16, 21),
+  updatedAt: DateTime.utc(2026, 10, 16, 21),
+  entryOrigin: origin,
+);
 
 EntryOrigin lock(String id) =>
     EntryOrigin.lockScreen(commandId: id, tappedAt: _tap);
@@ -69,8 +69,11 @@ void main() {
 
     test('a new lock-screen action carries only its own command', () {
       final fromLock = source(origin: lock('old'));
-      final again =
-          fromLock.repeated(newId: 'n2', at: _later, origin: lock('new'));
+      final again = fromLock.repeated(
+        newId: 'n2',
+        at: _later,
+        origin: lock('new'),
+      );
       expect(again.entryOrigin!.commandId, 'new');
     });
   });
@@ -80,17 +83,21 @@ void main() {
 
     test('price', () {
       final e = base.copyWithPrice(
-          kind: PriceKind.informed, paidCents: 2000, updatedAt: _later);
+        kind: PriceKind.informed,
+        paidCents: 2000,
+        updatedAt: _later,
+      );
       expect(e.entryOrigin!.commandId, 'c');
       expect(e.paidCents, 2000);
     });
 
     test('bill total, delete and restore', () {
       expect(
-          base
-              .copyWithBillTotal(billTotalCents: 5000, updatedAt: _later)
-              .entryOrigin,
-          isNotNull);
+        base
+            .copyWithBillTotal(billTotalCents: 5000, updatedAt: _later)
+            .entryOrigin,
+        isNotNull,
+      );
       final del = base.copyWith(deletedAt: _later);
       expect(del.entryOrigin!.commandId, 'c');
       expect(del.copyWith(clearDeleted: true).entryOrigin!.commandId, 'c');
@@ -113,8 +120,12 @@ void main() {
   group('review draft', () {
     test('is a NEW record with only the command origin', () {
       final template = source(origin: lock('someone-else'));
-      final draft = DrinkDraft.fromEntry(template,
-          asNew: true, consumedAt: _tap, origin: lock('mine'));
+      final draft = DrinkDraft.fromEntry(
+        template,
+        asNew: true,
+        consumedAt: _tap,
+        origin: lock('mine'),
+      );
       final saved = draft.toEntry(id: 'stable', outingId: 'o1', now: _later);
       expect(saved.id, 'stable'); // not the template id
       expect(saved.entryOrigin!.commandId, 'mine');

@@ -44,15 +44,15 @@ class SyncConflict {
   bool get remoteDeleted => remote?['deleted_at'] != null;
 
   Map<String, dynamic> toJson() => {
-        'kind': kind.name,
-        'collection': collection,
-        'id': id,
-        'local': local,
-        'remote': remote,
-        'remote_revision': remoteRevision,
-        'other_id': otherId,
-        'at': at.toUtc().toIso8601String(),
-      };
+    'kind': kind.name,
+    'collection': collection,
+    'id': id,
+    'local': local,
+    'remote': remote,
+    'remote_revision': remoteRevision,
+    'other_id': otherId,
+    'at': at.toUtc().toIso8601String(),
+  };
 
   static SyncConflict? fromJson(Map<String, dynamic> j) {
     try {
@@ -97,8 +97,8 @@ class SyncConflicts {
 
   Stream<void> get changes => _changes.stream;
 
-  List<SyncConflict> get all => _items.values.toList()
-    ..sort((a, b) => a.at.compareTo(b.at));
+  List<SyncConflict> get all =>
+      _items.values.toList()..sort((a, b) => a.at.compareTo(b.at));
 
   int get count => _items.length;
 
@@ -117,7 +117,9 @@ class SyncConflicts {
 
   Future<void> _save() async {
     await _store.setString(
-        _key, jsonEncode([for (final c in _items.values) c.toJson()]));
+      _key,
+      jsonEncode([for (final c in _items.values) c.toJson()]),
+    );
     if (!_changes.isClosed) _changes.add(null);
   }
 
@@ -140,7 +142,11 @@ class SyncConflicts {
   Future<void> useRemote(SyncConflict c) async {
     final remote = c.remote;
     if (remote != null) {
-      await _store.replaceWithRemote(c.collection, remote, c.remoteRevision ?? 0);
+      await _store.replaceWithRemote(
+        c.collection,
+        remote,
+        c.remoteRevision ?? 0,
+      );
     }
     await remove(c);
   }

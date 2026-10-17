@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -176,7 +175,8 @@ class AppLocalizationsEs extends AppLocalizations {
       locale: localeName,
       other:
           '$count registros con graduación o cantidad desconocida: el total es un mínimo',
-      one: '1 registro con graduación o cantidad desconocida: el total es un mínimo',
+      one:
+          '1 registro con graduación o cantidad desconocida: el total es un mínimo',
     );
     return '$_temp0';
   }
@@ -3051,7 +3051,8 @@ class AppLocalizationsEs extends AppLocalizations {
       locale: localeName,
       other:
           'Se ignoraron $count precios sin elemento claro. Añade el elemento manualmente si lo necesitas.',
-      one: 'Se ignoró 1 precio sin elemento claro. Añade el elemento manualmente si lo necesitas.',
+      one:
+          'Se ignoró 1 precio sin elemento claro. Añade el elemento manualmente si lo necesitas.',
     );
     return '$_temp0';
   }
@@ -3070,7 +3071,8 @@ class AppLocalizationsEs extends AppLocalizations {
       locale: localeName,
       other:
           '$count fotos de esta lectura ya no están disponibles. Se conservaron sus elementos para que los revises.',
-      one: 'Una foto de esta lectura ya no está disponible. Se conservaron sus elementos para que los revises.',
+      one:
+          'Una foto de esta lectura ya no está disponible. Se conservaron sus elementos para que los revises.',
     );
     return '$_temp0';
   }
@@ -4853,7 +4855,8 @@ class AppLocalizationsEs extends AppLocalizations {
       locale: localeName,
       other:
           'Sin base de comparación: no hay salidas registradas en los $days días anteriores a este período.',
-      one: 'Sin base de comparación: no hay salidas registradas el día anterior a este período.',
+      one:
+          'Sin base de comparación: no hay salidas registradas el día anterior a este período.',
     );
     return '$_temp0';
   }

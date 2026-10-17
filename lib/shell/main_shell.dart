@@ -98,33 +98,50 @@ class _ActiveOutingBar extends StatelessWidget {
             onTap: () => OutingFlow.open(context, outing.id),
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpace.gutter, vertical: AppSpace.sm),
-              child: Row(children: [
-                Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                      color: AppColors.success, shape: BoxShape.circle),
-                ),
-                const SizedBox(width: AppSpace.sm),
-                Expanded(
-                  child: Row(children: [
-                    Flexible(
-                      child: Text(
-                        tr.shellOutingRunning(outing.displayName),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppText.caption.copyWith(color: AppColors.text),
-                      ),
+                horizontal: AppSpace.gutter,
+                vertical: AppSpace.sm,
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: AppColors.success,
+                      shape: BoxShape.circle,
                     ),
-                    const SizedBox(width: AppSpace.sm),
-                    ElapsedText(since: outing.startedAt, style: AppText.caption),
-                  ]),
-                ),
-                Text(tr.shellBackToOuting,
+                  ),
+                  const SizedBox(width: AppSpace.sm),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            tr.shellOutingRunning(outing.displayName),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppText.caption.copyWith(
+                              color: AppColors.text,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: AppSpace.sm),
+                        ElapsedText(
+                          since: outing.startedAt,
+                          style: AppText.caption,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    tr.shellBackToOuting,
                     style: TextStyle(
-                        color: AppColors.amber, fontWeight: FontWeight.w700)),
-              ]),
+                      color: AppColors.amber,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

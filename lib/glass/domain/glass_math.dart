@@ -42,12 +42,7 @@ double maxFillAtTilt(double theta, double w, double h) {
 /// Coordinates are in the rectangle's own (unrotated) frame.
 List<Offset> liquidPolygon(double fill, double theta, double w, double h) {
   if (fill <= 0) return const [];
-  final corners = [
-    Offset(0, 0),
-    Offset(w, 0),
-    Offset(w, h),
-    Offset(0, h),
-  ];
+  final corners = [Offset(0, 0), Offset(w, 0), Offset(w, h), Offset(0, h)];
   if (fill >= 1) return corners;
   final c = Offset(w / 2, h / 2);
   // World "down" expressed in the glass frame.

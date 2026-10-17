@@ -80,20 +80,22 @@ class StatTile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(children: [
-          if (icon != null) ...[
-            Icon(icon, size: 15, color: AppColors.textMuted),
-            const SizedBox(width: 5),
-          ],
-          Flexible(
-            child: Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: AppText.caption,
+        Row(
+          children: [
+            if (icon != null) ...[
+              Icon(icon, size: 15, color: AppColors.textMuted),
+              const SizedBox(width: 5),
+            ],
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppText.caption,
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
         const SizedBox(height: AppSpace.xs),
         FittedBox(
           fit: BoxFit.scaleDown,
@@ -115,10 +117,12 @@ class SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(4, AppSpace.xl, 4, AppSpace.md),
-      child: Row(children: [
-        Expanded(child: Text(text.toUpperCase(), style: AppText.overline)),
-        ?trailing,
-      ]),
+      child: Row(
+        children: [
+          Expanded(child: Text(text.toUpperCase(), style: AppText.overline)),
+          ?trailing,
+        ],
+      ),
     );
   }
 }
@@ -142,19 +146,25 @@ class InfoPill extends StatelessWidget {
             : AppColors.surfaceHigh,
         borderRadius: BorderRadius.circular(AppRadius.sm),
       ),
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        if (icon != null) ...[
-          Icon(icon, size: 14, color: color),
-          const SizedBox(width: 5),
-        ],
-        Flexible(
-          child: Text(
-            text,
-            style: TextStyle(
-                fontSize: 12, fontWeight: FontWeight.w600, color: color),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 14, color: color),
+            const SizedBox(width: 5),
+          ],
+          Flexible(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: color,
+              ),
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -177,7 +187,11 @@ class BottomActionBar extends StatelessWidget {
         top: false,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
-              AppSpace.gutter, AppSpace.md, AppSpace.gutter, AppSpace.md),
+            AppSpace.gutter,
+            AppSpace.md,
+            AppSpace.gutter,
+            AppSpace.md,
+          ),
           child: child,
         ),
       ),
@@ -190,10 +204,9 @@ void showToast(BuildContext context, String text) {
   final messenger = ScaffoldMessenger.of(context);
   messenger
     ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(
-      content: Text(text),
-      duration: const Duration(seconds: 2),
-    ));
+    ..showSnackBar(
+      SnackBar(content: Text(text), duration: const Duration(seconds: 2)),
+    );
 }
 
 /// Live "2h 15min" counter that refreshes every 30 seconds.
@@ -226,9 +239,9 @@ class _ElapsedTextState extends State<ElapsedText> {
 
   @override
   Widget build(BuildContext context) => Text(
-        formatDuration(DateTime.now().difference(widget.since)),
-        style: widget.style,
-      );
+    formatDuration(DateTime.now().difference(widget.since)),
+    style: widget.style,
+  );
 }
 
 /// Discreet cloud indicator (icon only). Tap to open the sync details.
@@ -242,14 +255,18 @@ class SyncBadge extends StatelessWidget {
     return BlocBuilder<SyncCubit, SyncState>(
       builder: (context, state) {
         final (icon, color) = switch (state.status) {
-          SyncStatus.synced when state.conflicts > 0 =>
-            (Icons.call_split_rounded, AppColors.amber),
+          SyncStatus.synced when state.conflicts > 0 => (
+            Icons.call_split_rounded,
+            AppColors.amber,
+          ),
           SyncStatus.synced => (Icons.cloud_done_outlined, AppColors.textMuted),
           SyncStatus.syncing => (Icons.cloud_sync_outlined, AppColors.amber),
           SyncStatus.pending => (Icons.cloud_upload_outlined, AppColors.amber),
           SyncStatus.failed => (Icons.cloud_off_outlined, AppColors.danger),
-          SyncStatus.localOnly =>
-            (Icons.phone_iphone_rounded, AppColors.textMuted),
+          SyncStatus.localOnly => (
+            Icons.phone_iphone_rounded,
+            AppColors.textMuted,
+          ),
         };
         return IconButton(
           tooltip: state.label,

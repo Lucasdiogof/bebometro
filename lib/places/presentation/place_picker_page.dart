@@ -56,10 +56,11 @@ class PlacePickerPage extends StatefulWidget {
     PlacePickerMode mode = PlacePickerMode.start,
     OutingType type = OutingType.bar,
     Place? editing,
-  }) =>
-      Navigator.of(context).push<PlaceDraft>(MaterialPageRoute(
-        builder: (_) => PlacePickerPage(mode: mode, type: type, editing: editing),
-      ));
+  }) => Navigator.of(context).push<PlaceDraft>(
+    MaterialPageRoute(
+      builder: (_) => PlacePickerPage(mode: mode, type: type, editing: editing),
+    ),
+  );
 
   @override
   State<PlacePickerPage> createState() => _PlacePickerPageState();
@@ -94,8 +95,6 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
     _query.dispose();
     super.dispose();
   }
-
-  // ---------------------------------------------------------------- search
 
   void _onChanged(String text) {
     _debounce?.cancel();
@@ -139,8 +138,6 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
     }
   }
 
-  // -------------------------------------------------------------- location
-
   Future<void> _useLocation() async {
     if (_locating) return;
     setState(() {
@@ -167,8 +164,10 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
       _nearbyError = null;
     });
     try {
-      final list = await _search.nearby(point,
-          radiusMeters: r.approximate ? 1500 : 300);
+      final list = await _search.nearby(
+        point,
+        radiusMeters: r.approximate ? 1500 : 300,
+      );
       if (!mounted) return;
       setState(() {
         _nearbyLoading = false;
@@ -184,8 +183,6 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
     }
   }
 
-  // ------------------------------------------------------------- choosing
-
   Future<void> _chooseResult(GeoResult r) async {
     var match = _places.findByProvider(GeoSearch.provider, r.placeId);
     if (_locate) {
@@ -197,11 +194,13 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
             content: Text(tr.pickerAlreadySavedBody(match!.displayName)),
             actions: [
               TextButton(
-                  onPressed: () => Navigator.pop(ctx, false),
-                  child: Text(tr.commonCancel)),
+                onPressed: () => Navigator.pop(ctx, false),
+                child: Text(tr.commonCancel),
+              ),
               FilledButton(
-                  onPressed: () => Navigator.pop(ctx, true),
-                  child: Text(tr.pickerUseAnyway)),
+                onPressed: () => Navigator.pop(ctx, true),
+                child: Text(tr.pickerUseAnyway),
+              ),
             ],
           ),
         );
@@ -222,17 +221,14 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
     await _confirm(draft, match: match);
   }
 
-  Future<void> _confirmPoint(GeoPoint p) => _confirm(
-      PlaceDraft(point: p, source: LocationSource.currentLocation));
+  Future<void> _confirmPoint(GeoPoint p) =>
+      _confirm(PlaceDraft(point: p, source: LocationSource.currentLocation));
 
   Future<void> _confirm(PlaceDraft draft, {Place? match}) async {
     final result = await Navigator.of(context).push<PlaceDraft>(
       MaterialPageRoute(
-        builder: (_) => PlaceConfirmPage(
-          draft: draft,
-          match: match,
-          allowSave: !_locate,
-        ),
+        builder: (_) =>
+            PlaceConfirmPage(draft: draft, match: match, allowSave: !_locate),
       ),
     );
     if (result != null && mounted) Navigator.of(context).pop(result);
@@ -247,14 +243,15 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
     if (result != null && mounted) Navigator.of(context).pop(result);
   }
 
-  // ------------------------------------------------------------------ UI
-
   List<Place> _savedMatching(String q) {
     final needle = q.toLowerCase();
     return [
       for (final p in _places.active())
-        if ([p.nickname, p.providerName, p.address]
-            .any((v) => v != null && v.toLowerCase().contains(needle)))
+        if ([
+          p.nickname,
+          p.providerName,
+          p.address,
+        ].any((v) => v != null && v.toLowerCase().contains(needle)))
           p,
     ].take(5).toList();
   }
@@ -277,7 +274,11 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.gutter, AppSpace.sm, AppSpace.gutter, AppSpace.sm),
+                AppSpace.gutter,
+                AppSpace.sm,
+                AppSpace.gutter,
+                AppSpace.sm,
+              ),
               child: TextField(
                 controller: _query,
                 autofocus: false,
@@ -310,9 +311,14 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
             if (_loading) const LinearProgressIndicator(minHeight: 2),
             Expanded(
               child: ListView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 padding: const EdgeInsets.fromLTRB(
-                    AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                  AppSpace.gutter,
+                  0,
+                  AppSpace.gutter,
+                  AppSpace.xl,
+                ),
                 children: typing ? _typingChildren(q) : _idleChildren(),
               ),
             ),
@@ -345,7 +351,8 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
       if (_near != null) ..._nearbySection(),
       if (saved.isNotEmpty) ...[
         SectionTitle(tr.pickerYourPlaces),
-        for (final p in saved) _SavedTile(place: p, onTap: () => _chooseSaved(p)),
+        for (final p in saved)
+          _SavedTile(place: p, onTap: () => _chooseSaved(p)),
       ],
       if (!_search.configured) ...[
         const SizedBox(height: AppSpace.lg),
@@ -377,10 +384,7 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
           child: LinearProgressIndicator(minHeight: 2),
         )
       else if (_nearbyError != null)
-        _Notice(
-          icon: Icons.wifi_off_rounded,
-          text: _errorText(_nearbyError!),
-        )
+        _Notice(icon: Icons.wifi_off_rounded, text: _errorText(_nearbyError!))
       else if (list != null && list.isEmpty)
         _Notice(
           icon: Icons.location_searching_rounded,
@@ -411,29 +415,31 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
         ]);
     }
     if (!_search.configured) {
-      children.add(_Notice(
-        icon: Icons.search_off_rounded,
-        text: tr.pickerNotConfigured,
-      ));
+      children.add(
+        _Notice(icon: Icons.search_off_rounded, text: tr.pickerNotConfigured),
+      );
     } else if (q.length < GeoSearch.minChars) {
-      children.add(Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpace.md),
-        child: Text(tr.pickerMinChars, style: AppText.caption),
-      ));
+      children.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppSpace.md),
+          child: Text(tr.pickerMinChars, style: AppText.caption),
+        ),
+      );
     } else if (_error != null) {
-      children.add(_Notice(
-        icon: _error == GeoSearchError.offline
-            ? Icons.wifi_off_rounded
-            : Icons.cloud_off_rounded,
-        text: _errorText(_error!),
-        action: tr.commonRetry,
-        onAction: () => _run(q, force: true),
-      ));
+      children.add(
+        _Notice(
+          icon: _error == GeoSearchError.offline
+              ? Icons.wifi_off_rounded
+              : Icons.cloud_off_rounded,
+          text: _errorText(_error!),
+          action: tr.commonRetry,
+          onAction: () => _run(q, force: true),
+        ),
+      );
     } else if (!_loading && _lastSent == q && _results.isEmpty) {
-      children.add(_Notice(
-        icon: Icons.search_off_rounded,
-        text: tr.pickerNothingFound,
-      ));
+      children.add(
+        _Notice(icon: Icons.search_off_rounded, text: tr.pickerNothingFound),
+      );
     } else if (_results.isNotEmpty) {
       children
         ..add(SectionTitle(tr.pickerResults))
@@ -450,56 +456,56 @@ class _PlacePickerPageState extends State<PlacePickerPage> {
         ..add(const MapAttribution(compact: true));
     }
     if (!_locate) {
-      children.add(_ActionTile(
-        icon: Icons.edit_note_rounded,
-        title: tr.pickerNicknameOnly,
-        subtitle: tr.pickerNicknameOnlyShort,
-        onTap: _nicknameOnly,
-      ));
+      children.add(
+        _ActionTile(
+          icon: Icons.edit_note_rounded,
+          title: tr.pickerNicknameOnly,
+          subtitle: tr.pickerNicknameOnlyShort,
+          onTap: _nicknameOnly,
+        ),
+      );
     }
     return children;
   }
 
   String _errorText(GeoSearchError e) => switch (e) {
-        GeoSearchError.offline => tr.pickerErrorOffline,
-        GeoSearchError.unavailable => tr.pickerErrorUnavailable,
-        GeoSearchError.notConfigured => tr.pickerNotConfigured,
-      };
+    GeoSearchError.offline => tr.pickerErrorOffline,
+    GeoSearchError.unavailable => tr.pickerErrorUnavailable,
+    GeoSearchError.notConfigured => tr.pickerNotConfigured,
+  };
 
   Widget _locationProblemCard(LocationProblem p) {
     final location = getIt<DeviceLocation>();
     return switch (p) {
       LocationProblem.serviceOff => _Notice(
-          icon: Icons.location_disabled_rounded,
-          text: tr.pickerLocServiceOff,
-          action: tr.pickerOpenSettings,
-          onAction: location.openLocationSettings,
-        ),
+        icon: Icons.location_disabled_rounded,
+        text: tr.pickerLocServiceOff,
+        action: tr.pickerOpenSettings,
+        onAction: location.openLocationSettings,
+      ),
       LocationProblem.denied => _Notice(
-          icon: Icons.location_off_rounded,
-          text: tr.pickerLocDenied,
-        ),
+        icon: Icons.location_off_rounded,
+        text: tr.pickerLocDenied,
+      ),
       LocationProblem.deniedForever => _Notice(
-          icon: Icons.location_off_rounded,
-          text: tr.pickerLocDeniedForever,
-          action: tr.pickerOpenSettings,
-          onAction: location.openAppSettings,
-        ),
+        icon: Icons.location_off_rounded,
+        text: tr.pickerLocDeniedForever,
+        action: tr.pickerOpenSettings,
+        onAction: location.openAppSettings,
+      ),
       LocationProblem.timeout => _Notice(
-          icon: Icons.timer_off_outlined,
-          text: tr.pickerLocTimeout,
-          action: tr.commonRetry,
-          onAction: _useLocation,
-        ),
+        icon: Icons.timer_off_outlined,
+        text: tr.pickerLocTimeout,
+        action: tr.commonRetry,
+        onAction: _useLocation,
+      ),
       LocationProblem.unavailable => _Notice(
-          icon: Icons.location_off_rounded,
-          text: tr.pickerLocUnavailable,
-        ),
+        icon: Icons.location_off_rounded,
+        text: tr.pickerLocUnavailable,
+      ),
     };
   }
 }
-
-// ------------------------------------------------------------------ tiles
 
 class _ActionTile extends StatelessWidget {
   const _ActionTile({
@@ -522,24 +528,27 @@ class _ActionTile extends StatelessWidget {
       padding: const EdgeInsets.only(top: AppSpace.sm),
       child: SurfaceCard(
         onTap: busy ? null : onTap,
-        child: Row(children: [
-          busy
-              ? const SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(strokeWidth: 2))
-              : Icon(icon, color: AppColors.amber),
-          const SizedBox(width: AppSpace.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppText.subtitle),
-                Text(subtitle, style: AppText.caption),
-              ],
+        child: Row(
+          children: [
+            busy
+                ? const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Icon(icon, color: AppColors.amber),
+            const SizedBox(width: AppSpace.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: AppText.subtitle),
+                  Text(subtitle, style: AppText.caption),
+                ],
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
@@ -562,27 +571,35 @@ class _SavedTile extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: AppSpace.sm),
       child: SurfaceCard(
         onTap: onTap,
-        child: Row(children: [
-          Icon(place.favorite ? Icons.star_rounded : place.type.icon,
-              color: AppColors.amber),
-          const SizedBox(width: AppSpace.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(place.displayName,
+        child: Row(
+          children: [
+            Icon(
+              place.favorite ? Icons.star_rounded : place.type.icon,
+              color: AppColors.amber,
+            ),
+            const SizedBox(width: AppSpace.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    place.displayName,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: AppText.subtitle),
-                if (sub.isNotEmpty)
-                  Text(sub,
+                    style: AppText.subtitle,
+                  ),
+                  if (sub.isNotEmpty)
+                    Text(
+                      sub,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppText.caption),
-              ],
+                      style: AppText.caption,
+                    ),
+                ],
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
@@ -604,40 +621,48 @@ class _ResultTile extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: AppSpace.sm),
       child: SurfaceCard(
         onTap: onTap,
-        child: Row(children: [
-          Icon(
-            result.name != null ? Icons.storefront_rounded : Icons.place_outlined,
-            color: AppColors.amber,
-          ),
-          const SizedBox(width: AppSpace.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(result.title,
+        child: Row(
+          children: [
+            Icon(
+              result.name != null
+                  ? Icons.storefront_rounded
+                  : Icons.place_outlined,
+              color: AppColors.amber,
+            ),
+            const SizedBox(width: AppSpace.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    result.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: AppText.subtitle),
-                if (result.subtitle != null)
-                  Text(result.subtitle!,
+                    style: AppText.subtitle,
+                  ),
+                  if (result.subtitle != null)
+                    Text(
+                      result.subtitle!,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style: AppText.caption),
-                if (savedAs != null || d != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: AppSpace.xs),
-                    child: Text(
-                      [
-                        if (d != null) formatDistance(d),
-                        if (savedAs != null) tr.pickerSavedAs(savedAs!),
-                      ].join(' · '),
-                      style: AppText.caption.copyWith(color: AppColors.amber),
+                      style: AppText.caption,
                     ),
-                  ),
-              ],
+                  if (savedAs != null || d != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: AppSpace.xs),
+                      child: Text(
+                        [
+                          if (d != null) formatDistance(d),
+                          if (savedAs != null) tr.pickerSavedAs(savedAs!),
+                        ].join(' · '),
+                        style: AppText.caption.copyWith(color: AppColors.amber),
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
@@ -687,8 +712,6 @@ class _Notice extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------- nickname only
-
 /// Nickname (enough alone) with an optional typed address. City and state are
 /// never filled in by guess.
 class _ManualPlacePage extends StatefulWidget {
@@ -732,13 +755,15 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
           : null;
     });
     if (_error != null || _stateError != null) return;
-    Navigator.of(context).pop(PlaceDraft(
-      nickname: nick,
-      address: addr,
-      city: clean(_city),
-      state: uf,
-      save: _save,
-    ));
+    Navigator.of(context).pop(
+      PlaceDraft(
+        nickname: nick,
+        address: addr,
+        city: clean(_city),
+        state: uf,
+        save: _save,
+      ),
+    );
   }
 
   @override
@@ -751,7 +776,11 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
             child: ListView(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.gutter, AppSpace.sm, AppSpace.gutter, AppSpace.xl),
+                AppSpace.gutter,
+                AppSpace.sm,
+                AppSpace.gutter,
+                AppSpace.xl,
+              ),
               children: [
                 TextField(
                   controller: _nickname,
@@ -794,8 +823,9 @@ class _ManualPlacePageState extends State<_ManualPlacePage> {
                         child: TextField(
                           controller: _city,
                           textCapitalization: TextCapitalization.words,
-                          decoration:
-                              InputDecoration(labelText: tr.startCityLabel),
+                          decoration: InputDecoration(
+                            labelText: tr.startCityLabel,
+                          ),
                         ),
                       ),
                       const SizedBox(width: AppSpace.sm),

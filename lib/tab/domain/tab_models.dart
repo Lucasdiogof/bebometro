@@ -21,14 +21,14 @@ enum ExtraCategory {
   final IconData icon;
 
   String get label => switch (this) {
-        ExtraCategory.food => tr.tabCatFood,
-        ExtraCategory.soft => tr.tabCatSoft,
-        ExtraCategory.cover => tr.tabCatCover,
-        ExtraCategory.starter => tr.tabCatStarter,
-        ExtraCategory.transport => tr.tabCatTransport,
-        ExtraCategory.other => tr.tabCatOther,
-        ExtraCategory.drink => tr.tabCatDrink,
-      };
+    ExtraCategory.food => tr.tabCatFood,
+    ExtraCategory.soft => tr.tabCatSoft,
+    ExtraCategory.cover => tr.tabCatCover,
+    ExtraCategory.starter => tr.tabCatStarter,
+    ExtraCategory.transport => tr.tabCatTransport,
+    ExtraCategory.other => tr.tabCatOther,
+    ExtraCategory.drink => tr.tabCatDrink,
+  };
 
   /// Entry and transport start without the service charge.
   final bool defaultService;
@@ -46,8 +46,10 @@ enum PriceBasis {
 
   final String code;
 
-  static PriceBasis fromCode(String? code) => PriceBasis.values
-      .firstWhere((b) => b.code == code, orElse: () => PriceBasis.total);
+  static PriceBasis fromCode(String? code) => PriceBasis.values.firstWhere(
+    (b) => b.code == code,
+    orElse: () => PriceBasis.total,
+  );
 }
 
 enum SplitMode {
@@ -61,13 +63,15 @@ enum SplitMode {
   final String code;
 
   String get label => switch (this) {
-        SplitMode.equal => tr.tabSplitEqual,
-        SplitMode.item => tr.tabSplitItem,
-        SplitMode.custom => tr.tabSplitCustom,
-      };
+    SplitMode.equal => tr.tabSplitEqual,
+    SplitMode.item => tr.tabSplitItem,
+    SplitMode.custom => tr.tabSplitCustom,
+  };
 
-  static SplitMode fromCode(String? code) => SplitMode.values
-      .firstWhere((m) => m.code == code, orElse: () => SplitMode.equal);
+  static SplitMode fromCode(String? code) => SplitMode.values.firstWhere(
+    (m) => m.code == code,
+    orElse: () => SplitMode.equal,
+  );
 }
 
 enum DiscountKind {
@@ -79,8 +83,10 @@ enum DiscountKind {
 
   final String code;
 
-  static DiscountKind fromCode(String? code) => DiscountKind.values
-      .firstWhere((k) => k.code == code, orElse: () => DiscountKind.none);
+  static DiscountKind fromCode(String? code) => DiscountKind.values.firstWhere(
+    (k) => k.code == code,
+    orElse: () => DiscountKind.none,
+  );
 }
 
 /// A person of the table, known only by a nickname inside this tab. The id is
@@ -103,10 +109,10 @@ class Participant {
   Map<String, dynamic> toJson() => {'id': id, 'name': name, 'me': isMe};
 
   factory Participant.fromJson(Map<String, dynamic> j) => Participant(
-        id: j['id'] as String,
-        name: j['name'] as String? ?? '',
-        isMe: j['me'] as bool? ?? false,
-      );
+    id: j['id'] as String,
+    name: j['name'] as String? ?? '',
+    isMe: j['me'] as bool? ?? false,
+  );
 }
 
 Map<String, int>? _weightsFromJson(Object? raw) {
@@ -175,47 +181,46 @@ class TabExtra {
     int? Function()? cents,
     bool? service,
     Map<String, int>? Function()? assign,
-  }) =>
-      TabExtra(
-        id: id,
-        description: description ?? this.description,
-        category: category ?? this.category,
-        createdAt: createdAt,
-        quantity: quantity ?? this.quantity,
-        priceKind: priceKind ?? this.priceKind,
-        basis: basis ?? this.basis,
-        cents: cents != null ? cents() : this.cents,
-        service: service ?? this.service,
-        assign: assign != null ? assign() : this.assign,
-      );
+  }) => TabExtra(
+    id: id,
+    description: description ?? this.description,
+    category: category ?? this.category,
+    createdAt: createdAt,
+    quantity: quantity ?? this.quantity,
+    priceKind: priceKind ?? this.priceKind,
+    basis: basis ?? this.basis,
+    cents: cents != null ? cents() : this.cents,
+    service: service ?? this.service,
+    assign: assign != null ? assign() : this.assign,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'description': description,
-        'category': category.code,
-        'quantity': quantity,
-        'price_kind': priceKind.code,
-        'basis': basis.code,
-        'cents': cents,
-        'service': service,
-        'assign': assign,
-        'created_at': createdAt.toUtc().toIso8601String(),
-      };
+    'id': id,
+    'description': description,
+    'category': category.code,
+    'quantity': quantity,
+    'price_kind': priceKind.code,
+    'basis': basis.code,
+    'cents': cents,
+    'service': service,
+    'assign': assign,
+    'created_at': createdAt.toUtc().toIso8601String(),
+  };
 
   factory TabExtra.fromJson(Map<String, dynamic> j) => TabExtra(
-        id: j['id'] as String,
-        description: j['description'] as String? ?? '',
-        category: ExtraCategory.fromCode(j['category'] as String?),
-        quantity: ((j['quantity'] as num?)?.toInt() ?? 1).clamp(1, 9999).toInt(),
-        priceKind: PriceKind.fromCode(j['price_kind'] as String? ?? 'unknown'),
-        basis: PriceBasis.fromCode(j['basis'] as String?),
-        cents: (j['cents'] as num?)?.toInt(),
-        service: j['service'] as bool? ?? true,
-        assign: _weightsFromJson(j['assign']),
-        createdAt: DateTime.tryParse(j['created_at'] as String? ?? '')
-                ?.toLocal() ??
-            DateTime.now(),
-      );
+    id: j['id'] as String,
+    description: j['description'] as String? ?? '',
+    category: ExtraCategory.fromCode(j['category'] as String?),
+    quantity: ((j['quantity'] as num?)?.toInt() ?? 1).clamp(1, 9999).toInt(),
+    priceKind: PriceKind.fromCode(j['price_kind'] as String? ?? 'unknown'),
+    basis: PriceBasis.fromCode(j['basis'] as String?),
+    cents: (j['cents'] as num?)?.toInt(),
+    service: j['service'] as bool? ?? true,
+    assign: _weightsFromJson(j['assign']),
+    createdAt:
+        DateTime.tryParse(j['created_at'] as String? ?? '')?.toLocal() ??
+        DateTime.now(),
+  );
 }
 
 /// An explicit link to a drink record. Only the id (and how the line is
@@ -241,27 +246,26 @@ class TabLink {
     bool? service,
     Map<String, int>? Function()? assign,
     List<String>? mergedIds,
-  }) =>
-      TabLink(
-        entryId: entryId,
-        service: service ?? this.service,
-        assign: assign != null ? assign() : this.assign,
-        mergedIds: mergedIds ?? this.mergedIds,
-      );
+  }) => TabLink(
+    entryId: entryId,
+    service: service ?? this.service,
+    assign: assign != null ? assign() : this.assign,
+    mergedIds: mergedIds ?? this.mergedIds,
+  );
 
   Map<String, dynamic> toJson() => {
-        'entry_id': entryId,
-        'service': service,
-        'assign': assign,
-        'merged_ids': mergedIds,
-      };
+    'entry_id': entryId,
+    'service': service,
+    'assign': assign,
+    'merged_ids': mergedIds,
+  };
 
   factory TabLink.fromJson(Map<String, dynamic> j) => TabLink(
-        entryId: j['entry_id'] as String,
-        service: j['service'] as bool? ?? true,
-        assign: _weightsFromJson(j['assign']),
-        mergedIds: (j['merged_ids'] as List?)?.cast<String>() ?? const [],
-      );
+    entryId: j['entry_id'] as String,
+    service: j['service'] as bool? ?? true,
+    assign: _weightsFromJson(j['assign']),
+    mergedIds: (j['merged_ids'] as List?)?.cast<String>() ?? const [],
+  );
 }
 
 /// What a person says to have paid the establishment. It never changes the
@@ -291,21 +295,22 @@ class TabPayment {
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'participant_id': participantId,
-        'cents': cents,
-        'at': at.toUtc().toIso8601String(),
-        'note': note,
-      };
+    'id': id,
+    'participant_id': participantId,
+    'cents': cents,
+    'at': at.toUtc().toIso8601String(),
+    'note': note,
+  };
 
   factory TabPayment.fromJson(Map<String, dynamic> j) => TabPayment(
-        id: j['id'] as String,
-        participantId: j['participant_id'] as String,
-        cents: (j['cents'] as num?)?.toInt() ?? 0,
-        at: DateTime.tryParse(j['at'] as String? ?? '')?.toLocal() ??
-            DateTime.now(),
-        note: j['note'] as String?,
-      );
+    id: j['id'] as String,
+    participantId: j['participant_id'] as String,
+    cents: (j['cents'] as num?)?.toInt() ?? 0,
+    at:
+        DateTime.tryParse(j['at'] as String? ?? '')?.toLocal() ??
+        DateTime.now(),
+    note: j['note'] as String?,
+  );
 }
 
 /// The whole tab of one outing, saved as a single document so participants,
@@ -351,7 +356,10 @@ class TabDoc {
   final List<TabPayment> payments;
 
   bool get isEmpty =>
-      participants.isEmpty && extras.isEmpty && links.isEmpty && payments.isEmpty;
+      participants.isEmpty &&
+      extras.isEmpty &&
+      links.isEmpty &&
+      payments.isEmpty;
 
   Participant? get me {
     for (final p in participants) {
@@ -376,8 +384,8 @@ class TabDoc {
 
   /// Records already charged on the tab (linked or merged into a link).
   Set<String> get coveredEntryIds => {
-        for (final l in links) ...[l.entryId, ...l.mergedIds],
-      };
+    for (final l in links) ...[l.entryId, ...l.mergedIds],
+  };
 
   TabDoc copyWith({
     List<Participant>? participants,
@@ -391,41 +399,40 @@ class TabDoc {
     List<String>? equalIds,
     Map<String, int>? custom,
     List<TabPayment>? payments,
-  }) =>
-      TabDoc(
-        outingId: outingId,
-        participants: participants ?? this.participants,
-        extras: extras ?? this.extras,
-        links: links ?? this.links,
-        serviceOn: serviceOn ?? this.serviceOn,
-        serviceBp: serviceBp ?? this.serviceBp,
-        discountKind: discountKind ?? this.discountKind,
-        discountValue: discountValue ?? this.discountValue,
-        mode: mode ?? this.mode,
-        equalIds: equalIds ?? this.equalIds,
-        custom: custom ?? this.custom,
-        payments: payments ?? this.payments,
-      );
+  }) => TabDoc(
+    outingId: outingId,
+    participants: participants ?? this.participants,
+    extras: extras ?? this.extras,
+    links: links ?? this.links,
+    serviceOn: serviceOn ?? this.serviceOn,
+    serviceBp: serviceBp ?? this.serviceBp,
+    discountKind: discountKind ?? this.discountKind,
+    discountValue: discountValue ?? this.discountValue,
+    mode: mode ?? this.mode,
+    equalIds: equalIds ?? this.equalIds,
+    custom: custom ?? this.custom,
+    payments: payments ?? this.payments,
+  );
 
   Map<String, dynamic> toJson() => {
-        'participants': [for (final p in participants) p.toJson()],
-        'extras': [for (final e in extras) e.toJson()],
-        'links': [for (final l in links) l.toJson()],
-        'service_on': serviceOn,
-        'service_bp': serviceBp,
-        'discount_kind': discountKind.code,
-        'discount_value': discountValue,
-        'mode': mode.code,
-        'equal_ids': equalIds,
-        'custom': custom,
-        'payments': [for (final p in payments) p.toJson()],
-      };
+    'participants': [for (final p in participants) p.toJson()],
+    'extras': [for (final e in extras) e.toJson()],
+    'links': [for (final l in links) l.toJson()],
+    'service_on': serviceOn,
+    'service_bp': serviceBp,
+    'discount_kind': discountKind.code,
+    'discount_value': discountValue,
+    'mode': mode.code,
+    'equal_ids': equalIds,
+    'custom': custom,
+    'payments': [for (final p in payments) p.toJson()],
+  };
 
   factory TabDoc.fromJson(String outingId, Map<String, dynamic> j) {
     List<T> list<T>(String key, T Function(Map<String, dynamic>) f) => [
-          for (final raw in (j[key] as List? ?? const []))
-            f(Map<String, dynamic>.from(raw as Map)),
-        ];
+      for (final raw in (j[key] as List? ?? const []))
+        f(Map<String, dynamic>.from(raw as Map)),
+    ];
     final custom = <String, int>{};
     (j['custom'] as Map?)?.forEach((k, v) {
       custom[k as String] = (v as num?)?.toInt() ?? 0;

@@ -48,7 +48,9 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
     _abv = TextEditingController(
       text: e?.abvPercent == null ? '' : decimalToInput(e!.abvPercent!),
     );
-    _ingredients = TextEditingController(text: e?.ingredients?.join(', ') ?? '');
+    _ingredients = TextEditingController(
+      text: e?.ingredients?.join(', ') ?? '',
+    );
     _category = e?.category ?? DrinkCategory.beer;
   }
 
@@ -101,7 +103,11 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 padding: const EdgeInsets.fromLTRB(
-                    AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                  AppSpace.gutter,
+                  0,
+                  AppSpace.gutter,
+                  AppSpace.xl,
+                ),
                 children: [
                   Text(
                     editing ? tr.customEditNote : tr.customNewNote,
@@ -166,7 +172,8 @@ class _CustomDrinkPageState extends State<CustomDrinkPage> {
                     TextFormField(
                       controller: _abv,
                       keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true),
+                        decimal: true,
+                      ),
                       decoration: InputDecoration(
                         labelText: tr.entryAbvOptional,
                         suffixText: '% vol.',

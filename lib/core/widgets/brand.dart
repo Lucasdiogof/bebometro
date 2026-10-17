@@ -11,12 +11,12 @@ class BrandCap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Image.asset(
-        'assets/branding/logo_cap.png',
-        width: size,
-        height: size,
-        filterQuality: FilterQuality.medium,
-        semanticLabel: 'Bebômetro',
-      );
+    'assets/branding/logo_cap.png',
+    width: size,
+    height: size,
+    filterQuality: FilterQuality.medium,
+    semanticLabel: 'Bebômetro',
+  );
 }
 
 /// The written logo, for headers and for the login/sign-up screens when they
@@ -28,11 +28,11 @@ class BrandWordmark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Image.asset(
-        'assets/branding/logo_wordmark.png',
-        height: height,
-        filterQuality: FilterQuality.medium,
-        semanticLabel: 'Bebômetro',
-      );
+    'assets/branding/logo_wordmark.png',
+    height: height,
+    filterQuality: FilterQuality.medium,
+    semanticLabel: 'Bebômetro',
+  );
 }
 
 /// Bottle cap with a soft breathing pulse (static with reduced motion).

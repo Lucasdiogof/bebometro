@@ -39,10 +39,12 @@ class PlacesCubit extends Cubit<PlacesState> {
 
   void _load() {
     PlaceRow row(Place p) => PlaceRow(p, _outings.forPlace(p.id).length);
-    emit(PlacesState(
-      active: [for (final p in _places.active()) row(p)],
-      archived: [for (final p in _places.archived()) row(p)],
-    ));
+    emit(
+      PlacesState(
+        active: [for (final p in _places.active()) row(p)],
+        archived: [for (final p in _places.archived()) row(p)],
+      ),
+    );
   }
 
   Future<void> toggleFavorite(Place p) => _places.toggleFavorite(p.id);
@@ -89,7 +91,7 @@ class PlaceDetailState {
 
 class PlaceDetailCubit extends Cubit<PlaceDetailState> {
   PlaceDetailCubit(this.placeId, this._places, this._outings, this._drinks)
-      : super(const PlaceDetailState()) {
+    : super(const PlaceDetailState()) {
     _subs = [
       _places.changes.listen((_) => _load()),
       _outings.changes.listen((_) => _load()),
@@ -109,12 +111,8 @@ class PlaceDetailCubit extends Cubit<PlaceDetailState> {
     var drinks = 0;
     var cents = 0;
     var unpriced = 0;
-    final all = [
-      for (final o in _outings.forPlace(placeId)) o,
-    ];
-    final allEntries = [
-      for (final o in all) ..._drinks.entriesFor(o.id),
-    ];
+    final all = [for (final o in _outings.forPlace(placeId)) o];
+    final allEntries = [for (final o in all) ..._drinks.entriesFor(o.id)];
     for (final o in all) {
       final s = OutingSummary.of(_drinks.entriesFor(o.id));
       visits.add(PlaceVisit(o, s));
@@ -122,15 +120,17 @@ class PlaceDetailCubit extends Cubit<PlaceDetailState> {
       cents += s.informedCents;
       unpriced += s.unpricedCount;
     }
-    emit(PlaceDetailState(
-      loading: false,
-      place: _places.byId(placeId),
-      visits: visits,
-      drinkCount: drinks,
-      informedCents: cents,
-      unpricedCount: unpriced,
-      priceStats: priceStatsFor(allEntries),
-    ));
+    emit(
+      PlaceDetailState(
+        loading: false,
+        place: _places.byId(placeId),
+        visits: visits,
+        drinkCount: drinks,
+        informedCents: cents,
+        unpricedCount: unpriced,
+        priceStats: priceStatsFor(allEntries),
+      ),
+    );
   }
 
   Future<void> toggleFavorite() => _places.toggleFavorite(placeId);

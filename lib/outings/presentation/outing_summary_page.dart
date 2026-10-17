@@ -58,15 +58,19 @@ class _SummaryViewState extends State<_SummaryView> {
     _sub = context.read<OutingCubit>().notices.listen((n) {
       if (!mounted) return;
       final m = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
-      m.showSnackBar(SnackBar(
-        content: Text(n.text),
-        duration: const Duration(seconds: 5),
-        persist: false,
-        action: n.undo == null
-            ? null
-            : SnackBarAction(
-                label: n.undoLabel ?? tr.commonUndo, onPressed: () => n.undo!()),
-      ));
+      m.showSnackBar(
+        SnackBar(
+          content: Text(n.text),
+          duration: const Duration(seconds: 5),
+          persist: false,
+          action: n.undo == null
+              ? null
+              : SnackBarAction(
+                  label: n.undoLabel ?? tr.commonUndo,
+                  onPressed: () => n.undo!(),
+                ),
+        ),
+      );
     });
   }
 
@@ -125,7 +129,11 @@ class _SummaryViewState extends State<_SummaryView> {
               Expanded(
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(
-                      AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+                    AppSpace.gutter,
+                    0,
+                    AppSpace.gutter,
+                    AppSpace.xl,
+                  ),
                   children: [
                     SurfaceCard(
                       highlight: true,
@@ -133,23 +141,33 @@ class _SummaryViewState extends State<_SummaryView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(children: [
-                            Icon(outing.type.icon,
-                                color: AppColors.amber, size: 20),
-                            const SizedBox(width: AppSpace.sm),
-                            Text(outing.type.label, style: AppText.caption),
-                          ]),
+                          Row(
+                            children: [
+                              Icon(
+                                outing.type.icon,
+                                color: AppColors.amber,
+                                size: 20,
+                              ),
+                              const SizedBox(width: AppSpace.sm),
+                              Text(outing.type.label, style: AppText.caption),
+                            ],
+                          ),
                           const SizedBox(height: AppSpace.sm),
                           Text(outing.displayName, style: AppText.headline),
                           const SizedBox(height: AppSpace.xs),
-                          Text(formatWeekdayDate(outing.startedAt),
-                              style: AppText.subtitle
-                                  .copyWith(color: AppColors.amber)),
+                          Text(
+                            formatWeekdayDate(outing.startedAt),
+                            style: AppText.subtitle.copyWith(
+                              color: AppColors.amber,
+                            ),
+                          ),
                           if (outing.subtitleAddress != null)
                             Padding(
                               padding: const EdgeInsets.only(top: AppSpace.xs),
-                              child: Text(outing.subtitleAddress!,
-                                  style: AppText.caption),
+                              child: Text(
+                                outing.subtitleAddress!,
+                                style: AppText.caption,
+                              ),
                             ),
                           if (outing.nickname != null &&
                               outing.placeName != null &&
@@ -162,40 +180,48 @@ class _SummaryViewState extends State<_SummaryView> {
                                 TextButton.icon(
                                   onPressed: () =>
                                       openOutingInMaps(context, outing),
-                                  icon: const Icon(Icons.map_outlined, size: 18),
+                                  icon: const Icon(
+                                    Icons.map_outlined,
+                                    size: 18,
+                                  ),
                                   label: Text(tr.placeOpenInMaps),
                                 ),
                               TextButton.icon(
                                 onPressed: () =>
                                     changeOutingPlace(context, outing),
-                                icon: const Icon(Icons.edit_location_alt_outlined,
-                                    size: 18),
+                                icon: const Icon(
+                                  Icons.edit_location_alt_outlined,
+                                  size: 18,
+                                ),
                                 label: Text(tr.placeCorrect),
                               ),
                             ],
                           ),
                           const SizedBox(height: AppSpace.lg),
-                          Row(children: [
-                            Expanded(
-                              child: StatTile(
-                                label: tr.summaryStart,
-                                value: formatTime(outing.startedAt),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: StatTile(
+                                  label: tr.summaryStart,
+                                  value: formatTime(outing.startedAt),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: StatTile(
-                                label: tr.summaryEnd,
-                                value: formatTime(endedAt),
+                              Expanded(
+                                child: StatTile(
+                                  label: tr.summaryEnd,
+                                  value: formatTime(endedAt),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: StatTile(
-                                label: tr.summaryDuration,
-                                value: formatDuration(
-                                    outing.durationAt(endedAt)),
+                              Expanded(
+                                child: StatTile(
+                                  label: tr.summaryDuration,
+                                  value: formatDuration(
+                                    outing.durationAt(endedAt),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ]),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -221,22 +247,24 @@ class _SummaryViewState extends State<_SummaryView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(children: [
-                            Expanded(
-                              child: StatTile(
-                                label: tr.homeDrinks,
-                                value: '${s.entryCount}',
-                                icon: Icons.local_bar_rounded,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: StatTile(
+                                  label: tr.homeDrinks,
+                                  value: '${s.entryCount}',
+                                  icon: Icons.local_bar_rounded,
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: StatTile(
-                                label: tr.outingYourVolume,
-                                value: s.volumeLabel,
-                                icon: Icons.opacity_rounded,
+                              Expanded(
+                                child: StatTile(
+                                  label: tr.outingYourVolume,
+                                  value: s.volumeLabel,
+                                  icon: Icons.opacity_rounded,
+                                ),
                               ),
-                            ),
-                          ]),
+                            ],
+                          ),
                           if (s.groups.isNotEmpty) ...[
                             const Divider(height: 28),
                             for (final g in s.groups) _GroupRow(group: g),
@@ -281,12 +309,14 @@ class _SummaryViewState extends State<_SummaryView> {
                               child: TextButton.icon(
                                 onPressed: () => Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (_) => PriceFixPage(
-                                        outingId: outing.id),
+                                    builder: (_) =>
+                                        PriceFixPage(outingId: outing.id),
                                   ),
                                 ),
-                                icon: const Icon(Icons.edit_note_rounded,
-                                    size: 18),
+                                icon: const Icon(
+                                  Icons.edit_note_rounded,
+                                  size: 18,
+                                ),
                                 label: Text(tr.summaryFillPrices),
                               ),
                             ),
@@ -300,18 +330,27 @@ class _SummaryViewState extends State<_SummaryView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (outing.feedbackMood != null)
-                            Row(children: [
-                              Icon(outing.feedbackMood!.icon,
-                                  color: AppColors.amber, size: 28),
-                              const SizedBox(width: AppSpace.md),
-                              Text(outing.feedbackMood!.label,
-                                  style: AppText.title),
-                              const Spacer(),
-                              Text(tr.summaryYourAccountTag, style: AppText.caption),
-                            ])
+                            Row(
+                              children: [
+                                Icon(
+                                  outing.feedbackMood!.icon,
+                                  color: AppColors.amber,
+                                  size: 28,
+                                ),
+                                const SizedBox(width: AppSpace.md),
+                                Text(
+                                  outing.feedbackMood!.label,
+                                  style: AppText.title,
+                                ),
+                                const Spacer(),
+                                Text(
+                                  tr.summaryYourAccountTag,
+                                  style: AppText.caption,
+                                ),
+                              ],
+                            )
                           else
-                            Text(tr.summaryNoAccount,
-                                style: AppText.caption),
+                            Text(tr.summaryNoAccount, style: AppText.caption),
                           if (outing.wakeFeeling != null ||
                               outing.hangover != null) ...[
                             const SizedBox(height: AppSpace.md),
@@ -321,10 +360,16 @@ class _SummaryViewState extends State<_SummaryView> {
                               children: [
                                 if (outing.wakeFeeling != null)
                                   InfoPill(
-                                      tr.summaryWoke(outing.wakeFeeling!.label.toLowerCase())),
+                                    tr.summaryWoke(
+                                      outing.wakeFeeling!.label.toLowerCase(),
+                                    ),
+                                  ),
                                 if (outing.hangover != null)
                                   InfoPill(
-                                      tr.summaryHangover(outing.hangover!.label.toLowerCase())),
+                                    tr.summaryHangover(
+                                      outing.hangover!.label.toLowerCase(),
+                                    ),
+                                  ),
                               ],
                             ),
                           ],
@@ -341,9 +386,11 @@ class _SummaryViewState extends State<_SummaryView> {
                                 editMood: true,
                               ),
                               icon: const Icon(Icons.edit_outlined, size: 18),
-                              label: Text(outing.feedbackMood == null
-                                  ? tr.summaryAddAccount
-                                  : tr.summaryEditAccount),
+                              label: Text(
+                                outing.feedbackMood == null
+                                    ? tr.summaryAddAccount
+                                    : tr.summaryEditAccount,
+                              ),
                             ),
                           ),
                           Text(tr.summaryAccountNote, style: AppText.caption),
@@ -362,8 +409,10 @@ class _SummaryViewState extends State<_SummaryView> {
                     else ...[
                       Padding(
                         padding: const EdgeInsets.only(bottom: AppSpace.sm),
-                        child: Text(tr.summaryTapToCorrect,
-                            style: AppText.caption),
+                        child: Text(
+                          tr.summaryTapToCorrect,
+                          style: AppText.caption,
+                        ),
                       ),
                       for (final e in state.entries)
                         Padding(
@@ -416,34 +465,45 @@ class _GroupRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(children: [
-        SizedBox(
-          width: 44,
-          child: Text(tr.groupTimes(group.count),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 44,
+            child: Text(
+              tr.groupTimes(group.count),
               style: const TextStyle(
-                  color: AppColors.amber,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 16)),
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(group.name,
+                color: AppColors.amber,
+                fontWeight: FontWeight.w800,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  group.name,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.w600)),
-              Text(group.detail,
-                  style: AppText.caption.copyWith(fontSize: 12)),
-            ],
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  group.detail,
+                  style: AppText.caption.copyWith(fontSize: 12),
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(width: AppSpace.sm),
-        Text(
-          group.personalMl == null ? tr.groupVolumeUnknownShort : formatMl(group.personalMl!),
-          style: AppText.caption,
-        ),
-      ]),
+          const SizedBox(width: AppSpace.sm),
+          Text(
+            group.personalMl == null
+                ? tr.groupVolumeUnknownShort
+                : formatMl(group.personalMl!),
+            style: AppText.caption,
+          ),
+        ],
+      ),
     );
   }
 }

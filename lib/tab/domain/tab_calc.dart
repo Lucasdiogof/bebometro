@@ -201,7 +201,8 @@ class TabCalculator {
         }
     }
     final size = _sizeOf(e);
-    final title = size.isEmpty || e.name.toLowerCase().contains(size.toLowerCase())
+    final title =
+        size.isEmpty || e.name.toLowerCase().contains(size.toLowerCase())
         ? e.name
         : '${e.name} $size';
     final key = [
@@ -229,19 +230,19 @@ class TabCalculator {
   }
 
   static TabLine extraLine(TabExtra x) => TabLine(
-        id: x.id,
-        source: LineSource.extra,
-        title: x.description.isEmpty ? x.category.label : x.description,
-        detail: x.category.label,
-        at: x.createdAt,
-        quantity: x.quantity,
-        totalCents: x.totalCents,
-        complimentary: x.priceKind == PriceKind.complimentary,
-        service: x.service,
-        assign: x.assign,
-        groupKey: 'x|${x.id}',
-        extra: x,
-      );
+    id: x.id,
+    source: LineSource.extra,
+    title: x.description.isEmpty ? x.category.label : x.description,
+    detail: x.category.label,
+    at: x.createdAt,
+    quantity: x.quantity,
+    totalCents: x.totalCents,
+    complimentary: x.priceKind == PriceKind.complimentary,
+    service: x.service,
+    assign: x.assign,
+    groupKey: 'x|${x.id}',
+    extra: x,
+  );
 
   /// Lines of the tab, oldest first. A link whose record was deleted shows
   /// nothing (and comes back if the deletion is undone).
@@ -282,9 +283,10 @@ class TabCalculator {
       case DiscountKind.amount:
         discount = doc.discountValue.clamp(0, subtotal).toInt();
       case DiscountKind.percent:
-        discount = percentOf(subtotal, doc.discountValue.clamp(0, 10000).toInt())
-            .clamp(0, subtotal)
-            .toInt();
+        discount = percentOf(
+          subtotal,
+          doc.discountValue.clamp(0, 10000).toInt(),
+        ).clamp(0, subtotal).toInt();
     }
     final discounts = allocate(discount, [
       for (final l in lines) l.totalCents ?? 0,
@@ -294,10 +296,12 @@ class TabCalculator {
     var base = 0;
     for (var i = 0; i < lines.length; i++) {
       final t = lines[i].totalCents;
-      if (doc.serviceOn && t != null && lines[i].service) base += t - discounts[i];
+      if (doc.serviceOn && t != null && lines[i].service)
+        base += t - discounts[i];
     }
-    final serviceTotal =
-        doc.serviceOn ? percentOf(base, doc.serviceBp.clamp(0, 10000).toInt()) : 0;
+    final serviceTotal = doc.serviceOn
+        ? percentOf(base, doc.serviceBp.clamp(0, 10000).toInt())
+        : 0;
     final services = allocate(serviceTotal, [
       for (var i = 0; i < lines.length; i++)
         (doc.serviceOn && lines[i].totalCents != null && lines[i].service)
@@ -316,9 +320,7 @@ class TabCalculator {
     for (final l in lines) {
       byKey.putIfAbsent(l.groupKey, () => []).add(l);
     }
-    final groups = [
-      for (final e in byKey.entries) TabGroup(e.key, e.value),
-    ];
+    final groups = [for (final e in byKey.entries) TabGroup(e.key, e.value)];
 
     final split = _split(doc, results, total);
 

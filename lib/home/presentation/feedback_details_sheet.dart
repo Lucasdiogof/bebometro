@@ -82,52 +82,69 @@ class _FeedbackDetailsState extends State<_FeedbackDetails> {
     T? selected,
     String Function(T) label,
     ValueChanged<T?> onChanged,
-  ) =>
-      Wrap(
-        spacing: AppSpace.sm,
-        runSpacing: AppSpace.sm,
-        children: [
-          for (final v in values)
-            ChoiceChip(
-              label: Text(label(v)),
-              selected: selected == v,
-              showCheckmark: false,
-              onSelected: (_) => onChanged(selected == v ? null : v),
-            ),
-        ],
-      );
+  ) => Wrap(
+    spacing: AppSpace.sm,
+    runSpacing: AppSpace.sm,
+    children: [
+      for (final v in values)
+        ChoiceChip(
+          label: Text(label(v)),
+          selected: selected == v,
+          showCheckmark: false,
+          onSelected: (_) => onChanged(selected == v ? null : v),
+        ),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(AppSpace.xl, 0, AppSpace.xl,
-            AppSpace.lg + MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.fromLTRB(
+          AppSpace.xl,
+          0,
+          AppSpace.xl,
+          AppSpace.lg + MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.editMood ? tr.feedbackYourAccount : tr.feedbackTellMore,
-                style: AppText.title),
+            Text(
+              widget.editMood ? tr.feedbackYourAccount : tr.feedbackTellMore,
+              style: AppText.title,
+            ),
             const SizedBox(height: AppSpace.xs),
             Text(tr.feedbackOptional, style: AppText.caption),
             if (widget.editMood) ...[
               const SizedBox(height: AppSpace.lg),
               Text(tr.feedbackHowItWent, style: AppText.overline),
               const SizedBox(height: AppSpace.sm),
-              _chips<FeedbackMood>(FeedbackMood.values, _mood, (m) => m.label,
-                  (v) => setState(() => _mood = v)),
+              _chips<FeedbackMood>(
+                FeedbackMood.values,
+                _mood,
+                (m) => m.label,
+                (v) => setState(() => _mood = v),
+              ),
             ],
             const SizedBox(height: AppSpace.lg),
             Text(tr.feedbackWake, style: AppText.overline),
             const SizedBox(height: AppSpace.sm),
-            _chips<WakeFeeling>(WakeFeeling.values, _wake, (w) => w.label,
-                (v) => setState(() => _wake = v)),
+            _chips<WakeFeeling>(
+              WakeFeeling.values,
+              _wake,
+              (w) => w.label,
+              (v) => setState(() => _wake = v),
+            ),
             const SizedBox(height: AppSpace.lg),
             Text(tr.feedbackHangover, style: AppText.overline),
             const SizedBox(height: AppSpace.sm),
-            _chips<Hangover>(Hangover.values, _hangover, (h) => h.label,
-                (v) => setState(() => _hangover = v)),
+            _chips<Hangover>(
+              Hangover.values,
+              _hangover,
+              (h) => h.label,
+              (v) => setState(() => _hangover = v),
+            ),
             const SizedBox(height: AppSpace.lg),
             TextField(
               controller: _note,
@@ -160,8 +177,10 @@ class _FeedbackDetailsState extends State<_FeedbackDetails> {
               child: TextButton(
                 onPressed: () =>
                     Navigator.pop(context, FeedbackDetailsResult.skipped),
-                child: Text(widget.editMood ? tr.commonCancel : tr.commonNotNow,
-                    style: const TextStyle(color: AppColors.textMuted)),
+                child: Text(
+                  widget.editMood ? tr.commonCancel : tr.commonNotNow,
+                  style: const TextStyle(color: AppColors.textMuted),
+                ),
               ),
             ),
           ],

@@ -35,11 +35,22 @@ class TabShareText {
       for (final g in result.groups) {
         final l = g.first;
         if (g.count > 1 && g.isPriced) {
-          b.writeln(tr.tabShareLineGroup(l.title, '${g.count}',
-              formatCents(g.unitCents!), formatCents(g.sumCents!)));
+          b.writeln(
+            tr.tabShareLineGroup(
+              l.title,
+              '${g.count}',
+              formatCents(g.unitCents!),
+              formatCents(g.sumCents!),
+            ),
+          );
         } else if (l.quantity > 1 && l.totalCents != null) {
-          b.writeln(tr.tabShareLineQty(
-              l.title, '${l.quantity}', formatCents(l.totalCents!)));
+          b.writeln(
+            tr.tabShareLineQty(
+              l.title,
+              '${l.quantity}',
+              formatCents(l.totalCents!),
+            ),
+          );
         } else if (g.count > 1) {
           b.writeln(tr.tabShareLineGroupNoPrice(l.title, '${g.count}'));
         } else if (l.totalCents != null) {
@@ -51,19 +62,28 @@ class TabShareText {
     }
 
     b.writeln();
-    b.writeln(result.isPartial
-        ? tr.tabShareSubtotalKnown(formatCents(result.subtotal))
-        : tr.tabShareSubtotal(formatCents(result.subtotal)));
+    b.writeln(
+      result.isPartial
+          ? tr.tabShareSubtotalKnown(formatCents(result.subtotal))
+          : tr.tabShareSubtotal(formatCents(result.subtotal)),
+    );
     if (result.discount > 0) {
       b.writeln(tr.tabShareDiscount(formatCents(result.discount)));
     }
     if (doc.serviceOn) {
-      b.writeln(tr.tabShareService(_pct(doc.serviceBp),
-          formatCents(result.serviceBase), formatCents(result.service)));
+      b.writeln(
+        tr.tabShareService(
+          _pct(doc.serviceBp),
+          formatCents(result.serviceBase),
+          formatCents(result.service),
+        ),
+      );
     }
-    b.writeln(result.isPartial
-        ? tr.tabShareTotalKnown(formatCents(result.total))
-        : tr.tabShareTotal(formatCents(result.total)));
+    b.writeln(
+      result.isPartial
+          ? tr.tabShareTotalKnown(formatCents(result.total))
+          : tr.tabShareTotal(formatCents(result.total)),
+    );
     if (result.isPartial) {
       b.writeln(tr.tabSharePartial(result.pendingCount));
     }
@@ -73,8 +93,10 @@ class TabShareText {
         ..writeln()
         ..writeln(tr.tabShareSplitHeader(doc.mode.label.toLowerCase()));
       for (final p in doc.participants) {
-        var line =
-            tr.tabShareSplitLine(p.displayName, formatCents(result.shareOf(p.id)));
+        var line = tr.tabShareSplitLine(
+          p.displayName,
+          formatCents(result.shareOf(p.id)),
+        );
         if (includePayments) {
           line += tr.tabSharePaid(formatCents(result.paidBy(p.id)));
           final bal = result.balanceOf(p.id);
@@ -87,9 +109,11 @@ class TabShareText {
         b.writeln(line);
       }
       if (result.unassigned != 0) {
-        b.writeln(result.unassigned > 0
-            ? tr.tabShareUnassigned(formatCents(result.unassigned))
-            : tr.tabShareOverTotal(formatCents(-result.unassigned)));
+        b.writeln(
+          result.unassigned > 0
+              ? tr.tabShareUnassigned(formatCents(result.unassigned))
+              : tr.tabShareOverTotal(formatCents(-result.unassigned)),
+        );
       }
       if (result.isPartial || result.unassigned != 0) {
         b.writeln(tr.tabShareSplitPartial);

@@ -57,14 +57,17 @@ class AppTheme {
         focusedErrorBorder: border(AppColors.danger, 1.5),
         labelStyle: const TextStyle(color: AppColors.textMuted),
         helperStyle: const TextStyle(color: AppColors.textMuted),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           minimumSize: const Size.fromHeight(56),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
         ),
       ),
@@ -73,8 +76,9 @@ class AppTheme {
           minimumSize: const Size.fromHeight(52),
           foregroundColor: AppColors.text,
           side: const BorderSide(color: AppColors.outline),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
@@ -88,7 +92,8 @@ class AppTheme {
         style: ButtonStyle(
           minimumSize: const WidgetStatePropertyAll(Size(0, 48)),
           side: const WidgetStatePropertyAll(
-              BorderSide(color: AppColors.outline)),
+            BorderSide(color: AppColors.outline),
+          ),
           backgroundColor: WidgetStateProperty.resolveWith(
             (states) => states.contains(WidgetState.selected)
                 ? AppColors.amber

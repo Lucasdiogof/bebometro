@@ -16,24 +16,23 @@ DrinkEntry drink(
   bool shared = false,
   int people = 1,
   int? personal,
-}) =>
-    DrinkEntry(
-      id: id,
-      outingId: outing,
-      consumedAt: _t,
-      name: name,
-      category: DrinkCategory.draft,
-      presentation: 'Copo $ml ml',
-      containerMl: ml,
-      personalMl: personal ?? ml,
-      abvPercent: 4.8,
-      isShared: shared,
-      peopleCount: people,
-      priceKind: paid == null ? PriceKind.unknown : PriceKind.informed,
-      paidCents: paid,
-      createdAt: _t,
-      updatedAt: _t,
-    );
+}) => DrinkEntry(
+  id: id,
+  outingId: outing,
+  consumedAt: _t,
+  name: name,
+  category: DrinkCategory.draft,
+  presentation: 'Copo $ml ml',
+  containerMl: ml,
+  personalMl: personal ?? ml,
+  abvPercent: 4.8,
+  isShared: shared,
+  peopleCount: people,
+  priceKind: paid == null ? PriceKind.unknown : PriceKind.informed,
+  paidCents: paid,
+  createdAt: _t,
+  updatedAt: _t,
+);
 
 void main() {
   late DrinkRepository repo;
@@ -55,25 +54,29 @@ void main() {
 
   test('equivalents are the same drink, size and outing only', () async {
     await seed();
-    final ids =
-        repo.equivalentsOf(repo.entryById('a')!).map((e) => e.id).toSet();
+    final ids = repo
+        .equivalentsOf(repo.entryById('a')!)
+        .map((e) => e.id)
+        .toSet();
     expect(ids, {'b', 'c', 'd'});
   });
 
-  test('applying the price to equivalents without price leaves the rest',
-      () async {
-    await seed();
-    await repo.applyPrices({
-      'b': (kind: PriceKind.informed, paidCents: 1500),
-      'c': (kind: PriceKind.informed, paidCents: 1500),
-    });
-    expect(repo.entryById('b')!.paidCents, 1500);
-    expect(repo.entryById('c')!.paidCents, 1500);
-    expect(repo.entryById('d')!.paidCents, 1800, reason: 'had another price');
-    expect(repo.entryById('e')!.paidCents, isNull, reason: 'other drink');
-    expect(repo.entryById('f')!.paidCents, isNull, reason: 'other size');
-    expect(repo.entryById('g')!.paidCents, isNull, reason: 'other outing');
-  });
+  test(
+    'applying the price to equivalents without price leaves the rest',
+    () async {
+      await seed();
+      await repo.applyPrices({
+        'b': (kind: PriceKind.informed, paidCents: 1500),
+        'c': (kind: PriceKind.informed, paidCents: 1500),
+      });
+      expect(repo.entryById('b')!.paidCents, 1500);
+      expect(repo.entryById('c')!.paidCents, 1500);
+      expect(repo.entryById('d')!.paidCents, 1800, reason: 'had another price');
+      expect(repo.entryById('e')!.paidCents, isNull, reason: 'other drink');
+      expect(repo.entryById('f')!.paidCents, isNull, reason: 'other size');
+      expect(repo.entryById('g')!.paidCents, isNull, reason: 'other outing');
+    },
+  );
 
   test('applying to all equivalents replaces the other price too', () async {
     await seed();
@@ -89,24 +92,39 @@ void main() {
     expect(repo.entryById('d')!.personalMl, 400);
   });
 
-  test('a shared bottle keeps the price paid separate from the personal ml',
-      () async {
-    await repo.save(
-        drink('s', 'Cerveja 600', ml: 600, shared: true, people: 3, personal: 200, paid: 1000));
-    final e = repo.entryById('s')!;
-    expect(e.personalMl, 200);
-    expect(e.containerMl, 600);
-    expect(e.paidCents, 1000);
-    // Re-pricing never touches the portion.
-    await repo.applyPrices({'s': (kind: PriceKind.informed, paidCents: 1200)});
-    final after = repo.entryById('s')!;
-    expect(after.paidCents, 1200);
-    expect(after.personalMl, 200);
-  });
+  test(
+    'a shared bottle keeps the price paid separate from the personal ml',
+    () async {
+      await repo.save(
+        drink(
+          's',
+          'Cerveja 600',
+          ml: 600,
+          shared: true,
+          people: 3,
+          personal: 200,
+          paid: 1000,
+        ),
+      );
+      final e = repo.entryById('s')!;
+      expect(e.personalMl, 200);
+      expect(e.containerMl, 600);
+      expect(e.paidCents, 1000);
+      // Re-pricing never touches the portion.
+      await repo.applyPrices({
+        's': (kind: PriceKind.informed, paidCents: 1200),
+      });
+      final after = repo.entryById('s')!;
+      expect(after.paidCents, 1200);
+      expect(after.personalMl, 200);
+    },
+  );
 
   test('complimentary and unknown prices are not the same as zero', () async {
     await repo.save(drink('u', 'Chopp'));
-    await repo.applyPrices({'u': (kind: PriceKind.complimentary, paidCents: null)});
+    await repo.applyPrices({
+      'u': (kind: PriceKind.complimentary, paidCents: null),
+    });
     expect(repo.entryById('u')!.priceKind, PriceKind.complimentary);
     expect(repo.entryById('u')!.paidCents, 0);
     await repo.applyPrices({'u': (kind: PriceKind.unknown, paidCents: null)});

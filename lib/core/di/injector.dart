@@ -103,7 +103,8 @@ Future<void> configureDependencies() async {
     // Language: a device preference, read before anything is shown.
     ..registerSingleton<LocaleController>(LocaleController(device))
     ..registerSingleton<AuthController>(
-        AuthController(device, cloudEnabled: _cloudEnabled))
+      AuthController(device, cloudEnabled: _cloudEnabled),
+    )
     ..registerSingleton<PhotoFiles>(PhotoFiles())
     ..registerSingleton<ImageCaptureService>(ImageCaptureService())
     ..registerSingleton<TextRecognizer>(TextRecognizer())
@@ -191,7 +192,8 @@ class AccountScope {
       )
       ..registerSingleton<OutingRepository>(OutingRepository(store))
       ..registerSingleton<DrinkRepository>(
-          DrinkRepository(store, _bundledCatalog))
+        DrinkRepository(store, _bundledCatalog),
+      )
       ..registerSingleton<TrackingCoordinator>(
         TrackingCoordinator(
           getIt<TrackingPlatform>(),
@@ -225,7 +227,9 @@ class AccountScope {
       )
       ..registerFactory<ActiveOutingCubit>(
         () => ActiveOutingCubit(
-            getIt<OutingRepository>(), getIt<DrinkRepository>()),
+          getIt<OutingRepository>(),
+          getIt<DrinkRepository>(),
+        ),
       )
       ..registerFactory<HomeCubit>(
         () => HomeCubit(
@@ -238,10 +242,12 @@ class AccountScope {
         () => HistoryCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
       )
       ..registerFactory<SettingsCubit>(
-        () => SettingsCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
+        () =>
+            SettingsCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
       )
       ..registerFactory<MyDrinksCubit>(
-        () => MyDrinksCubit(getIt<DrinkRepository>(), getIt<OutingRepository>()),
+        () =>
+            MyDrinksCubit(getIt<DrinkRepository>(), getIt<OutingRepository>()),
       )
       ..registerFactory<PlacesCubit>(
         () => PlacesCubit(getIt<PlaceRepository>(), getIt<OutingRepository>()),
@@ -256,10 +262,13 @@ class AccountScope {
       )
       ..registerFactory<StartOutingCubit>(
         () => StartOutingCubit(
-            getIt<OutingRepository>(), getIt<PlaceRepository>()),
+          getIt<OutingRepository>(),
+          getIt<PlaceRepository>(),
+        ),
       )
       ..registerFactory<CatalogCubit>(
-          () => CatalogCubit(getIt<DrinkRepository>()))
+        () => CatalogCubit(getIt<DrinkRepository>()),
+      )
       ..registerFactoryParam<PriceFixCubit, String, void>(
         (outingId, _) => PriceFixCubit(outingId, getIt<DrinkRepository>()),
       )
@@ -271,30 +280,27 @@ class AccountScope {
           getIt<AppPrefs>(),
         ),
       )
-      ..registerFactoryParam<DrinkFormCubit,
-          ({String outingId, CatalogItem item}), void>(
-        (args, _) {
-          final outing = getIt<OutingRepository>().byId(args.outingId)!;
-          return DrinkFormCubit.forItem(
-            getIt<DrinkRepository>(),
-            outing,
-            args.item,
-            _priceCandidates(outing),
-          );
-        },
-        instanceName: 'new',
-      )
-      ..registerFactoryParam<DrinkFormCubit, DrinkEntry, void>(
-        (entry, _) {
-          final outing = getIt<OutingRepository>().byId(entry.outingId)!;
-          return DrinkFormCubit.forEntry(
-            getIt<DrinkRepository>(),
-            outing,
-            entry,
-            _priceCandidates(outing),
-          );
-        },
-        instanceName: 'edit',
-      );
+      ..registerFactoryParam<
+        DrinkFormCubit,
+        ({String outingId, CatalogItem item}),
+        void
+      >((args, _) {
+        final outing = getIt<OutingRepository>().byId(args.outingId)!;
+        return DrinkFormCubit.forItem(
+          getIt<DrinkRepository>(),
+          outing,
+          args.item,
+          _priceCandidates(outing),
+        );
+      }, instanceName: 'new')
+      ..registerFactoryParam<DrinkFormCubit, DrinkEntry, void>((entry, _) {
+        final outing = getIt<OutingRepository>().byId(entry.outingId)!;
+        return DrinkFormCubit.forEntry(
+          getIt<DrinkRepository>(),
+          outing,
+          entry,
+          _priceCandidates(outing),
+        );
+      }, instanceName: 'edit');
   }
 }

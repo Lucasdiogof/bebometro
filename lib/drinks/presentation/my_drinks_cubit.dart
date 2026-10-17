@@ -29,10 +29,12 @@ class MyDrinksCubit extends Cubit<MyDrinksState> {
   final OutingRepository _outings;
   late final List<StreamSubscription<void>> _subs;
 
-  void _load() => emit(MyDrinksState(
-        items: _drinks.customItems(),
-        activeOutingId: _outings.active?.id,
-      ));
+  void _load() => emit(
+    MyDrinksState(
+      items: _drinks.customItems(),
+      activeOutingId: _outings.active?.id,
+    ),
+  );
 
   Future<void> duplicate(CatalogItem item) => _drinks.duplicateCustom(item);
 

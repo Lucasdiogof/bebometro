@@ -46,29 +46,43 @@ Future<void> showEntryGroupSheet(
     isScrollControlled: true,
     builder: (ctx) => SafeArea(
       child: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(ctx).size.height * 0.75),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(ctx).size.height * 0.75,
+        ),
         child: ListView(
           shrinkWrap: true,
           padding: const EdgeInsets.fromLTRB(
-              AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+            AppSpace.xl,
+            0,
+            AppSpace.xl,
+            AppSpace.lg,
+          ),
           children: [
             Text(title, style: AppText.title),
             const SizedBox(height: AppSpace.sm),
             for (final e in entries.reversed)
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text(e.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+                title: Text(
+                  e.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 subtitle: Text(_summaryLine(e), style: AppText.caption),
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onTap: () {
-                  showEntryDetailSheet(ctx, e, onEdit: (x) {
-                    Navigator.pop(ctx);
-                    onEdit(x);
-                  }, onDelete: (x) {
-                    Navigator.pop(ctx);
-                    onDelete(x);
-                  });
+                  showEntryDetailSheet(
+                    ctx,
+                    e,
+                    onEdit: (x) {
+                      Navigator.pop(ctx);
+                      onEdit(x);
+                    },
+                    onDelete: (x) {
+                      Navigator.pop(ctx);
+                      onDelete(x);
+                    },
+                  );
                 },
               ),
           ],
@@ -79,19 +93,19 @@ Future<void> showEntryGroupSheet(
 }
 
 String _summaryLine(DrinkEntry e) => [
-      formatTime(e.consumedAt),
-      if (e.personalMl != null)
-        formatMl(e.personalMl!)
-      else
-        tr.recordsUnknownVolume,
-      _price(e),
-    ].join(' · ');
+  formatTime(e.consumedAt),
+  if (e.personalMl != null)
+    formatMl(e.personalMl!)
+  else
+    tr.recordsUnknownVolume,
+  _price(e),
+].join(' · ');
 
 String _price(DrinkEntry e) => switch (e.priceKind) {
-      PriceKind.informed => formatCents(e.paidCents ?? 0),
-      PriceKind.complimentary => tr.priceComplimentary,
-      PriceKind.unknown => tr.priceNone,
-    };
+  PriceKind.informed => formatCents(e.paidCents ?? 0),
+  PriceKind.complimentary => tr.priceComplimentary,
+  PriceKind.unknown => tr.priceNone,
+};
 
 class _EntryDetail extends StatelessWidget {
   const _EntryDetail({
@@ -113,7 +127,11 @@ class _EntryDetail extends StatelessWidget {
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+          AppSpace.xl,
+          0,
+          AppSpace.xl,
+          AppSpace.lg,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -122,13 +140,17 @@ class _EntryDetail extends StatelessWidget {
             Text(
               [
                 kind.label,
-                if (e.presentation != null) localizePresentation(e.presentation!),
+                if (e.presentation != null)
+                  localizePresentation(e.presentation!),
               ].join(' · '),
               style: AppText.caption,
             ),
             const SizedBox(height: AppSpace.lg),
-            _Line(Icons.schedule_rounded, tr.entryTimeSection,
-                formatDateTime(e.consumedAt)),
+            _Line(
+              Icons.schedule_rounded,
+              tr.entryTimeSection,
+              formatDateTime(e.consumedAt),
+            ),
             _Line(
               Icons.opacity_rounded,
               tr.tableYourVolume,
@@ -138,13 +160,19 @@ class _EntryDetail extends StatelessWidget {
               _Line(
                 Icons.groups_outlined,
                 tr.entryShared,
-                tr.tableSharedLine(formatMl(personal), formatMl(container),
-                    '${e.peopleCount}'),
+                tr.tableSharedLine(
+                  formatMl(personal),
+                  formatMl(container),
+                  '${e.peopleCount}',
+                ),
               ),
             _Line(Icons.payments_outlined, tr.tabFillPriceTitle, _price(e)),
             if (e.isMixed && e.composition!.customized)
-              _Line(Icons.tune_rounded, tr.entryCompositionTitle,
-                  tr.tableRecipeAdjusted),
+              _Line(
+                Icons.tune_rounded,
+                tr.entryCompositionTitle,
+                tr.tableRecipeAdjusted,
+              ),
             const SizedBox(height: AppSpace.lg),
             FilledButton.icon(
               onPressed: () => onEdit(e),
@@ -155,10 +183,15 @@ class _EntryDetail extends StatelessWidget {
             Center(
               child: TextButton.icon(
                 onPressed: () => onDelete(e),
-                icon: const Icon(Icons.delete_outline_rounded,
-                    size: 18, color: AppColors.danger),
-                label: Text(tr.commonDelete,
-                    style: const TextStyle(color: AppColors.danger)),
+                icon: const Icon(
+                  Icons.delete_outline_rounded,
+                  size: 18,
+                  color: AppColors.danger,
+                ),
+                label: Text(
+                  tr.commonDelete,
+                  style: const TextStyle(color: AppColors.danger),
+                ),
               ),
             ),
           ],
@@ -210,7 +243,11 @@ Future<void> showScenarioPicker(
     builder: (ctx) => SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.xl, 0, AppSpace.xl, AppSpace.lg),
+          AppSpace.xl,
+          0,
+          AppSpace.xl,
+          AppSpace.lg,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,11 +262,13 @@ Future<void> showScenarioPicker(
               children: [
                 for (final s in TableScenario.values)
                   ChoiceChip(
-                    avatar: Icon(s.icon,
-                        size: 18,
-                        color: s == current
-                            ? const Color(0xFF241800)
-                            : AppColors.amber),
+                    avatar: Icon(
+                      s.icon,
+                      size: 18,
+                      color: s == current
+                          ? const Color(0xFF241800)
+                          : AppColors.amber,
+                    ),
                     label: Text(s.label),
                     selected: s == current,
                     showCheckmark: false,
@@ -256,7 +295,9 @@ Future<void> showTableAbout(BuildContext context) {
       content: Text(tr.tableAboutBody),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(ctx), child: Text(tr.tableUnderstood)),
+          onPressed: () => Navigator.pop(ctx),
+          child: Text(tr.tableUnderstood),
+        ),
       ],
     ),
   );

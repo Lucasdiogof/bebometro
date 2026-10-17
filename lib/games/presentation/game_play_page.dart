@@ -21,10 +21,10 @@ class GamePlayPage extends StatelessWidget {
   });
 
   const GamePlayPage.resume({super.key})
-      : game = null,
-        mode = null,
-        players = null,
-        usePoints = null;
+    : game = null,
+      mode = null,
+      players = null,
+      usePoints = null;
 
   final GameType? game;
   final GameMode? mode;
@@ -65,11 +65,13 @@ class _PlayView extends StatelessWidget {
         content: Text(tr.gameFinishBody),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(tr.gameKeepPlaying)),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.gameKeepPlaying),
+          ),
           TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(tr.gameFinish)),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(tr.gameFinish),
+          ),
         ],
       ),
     );
@@ -106,13 +108,22 @@ class _PlayView extends StatelessWidget {
           body: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
-                child: Row(children: [
-                  InfoPill(tr.gameModePill(session.mode.label),
-                      icon: Icons.tune_rounded),
-                  const SizedBox(width: AppSpace.sm),
-                  InfoPill(tr.gameCardsLeft(left), icon: Icons.style_outlined),
-                ]),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpace.gutter,
+                ),
+                child: Row(
+                  children: [
+                    InfoPill(
+                      tr.gameModePill(session.mode.label),
+                      icon: Icons.tune_rounded,
+                    ),
+                    const SizedBox(width: AppSpace.sm),
+                    InfoPill(
+                      tr.gameCardsLeft(left),
+                      icon: Icons.style_outlined,
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: Padding(
@@ -172,11 +183,12 @@ class _Stage extends StatelessWidget {
           if (state.noticeKind != null) ...[
             const SizedBox(height: AppSpace.sm),
             Text(
-                state.noticeKind == CardKind.truth
-                    ? tr.gameNoTruthLeft
-                    : tr.gameNoDareLeft,
-                style: AppText.caption,
-                textAlign: TextAlign.center),
+              state.noticeKind == CardKind.truth
+                  ? tr.gameNoTruthLeft
+                  : tr.gameNoDareLeft,
+              style: AppText.caption,
+              textAlign: TextAlign.center,
+            ),
           ],
           const SizedBox(height: AppSpace.xl),
           FilledButton(
@@ -206,8 +218,10 @@ class _Stage extends StatelessWidget {
           else
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpace.md),
-              child: Text(tr.gameWhoReads(session.currentPlayer),
-                  style: AppText.caption),
+              child: Text(
+                tr.gameWhoReads(session.currentPlayer),
+                style: AppText.caption,
+              ),
             ),
           Text(
             card.text,
@@ -284,7 +298,11 @@ class _Scoreboard extends StatelessWidget {
     final cubit = context.read<GameCubit>();
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpace.gutter, 0, AppSpace.gutter, AppSpace.sm),
+        AppSpace.gutter,
+        0,
+        AppSpace.gutter,
+        AppSpace.sm,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -302,15 +320,17 @@ class _Scoreboard extends StatelessWidget {
                     final messenger = ScaffoldMessenger.of(context);
                     messenger
                       ..hideCurrentSnackBar()
-                      ..showSnackBar(SnackBar(
-                        content: Text(tr.gamePlusOne(p)),
-                        duration: const Duration(seconds: 3),
-                        persist: false,
-                        action: SnackBarAction(
-                          label: tr.commonUndo,
-                          onPressed: () => cubit.removePoint(p),
+                      ..showSnackBar(
+                        SnackBar(
+                          content: Text(tr.gamePlusOne(p)),
+                          duration: const Duration(seconds: 3),
+                          persist: false,
+                          action: SnackBarAction(
+                            label: tr.commonUndo,
+                            onPressed: () => cubit.removePoint(p),
+                          ),
                         ),
-                      ));
+                      );
                   },
                 ),
             ],
@@ -336,23 +356,25 @@ class _Controls extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (showCardControls)
-            Row(children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: cubit.skip,
-                  icon: const Icon(Icons.skip_next_rounded),
-                  label: Text(tr.gameSkip),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: cubit.skip,
+                    icon: const Icon(Icons.skip_next_rounded),
+                    label: Text(tr.gameSkip),
+                  ),
                 ),
-              ),
-              const SizedBox(width: AppSpace.sm),
-              Expanded(
-                child: FilledButton.icon(
-                  onPressed: cubit.next,
-                  icon: const Icon(Icons.arrow_forward_rounded),
-                  label: Text(tr.gameNext),
+                const SizedBox(width: AppSpace.sm),
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: cubit.next,
+                    icon: const Icon(Icons.arrow_forward_rounded),
+                    label: Text(tr.gameNext),
+                  ),
                 ),
-              ),
-            ])
+              ],
+            )
           else
             Text(
               tr.gameSavedNote(tr.navGames),

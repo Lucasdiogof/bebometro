@@ -35,39 +35,49 @@ class RecordsPage extends StatelessWidget {
     final rows = <Widget>[];
     if (outings != null) {
       for (final o in outings!) {
-        rows.add(_row(
-          context,
-          title: o.displayName,
-          subtitle: '${formatDate(o.startedAt)} · ${formatTime(o.startedAt)}'
-              '${o.isActive ? ' · ${tr.placeVisitInProgress}' : ''}',
-          outingId: o.id,
-        ));
+        rows.add(
+          _row(
+            context,
+            title: o.displayName,
+            subtitle:
+                '${formatDate(o.startedAt)} · ${formatTime(o.startedAt)}'
+                '${o.isActive ? ' · ${tr.placeVisitInProgress}' : ''}',
+            outingId: o.id,
+          ),
+        );
       }
     } else {
       final sorted = [...entries!]
         ..sort((a, b) => b.consumedAt.compareTo(a.consumedAt));
       for (final e in sorted) {
         final outing = repo.byId(e.outingId);
-        rows.add(_row(
-          context,
-          title: e.name,
-          subtitle: '${formatDateTime(e.consumedAt)}'
-              '${e.personalMl == null ? ' · ${tr.recordsUnknownVolume}' : ' · ${formatMl(e.personalMl!)}'}'
-              '${outing == null ? '' : ' · ${outing.displayName}'}',
-          trailing: switch (e.priceKind) {
-            PriceKind.informed => formatCents(e.paidCents ?? 0),
-            PriceKind.complimentary => tr.priceComplimentary,
-            PriceKind.unknown => tr.priceNone,
-          },
-          outingId: e.outingId,
-        ));
+        rows.add(
+          _row(
+            context,
+            title: e.name,
+            subtitle:
+                '${formatDateTime(e.consumedAt)}'
+                '${e.personalMl == null ? ' · ${tr.recordsUnknownVolume}' : ' · ${formatMl(e.personalMl!)}'}'
+                '${outing == null ? '' : ' · ${outing.displayName}'}',
+            trailing: switch (e.priceKind) {
+              PriceKind.informed => formatCents(e.paidCents ?? 0),
+              PriceKind.complimentary => tr.priceComplimentary,
+              PriceKind.unknown => tr.priceNone,
+            },
+            outingId: e.outingId,
+          ),
+        );
       }
     }
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-            AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xl),
+          AppSpace.gutter,
+          0,
+          AppSpace.gutter,
+          AppSpace.xl,
+        ),
         children: rows,
       ),
     );
@@ -83,25 +93,35 @@ class RecordsPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpace.sm),
       child: SurfaceCard(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => OutingSummaryPage(outingId: outingId))),
-        child: Row(children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title,
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => OutingSummaryPage(outingId: outingId),
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: AppText.subtitle),
-                Text(subtitle, style: AppText.caption),
-              ],
+                    style: AppText.subtitle,
+                  ),
+                  Text(subtitle, style: AppText.caption),
+                ],
+              ),
             ),
-          ),
-          if (trailing != null)
-            Text(trailing, style: const TextStyle(fontWeight: FontWeight.w700)),
-          const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
-        ]),
+            if (trailing != null)
+              Text(
+                trailing,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
+            const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
+          ],
+        ),
       ),
     );
   }

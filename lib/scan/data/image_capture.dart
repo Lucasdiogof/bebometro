@@ -1,4 +1,3 @@
-
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -20,7 +19,8 @@ class CaptureException implements Exception {
 /// Camera and gallery access. Returns the image bytes; the caller decides
 /// where to keep them (never in a temporary camera path).
 class ImageCaptureService {
-  ImageCaptureService([ImagePicker? picker]) : _picker = picker ?? ImagePicker();
+  ImageCaptureService([ImagePicker? picker])
+    : _picker = picker ?? ImagePicker();
 
   final ImagePicker _picker;
 
@@ -43,9 +43,11 @@ class ImageCaptureService {
   /// permission, unreadable or oversized files and unsupported platforms.
   Future<Uint8List?> pick(CaptureSource source) async {
     if (!supports(source)) {
-      throw CaptureException(source == CaptureSource.camera
-          ? tr.captureCameraUnavailable
-          : tr.captureGalleryUnavailable);
+      throw CaptureException(
+        source == CaptureSource.camera
+            ? tr.captureCameraUnavailable
+            : tr.captureGalleryUnavailable,
+      );
     }
     final XFile? file;
     try {
@@ -59,12 +61,18 @@ class ImageCaptureService {
         requestFullMetadata: false,
       );
     } on PlatformException catch (e) {
-      final denied = e.code.contains('access_denied') ||
-          e.code.contains('permission');
+      final denied =
+          e.code.contains('access_denied') || e.code.contains('permission');
       final camera = source == CaptureSource.camera;
-      throw CaptureException(denied
-          ? (camera ? tr.capturePermissionCamera : tr.capturePermissionGallery)
-          : (camera ? tr.captureOpenCameraFailed : tr.captureOpenGalleryFailed));
+      throw CaptureException(
+        denied
+            ? (camera
+                  ? tr.capturePermissionCamera
+                  : tr.capturePermissionGallery)
+            : (camera
+                  ? tr.captureOpenCameraFailed
+                  : tr.captureOpenGalleryFailed),
+      );
     } catch (_) {
       throw CaptureException(tr.captureFailed);
     }

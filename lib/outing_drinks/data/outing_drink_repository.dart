@@ -14,8 +14,9 @@ import '../domain/outing_drink.dart';
 class OutingDrinkRepository {
   OutingDrinkRepository(this._store, this._files) {
     _store.changes
-        .where((c) =>
-            c == LocalStore.outingDrinks || c == LocalStore.outingPhotos)
+        .where(
+          (c) => c == LocalStore.outingDrinks || c == LocalStore.outingPhotos,
+        )
         .listen((_) => _changes.add(null));
   }
 
@@ -30,15 +31,14 @@ class OutingDrinkRepository {
 
   Stream<void> get changes => _changes.stream;
 
-  // ---- Drinks ------------------------------------------------------------
-
   /// Live items of this outing only, newest first.
-  List<OutingDrink> forOuting(String outingId) => _store
-      .all(LocalStore.outingDrinks)
-      .where((j) => j['outing_id'] == outingId && j['deleted_at'] == null)
-      .map(OutingDrink.fromJson)
-      .toList()
-    ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+  List<OutingDrink> forOuting(String outingId) =>
+      _store
+          .all(LocalStore.outingDrinks)
+          .where((j) => j['outing_id'] == outingId && j['deleted_at'] == null)
+          .map(OutingDrink.fromJson)
+          .toList()
+        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
   OutingDrink? byId(String id) {
     final j = _store.get(LocalStore.outingDrinks, id);
@@ -70,14 +70,13 @@ class OutingDrinkRepository {
       .where((j) => j['deleted_at'] == null)
       .length;
 
-  // ---- Photos ------------------------------------------------------------
-
-  List<OutingPhoto> photosFor(String outingId) => _store
-      .all(LocalStore.outingPhotos)
-      .where((j) => j['outing_id'] == outingId && j['deleted_at'] == null)
-      .map(OutingPhoto.fromJson)
-      .toList()
-    ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+  List<OutingPhoto> photosFor(String outingId) =>
+      _store
+          .all(LocalStore.outingPhotos)
+          .where((j) => j['outing_id'] == outingId && j['deleted_at'] == null)
+          .map(OutingPhoto.fromJson)
+          .toList()
+        ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
   final _downloads = <String, Future<Uint8List?>>{};
 
@@ -145,9 +144,9 @@ class OutingDrinkRepository {
 
   /// Photo ids whose file still exists, in the same order.
   Future<List<String>> existingPhotos(List<String> ids) async => [
-        for (final id in ids)
-          if (await _files.exists(id)) id,
-      ];
+    for (final id in ids)
+      if (await _files.exists(id)) id,
+  ];
 
   /// Throws away a photo from an unfinished reading. When a row already
   /// exists (a confirmation that failed halfway and was resumed) it is
@@ -169,14 +168,20 @@ class OutingDrinkRepository {
       );
     }
     await _files.delete(id);
-    for (final drink in _store
-        .all(LocalStore.outingDrinks)
-        .map(OutingDrink.fromJson)
-        .where((d) => d.photoIds.contains(id))) {
-      await save(drink.copyWith(
-        photoIds: [for (final p in drink.photoIds) if (p != id) p],
-        updatedAt: now,
-      ));
+    for (final drink
+        in _store
+            .all(LocalStore.outingDrinks)
+            .map(OutingDrink.fromJson)
+            .where((d) => d.photoIds.contains(id))) {
+      await save(
+        drink.copyWith(
+          photoIds: [
+            for (final p in drink.photoIds)
+              if (p != id) p,
+          ],
+          updatedAt: now,
+        ),
+      );
     }
   }
 

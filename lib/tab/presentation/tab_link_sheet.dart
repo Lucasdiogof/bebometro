@@ -85,16 +85,21 @@ class _LinkFormState extends State<_LinkForm> {
         builder: (ctx) => AlertDialog(
           title: Text(tr.tabLinkSameBottleTitle),
           content: Text(
-            tr.tabLinkSameBottleBody('${g.length}', g.first.name,
-                formatCents(g.first.billTotalCents!)),
+            tr.tabLinkSameBottleBody(
+              '${g.length}',
+              g.first.name,
+              formatCents(g.first.billTotalCents!),
+            ),
           ),
           actions: [
             TextButton(
-                onPressed: () => Navigator.pop(ctx, false),
-                child: Text(tr.tabLinkSeparate('${g.length}'))),
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(tr.tabLinkSeparate('${g.length}')),
+            ),
             TextButton(
-                onPressed: () => Navigator.pop(ctx, true),
-                child: Text(tr.tabLinkSame)),
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text(tr.tabLinkSame),
+            ),
           ],
         ),
       );
@@ -116,30 +121,38 @@ class _LinkFormState extends State<_LinkForm> {
     return SafeArea(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-            maxHeight: MediaQuery.sizeOf(context).height * 0.8),
+          maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.xl, 0, AppSpace.xl, AppSpace.sm),
+                AppSpace.xl,
+                0,
+                AppSpace.xl,
+                AppSpace.sm,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(tr.tabLinkTitle, style: AppText.title),
                   const SizedBox(height: AppSpace.xs),
                   Text(tr.tabLinkNote, style: AppText.caption),
-                  Row(children: [
-                    TextButton(
-                      onPressed: () => setState(
-                          () => _picked.addAll([for (final e in all) e.id])),
-                      child: Text(tr.tabLinkAll),
-                    ),
-                    TextButton(
-                      onPressed: () => setState(_picked.clear),
-                      child: Text(tr.tabLinkNone),
-                    ),
-                  ]),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () => setState(
+                          () => _picked.addAll([for (final e in all) e.id]),
+                        ),
+                        child: Text(tr.tabLinkAll),
+                      ),
+                      TextButton(
+                        onPressed: () => setState(_picked.clear),
+                        child: Text(tr.tabLinkNone),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -160,8 +173,9 @@ class _LinkFormState extends State<_LinkForm> {
                       }),
                       title: Text(e.name),
                       subtitle: Text(
-                          '${formatTime(e.consumedAt)} · ${_priceText(e)}',
-                          style: AppText.caption),
+                        '${formatTime(e.consumedAt)} · ${_priceText(e)}',
+                        style: AppText.caption,
+                      ),
                     ),
                 ],
               ),

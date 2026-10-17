@@ -15,25 +15,24 @@ DrinkEntry entry({
   int? bill,
   int? personalMl = 400,
   double? abv = 4.8,
-}) =>
-    DrinkEntry(
-      id: id,
-      outingId: 'o1',
-      consumedAt: _t,
-      name: name,
-      category: DrinkCategory.draft,
-      presentation: 'Copo 400 ml',
-      containerMl: 400,
-      personalMl: personalMl,
-      abvPercent: abv,
-      priceKind: kind,
-      paidCents: paid,
-      isShared: shared,
-      peopleCount: people,
-      billTotalCents: bill,
-      createdAt: _t,
-      updatedAt: _t,
-    );
+}) => DrinkEntry(
+  id: id,
+  outingId: 'o1',
+  consumedAt: _t,
+  name: name,
+  category: DrinkCategory.draft,
+  presentation: 'Copo 400 ml',
+  containerMl: 400,
+  personalMl: personalMl,
+  abvPercent: abv,
+  priceKind: kind,
+  paidCents: paid,
+  isShared: shared,
+  peopleCount: people,
+  billTotalCents: bill,
+  createdAt: _t,
+  updatedAt: _t,
+);
 
 List<String> lines(String csv) =>
     csv.replaceFirst(ExportBuilder.bom, '').trim().split('\n');
@@ -43,16 +42,25 @@ void main() {
     test('starts with a BOM and fixed Portuguese column names', () {
       final csv = ExportBuilder.drinksCsv([entry()]);
       expect(csv.startsWith(ExportBuilder.bom), isTrue);
-      final header =
-          lines(csv).first.split(';').map((c) => c.replaceAll('"', '')).toList();
+      final header = lines(
+        csv,
+      ).first.split(';').map((c) => c.replaceAll('"', '')).toList();
       expect(header.first, 'id');
       expect(header, containsAll(['categoria', 'preco_tipo', 'pago_centavos']));
     });
 
     test('codes, decimal comma and sim/nao instead of translated labels', () {
-      final row = lines(ExportBuilder.drinksCsv([
-        entry(shared: true, people: 3, bill: 3000, paid: 1000, personalMl: 200)
-      ]))[1];
+      final row = lines(
+        ExportBuilder.drinksCsv([
+          entry(
+            shared: true,
+            people: 3,
+            bill: 3000,
+            paid: 1000,
+            personalMl: 200,
+          ),
+        ]),
+      )[1];
       expect(row, contains('"draft"'));
       expect(row, contains('4,8'));
       expect(row, contains('sim'));
@@ -74,7 +82,9 @@ void main() {
     });
 
     test('a quote in a name is escaped', () {
-      final row = lines(ExportBuilder.drinksCsv([entry(name: 'Chopp "da casa"')]))[1];
+      final row = lines(
+        ExportBuilder.drinksCsv([entry(name: 'Chopp "da casa"')]),
+      )[1];
       expect(row, contains('"Chopp ""da casa"""'));
     });
   });

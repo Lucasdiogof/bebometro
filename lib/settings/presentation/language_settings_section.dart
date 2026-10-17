@@ -19,14 +19,16 @@ class LanguageSettingsSection extends StatelessWidget {
       listenable: controller,
       builder: (context, _) {
         String label(LanguageChoice c) => switch (c) {
-              LanguageChoice.system => tr.languageSystem,
-              LanguageChoice.pt => tr.languagePt,
-              LanguageChoice.en => tr.languageEn,
-              LanguageChoice.es => tr.languageEs,
-            };
+          LanguageChoice.system => tr.languageSystem,
+          LanguageChoice.pt => tr.languagePt,
+          LanguageChoice.en => tr.languageEn,
+          LanguageChoice.es => tr.languageEs,
+        };
         return SurfaceCard(
           padding: const EdgeInsets.symmetric(
-              horizontal: AppSpace.sm, vertical: AppSpace.xs),
+            horizontal: AppSpace.sm,
+            vertical: AppSpace.xs,
+          ),
           child: RadioGroup<LanguageChoice>(
             groupValue: controller.choice,
             onChanged: (c) {
@@ -39,8 +41,9 @@ class LanguageSettingsSection extends StatelessWidget {
                   RadioListTile<LanguageChoice>(
                     value: c,
                     activeColor: AppColors.amber,
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: AppSpace.sm),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: AppSpace.sm,
+                    ),
                     title: Text(label(c)),
                     subtitle: c == LanguageChoice.system
                         ? Text(tr.languageSystemHint)
@@ -48,7 +51,11 @@ class LanguageSettingsSection extends StatelessWidget {
                   ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(
-                      AppSpace.md, 0, AppSpace.md, AppSpace.sm),
+                    AppSpace.md,
+                    0,
+                    AppSpace.md,
+                    AppSpace.sm,
+                  ),
                   child: Text(tr.languageMoneyNote, style: AppText.caption),
                 ),
               ],

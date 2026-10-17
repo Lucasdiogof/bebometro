@@ -85,7 +85,9 @@ class _PlaceMapState extends State<PlaceMap> {
                 onTap: widget.interactive && widget.onMoved != null
                     ? (_, latLng) {
                         final p = GeoPoint.tryCreate(
-                            latLng.latitude, latLng.longitude);
+                          latLng.latitude,
+                          latLng.longitude,
+                        );
                         if (p != null) widget.onMoved!(p);
                       }
                     : null,
@@ -102,16 +104,21 @@ class _PlaceMapState extends State<PlaceMap> {
                     widget.onTilesFailed?.call();
                   },
                 ),
-                MarkerLayer(markers: [
-                  Marker(
-                    point: _center,
-                    width: 44,
-                    height: 44,
-                    alignment: Alignment.topCenter,
-                    child: const Icon(Icons.location_on_rounded,
-                        size: 44, color: AppColors.amber),
-                  ),
-                ]),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: _center,
+                      width: 44,
+                      height: 44,
+                      alignment: Alignment.topCenter,
+                      child: const Icon(
+                        Icons.location_on_rounded,
+                        size: 44,
+                        color: AppColors.amber,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -119,24 +126,34 @@ class _PlaceMapState extends State<PlaceMap> {
             Positioned(
               right: AppSpace.sm,
               top: AppSpace.sm,
-              child: Column(children: [
-                _MapButton(
+              child: Column(
+                children: [
+                  _MapButton(
                     icon: Icons.add_rounded,
                     label: tr.mapZoomIn,
-                    onTap: () => _zoom(1)),
-                const SizedBox(height: AppSpace.sm),
-                _MapButton(
+                    onTap: () => _zoom(1),
+                  ),
+                  const SizedBox(height: AppSpace.sm),
+                  _MapButton(
                     icon: Icons.remove_rounded,
                     label: tr.mapZoomOut,
-                    onTap: () => _zoom(-1)),
-                const SizedBox(height: AppSpace.sm),
-                _MapButton(
+                    onTap: () => _zoom(-1),
+                  ),
+                  const SizedBox(height: AppSpace.sm),
+                  _MapButton(
                     icon: Icons.my_location_rounded,
                     label: tr.mapCenter,
-                    onTap: () => _controller.move(_center, 17)),
-              ]),
+                    onTap: () => _controller.move(_center, 17),
+                  ),
+                ],
+              ),
             ),
-          const Positioned(left: 0, right: 0, bottom: 0, child: MapAttribution()),
+          const Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: MapAttribution(),
+          ),
         ],
       ),
     );
@@ -144,8 +161,11 @@ class _PlaceMapState extends State<PlaceMap> {
 }
 
 class _MapButton extends StatelessWidget {
-  const _MapButton(
-      {required this.icon, required this.label, required this.onTap});
+  const _MapButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   final IconData icon;
   final String label;
@@ -160,8 +180,10 @@ class _MapButton extends StatelessWidget {
         tooltip: label,
         onPressed: onTap,
         icon: Icon(icon, color: AppColors.text),
-        constraints:
-            const BoxConstraints.tightFor(width: kTouchTarget, height: kTouchTarget),
+        constraints: const BoxConstraints.tightFor(
+          width: kTouchTarget,
+          height: kTouchTarget,
+        ),
       ),
     );
   }
@@ -178,13 +200,15 @@ class MapAttribution extends StatelessWidget {
   Widget build(BuildContext context) {
     const style = TextStyle(fontSize: 11, color: AppColors.textMuted);
     Widget link(String text, String url) => InkWell(
-          onTap: () => openLink(url),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
-            child: Text(text,
-                style: style.copyWith(decoration: TextDecoration.underline)),
-          ),
-        );
+      onTap: () => openLink(url),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+        child: Text(
+          text,
+          style: style.copyWith(decoration: TextDecoration.underline),
+        ),
+      ),
+    );
     return Container(
       color: compact ? null : AppColors.background.withValues(alpha: 0.75),
       padding: const EdgeInsets.symmetric(horizontal: AppSpace.sm),

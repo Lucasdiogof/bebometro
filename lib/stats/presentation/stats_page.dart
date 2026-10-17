@@ -32,12 +32,12 @@ class _StatsView extends StatelessWidget {
   const _StatsView();
 
   void _openEntries(BuildContext context, String title, List<dynamic> entries) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => RecordsPage.entries(
-        title: title,
-        entries: entries.cast(),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) =>
+            RecordsPage.entries(title: title, entries: entries.cast()),
       ),
-    ));
+    );
   }
 
   Future<void> _pickCustom(BuildContext context) async {
@@ -68,7 +68,11 @@ class _StatsView extends StatelessWidget {
           if (report == null) return const LoadingView();
           return ListView(
             padding: const EdgeInsets.fromLTRB(
-                AppSpace.gutter, 0, AppSpace.gutter, AppSpace.xxl),
+              AppSpace.gutter,
+              0,
+              AppSpace.gutter,
+              AppSpace.xxl,
+            ),
             children: [
               SizedBox(
                 height: 48,
@@ -92,10 +96,12 @@ class _StatsView extends StatelessWidget {
               ),
               Text(
                 tr.statsRangeLine(
-                    formatDate(report.range.start),
-                    formatDate(
-                        report.range.end.subtract(const Duration(days: 1))),
-                    report.range.days),
+                  formatDate(report.range.start),
+                  formatDate(
+                    report.range.end.subtract(const Duration(days: 1)),
+                  ),
+                  report.range.days,
+                ),
                 style: AppText.caption,
               ),
               if (report.isEmpty)
@@ -113,35 +119,46 @@ class _StatsView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => RecordsPage.outings(
+                      Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => RecordsPage.outings(
                                     title: tr.statsOutingsOfPeriod,
-                                    outings: report.outings),
+                                    outings: report.outings,
+                                  ),
+                                ),
+                              ),
+                              child: StatTile(
+                                label: tr.placeStatOutings,
+                                value: '${report.outings.length}',
                               ),
                             ),
-                            child: StatTile(
-                                label: tr.placeStatOutings,
-                                value: '${report.outings.length}'),
                           ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () => _openEntries(
-                                context, tr.statsDrinksOfPeriod, report.entries),
-                            child: StatTile(
+                          Expanded(
+                            child: InkWell(
+                              onTap: () => _openEntries(
+                                context,
+                                tr.statsDrinksOfPeriod,
+                                report.entries,
+                              ),
+                              child: StatTile(
                                 label: tr.statsDrinksLogged,
-                                value: '${report.entries.length}'),
+                                value: '${report.entries.length}',
+                              ),
+                            ),
                           ),
-                        ),
-                      ]),
+                        ],
+                      ),
                       const SizedBox(height: AppSpace.lg),
                       InkWell(
-                        onTap: () => _openEntries(context, tr.statsPricedRecords,
-                            [for (final e in report.entries) if (e.hasPrice) e]),
+                        onTap: () =>
+                            _openEntries(context, tr.statsPricedRecords, [
+                              for (final e in report.entries)
+                                if (e.hasPrice) e,
+                            ]),
                         child: StatTile(
                           label: tr.placeStatSpent,
                           value: formatCents(report.informedCents),
@@ -164,22 +181,24 @@ class _StatsView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(children: [
-                        Expanded(
-                          child: StatTile(
-                            label: tr.statsAlcoholicVolume,
-                            value: formatMl(report.alcoholicMl),
-                            icon: Icons.local_bar_outlined,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: StatTile(
+                              label: tr.statsAlcoholicVolume,
+                              value: formatMl(report.alcoholicMl),
+                              icon: Icons.local_bar_outlined,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: StatTile(
-                            label: tr.statsNonAlcoholicVolume,
-                            value: formatMl(report.nonAlcoholicMl),
-                            icon: Icons.water_drop_outlined,
+                          Expanded(
+                            child: StatTile(
+                              label: tr.statsNonAlcoholicVolume,
+                              value: formatMl(report.nonAlcoholicMl),
+                              icon: Icons.water_drop_outlined,
+                            ),
                           ),
-                        ),
-                      ]),
+                        ],
+                      ),
                       if (report.unknownVolumeCount > 0) ...[
                         const SizedBox(height: AppSpace.sm),
                         InfoPill(
@@ -199,7 +218,9 @@ class _StatsView extends StatelessWidget {
                       StatTile(
                         label: tr.statsPureAlcohol,
                         value: report.alcoholIncomplete
-                            ? tr.entryAtLeast(formatGrams(report.pureAlcoholGrams))
+                            ? tr.entryAtLeast(
+                                formatGrams(report.pureAlcoholGrams),
+                              )
                             : formatGrams(report.pureAlcoholGrams),
                         icon: Icons.science_outlined,
                       ),
@@ -207,7 +228,8 @@ class _StatsView extends StatelessWidget {
                         const SizedBox(height: AppSpace.sm),
                         InfoPill(
                           tr.statsIncompleteAlcohol(
-                              report.incompleteAlcoholCount),
+                            report.incompleteAlcoholCount,
+                          ),
                           icon: Icons.help_outline_rounded,
                           warning: true,
                         ),
@@ -229,7 +251,10 @@ class _StatsView extends StatelessWidget {
                               ? tr.statsNoVolumeNote('${c.unknownVolumeCount}')
                               : null,
                           onTap: () => _openEntries(
-                              context, c.category.label, c.entries),
+                            context,
+                            c.category.label,
+                            c.entries,
+                          ),
                         ),
                     ],
                   ),
@@ -244,7 +269,10 @@ class _StatsView extends StatelessWidget {
                           value: c.count,
                           color: const Color(0xFF6EC1E4),
                           onTap: () => _openEntries(
-                              context, c.category.label, c.entries),
+                            context,
+                            c.category.label,
+                            c.entries,
+                          ),
                         ),
                     ],
                   ),
@@ -256,14 +284,23 @@ class _StatsView extends StatelessWidget {
                     child: SurfaceCard(
                       onTap: p.placeId == null
                           ? null
-                          : () => Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) =>
-                                  PlaceDetailPage(placeId: p.placeId!))),
-                      child: Row(children: [
-                        Expanded(
-                            child: Text(p.label, style: AppText.subtitle)),
-                        Text(tr.placesVisits(p.visits), style: AppText.caption),
-                      ]),
+                          : () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    PlaceDetailPage(placeId: p.placeId!),
+                              ),
+                            ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(p.label, style: AppText.subtitle),
+                          ),
+                          Text(
+                            tr.placesVisits(p.visits),
+                            style: AppText.caption,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 Text(tr.statsPlacesNote, style: AppText.caption),
@@ -281,8 +318,10 @@ class _StatsView extends StatelessWidget {
                 if (report.withoutMood > 0)
                   Padding(
                     padding: const EdgeInsets.only(top: AppSpace.sm),
-                    child: Text(tr.statsWithoutMood('${report.withoutMood}'),
-                        style: AppText.caption),
+                    child: Text(
+                      tr.statsWithoutMood('${report.withoutMood}'),
+                      style: AppText.caption,
+                    ),
                   ),
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpace.xs),
@@ -338,42 +377,53 @@ class _Bars extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppRadius.sm),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: AppSpace.sm),
-                child: Row(children: [
-                  SizedBox(
-                    width: 112,
-                    child: Text(b.label,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 112,
+                      child: Text(
+                        b.label,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: AppText.body),
-                  ),
-                  Expanded(
-                    child: LayoutBuilder(builder: (context, c) {
-                      return Stack(children: [
-                        Container(
-                          height: 14,
-                          decoration: BoxDecoration(
-                            color: AppColors.surfaceHigh,
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                        ),
-                        Container(
-                          height: 14,
-                          width: c.maxWidth * b.value / max,
-                          decoration: BoxDecoration(
-                            color: b.color,
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                        ),
-                      ]);
-                    }),
-                  ),
-                  const SizedBox(width: AppSpace.sm),
-                  SizedBox(
-                    width: 36,
-                    child: Text('${b.value}',
-                        textAlign: TextAlign.end, style: AppText.subtitle),
-                  ),
-                ]),
+                        style: AppText.body,
+                      ),
+                    ),
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, c) {
+                          return Stack(
+                            children: [
+                              Container(
+                                height: 14,
+                                decoration: BoxDecoration(
+                                  color: AppColors.surfaceHigh,
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                              ),
+                              Container(
+                                height: 14,
+                                width: c.maxWidth * b.value / max,
+                                decoration: BoxDecoration(
+                                  color: b.color,
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: AppSpace.sm),
+                    SizedBox(
+                      width: 36,
+                      child: Text(
+                        '${b.value}',
+                        textAlign: TextAlign.end,
+                        style: AppText.subtitle,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -381,8 +431,10 @@ class _Bars extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              [for (final b in items) if (b.note != null) '${b.label}: ${b.note}']
-                  .join(' · '),
+              [
+                for (final b in items)
+                  if (b.note != null) '${b.label}: ${b.note}',
+              ].join(' · '),
               style: AppText.caption,
             ),
           ),
@@ -415,18 +467,28 @@ class _Comparison extends StatelessWidget {
         children: [
           Text(
             tr.statsComparedTo(
-                report.range.days,
-                formatDate(prev.range.start),
-                formatDate(prev.range.end.subtract(const Duration(days: 1)))),
+              report.range.days,
+              formatDate(prev.range.start),
+              formatDate(prev.range.end.subtract(const Duration(days: 1))),
+            ),
             style: AppText.caption,
           ),
           const SizedBox(height: AppSpace.md),
-          _line(tr.placeStatOutings, '${report.outings.length}',
-              '${prev.outings.length}'),
-          _line(tr.statsDrinksLogged, '${report.entries.length}',
-              '${prev.entries.length}'),
-          _line(tr.placeStatSpent, formatCents(report.informedCents),
-              formatCents(prev.informedCents)),
+          _line(
+            tr.placeStatOutings,
+            '${report.outings.length}',
+            '${prev.outings.length}',
+          ),
+          _line(
+            tr.statsDrinksLogged,
+            '${report.entries.length}',
+            '${prev.entries.length}',
+          ),
+          _line(
+            tr.placeStatSpent,
+            formatCents(report.informedCents),
+            formatCents(prev.informedCents),
+          ),
           if (incomplete)
             Padding(
               padding: const EdgeInsets.only(top: AppSpace.sm),
@@ -438,10 +500,12 @@ class _Comparison extends StatelessWidget {
   }
 
   Widget _line(String label, String now, String before) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Row(children: [
-          Expanded(child: Text(label, style: AppText.body)),
-          Text(tr.statsLineBefore(now, before), style: AppText.subtitle),
-        ]),
-      );
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Row(
+      children: [
+        Expanded(child: Text(label, style: AppText.body)),
+        Text(tr.statsLineBefore(now, before), style: AppText.subtitle),
+      ],
+    ),
+  );
 }
