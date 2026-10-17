@@ -83,6 +83,8 @@ Sétima rodada: e-mail de teste entregue na caixa de entrada; "Confirm email" **
 
 **Confirmação de e-mail removida (13/10/2026):** o Supabase passou a confirmar contas automaticamente (`mailer_autoconfirm: true`, lido de volta) e o app não tem mais a tela "confira seu e-mail" (`CheckEmailPage` apagada). O cadastro entra direto. O e-mail de **recuperação de senha** continua existindo (SMTP e template aplicados). O template de confirmação segue aplicado, mas não é disparado. Nada compilado.
 
+Rodada de 17/10 (token do Supabase fornecido): migrations `20261019`, `20261020` e `20261021` conferidas **já aplicadas** por consulta ao banco; template de recuperação por código aplicado e lido de volta; `flutter analyze` sem erros (10 avisos de estilo antigos) e 42 testes passando.
+
 ## Bloqueios conhecidos
 
 - Sem acesso administrativo ao Supabase neste ambiente: novas migrations são preparadas e aplicadas pelo dono.

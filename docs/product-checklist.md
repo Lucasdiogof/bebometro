@@ -14,7 +14,7 @@ para as últimas etapas e não foram começados.
 | Item | Código | Externo | Execução | Situação |
 |------|--------|---------|----------|----------|
 | Rolê: iniciar, editar, encerrar, feedback, orçamento, preços ausentes | Sim | n/a | Não | Pendente validar |
-| Catálogo (v6: 136 produtos, 20 bebidas prontas; sem ampliação nesta rodada), "Sobre estes dados" por campo (procedência por campo: implementada; 55 produtos com `fieldSources`), filtros, favoritos, recentes, "Mais uma", água, desfazer | Sim | Migration `20261019000000` (categoria nova) **pendente** | Não | Pendente validar |
+| Catálogo (v6: 136 produtos, 20 bebidas prontas; sem ampliação nesta rodada), "Sobre estes dados" por campo (procedência por campo: implementada; 55 produtos com `fieldSources`), filtros, favoritos, recentes, "Mais uma", água, desfazer | Sim | Migration `20261019000000` **aplicada** (conferido por consulta ao banco em 17/10: o `check` de categoria de `custom_drinks` e `drink_entries` inclui `ready_to_drink`) | Não | Pendente validar |
 | Pipeline de atualização do catálogo (`tools/catalog_sync`: coletar → comparar → proposta → `catalog_tool.py merge`) | Sim (exercitado por script: `selftest`, `check`, `ids HEAD`) | n/a | Não (Flutter) | Parcial: um coletor (HEINEKEN Brasil); fontes adicionais são melhoria futura e não bloqueiam o app |
 | Flutter: analyze, testes e builds | n/a | n/a | Sim (analyze sem erros, 42 testes, APK release e web release gerados e executados; ver `qa-report.md`) | iOS não compilado |
 | Receitas de referência e próprias, composição, avisos de dado incompleto | Sim | n/a | Não | Pendente validar |
@@ -42,22 +42,21 @@ para as últimas etapas e não foram começados.
 | Item | Código | Externo | Execução |
 |------|--------|---------|----------|
 | Conta obrigatória (e-mail e senha), cadastro entra direto, perfil | Sim | SMTP aplicado; "Confirm email" desligado de propósito (lido pela API pública em 14/10) | Não |
-| Recuperação de senha por código de 6 dígitos | Sim (`verifyOTP` tipo `recovery`) | Template `recovery.html` com `{{ .Token }}` e `mailer_otp_length = 6` **não aplicados/lidos daqui** (sem token administrativo): `scripts/apply_recovery_code.py` | Não |
+| Recuperação de senha por código de 6 dígitos | Sim (`verifyOTP` tipo `recovery`) | Template `recovery.html` (só `{{ .Token }}`, sem link) e `mailer_otp_length = 6` **aplicados e lidos de volta em 17/10** com `scripts/apply_recovery_code.py` (o resto da configuração de Auth não mudou). Falta pedir um código com conta própria | Não |
 | Sincronização com leitura da nuvem, conflitos, exclusões | Sim | Migration `20261018000000` aplicada pelo dono | Não |
 | Excluir conta | Sim | Função `delete-account` **publicada** e **comprovada** em 17/10 (conta de QA apagada: 0 linhas, 0 arquivos, sem usuário, `done`). Exigiu conceder `SELECT/INSERT/UPDATE/DELETE` ao `service_role` nas tabelas do app (aplicado à mão; migration ainda não versionada) | Sim (servidor); pela interface só a falha da 1ª tentativa |
 | Persistência local por conta | Sim | n/a | Não |
 
 ## Banco e migrations
 
-Todas até `20261018000000_accounts_sync.sql` foram **aplicadas pelo dono** (não verificado daqui). **Nova e pendente:**
-`20261019000000_ready_to_drink_category.sql` (idempotente; só amplia os `check` de categoria). Detalhes: `docs/development-progress.md`.
+Todas até `20261018000000_accounts_sync.sql` foram **aplicadas pelo dono** (não verificado daqui). `20261019000000_ready_to_drink_category.sql`, `20261020000000_drink_entry_origin.sql` (colunas `entry_origin`, `origin_command_id`, `origin_tapped_at`) e `20261021000000_service_role_table_grants.sql` (grants do `service_role`) **já estão no banco** (conferido por consulta em 17/10). Detalhes: `docs/development-progress.md`.
 
 ## Configurações externas pendentes
 
 Passo a passo e estado real (implementado / configurado / verificado pela API / validado no app): [`external-setup.md`](external-setup.md).
 Geoapify: chave dedicada configurada em `env.json` local (verificada por HTTP); mapa e busca ainda **não validados no app**.
 
-1. Aplicar o template de recuperação por código e conferir `mailer_otp_length = 6`: `SUPABASE_ACCESS_TOKEN=... python -I scripts/apply_recovery_code.py --apply` (só mexe nesses campos e confere que o resto não mudou). Depois, pedir um código para uma conta própria e concluir a troca de senha no app.
+1. ~~Template de recuperação por código~~ **aplicado em 17/10**. Falta só pedir um código para uma conta própria e concluir a troca de senha no app.
 2. Versionar a migration com as permissões do `service_role` (já aplicada à mão no projeto do Bebômetro).
 3. Templates de e-mail trilíngues (`supabase/email-templates/`, ver `docs/auth-emails.md`).
 4. Chave Geoapify (`GEOAPIFY_KEY`) e `flutter pub get` dos pacotes novos.
