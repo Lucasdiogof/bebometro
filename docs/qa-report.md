@@ -140,6 +140,14 @@ Restauração após exclusão (o app não tem esse fluxo de restauração de con
 | `xcodebuild` Release, `generic/platform=iOS`, `DEVELOPMENT_TEAM=HALJMW29DC`, `-allowProvisioningUpdates` | **BUILD SUCCEEDED**; instalado e aberto no iPhone 15 Pro real (`devicectl install` + `process launch`) |
 | `xcodebuild` Debug, mesmo destino | **BUILD SUCCEEDED** (não foi arquivado pela interface do Xcode) |
 
+### B. Live Activity na tela bloqueada (evidência visual enviada pelo responsável)
+- **Plataforma:** iPhone físico, rodada 4. Duas capturas de tela reais enviadas pelo responsável em 17/10/2026; **não** são execução comandada por esta sessão.
+- **Passos observáveis:** iniciar rolê; iOS apresenta a pergunta "Permitir Atividades ao Vivo do app Bebômetro?"; após a autorização, o card aparece na tela bloqueada.
+- **Esperado / observado:** card com logo, cronômetro e ações "Abrir"/"Água"; visível em 0:11 e novamente em 2:09. O cronômetro progrediu e os textos estão em pt-BR.
+- **Sem bebida alcoólica registrada:** botão "Mais uma" ausente, coerente com a regra de só mostrá-lo quando há bebida alcoólica elegível. Isso **não** valida o botão interativo.
+- **Observação de layout (pendente):** título truncado "Rolê em andam..." e subtítulo "Nenhum registro de be...". Avaliar possível texto mais curto, prioridade e truncamento em tela bloqueada, sem comprometer legibilidade.
+- **Ainda não validado:** tocar "Abrir"/"Água"; Live Activity expandida na Dynamic Island; tocar "Mais uma" em iOS 17+; fila persistente, horário e origem, idempotência, pendências, encerramento e desaparecimento da atividade.
+
 ### D. Permissões do iOS (verificação estática do app compilado)
 `InfoPlist.strings` de pt-BR, en e es estão no `.app` com câmera, localização, movimento, galeria e salvar na galeria; `CFBundleLocalizations` =
 pt-BR, en, es. O iOS escolhe o idioma pelo **sistema**, não pela escolha do app (documentado em `docs/i18n-checklist.md`). Falta ver o diálogo real em
@@ -149,7 +157,7 @@ cada idioma do sistema no aparelho.
 O build de simulador sai **só x86_64** porque o ML Kit (`GoogleMLKit`, `MLImage`, `MLKitCommon`, `MLKitVision`) não tem slice arm64 de simulador. O
 runtime instalado é o iOS 26.5, que exige arm64: `simctl install` recusa o app ("needs to be updated by the developer", `Failed to find matching arch`).
 Consequência: **nenhum cenário iOS deste relatório pôde ser exercitado no simulador**; tudo depende do iPhone físico, que a ferramenta de automação
-desta sessão não consegue tocar (ela só controla simuladores). Os blocos B, C, E, F, G e H seguem **não executados** no iOS.
+desta sessão não consegue tocar (ela só controla simuladores). Os cenários interativos de B, C, E, F, G e H permanecem **não executados no simulador**; B tem agora evidência visual parcial em iPhone físico, registrada acima.
 
 ### Próximo passo exato
 1. Com o build Release já instalado no iPhone, executar à mão os roteiros de B (`docs/lock-screen-one-tap.md`), C, E, F, G e H e registrar o resultado aqui.
