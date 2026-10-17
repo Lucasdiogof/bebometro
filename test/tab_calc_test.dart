@@ -1,4 +1,3 @@
-import 'package:bebometro/drinks/domain/drink_category.dart';
 import 'package:bebometro/drinks/domain/drink_entry.dart';
 import 'package:bebometro/tab/domain/tab_calc.dart';
 import 'package:bebometro/tab/domain/tab_models.dart';

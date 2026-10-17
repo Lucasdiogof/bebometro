@@ -182,7 +182,7 @@
   "authSignInAgainTitle": "Entre novamente",
   "authSignInAgainToContinue": "Entre novamente para continuar.",
   "authSignInBody": "Seus rolês ficam salvos na sua conta e voltam em qualquer aparelho.",
-  "authSignUpNote": "Vamos enviar um link para confirmar o e-mail. Seu nome e e-mail só servem para a sua conta.",
+  "authSignUpNote": "Seu nome e e-mail só servem para a sua conta. Você entra direto, sem precisar confirmar o e-mail.",
   "authSignupDisabled": "Cadastro desativado no servidor no momento.",
   "authTooManyAttempts": "Muitas tentativas. Espere alguns minutos e tente de novo.",
   "authTooManyShort": "Muitas tentativas. Espere alguns minutos.",

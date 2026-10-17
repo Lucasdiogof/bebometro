@@ -647,14 +647,19 @@ class _ItemTile extends StatelessWidget {
                 style: AppText.caption,
               ),
               const SizedBox(height: AppSpace.xs),
-              Row(children: [
-                OriginBadge(item.origin),
-                if (count > 1) ...[
-                  const SizedBox(width: AppSpace.sm),
-                  Text(tr.catalogSizes('$count'),
-                      style: AppText.caption.copyWith(fontSize: 12)),
+              // Wrap: a long origin label plus the sizes count must break
+              // to a second line instead of overflowing the card.
+              Wrap(
+                spacing: AppSpace.sm,
+                runSpacing: AppSpace.xs,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  OriginBadge(item.origin),
+                  if (count > 1)
+                    Text(tr.catalogSizes('$count'),
+                        style: AppText.caption.copyWith(fontSize: 12)),
                 ],
-              ]),
+              ),
             ],
           ),
         ),

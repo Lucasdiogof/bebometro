@@ -91,7 +91,7 @@
   "authSignInAgainTitle": "Sign in again",
   "authSignInAgainToContinue": "Sign in again to continue.",
   "authSignInBody": "Your outings are saved in your account and come back on any device.",
-  "authSignUpNote": "We'll send a link to confirm the e-mail. Your name and e-mail are only used for your account.",
+  "authSignUpNote": "Your name and e-mail are only used for your account. You sign in right away, with no e-mail confirmation.",
   "authSignupDisabled": "Sign-up is turned off on the server right now.",
   "authTooManyAttempts": "Too many attempts. Wait a few minutes and try again.",
   "authTooManyShort": "Too many attempts. Wait a few minutes.",

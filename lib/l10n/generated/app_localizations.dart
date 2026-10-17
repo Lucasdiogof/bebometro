@@ -649,7 +649,7 @@ abstract class AppLocalizations {
   /// No description provided for @authSignUpNote.
   ///
   /// In pt, this message translates to:
-  /// **'Vamos enviar um link para confirmar o e-mail. Seu nome e e-mail só servem para a sua conta.'**
+  /// **'Seu nome e e-mail só servem para a sua conta. Você entra direto, sem precisar confirmar o e-mail.'**
   String get authSignUpNote;
 
   /// No description provided for @authSignupDisabled.

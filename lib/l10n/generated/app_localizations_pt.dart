@@ -371,7 +371,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get authSignUpNote =>
-      'Vamos enviar um link para confirmar o e-mail. Seu nome e e-mail só servem para a sua conta.';
+      'Seu nome e e-mail só servem para a sua conta. Você entra direto, sem precisar confirmar o e-mail.';
 
   @override
   String get authSignupDisabled =>
