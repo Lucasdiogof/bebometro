@@ -124,6 +124,37 @@ O build release foi reinstalado no emulador e usado nos testes acima.
 ### Ainda não executado
 Restauração após exclusão (o app não tem esse fluxo de restauração de conta); iPhone, Live Activity e sensor físico (bloqueados); código de 6 dígitos (sem caixa de QA).
 
+## Rodada 4 (17/10/2026, Mac mini, Xcode 27.0, iOS 26.5, a partir de `768a2ef`)
+
+### Ambiente e preparo
+- O projeto exige Dart ^3.13.3; os SDKs locais não atendiam (master 3.50-dev traz Dart 3.13.0-dev, fvm ia até 3.44.1). Instalado Flutter **3.47.7**
+  (Dart 3.13.5) via fvm e `flutter precache --ios` (sem o precache o `pod install` falha no post-install).
+- `pod install` precisa de `LANG=en_US.UTF-8` neste Mac (sem isso o Ruby 4 quebra com `Unicode Normalization not appropriate for ASCII-8BIT`).
+- O disco interno chegou a 106 MB livres (ENOSPC até para o shell); liberado apagando `~/Library/Developer/Xcode/DerivedData` (cache).
+- `pubspec.lock` não mudou com `pub get`. `flutter analyze`: sem erros, 10 avisos de estilo antigos. `flutter test`: **42 passaram**.
+
+### A. Compilação iOS (aprovado)
+| Build | Resultado |
+|---|---|
+| `flutter build ios --simulator --debug` | Gerado; a extensão `BebometroLiveActivity.appex` (mínimo iOS 16.2) vem embutida. O `project.pbxproj` editado à mão compilou sem correção |
+| `xcodebuild` Release, `generic/platform=iOS`, `DEVELOPMENT_TEAM=HALJMW29DC`, `-allowProvisioningUpdates` | **BUILD SUCCEEDED**; instalado e aberto no iPhone 15 Pro real (`devicectl install` + `process launch`) |
+| `xcodebuild` Debug, mesmo destino | **BUILD SUCCEEDED** (não foi arquivado pela interface do Xcode) |
+
+### D. Permissões do iOS (verificação estática do app compilado)
+`InfoPlist.strings` de pt-BR, en e es estão no `.app` com câmera, localização, movimento, galeria e salvar na galeria; `CFBundleLocalizations` =
+pt-BR, en, es. O iOS escolhe o idioma pelo **sistema**, não pela escolha do app (documentado em `docs/i18n-checklist.md`). Falta ver o diálogo real em
+cada idioma do sistema no aparelho.
+
+### Bloqueio: simulador iOS
+O build de simulador sai **só x86_64** porque o ML Kit (`GoogleMLKit`, `MLImage`, `MLKitCommon`, `MLKitVision`) não tem slice arm64 de simulador. O
+runtime instalado é o iOS 26.5, que exige arm64: `simctl install` recusa o app ("needs to be updated by the developer", `Failed to find matching arch`).
+Consequência: **nenhum cenário iOS deste relatório pôde ser exercitado no simulador**; tudo depende do iPhone físico, que a ferramenta de automação
+desta sessão não consegue tocar (ela só controla simuladores). Os blocos B, C, E, F, G e H seguem **não executados** no iOS.
+
+### Próximo passo exato
+1. Com o build Release já instalado no iPhone, executar à mão os roteiros de B (`docs/lock-screen-one-tap.md`), C, E, F, G e H e registrar o resultado aqui.
+2. Decidir se vale ter caminho de simulador (ex.: carregar o ML Kit só em dispositivo) para permitir automação no iOS.
+
 ## Contas de QA
 Mantida: **A** (`qa.bebometro.a.fc6438`). **B excluída** pela função `delete-account` em 17/10 (comprovado no banco).
 
