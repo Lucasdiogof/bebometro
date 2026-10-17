@@ -5404,7 +5404,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get resenhaIntro =>
-      'Juegos para la mesa, sin internet y sin cuenta. Las cartas no piden beber y no registran ninguna bebida.';
+      'Juegos para la mesa, que funcionan sin internet. Las cartas no piden beber y no registran ninguna bebida.';
 
   @override
   String get resenhaInProgress => 'Partida en curso';

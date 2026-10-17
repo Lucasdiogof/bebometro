@@ -8658,7 +8658,7 @@ abstract class AppLocalizations {
   /// No description provided for @resenhaIntro.
   ///
   /// In pt, this message translates to:
-  /// **'Jogos para a mesa, sem internet e sem conta. As cartas não pedem para beber e não registram nenhuma bebida.'**
+  /// **'Jogos para a mesa, que funcionam sem internet. As cartas não pedem para beber e não registram nenhuma bebida.'**
   String get resenhaIntro;
 
   /// No description provided for @resenhaInProgress.

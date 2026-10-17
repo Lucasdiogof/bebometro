@@ -1424,7 +1424,7 @@
   "gameKindCard": "Carta",
   "gameKindTruth": "Verdad",
   "gameKindDare": "Reto",
-  "resenhaIntro": "Juegos para la mesa, sin internet y sin cuenta. Las cartas no piden beber y no registran ninguna bebida.",
+  "resenhaIntro": "Juegos para la mesa, que funcionan sin internet. Las cartas no piden beber y no registran ninguna bebida.",
   "resenhaInProgress": "Partida en curso",
   "resenhaSession": "{count, plural, =1{1 participante · modo {mode}} other{{count} participantes · modo {mode}}}",
   "resenhaResume": "Retomar",

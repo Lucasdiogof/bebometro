@@ -1424,7 +1424,7 @@
   "gameKindCard": "Card",
   "gameKindTruth": "Truth",
   "gameKindDare": "Dare",
-  "resenhaIntro": "Table games, with no internet and no account. The cards never ask you to drink and do not log any drink.",
+  "resenhaIntro": "Table games that work without internet. The cards never ask you to drink and do not log any drink.",
   "resenhaInProgress": "Game in progress",
   "resenhaSession": "{count, plural, =1{1 player · {mode} mode} other{{count} players · {mode} mode}}",
   "resenhaResume": "Resume",
