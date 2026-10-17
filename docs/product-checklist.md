@@ -86,6 +86,13 @@ sobre bebidas alcoólicas e modo +18 dos jogos).
 ## Migrations aplicadas pelo responsável (16/10/2026)
 - `20261019000000_ready_to_drink_category.sql` e `20261020000000_drink_entry_origin.sql`: **aplicadas pelo responsável** no SQL Editor (informado em 16/10/2026; não lidas de volta daqui). Sincronização de bebidas prontas e da origem dos registros da tela bloqueada ainda não observada no app.
 
+- `20261021000000_service_role_table_grants.sql`: **versionada no repositório em 17/10/2026**. **Estado do banco:** as mesmas permissões
+  (`SELECT/INSERT/UPDATE/DELETE` ao `service_role` nas 8 tabelas que a função toca) foram aplicadas **à mão** no SQL Editor do projeto
+  `jiisoqkryhmtopaojyyu` pelo responsável (informado: "Success"; efeito comprovado pela exclusão da conta de QA B). **Histórico de
+  migrations:** a execução manual não registra a migration em `supabase_migrations.schema_migrations`; este projeto aplica as migrations à
+  mão, então o histórico do painel pode não listar nenhuma delas. Rodar o arquivo de novo é seguro (idempotente). Para conferir o estado real:
+  `supabase/queries/diagnose_delete_account.sql` (somente leitura).
+
 ## Itens BEB-001 a BEB-007 (estado em 16/10/2026)
 
 Nenhum item foi **validado em execução**: nada foi compilado, analisado, testado nem aberto em aparelho.
