@@ -159,6 +159,12 @@ runtime instalado é o iOS 26.5, que exige arm64: `simctl install` recusa o app 
 Consequência: **nenhum cenário iOS deste relatório pôde ser exercitado no simulador**; tudo depende do iPhone físico, que a ferramenta de automação
 desta sessão não consegue tocar (ela só controla simuladores). Os cenários interativos de B, C, E, F, G e H permanecem **não executados no simulador**; B tem agora evidência visual parcial em iPhone físico, registrada acima.
 
+### B. Live Activity (iPhone 15 Pro real, iOS, pt-BR) — parcial
+- Atividade aparece na tela bloqueada (título, cronômetro, "Abrir", "Água"); o iOS pede "Permitir Atividades ao Vivo" na primeira vez.
+- Com o rolê **sem bebida**, o botão "Mais uma" não aparece (esperado: `nextLabel` vazio, nada a repetir). Observação de produto: pode confundir.
+- Após registrar uma bebida, "Mais uma" apareceu e funcionou (relato do responsável, sem captura). **Não confirmados ainda:** toques rápidos/espaçados sem
+  duplicar, horário original do toque, tela de pendentes, textos em en/es, Dynamic Island, remoção ao encerrar.
+
 ### Próximo passo exato
 1. Com o build Release já instalado no iPhone, executar à mão os roteiros de B (`docs/lock-screen-one-tap.md`), C, E, F, G e H e registrar o resultado aqui.
 2. Decidir se vale ter caminho de simulador (ex.: carregar o ML Kit só em dispositivo) para permitir automação no iOS.
