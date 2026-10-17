@@ -39,3 +39,7 @@ mostram álcool puro declarado, nunca alcoolemia nem recomendação médica.
 Carregamento, tela inicial, ausência de erros de console, mobile (375x812) e desktop verificados. Sem chaves privilegiadas no bundle.
 **Não testado por mim**: login/logout/persistência, recuperação por código, isolamento entre usuários (exigem conta de QA e caixa de e-mail de QA, que não tenho; digitar senhas fora de localhost também é vedado).
 Deploy de teste em workers.dev: **bloqueado** (login do wrangler expirou e não há `CLOUDFLARE_API_TOKEN`). Workflow `deploy-web.yml` pronto, desativado até existir o token e a variável `AUTO_DEPLOY=true`.
+
+## Ambiente de teste (2026-10-17)
+URL: https://bebometro.lucasdiogo1234.workers.dev (Worker `bebometro`, deploy manual com token Cloudflare; versão 163e5637).
+Validado nessa URL em navegador real: carrega, sem erro de console próprio (smoke público: raiz, manifest, scripts, rota profunda e headers OK), tela de entrada/inicial correta. Login, sessão, recuperação por código e isolamento **não testados**: exigem criar conta/digitar senha, o que fica com o dono.
