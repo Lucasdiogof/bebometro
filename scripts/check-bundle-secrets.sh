@@ -4,9 +4,9 @@ set -euo pipefail
 DIR="${1:-build/web}"
 [ -d "$DIR" ] || { echo "No $DIR"; exit 1; }
 bad=0
-# service_role JWTs / secret keys
-if grep -rEl 'sb_secret_[A-Za-z0-9_-]+|service_role' "$DIR" --include='*.js' --include='*.json' --include='*.html' 2>/dev/null; then
-  echo "FAIL: privileged Supabase key marker found in bundle"; bad=1
+# real secret keys (long token after the prefix); the bare words may appear in app code that rejects such keys
+if grep -rEl 'sb_secret_[A-Za-z0-9_-]{20,}' "$DIR" --include='*.js' --include='*.json' --include='*.html' 2>/dev/null; then
+  echo "FAIL: Supabase secret key found in bundle"; bad=1
 fi
 # JWTs whose payload decodes to role=service_role
 for t in $(grep -rhoE 'eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}' "$DIR" 2>/dev/null | sort -u); do
