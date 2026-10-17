@@ -44,7 +44,7 @@ para as últimas etapas e não foram começados.
 | Conta obrigatória (e-mail e senha), cadastro entra direto, perfil | Sim | SMTP aplicado; "Confirm email" desligado de propósito (lido pela API pública em 14/10) | Não |
 | Recuperação de senha por código de 6 dígitos | Sim (`verifyOTP` tipo `recovery`) | Template `recovery.html` com `{{ .Token }}` e `mailer_otp_length = 6` **não aplicados/lidos daqui** (sem token administrativo): `scripts/apply_recovery_code.py` | Não |
 | Sincronização com leitura da nuvem, conflitos, exclusões | Sim | Migration `20261018000000` aplicada pelo dono | Não |
-| Excluir conta | Sim | Função `delete-account` **publicada**, mas **falha em execução real** (17/10): responde 500 `partial_failure`, nada foi apagado e a interface avisa corretamente. Causa não vista (precisa de `account_deletions.last_error`: `supabase/queries/check_account_deletions.sql`) | Sim: falha observada |
+| Excluir conta | Sim | Função `delete-account` **publicada** e **comprovada** em 17/10 (conta de QA apagada: 0 linhas, 0 arquivos, sem usuário, `done`). Exigiu conceder `SELECT/INSERT/UPDATE/DELETE` ao `service_role` nas tabelas do app (aplicado à mão; migration ainda não versionada) | Sim (servidor); pela interface só a falha da 1ª tentativa |
 | Persistência local por conta | Sim | n/a | Não |
 
 ## Banco e migrations
@@ -58,7 +58,7 @@ Passo a passo e estado real (implementado / configurado / verificado pela API / 
 Geoapify: chave dedicada configurada em `env.json` local (verificada por HTTP); mapa e busca ainda **não validados no app**.
 
 1. Aplicar o template de recuperação por código e conferir `mailer_otp_length = 6`: `SUPABASE_ACCESS_TOKEN=... python -I scripts/apply_recovery_code.py --apply` (só mexe nesses campos e confere que o resto não mudou). Depois, pedir um código para uma conta própria e concluir a troca de senha no app.
-2. Rodar `supabase/queries/check_account_deletions.sql`, corrigir a etapa que falha e republicar `delete-account` (a versão do repositório agora devolve `step`).
+2. Versionar a migration com as permissões do `service_role` (já aplicada à mão no projeto do Bebômetro).
 3. Templates de e-mail trilíngues (`supabase/email-templates/`, ver `docs/auth-emails.md`).
 4. Chave Geoapify (`GEOAPIFY_KEY`) e `flutter pub get` dos pacotes novos.
 5. Assinatura (Team) do app e da extensão no Xcode.

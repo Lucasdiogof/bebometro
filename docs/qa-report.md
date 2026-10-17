@@ -62,7 +62,11 @@ fora do Git (pasta temporária local da máquina de QA).
 - O app web em uma janela de largura variável: validar o layout em telas estreitas no aparelho.
 
 ## Reprovado / bloqueado
-- **Exclusão de conta (B, pela interface web): FALHOU.** A interface mostrou "A exclusão começou mas não terminou. Nada local foi apagado".
+- **Exclusão de conta (B): falhou na 1ª tentativa e FOI CORRIGIDA e comprovada (17/10).** Causa: o `service_role` do projeto só tinha
+  `REFERENCES`, `TRIGGER` e `TRUNCATE` nas tabelas (sem `SELECT/INSERT/UPDATE/DELETE`), então a função não conseguia ler, apagar nem gravar o
+  progresso. O responsável concedeu as permissões no SQL Editor; a repetição respondeu 200 `{ok:true}`, o login da B passou a dar
+  `invalid_credentials` e a consulta ao banco mostrou 0 linhas, 0 arquivos, 0 usuário de autenticação e `account_deletions = done`, com a A intacta
+  (`a_still_there = 1`). A migration com as permissões **ainda não está versionada no repositório** (pendente de autorização). Histórico da falha: A interface mostrou "A exclusão começou mas não terminou. Nada local foi apagado".
   Chamando a função com a sessão da própria B: HTTP 500 `{"error":"partial_failure","retry":true}`. A função **está publicada**
   (sem sessão: 401). As linhas da B continuaram no servidor (1 rolê, 2 registros, 1 local), então parou na etapa 1 (arquivos) ou ao apagar
   `drink_entries`. A causa exata está em `account_deletions.last_error`, que só se lê com acesso ao projeto. A função do repositório agora devolve
@@ -77,11 +81,11 @@ com aviso de total, importação de CSV (não existe), restauração após exclu
 usuário com exclusão de conta.
 
 ## Contas de QA
-Mantidas: **A** e **B** (a exclusão da B falhou). Nenhuma foi excluída.
+Mantida: **A** (`qa.bebometro.a.fc6438`). **B excluída** pela função `delete-account` em 17/10 (comprovado no banco).
 
 ## Fora do alcance do ambiente
 iPhone/Live Activity/compartilhamento iOS, caixa de e-mail de QA (código de 6 dígitos), sensor físico do simulador, acesso admin ao Supabase.
 
 ## Próximo passo exato
-1. Responsável: rodar `supabase/queries/check_account_deletions.sql`, corrigir a etapa e republicar `delete-account`.
-2. Repetir a exclusão da conta B pela interface (senha da B no cofre de QA local) e conferir que a A permanece.
+1. Versionar a migration de permissões do `service_role` (hoje só aplicada à mão no projeto) para novos ambientes.
+2. Repetir a exclusão **pela interface** com uma conta nova (esta rodada comprovou o servidor, chamando a função com a sessão da própria conta; a tela já havia mostrado a falha corretamente) e excluir também a A quando o QA terminar.

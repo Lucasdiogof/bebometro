@@ -881,6 +881,7 @@ Relatório completo e atualizado: [`docs/qa-report.md`](docs/qa-report.md). Resu
   nuvem, isolamento entre contas.
 - Corrigido: aviso falso de link expirado na web, avisos "Desfazer" que não sumiam, R8 quebrando o build release e o OCR em release,
   texto antigo dos jogos ("sem conta").
-- **Aberto:** `delete-account` publicada mas responde `partial_failure` (nada apagado). Rodar `supabase/queries/check_account_deletions.sql`
-  no SQL Editor e olhar `last_error`; a função do repositório agora informa `step` (republicar).
-- Contas de QA mantidas: A (`qa.bebometro.a.fc6438`) e B (`qa.bebometro.b.50eb5f`, exclusão falhou).
+- `delete-account` falhava (`partial_failure`) porque o `service_role` do projeto não tinha `SELECT/INSERT/UPDATE/DELETE` nas tabelas. O responsável
+  concedeu no SQL Editor; a exclusão da conta de QA B foi comprovada no banco (0 linhas, 0 arquivos, sem usuário, `done`). **Aberto:** versionar essa
+  concessão numa migration (hoje só existe no projeto).
+- Conta de QA mantida: A (`qa.bebometro.a.fc6438`). B excluída.
