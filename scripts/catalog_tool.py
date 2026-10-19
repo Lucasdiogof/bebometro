@@ -28,7 +28,8 @@ import unicodedata
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, '..', 'assets', 'catalog', 'catalog_v1.json')
-CATEGORIES = {'beer', 'draft', 'nonAlcoholic', 'spirit', 'wine', 'readyToDrink'}
+CATEGORIES = {'beer', 'draft', 'nonAlcoholic', 'spirit', 'wine', 'readyToDrink',
+              'cocktail'}
 KINDS = {'can', 'longNeck', 'bottle', 'glass', 'shot'}
 EVIDENCE = {'primary', 'secondary'}
 TYPES = {'official', 'label', 'packagingRegistry', 'secondary'}
@@ -59,7 +60,10 @@ def empty(v):
 
 def validate(p):
     errs = []
+    # A cocktail name has no brand (the name alone is the drink).
     for k in ('id', 'brand', 'name', 'category', 'source'):
+        if k == 'brand' and p.get('category') == 'cocktail':
+            continue
         if empty(p.get(k)):
             errs.append(f'missing {k}')
     if p.get('category') not in CATEGORIES:

@@ -319,7 +319,7 @@ class CatalogItem {
   /// Everything a search should match, normalised once. Category names and
   /// styles are included in every language, so a search in English finds the
   /// same items as one in Portuguese or Spanish.
-  String get searchText => normalizeText(
+  String get searchText => searchKey(
     [
       displayName,
       brand ?? '',

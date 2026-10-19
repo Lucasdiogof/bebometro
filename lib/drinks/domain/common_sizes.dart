@@ -37,7 +37,15 @@ List<Presentation> commonSizesFor(DrinkCategory category) {
         ),
       ];
     case DrinkCategory.draft:
+      // Served glasses, not packages: editable suggestions, never an official
+      // size of the brand.
       return const [
+        Presentation(
+          'Copo 200 ml',
+          200,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
         Presentation(
           'Copo 300 ml',
           300,
@@ -117,14 +125,20 @@ List<Presentation> commonSizesFor(DrinkCategory category) {
     case DrinkCategory.wine:
       return const [
         Presentation(
-          'Taça 150 ml',
-          150,
+          'Taça 100 ml',
+          100,
           kind: PresentationKind.glass,
           isSuggestion: true,
         ),
         Presentation(
-          'Taça 200 ml',
-          200,
+          'Taça 125 ml',
+          125,
+          kind: PresentationKind.glass,
+          isSuggestion: true,
+        ),
+        Presentation(
+          'Taça 150 ml',
+          150,
           kind: PresentationKind.glass,
           isSuggestion: true,
         ),

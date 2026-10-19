@@ -174,12 +174,20 @@ class CatalogCubit extends Cubit<CatalogState> {
     final all = _drinks.catalog();
     final byId = {for (final i in all) i.id: i};
 
-    final tokens = normalizeText(
+    final tokens = searchKey(
       _query,
     ).split(' ').where((t) => t.isNotEmpty).toList();
+    final wantsDraft = tokens.contains('chop');
     final items = all.where((i) => _matches(i, _filters, tokens)).toList()
       ..sort((a, b) {
         if (a.isCustom != b.isCustom) return a.isCustom ? -1 : 1;
+        if (wantsDraft) {
+          // Asking for a "chope" puts the served draft before the can or
+          // bottle that only has the word in its name.
+          final ad = a.category == DrinkCategory.draft;
+          final bd = b.category == DrinkCategory.draft;
+          if (ad != bd) return ad ? -1 : 1;
+        }
         return normalizeText(
           a.displayName,
         ).compareTo(normalizeText(b.displayName));

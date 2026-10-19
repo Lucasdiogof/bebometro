@@ -179,7 +179,7 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   List<CatalogItem> _suggestions() {
-    final q = normalizeText(_name.text);
+    final q = searchKey(_name.text);
     if (_item != null || q.length < 2) return const [];
     final tokens = q.split(' ').where((t) => t.isNotEmpty).toList();
     final all = getIt<DrinkRepository>().catalog();
@@ -187,7 +187,13 @@ class _OrderPageState extends State<OrderPage> {
       for (final i in all)
         if (!i.isOutingOnly && tokens.every(i.searchText.contains)) i,
     ];
+    final wantsDraft = tokens.contains('chop');
     hits.sort((a, b) {
+      if (wantsDraft) {
+        final ad = a.category == DrinkCategory.draft;
+        final bd = b.category == DrinkCategory.draft;
+        if (ad != bd) return ad ? -1 : 1;
+      }
       final an = normalizeText(a.displayName).startsWith(q) ? 0 : 1;
       final bn = normalizeText(b.displayName).startsWith(q) ? 0 : 1;
       if (an != bn) return an - bn;

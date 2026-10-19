@@ -189,6 +189,14 @@ const _accents = {
   'ñ': 'n',
 };
 
+/// [normalizeText] for searching: "chop", "chopp", "chope" (and plurals) are
+/// the same word, so a search for any of them finds the same drafts. Apply it
+/// to both the text searched and the query.
+String searchKey(String input) =>
+    normalizeText(input).replaceAll(_chopWord, 'chop');
+
+final _chopWord = RegExp(r'\bchop{1,2}e?s?\b');
+
 /// Lower-cases and strips accents so searches match "cachaça" with "cachaca".
 String normalizeText(String input) {
   final lower = input.toLowerCase();

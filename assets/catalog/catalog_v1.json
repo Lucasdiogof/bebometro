@@ -1100,7 +1100,10 @@
      "ml": 330
     }
    ],
-   "aliases": [],
+   "aliases": [
+    "chope spaten",
+    "chopp spaten"
+   ],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/spaten/spaten/",
     "label": "Ambev (site oficial)"
@@ -1823,7 +1826,10 @@
     "Semente de coentro"
    ],
    "presentations": [],
-   "aliases": [],
+   "aliases": [
+    "chope patagonia weisse",
+    "chopp patagonia weisse"
+   ],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/patagonia/patagonia-weisse",
     "label": "Ambev (site oficial)"
@@ -1852,7 +1858,10 @@
     "Lúpulo"
    ],
    "presentations": [],
-   "aliases": [],
+   "aliases": [
+    "chope patagonia amber lager",
+    "chopp patagonia amber lager"
+   ],
    "source": {
     "url": "https://www.ambev.com.br/marcas/cervejas/patagonia/patagonia-amber-lager",
     "label": "Ambev (site oficial)"
@@ -6469,6 +6478,5182 @@
     "url": "https://world.openfoodfacts.org/product/7893218004150",
     "label": "Foto do rótulo, long neck 275 ml (Open Food Facts)"
    }
+  },
+  {
+   "id": "drink-alexander",
+   "brand": "",
+   "name": "Alexander",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-americano",
+   "brand": "",
+   "name": "Americano",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-angel-face",
+   "brand": "",
+   "name": "Angel Face",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-aviation",
+   "brand": "",
+   "name": "Aviation",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-bee-s-knees",
+   "brand": "",
+   "name": "Bee’s Knees",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-bellini",
+   "brand": "",
+   "name": "Bellini",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-between-the-sheets",
+   "brand": "",
+   "name": "Between the Sheets",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-black-russian",
+   "brand": "",
+   "name": "Black Russian",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-bloody-mary",
+   "brand": "",
+   "name": "Bloody Mary",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-boulevardier",
+   "brand": "",
+   "name": "Boulevardier",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-bramble",
+   "brand": "",
+   "name": "Bramble",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-brandy-crusta",
+   "brand": "",
+   "name": "Brandy Crusta",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-canchanchara",
+   "brand": "",
+   "name": "Canchanchara",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-cardinale",
+   "brand": "",
+   "name": "Cardinale",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-casino",
+   "brand": "",
+   "name": "Casino",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-champagne-cocktail",
+   "brand": "",
+   "name": "Champagne Cocktail",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-chartreuse-swizzle",
+   "brand": "",
+   "name": "Chartreuse Swizzle",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-clover-club",
+   "brand": "",
+   "name": "Clover Club",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-corpse-reviver-2",
+   "brand": "",
+   "name": "Corpse Reviver #2",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-dark-n-stormy",
+   "brand": "",
+   "name": "Dark ’N’ Stormy",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-don-s-special-daiquiri",
+   "brand": "",
+   "name": "Don’s Special Daiquiri",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-espresso-martini",
+   "brand": "",
+   "name": "Espresso Martini",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-fernandito",
+   "brand": "",
+   "name": "Fernandito",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-french-75",
+   "brand": "",
+   "name": "French 75",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-french-connection",
+   "brand": "",
+   "name": "French Connection",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-french-martini",
+   "brand": "",
+   "name": "French Martini",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-garibaldi",
+   "brand": "",
+   "name": "Garibaldi",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-gin-basil-smash",
+   "brand": "",
+   "name": "Gin Basil Smash",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-gin-fizz",
+   "brand": "",
+   "name": "Gin Fizz",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-grand-margarita",
+   "brand": "",
+   "name": "Grand Margarita",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-grasshopper",
+   "brand": "",
+   "name": "Grasshopper",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-hanky-panky",
+   "brand": "",
+   "name": "Hanky Panky",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-hemingway-special",
+   "brand": "",
+   "name": "Hemingway Special",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-horse-s-neck",
+   "brand": "",
+   "name": "Horse’s Neck",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-iba-tiki",
+   "brand": "",
+   "name": "IBA Tiki",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/2/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-illegal",
+   "brand": "",
+   "name": "Illegal",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-irish-coffee",
+   "brand": "",
+   "name": "Irish Coffee",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-john-collins",
+   "brand": "",
+   "name": "John Collins",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-jungle-bird",
+   "brand": "",
+   "name": "Jungle Bird",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-kir",
+   "brand": "",
+   "name": "Kir",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-last-word",
+   "brand": "",
+   "name": "Last Word",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-lemon-drop-martini",
+   "brand": "",
+   "name": "Lemon Drop Martini",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-long-island-iced-tea",
+   "brand": "",
+   "name": "Long Island Iced Tea",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-mai-tai",
+   "brand": "",
+   "name": "Mai-Tai",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-manhattan",
+   "brand": "",
+   "name": "Manhattan",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-martinez",
+   "brand": "",
+   "name": "Martinez",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-mary-pickford",
+   "brand": "",
+   "name": "Mary Pickford",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-mimosa",
+   "brand": "",
+   "name": "Mimosa",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-mint-julep",
+   "brand": "",
+   "name": "Mint Julep",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-missionary-s-downfall",
+   "brand": "",
+   "name": "Missionary’s Downfall",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-monkey-gland",
+   "brand": "",
+   "name": "Monkey Gland",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-naked-and-famous",
+   "brand": "",
+   "name": "Naked and Famous",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/3/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-new-york-sour",
+   "brand": "",
+   "name": "New York Sour",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-old-cuban",
+   "brand": "",
+   "name": "Old Cuban",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-paloma",
+   "brand": "",
+   "name": "Paloma",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-paper-plane",
+   "brand": "",
+   "name": "Paper Plane",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-paradise",
+   "brand": "",
+   "name": "Paradise",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-penicillin",
+   "brand": "",
+   "name": "Penicillin",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-pisco-punch",
+   "brand": "",
+   "name": "Pisco Punch",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-pisco-sour",
+   "brand": "",
+   "name": "Pisco Sour",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-planter-s-punch",
+   "brand": "",
+   "name": "Planter’s Punch",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-porn-star-martini",
+   "brand": "",
+   "name": "Porn Star Martini",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-porto-flip",
+   "brand": "",
+   "name": "Porto Flip",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-rabo-de-galo",
+   "brand": "",
+   "name": "Rabo de Galo",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-ramos-fizz",
+   "brand": "",
+   "name": "Ramos Fizz",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-remember-the-maine",
+   "brand": "",
+   "name": "Remember the Maine",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-russian-spring-punch",
+   "brand": "",
+   "name": "Russian Spring Punch",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-rusty-nail",
+   "brand": "",
+   "name": "Rusty Nail",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-sazerac",
+   "brand": "",
+   "name": "Sazerac",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/4/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-sea-breeze",
+   "brand": "",
+   "name": "Sea Breeze",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-sex-on-the-beach",
+   "brand": "",
+   "name": "Sex on the Beach",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-sherry-cobbler",
+   "brand": "",
+   "name": "Sherry Cobbler",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-sidecar",
+   "brand": "",
+   "name": "Sidecar",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-singapore-sling",
+   "brand": "",
+   "name": "Singapore Sling",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-south-side",
+   "brand": "",
+   "name": "South Side",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-spicy-fifty",
+   "brand": "",
+   "name": "Spicy Fifty",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-stinger",
+   "brand": "",
+   "name": "Stinger",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-suffering-bastard",
+   "brand": "",
+   "name": "Suffering Bastard",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-tequila-sunrise",
+   "brand": "",
+   "name": "Tequila Sunrise",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-three-dots-and-a-dash",
+   "brand": "",
+   "name": "Three Dots and a Dash",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-tipperary",
+   "brand": "",
+   "name": "Tipperary",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-tommy-s-margarita",
+   "brand": "",
+   "name": "Tommy’s Margarita",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-trinidad-sour",
+   "brand": "",
+   "name": "Trinidad Sour",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-tuxedo",
+   "brand": "",
+   "name": "Tuxedo",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-ve-n-to",
+   "brand": "",
+   "name": "Ve.N.To",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-vesper",
+   "brand": "",
+   "name": "Vesper",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-vieux-carre",
+   "brand": "",
+   "name": "Vieux Carré",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/5/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-white-lady",
+   "brand": "",
+   "name": "White Lady",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/6/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-zombie",
+   "brand": "",
+   "name": "Zombie",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://iba-world.com/cocktails/all-cocktails/page/6/",
+    "label": "IBA, lista de coquetéis"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Nome da lista de coquetéis da IBA. Composição, teor e volume não estão registrados aqui: o que o bar serviu pode ser diferente.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "IBA, cocktail list",
+     "note": "Name from the IBA cocktail list. Composition, ABV and volume are not recorded here: what a bar served may differ."
+    },
+    "es": {
+     "sourceLabel": "IBA, lista de cócteles",
+     "note": "Nombre de la lista de cócteles de la IBA. La composición, el contenido de alcohol y el volumen no se registran aquí: lo que sirvió el bar puede ser distinto."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "drink-spritzgerald",
+   "brand": "",
+   "name": "Spritzgerald",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://monin.us/products/spritzgerald",
+    "label": "Monin (EUA), página do Spritzgerald"
+   },
+   "retrieved": "2026-10-19",
+   "note": "O nome existe e a Monin (EUA) publica uma versão com champanhe, xarope de elderflower e concentrado de blackberry. Isso confirma o nome e uma versão, não o drink que um bar serve: composição, teor e volume ficam desconhecidos. Não é o Fitzgerald nem o Aperol Spritz.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Monin (US), Spritzgerald page",
+     "note": "The name exists and Monin (US) publishes a version with champagne, elderflower syrup and blackberry concentrate. That confirms the name and one version, not what a bar serves: composition, ABV and volume stay unknown. It is neither the Fitzgerald nor the Aperol Spritz."
+    },
+    "es": {
+     "sourceLabel": "Monin (EE. UU.), página del Spritzgerald",
+     "note": "El nombre existe y Monin (EE. UU.) publica una versión con champán, jarabe de elderflower y concentrado de blackberry. Eso confirma el nombre y una versión, no lo que sirve un bar: composición, contenido de alcohol y volumen quedan desconocidos. No es el Fitzgerald ni el Aperol Spritz."
+    }
+   },
+   "evidence": "secondary",
+   "market": "US"
+  },
+  {
+   "id": "drink-fitzgerald",
+   "brand": "",
+   "name": "Fitzgerald",
+   "category": "cocktail",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.diffordsguide.com/cocktails/recipe/2408/fitzgerald",
+    "label": "Difford's Guide, Fitzgerald"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Drink com nome e receita próprios (Difford's Guide); a receita não foi importada. Não é sinônimo de Spritzgerald.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Difford's Guide, Fitzgerald",
+     "note": "A drink with its own name and recipe (Difford's Guide); the recipe was not imported. Not a synonym of Spritzgerald."
+    },
+    "es": {
+     "sourceLabel": "Difford's Guide, Fitzgerald",
+     "note": "Un cóctel con nombre y receta propios (Difford's Guide); la receta no se importó. No es sinónimo de Spritzgerald."
+    }
+   },
+   "evidence": "secondary",
+   "market": "GB"
+  },
+  {
+   "id": "heineken-lager-chope",
+   "brand": "Heineken",
+   "name": "Lager (chope)",
+   "category": "draft",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chope Heineken Lager"
+   ],
+   "source": {
+    "url": "https://express.heineken.com.br/collections/chopes",
+    "label": "Heineken Express (chopes)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Chope servido no copo. Os tamanhos de copo do app são sugestões editáveis, não medidas oficiais da marca; teor e volume não estão registrados. Não é a cerveja em lata ou garrafa da mesma marca.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Express (draft beers)",
+     "note": "Draft beer served in a glass. The app glass sizes are editable suggestions, not official sizes of the brand; ABV and volume are not recorded. It is not the canned or bottled beer of the same brand."
+    },
+    "es": {
+     "sourceLabel": "Heineken Express (chopes)",
+     "note": "Chope servido en vaso. Los tamaños de vaso de la app son sugerencias editables, no medidas oficiales de la marca; el contenido de alcohol y el volumen no se registran. No es la cerveza en lata o botella de la misma marca."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "amstel-draft-lager-chope",
+   "brand": "Amstel",
+   "name": "Draft Lager (chope)",
+   "category": "draft",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chope Amstel Draft Lager"
+   ],
+   "source": {
+    "url": "https://express.heineken.com.br/collections/chopes",
+    "label": "Heineken Express (chopes)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Chope servido no copo. Os tamanhos de copo do app são sugestões editáveis, não medidas oficiais da marca; teor e volume não estão registrados. Não é a cerveja em lata ou garrafa da mesma marca.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Express (draft beers)",
+     "note": "Draft beer served in a glass. The app glass sizes are editable suggestions, not official sizes of the brand; ABV and volume are not recorded. It is not the canned or bottled beer of the same brand."
+    },
+    "es": {
+     "sourceLabel": "Heineken Express (chopes)",
+     "note": "Chope servido en vaso. Los tamaños de vaso de la app son sugerencias editables, no medidas oficiales de la marca; el contenido de alcohol y el volumen no se registran. No es la cerveza en lata o botella de la misma marca."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "lagunitas-american-ipa-chope",
+   "brand": "Lagunitas",
+   "name": "American IPA (chope)",
+   "category": "draft",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chope Lagunitas American IPA"
+   ],
+   "source": {
+    "url": "https://express.heineken.com.br/collections/chopes",
+    "label": "Heineken Express (chopes)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Chope servido no copo. Os tamanhos de copo do app são sugestões editáveis, não medidas oficiais da marca; teor e volume não estão registrados. Não é a cerveja em lata ou garrafa da mesma marca.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Express (draft beers)",
+     "note": "Draft beer served in a glass. The app glass sizes are editable suggestions, not official sizes of the brand; ABV and volume are not recorded. It is not the canned or bottled beer of the same brand."
+    },
+    "es": {
+     "sourceLabel": "Heineken Express (chopes)",
+     "note": "Chope servido en vaso. Los tamaños de vaso de la app son sugerencias editables, no medidas oficiales de la marca; el contenido de alcohol y el volumen no se registran. No es la cerveza en lata o botella de la misma marca."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "blue-moon-witbier-chope",
+   "brand": "Blue Moon",
+   "name": "Witbier (chope)",
+   "category": "draft",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chope Blue Moon Witbier"
+   ],
+   "source": {
+    "url": "https://express.heineken.com.br/collections/chopes",
+    "label": "Heineken Express (chopes)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Chope servido no copo. Os tamanhos de copo do app são sugestões editáveis, não medidas oficiais da marca; teor e volume não estão registrados. Não é a cerveja em lata ou garrafa da mesma marca.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Express (draft beers)",
+     "note": "Draft beer served in a glass. The app glass sizes are editable suggestions, not official sizes of the brand; ABV and volume are not recorded. It is not the canned or bottled beer of the same brand."
+    },
+    "es": {
+     "sourceLabel": "Heineken Express (chopes)",
+     "note": "Chope servido en vaso. Los tamaños de vaso de la app son sugerencias editables, no medidas oficiales de la marca; el contenido de alcohol y el volumen no se registran. No es la cerveza en lata o botella de la misma marca."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "brahma-claro-chope",
+   "brand": "Brahma",
+   "name": "Claro (chope)",
+   "category": "draft",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chope Brahma Claro"
+   ],
+   "source": {
+    "url": "https://www.choppbrahmaexpress.com.br/chopps",
+    "label": "Chopp Brahma Express"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Chope servido no copo. Os tamanhos de copo do app são sugestões editáveis, não medidas oficiais da marca; teor e volume não estão registrados. Não é a cerveja em lata ou garrafa da mesma marca.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Draft beer served in a glass. The app glass sizes are editable suggestions, not official sizes of the brand; ABV and volume are not recorded. It is not the canned or bottled beer of the same brand."
+    },
+    "es": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Chope servido en vaso. Los tamaños de vaso de la app son sugerencias editables, no medidas oficiales de la marca; el contenido de alcohol y el volumen no se registran. No es la cerveza en lata o botella de la misma marca."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "brahma-black-chope",
+   "brand": "Brahma",
+   "name": "Black (chope)",
+   "category": "draft",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chope Brahma Black"
+   ],
+   "source": {
+    "url": "https://www.choppbrahmaexpress.com.br/chopps",
+    "label": "Chopp Brahma Express"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Chope servido no copo. Os tamanhos de copo do app são sugestões editáveis, não medidas oficiais da marca; teor e volume não estão registrados. Não é a cerveja em lata ou garrafa da mesma marca.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Draft beer served in a glass. The app glass sizes are editable suggestions, not official sizes of the brand; ABV and volume are not recorded. It is not the canned or bottled beer of the same brand."
+    },
+    "es": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Chope servido en vaso. Los tamaños de vaso de la app son sugerencias editables, no medidas oficiales de la marca; el contenido de alcohol y el volumen no se registran. No es la cerveza en lata o botella de la misma marca."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "brahma-escuro-chope",
+   "brand": "Brahma",
+   "name": "Escuro (chope)",
+   "category": "draft",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chope Brahma Escuro"
+   ],
+   "source": {
+    "url": "https://www.choppbrahmaexpress.com.br/chopps",
+    "label": "Chopp Brahma Express"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Chope servido no copo. Os tamanhos de copo do app são sugestões editáveis, não medidas oficiais da marca; teor e volume não estão registrados. Não é a cerveja em lata ou garrafa da mesma marca.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Draft beer served in a glass. The app glass sizes are editable suggestions, not official sizes of the brand; ABV and volume are not recorded. It is not the canned or bottled beer of the same brand."
+    },
+    "es": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Chope servido en vaso. Los tamaños de vaso de la app son sugerencias editables, no medidas oficiales de la marca; el contenido de alcohol y el volumen no se registran. No es la cerveza en lata o botella de la misma marca."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "antarctica-claro-chope",
+   "brand": "Antarctica",
+   "name": "Claro (chope)",
+   "category": "draft",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chope Antarctica Claro"
+   ],
+   "source": {
+    "url": "https://www.choppbrahmaexpress.com.br/chopps",
+    "label": "Chopp Brahma Express"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Chope servido no copo. Os tamanhos de copo do app são sugestões editáveis, não medidas oficiais da marca; teor e volume não estão registrados. Não é a cerveja em lata ou garrafa da mesma marca.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Draft beer served in a glass. The app glass sizes are editable suggestions, not official sizes of the brand; ABV and volume are not recorded. It is not the canned or bottled beer of the same brand."
+    },
+    "es": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Chope servido en vaso. Los tamaños de vaso de la app son sugerencias editables, no medidas oficiales de la marca; el contenido de alcohol y el volumen no se registran. No es la cerveza en lata o botella de la misma marca."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "stella-artois-claro-chope",
+   "brand": "Stella Artois",
+   "name": "Claro (chope)",
+   "category": "draft",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chope Stella Artois Claro"
+   ],
+   "source": {
+    "url": "https://www.choppbrahmaexpress.com.br/chopps",
+    "label": "Chopp Brahma Express"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Chope servido no copo. Os tamanhos de copo do app são sugestões editáveis, não medidas oficiais da marca; teor e volume não estão registrados. Não é a cerveja em lata ou garrafa da mesma marca.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Draft beer served in a glass. The app glass sizes are editable suggestions, not official sizes of the brand; ABV and volume are not recorded. It is not the canned or bottled beer of the same brand."
+    },
+    "es": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Chope servido en vaso. Los tamaños de vaso de la app son sugerencias editables, no medidas oficiales de la marca; el contenido de alcohol y el volumen no se registran. No es la cerveza en lata o botella de la misma marca."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "patagonia-ipa-chope",
+   "brand": "Patagonia",
+   "name": "IPA (chope)",
+   "category": "draft",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [
+    "chope Patagonia IPA"
+   ],
+   "source": {
+    "url": "https://www.choppbrahmaexpress.com.br/chopps",
+    "label": "Chopp Brahma Express"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Chope servido no copo. Os tamanhos de copo do app são sugestões editáveis, não medidas oficiais da marca; teor e volume não estão registrados. Não é a cerveja em lata ou garrafa da mesma marca.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Draft beer served in a glass. The app glass sizes are editable suggestions, not official sizes of the brand; ABV and volume are not recorded. It is not the canned or bottled beer of the same brand."
+    },
+    "es": {
+     "sourceLabel": "Chopp Brahma Express",
+     "note": "Chope servido en vaso. Los tamaños de vaso de la app son sugerencias editables, no medidas oficiales de la marca; el contenido de alcohol y el volumen no se registran. No es la cerveza en lata o botella de la misma marca."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-romaria",
+   "brand": "Colombina",
+   "name": "Romaria",
+   "category": "beer",
+   "style": null,
+   "abv": 9,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded.",
+     "fieldSources": {
+      "abv": [
+       {
+        "label": "Colombina brewery (official website)"
+       }
+      ]
+     }
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron.",
+     "fieldSources": {
+      "abv": [
+       {
+        "label": "Cervecería Colombina (sitio oficial)"
+       }
+      ]
+     }
+    }
+   },
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://cervejacolombina.com.br/produtos/",
+      "label": "Cervejaria Colombina (site oficial)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ]
+   }
+  },
+  {
+   "id": "colombina-poema",
+   "brand": "Colombina",
+   "name": "Poema",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-figueira",
+   "brand": "Colombina",
+   "name": "Figueira",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-tesourinha",
+   "brand": "Colombina",
+   "name": "Tesourinha",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-gynhattan",
+   "brand": "Colombina",
+   "name": "Gynhattan",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-1929",
+   "brand": "Colombina",
+   "name": "1929",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-brut-do-cerrado-jabuticaba",
+   "brand": "Colombina",
+   "name": "Brut do Cerrado Jabuticaba",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-catharina-sour-maracuja-e-amora",
+   "brand": "Colombina",
+   "name": "Catharina Sour Maracujá e Amora",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-puro-malte",
+   "brand": "Colombina",
+   "name": "Puro Malte",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-session-ipa",
+   "brand": "Colombina",
+   "name": "Session IPA",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-ipa",
+   "brand": "Colombina",
+   "name": "IPA",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-weiss-com-laranja",
+   "brand": "Colombina",
+   "name": "Weiss com Laranja",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-session-ipa-sem-alcool",
+   "brand": "Colombina",
+   "name": "Session IPA Sem Álcool",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-cozumel",
+   "brand": "Colombina",
+   "name": "Cozumel",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "colombina-cold-brew-lager",
+   "brand": "Colombina",
+   "name": "Cold Brew Lager",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://cervejacolombina.com.br/produtos/",
+    "label": "Cervejaria Colombina (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Colombina brewery (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cervecería Colombina (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "praya-receita-classica",
+   "brand": "Praya",
+   "name": "Receita Clássica",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "longNeck",
+     "ml": 355
+    },
+    {
+     "kind": "can",
+     "ml": 269
+    },
+    {
+     "kind": "bottle",
+     "ml": 600
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://express.heineken.com.br/collections/cervejas",
+    "label": "Heineken Express (cervejas)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Express (beers)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded.",
+     "fieldSources": {
+      "presentations": [
+       {
+        "label": "Heineken Express (beers)"
+       },
+       {
+        "label": "Heineken Express (beers)"
+       },
+       {
+        "label": "Heineken Express (beers)"
+       }
+      ]
+     }
+    },
+    "es": {
+     "sourceLabel": "Heineken Express (cervezas)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron.",
+     "fieldSources": {
+      "presentations": [
+       {
+        "label": "Heineken Express (cervezas)"
+       },
+       {
+        "label": "Heineken Express (cervezas)"
+       },
+       {
+        "label": "Heineken Express (cervezas)"
+       }
+      ]
+     }
+    }
+   },
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://express.heineken.com.br/collections/cervejas",
+      "label": "Heineken Express (cervejas)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "longNeck 355 ml"
+     },
+     {
+      "url": "https://express.heineken.com.br/collections/cervejas",
+      "label": "Heineken Express (cervejas)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "can 269 ml"
+     },
+     {
+      "url": "https://express.heineken.com.br/collections/cervejas",
+      "label": "Heineken Express (cervejas)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "bottle 600 ml"
+     }
+    ]
+   }
+  },
+  {
+   "id": "praya-lager",
+   "brand": "Praya",
+   "name": "Lager",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "longNeck",
+     "ml": 330
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://express.heineken.com.br/collections/cervejas",
+    "label": "Heineken Express (cervejas)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "É outro produto que a Praya Receita Clássica.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Express (beers)",
+     "note": "This is a different product from Praya Receita Clássica.",
+     "fieldSources": {
+      "presentations": [
+       {
+        "label": "Heineken Express (beers)"
+       }
+      ]
+     }
+    },
+    "es": {
+     "sourceLabel": "Heineken Express (cervezas)",
+     "note": "Es otro producto que Praya Receita Clássica.",
+     "fieldSources": {
+      "presentations": [
+       {
+        "label": "Heineken Express (cervezas)"
+       }
+      ]
+     }
+    }
+   },
+   "market": "BR",
+   "fieldSources": {
+    "presentations": [
+     {
+      "url": "https://express.heineken.com.br/collections/cervejas",
+      "label": "Heineken Express (cervejas)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "longNeck 330 ml"
+     }
+    ]
+   }
+  },
+  {
+   "id": "baden-baden-peach",
+   "brand": "Baden Baden",
+   "name": "Peach",
+   "category": "beer",
+   "style": null,
+   "abv": 4.9,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://express.heineken.com.br/collections/cervejas",
+    "label": "Heineken Express (cervejas)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Express (beers)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded.",
+     "fieldSources": {
+      "abv": [
+       {
+        "label": "Heineken Express (beers)"
+       }
+      ],
+      "presentations": [
+       {
+        "label": "Heineken Express (beers)"
+       }
+      ]
+     }
+    },
+    "es": {
+     "sourceLabel": "Heineken Express (cervezas)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron.",
+     "fieldSources": {
+      "abv": [
+       {
+        "label": "Heineken Express (cervezas)"
+       }
+      ],
+      "presentations": [
+       {
+        "label": "Heineken Express (cervezas)"
+       }
+      ]
+     }
+    }
+   },
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://express.heineken.com.br/collections/cervejas",
+      "label": "Heineken Express (cervejas)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://express.heineken.com.br/collections/cervejas",
+      "label": "Heineken Express (cervejas)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "can 350 ml"
+     }
+    ]
+   }
+  },
+  {
+   "id": "lagunitas-ipa",
+   "brand": "Lagunitas",
+   "name": "IPA",
+   "category": "beer",
+   "style": null,
+   "abv": 6.2,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "can",
+     "ml": 350
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://express.heineken.com.br/collections/cervejas",
+    "label": "Heineken Express (cervejas)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "O teor e a lata são da cerveja Lagunitas IPA; não valem automaticamente para o chope Lagunitas.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Express (beers)",
+     "note": "The ABV and can belong to the Lagunitas IPA beer; they do not automatically apply to the Lagunitas draft.",
+     "fieldSources": {
+      "abv": [
+       {
+        "label": "Heineken Express (beers)"
+       }
+      ],
+      "presentations": [
+       {
+        "label": "Heineken Express (beers)"
+       }
+      ]
+     }
+    },
+    "es": {
+     "sourceLabel": "Heineken Express (cervezas)",
+     "note": "El contenido de alcohol y la lata son de la cerveza Lagunitas IPA; no valen automáticamente para el chope Lagunitas.",
+     "fieldSources": {
+      "abv": [
+       {
+        "label": "Heineken Express (cervezas)"
+       }
+      ],
+      "presentations": [
+       {
+        "label": "Heineken Express (cervezas)"
+       }
+      ]
+     }
+    }
+   },
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://express.heineken.com.br/collections/cervejas",
+      "label": "Heineken Express (cervejas)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://express.heineken.com.br/collections/cervejas",
+      "label": "Heineken Express (cervejas)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "can 350 ml"
+     }
+    ]
+   }
+  },
+  {
+   "id": "amstel-lager",
+   "brand": "Amstel",
+   "name": "Lager",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://express.heineken.com.br/collections/all",
+    "label": "Heineken Express (catálogo)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Express (catalog)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Heineken Express (catálogo)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "amstel-ultra",
+   "brand": "Amstel",
+   "name": "Ultra",
+   "category": "beer",
+   "style": null,
+   "abv": 4,
+   "ingredients": null,
+   "presentations": [
+    {
+     "kind": "bottle",
+     "ml": 275
+    },
+    {
+     "kind": "can",
+     "ml": 269
+    }
+   ],
+   "aliases": [],
+   "source": {
+    "url": "https://express.heineken.com.br/collections/all",
+    "label": "Heineken Express (catálogo)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Dois tamanhos descritos na fonte: garrafa de 275 ml e lata de 269 ml. O teor de 4% é da Amstel Ultra, não da Amstel Lager.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Heineken Express (catalog)",
+     "note": "Two sizes described in the source: 275 ml bottle and 269 ml can. The 4% ABV belongs to Amstel Ultra, not Amstel Lager.",
+     "fieldSources": {
+      "abv": [
+       {
+        "label": "Heineken Express (catalog)"
+       }
+      ],
+      "presentations": [
+       {
+        "label": "Heineken Express (catalog)"
+       },
+       {
+        "label": "Heineken Express (catalog)"
+       }
+      ]
+     }
+    },
+    "es": {
+     "sourceLabel": "Heineken Express (catálogo)",
+     "note": "Dos tamaños descritos en la fuente: botella de 275 ml y lata de 269 ml. El 4 % es de Amstel Ultra, no de Amstel Lager.",
+     "fieldSources": {
+      "abv": [
+       {
+        "label": "Heineken Express (catálogo)"
+       }
+      ],
+      "presentations": [
+       {
+        "label": "Heineken Express (catálogo)"
+       },
+       {
+        "label": "Heineken Express (catálogo)"
+       }
+      ]
+     }
+    }
+   },
+   "market": "BR",
+   "fieldSources": {
+    "abv": [
+     {
+      "url": "https://express.heineken.com.br/collections/all",
+      "label": "Heineken Express (catálogo)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official"
+     }
+    ],
+    "presentations": [
+     {
+      "url": "https://express.heineken.com.br/collections/all",
+      "label": "Heineken Express (catálogo)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "bottle 275 ml"
+     },
+     {
+      "url": "https://express.heineken.com.br/collections/all",
+      "label": "Heineken Express (catálogo)",
+      "retrieved": "2026-10-19",
+      "market": "BR",
+      "evidence": "primary",
+      "type": "official",
+      "variant": "can 269 ml"
+     }
+    ]
+   }
+  },
+  {
+   "id": "petra-puro-malte",
+   "brand": "Petra",
+   "name": "Puro Malte",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.cervejapetra.com.br/",
+    "label": "Cerveja Petra (índice de busca; abertura direta bloqueada)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto, localizado pelo índice de busca (a página direta bloqueia leitura automática): teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Petra beer (search index; direct opening blocked)",
+     "note": "Only the product name, found through the search index (the page blocks automated reading): ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cerveza Petra (índice de búsqueda; apertura directa bloqueada)",
+     "note": "Solo el nombre del producto, localizado por el índice de búsqueda (la página bloquea la lectura automática): contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "petra-escura",
+   "brand": "Petra",
+   "name": "Escura",
+   "category": "beer",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://www.cervejapetra.com.br/",
+    "label": "Cerveja Petra (índice de busca; abertura direta bloqueada)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto, localizado pelo índice de busca (a página direta bloqueia leitura automática): teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Petra beer (search index; direct opening blocked)",
+     "note": "Only the product name, found through the search index (the page blocks automated reading): ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Cerveza Petra (índice de búsqueda; apertura directa bloqueada)",
+     "note": "Solo el nombre del producto, localizado por el índice de búsqueda (la página bloquea la lectura automática): contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "evidence": "secondary",
+   "market": "BR"
+  },
+  {
+   "id": "miolo-lote-43",
+   "brand": "Miolo",
+   "name": "Lote 43",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-merlot-terroir",
+   "brand": "Miolo",
+   "name": "Merlot Terroir",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-cuvee-giuseppe-chardonnay",
+   "brand": "Miolo",
+   "name": "Cuvée Giuseppe Chardonnay",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-cuvee-giuseppe-merlot-cabernet",
+   "brand": "Miolo",
+   "name": "Cuvée Giuseppe Merlot / Cabernet",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-single-vineyard-riesling-johannisberg",
+   "brand": "Miolo",
+   "name": "Single Vineyard Riesling Johannisberg",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-single-vineyard-syrah",
+   "brand": "Miolo",
+   "name": "Single Vineyard Syrah",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-single-vineyard-touriga-nacional",
+   "brand": "Miolo",
+   "name": "Single Vineyard Touriga Nacional",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-single-vineyard-pinot-noir",
+   "brand": "Miolo",
+   "name": "Single Vineyard Pinot Noir",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-reserva-sauvignon-blanc",
+   "brand": "Miolo",
+   "name": "Reserva Sauvignon Blanc",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-reserva-pinot-grigio",
+   "brand": "Miolo",
+   "name": "Reserva Pinot Grigio",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-reserva-cabernet-sauvignon",
+   "brand": "Miolo",
+   "name": "Reserva Cabernet Sauvignon",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-reserva-tannat",
+   "brand": "Miolo",
+   "name": "Reserva Tannat",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-reserva-tempranillo",
+   "brand": "Miolo",
+   "name": "Reserva Tempranillo",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-reserva-pinot-noir",
+   "brand": "Miolo",
+   "name": "Reserva Pinot Noir",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-reserva-merlot",
+   "brand": "Miolo",
+   "name": "Reserva Merlot",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-reserva-chardonnay",
+   "brand": "Miolo",
+   "name": "Reserva Chardonnay",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-selecao-rose",
+   "brand": "Miolo",
+   "name": "Seleção Rosé",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-selecao-cabernet-sauvignon-merlot",
+   "brand": "Miolo",
+   "name": "Seleção Cabernet Sauvignon/Merlot",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "almaden-cabernet-sauvignon",
+   "brand": "Almadén",
+   "name": "Cabernet Sauvignon",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "almaden-merlot",
+   "brand": "Almadén",
+   "name": "Merlot",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "almaden-chardonnay",
+   "brand": "Almadén",
+   "name": "Chardonnay",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "almaden-sauvignon-blanc",
+   "brand": "Almadén",
+   "name": "Sauvignon Blanc",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "almaden-tannat",
+   "brand": "Almadén",
+   "name": "Tannat",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "almaden-riesling",
+   "brand": "Almadén",
+   "name": "Riesling",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-cuvee-tradition-brut",
+   "brand": "Miolo",
+   "name": "Cuvée Tradition Brut",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-cuvee-tradition-brut-rose",
+   "brand": "Miolo",
+   "name": "Cuvée Tradition Brut Rosé",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-cuvee-tradition-demi-sec",
+   "brand": "Miolo",
+   "name": "Cuvée Tradition Demi-Sec",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-millesime-brut",
+   "brand": "Miolo",
+   "name": "Millésime Brut",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "miolo-millesime-brut-rose",
+   "brand": "Miolo",
+   "name": "Millésime Brut Rosé",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "terranova-brut",
+   "brand": "Terranova",
+   "name": "Brut",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "terranova-brut-rose",
+   "brand": "Terranova",
+   "name": "Brut Rosé",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "terranova-moscatel",
+   "brand": "Terranova",
+   "name": "Moscatel",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "terranova-demi-sec",
+   "brand": "Terranova",
+   "name": "Demi-Sec",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "almaden-brut",
+   "brand": "Almadén",
+   "name": "Brut",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "almaden-espumante-brut-rose",
+   "brand": "Almadén",
+   "name": "Espumante Brut Rosé",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "almaden-espumante-demi-sec",
+   "brand": "Almadén",
+   "name": "Espumante Demi Sec",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://institucional.miolo.com.br/produtos/",
+    "label": "Miolo Wine Group (site oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Miolo Wine Group (official website)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Miolo Wine Group (sitio oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "aurora-reserva-tannat",
+   "brand": "Aurora",
+   "name": "Reserva Tannat",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://loja.vinicolaaurora.com.br/collections/aurora-reserva",
+    "label": "Vinícola Aurora (loja oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Vinícola Aurora (official store)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Vinícola Aurora (tienda oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "aurora-reserva-cabernet-sauvignon",
+   "brand": "Aurora",
+   "name": "Reserva Cabernet Sauvignon",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://loja.vinicolaaurora.com.br/collections/aurora-reserva",
+    "label": "Vinícola Aurora (loja oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Vinícola Aurora (official store)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Vinícola Aurora (tienda oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "aurora-reserva-chardonnay",
+   "brand": "Aurora",
+   "name": "Reserva Chardonnay",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://loja.vinicolaaurora.com.br/collections/aurora-reserva",
+    "label": "Vinícola Aurora (loja oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Vinícola Aurora (official store)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Vinícola Aurora (tienda oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "aurora-reserva-merlot",
+   "brand": "Aurora",
+   "name": "Reserva Merlot",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://loja.vinicolaaurora.com.br/collections/aurora-reserva",
+    "label": "Vinícola Aurora (loja oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Vinícola Aurora (official store)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Vinícola Aurora (tienda oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "aurora-reserva-merlot-rose",
+   "brand": "Aurora",
+   "name": "Reserva Merlot Rosé",
+   "category": "wine",
+   "style": null,
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://loja.vinicolaaurora.com.br/collections/aurora-reserva",
+    "label": "Vinícola Aurora (loja oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Vinícola Aurora (official store)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Vinícola Aurora (tienda oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "aurora-moscatel-branco",
+   "brand": "Aurora",
+   "name": "Moscatel Branco",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://loja.vinicolaaurora.com.br/collections/espumantes-aurora",
+    "label": "Vinícola Aurora (loja oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Vinícola Aurora (official store)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Vinícola Aurora (tienda oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "aurora-moscatel-rose",
+   "brand": "Aurora",
+   "name": "Moscatel Rosé",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://loja.vinicolaaurora.com.br/collections/espumantes-aurora",
+    "label": "Vinícola Aurora (loja oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Vinícola Aurora (official store)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Vinícola Aurora (tienda oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "aurora-brut-branco",
+   "brand": "Aurora",
+   "name": "Brut Branco",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://loja.vinicolaaurora.com.br/collections/espumantes-aurora",
+    "label": "Vinícola Aurora (loja oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Vinícola Aurora (official store)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Vinícola Aurora (tienda oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "aurora-brut-rose",
+   "brand": "Aurora",
+   "name": "Brut Rosé",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://loja.vinicolaaurora.com.br/collections/espumantes-aurora",
+    "label": "Vinícola Aurora (loja oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Vinícola Aurora (official store)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Vinícola Aurora (tienda oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
+  },
+  {
+   "id": "aurora-prosecco",
+   "brand": "Aurora",
+   "name": "Prosecco",
+   "category": "wine",
+   "style": "Espumante",
+   "abv": null,
+   "ingredients": null,
+   "presentations": [],
+   "aliases": [],
+   "source": {
+    "url": "https://loja.vinicolaaurora.com.br/collections/espumantes-aurora",
+    "label": "Vinícola Aurora (loja oficial)"
+   },
+   "retrieved": "2026-10-19",
+   "note": "Só o nome do produto consta na listagem consultada: teor, volume e ingredientes não foram registrados.",
+   "i18n": {
+    "en": {
+     "sourceLabel": "Vinícola Aurora (official store)",
+     "note": "Only the product name appears in the listing consulted: ABV, volume and ingredients were not recorded."
+    },
+    "es": {
+     "sourceLabel": "Vinícola Aurora (tienda oficial)",
+     "note": "Solo el nombre del producto figura en el listado consultado: contenido de alcohol, volumen e ingredientes no se registraron."
+    }
+   },
+   "market": "BR"
   }
  ]
 }
