@@ -94,10 +94,10 @@ void main() {
     }
   });
 
-  test('a bottle keeps two people and someone who pays', () {
-    final two = BottlePeople.equal({ownerPortionKey: null, 'ana': null});
-    expect(two.canRemoveAny, isFalse);
-    expect(() => two.remove('ana'), throwsArgumentError);
+  test('a bottle keeps at least one person and someone who pays', () {
+    final one = BottlePeople.equal({ownerPortionKey: null});
+    expect(one.canRemoveAny, isFalse);
+    expect(() => one.remove(ownerPortionKey), throwsArgumentError);
     final onePays = _base().withWeight(ownerPortionKey, 0).withWeight('bob', 0);
     expect(
       () => onePays.remove(
@@ -107,6 +107,27 @@ void main() {
       ),
       throwsArgumentError,
     );
+  });
+
+  test('two people can become one: volume and cost handed over explicitly', () {
+    final two = BottlePeople.equal({ownerPortionKey: 200, 'ana': 300}, leftoverMl: 100);
+    expect(two.canRemoveAny, isTrue);
+    expect(
+      () => two.remove('ana', volume: VolumeFate.toLeftover),
+      throwsArgumentError, // cost still unresolved
+    );
+    final one = two.remove(
+      'ana',
+      volume: VolumeFate.toPerson,
+      volumeTo: ownerPortionKey,
+      money: MoneyFate.toPerson,
+      moneyTo: ownerPortionKey,
+    );
+    expect(one.portions, {ownerPortionKey: 500});
+    expect(one.leftoverMl, 100); // leftover untouched, not turned into drinking
+    expect(one.costShares(6000), {ownerPortionKey: 6000});
+    expect(one.toLinkAssign('me-id'), isNull); // one payer = default split
+    expect(one.canRemoveAny, isFalse);
   });
 
   test('known volume plus leftover cannot pass the bottle', () {

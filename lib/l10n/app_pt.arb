@@ -4170,7 +4170,7 @@
           }
       }
   },
-  "bottleMinPeople": "Uma garrafa dividida precisa de pelo menos duas pessoas. Para outro uso, exclua o registro.",
+  "bottleMinPeople": "Uma garrafa precisa de pelo menos uma pessoa. Para outro uso, exclua o registro.",
   "bottleRemoveTitle": "Tirar {name}?",
   "@bottleRemoveTitle": {
       "placeholders": {

@@ -27,7 +27,8 @@ class BottlePeople {
   final Map<String, int> weights;
   final int leftoverMl;
 
-  static const minPeople = 2;
+  /// A bottle may end with a single person (the others left it).
+  static const minPeople = 1;
 
   /// Everyone of the bottle splits the cost equally (the default of a bottle
   /// that was never adjusted).
@@ -107,7 +108,7 @@ class BottlePeople {
   }) {
     if (!has(key)) return this;
     if (!canRemoveAny) {
-      throw ArgumentError('a shared bottle keeps at least $minPeople people');
+      throw ArgumentError('a bottle keeps at least $minPeople person');
     }
     var nextPortions = Map<String, int?>.of(portions)..remove(key);
     var nextWeights = Map<String, int>.of(weights)..remove(key);
@@ -166,8 +167,11 @@ class BottlePeople {
   /// means "everyone of the bottle equally", which is what a bottle never
   /// adjusted already does.
   Map<String, int>? toLinkAssign(String? ownerId) {
+    final first = portions.isEmpty ? 0 : weightOf(portions.keys.first);
     final everyoneEqual =
-        portions.keys.every((k) => weightOf(k) == 1) && weights.keys.every(has);
+        first > 0 &&
+        portions.keys.every((k) => weightOf(k) == first) &&
+        weights.keys.every(has);
     if (everyoneEqual) return null;
     return {
       for (final k in keys)

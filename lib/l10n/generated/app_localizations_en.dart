@@ -6540,7 +6540,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bottleMinPeople =>
-      'A shared bottle needs at least two people. To change that, delete the record.';
+      'A bottle needs at least one person. To do anything else, delete the record.';
 
   @override
   String bottleRemoveTitle(String name) {

@@ -10536,7 +10536,7 @@ abstract class AppLocalizations {
   /// No description provided for @bottleMinPeople.
   ///
   /// In pt, this message translates to:
-  /// **'Uma garrafa dividida precisa de pelo menos duas pessoas. Para outro uso, exclua o registro.'**
+  /// **'Uma garrafa precisa de pelo menos uma pessoa. Para outro uso, exclua o registro.'**
   String get bottleMinPeople;
 
   /// No description provided for @bottleRemoveTitle.

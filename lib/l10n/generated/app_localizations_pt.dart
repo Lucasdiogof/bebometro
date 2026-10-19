@@ -6556,7 +6556,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get bottleMinPeople =>
-      'Uma garrafa dividida precisa de pelo menos duas pessoas. Para outro uso, exclua o registro.';
+      'Uma garrafa precisa de pelo menos uma pessoa. Para outro uso, exclua o registro.';
 
   @override
   String bottleRemoveTitle(String name) {

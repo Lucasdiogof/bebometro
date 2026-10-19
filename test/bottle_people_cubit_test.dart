@@ -135,4 +135,45 @@ void main() {
     await c.submit();
     expect(drinks.entryById('bottle-1')!.portions!['p-bob'], 150);
   });
+
+  test('Você and Ana become Você alone: same record, total, leftover and payment', () async {
+    await _seed();
+    final withLeftover = _bottle({ownerPortionKey: 200, 'p-ana': 300}, personal: 200);
+    await drinks.save(withLeftover);
+    final c = _open();
+    expect(c.state.draft.leftoverMl, 0);
+    c.setLeftoverMl(100);
+    c.removePerson(
+      'p-ana',
+      volume: VolumeFate.toPerson,
+      volumeTo: ownerPortionKey,
+      money: MoneyFate.toPerson,
+      moneyTo: ownerPortionKey,
+    );
+    await c.submit();
+    expect(c.state.saved, isTrue);
+    final saved = drinks.entryById('bottle-1')!;
+    expect(saved.portions, {ownerPortionKey: 500});
+    expect(saved.peopleCount, 1);
+    expect(saved.isShared, isTrue);
+    expect(saved.leftoverMl, 100);
+    expect(saved.billTotalCents, 6000);
+    expect(saved.containerMl, 750);
+    expect(saved.paidCents, 6000);
+    expect(drinks.entriesFor(outing.id).where((e) => e.name == 'Vinho'), hasLength(1));
+    final r = tabs.compute(outing.id);
+    expect(r.shareOf('p-me'), 6000);
+    expect(r.shareOf('p-ana'), 0);
+    expect(tabs.load(outing.id).payments.single.participantId, 'p-ana');
+  });
+
+  test('saving is blocked while a priced bottle has nobody to pay', () async {
+    await _seed();
+    final c = _open();
+    c.setWeight(ownerPortionKey, 0);
+    c.setWeight('p-ana', 0);
+    await c.submit();
+    expect(c.state.saved, isFalse);
+    expect(drinks.entryById('bottle-1')!.portions!.length, 2);
+  });
 }

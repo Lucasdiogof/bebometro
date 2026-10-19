@@ -655,7 +655,12 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
 
   Future<void> submit() async {
     if (state.saving || state.saved || state.deleted) return;
-    if (state.consumerPending || !state.draft.isValid) {
+    final people = state.people;
+    // Cost left to distribute needs someone to receive it.
+    final noPayer = people != null &&
+        state.draft.priceKind == PriceKind.informed &&
+        !people.hasPayer;
+    if (state.consumerPending || !state.draft.isValid || noPayer) {
       emit(state.copyWith(showErrors: true));
       return;
     }
@@ -668,7 +673,6 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       );
       // The tab's split goes first: if the app stops in between, the bottle
       // still has its old people and the new split only names the same total.
-      final people = state.people;
       final tabs = _tabs;
       if (people != null && tabs != null && peopleChanged) {
         final ownerId = tabs.load(_outingId).me?.id;

@@ -119,7 +119,11 @@ class DrinkDraft {
     billTotalCents: e.billTotalCents,
     paidEdited: true,
     isShared: e.isShared,
-    peopleCount: e.peopleCount < 2 ? 2 : e.peopleCount,
+    // A bottle with per-person portions counts exactly its people (one is
+    // allowed); any other shared record keeps the old minimum of two.
+    peopleCount: e.portions != null && e.portions!.isNotEmpty
+        ? e.portions!.length
+        : (e.peopleCount < 2 ? 2 : e.peopleCount),
     personalMl: e.personalMl,
     leftoverMl: e.leftoverMl,
     personalEdited: true,
