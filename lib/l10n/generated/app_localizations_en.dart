@@ -6663,4 +6663,126 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get outingRestoreFailed => 'Could not restore the outing. Try again.';
+
+  @override
+  String get conflictFieldName => 'Name';
+
+  @override
+  String get conflictFieldType => 'Type';
+
+  @override
+  String get conflictFieldAddress => 'Address';
+
+  @override
+  String get conflictFieldCity => 'City';
+
+  @override
+  String get conflictFieldFavorite => 'Favorite';
+
+  @override
+  String get conflictFieldStatus => 'Status';
+
+  @override
+  String get conflictFieldMap => 'Map point';
+
+  @override
+  String get conflictFieldCategory => 'Category';
+
+  @override
+  String get conflictFieldBrand => 'Brand';
+
+  @override
+  String get conflictFieldStyle => 'Style';
+
+  @override
+  String get conflictFieldVolume => 'Volume';
+
+  @override
+  String get conflictFieldAbv => 'Alcohol content';
+
+  @override
+  String get conflictFieldIngredients => 'Ingredients';
+
+  @override
+  String get conflictFieldRecipe => 'Recipe composition';
+
+  @override
+  String get conflictNotInformed => 'not informed';
+
+  @override
+  String get conflictYes => 'yes';
+
+  @override
+  String get conflictNo => 'no';
+
+  @override
+  String get conflictArchived => 'archived';
+
+  @override
+  String get conflictActive => 'active';
+
+  @override
+  String get conflictPointSet => 'set';
+
+  @override
+  String get conflictPointNone => 'no point';
+
+  @override
+  String get conflictDiffers => 'different';
+
+  @override
+  String get conflictLocalDeleted => 'Deleted on this device';
+
+  @override
+  String get conflictKindPlace => 'Place';
+
+  @override
+  String get conflictKindDrink => 'Personal drink';
+
+  @override
+  String get conflictKindRecipe => 'Personal recipe';
+
+  @override
+  String get conflictWhatEdit => 'Edited on two devices.';
+
+  @override
+  String get conflictWhatCloudDeleted =>
+      'Edited on this device, but deleted in the cloud.';
+
+  @override
+  String get conflictWhatLocalDeleted =>
+      'Deleted on this device, but edited in the cloud.';
+
+  @override
+  String get conflictEffectKeepLocal =>
+      'This device\'s version becomes the one in the cloud and on other devices. The cloud version is replaced.';
+
+  @override
+  String get conflictEffectUseRemote =>
+      'The cloud version becomes the one here. Your edit on this device is discarded.';
+
+  @override
+  String get conflictEffectRestore =>
+      'Undoes the deletion made in the cloud: it exists again on all devices, with this device\'s version.';
+
+  @override
+  String get conflictEffectAcceptDeletion =>
+      'The deletion applies here too and your edit is discarded. Records already made keep their own data.';
+
+  @override
+  String get conflictEffectKeepDeletion =>
+      'Your deletion applies in the cloud and on other devices. The cloud edit is discarded. Records already made keep their own data.';
+
+  @override
+  String get conflictEffectUndeleteRemote =>
+      'The version edited in the cloud exists again here. Your deletion is discarded.';
+
+  @override
+  String get conflictKeepDeletion => 'Keep the deletion';
+
+  @override
+  String get conflictDeletionKept => 'Deletion kept';
+
+  @override
+  String get conflictUseRemoteRestore => 'Use the cloud one (it exists again)';
 }

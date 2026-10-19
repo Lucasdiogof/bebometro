@@ -10718,6 +10718,234 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Não foi possível restaurar o rolê. Tente de novo.'**
   String get outingRestoreFailed;
+
+  /// No description provided for @conflictFieldName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome'**
+  String get conflictFieldName;
+
+  /// No description provided for @conflictFieldType.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo'**
+  String get conflictFieldType;
+
+  /// No description provided for @conflictFieldAddress.
+  ///
+  /// In pt, this message translates to:
+  /// **'Endereço'**
+  String get conflictFieldAddress;
+
+  /// No description provided for @conflictFieldCity.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cidade'**
+  String get conflictFieldCity;
+
+  /// No description provided for @conflictFieldFavorite.
+  ///
+  /// In pt, this message translates to:
+  /// **'Favorito'**
+  String get conflictFieldFavorite;
+
+  /// No description provided for @conflictFieldStatus.
+  ///
+  /// In pt, this message translates to:
+  /// **'Situação'**
+  String get conflictFieldStatus;
+
+  /// No description provided for @conflictFieldMap.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ponto no mapa'**
+  String get conflictFieldMap;
+
+  /// No description provided for @conflictFieldCategory.
+  ///
+  /// In pt, this message translates to:
+  /// **'Categoria'**
+  String get conflictFieldCategory;
+
+  /// No description provided for @conflictFieldBrand.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marca'**
+  String get conflictFieldBrand;
+
+  /// No description provided for @conflictFieldStyle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estilo'**
+  String get conflictFieldStyle;
+
+  /// No description provided for @conflictFieldVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume'**
+  String get conflictFieldVolume;
+
+  /// No description provided for @conflictFieldAbv.
+  ///
+  /// In pt, this message translates to:
+  /// **'Teor alcoólico'**
+  String get conflictFieldAbv;
+
+  /// No description provided for @conflictFieldIngredients.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ingredientes'**
+  String get conflictFieldIngredients;
+
+  /// No description provided for @conflictFieldRecipe.
+  ///
+  /// In pt, this message translates to:
+  /// **'Composição da receita'**
+  String get conflictFieldRecipe;
+
+  /// No description provided for @conflictNotInformed.
+  ///
+  /// In pt, this message translates to:
+  /// **'não informado'**
+  String get conflictNotInformed;
+
+  /// No description provided for @conflictYes.
+  ///
+  /// In pt, this message translates to:
+  /// **'sim'**
+  String get conflictYes;
+
+  /// No description provided for @conflictNo.
+  ///
+  /// In pt, this message translates to:
+  /// **'não'**
+  String get conflictNo;
+
+  /// No description provided for @conflictArchived.
+  ///
+  /// In pt, this message translates to:
+  /// **'arquivado'**
+  String get conflictArchived;
+
+  /// No description provided for @conflictActive.
+  ///
+  /// In pt, this message translates to:
+  /// **'ativo'**
+  String get conflictActive;
+
+  /// No description provided for @conflictPointSet.
+  ///
+  /// In pt, this message translates to:
+  /// **'marcado'**
+  String get conflictPointSet;
+
+  /// No description provided for @conflictPointNone.
+  ///
+  /// In pt, this message translates to:
+  /// **'sem ponto'**
+  String get conflictPointNone;
+
+  /// No description provided for @conflictDiffers.
+  ///
+  /// In pt, this message translates to:
+  /// **'diferente'**
+  String get conflictDiffers;
+
+  /// No description provided for @conflictLocalDeleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluído neste aparelho'**
+  String get conflictLocalDeleted;
+
+  /// No description provided for @conflictKindPlace.
+  ///
+  /// In pt, this message translates to:
+  /// **'Local'**
+  String get conflictKindPlace;
+
+  /// No description provided for @conflictKindDrink.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebida pessoal'**
+  String get conflictKindDrink;
+
+  /// No description provided for @conflictKindRecipe.
+  ///
+  /// In pt, this message translates to:
+  /// **'Receita pessoal'**
+  String get conflictKindRecipe;
+
+  /// No description provided for @conflictWhatEdit.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editado em dois aparelhos.'**
+  String get conflictWhatEdit;
+
+  /// No description provided for @conflictWhatCloudDeleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editado neste aparelho, mas excluído na nuvem.'**
+  String get conflictWhatCloudDeleted;
+
+  /// No description provided for @conflictWhatLocalDeleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluído neste aparelho, mas editado na nuvem.'**
+  String get conflictWhatLocalDeleted;
+
+  /// No description provided for @conflictEffectKeepLocal.
+  ///
+  /// In pt, this message translates to:
+  /// **'A versão deste aparelho passa a valer na nuvem e nos outros aparelhos. A da nuvem é substituída.'**
+  String get conflictEffectKeepLocal;
+
+  /// No description provided for @conflictEffectUseRemote.
+  ///
+  /// In pt, this message translates to:
+  /// **'A versão da nuvem passa a valer aqui. A sua edição deste aparelho é descartada.'**
+  String get conflictEffectUseRemote;
+
+  /// No description provided for @conflictEffectRestore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desfaz a exclusão feita na nuvem: volta a existir em todos os aparelhos, com a versão deste aparelho.'**
+  String get conflictEffectRestore;
+
+  /// No description provided for @conflictEffectAcceptDeletion.
+  ///
+  /// In pt, this message translates to:
+  /// **'A exclusão vale também aqui e a sua edição é descartada. Registros já feitos mantêm os próprios dados.'**
+  String get conflictEffectAcceptDeletion;
+
+  /// No description provided for @conflictEffectKeepDeletion.
+  ///
+  /// In pt, this message translates to:
+  /// **'A sua exclusão vale na nuvem e nos outros aparelhos. A edição da nuvem é descartada. Registros já feitos mantêm os próprios dados.'**
+  String get conflictEffectKeepDeletion;
+
+  /// No description provided for @conflictEffectUndeleteRemote.
+  ///
+  /// In pt, this message translates to:
+  /// **'A versão editada na nuvem volta a existir aqui. A sua exclusão é descartada.'**
+  String get conflictEffectUndeleteRemote;
+
+  /// No description provided for @conflictKeepDeletion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Manter a exclusão'**
+  String get conflictKeepDeletion;
+
+  /// No description provided for @conflictDeletionKept.
+  ///
+  /// In pt, this message translates to:
+  /// **'Exclusão mantida'**
+  String get conflictDeletionKept;
+
+  /// No description provided for @conflictUseRemoteRestore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar a da nuvem (volta a existir)'**
+  String get conflictUseRemoteRestore;
 }
 
 class _AppLocalizationsDelegate

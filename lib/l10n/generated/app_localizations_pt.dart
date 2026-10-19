@@ -6680,4 +6680,126 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get outingRestoreFailed =>
       'Não foi possível restaurar o rolê. Tente de novo.';
+
+  @override
+  String get conflictFieldName => 'Nome';
+
+  @override
+  String get conflictFieldType => 'Tipo';
+
+  @override
+  String get conflictFieldAddress => 'Endereço';
+
+  @override
+  String get conflictFieldCity => 'Cidade';
+
+  @override
+  String get conflictFieldFavorite => 'Favorito';
+
+  @override
+  String get conflictFieldStatus => 'Situação';
+
+  @override
+  String get conflictFieldMap => 'Ponto no mapa';
+
+  @override
+  String get conflictFieldCategory => 'Categoria';
+
+  @override
+  String get conflictFieldBrand => 'Marca';
+
+  @override
+  String get conflictFieldStyle => 'Estilo';
+
+  @override
+  String get conflictFieldVolume => 'Volume';
+
+  @override
+  String get conflictFieldAbv => 'Teor alcoólico';
+
+  @override
+  String get conflictFieldIngredients => 'Ingredientes';
+
+  @override
+  String get conflictFieldRecipe => 'Composição da receita';
+
+  @override
+  String get conflictNotInformed => 'não informado';
+
+  @override
+  String get conflictYes => 'sim';
+
+  @override
+  String get conflictNo => 'não';
+
+  @override
+  String get conflictArchived => 'arquivado';
+
+  @override
+  String get conflictActive => 'ativo';
+
+  @override
+  String get conflictPointSet => 'marcado';
+
+  @override
+  String get conflictPointNone => 'sem ponto';
+
+  @override
+  String get conflictDiffers => 'diferente';
+
+  @override
+  String get conflictLocalDeleted => 'Excluído neste aparelho';
+
+  @override
+  String get conflictKindPlace => 'Local';
+
+  @override
+  String get conflictKindDrink => 'Bebida pessoal';
+
+  @override
+  String get conflictKindRecipe => 'Receita pessoal';
+
+  @override
+  String get conflictWhatEdit => 'Editado em dois aparelhos.';
+
+  @override
+  String get conflictWhatCloudDeleted =>
+      'Editado neste aparelho, mas excluído na nuvem.';
+
+  @override
+  String get conflictWhatLocalDeleted =>
+      'Excluído neste aparelho, mas editado na nuvem.';
+
+  @override
+  String get conflictEffectKeepLocal =>
+      'A versão deste aparelho passa a valer na nuvem e nos outros aparelhos. A da nuvem é substituída.';
+
+  @override
+  String get conflictEffectUseRemote =>
+      'A versão da nuvem passa a valer aqui. A sua edição deste aparelho é descartada.';
+
+  @override
+  String get conflictEffectRestore =>
+      'Desfaz a exclusão feita na nuvem: volta a existir em todos os aparelhos, com a versão deste aparelho.';
+
+  @override
+  String get conflictEffectAcceptDeletion =>
+      'A exclusão vale também aqui e a sua edição é descartada. Registros já feitos mantêm os próprios dados.';
+
+  @override
+  String get conflictEffectKeepDeletion =>
+      'A sua exclusão vale na nuvem e nos outros aparelhos. A edição da nuvem é descartada. Registros já feitos mantêm os próprios dados.';
+
+  @override
+  String get conflictEffectUndeleteRemote =>
+      'A versão editada na nuvem volta a existir aqui. A sua exclusão é descartada.';
+
+  @override
+  String get conflictKeepDeletion => 'Manter a exclusão';
+
+  @override
+  String get conflictDeletionKept => 'Exclusão mantida';
+
+  @override
+  String get conflictUseRemoteRestore => 'Usar a da nuvem (volta a existir)';
 }

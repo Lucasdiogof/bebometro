@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/data/local_store.dart';
 import '../../core/di/injector.dart';
+import '../../core/sync/conflict_describer.dart';
 import '../../core/sync/sync_conflicts.dart';
 import '../../core/sync/sync_cubit.dart';
 import '../../core/theme/app_colors.dart';
@@ -171,58 +172,84 @@ class _ConflictsPageState extends State<ConflictsPage> {
 
   Widget _rowCard(SyncConflict c) {
     final remote = c.remote;
+    final view = ConflictDescriber.describe(c.collection, c.local, remote);
+    final localDeleted = c.local['deleted_at'] != null;
+    final remoteDeleted = c.remoteDeleted;
+    // What this conflict is, and what each button does: edits and deletions
+    // are never mixed up.
+    final what = localDeleted
+        ? tr.conflictWhatLocalDeleted
+        : (remoteDeleted ? tr.conflictWhatCloudDeleted : tr.conflictWhatEdit);
+    final keepLabel = localDeleted
+        ? tr.conflictKeepDeletion
+        : (remoteDeleted ? tr.conflictRestore : tr.conflictKeepLocal);
+    final keepEffect = localDeleted
+        ? tr.conflictEffectKeepDeletion
+        : (remoteDeleted ? tr.conflictEffectRestore : tr.conflictEffectKeepLocal);
+    final keepDone = localDeleted
+        ? tr.conflictDeletionKept
+        : (remoteDeleted ? tr.conflictRestored : tr.conflictKeptLocal);
+    final useLabel = localDeleted
+        ? tr.conflictUseRemoteRestore
+        : (remoteDeleted ? tr.conflictAcceptDeletion : tr.conflictUseRemote);
+    final useEffect = localDeleted
+        ? tr.conflictEffectUndeleteRemote
+        : (remoteDeleted
+              ? tr.conflictEffectAcceptDeletion
+              : tr.conflictEffectUseRemote);
+    final useDone = remoteDeleted
+        ? tr.conflictDeletionAccepted
+        : tr.conflictUsedRemote;
     return SurfaceCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(_title(c), style: AppText.title),
+          if (view != null) ...[
+            Text(view.kind, style: AppText.overline),
+            Text(view.name, style: AppText.title),
+            const SizedBox(height: AppSpace.xs),
+            Text(what, style: AppText.caption),
+          ] else
+            Text(_title(c), style: AppText.title),
           const SizedBox(height: AppSpace.sm),
-          _version(tr.conflictHere, c.collection, c.local),
+          _version(
+            localDeleted ? tr.conflictLocalDeleted : tr.conflictHere,
+            c.collection,
+            c.local,
+            view: view,
+            side: view?.local,
+          ),
           const SizedBox(height: AppSpace.sm),
           if (remote == null)
             Text(tr.conflictRemoteUnreadable, style: AppText.caption)
           else
             _version(
-              c.remoteDeleted ? tr.conflictCloudDeleted : tr.conflictCloud,
+              remoteDeleted ? tr.conflictCloudDeleted : tr.conflictCloud,
               c.collection,
               remote,
+              view: view,
+              side: view?.remote,
             ),
           const SizedBox(height: AppSpace.md),
-          Wrap(
-            spacing: AppSpace.sm,
-            runSpacing: AppSpace.sm,
-            children: [
-              FilledButton.tonal(
-                onPressed: _busy
-                    ? null
-                    : () => _run(
-                        () => _conflicts.keepLocal(c),
-                        c.remoteDeleted
-                            ? tr.conflictRestored
-                            : tr.conflictKeptLocal,
-                      ),
-                child: Text(
-                  c.remoteDeleted ? tr.conflictRestore : tr.conflictKeepLocal,
-                ),
-              ),
-              if (remote != null)
-                OutlinedButton(
-                  onPressed: _busy
-                      ? null
-                      : () => _run(
-                          () => _conflicts.useRemote(c),
-                          c.remoteDeleted
-                              ? tr.conflictDeletionAccepted
-                              : tr.conflictUsedRemote,
-                        ),
-                  child: Text(
-                    c.remoteDeleted
-                        ? tr.conflictAcceptDeletion
-                        : tr.conflictUseRemote,
-                  ),
-                ),
-            ],
+          Text(keepEffect, style: AppText.caption),
+          const SizedBox(height: AppSpace.xs),
+          FilledButton.tonal(
+            onPressed: _busy
+                ? null
+                : () => _run(() => _conflicts.keepLocal(c), keepDone),
+            child: Text(keepLabel),
           ),
+          if (remote != null) ...[
+            const SizedBox(height: AppSpace.md),
+            Text(useEffect, style: AppText.caption),
+            const SizedBox(height: AppSpace.xs),
+            OutlinedButton(
+              onPressed: _busy
+                  ? null
+                  : () => _run(() => _conflicts.useRemote(c), useDone),
+              child: Text(useLabel),
+            ),
+          ],
         ],
       ),
     );
@@ -237,10 +264,17 @@ class _ConflictsPageState extends State<ConflictsPage> {
     _ => tr.conflictItem,
   };
 
-  Widget _version(String label, String collection, Map<String, dynamic> j) {
+  Widget _version(
+    String label,
+    String collection,
+    Map<String, dynamic> j, {
+    ConflictView? view,
+    ConflictSide? side,
+  }) {
     final updated = DateTime.tryParse(j['updated_at'] as String? ?? '');
+    final fields = side?.fields;
     final lines = <String>[
-      ..._describe(collection, j),
+      if (fields == null) ..._describe(collection, j),
       if (updated != null)
         tr.conflictEditedAt(formatDateTime(updated.toLocal())),
     ];
@@ -255,6 +289,33 @@ class _ConflictsPageState extends State<ConflictsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: AppText.overline),
+          if (fields != null)
+            for (final f in fields)
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${f.label}: ',
+                        style: AppText.caption,
+                      ),
+                      TextSpan(text: f.value),
+                      // Text, not only color: the marker says which fields
+                      // are not the same on both sides.
+                      if (view?.differing.contains(f.label) ?? false)
+                        TextSpan(
+                          text: '  ≠ ${tr.conflictDiffers}',
+                          style: const TextStyle(
+                            color: AppColors.amber,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                    ],
+                  ),
+                  style: AppText.body,
+                ),
+              ),
           for (final l in lines) Text(l, style: AppText.body),
         ],
       ),
