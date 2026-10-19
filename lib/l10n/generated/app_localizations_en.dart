@@ -6518,4 +6518,126 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderOpenCatalog => 'Full catalog, label or menu';
+
+  @override
+  String get bottleAddPerson => 'Add person';
+
+  @override
+  String get bottleAddTitle => 'Who joins this bottle?';
+
+  @override
+  String get bottleAddNone =>
+      'Everyone at the outing is already on this bottle.';
+
+  @override
+  String get bottleAddHint =>
+      'The person joins with unknown volume and one share of the cost. Nobody else\'s volume changes.';
+
+  @override
+  String bottleRemoveTooltip(String name) {
+    return 'Remove $name from the bottle';
+  }
+
+  @override
+  String get bottleMinPeople =>
+      'A shared bottle needs at least two people. To change that, delete the record.';
+
+  @override
+  String bottleRemoveTitle(String name) {
+    return 'Remove $name?';
+  }
+
+  @override
+  String bottleRemoveVolumeAsk(String name, String volume) {
+    return '$name has $volume recorded. What should happen to that volume?';
+  }
+
+  @override
+  String get bottleRemoveVolumeLeftover => 'Move it to the bottle\'s leftover';
+
+  @override
+  String bottleRemoveVolumeTo(String name) {
+    return 'Give it to $name';
+  }
+
+  @override
+  String bottleRemoveMoneyAsk(String name) {
+    return '$name has a share of the cost. What should happen to it?';
+  }
+
+  @override
+  String get bottleRemoveMoneySpread => 'Split it among those who keep paying';
+
+  @override
+  String bottleRemoveMoneyTo(String name) {
+    return 'Give it to $name';
+  }
+
+  @override
+  String get bottleRemoveConfirm => 'Remove from bottle';
+
+  @override
+  String get bottleRemoveNoPayer =>
+      'Someone has to keep paying for the bottle: give the share to another person.';
+
+  @override
+  String get bottleCostTitle => 'Cost split';
+
+  @override
+  String get bottleCostHint =>
+      'Separate from volume: each part counts in splitting the bottle\'s cost. Zero parts = pays none of it.';
+
+  @override
+  String bottleCostParts(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parts',
+      one: '1 part',
+      zero: '0 parts',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bottleCostLess(String name) {
+    return 'One part less for $name';
+  }
+
+  @override
+  String bottleCostMore(String name) {
+    return 'One part more for $name';
+  }
+
+  @override
+  String get bottleLeftoverLabel => 'Left in the bottle';
+
+  @override
+  String get bottleImpactTitle => 'What changes on save';
+
+  @override
+  String get bottleImpactBody =>
+      'Payments already recorded do not change or move to someone else; only each person\'s share of the tab and the volume.';
+
+  @override
+  String bottleImpactVolume(String before, String after) {
+    return 'Volume: $before → $after';
+  }
+
+  @override
+  String bottleImpactCost(String before, String after) {
+    return 'Share of the tab: $before → $after';
+  }
+
+  @override
+  String get bottleImpactJoins => 'joins the bottle';
+
+  @override
+  String get bottleImpactLeaves => 'leaves the bottle';
+
+  @override
+  String get bottleImpactNoChange => 'No change for this person.';
+
+  @override
+  String get bottleImpactConfirm => 'Save anyway';
 }

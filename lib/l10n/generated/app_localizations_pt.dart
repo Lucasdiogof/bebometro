@@ -6534,4 +6534,126 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get orderOpenCatalog => 'Catálogo completo, rótulo ou cardápio';
+
+  @override
+  String get bottleAddPerson => 'Adicionar pessoa';
+
+  @override
+  String get bottleAddTitle => 'Quem entra nesta garrafa?';
+
+  @override
+  String get bottleAddNone =>
+      'Todas as pessoas do rolê já estão nesta garrafa.';
+
+  @override
+  String get bottleAddHint =>
+      'A pessoa entra com volume desconhecido e uma parte do valor. O volume das outras não muda.';
+
+  @override
+  String bottleRemoveTooltip(String name) {
+    return 'Tirar $name da garrafa';
+  }
+
+  @override
+  String get bottleMinPeople =>
+      'Uma garrafa dividida precisa de pelo menos duas pessoas. Para outro uso, exclua o registro.';
+
+  @override
+  String bottleRemoveTitle(String name) {
+    return 'Tirar $name?';
+  }
+
+  @override
+  String bottleRemoveVolumeAsk(String name, String volume) {
+    return '$name tem $volume registrados. O que fazer com esse volume?';
+  }
+
+  @override
+  String get bottleRemoveVolumeLeftover => 'Passar para a sobra da garrafa';
+
+  @override
+  String bottleRemoveVolumeTo(String name) {
+    return 'Passar para $name';
+  }
+
+  @override
+  String bottleRemoveMoneyAsk(String name) {
+    return '$name tem parte do valor. O que fazer com ela?';
+  }
+
+  @override
+  String get bottleRemoveMoneySpread => 'Dividir entre quem fica pagando';
+
+  @override
+  String bottleRemoveMoneyTo(String name) {
+    return 'Passar para $name';
+  }
+
+  @override
+  String get bottleRemoveConfirm => 'Tirar da garrafa';
+
+  @override
+  String get bottleRemoveNoPayer =>
+      'Alguém precisa continuar pagando a garrafa: passe a parte para outra pessoa.';
+
+  @override
+  String get bottleCostTitle => 'Divisão do valor';
+
+  @override
+  String get bottleCostHint =>
+      'Separada do volume: cada parte conta na divisão do valor da garrafa. Zero partes = não paga nada dela.';
+
+  @override
+  String bottleCostParts(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count partes',
+      one: '1 parte',
+      zero: '0 partes',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bottleCostLess(String name) {
+    return 'Menos uma parte de $name';
+  }
+
+  @override
+  String bottleCostMore(String name) {
+    return 'Mais uma parte para $name';
+  }
+
+  @override
+  String get bottleLeftoverLabel => 'Sobra na garrafa';
+
+  @override
+  String get bottleImpactTitle => 'O que muda ao salvar';
+
+  @override
+  String get bottleImpactBody =>
+      'Pagamentos já registrados não mudam nem trocam de pessoa; só a parte de cada um na comanda e o volume.';
+
+  @override
+  String bottleImpactVolume(String before, String after) {
+    return 'Volume: $before → $after';
+  }
+
+  @override
+  String bottleImpactCost(String before, String after) {
+    return 'Valor na comanda: $before → $after';
+  }
+
+  @override
+  String get bottleImpactJoins => 'entra na garrafa';
+
+  @override
+  String get bottleImpactLeaves => 'sai da garrafa';
+
+  @override
+  String get bottleImpactNoChange => 'Sem mudança para esta pessoa.';
+
+  @override
+  String get bottleImpactConfirm => 'Salvar mesmo assim';
 }

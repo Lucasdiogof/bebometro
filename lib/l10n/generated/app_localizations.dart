@@ -10502,6 +10502,180 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Catálogo completo, rótulo ou cardápio'**
   String get orderOpenCatalog;
+
+  /// No description provided for @bottleAddPerson.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar pessoa'**
+  String get bottleAddPerson;
+
+  /// No description provided for @bottleAddTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem entra nesta garrafa?'**
+  String get bottleAddTitle;
+
+  /// No description provided for @bottleAddNone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todas as pessoas do rolê já estão nesta garrafa.'**
+  String get bottleAddNone;
+
+  /// No description provided for @bottleAddHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'A pessoa entra com volume desconhecido e uma parte do valor. O volume das outras não muda.'**
+  String get bottleAddHint;
+
+  /// No description provided for @bottleRemoveTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar {name} da garrafa'**
+  String bottleRemoveTooltip(String name);
+
+  /// No description provided for @bottleMinPeople.
+  ///
+  /// In pt, this message translates to:
+  /// **'Uma garrafa dividida precisa de pelo menos duas pessoas. Para outro uso, exclua o registro.'**
+  String get bottleMinPeople;
+
+  /// No description provided for @bottleRemoveTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar {name}?'**
+  String bottleRemoveTitle(String name);
+
+  /// No description provided for @bottleRemoveVolumeAsk.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} tem {volume} registrados. O que fazer com esse volume?'**
+  String bottleRemoveVolumeAsk(String name, String volume);
+
+  /// No description provided for @bottleRemoveVolumeLeftover.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passar para a sobra da garrafa'**
+  String get bottleRemoveVolumeLeftover;
+
+  /// No description provided for @bottleRemoveVolumeTo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passar para {name}'**
+  String bottleRemoveVolumeTo(String name);
+
+  /// No description provided for @bottleRemoveMoneyAsk.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} tem parte do valor. O que fazer com ela?'**
+  String bottleRemoveMoneyAsk(String name);
+
+  /// No description provided for @bottleRemoveMoneySpread.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dividir entre quem fica pagando'**
+  String get bottleRemoveMoneySpread;
+
+  /// No description provided for @bottleRemoveMoneyTo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passar para {name}'**
+  String bottleRemoveMoneyTo(String name);
+
+  /// No description provided for @bottleRemoveConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar da garrafa'**
+  String get bottleRemoveConfirm;
+
+  /// No description provided for @bottleRemoveNoPayer.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alguém precisa continuar pagando a garrafa: passe a parte para outra pessoa.'**
+  String get bottleRemoveNoPayer;
+
+  /// No description provided for @bottleCostTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão do valor'**
+  String get bottleCostTitle;
+
+  /// No description provided for @bottleCostHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Separada do volume: cada parte conta na divisão do valor da garrafa. Zero partes = não paga nada dela.'**
+  String get bottleCostHint;
+
+  /// No description provided for @bottleCostParts.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{0 partes} =1{1 parte} other{{count} partes}}'**
+  String bottleCostParts(int count);
+
+  /// No description provided for @bottleCostLess.
+  ///
+  /// In pt, this message translates to:
+  /// **'Menos uma parte de {name}'**
+  String bottleCostLess(String name);
+
+  /// No description provided for @bottleCostMore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais uma parte para {name}'**
+  String bottleCostMore(String name);
+
+  /// No description provided for @bottleLeftoverLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sobra na garrafa'**
+  String get bottleLeftoverLabel;
+
+  /// No description provided for @bottleImpactTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que muda ao salvar'**
+  String get bottleImpactTitle;
+
+  /// No description provided for @bottleImpactBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pagamentos já registrados não mudam nem trocam de pessoa; só a parte de cada um na comanda e o volume.'**
+  String get bottleImpactBody;
+
+  /// No description provided for @bottleImpactVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume: {before} → {after}'**
+  String bottleImpactVolume(String before, String after);
+
+  /// No description provided for @bottleImpactCost.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor na comanda: {before} → {after}'**
+  String bottleImpactCost(String before, String after);
+
+  /// No description provided for @bottleImpactJoins.
+  ///
+  /// In pt, this message translates to:
+  /// **'entra na garrafa'**
+  String get bottleImpactJoins;
+
+  /// No description provided for @bottleImpactLeaves.
+  ///
+  /// In pt, this message translates to:
+  /// **'sai da garrafa'**
+  String get bottleImpactLeaves;
+
+  /// No description provided for @bottleImpactNoChange.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem mudança para esta pessoa.'**
+  String get bottleImpactNoChange;
+
+  /// No description provided for @bottleImpactConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar mesmo assim'**
+  String get bottleImpactConfirm;
 }
 
 class _AppLocalizationsDelegate

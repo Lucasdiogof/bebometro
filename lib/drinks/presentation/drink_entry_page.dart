@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/injector.dart';
@@ -15,11 +14,11 @@ import '../domain/recipe.dart';
 import '../domain/drink_draft.dart';
 import '../domain/drink_entry.dart';
 import '../domain/price_history.dart';
+import 'bottle_people_editor.dart';
 import 'drink_form_cubit.dart';
 import 'unit_dropdown.dart';
 import '../../l10n/l10n.dart';
 import '../../tab/data/tab_repository.dart';
-import '../../tab/domain/tab_models.dart';
 import '../../table/presentation/person_avatar.dart';
 
 /// How the entry screen was closed, when it changed something.
@@ -74,6 +73,23 @@ class DrinkEntryPage extends StatelessWidget {
 
 class _DrinkEntryView extends StatelessWidget {
   const _DrinkEntryView();
+
+  /// A bottle whose people or cost split changed shows what changes per
+  /// person before anything is saved.
+  Future<void> _submit(BuildContext context, DrinkFormCubit cubit) async {
+    if (cubit.state.draft.isValid && cubit.peopleChanged) {
+      final rows = cubit.impact();
+      if (rows != null) {
+        final ok = await confirmBottleImpact(
+          context,
+          doc: getIt<TabRepository>().load(cubit.outingId),
+          rows: rows,
+        );
+        if (!ok || !context.mounted) return;
+      }
+    }
+    await cubit.submit();
+  }
 
   Future<void> _confirmDelete(BuildContext context) async {
     final cubit = context.read<DrinkFormCubit>();
@@ -487,7 +503,7 @@ class _DrinkEntryView extends StatelessWidget {
                           ),
                         ),
                       FilledButton(
-                        onPressed: state.saving ? null : cubit.submit,
+                        onPressed: state.saving ? null : () => _submit(context, cubit),
                         child: state.saving
                             ? const SizedBox(
                                 width: 20,
@@ -1470,65 +1486,6 @@ class _BulkPriceSheet extends StatelessWidget {
   }
 }
 
-/// "Para quem?": on a table the drink is attributed to a person, chosen in
-/// view of the screen (nothing is assumed). A shared bottle keeps its people in
-/// the order's portions, so there is nothing to pick here.
-/// "Quanto cada pessoa tomou" for a shared bottle that already has per-person
-/// portions. Blank = unknown (never zero); the sum cannot pass the bottle.
-class _PortionsEditor extends StatelessWidget {
-  const _PortionsEditor({required this.draft, required this.doc, this.error});
-
-  final DrinkDraft draft;
-  final TabDoc doc;
-  final String? error;
-
-  String _name(String key) => key == ownerPortionKey
-      ? (doc.me?.displayName ?? tr.tabMe)
-      : (doc.participant(key)?.displayName ?? tr.ordersUnassigned);
-
-  @override
-  Widget build(BuildContext context) {
-    final cubit = context.read<DrinkFormCubit>();
-    final portions = draft.portions!;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SectionTitle(tr.formPortionsTitle),
-        Text(tr.formPortionsHint, style: AppText.caption),
-        const SizedBox(height: AppSpace.sm),
-        for (final key in portions.keys)
-          Padding(
-            padding: const EdgeInsets.only(bottom: AppSpace.sm),
-            child: Row(
-              children: [
-                Expanded(child: Text(_name(key), style: AppText.subtitle)),
-                SizedBox(
-                  width: 120,
-                  child: TextFormField(
-                    key: ValueKey('portion-$key'),
-                    initialValue: portions[key]?.toString() ?? '',
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: InputDecoration(
-                      suffixText: tr.formPortionMl,
-                      hintText: tr.volumeUnknown,
-                    ),
-                    onChanged: (t) => cubit.setPortion(
-                      key,
-                      t.trim().isEmpty ? null : int.tryParse(t.trim()),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        if (error != null)
-          Text(error!, style: const TextStyle(color: AppColors.danger)),
-      ],
-    );
-  }
-}
-
 /// The outing has people besides the owner (a table).
 bool _tableHasPeople(String outingId) =>
     getIt<TabRepository>().load(outingId).participants.length >= 2;
@@ -1548,7 +1505,11 @@ class _ConsumerSection extends StatelessWidget {
       return const SizedBox.shrink();
     }
     if (d.portions != null) {
-      return _PortionsEditor(draft: d, doc: doc, error: state.draft.errors['personal']);
+      return BottlePeopleEditor(
+        state: state,
+        doc: doc,
+        error: state.draft.errors['personal'],
+      );
     }
     final ownerId = doc.me?.id;
     final selected = d.consumerId ?? (state.consumerPending ? null : ownerId);

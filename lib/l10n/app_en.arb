@@ -1731,5 +1731,120 @@
   "formForWhom": "For whom?",
   "formForWhomPending": "Choose who this drink is for.",
   "formForWhomShared": "Shared bottle: the people are in the order's portions.",
-  "orderOpenCatalog": "Full catalog, label or menu"
+  "orderOpenCatalog": "Full catalog, label or menu",
+  "bottleAddPerson": "Add person",
+  "bottleAddTitle": "Who joins this bottle?",
+  "bottleAddNone": "Everyone at the outing is already on this bottle.",
+  "bottleAddHint": "The person joins with unknown volume and one share of the cost. Nobody else's volume changes.",
+  "bottleRemoveTooltip": "Remove {name} from the bottle",
+  "@bottleRemoveTooltip": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleMinPeople": "A shared bottle needs at least two people. To change that, delete the record.",
+  "bottleRemoveTitle": "Remove {name}?",
+  "@bottleRemoveTitle": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleRemoveVolumeAsk": "{name} has {volume} recorded. What should happen to that volume?",
+  "@bottleRemoveVolumeAsk": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          },
+          "volume": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleRemoveVolumeLeftover": "Move it to the bottle's leftover",
+  "bottleRemoveVolumeTo": "Give it to {name}",
+  "@bottleRemoveVolumeTo": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleRemoveMoneyAsk": "{name} has a share of the cost. What should happen to it?",
+  "@bottleRemoveMoneyAsk": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleRemoveMoneySpread": "Split it among those who keep paying",
+  "bottleRemoveMoneyTo": "Give it to {name}",
+  "@bottleRemoveMoneyTo": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleRemoveConfirm": "Remove from bottle",
+  "bottleRemoveNoPayer": "Someone has to keep paying for the bottle: give the share to another person.",
+  "bottleCostTitle": "Cost split",
+  "bottleCostHint": "Separate from volume: each part counts in splitting the bottle's cost. Zero parts = pays none of it.",
+  "bottleCostParts": "{count, plural, =0{0 parts} =1{1 part} other{{count} parts}}",
+  "@bottleCostParts": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "bottleCostLess": "One part less for {name}",
+  "@bottleCostLess": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleCostMore": "One part more for {name}",
+  "@bottleCostMore": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleLeftoverLabel": "Left in the bottle",
+  "bottleImpactTitle": "What changes on save",
+  "bottleImpactBody": "Payments already recorded do not change or move to someone else; only each person's share of the tab and the volume.",
+  "bottleImpactVolume": "Volume: {before} → {after}",
+  "@bottleImpactVolume": {
+      "placeholders": {
+          "before": {
+              "type": "String"
+          },
+          "after": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleImpactCost": "Share of the tab: {before} → {after}",
+  "@bottleImpactCost": {
+      "placeholders": {
+          "before": {
+              "type": "String"
+          },
+          "after": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleImpactJoins": "joins the bottle",
+  "bottleImpactLeaves": "leaves the bottle",
+  "bottleImpactNoChange": "No change for this person.",
+  "bottleImpactConfirm": "Save anyway"
 }

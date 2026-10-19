@@ -1731,5 +1731,120 @@
   "formForWhom": "¿Para quién?",
   "formForWhomPending": "Elige para quién es esta bebida.",
   "formForWhomShared": "Botella compartida: las personas están en las porciones del pedido.",
-  "orderOpenCatalog": "Catálogo completo, etiqueta o menú"
+  "orderOpenCatalog": "Catálogo completo, etiqueta o menú",
+  "bottleAddPerson": "Añadir persona",
+  "bottleAddTitle": "¿Quién entra en esta botella?",
+  "bottleAddNone": "Todas las personas de la salida ya están en esta botella.",
+  "bottleAddHint": "La persona entra con volumen desconocido y una parte del valor. El volumen de las demás no cambia.",
+  "bottleRemoveTooltip": "Quitar a {name} de la botella",
+  "@bottleRemoveTooltip": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleMinPeople": "Una botella compartida necesita al menos dos personas. Para otro uso, elimina el registro.",
+  "bottleRemoveTitle": "¿Quitar a {name}?",
+  "@bottleRemoveTitle": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleRemoveVolumeAsk": "{name} tiene {volume} registrados. ¿Qué hacer con ese volumen?",
+  "@bottleRemoveVolumeAsk": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          },
+          "volume": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleRemoveVolumeLeftover": "Pasarlo a lo que sobró de la botella",
+  "bottleRemoveVolumeTo": "Pasarlo a {name}",
+  "@bottleRemoveVolumeTo": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleRemoveMoneyAsk": "{name} tiene parte del valor. ¿Qué hacer con ella?",
+  "@bottleRemoveMoneyAsk": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleRemoveMoneySpread": "Dividirla entre quienes siguen pagando",
+  "bottleRemoveMoneyTo": "Pasarla a {name}",
+  "@bottleRemoveMoneyTo": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleRemoveConfirm": "Quitar de la botella",
+  "bottleRemoveNoPayer": "Alguien tiene que seguir pagando la botella: pasa la parte a otra persona.",
+  "bottleCostTitle": "División del valor",
+  "bottleCostHint": "Separada del volumen: cada parte cuenta en la división del valor de la botella. Cero partes = no paga nada.",
+  "bottleCostParts": "{count, plural, =0{0 partes} =1{1 parte} other{{count} partes}}",
+  "@bottleCostParts": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "bottleCostLess": "Una parte menos para {name}",
+  "@bottleCostLess": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleCostMore": "Una parte más para {name}",
+  "@bottleCostMore": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleLeftoverLabel": "Sobra en la botella",
+  "bottleImpactTitle": "Qué cambia al guardar",
+  "bottleImpactBody": "Los pagos ya registrados no cambian ni pasan a otra persona; solo la parte de cada uno en la cuenta y el volumen.",
+  "bottleImpactVolume": "Volumen: {before} → {after}",
+  "@bottleImpactVolume": {
+      "placeholders": {
+          "before": {
+              "type": "String"
+          },
+          "after": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleImpactCost": "Valor en la cuenta: {before} → {after}",
+  "@bottleImpactCost": {
+      "placeholders": {
+          "before": {
+              "type": "String"
+          },
+          "after": {
+              "type": "String"
+          }
+      }
+  },
+  "bottleImpactJoins": "entra en la botella",
+  "bottleImpactLeaves": "sale de la botella",
+  "bottleImpactNoChange": "Sin cambios para esta persona.",
+  "bottleImpactConfirm": "Guardar igualmente"
 }

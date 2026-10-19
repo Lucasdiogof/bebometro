@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../outings/domain/outing.dart';
+import '../../tab/data/tab_repository.dart';
+import '../../tab/domain/tab_calc.dart';
+import '../../tab/domain/tab_models.dart';
+import '../domain/bottle_people.dart';
 import '../data/drink_repository.dart';
 import '../domain/catalog_item.dart';
 import '../domain/common_sizes.dart';
@@ -33,6 +37,30 @@ class PriceOffer {
   int get total => unpriced.length + differing.length;
 }
 
+/// One line of the "what changes" preview of an edited shared bottle.
+class BottleImpactRow {
+  const BottleImpactRow({
+    required this.key,
+    required this.mlBefore,
+    required this.mlAfter,
+    required this.wasIn,
+    required this.isIn,
+    required this.costBefore,
+    required this.costAfter,
+  });
+
+  final String key;
+  final int? mlBefore;
+  final int? mlAfter;
+  final bool wasIn;
+  final bool isIn;
+  final int costBefore;
+  final int costAfter;
+
+  bool get changed =>
+      wasIn != isIn || mlBefore != mlAfter || costBefore != costAfter;
+}
+
 class DrinkFormState {
   const DrinkFormState({
     required this.draft,
@@ -50,9 +78,14 @@ class DrinkFormState {
     this.dirty = false,
     this.error,
     this.consumerPending = false,
+    this.people,
   });
 
   final DrinkDraft draft;
+
+  /// Who takes part in an already registered shared bottle (volume and cost
+  /// kept apart). Null for any other record.
+  final BottlePeople? people;
 
   /// The outing has people and the form was opened without saying whose drink
   /// it is: the person must be chosen (nothing is assumed) before saving.
@@ -104,7 +137,9 @@ class DrinkFormState {
     String? error,
     PriceSuggestion? suggestion,
     bool? consumerPending,
+    BottlePeople? people,
   }) => DrinkFormState(
+    people: people ?? this.people,
     consumerPending: consumerPending ?? this.consumerPending,
     draft: draft ?? this.draft,
     presentations: presentations,
@@ -131,7 +166,16 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     super.initial, {
     String? entryId,
     this.reviewNote,
-  }) : _entryId = entryId ?? _drinks.newId();
+    TabRepository? tabs,
+    BottlePeople? initialPeople,
+  }) : _entryId = entryId ?? _drinks.newId(),
+       _tabs = tabs,
+       _initialPeople = initialPeople;
+
+  final TabRepository? _tabs;
+
+  /// The bottle's people as they were when the form opened.
+  final BottlePeople? _initialPeople;
 
   /// Shown on top of the form when it reviews a lock-screen tap.
   final String? reviewNote;
@@ -258,8 +302,18 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     DrinkRepository drinks,
     Outing outing,
     DrinkEntry entry,
-    List<DrinkEntry> candidates,
-  ) {
+    List<DrinkEntry> candidates, {
+    TabRepository? tabs,
+  }) {
+    BottlePeople? people;
+    if (tabs != null && entry.isShared && entry.portions != null) {
+      final doc = tabs.load(entry.outingId);
+      people = BottlePeople.fromEntry(
+        entry,
+        assign: doc.linkFor(entry.id)?.assign,
+        ownerId: doc.me?.id,
+      );
+    }
     final item = drinks.itemById(entry.catalogItemId);
     final others = [
       for (final c in candidates)
@@ -270,6 +324,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       entry.outingId,
       others,
       DrinkFormState(
+        people: people,
         draft: DrinkDraft.fromEntry(
           entry,
           notBefore: outing.startedAt,
@@ -286,6 +341,8 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
         abvVariants: item?.abvVariants ?? const [],
         bottles: item == null ? const [] : _bottlesOf(item),
       ),
+      tabs: tabs,
+      initialPeople: people,
     );
   }
 
@@ -305,9 +362,150 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
 
   /// Corrects how much one person of a shared bottle drank (null = unknown).
   void setPortion(String key, int? ml) {
-    final current = state.draft.portions;
-    if (current == null) return;
-    _set(state.draft.withPortions({...current, key: ml}));
+    final people = state.people;
+    if (people == null) {
+      final current = state.draft.portions;
+      if (current == null) return;
+      _set(state.draft.withPortions({...current, key: ml}));
+      return;
+    }
+    _setPeople(people.withPortion(key, ml));
+  }
+
+  /// Keys (portion keys) of the people of the outing who can still join this
+  /// bottle: present on the tab of the SAME outing and not already in it.
+  List<String> get candidatesToAdd {
+    final people = state.people;
+    final tabs = _tabs;
+    if (people == null || tabs == null) return const [];
+    final doc = tabs.load(_outingId);
+    return [
+      for (final p in doc.present)
+        if (!people.has(p.isMe ? ownerPortionKey : p.id)) p.isMe ? ownerPortionKey : p.id,
+    ];
+  }
+
+  /// Adds someone of this outing. Their volume starts unknown and nobody
+  /// else's volume changes.
+  void addPerson(String key) {
+    final people = state.people;
+    if (people == null || !candidatesToAdd.contains(key)) return;
+    _setPeople(people.add(key));
+  }
+
+  /// Removes someone, placing their volume and cost share as chosen.
+  /// Throws [ArgumentError] when something is left unresolved.
+  void removePerson(
+    String key, {
+    VolumeFate? volume,
+    String? volumeTo,
+    MoneyFate? money,
+    String? moneyTo,
+  }) {
+    final people = state.people;
+    if (people == null) return;
+    _setPeople(
+      people.remove(
+        key,
+        volume: volume,
+        volumeTo: volumeTo,
+        money: money,
+        moneyTo: moneyTo,
+      ),
+    );
+  }
+
+  /// Weight of one person in the cost split (0 = does not pay any of it).
+  void setWeight(String key, int weight) {
+    final people = state.people;
+    if (people == null) return;
+    _setPeople(people.withWeight(key, weight));
+  }
+
+  void _setPeople(BottlePeople next) {
+    var draft = state.draft
+        .withPortions(next.portions)
+        .withLeftoverMl(next.leftoverMl);
+    // The owner's own cost follows the split; without a known bill total it
+    // only changes when the owner stops paying.
+    final bill = draft.billTotalCents;
+    if (draft.priceKind == PriceKind.informed) {
+      final owner = next.has(ownerPortionKey) ? next.weightOf(ownerPortionKey) : 0;
+      if (owner <= 0) {
+        draft = draft.withPaidCents(0);
+      } else if (bill != null) {
+        draft = draft.withPaidCents(next.costShares(bill)[ownerPortionKey] ?? 0);
+      }
+    }
+    emit(
+      state.copyWith(
+        draft: draft,
+        people: next,
+        dirty: true,
+        suggestion: suggestPrice(_candidates, _keyOf(draft)),
+      ),
+    );
+  }
+
+  /// The bottle's people or cost split differ from what was opened.
+  bool get peopleChanged {
+    final now = state.people;
+    final before = _initialPeople;
+    if (now == null || before == null) return false;
+    if (!mapEquals(now.portions, before.portions) ||
+        now.leftoverMl != before.leftoverMl) {
+      return true;
+    }
+    return !mapEquals(
+      {for (final k in now.keys) k: now.weightOf(k)},
+      {for (final k in before.keys) k: before.weightOf(k)},
+    );
+  }
+
+  /// Per person, what changes if the form is saved now: volume and share of
+  /// the tab (service and discount included), before and after. Null when the
+  /// bottle is not being edited as a table bottle.
+  List<BottleImpactRow>? impact() {
+    final people = state.people;
+    final before = _initialPeople;
+    final tabs = _tabs;
+    final existing = state.draft.existing;
+    if (people == null || before == null || tabs == null || existing == null) {
+      return null;
+    }
+    final doc = tabs.load(_outingId);
+    final entries = tabs.entriesOf(_outingId);
+    final draftEntry = state.draft.toEntry(
+      id: existing.id,
+      outingId: _outingId,
+      now: DateTime.now(),
+    );
+    final link = doc.linkFor(existing.id) ?? TabLink(entryId: existing.id);
+    final nextLink = link.copyWith(assign: () => people.toLinkAssign(doc.me?.id));
+    final nextDoc = doc.copyWith(
+      links: [
+        for (final l in doc.links)
+          if (l.entryId != existing.id) l,
+        nextLink,
+      ],
+    );
+    final a = TabCalculator.compute(doc, entries);
+    final b = TabCalculator.compute(nextDoc, {...entries, existing.id: draftEntry});
+    String idOf(String key) =>
+        key == ownerPortionKey ? (doc.me?.id ?? key) : key;
+    final keys = <String>{...before.keys, ...people.keys};
+    return [
+      for (final k in keys)
+        BottleImpactRow(
+          key: k,
+          mlBefore: before.portions[k],
+          mlAfter: people.portions[k],
+          wasIn: before.has(k),
+          isIn: people.has(k),
+          costBefore: a.shareOf(idOf(k)),
+          costAfter: b.shareOf(idOf(k)),
+        ),
+    ];
   }
 
   /// Stable per form, so a repeated "save" never creates a second row.
@@ -356,7 +554,14 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
   void setShared(bool v) => _set(state.draft.withShared(v));
   void setPeople(int n) => _set(state.draft.withPeople(n));
   void setPersonalMl(int? ml) => _set(state.draft.withPersonalMl(ml));
-  void setLeftoverMl(int ml) => _set(state.draft.withLeftoverMl(ml));
+  void setLeftoverMl(int ml) {
+    final people = state.people;
+    if (people != null) {
+      _setPeople(people.copyWith(leftoverMl: ml < 0 ? 0 : ml));
+      return;
+    }
+    _set(state.draft.withLeftoverMl(ml));
+  }
   void setPriceKind(PriceKind k) => _set(state.draft.withPriceKind(k));
   void setPaidCents(int? c) => _set(state.draft.withPaidCents(c));
   void setBillTotalCents(int? c) => _set(state.draft.withBillTotalCents(c));
@@ -461,6 +666,24 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
         outingId: _outingId,
         now: DateTime.now(),
       );
+      // The tab's split goes first: if the app stops in between, the bottle
+      // still has its old people and the new split only names the same total.
+      final people = state.people;
+      final tabs = _tabs;
+      if (people != null && tabs != null && peopleChanged) {
+        final ownerId = tabs.load(_outingId).me?.id;
+        await tabs.update(_outingId, (doc) {
+          final link = doc.linkFor(entry.id) ?? TabLink(entryId: entry.id);
+          final next = link.copyWith(assign: () => people.toLinkAssign(ownerId));
+          return doc.copyWith(
+            links: [
+              for (final l in doc.links)
+                if (l.entryId != entry.id) l,
+              next,
+            ],
+          );
+        });
+      }
       await _drinks.save(entry);
       _saved = entry;
       emit(state.copyWith(saving: false, saved: true));

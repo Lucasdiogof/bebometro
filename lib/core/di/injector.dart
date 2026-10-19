@@ -313,6 +313,7 @@ class AccountScope {
           outing,
           entry,
           _priceCandidates(outing),
+          tabs: getIt<TabRepository>(),
         );
       }, instanceName: 'edit');
   }
