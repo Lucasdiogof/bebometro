@@ -104,6 +104,44 @@ class _OrderPageState extends State<OrderPage> {
 
   bool _showErrors = false;
 
+  /// The screen is closing because the order was saved (no discard question).
+  bool _leaving = false;
+
+  /// Something was typed or chosen: leaving asks first.
+  bool get _dirty =>
+      _name.text.trim() != widget.initialText.trim() ||
+      _price.text.trim().isNotEmpty ||
+      _volume.text.trim().isNotEmpty ||
+      _abv.text.trim().isNotEmpty ||
+      _item != null;
+
+  Future<void> _confirmDiscard() async {
+    final leave = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(tr.entryDiscardTitle),
+        content: Text(tr.entryDiscardBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.entryKeepEditing),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              tr.entryDiscard,
+              style: const TextStyle(color: AppColors.danger),
+            ),
+          ),
+        ],
+      ),
+    );
+    if (leave == true && mounted) {
+      setState(() => _leaving = true);
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   void dispose() {
     _name.dispose();
@@ -197,7 +235,8 @@ class _OrderPageState extends State<OrderPage> {
       final an = normalizeText(a.displayName).startsWith(q) ? 0 : 1;
       final bn = normalizeText(b.displayName).startsWith(q) ? 0 : 1;
       if (an != bn) return an - bn;
-      return normalizeText(a.displayName).compareTo(normalizeText(b.displayName));
+      return normalizeText(a.displayName)
+          .compareTo(normalizeText(b.displayName));
     });
     return hits.take(6).toList();
   }
@@ -233,7 +272,10 @@ class _OrderPageState extends State<OrderPage> {
   });
 
   void _step(String id, int delta) => setState(() {
-    final next = ((_units[id] ?? 1) + delta).clamp(1, OrderBuilder.maxPerPerson);
+    final next = ((_units[id] ?? 1) + delta).clamp(
+      1,
+      OrderBuilder.maxPerPerson,
+    );
     _units[id] = next.toInt();
   });
 
@@ -252,9 +294,9 @@ class _OrderPageState extends State<OrderPage> {
     }
   });
 
-  String _namesOf(Iterable<String> ids) => [
-    for (final id in ids) widget.doc.participant(id)?.displayName ?? '?',
-  ].join(', ');
+  String _namesOf(Iterable<String> ids) =>
+      [for (final id in ids) widget.doc.participant(id)?.displayName ?? '?']
+          .join(', ');
 
   int get _servings =>
       _shared ? _bottles : _units.values.fold(0, (a, b) => a + b);
@@ -264,11 +306,22 @@ class _OrderPageState extends State<OrderPage> {
     if (_kind != PriceKind.informed || cents == null || _servings <= 0) {
       return null;
     }
-    if (_shared) return tr.orderSplitEach(formatCents(cents ~/ (_sharers.isEmpty ? 1 : _sharers.length)));
+    if (_shared)
+      return tr.orderSplitEach(
+        formatCents(cents ~/ (_sharers.isEmpty ? 1 : _sharers.length)),
+      );
     if (_servings == 1) return null;
     return _basis == PriceBasis.unit
-        ? tr.orderLineSummary(_servings, formatCents(cents), formatCents(cents * _servings))
-        : tr.orderLineSummary(_servings, formatCents((cents / _servings).round()), formatCents(cents));
+        ? tr.orderLineSummary(
+            _servings,
+            formatCents(cents),
+            formatCents(cents * _servings),
+          )
+        : tr.orderLineSummary(
+            _servings,
+            formatCents((cents / _servings).round()),
+            formatCents(cents),
+          );
   }
 
   /// The full catalog, label or menu reading: the person already chosen is
@@ -286,7 +339,10 @@ class _OrderPageState extends State<OrderPage> {
       ),
     );
     // Saved over there: the outing page only needs to know something was added.
-    if (saved == true && mounted) Navigator.of(context).pop(<DrinkEntry>[]);
+    if (saved == true && mounted) {
+      setState(() => _leaving = true);
+      Navigator.of(context).pop(<DrinkEntry>[]);
+    }
   }
 
   Future<void> _save() async {
@@ -298,12 +354,17 @@ class _OrderPageState extends State<OrderPage> {
     final repo = getIt<DrinkRepository>();
     final list = OrderBuilder.build(_input(), newId: repo.newId);
     await repo.saveAll(list);
-    if (mounted) Navigator.of(context).pop(list);
+    if (mounted) {
+      setState(() => _leaving = true);
+      Navigator.of(context).pop(list);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final problems = _showErrors ? OrderBuilder.problems(_input()) : const <OrderProblem>{};
+    final problems = _showErrors
+        ? OrderBuilder.problems(_input())
+        : const <OrderProblem>{};
     final suggestions = _suggestions();
     final item = _item;
     final text = _name.text.trim();
@@ -311,402 +372,438 @@ class _OrderPageState extends State<OrderPage> {
         ? item.documentedPresentations
         : commonSizesFor(_category);
     final who = _shared ? _sharers : _units.keys;
-    return Scaffold(
-      appBar: AppBar(title: Text(tr.orderTitle)),
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpace.gutter,
-                  0,
-                  AppSpace.gutter,
-                  AppSpace.xl,
-                ),
-                children: [
-                  SectionTitle(tr.orderWhat),
-                  TextField(
-                    key: const ValueKey('order-name'),
-                    controller: _name,
-                    textCapitalization: TextCapitalization.sentences,
-                    decoration: InputDecoration(
-                      labelText: tr.orderNameLabel,
-                      hintText: tr.orderNameHint,
-                      errorText: problems.contains(OrderProblem.nameMissing)
-                          ? tr.orderErrName
-                          : null,
-                    ),
-                    onChanged: (_) => setState(() {
-                      if (_item != null &&
-                          normalizeText(_name.text) !=
-                              normalizeText(_item!.displayName)) {
-                        _item = null;
-                        _useRecipe = false;
-                      }
-                    }),
+    return PopScope(
+      canPop: _leaving || !_dirty,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _confirmDiscard();
+      },
+      child: Scaffold(
+        appBar: AppBar(title: Text(tr.orderTitle)),
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpace.gutter,
+                    0,
+                    AppSpace.gutter,
+                    AppSpace.xl,
                   ),
-                  if (item != null) ...[
-                    const SizedBox(height: AppSpace.sm),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InfoPill(
-                            tr.orderFromCatalog(item.displayName),
-                            icon: Icons.menu_book_outlined,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: _clearItem,
-                          child: Text(tr.orderUseTextOnly),
-                        ),
-                      ],
-                    ),
-                  ] else if (suggestions.isNotEmpty) ...[
-                    const SizedBox(height: AppSpace.sm),
-                    SizedBox(
-                      height: 44,
-                      child: ListView.separated(
-                        key: const ValueKey('suggestions'),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: suggestions.length,
-                        separatorBuilder: (_, _) =>
-                            const SizedBox(width: AppSpace.sm),
-                        itemBuilder: (context, i) {
-                          final s = suggestions[i];
-                          return ActionChip(
-                            key: ValueKey('suggest-${s.id}'),
-                            avatar: Icon(
-                              s.category.icon,
-                              size: 18,
-                              color: AppColors.amber,
-                            ),
-                            label: ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 200),
-                              child: Text(
-                                s.displayName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            onPressed: () => _pick(s),
-                          );
-                        },
+                  children: [
+                    SectionTitle(tr.orderWhat),
+                    TextField(
+                      key: const ValueKey('order-name'),
+                      controller: _name,
+                      textCapitalization: TextCapitalization.sentences,
+                      decoration: InputDecoration(
+                        labelText: tr.orderNameLabel,
+                        hintText: tr.orderNameHint,
+                        errorText: problems.contains(OrderProblem.nameMissing)
+                            ? tr.orderErrName
+                            : null,
                       ),
+                      onChanged: (_) => setState(() {
+                        if (_item != null &&
+                            normalizeText(_name.text) !=
+                                normalizeText(_item!.displayName)) {
+                          _item = null;
+                          _useRecipe = false;
+                        }
+                      }),
                     ),
-                  ]
-                  else if (text.length >= 2)
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppSpace.sm),
-                      child: Text(tr.orderNotInCatalog(_name.text.trim()), style: AppText.caption),
-                    ),
-                  const SizedBox(height: AppSpace.md),
-                  Text(tr.orderKind, style: AppText.caption),
-                  const SizedBox(height: AppSpace.sm),
-                  Wrap(
-                    spacing: AppSpace.sm,
-                    runSpacing: AppSpace.sm,
-                    children: [
-                      for (final c in _kinds)
-                        ChoiceChip(
-                          key: ValueKey('kind-${c.code}'),
-                          avatar: Icon(c.icon, size: 18),
-                          label: Text(c.label),
-                          selected: _category == c,
-                          showCheckmark: false,
-                          onSelected: (_) => setState(() => _category = c),
-                        ),
-                    ],
-                  ),
-                  SectionTitle(tr.orderFor),
-                  SegmentedButton<bool>(
-                    showSelectedIcon: false,
-                    segments: [
-                      ButtonSegment(value: false, label: Text(tr.orderEach)),
-                      ButtonSegment(value: true, label: Text(tr.orderSharedBottle)),
-                    ],
-                    selected: {_shared},
-                    onSelectionChanged: (s) => setState(() => _shared = s.first),
-                  ),
-                  const SizedBox(height: AppSpace.sm),
-                  Text(
-                    _shared ? tr.orderSharers : tr.orderForHint,
-                    style: AppText.caption,
-                  ),
-                  const SizedBox(height: AppSpace.sm),
-                  Wrap(
-                    spacing: AppSpace.sm,
-                    runSpacing: AppSpace.sm,
-                    children: [
-                      for (final p in _people)
-                        FilterChip(
-                          key: ValueKey('who-${p.id}'),
-                          avatar: PersonAvatar(person: p, size: 22),
-                          label: Text(p.displayName),
-                          selected: _shared
-                              ? _sharers.contains(p.id)
-                              : _units.containsKey(p.id),
-                          onSelected: (_) =>
-                              _shared ? _toggleSharer(p.id) : _toggleUnits(p.id),
-                        ),
-                    ],
-                  ),
-                  if (problems.contains(OrderProblem.nobodyPicked))
-                    _error(tr.orderErrNobody),
-                  if (problems.contains(OrderProblem.sharersNeeded))
-                    _error(tr.orderErrSharers),
-                  if (!_shared)
-                    for (final id in _units.keys.toList())
-                      _UnitsRow(
-                        person: widget.doc.participant(id)!,
-                        count: _units[id]!,
-                        onMinus: () => _step(id, -1),
-                        onPlus: () => _step(id, 1),
-                        canMinus: _units[id]! > 1,
-                      )
-                  else ...[
-                    const SizedBox(height: AppSpace.sm),
-                    for (final id in _sharers)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: AppSpace.sm),
-                        child: TextField(
-                          key: ValueKey('portion-$id'),
-                          controller: _ctl(id),
-                          keyboardType: TextInputType.number,
-                          onChanged: (_) => setState(() {}),
-                          decoration: InputDecoration(
-                            labelText: tr.orderPortionMl(
-                              widget.doc.participant(id)?.displayName ?? '?',
-                            ),
-                            helperText: tr.orderPortionHint,
-                          ),
-                        ),
-                      ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _leftover,
-                            keyboardType: TextInputType.number,
-                            onChanged: (_) => setState(() {}),
-                            decoration: InputDecoration(labelText: tr.orderLeftover),
-                          ),
-                        ),
-                        const SizedBox(width: AppSpace.md),
-                        Column(
-                          children: [
-                            Text(tr.orderBottles, style: AppText.caption),
-                            Row(
-                              children: [
-                                IconButton(
-                                  tooltip: tr.orderLess(tr.orderBottles),
-                                  onPressed: _bottles > 1
-                                      ? () => setState(() => _bottles--)
-                                      : null,
-                                  icon: const Icon(Icons.remove_circle_outline),
-                                ),
-                                Text('$_bottles', style: AppText.subtitle),
-                                IconButton(
-                                  tooltip: tr.orderMore(tr.orderBottles),
-                                  onPressed: () => setState(() => _bottles++),
-                                  icon: const Icon(Icons.add_circle_outline),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    OutlinedButton.icon(
-                      key: const ValueKey('divide-volume'),
-                      onPressed: _sharers.length >= 2 ? _divideEqually : null,
-                      icon: const Icon(Icons.balance_outlined),
-                      label: Text(tr.orderDivideVolume),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppSpace.xs),
-                      child: Text(tr.orderDivideNote, style: AppText.caption),
-                    ),
-                    if (problems.contains(OrderProblem.portionsOverBottle))
-                      _error(tr.orderErrPortions),
-                  ],
-                  const SizedBox(height: AppSpace.md),
-                  OutlinedButton.icon(
-                    key: const ValueKey('order-catalog'),
-                    onPressed: _openCatalog,
-                    icon: const Icon(Icons.menu_book_outlined),
-                    label: Text(tr.orderOpenCatalog),
-                  ),
-                  SectionTitle(tr.orderPrice),
-                  SegmentedButton<PriceKind>(
-                    showSelectedIcon: false,
-                    segments: [
-                      ButtonSegment(
-                        value: PriceKind.informed,
-                        label: Text(tr.entryPriceValue),
-                      ),
-                      ButtonSegment(
-                        value: PriceKind.complimentary,
-                        label: Text(tr.priceComplimentary),
-                      ),
-                      ButtonSegment(
-                        value: PriceKind.unknown,
-                        label: Text(tr.entryPriceDontKnow),
-                      ),
-                    ],
-                    selected: {_kind},
-                    onSelectionChanged: (s) => setState(() => _kind = s.first),
-                  ),
-                  if (_kind == PriceKind.informed) ...[
-                    if (!_shared && _servings > 1) ...[
+                    if (item != null) ...[
                       const SizedBox(height: AppSpace.sm),
-                      SegmentedButton<PriceBasis>(
-                        showSelectedIcon: false,
-                        segments: [
-                          ButtonSegment(
-                            value: PriceBasis.unit,
-                            label: Text(tr.orderPriceEach),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: InfoPill(
+                              tr.orderFromCatalog(item.displayName),
+                              icon: Icons.menu_book_outlined,
+                            ),
                           ),
-                          ButtonSegment(
-                            value: PriceBasis.total,
-                            label: Text(tr.orderPriceTotal),
+                          TextButton(
+                            onPressed: _clearItem,
+                            child: Text(tr.orderUseTextOnly),
                           ),
                         ],
-                        selected: {_basis},
-                        onSelectionChanged: (s) => setState(() => _basis = s.first),
                       ),
-                    ],
-                    const SizedBox(height: AppSpace.sm),
-                    MoneyField(
-                      key: const ValueKey('order-price'),
-                      controller: _price,
-                      onChanged: (_) => setState(() {}),
-                      label: _shared
-                          ? tr.orderPriceBottleLabel
-                          : (_servings > 1 && _basis == PriceBasis.total
-                                ? tr.orderPriceTotalLabel
-                                : (_servings > 1
-                                      ? tr.orderPriceEachLabel
-                                      : tr.entryPriceValue)),
-                      helper: !_shared && _servings > 1 && _basis == PriceBasis.total
-                          ? tr.orderPriceTotalHelper
-                          : _summaryLine(),
-                      errorText: problems.contains(OrderProblem.priceMissing)
-                          ? tr.orderErrPrice
-                          : null,
-                    ),
-                  ] else
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppSpace.sm),
-                      child: Text(
-                        _kind == PriceKind.complimentary
-                            ? tr.entryComplimentaryNote(formatCents(0))
-                            : tr.entryNoPriceNote,
-                        style: AppText.caption,
-                      ),
-                    ),
-                  const SizedBox(height: AppSpace.md),
-                  Theme(
-                    data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-                    child: ExpansionTile(
-                      key: const ValueKey('order-details'),
-                      tilePadding: EdgeInsets.zero,
-                      title: Text(tr.orderDetails, style: AppText.subtitle),
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Wrap(
-                            spacing: AppSpace.sm,
-                            runSpacing: AppSpace.sm,
-                            children: [
-                              for (final p in sizes)
-                                ChoiceChip(
-                                  label: Text(p.label),
-                                  selected: _volume.text == '${p.volumeMl}',
-                                  showCheckmark: false,
-                                  onSelected: (_) => setState(() {
-                                    _volume.text = '${p.volumeMl}';
-                                    _presentationLabel = p.isSuggestion ? null : p.label;
-                                  }),
+                    ] else if (suggestions.isNotEmpty) ...[
+                      const SizedBox(height: AppSpace.sm),
+                      SizedBox(
+                        height: 44,
+                        child: ListView.separated(
+                          key: const ValueKey('suggestions'),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: suggestions.length,
+                          separatorBuilder: (_, _) =>
+                              const SizedBox(width: AppSpace.sm),
+                          itemBuilder: (context, i) {
+                            final s = suggestions[i];
+                            return ActionChip(
+                              key: ValueKey('suggest-${s.id}'),
+                              avatar: Icon(
+                                s.category.icon,
+                                size: 18,
+                                color: AppColors.amber,
+                              ),
+                              label: ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 200,
                                 ),
-                            ],
-                          ),
+                                child: Text(
+                                  s.displayName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              onPressed: () => _pick(s),
+                            );
+                          },
                         ),
-                        const SizedBox(height: AppSpace.xs),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(tr.orderVolumeNote, style: AppText.caption),
+                      ),
+                    ] else if (text.length >= 2)
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppSpace.sm),
+                        child: Text(
+                          tr.orderNotInCatalog(_name.text.trim()),
+                          style: AppText.caption,
                         ),
-                        const SizedBox(height: AppSpace.sm),
-                        TextField(
-                          key: const ValueKey('order-volume'),
-                          controller: _volume,
-                          keyboardType: TextInputType.number,
-                          onChanged: (_) => setState(() => _presentationLabel = null),
-                          decoration: InputDecoration(
-                            labelText: tr.orderVolume,
-                            errorText: problems.contains(OrderProblem.volumeInvalid)
-                                ? tr.orderErrVolume
-                                : null,
-                          ),
-                        ),
-                        const SizedBox(height: AppSpace.md),
-                        TextField(
-                          key: const ValueKey('order-abv'),
-                          controller: _abv,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                          decoration: InputDecoration(
-                            labelText: tr.orderAbv,
-                            errorText: problems.contains(OrderProblem.abvInvalid)
-                                ? tr.orderErrAbv
-                                : null,
-                          ),
-                        ),
-                        if (item?.recipe != null)
-                          SwitchListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(tr.orderUseRecipe),
-                            subtitle: Text(tr.orderUseRecipeNote),
-                            value: _useRecipe,
-                            activeThumbColor: AppColors.amber,
-                            onChanged: (v) => setState(() => _useRecipe = v),
+                      ),
+                    const SizedBox(height: AppSpace.md),
+                    Text(tr.orderKind, style: AppText.caption),
+                    const SizedBox(height: AppSpace.sm),
+                    Wrap(
+                      spacing: AppSpace.sm,
+                      runSpacing: AppSpace.sm,
+                      children: [
+                        for (final c in _kinds)
+                          ChoiceChip(
+                            key: ValueKey('kind-${c.code}'),
+                            avatar: Icon(c.icon, size: 18),
+                            label: Text(c.label),
+                            selected: _category == c,
+                            showCheckmark: false,
+                            onSelected: (_) => setState(() => _category = c),
                           ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-            BottomActionBar(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (who.isNotEmpty && text.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpace.sm),
-                      child: Text(
-                        '${tr.orderSummaryFor(_namesOf(who))} · $text',
-                        key: const ValueKey('order-summary'),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppText.caption,
+                    SectionTitle(tr.orderFor),
+                    SegmentedButton<bool>(
+                      showSelectedIcon: false,
+                      segments: [
+                        ButtonSegment(value: false, label: Text(tr.orderEach)),
+                        ButtonSegment(
+                          value: true,
+                          label: Text(tr.orderSharedBottle),
+                        ),
+                      ],
+                      selected: {_shared},
+                      onSelectionChanged: (s) =>
+                          setState(() => _shared = s.first),
+                    ),
+                    const SizedBox(height: AppSpace.sm),
+                    Text(
+                      _shared ? tr.orderSharers : tr.orderForHint,
+                      style: AppText.caption,
+                    ),
+                    const SizedBox(height: AppSpace.sm),
+                    Wrap(
+                      spacing: AppSpace.sm,
+                      runSpacing: AppSpace.sm,
+                      children: [
+                        for (final p in _people)
+                          FilterChip(
+                            key: ValueKey('who-${p.id}'),
+                            avatar: PersonAvatar(person: p, size: 22),
+                            label: Text(p.displayName),
+                            selected: _shared
+                                ? _sharers.contains(p.id)
+                                : _units.containsKey(p.id),
+                            onSelected: (_) => _shared
+                                ? _toggleSharer(p.id)
+                                : _toggleUnits(p.id),
+                          ),
+                      ],
+                    ),
+                    if (problems.contains(OrderProblem.nobodyPicked))
+                      _error(tr.orderErrNobody),
+                    if (problems.contains(OrderProblem.sharersNeeded))
+                      _error(tr.orderErrSharers),
+                    if (!_shared)
+                      for (final id in _units.keys.toList())
+                        _UnitsRow(
+                          person: widget.doc.participant(id)!,
+                          count: _units[id]!,
+                          onMinus: () => _step(id, -1),
+                          onPlus: () => _step(id, 1),
+                          canMinus: _units[id]! > 1,
+                        )
+                    else ...[
+                      const SizedBox(height: AppSpace.sm),
+                      for (final id in _sharers)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                          child: TextField(
+                            key: ValueKey('portion-$id'),
+                            controller: _ctl(id),
+                            keyboardType: TextInputType.number,
+                            onChanged: (_) => setState(() {}),
+                            decoration: InputDecoration(
+                              labelText: tr.orderPortionMl(
+                                widget.doc.participant(id)?.displayName ?? '?',
+                              ),
+                              helperText: tr.orderPortionHint,
+                            ),
+                          ),
+                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _leftover,
+                              keyboardType: TextInputType.number,
+                              onChanged: (_) => setState(() {}),
+                              decoration: InputDecoration(
+                                labelText: tr.orderLeftover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: AppSpace.md),
+                          Column(
+                            children: [
+                              Text(tr.orderBottles, style: AppText.caption),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    tooltip: tr.orderLess(tr.orderBottles),
+                                    onPressed: _bottles > 1
+                                        ? () => setState(() => _bottles--)
+                                        : null,
+                                    icon: const Icon(
+                                      Icons.remove_circle_outline,
+                                    ),
+                                  ),
+                                  Text('$_bottles', style: AppText.subtitle),
+                                  IconButton(
+                                    tooltip: tr.orderMore(tr.orderBottles),
+                                    onPressed: () => setState(() => _bottles++),
+                                    icon: const Icon(Icons.add_circle_outline),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      OutlinedButton.icon(
+                        key: const ValueKey('divide-volume'),
+                        onPressed: _sharers.length >= 2 ? _divideEqually : null,
+                        icon: const Icon(Icons.balance_outlined),
+                        label: Text(tr.orderDivideVolume),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppSpace.xs),
+                        child: Text(tr.orderDivideNote, style: AppText.caption),
+                      ),
+                      if (problems.contains(OrderProblem.portionsOverBottle))
+                        _error(tr.orderErrPortions),
+                    ],
+                    const SizedBox(height: AppSpace.md),
+                    OutlinedButton.icon(
+                      key: const ValueKey('order-catalog'),
+                      onPressed: _openCatalog,
+                      icon: const Icon(Icons.menu_book_outlined),
+                      label: Text(tr.orderOpenCatalog),
+                    ),
+                    SectionTitle(tr.orderPrice),
+                    SegmentedButton<PriceKind>(
+                      showSelectedIcon: false,
+                      segments: [
+                        ButtonSegment(
+                          value: PriceKind.informed,
+                          label: Text(tr.entryPriceValue),
+                        ),
+                        ButtonSegment(
+                          value: PriceKind.complimentary,
+                          label: Text(tr.priceComplimentary),
+                        ),
+                        ButtonSegment(
+                          value: PriceKind.unknown,
+                          label: Text(tr.entryPriceDontKnow),
+                        ),
+                      ],
+                      selected: {_kind},
+                      onSelectionChanged: (s) =>
+                          setState(() => _kind = s.first),
+                    ),
+                    if (_kind == PriceKind.informed) ...[
+                      if (!_shared && _servings > 1) ...[
+                        const SizedBox(height: AppSpace.sm),
+                        SegmentedButton<PriceBasis>(
+                          showSelectedIcon: false,
+                          segments: [
+                            ButtonSegment(
+                              value: PriceBasis.unit,
+                              label: Text(tr.orderPriceEach),
+                            ),
+                            ButtonSegment(
+                              value: PriceBasis.total,
+                              label: Text(tr.orderPriceTotal),
+                            ),
+                          ],
+                          selected: {_basis},
+                          onSelectionChanged: (s) =>
+                              setState(() => _basis = s.first),
+                        ),
+                      ],
+                      const SizedBox(height: AppSpace.sm),
+                      MoneyField(
+                        key: const ValueKey('order-price'),
+                        controller: _price,
+                        onChanged: (_) => setState(() {}),
+                        label: _shared
+                            ? tr.orderPriceBottleLabel
+                            : (_servings > 1 && _basis == PriceBasis.total
+                                  ? tr.orderPriceTotalLabel
+                                  : (_servings > 1
+                                        ? tr.orderPriceEachLabel
+                                        : tr.entryPriceValue)),
+                        helper:
+                            !_shared &&
+                                _servings > 1 &&
+                                _basis == PriceBasis.total
+                            ? tr.orderPriceTotalHelper
+                            : _summaryLine(),
+                        errorText: problems.contains(OrderProblem.priceMissing)
+                            ? tr.orderErrPrice
+                            : null,
+                      ),
+                    ] else
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppSpace.sm),
+                        child: Text(
+                          _kind == PriceKind.complimentary
+                              ? tr.entryComplimentaryNote(formatCents(0))
+                              : tr.entryNoPriceNote,
+                          style: AppText.caption,
+                        ),
+                      ),
+                    const SizedBox(height: AppSpace.md),
+                    Theme(
+                      data: Theme.of(context)
+                          .copyWith(dividerColor: Colors.transparent),
+                      child: ExpansionTile(
+                        key: const ValueKey('order-details'),
+                        tilePadding: EdgeInsets.zero,
+                        title: Text(tr.orderDetails, style: AppText.subtitle),
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Wrap(
+                              spacing: AppSpace.sm,
+                              runSpacing: AppSpace.sm,
+                              children: [
+                                for (final p in sizes)
+                                  ChoiceChip(
+                                    label: Text(p.label),
+                                    selected: _volume.text == '${p.volumeMl}',
+                                    showCheckmark: false,
+                                    onSelected: (_) => setState(() {
+                                      _volume.text = '${p.volumeMl}';
+                                      _presentationLabel = p.isSuggestion
+                                          ? null
+                                          : p.label;
+                                    }),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: AppSpace.xs),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              tr.orderVolumeNote,
+                              style: AppText.caption,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpace.sm),
+                          TextField(
+                            key: const ValueKey('order-volume'),
+                            controller: _volume,
+                            keyboardType: TextInputType.number,
+                            onChanged: (_) =>
+                                setState(() => _presentationLabel = null),
+                            decoration: InputDecoration(
+                              labelText: tr.orderVolume,
+                              errorText:
+                                  problems.contains(OrderProblem.volumeInvalid)
+                                  ? tr.orderErrVolume
+                                  : null,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpace.md),
+                          TextField(
+                            key: const ValueKey('order-abv'),
+                            controller: _abv,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            decoration: InputDecoration(
+                              labelText: tr.orderAbv,
+                              errorText:
+                                  problems.contains(OrderProblem.abvInvalid)
+                                  ? tr.orderErrAbv
+                                  : null,
+                            ),
+                          ),
+                          if (item?.recipe != null)
+                            SwitchListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: Text(tr.orderUseRecipe),
+                              subtitle: Text(tr.orderUseRecipeNote),
+                              value: _useRecipe,
+                              activeThumbColor: AppColors.amber,
+                              onChanged: (v) => setState(() => _useRecipe = v),
+                            ),
+                        ],
                       ),
                     ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      key: const ValueKey('order-save'),
-                      onPressed: _save,
-                      icon: const Icon(Icons.check_rounded),
-                      label: Text(tr.orderSave),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              BottomActionBar(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (who.isNotEmpty && text.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: AppSpace.sm),
+                        child: Text(
+                          '${tr.orderSummaryFor(_namesOf(who))} · $text',
+                          key: const ValueKey('order-summary'),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppText.caption,
+                        ),
+                      ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        key: const ValueKey('order-save'),
+                        onPressed: _save,
+                        icon: const Icon(Icons.check_rounded),
+                        label: Text(tr.orderSave),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -750,7 +847,11 @@ class _UnitsRow extends StatelessWidget {
           ),
           SizedBox(
             width: 32,
-            child: Text('$count', textAlign: TextAlign.center, style: AppText.title),
+            child: Text(
+              '$count',
+              textAlign: TextAlign.center,
+              style: AppText.title,
+            ),
           ),
           IconButton(
             tooltip: tr.orderMore(person.displayName),
