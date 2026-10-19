@@ -165,8 +165,8 @@ deu **24 já existentes** (13 drinks que já tinham receita ou produto, 3 chopes
 91 drinks (inclui Spritzgerald e Fitzgerald), 46 vinhos e espumantes, 23 cervejas, 10 chopes. Nenhum ID existente mudou ou sumiu
 (`catalog_tool.py ids`: lost none, renamed none, values changed none).
 
-Antes: 136 produtos, 62 marcas. Depois: **306 produtos**, 72 marcas, 15 receitas (inalteradas). Aliases de busca: `chope spaten`/`chopp spaten`
-e equivalentes para Patagonia Weisse e Amber Lager (6 aliases). 13 atalhos genéricos novos no app (sem teor nem volume): Chope IPA, Chope de
+Contagem de **produtos** (`assets/catalog/catalog_v1.json`): antes 136 produtos, 62 marcas; depois **306 produtos** (136 + 170: 91 drinks + 46 vinhos/espumantes + 23 cervejas + 10 chopes), 72 marcas; 15 receitas de referência inalteradas. Aliases de busca: `chope spaten`/`chopp spaten`
+e equivalentes para Patagonia Weisse e Amber Lager (6 aliases). **Fora dos 306**: 13 atalhos genéricos novos, que vivem no código (`CatalogSource`, não no JSON) e não contam como produtos, sem teor nem volume: Chope IPA, Chope de
 trigo, Vinho rosé, Espumante brut, Espumante moscatel, Sangria, Clericot, Batida, Caipirinha de fruta, Cozumel, Dose de destilado,
 Energético, Drink sem álcool (+ alias "drink da casa").
 
