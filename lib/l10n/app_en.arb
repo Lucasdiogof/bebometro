@@ -1516,6 +1516,7 @@
   "formPortionsTitle": "How much each person had",
   "formPortionsHint": "Leave blank if you do not know: it stays unknown, never zero. The sum cannot exceed the bottle size.",
   "formPortionMl": "ml",
+  "drinkCountYours": "{count, plural, =1{1 drink of yours} other{{count} drinks of yours}}",
   "gameTurnOf": "Turn: {name}",
   "gameTruthOrDareQ": "Truth or dare?",
   "gameNoTruthLeft": "Out of truth cards. Pick another.",

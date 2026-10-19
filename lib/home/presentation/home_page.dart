@@ -17,6 +17,7 @@ import 'feedback_details_sheet.dart';
 import 'feedback_sheet.dart';
 import '../../outings/domain/outing.dart';
 import 'home_cubit.dart';
+import '../../tab/data/tab_repository.dart';
 import '../../l10n/l10n.dart';
 
 class HomePage extends StatelessWidget {
@@ -381,7 +382,9 @@ class _LastOutingCard extends StatelessWidget {
                 Text(
                   [
                     formatDate(o.startedAt),
-                    tr.drinkCount(s.entryCount),
+                    getIt<TabRepository>().load(o.id).participants.length > 1
+                        ? tr.drinkCountYours(s.entryCount)
+                        : tr.drinkCount(s.entryCount),
                     if (s.pricedCount > 0) formatCents(s.informedCents),
                   ].join(' · '),
                   style: AppText.caption,

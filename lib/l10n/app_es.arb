@@ -1516,6 +1516,7 @@
   "formPortionsTitle": "Cuánto tomó cada persona",
   "formPortionsHint": "Déjalo en blanco si no lo sabes: queda desconocido, nunca cero. La suma no puede superar el tamaño de la botella.",
   "formPortionMl": "ml",
+  "drinkCountYours": "{count, plural, =1{1 bebida tuya} other{{count} bebidas tuyas}}",
   "gameTurnOf": "Turno: {name}",
   "gameTruthOrDareQ": "¿Verdad o reto?",
   "gameNoTruthLeft": "Se acabaron las cartas de verdad. Elige otra.",

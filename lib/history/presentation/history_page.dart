@@ -13,6 +13,7 @@ import '../../places/presentation/places_page.dart';
 import '../../stats/presentation/stats_page.dart';
 import '../../outings/presentation/outing_summary_page.dart';
 import 'history_cubit.dart';
+import '../../tab/data/tab_repository.dart';
 import '../../l10n/l10n.dart';
 
 class HistoryPage extends StatelessWidget {
@@ -239,7 +240,7 @@ class _OutingCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpace.xs),
                 Text(
-                  '${tr.drinkCount(s.entryCount)}'
+                  '${getIt<TabRepository>().load(o.id).participants.length > 1 ? tr.drinkCountYours(s.entryCount) : tr.drinkCount(s.entryCount)}'
                   ' · ${s.volumeLabel}',
                   style: AppText.caption.copyWith(color: AppColors.text),
                 ),

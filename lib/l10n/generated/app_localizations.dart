@@ -9207,6 +9207,12 @@ abstract class AppLocalizations {
   /// **'ml'**
   String get formPortionMl;
 
+  /// No description provided for @drinkCountYours.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 bebida sua} other{{count} bebidas suas}}'**
+  String drinkCountYours(int count);
+
   /// No description provided for @gameTurnOf.
   ///
   /// In pt, this message translates to:

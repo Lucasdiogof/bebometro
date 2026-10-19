@@ -5720,6 +5720,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get formPortionMl => 'ml';
 
   @override
+  String drinkCountYours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count drinks of yours',
+      one: '1 drink of yours',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String gameTurnOf(String name) {
     return 'Turn: $name';
   }

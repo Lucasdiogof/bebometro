@@ -3634,6 +3634,14 @@
   "formPortionsTitle": "Quanto cada pessoa tomou",
   "formPortionsHint": "Deixe em branco se não souber: fica desconhecido, nunca zero. A soma não pode passar do tamanho da garrafa.",
   "formPortionMl": "ml",
+  "drinkCountYours": "{count, plural, =1{1 bebida sua} other{{count} bebidas suas}}",
+  "@drinkCountYours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "gameTurnOf": "Vez de {name}",
   "@gameTurnOf": {
     "placeholders": {
