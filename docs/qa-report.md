@@ -199,3 +199,9 @@ iPhone/Live Activity/compartilhamento iOS, caixa de e-mail de QA (código de 6 d
 - **Recuperação por código, parte observável sem e-mail:** "Já tenho um código" + código errado: erro no campo, e a tela de nova senha **não** abre. Não foi pedido
   envio de código (não há caixa de QA). A mensagem de erro aparecia cortada ("…ask for a ne…"); agora admite 2 linhas.
 - `flutter analyze`: sem erros/avisos; 42 testes passaram.
+
+### Conferência independente da correção de saída da conta (19/10, `adddc56`, Android release)
+Em outro ambiente (emulador Android 17, APK release gerado do `main`): Ajustes → Minha conta → Sair → confirmar levou à tela de entrada sem tela de
+erro; entrar de novo trouxe o rolê em andamento e os totais (4 bebidas), sem exceção de provedor no log (os `SIGABRT` repetidos são do processo do
+sistema `android.hardwar`). `flutter analyze`: 18 itens, todos `info` de estilo (sem erros nem avisos); 42 testes passando. iPhone continua sem validação.
+
