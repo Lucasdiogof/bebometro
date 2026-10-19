@@ -427,7 +427,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get budgetOptionalNote =>
-      'Optional. It only compares with the spending you entered.';
+      'Optional. It only compares with the spending entered on your own drinks; what the table spends stays in the bill.';
 
   @override
   String budgetOver(String amount) {
@@ -1435,7 +1435,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get summarySpending => 'Spending';
 
   @override
-  String get summarySpentOnDrinks => 'Spending logged on drinks';
+  String get summarySpentOnDrinks => 'Your spending logged on drinks';
 
   @override
   String get summaryStart => 'Start';
@@ -4873,7 +4873,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyEmptyBody => 'When you end an outing, it shows up here.';
 
   @override
-  String get historySearchHint => 'Search by place name';
+  String get historySearchHint => 'Search by place, drink or person';
 
   @override
   String get historyNoMatchTitle => 'No outing with these filters';

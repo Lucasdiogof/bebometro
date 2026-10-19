@@ -222,7 +222,7 @@
     }
   },
   "budgetMustBePositive": "Informe um valor maior que zero",
-  "budgetOptionalNote": "Opcional. Compara só com os gastos que você informou.",
+  "budgetOptionalNote": "Opcional. Compara só com os gastos informados nas suas bebidas; o que a mesa gasta fica na comanda.",
   "budgetOver": "Passou {amount} do orçamento.",
   "@budgetOver": {
     "placeholders": {
@@ -819,7 +819,7 @@
   "summaryRetro": "Retrospectiva ilustrativa dos registros. Os números reais estão abaixo.",
   "summaryShare": "Compartilhar resumo",
   "summarySpending": "Gastos",
-  "summarySpentOnDrinks": "Gastos registrados em bebidas",
+  "summarySpentOnDrinks": "Seus gastos registrados em bebidas",
   "summaryStart": "Início",
   "summaryTab": "Comanda",
   "summaryTapToCorrect": "Toque em um registro para corrigir; o resumo se recalcula.",
@@ -3121,7 +3121,7 @@
   "recordsUnknownVolume": "volume desconhecido",
   "historyEmptyTitle": "Nenhum rolê encerrado",
   "historyEmptyBody": "Quando você encerrar um rolê, ele aparece aqui.",
-  "historySearchHint": "Buscar pelo nome do local",
+  "historySearchHint": "Buscar por local, bebida ou pessoa",
   "historyNoMatchTitle": "Nenhum rolê com esses filtros",
   "historyNoMatchBody": "Tente outro nome, período ou tipo.",
   "historyPeriodAll": "Tudo",

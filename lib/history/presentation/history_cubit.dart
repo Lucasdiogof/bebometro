@@ -7,6 +7,7 @@ import '../../drinks/data/drink_repository.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/domain/outing.dart';
 import '../../outings/domain/outing_summary.dart';
+import '../../tab/data/tab_repository.dart';
 import '../../l10n/l10n.dart';
 
 class HistoryItem {
@@ -54,7 +55,8 @@ class HistoryState {
 }
 
 class HistoryCubit extends Cubit<HistoryState> {
-  HistoryCubit(this._outings, this._drinks) : super(const HistoryState()) {
+  HistoryCubit(this._outings, this._drinks, [this._tabs])
+    : super(const HistoryState()) {
     _subs = [
       _outings.changes.listen((_) => load()),
       _drinks.changes.listen((_) => load()),
@@ -64,6 +66,7 @@ class HistoryCubit extends Cubit<HistoryState> {
 
   final OutingRepository _outings;
   final DrinkRepository _drinks;
+  final TabRepository? _tabs;
   late final List<StreamSubscription<void>> _subs;
 
   String _query = '';
@@ -112,8 +115,15 @@ class HistoryCubit extends Cubit<HistoryState> {
       if (!inPeriod(o)) return false;
       if (_type != null && o.type != _type) return false;
       if (q.isNotEmpty) {
-        final name = normalizeText('${o.nickname ?? ''} ${o.address ?? ''}');
-        if (!q.split(' ').every(name.contains)) return false;
+        // Place, drinks of the outing and the people who were there.
+        final people = _tabs == null
+            ? const <String>[]
+            : [for (final p in _tabs.load(o.id).participants) p.displayName];
+        final drinks = [for (final e in _drinks.entriesFor(o.id)) e.name];
+        final name = searchKey(
+          '${o.nickname ?? ''} ${o.address ?? ''} ${drinks.join(' ')} ${people.join(' ')}',
+        );
+        if (!searchKey(q).split(' ').every(name.contains)) return false;
       }
       return true;
     });

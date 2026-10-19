@@ -727,7 +727,7 @@ abstract class AppLocalizations {
   /// No description provided for @budgetOptionalNote.
   ///
   /// In pt, this message translates to:
-  /// **'Opcional. Compara só com os gastos que você informou.'**
+  /// **'Opcional. Compara só com os gastos informados nas suas bebidas; o que a mesa gasta fica na comanda.'**
   String get budgetOptionalNote;
 
   /// No description provided for @budgetOver.
@@ -2353,7 +2353,7 @@ abstract class AppLocalizations {
   /// No description provided for @summarySpentOnDrinks.
   ///
   /// In pt, this message translates to:
-  /// **'Gastos registrados em bebidas'**
+  /// **'Seus gastos registrados em bebidas'**
   String get summarySpentOnDrinks;
 
   /// No description provided for @summaryStart.
@@ -7866,7 +7866,7 @@ abstract class AppLocalizations {
   /// No description provided for @historySearchHint.
   ///
   /// In pt, this message translates to:
-  /// **'Buscar pelo nome do local'**
+  /// **'Buscar por local, bebida ou pessoa'**
   String get historySearchHint;
 
   /// No description provided for @historyNoMatchTitle.

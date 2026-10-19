@@ -427,7 +427,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get budgetOptionalNote =>
-      'Opcional. Compara só com os gastos que você informou.';
+      'Opcional. Compara só com os gastos informados nas suas bebidas; o que a mesa gasta fica na comanda.';
 
   @override
   String budgetOver(String amount) {
@@ -1433,7 +1433,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get summarySpending => 'Gastos';
 
   @override
-  String get summarySpentOnDrinks => 'Gastos registrados em bebidas';
+  String get summarySpentOnDrinks => 'Seus gastos registrados em bebidas';
 
   @override
   String get summaryStart => 'Início';
@@ -4888,7 +4888,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Quando você encerrar um rolê, ele aparece aqui.';
 
   @override
-  String get historySearchHint => 'Buscar pelo nome do local';
+  String get historySearchHint => 'Buscar por local, bebida ou pessoa';
 
   @override
   String get historyNoMatchTitle => 'Nenhum rolê com esses filtros';

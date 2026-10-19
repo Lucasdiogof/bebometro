@@ -239,7 +239,11 @@ class AccountScope {
         ),
       )
       ..registerFactory<HistoryCubit>(
-        () => HistoryCubit(getIt<OutingRepository>(), getIt<DrinkRepository>()),
+        () => HistoryCubit(
+          getIt<OutingRepository>(),
+          getIt<DrinkRepository>(),
+          getIt<TabRepository>(),
+        ),
       )
       ..registerFactory<SettingsCubit>(
         () =>

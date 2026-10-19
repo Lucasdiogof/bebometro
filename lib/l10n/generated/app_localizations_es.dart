@@ -430,7 +430,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get budgetOptionalNote =>
-      'Opcional. Solo compara con los gastos que informaste.';
+      'Opcional. Solo compara con los gastos informados en tus bebidas; lo que gasta la mesa queda en la cuenta.';
 
   @override
   String budgetOver(String amount) {
@@ -1440,7 +1440,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get summarySpending => 'Gastos';
 
   @override
-  String get summarySpentOnDrinks => 'Gastos registrados en bebidas';
+  String get summarySpentOnDrinks => 'Tus gastos registrados en bebidas';
 
   @override
   String get summaryStart => 'Inicio';
@@ -4901,7 +4901,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get historyEmptyBody => 'Cuando termines una salida, aparece aquí.';
 
   @override
-  String get historySearchHint => 'Buscar por el nombre del lugar';
+  String get historySearchHint => 'Buscar por lugar, bebida o persona';
 
   @override
   String get historyNoMatchTitle => 'Ninguna salida con estos filtros';
