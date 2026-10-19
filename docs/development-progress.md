@@ -131,3 +131,6 @@ conferência de referências/intervalos/traduções) e `flutter gen-l10n`.
 - **Ainda pendente:** offline/reabrir/reconectar, segunda instalação, conflito de comanda, fonte ampliada, espanhol na tela, Desfazer da exclusão pela UI, Android (emulador sem WHPX), iOS/Live Activity.
 - **Próxima ação exata:** liberar o emulador ou um aparelho Android e repetir os cenários F (offline) e G (tela bloqueada); revisar na tela o rótulo "Logged spend" / "Gasto informado" a 360 px após o rebuild.
 - **Dados de QA no servidor:** rolê "Bar QA Mesa" na conta do responsável (tem 1 pagamento e 2 Spritzgerald da Ana); pode ser excluído por ele.
+
+### Fechamento (19/10/2026)
+Ver "Fechamento da entrega" em `docs/qa-report.md`: contagens "Itens" x "pedidos" separadas; barra inferior conferida; cenário principal com evidência na aba Cuenta; offline reaberto sem rede comprovado na web (simulado); teste de fonte 1,0/1,3/2,0 a 360 px (automatizado); 111 testes, analyze e build web OK. Pendentes: Android/iOS, segunda instalação, conflito entre aparelhos.
