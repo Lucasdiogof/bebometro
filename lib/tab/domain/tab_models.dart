@@ -92,26 +92,51 @@ enum DiscountKind {
 /// A person of the table, known only by a nickname inside this tab. The id is
 /// the identity; the name can change freely.
 class Participant {
-  const Participant({required this.id, required this.name, this.isMe = false});
+  const Participant({
+    required this.id,
+    required this.name,
+    this.isMe = false,
+    this.left = false,
+  });
 
   final String id;
   final String name;
   final bool isMe;
+
+  /// The person left the outing. They stay on every order they were part of,
+  /// but are not selected by default for new items ("everybody present").
+  final bool left;
 
   /// The name to show. The automatic "me" person keeps showing in the
   /// language on screen until the user renames it.
   String get displayName =>
       isMe && const {'Você', 'You', 'Tú'}.contains(name) ? tr.tabMe : name;
 
-  Participant copyWith({String? name}) =>
-      Participant(id: id, name: name ?? this.name, isMe: isMe);
+  /// First letter, to tell people apart next to the name (names can repeat).
+  String get initial {
+    final t = displayName.trim();
+    return t.isEmpty ? '?' : String.fromCharCode(t.runes.first).toUpperCase();
+  }
 
-  Map<String, dynamic> toJson() => {'id': id, 'name': name, 'me': isMe};
+  Participant copyWith({String? name, bool? left}) => Participant(
+    id: id,
+    name: name ?? this.name,
+    isMe: isMe,
+    left: left ?? this.left,
+  );
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'me': isMe,
+    if (left) 'left': true,
+  };
 
   factory Participant.fromJson(Map<String, dynamic> j) => Participant(
     id: j['id'] as String,
     name: j['name'] as String? ?? '',
     isMe: j['me'] as bool? ?? false,
+    left: j['left'] as bool? ?? false,
   );
 }
 
@@ -329,9 +354,24 @@ class TabDoc {
     this.equalIds = const [],
     this.custom = const {},
     this.payments = const [],
+    this.autoLink = false,
   });
 
   factory TabDoc.empty(String outingId) => TabDoc(outingId: outingId);
+
+  /// An outing started with people: every live drink record of the outing is on
+  /// the tab by itself (no second write), shared by what each person ordered.
+  factory TabDoc.forTable(String outingId, Participant me) => TabDoc(
+    outingId: outingId,
+    participants: [me],
+    equalIds: [me.id],
+    mode: SplitMode.item,
+    autoLink: true,
+  );
+
+  /// Every record of the outing counts on the tab (see [TabDoc.forTable]).
+  /// False for tabs made before people existed: those keep their explicit links.
+  final bool autoLink;
 
   final String outingId;
   final List<Participant> participants;
@@ -360,6 +400,12 @@ class TabDoc {
       extras.isEmpty &&
       links.isEmpty &&
       payments.isEmpty;
+
+  /// People still at the table (not marked as left), in order.
+  List<Participant> get present => [
+    for (final p in participants)
+      if (!p.left) p,
+  ];
 
   Participant? get me {
     for (final p in participants) {
@@ -399,6 +445,7 @@ class TabDoc {
     List<String>? equalIds,
     Map<String, int>? custom,
     List<TabPayment>? payments,
+    bool? autoLink,
   }) => TabDoc(
     outingId: outingId,
     participants: participants ?? this.participants,
@@ -412,6 +459,7 @@ class TabDoc {
     equalIds: equalIds ?? this.equalIds,
     custom: custom ?? this.custom,
     payments: payments ?? this.payments,
+    autoLink: autoLink ?? this.autoLink,
   );
 
   Map<String, dynamic> toJson() => {
@@ -426,6 +474,7 @@ class TabDoc {
     'equal_ids': equalIds,
     'custom': custom,
     'payments': [for (final p in payments) p.toJson()],
+    if (autoLink) 'auto_link': true,
   };
 
   factory TabDoc.fromJson(String outingId, Map<String, dynamic> j) {
@@ -450,6 +499,7 @@ class TabDoc {
       equalIds: (j['equal_ids'] as List?)?.cast<String>() ?? const [],
       custom: custom,
       payments: list('payments', TabPayment.fromJson),
+      autoLink: j['auto_link'] as bool? ?? false,
     );
   }
 }

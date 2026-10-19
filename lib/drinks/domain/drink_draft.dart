@@ -38,6 +38,8 @@ class DrinkDraft {
     this.composition,
     this.reference,
     this.entryOrigin,
+    this.consumerId,
+    this.portions,
   });
 
   factory DrinkDraft.fromItem(
@@ -128,10 +130,52 @@ class DrinkDraft {
     // A correction keeps the record's origin; a new record gets only the
     // origin it is given (never the template's).
     entryOrigin: asNew ? origin : e.entryOrigin,
+    consumerId: e.consumerId,
+    portions: e.portions,
   );
 
   /// Lock-screen origin carried to the saved record (see [EntryOrigin]).
   final EntryOrigin? entryOrigin;
+
+  /// Who drank it (see [DrinkEntry.consumerId]; null is the owner) and the
+  /// per-person portions of a shared bottle (see [DrinkEntry.portions]).
+  final String? consumerId;
+  final Map<String, int?>? portions;
+
+  DrinkDraft withConsumer(String? id) => DrinkDraft(
+    name: name,
+    category: category,
+    brand: brand,
+    style: style,
+    catalogItemId: catalogItemId,
+    ingredients: ingredients,
+    origin: origin,
+    note: note,
+    consumedAt: consumedAt,
+    presentationLabel: presentationLabel,
+    containerMl: containerMl,
+    abvPercent: abvPercent,
+    abvSource: abvSource,
+    priceKind: priceKind,
+    paidCents: paidCents,
+    billTotalCents: billTotalCents,
+    paidEdited: paidEdited,
+    isShared: isShared,
+    peopleCount: peopleCount,
+    personalMl: personalMl,
+    leftoverMl: leftoverMl,
+    personalEdited: personalEdited,
+    existing: existing,
+    notBefore: notBefore,
+    notAfter: notAfter,
+    composition: composition,
+    reference: reference,
+    entryOrigin: entryOrigin,
+    consumerId: id,
+    // A guest-only draft has no owner portion; per-person portions are set by
+    // the order flow, never by this setter.
+    portions: portions,
+  );
 
   final String name;
   final DrinkCategory category;
@@ -215,6 +259,8 @@ class DrinkDraft {
     notAfter: notAfter,
     reference: reference,
     entryOrigin: entryOrigin,
+    consumerId: consumerId,
+    portions: portions,
     composition: composition ?? this.composition,
     consumedAt: consumedAt ?? this.consumedAt,
     presentationLabel: presentationLabel != null
@@ -499,6 +545,8 @@ class DrinkDraft {
           ? billTotalCents
           : null,
       createdAt: existing?.createdAt ?? now,
+      consumerId: consumerId,
+      portions: portions,
       updatedAt: now,
       entryOrigin: entryOrigin,
     );

@@ -66,6 +66,9 @@ class EntryOrigin {
   }
 }
 
+/// Key that stands for the account owner ("Você") inside [DrinkEntry.portions].
+const ownerPortionKey = 'me';
+
 /// A serving the user declares to have consumed. It stores a copy of the
 /// drink data so later catalog changes never rewrite history.
 class DrinkEntry {
@@ -95,7 +98,31 @@ class DrinkEntry {
     this.billTotalCents,
     this.deletedAt,
     this.entryOrigin,
+    this.consumerId,
+    this.portions,
   });
+
+  /// Who drank this record. **Null is the account owner ("Você")**: every
+  /// record made before people existed, and every record of the owner. A guest
+  /// is the id of a participant of the outing's tab. For a shared bottle with
+  /// [portions] this is null and the people are in [portions].
+  final String? consumerId;
+
+  /// Shared bottle/jug only: participant id (or [ownerPortionKey]) -> ml that
+  /// person drank; a null ml is unknown (never zero). Null for records without
+  /// per-person portions (every older shared record).
+  final Map<String, int?>? portions;
+
+  /// This record is drink of the owner ("Você"): personal statistics count only
+  /// these. Unknown or unassigned consumption is never the owner's.
+  bool get isMine {
+    final p = portions;
+    if (p != null) return p.containsKey(ownerPortionKey);
+    return consumerId == null;
+  }
+
+  /// People that share a bottle/jug with known per-person portions.
+  Set<String> get sharerIds => {...?portions?.keys};
 
   /// Lock-screen origin; null for records typed in the app and older ones.
   /// Kept by every correction (price, composition, portion, time).
@@ -201,7 +228,7 @@ class DrinkEntry {
   }
 
   /// Copy for "Mais uma": same drink, composition (with the user's changes),
-  /// size, ABV, sharing and price, but a new id and its own timestamp.
+  /// size, ABV, sharing, people and price, but a new id and its own timestamp.
   /// [origin] is the origin of THIS new action (a lock-screen command), or
   /// null for a repeat done in the app: the source's origin is never copied.
   DrinkEntry repeated({
@@ -233,6 +260,8 @@ class DrinkEntry {
     createdAt: at,
     updatedAt: at,
     entryOrigin: origin,
+    consumerId: consumerId,
+    portions: portions,
   );
 
   DrinkEntry copyWith({
@@ -263,6 +292,8 @@ class DrinkEntry {
     billTotalCents: billTotalCents,
     createdAt: createdAt,
     entryOrigin: entryOrigin,
+    consumerId: consumerId,
+    portions: portions,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: clearDeleted ? null : (deletedAt ?? this.deletedAt),
   );
@@ -296,6 +327,8 @@ class DrinkEntry {
     billTotalCents: billTotalCents,
     createdAt: createdAt,
     entryOrigin: entryOrigin,
+    consumerId: consumerId,
+    portions: portions,
     updatedAt: updatedAt,
     deletedAt: deletedAt,
   );
@@ -332,6 +365,46 @@ class DrinkEntry {
     billTotalCents: kind == PriceKind.informed ? billTotalCents : null,
     createdAt: createdAt,
     entryOrigin: entryOrigin,
+    consumerId: consumerId,
+    portions: portions,
+    updatedAt: updatedAt,
+    deletedAt: deletedAt,
+  );
+
+  /// Same record attributed to someone else (or to the owner with a null
+  /// [consumerId]) and/or with other portions. Price and bill stay untouched.
+  DrinkEntry copyWithAttribution({
+    required String? consumerId,
+    required Map<String, int?>? portions,
+    required int? personalMl,
+    required int peopleCount,
+    required DateTime updatedAt,
+  }) => DrinkEntry(
+    id: id,
+    outingId: outingId,
+    consumedAt: consumedAt,
+    name: name,
+    category: category,
+    brand: brand,
+    style: style,
+    presentation: presentation,
+    catalogItemId: catalogItemId,
+    abvPercent: abvPercent,
+    abvSource: abvSource,
+    ingredients: ingredients,
+    composition: composition,
+    containerMl: containerMl,
+    isShared: isShared,
+    peopleCount: peopleCount,
+    personalMl: personalMl,
+    leftoverMl: leftoverMl,
+    priceKind: priceKind,
+    paidCents: paidCents,
+    billTotalCents: billTotalCents,
+    createdAt: createdAt,
+    entryOrigin: entryOrigin,
+    consumerId: consumerId,
+    portions: portions,
     updatedAt: updatedAt,
     deletedAt: deletedAt,
   );
@@ -367,6 +440,10 @@ class DrinkEntry {
     if (abvSource != null) 'abv_source': abvSource!.code,
     // Only lock-screen records carry these keys (same idea as above).
     if (entryOrigin != null) ...entryOrigin!.toJson(),
+    // Always written (null included): an edit that gives a record back to the
+    // owner must clear the guest on the server, which an absent key would not.
+    'consumer_id': consumerId,
+    'portions': portions,
   };
 
   factory DrinkEntry.fromJson(Map<String, dynamic> json) => DrinkEntry(
@@ -401,5 +478,14 @@ class DrinkEntry {
         ? null
         : DateTime.parse(json['deleted_at'] as String).toLocal(),
     entryOrigin: EntryOrigin.fromJson(json),
+    consumerId: json['consumer_id'] as String?,
+    portions: _portionsFromJson(json['portions']),
   );
+}
+
+Map<String, int?>? _portionsFromJson(Object? raw) {
+  if (raw is! Map) return null;
+  return {
+    for (final e in raw.entries) e.key as String: (e.value as num?)?.toInt(),
+  };
 }

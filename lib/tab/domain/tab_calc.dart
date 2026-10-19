@@ -130,8 +130,74 @@ class TabResult {
   int shareOf(String id) => shares[id] ?? 0;
   int paidBy(String id) => paid[id] ?? 0;
 
+  /// Everything reported as paid to the venue, by anybody.
+  int get paidTotal => paid.values.fold(0, (a, b) => a + b);
+
+  /// What is still due to the venue (never negative). Whoever paid it does not
+  /// matter: one person paying for the table settles the bar.
+  int get venueDueCents => (total - paidTotal).clamp(0, 1 << 40).toInt();
+
+  /// The venue was paid in full (or more) and the total is final.
+  bool get venueSettled => !isPartial && paidTotal >= total && total > 0;
+
+  /// More than the venue was paid: a mistake or a tip, never silently dropped.
+  int get overpaidCents => (paidTotal - total).clamp(0, 1 << 40).toInt();
+
+  /// How much a person paid beyond their own share (for the others at the
+  /// table). Informational: the app does not say who should pay whom.
+  int paidForOthers(String id) =>
+      (paidBy(id) - shareOf(id)).clamp(0, 1 << 40).toInt();
+
   /// Positive = still has to pay; negative = paid more than the share.
   int balanceOf(String id) => shareOf(id) - paidBy(id);
+}
+
+/// One person's side of the bill: the pieces and the balance against what they
+/// said they paid the venue. Costs only; consumption lives in [PersonConsumption].
+class PersonBreakdown {
+  const PersonBreakdown({
+    required this.id,
+    required this.drinksCents,
+    required this.foodCents,
+    required this.discountCents,
+    required this.serviceCents,
+    required this.shareCents,
+    required this.paidCents,
+  });
+
+  final String id;
+  final int drinksCents;
+  final int foodCents;
+  final int discountCents;
+  final int serviceCents;
+
+  /// Cost assigned to the person (same number as [TabResult.shares]).
+  final int shareCents;
+
+  /// What the person paid the venue.
+  final int paidCents;
+
+  /// Positive = still has to pay; negative = paid more than the share.
+  int get balanceCents => shareCents - paidCents;
+}
+
+/// What one person drank, apart from who paid.
+class PersonConsumption {
+  const PersonConsumption({
+    required this.count,
+    required this.knownMl,
+    required this.unknownCount,
+    required this.alcoholicCount,
+  });
+
+  final int count;
+  final int knownMl;
+
+  /// Records of this person whose volume is not known (not counted in ml).
+  final int unknownCount;
+  final int alcoholicCount;
+
+  bool get volumeComplete => unknownCount == 0;
 }
 
 class TabCalculator {
@@ -177,7 +243,11 @@ class TabCalculator {
     return e.containerMl == null ? '' : formatMl(e.containerMl!);
   }
 
-  static TabLine entryLine(DrinkEntry e, TabLink link) {
+  static TabLine entryLine(
+    DrinkEntry e,
+    TabLink link, {
+    Map<String, int>? assign,
+  }) {
     int? total;
     int? personal;
     var complimentary = false;
@@ -223,7 +293,7 @@ class TabCalculator {
       personalOnlyCents: personal,
       complimentary: complimentary,
       service: link.service,
-      assign: link.assign,
+      assign: assign ?? link.assign,
       groupKey: 'e|$key',
       entry: e,
     );
@@ -244,14 +314,48 @@ class TabCalculator {
     extra: x,
   );
 
+  /// Who splits the cost of [e] when nobody chose otherwise: the person who
+  /// drank it, or the people sharing a bottle/jug. A record whose person is not
+  /// on the tab yields an EMPTY map (its cost stays unassigned), never "everybody"
+  /// and never the owner by default.
+  static Map<String, int> defaultAssign(DrinkEntry e, TabDoc doc) {
+    String? idFor(String? key) {
+      if (key == null || key == ownerPortionKey) return doc.me?.id;
+      return doc.participant(key) == null ? null : key;
+    }
+
+    final portions = e.portions;
+    if (portions != null) {
+      return {
+        for (final k in portions.keys)
+          if (idFor(k) != null) idFor(k)!: 1,
+      };
+    }
+    final id = idFor(e.consumerId);
+    return id == null ? <String, int>{} : {id: 1};
+  }
+
   /// Lines of the tab, oldest first. A link whose record was deleted shows
-  /// nothing (and comes back if the deletion is undone).
+  /// nothing (and comes back if the deletion is undone). On a tab with
+  /// [TabDoc.autoLink] every live record of the outing is a line (a link, when
+  /// there is one, only adjusts service or the cost split).
   static List<TabLine> lines(TabDoc doc, Map<String, DrinkEntry> entries) {
     final out = <TabLine>[];
-    for (final link in doc.links) {
-      final e = entries[link.entryId];
-      if (e == null || e.isDeleted) continue;
-      out.add(entryLine(e, link));
+    if (doc.autoLink) {
+      final merged = {for (final l in doc.links) ...l.mergedIds};
+      for (final e in entries.values) {
+        if (e.isDeleted || merged.contains(e.id)) continue;
+        final link = doc.linkFor(e.id) ?? TabLink(entryId: e.id);
+        out.add(
+          entryLine(e, link, assign: link.assign ?? defaultAssign(e, doc)),
+        );
+      }
+    } else {
+      for (final link in doc.links) {
+        final e = entries[link.entryId];
+        if (e == null || e.isDeleted) continue;
+        out.add(entryLine(e, link));
+      }
     }
     for (final x in doc.extras) {
       out.add(extraLine(x));
@@ -408,5 +512,135 @@ class TabCalculator {
         }
         return (shares: shares, unassigned: total - sum);
     }
+  }
+
+  /// Weights of a line's cost among participants, in participant order, as the
+  /// "by item" split uses them. Empty = nobody (stays unassigned).
+  static Map<String, int> _weightsOf(
+    Map<String, int>? assign,
+    List<String> ids,
+  ) {
+    final weights = <String, int>{};
+    if (assign == null) {
+      for (final id in ids) {
+        weights[id] = 1;
+      }
+    } else {
+      for (final id in ids) {
+        final w = assign[id] ?? 0;
+        if (w > 0) weights[id] = w;
+      }
+    }
+    return weights;
+  }
+
+  static bool _isDrinkLine(TabLine l) =>
+      l.source == LineSource.entry ||
+      l.extra?.category == ExtraCategory.drink ||
+      l.extra?.category == ExtraCategory.soft;
+
+  /// What each person owes, split in drinks, food/other, discount and service.
+  /// Only the "by item" mode knows which line is whose; in the other modes the
+  /// pieces are zero and only [PersonBreakdown.shareCents] is meaningful. The
+  /// service row absorbs the cents of rounding so the rows always add up to the
+  /// share shown in [TabResult.shares].
+  static Map<String, PersonBreakdown> breakdown(TabDoc doc, TabResult r) {
+    final ids = [for (final p in doc.participants) p.id];
+    final drinks = {for (final id in ids) id: 0};
+    final food = {for (final id in ids) id: 0};
+    final discount = {for (final id in ids) id: 0};
+    final service = {for (final id in ids) id: 0};
+    final itemMode = doc.mode == SplitMode.item;
+    if (itemMode) {
+      for (final res in r.results) {
+        final total = res.line.totalCents;
+        if (total == null) continue;
+        final weights = _weightsOf(res.line.assign, ids);
+        if (weights.isEmpty) continue;
+        final order = [
+          for (final id in ids)
+            if (weights.containsKey(id)) id,
+        ];
+        final w = [for (final id in order) weights[id]!];
+        final base = allocate(total, w);
+        final disc = allocate(res.discount, w);
+        final serv = allocate(res.service, w);
+        final bucket = _isDrinkLine(res.line) ? drinks : food;
+        for (var i = 0; i < order.length; i++) {
+          bucket[order[i]] = bucket[order[i]]! + base[i];
+          discount[order[i]] = discount[order[i]]! + disc[i];
+          service[order[i]] = service[order[i]]! + serv[i];
+        }
+      }
+    }
+    return {
+      for (final id in ids)
+        id: () {
+          final share = r.shareOf(id);
+          final known = drinks[id]! + food[id]! - discount[id]! + service[id]!;
+          return PersonBreakdown(
+            id: id,
+            drinksCents: drinks[id]!,
+            foodCents: food[id]!,
+            discountCents: discount[id]!,
+            serviceCents: itemMode
+                ? service[id]! + (share - known)
+                : service[id]!,
+            shareCents: share,
+            paidCents: r.paidBy(id),
+          );
+        }(),
+    };
+  }
+
+  /// Key of the consumption that belongs to nobody on the tab.
+  static const unassignedKey = '?';
+
+  /// Consumption per person (never mixed with money): how many records and the
+  /// known ml; unknown volumes are counted apart, never as zero. A record whose
+  /// person is not on the tab is "unassigned" under [unassignedKey].
+  static Map<String, PersonConsumption> consumption(
+    TabDoc doc,
+    Iterable<DrinkEntry> entries,
+  ) {
+    final acc = <String, List<int>>{}; // id -> [count, ml, unknown, alcoholic]
+    String keyOf(String? raw) {
+      if (raw == null || raw == ownerPortionKey) {
+        return doc.me?.id ?? ownerPortionKey;
+      }
+      return doc.participant(raw) == null ? unassignedKey : raw;
+    }
+
+    void add(String key, int? ml, bool alcoholic) {
+      final a = acc.putIfAbsent(key, () => [0, 0, 0, 0]);
+      a[0]++;
+      if (ml == null) {
+        a[2]++;
+      } else {
+        a[1] += ml;
+      }
+      if (alcoholic) a[3]++;
+    }
+
+    for (final e in entries) {
+      if (e.isDeleted) continue;
+      final p = e.portions;
+      if (p != null) {
+        for (final kv in p.entries) {
+          add(keyOf(kv.key), kv.value, e.isAlcoholic);
+        }
+      } else {
+        add(keyOf(e.consumerId), e.personalMl, e.isAlcoholic);
+      }
+    }
+    return {
+      for (final kv in acc.entries)
+        kv.key: PersonConsumption(
+          count: kv.value[0],
+          knownMl: kv.value[1],
+          unknownCount: kv.value[2],
+          alcoholicCount: kv.value[3],
+        ),
+    };
   }
 }
