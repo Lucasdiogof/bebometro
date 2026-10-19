@@ -10,6 +10,7 @@ import '../../core/widgets/common.dart';
 import '../data/game_repository.dart';
 import '../domain/game_models.dart';
 import '../../glass/presentation/tip_glass_page.dart';
+import 'bafometro_page.dart';
 import 'custom_cards_page.dart';
 import 'game_play_page.dart';
 import 'game_setup_page.dart';
@@ -144,6 +145,29 @@ class _ResenhaPageState extends State<ResenhaPage> {
                       children: [
                         Text(tr.resenhaTipTitle, style: AppText.subtitle),
                         Text(tr.resenhaTipBody, style: AppText.caption),
+                      ],
+                    ),
+                  ),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.textMuted,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpace.sm),
+            SurfaceCard(
+              onTap: () => _open(const BafometroPage()),
+              child: Row(
+                children: [
+                  const Icon(Icons.air_rounded, color: AppColors.amber),
+                  const SizedBox(width: AppSpace.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(tr.bafoTitle, style: AppText.subtitle),
+                        Text(tr.bafoHubBody, style: AppText.caption),
                       ],
                     ),
                   ),

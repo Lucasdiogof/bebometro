@@ -51,6 +51,8 @@
 	<string>A câmera é usada só para fotografar rótulos e cardápios do rolê. As fotos ficam no seu aparelho.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Só quando você toca em "Usar minha localização": para sugerir lugares por perto e marcar o ponto no mapa. O Bebômetro não acompanha seus deslocamentos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>O microfone é usado só na brincadeira do bafômetro, para sentir a força do sopro. O som não é gravado nem enviado.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>O movimento do aparelho é usado só para inclinar a cerveja no "Virar o copo". Nada é gravado.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

@@ -2,6 +2,8 @@
     <!-- Android 13+: asked only when the person switches the lock-screen tracking on. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- Release builds need it explicitly (Flutter only adds it to debug/profile): sync, place search and map tiles. -->
+    <!-- Only for the "Bafometro de brincadeira" toy: asked after the tap on Start, never recorded or sent. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- "Usar minha localização": asked only after that tap, foreground only. Coarse alone is accepted. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
