@@ -6235,7 +6235,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get peoplePaidToVenue => 'Pagó al local';
 
   @override
-  String get peopleCoveredByPayment => 'Cubierto por otro pago: el local está saldado';
+  String get peopleCoveredByPayment =>
+      'Cubierto por otro pago: el local está saldado';
 
   @override
   String peopleStillOwes(String amount) {

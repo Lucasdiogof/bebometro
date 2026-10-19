@@ -4450,7 +4450,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get splitBalanceCovered => 'covered by another payment (venue settled)';
+  String get splitBalanceCovered =>
+      'covered by another payment (venue settled)';
 
   @override
   String splitBalanceMissing(String amount, String provisional) {
@@ -6202,7 +6203,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get peoplePaidToVenue => 'Paid to the venue';
 
   @override
-  String get peopleCoveredByPayment => 'Covered by another payment: the venue is settled';
+  String get peopleCoveredByPayment =>
+      'Covered by another payment: the venue is settled';
 
   @override
   String peopleStillOwes(String amount) {

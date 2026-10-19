@@ -153,6 +153,16 @@ class TableOrders {
     return out;
   }
 
+  /// The order row of one drink record, never a food/extra row. [rows] puts
+  /// extras in the list too, so `rows(...).first` is not "the row of this
+  /// record" when a dish was added after the drink.
+  static OrderRow? rowOfEntry(TabDoc doc, DrinkEntry entry) {
+    for (final r in rows(doc, {entry.id: entry}, const PersonFilter.table())) {
+      if (r.extra == null && r.entries.any((e) => e.id == entry.id)) return r;
+    }
+    return null;
+  }
+
   /// People shown as present (not left), owner first, in tab order.
   static List<Participant> present(TabDoc doc) => doc.present;
 

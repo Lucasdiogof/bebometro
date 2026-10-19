@@ -962,13 +962,10 @@ class _OutingViewState extends State<_OutingView> {
                   _RepeatButton(
                     entry: last,
                     who: _whoLabel(last, doc),
-                    onPressed: () => _repeatRow(
-                      TableOrders.rows(
-                        doc,
-                        {last.id: last},
-                        const PersonFilter.table(),
-                      ).first,
-                    ),
+                    onPressed: () {
+                      final row = TableOrders.rowOfEntry(doc, last);
+                      if (row != null) _repeatRow(row);
+                    },
                   ),
                   const SizedBox(height: AppSpace.sm),
                 ],

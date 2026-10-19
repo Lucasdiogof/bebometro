@@ -2,6 +2,7 @@ import 'package:bebometro/drinks/domain/drink_category.dart';
 import 'package:bebometro/drinks/domain/drink_entry.dart';
 import 'package:bebometro/tab/domain/tab_calc.dart';
 import 'package:bebometro/tab/domain/tab_models.dart';
+import 'package:bebometro/table/domain/table_orders.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 final _t = DateTime.utc(2026, 10, 19, 22);
@@ -393,6 +394,29 @@ void main() {
       );
       expect(cleared.toJson().containsKey('consumer_id'), isTrue);
       expect(cleared.toJson()['consumer_id'], isNull);
+    });
+  });
+
+  group('repeat button targets the drink, not a later dish', () {
+    test('rowOfEntry finds the drink row even when food is newer', () {
+      final d = drink(id: 'rep1', name: 'Spritzgerald', consumerId: _ana.id);
+      final dish = TabExtra(
+        id: 'late-dish',
+        description: 'Batata',
+        category: ExtraCategory.food,
+        createdAt: _t.add(const Duration(hours: 3)),
+        priceKind: PriceKind.informed,
+        cents: 6000,
+        assign: {_me.id: 1, _ana.id: 1},
+      );
+      final doc = table(extras: [dish]);
+      final rows = TableOrders.rows(doc, {d.id: d}, const PersonFilter.table());
+      // The trap the button fell into: the newest row is the dish.
+      expect(rows.first.extra, isNotNull);
+      expect(rows.first.latest, isNull);
+      final row = TableOrders.rowOfEntry(doc, d)!;
+      expect(row.latest!.id, 'rep1');
+      expect(row.extra, isNull);
     });
   });
 }
