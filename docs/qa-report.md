@@ -217,4 +217,4 @@ Informado pelo responsável após receber o e-mail real: digitou o código de 6 
 Decisão posterior: o e-mail de recuperação passa a ser só em pt-BR e centralizado (`recovery.html` e assunto "Redefinir senha" alterados no
 repositório; **aplicados no servidor em 19/10/2026** com `scripts/apply_recovery_code.py --apply` e conferidos por um segundo dry run: "Would change: nothing", template idêntico ao repositório; o script confirmou que SMTP, `site_url`, template de confirmação, `mailer_otp_exp` e `mailer_autoconfirm` não mudaram). Código errado já fora validado em 17/10; código antigo e
 e-mail em English e Español deixam de se aplicar (e-mail só em pt-BR).
-**Pendente:** pedir um novo código e conferir visualmente o cartão centralizado e o assunto "Redefinir senha" (captura do responsável).
+**Concluído (19/10/2026):** novo código pedido e e-mail conferido pelo responsável ("ta show, tudo pronto"): cartão centralizado, assunto novo, 6 dígitos, sem link. O fluxo de recuperação de senha por código está aprovado.
