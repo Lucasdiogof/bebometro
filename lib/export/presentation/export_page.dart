@@ -34,8 +34,8 @@ class _ExportPageState extends State<ExportPage> {
     ];
     return ExportBuilder.json(
       exportedAt: DateTime.now(),
-      places: store.all(LocalStore.places),
-      outings: store.all(LocalStore.outings),
+      places: live(LocalStore.places),
+      outings: live(LocalStore.outings),
       drinkEntries: live(LocalStore.drinkEntries),
       customDrinks: live(LocalStore.customDrinks),
       outingDrinks: live(LocalStore.outingDrinks),

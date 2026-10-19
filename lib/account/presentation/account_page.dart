@@ -159,15 +159,11 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     Text(a.email ?? '', style: AppText.body),
                     const SizedBox(height: AppSpace.sm),
-                    InfoPill(
-                      a.emailConfirmed
-                          ? tr.accountEmailConfirmed
-                          : tr.accountEmailNotConfirmed,
-                      icon: a.emailConfirmed
-                          ? Icons.verified_outlined
-                          : Icons.mark_email_unread_outlined,
-                      warning: !a.emailConfirmed,
-                    ),
+                    if (a.emailConfirmed)
+                      InfoPill(
+                        tr.accountEmailConfirmed,
+                        icon: Icons.verified_outlined,
+                      ),
                   ],
                 ),
               ),
@@ -311,6 +307,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final _code = TextEditingController();
   bool _busy = false;
   bool _needsCode = false;
+  bool _codeAutoSent = false;
   String? _passwordError, _confirmError, _error, _info;
 
   @override
@@ -325,13 +322,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     setState(() => _busy = true);
     try {
       await context.read<AuthController>().reauthenticate();
+      if (!mounted) return;
       setState(() {
         _needsCode = true;
         _info = tr.accountCodeSent;
         _error = null;
       });
     } on AuthFailure catch (e) {
-      setState(() => _error = e.message);
+      if (mounted) setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -365,6 +363,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           // The project requires a code for password changes.
           _needsCode = true;
           _error = e.message;
+          if (!_codeAutoSent) {
+            // Nothing was sent yet: send the code now instead of asking the
+            // person to find the resend button first.
+            _codeAutoSent = true;
+            Future.microtask(_sendCode);
+          }
         } else if (e.field == 'password') {
           _passwordError = e.message;
         } else {

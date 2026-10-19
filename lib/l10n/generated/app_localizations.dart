@@ -1483,7 +1483,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeInformedSpent.
   ///
   /// In pt, this message translates to:
-  /// **'Gasto informado'**
+  /// **'Seu gasto informado'**
   String get homeInformedSpent;
 
   /// No description provided for @homeLastOuting.
@@ -1513,7 +1513,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeSpent.
   ///
   /// In pt, this message translates to:
-  /// **'Gasto'**
+  /// **'Seu gasto'**
   String get homeSpent;
 
   /// No description provided for @homeStartOuting.
@@ -6187,13 +6187,13 @@ abstract class AppLocalizations {
   /// No description provided for @placeStatDrinks.
   ///
   /// In pt, this message translates to:
-  /// **'Bebidas'**
+  /// **'Suas bebidas'**
   String get placeStatDrinks;
 
   /// No description provided for @placeStatSpent.
   ///
   /// In pt, this message translates to:
-  /// **'Gasto informado'**
+  /// **'Seu gasto informado'**
   String get placeStatSpent;
 
   /// No description provided for @placeLastVisit.
@@ -7680,13 +7680,13 @@ abstract class AppLocalizations {
   /// No description provided for @statsDrinksLogged.
   ///
   /// In pt, this message translates to:
-  /// **'Bebidas registradas'**
+  /// **'Suas bebidas registradas'**
   String get statsDrinksLogged;
 
   /// No description provided for @statsDrinksOfPeriod.
   ///
   /// In pt, this message translates to:
-  /// **'Bebidas do período'**
+  /// **'Suas bebidas do período'**
   String get statsDrinksOfPeriod;
 
   /// No description provided for @statsPricedRecords.
@@ -8918,6 +8918,276 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Usar selecionados'**
   String get gameImportUse;
+
+  /// No description provided for @bafoTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bafômetro de brincadeira'**
+  String get bafoTitle;
+
+  /// No description provided for @bafoHubBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sopre (ou segure o botão) e veja um resultado sorteado, de mentira.'**
+  String get bafoHubBody;
+
+  /// No description provided for @bafoDisclaimer.
+  ///
+  /// In pt, this message translates to:
+  /// **'De brincadeira: não mede álcool nem nada do seu corpo e não diz se alguém pode dirigir.'**
+  String get bafoDisclaimer;
+
+  /// No description provided for @bafoWho.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem vai soprar? (opcional)'**
+  String get bafoWho;
+
+  /// No description provided for @bafoSomeone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alguém'**
+  String get bafoSomeone;
+
+  /// No description provided for @bafoMicNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ao tocar em Começar, o app pede o microfone só para sentir a força do sopro, como brincadeira. O som é processado no aparelho: não é gravado nem enviado.'**
+  String get bafoMicNote;
+
+  /// No description provided for @bafoStart.
+  ///
+  /// In pt, this message translates to:
+  /// **'Começar'**
+  String get bafoStart;
+
+  /// No description provided for @bafoHoldOption.
+  ///
+  /// In pt, this message translates to:
+  /// **'Prefiro segurar o botão (sem microfone)'**
+  String get bafoHoldOption;
+
+  /// No description provided for @bafoBlowPrompt.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sopre no microfone até a barra encher'**
+  String get bafoBlowPrompt;
+
+  /// No description provided for @bafoHoldPrompt.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segure o botão até a barra encher'**
+  String get bafoHoldPrompt;
+
+  /// No description provided for @bafoHoldButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar para brincar'**
+  String get bafoHoldButton;
+
+  /// No description provided for @bafoHoldNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo manual: nada é detectado, conta só o tempo que você segura.'**
+  String get bafoHoldNote;
+
+  /// No description provided for @bafoDenied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem acesso ao microfone. Dá para brincar segurando o botão.'**
+  String get bafoDenied;
+
+  /// No description provided for @bafoUnsupported.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este aparelho não consegue usar o microfone aqui. Dá para brincar segurando o botão.'**
+  String get bafoUnsupported;
+
+  /// No description provided for @bafoHintLouder.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chegue mais perto e sopre com vontade.'**
+  String get bafoHintLouder;
+
+  /// No description provided for @bafoStop.
+  ///
+  /// In pt, this message translates to:
+  /// **'Parar'**
+  String get bafoStop;
+
+  /// No description provided for @bafoReveal.
+  ///
+  /// In pt, this message translates to:
+  /// **'A máquina de mentira está pensando…'**
+  String get bafoReveal;
+
+  /// No description provided for @bafoResultFor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resultado de brincadeira para {name}'**
+  String bafoResultFor(String name);
+
+  /// No description provided for @bafoResultAnon.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resultado de brincadeira'**
+  String get bafoResultAnon;
+
+  /// No description provided for @bafoFictional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sorteado ao acaso. Não é uma medição.'**
+  String get bafoFictional;
+
+  /// No description provided for @bafoAgain.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tentar de novo'**
+  String get bafoAgain;
+
+  /// No description provided for @bafoDone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Concluir'**
+  String get bafoDone;
+
+  /// No description provided for @bafoDialSemantics.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mostrador do bafômetro de brincadeira'**
+  String get bafoDialSemantics;
+
+  /// No description provided for @bafoR1T.
+  ///
+  /// In pt, this message translates to:
+  /// **'Respiração de nuvem'**
+  String get bafoR1T;
+
+  /// No description provided for @bafoR1L.
+  ///
+  /// In pt, this message translates to:
+  /// **'Leve como um suspiro de desenho animado.'**
+  String get bafoR1L;
+
+  /// No description provided for @bafoR2T.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vento de ventilador'**
+  String get bafoR2T;
+
+  /// No description provided for @bafoR2L.
+  ///
+  /// In pt, this message translates to:
+  /// **'A máquina de mentira recebeu uma brisa simpática.'**
+  String get bafoR2L;
+
+  /// No description provided for @bafoR3T.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sopro de vela de bolo'**
+  String get bafoR3T;
+
+  /// No description provided for @bafoR3L.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dá para fazer um pedido... de petisco.'**
+  String get bafoR3L;
+
+  /// No description provided for @bafoR4T.
+  ///
+  /// In pt, this message translates to:
+  /// **'Furacão de karaokê'**
+  String get bafoR4T;
+
+  /// No description provided for @bafoR4L.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu fôlego cantou mais alto que o aparelho.'**
+  String get bafoR4L;
+
+  /// No description provided for @bafoR5T.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dragão de papelão'**
+  String get bafoR5T;
+
+  /// No description provided for @bafoR5L.
+  ///
+  /// In pt, this message translates to:
+  /// **'Soltou fogo imaginário. Ninguém se machucou.'**
+  String get bafoR5L;
+
+  /// No description provided for @bafoR6T.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ventania de gibi'**
+  String get bafoR6T;
+
+  /// No description provided for @bafoR6L.
+  ///
+  /// In pt, this message translates to:
+  /// **'A agulha girou por pura dramaticidade.'**
+  String get bafoR6L;
+
+  /// No description provided for @bafoR7T.
+  ///
+  /// In pt, this message translates to:
+  /// **'Balão de festa'**
+  String get bafoR7T;
+
+  /// No description provided for @bafoR7L.
+  ///
+  /// In pt, this message translates to:
+  /// **'Encheu e murchou, sem exageros.'**
+  String get bafoR7L;
+
+  /// No description provided for @bafoR8T.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assobio de chaleira'**
+  String get bafoR8T;
+
+  /// No description provided for @bafoR8L.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quase apitou. Lembrete: a máquina é de mentira.'**
+  String get bafoR8L;
+
+  /// No description provided for @homeYourDrinks.
+  ///
+  /// In pt, this message translates to:
+  /// **'Suas bebidas'**
+  String get homeYourDrinks;
+
+  /// No description provided for @outingRecordsTable.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registros da mesa ({count})'**
+  String outingRecordsTable(int count);
+
+  /// No description provided for @summaryPeopleTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pessoas e conta'**
+  String get summaryPeopleTitle;
+
+  /// No description provided for @summaryPersonLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} · parcela {share} · pagou {paid}'**
+  String summaryPersonLine(String name, String share, String paid);
+
+  /// No description provided for @summaryPersonDrinks.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Nenhuma bebida} one{1 bebida} other{{count} bebidas}}'**
+  String summaryPersonDrinks(int count);
+
+  /// No description provided for @entrySharedUseOrder.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para dividir uma garrafa ou jarra entre pessoas da mesa, use \"Novo pedido\" na tela do rolê e escolha \"Garrafa ou jarra compartilhada\": lá você diz quanto cada um tomou.'**
+  String get entrySharedUseOrder;
 
   /// No description provided for @gameTurnOf.
   ///

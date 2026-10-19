@@ -149,7 +149,7 @@ class _OutingViewState extends State<_OutingView> {
       return;
     }
     if (action == 'another') {
-      if (cubit.state.lastAlcoholic == null) {
+      if (getIt<DrinkRepository>().lastPersonalIndividual(_outingId) == null) {
         showToast(context, tr.outingNothingToRepeat);
         return;
       }
@@ -1154,10 +1154,14 @@ class EntryTile extends StatelessWidget {
     required this.onTap,
     this.onDelete,
     this.onRepeat,
+    this.who,
   });
 
   final DrinkEntry entry;
   final VoidCallback onTap;
+
+  /// Who the record belongs to, shown when the outing has people.
+  final String? who;
   final VoidCallback? onDelete;
 
   /// Only in the running outing: logs this same drink again, now.
@@ -1175,6 +1179,7 @@ class EntryTile extends StatelessWidget {
     final container = entry.containerMl;
     final alcohol = entry.alcohol;
     final meta = <String>[
+      ?who,
       formatTime(entry.consumedAt),
       if (entry.isMixed && entry.composition!.customized)
         tr.groupRecipeAdjusted,

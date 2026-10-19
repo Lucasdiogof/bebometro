@@ -912,7 +912,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeIdleTitle => '¿Salimos?';
 
   @override
-  String get homeInformedSpent => 'Gasto informado';
+  String get homeInformedSpent => 'Tu gasto informado';
 
   @override
   String get homeLastOuting => 'Última salida';
@@ -927,7 +927,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeOutings => 'Salidas';
 
   @override
-  String get homeSpent => 'Gasto';
+  String get homeSpent => 'Tu gasto';
 
   @override
   String get homeStartOuting => 'Iniciar salida';
@@ -3758,10 +3758,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get placeStatOutings => 'Salidas';
 
   @override
-  String get placeStatDrinks => 'Bebidas';
+  String get placeStatDrinks => 'Tus bebidas';
 
   @override
-  String get placeStatSpent => 'Gasto informado';
+  String get placeStatSpent => 'Tu gasto informado';
 
   @override
   String placeLastVisit(String date) {
@@ -4763,10 +4763,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get statsOutingsOfPeriod => 'Salidas del período';
 
   @override
-  String get statsDrinksLogged => 'Bebidas registradas';
+  String get statsDrinksLogged => 'Tus bebidas registradas';
 
   @override
-  String get statsDrinksOfPeriod => 'Bebidas del período';
+  String get statsDrinksOfPeriod => 'Tus bebidas del período';
 
   @override
   String get statsPricedRecords => 'Registros con precio';
@@ -5581,6 +5581,164 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get gameImportUse => 'Usar seleccionados';
+
+  @override
+  String get bafoTitle => 'Alcoholímetro de broma';
+
+  @override
+  String get bafoHubBody =>
+      'Sopla (o mantén el botón) y mira un resultado inventado, al azar.';
+
+  @override
+  String get bafoDisclaimer =>
+      'De broma: no mide alcohol ni nada de tu cuerpo y no dice si alguien puede conducir.';
+
+  @override
+  String get bafoWho => '¿Quién sopla? (opcional)';
+
+  @override
+  String get bafoSomeone => 'Alguien';
+
+  @override
+  String get bafoMicNote =>
+      'Al tocar en Empezar, la app pide el micrófono solo para sentir la fuerza del soplido, como juego. El sonido se procesa en el dispositivo: no se graba ni se envía.';
+
+  @override
+  String get bafoStart => 'Empezar';
+
+  @override
+  String get bafoHoldOption => 'Prefiero mantener el botón (sin micrófono)';
+
+  @override
+  String get bafoBlowPrompt =>
+      'Sopla en el micrófono hasta que se llene la barra';
+
+  @override
+  String get bafoHoldPrompt => 'Mantén el botón hasta que se llene la barra';
+
+  @override
+  String get bafoHoldButton => 'Mantener para jugar';
+
+  @override
+  String get bafoHoldNote =>
+      'Modo manual: no se detecta nada, solo cuenta el tiempo que mantienes.';
+
+  @override
+  String get bafoDenied =>
+      'Sin acceso al micrófono. Puedes jugar manteniendo el botón.';
+
+  @override
+  String get bafoUnsupported =>
+      'Este dispositivo no puede usar el micrófono aquí. Puedes jugar manteniendo el botón.';
+
+  @override
+  String get bafoHintLouder => 'Acércate y sopla con ganas.';
+
+  @override
+  String get bafoStop => 'Parar';
+
+  @override
+  String get bafoReveal => 'La máquina de mentira está pensando…';
+
+  @override
+  String bafoResultFor(String name) {
+    return 'Resultado de broma para $name';
+  }
+
+  @override
+  String get bafoResultAnon => 'Resultado de broma';
+
+  @override
+  String get bafoFictional => 'Sorteado al azar. No es una medición.';
+
+  @override
+  String get bafoAgain => 'Intentar de nuevo';
+
+  @override
+  String get bafoDone => 'Terminar';
+
+  @override
+  String get bafoDialSemantics => 'Esfera del alcoholímetro de broma';
+
+  @override
+  String get bafoR1T => 'Respiración de nube';
+
+  @override
+  String get bafoR1L => 'Ligera como un suspiro de dibujo animado.';
+
+  @override
+  String get bafoR2T => 'Viento de ventilador';
+
+  @override
+  String get bafoR2L => 'La máquina de mentira recibió una brisa simpática.';
+
+  @override
+  String get bafoR3T => 'Soplido de vela de pastel';
+
+  @override
+  String get bafoR3L => 'Hora de pedir un deseo... de botana.';
+
+  @override
+  String get bafoR4T => 'Huracán de karaoke';
+
+  @override
+  String get bafoR4L => 'Tu aliento cantó más fuerte que el aparato.';
+
+  @override
+  String get bafoR5T => 'Dragón de cartón';
+
+  @override
+  String get bafoR5L => 'Soltó fuego imaginario. Nadie salió herido.';
+
+  @override
+  String get bafoR6T => 'Ventolera de historieta';
+
+  @override
+  String get bafoR6L => 'La aguja giró por puro dramatismo.';
+
+  @override
+  String get bafoR7T => 'Globo de fiesta';
+
+  @override
+  String get bafoR7L => 'Se infló y se desinfló, sin exagerar.';
+
+  @override
+  String get bafoR8T => 'Silbido de tetera';
+
+  @override
+  String get bafoR8L => 'Casi silbó. Recuerda: la máquina es de mentira.';
+
+  @override
+  String get homeYourDrinks => 'Tus bebidas';
+
+  @override
+  String outingRecordsTable(int count) {
+    return 'Registros de la mesa ($count)';
+  }
+
+  @override
+  String get summaryPeopleTitle => 'Personas y cuenta';
+
+  @override
+  String summaryPersonLine(String name, String share, String paid) {
+    return '$name · parte $share · pagó $paid';
+  }
+
+  @override
+  String summaryPersonDrinks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bebidas',
+      one: '1 bebida',
+      zero: 'Ninguna bebida',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get entrySharedUseOrder =>
+      'Para dividir una botella o jarra entre personas de la mesa, usa \"Nuevo pedido\" en la pantalla de la salida y elige \"Botella o jarra compartida\": ahí indicas cuánto tomó cada uno.';
 
   @override
   String gameTurnOf(String name) {

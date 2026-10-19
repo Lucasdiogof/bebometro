@@ -388,6 +388,12 @@ class _DrinkEntryView extends StatelessWidget {
                               ),
                             ),
                         ],
+                        if (_tableHasPeople(cubit.outingId) && !d.isShared) ...[
+                          // A bottle split between people needs per-person
+                          // portions, which only "Novo pedido" collects.
+                          const SizedBox(height: AppSpace.md),
+                          Text(tr.entrySharedUseOrder, style: AppText.caption),
+                        ] else ...[
                         SectionTitle(tr.entryIndividualOrShared),
                         SizedBox(
                           width: double.infinity,
@@ -410,6 +416,7 @@ class _DrinkEntryView extends StatelessWidget {
                         if (d.isShared) ...[
                           const SizedBox(height: AppSpace.md),
                           _SharingCard(draft: d, errors: errors),
+                        ],
                         ],
                       ],
                       SectionTitle(tr.entryPriceSection),
@@ -1464,6 +1471,10 @@ class _BulkPriceSheet extends StatelessWidget {
 /// "Para quem?": on a table the drink is attributed to a person, chosen in
 /// view of the screen (nothing is assumed). A shared bottle keeps its people in
 /// the order's portions, so there is nothing to pick here.
+/// The outing has people besides the owner (a table).
+bool _tableHasPeople(String outingId) =>
+    getIt<TabRepository>().load(outingId).participants.length >= 2;
+
 class _ConsumerSection extends StatelessWidget {
   const _ConsumerSection({required this.state});
 

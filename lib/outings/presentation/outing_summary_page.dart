@@ -13,6 +13,7 @@ import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/drink_entry_page.dart';
 import '../domain/outing_summary.dart';
 import '../../table/data/table_prefs_cubit.dart';
+import '../../table/domain/table_orders.dart';
 import '../../table/presentation/table_scene.dart';
 import 'budget_section.dart';
 import '../../drinks/presentation/add_drink_page.dart';
@@ -21,6 +22,9 @@ import '../../share/presentation/share_card_page.dart';
 import '../../outing_drinks/presentation/outing_scan_section.dart';
 import 'outing_cubit.dart';
 import '../../tab/presentation/tab_entry_card.dart';
+import '../../tab/data/tab_repository.dart';
+import '../../tab/domain/tab_calc.dart';
+import '../../tab/domain/tab_models.dart';
 import 'price_fix_page.dart';
 import '../../places/presentation/change_outing_place.dart';
 import 'outing_page.dart' show EntryTile;
@@ -108,6 +112,11 @@ class _SummaryViewState extends State<_SummaryView> {
         }
         final s = state.summary!;
         final endedAt = outing.endedAt ?? DateTime.now();
+        final tabDoc = getIt<TabRepository>().load(outing.id);
+        // With people at the table the owner's numbers and the table's differ:
+        // every list and total below says which one it is.
+        final table = tabDoc.participants.length > 1;
+        final unpricedAll = state.entries.where((e) => !e.hasPrice).length;
         return Scaffold(
           appBar: AppBar(
             title: Text(tr.summaryTitle),
@@ -251,7 +260,7 @@ class _SummaryViewState extends State<_SummaryView> {
                             children: [
                               Expanded(
                                 child: StatTile(
-                                  label: tr.homeDrinks,
+                                  label: tr.homeYourDrinks,
                                   value: '${s.entryCount}',
                                   icon: Icons.local_bar_rounded,
                                 ),
@@ -297,10 +306,12 @@ class _SummaryViewState extends State<_SummaryView> {
                               onChange: (_) {},
                             ),
                           ],
-                          if (s.unpricedCount > 0) ...[
+                          if (s.unpricedCount > 0 || (table && unpricedAll > 0)) ...[
                             const SizedBox(height: AppSpace.md),
                             InfoPill(
-                              tr.summaryUnpricedPill(s.unpricedCount),
+                              tr.summaryUnpricedPill(
+                                table ? unpricedAll : s.unpricedCount,
+                              ),
                               icon: Icons.sell_outlined,
                               warning: true,
                             ),
@@ -397,10 +408,21 @@ class _SummaryViewState extends State<_SummaryView> {
                         ],
                       ),
                     ),
+                    if (table) ...[
+                      SectionTitle(tr.summaryPeopleTitle),
+                      _PeopleSummary(
+                        outingId: outing.id,
+                        entries: state.entries,
+                      ),
+                    ],
                     SectionTitle(tr.summaryTab),
                     TabEntryCard(outingId: outing.id, detailed: true),
                     OutingScanSection(outingId: outing.id),
-                    SectionTitle(tr.outingRecords(state.entries.length)),
+                    SectionTitle(
+                      table
+                          ? tr.outingRecordsTable(state.entries.length)
+                          : tr.outingRecords(state.entries.length),
+                    ),
                     if (state.entries.isEmpty)
                       EmptyView(
                         icon: Icons.sports_bar_outlined,
@@ -419,6 +441,7 @@ class _SummaryViewState extends State<_SummaryView> {
                           padding: const EdgeInsets.only(bottom: AppSpace.sm),
                           child: EntryTile(
                             entry: e,
+                            who: table ? _whoOf(e, tabDoc) : null,
                             onTap: () => _edit(e),
                             onDelete: () => cubit.deleteEntry(e),
                           ),
@@ -452,6 +475,66 @@ class _SummaryViewState extends State<_SummaryView> {
           ),
         );
       },
+    );
+  }
+}
+
+/// Names of who a record belongs to ("Você", "Ana", "Você, Ana" for a shared
+/// bottle).
+String _whoOf(DrinkEntry e, TabDoc doc) => [
+  for (final id in TableOrders.consumersOf(e, doc))
+    doc.participant(id)?.displayName ?? tr.ordersUnassigned,
+].join(', ');
+
+/// One line per person: drinks, share of the bill and what they paid. Costs and
+/// consumption stay separate (the share is money, the drinks are consumption).
+class _PeopleSummary extends StatelessWidget {
+  const _PeopleSummary({required this.outingId, required this.entries});
+
+  final String outingId;
+  final List<DrinkEntry> entries;
+
+  @override
+  Widget build(BuildContext context) {
+    final doc = getIt<TabRepository>().load(outingId);
+    final byId = {for (final e in entries) e.id: e};
+    final result = TabCalculator.compute(doc, byId);
+    final consumption = TabCalculator.consumption(doc, entries);
+    return SurfaceCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (final p in doc.participants)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    tr.summaryPersonLine(
+                      p.displayName,
+                      formatCents(result.shareOf(p.id)),
+                      formatCents(result.paidBy(p.id)),
+                    ),
+                    style: AppText.subtitle,
+                  ),
+                  Text(
+                    tr.summaryPersonDrinks(consumption[p.id]?.count ?? 0),
+                    style: AppText.caption,
+                  ),
+                ],
+              ),
+            ),
+          if (result.isPartial)
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpace.xs),
+              child: Text(
+                tr.billTotalKnownShort(formatCents(result.total)),
+                style: AppText.caption,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

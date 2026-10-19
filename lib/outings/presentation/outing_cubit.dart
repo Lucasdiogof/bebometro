@@ -139,7 +139,9 @@ class OutingCubit extends Cubit<OutingState> {
   }
 
   Future<void> repeatLast() async {
-    final last = state.lastAlcoholic;
+    // The quick action repeats only an individual order of the owner (what the
+    // button on the lock screen showed), never a guest's or a shared bottle.
+    final last = _drinks.lastPersonalIndividual(outingId);
     if (last != null) await repeatEntry(last);
   }
 

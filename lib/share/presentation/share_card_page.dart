@@ -8,6 +8,7 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/brand.dart';
 import '../../core/widgets/common.dart';
+import '../../core/widgets/state_views.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../outings/data/outing_repository.dart';
@@ -114,7 +115,10 @@ class _ShareCardPageState extends State<ShareCardPage> {
   Widget build(BuildContext context) {
     final outing = _outing;
     if (outing == null) {
-      return Scaffold(appBar: AppBar(), body: const SizedBox.shrink());
+      return Scaffold(
+        appBar: AppBar(),
+        body: ErrorView(message: tr.outingNotFound),
+      );
     }
     final summary = OutingSummary.of(_entries);
     final scenario = context.read<TablePrefsCubit>().state.scenarioFor(

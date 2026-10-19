@@ -908,7 +908,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeIdleTitle => 'Heading out?';
 
   @override
-  String get homeInformedSpent => 'Entered spending';
+  String get homeInformedSpent => 'Your reported spend';
 
   @override
   String get homeLastOuting => 'Last outing';
@@ -923,7 +923,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeOutings => 'Outings';
 
   @override
-  String get homeSpent => 'Spent';
+  String get homeSpent => 'Your spend';
 
   @override
   String get homeStartOuting => 'Start outing';
@@ -3735,10 +3735,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get placeStatOutings => 'Outings';
 
   @override
-  String get placeStatDrinks => 'Drinks';
+  String get placeStatDrinks => 'Your drinks';
 
   @override
-  String get placeStatSpent => 'Reported spend';
+  String get placeStatSpent => 'Your reported spend';
 
   @override
   String placeLastVisit(String date) {
@@ -4736,10 +4736,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statsOutingsOfPeriod => 'Outings in the period';
 
   @override
-  String get statsDrinksLogged => 'Drinks logged';
+  String get statsDrinksLogged => 'Your logged drinks';
 
   @override
-  String get statsDrinksOfPeriod => 'Drinks in the period';
+  String get statsDrinksOfPeriod => 'Your drinks in the period';
 
   @override
   String get statsPricedRecords => 'Records with a price';
@@ -5551,6 +5551,163 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gameImportUse => 'Use selected';
+
+  @override
+  String get bafoTitle => 'Pretend breathalyzer';
+
+  @override
+  String get bafoHubBody =>
+      'Blow (or hold the button) and see a made-up, random result.';
+
+  @override
+  String get bafoDisclaimer =>
+      'Just for fun: it does not measure alcohol or anything about your body, and it does not say whether anyone can drive.';
+
+  @override
+  String get bafoWho => 'Who is blowing? (optional)';
+
+  @override
+  String get bafoSomeone => 'Somebody';
+
+  @override
+  String get bafoMicNote =>
+      'When you tap Start, the app asks for the microphone only to sense how hard you blow, as a game. The sound is processed on the device: it is not recorded or sent anywhere.';
+
+  @override
+  String get bafoStart => 'Start';
+
+  @override
+  String get bafoHoldOption => 'I prefer holding a button (no microphone)';
+
+  @override
+  String get bafoBlowPrompt => 'Blow into the microphone until the bar fills';
+
+  @override
+  String get bafoHoldPrompt => 'Hold the button until the bar fills';
+
+  @override
+  String get bafoHoldButton => 'Hold to play';
+
+  @override
+  String get bafoHoldNote =>
+      'Manual mode: nothing is detected, only how long you hold counts.';
+
+  @override
+  String get bafoDenied =>
+      'No microphone access. You can still play by holding the button.';
+
+  @override
+  String get bafoUnsupported =>
+      'This device cannot use the microphone here. You can still play by holding the button.';
+
+  @override
+  String get bafoHintLouder => 'Get closer and blow harder.';
+
+  @override
+  String get bafoStop => 'Stop';
+
+  @override
+  String get bafoReveal => 'The pretend machine is thinking…';
+
+  @override
+  String bafoResultFor(String name) {
+    return 'Just-for-fun result for $name';
+  }
+
+  @override
+  String get bafoResultAnon => 'Just-for-fun result';
+
+  @override
+  String get bafoFictional => 'Picked at random. It is not a measurement.';
+
+  @override
+  String get bafoAgain => 'Try again';
+
+  @override
+  String get bafoDone => 'Done';
+
+  @override
+  String get bafoDialSemantics => 'Pretend breathalyzer dial';
+
+  @override
+  String get bafoR1T => 'Cloud breathing';
+
+  @override
+  String get bafoR1L => 'Light as a cartoon sigh.';
+
+  @override
+  String get bafoR2T => 'Desk-fan wind';
+
+  @override
+  String get bafoR2L => 'The pretend machine got a friendly breeze.';
+
+  @override
+  String get bafoR3T => 'Birthday-candle puff';
+
+  @override
+  String get bafoR3L => 'Time to make a wish... for a snack.';
+
+  @override
+  String get bafoR4T => 'Karaoke hurricane';
+
+  @override
+  String get bafoR4L => 'Your breath sang louder than the gadget.';
+
+  @override
+  String get bafoR5T => 'Cardboard dragon';
+
+  @override
+  String get bafoR5L => 'Breathed imaginary fire. Nobody got hurt.';
+
+  @override
+  String get bafoR6T => 'Comic-book gale';
+
+  @override
+  String get bafoR6L => 'The needle spun out of pure drama.';
+
+  @override
+  String get bafoR7T => 'Party balloon';
+
+  @override
+  String get bafoR7L => 'Filled up and deflated, no fuss.';
+
+  @override
+  String get bafoR8T => 'Kettle whistle';
+
+  @override
+  String get bafoR8L => 'Almost whistled. Reminder: the machine is pretend.';
+
+  @override
+  String get homeYourDrinks => 'Your drinks';
+
+  @override
+  String outingRecordsTable(int count) {
+    return 'Table records ($count)';
+  }
+
+  @override
+  String get summaryPeopleTitle => 'People and bill';
+
+  @override
+  String summaryPersonLine(String name, String share, String paid) {
+    return '$name · share $share · paid $paid';
+  }
+
+  @override
+  String summaryPersonDrinks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count drinks',
+      one: '1 drink',
+      zero: 'No drinks',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get entrySharedUseOrder =>
+      'To split a bottle or jug between people at the table, use \"New order\" on the outing screen and pick \"Shared bottle or jug\": there you say how much each person had.';
 
   @override
   String gameTurnOf(String name) {

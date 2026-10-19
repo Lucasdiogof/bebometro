@@ -307,7 +307,7 @@ class _ActiveCard extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: StatTile(label: tr.homeDrinks, value: '${s.entryCount}'),
+                child: StatTile(label: tr.homeYourDrinks, value: '${s.entryCount}'),
               ),
               Expanded(
                 child: StatTile(
@@ -432,7 +432,7 @@ class _MonthCard extends StatelessWidget {
               ),
               Expanded(
                 child: StatTile(
-                  label: tr.homeDrinks,
+                  label: tr.homeYourDrinks,
                   value: '${state.monthDrinks}',
                 ),
               ),

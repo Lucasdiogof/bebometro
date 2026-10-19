@@ -271,7 +271,11 @@ class AccountScope {
         () => CatalogCubit(getIt<DrinkRepository>()),
       )
       ..registerFactoryParam<PriceFixCubit, String, void>(
-        (outingId, _) => PriceFixCubit(outingId, getIt<DrinkRepository>()),
+        (outingId, _) => PriceFixCubit(
+          outingId,
+          getIt<DrinkRepository>(),
+          getIt<TabRepository>(),
+        ),
       )
       ..registerFactoryParam<OutingCubit, String, void>(
         (outingId, _) => OutingCubit(
