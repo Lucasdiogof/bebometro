@@ -5731,6 +5731,39 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get outingEditTitle => 'Edit outing';
+
+  @override
+  String get outingEditKind => 'Kind of outing';
+
+  @override
+  String get outingEditStart => 'Start';
+
+  @override
+  String get outingStartFuture => 'The start cannot be in the future.';
+
+  @override
+  String get outingStartAfterEnd =>
+      'The start must be before the end of the outing.';
+
+  @override
+  String get outingStartAfterRecords =>
+      'There are drinks logged before that time. Pick a start before the first record.';
+
+  @override
+  String get outingDelete => 'Delete outing';
+
+  @override
+  String get outingDeleteTitle => 'Delete this outing?';
+
+  @override
+  String get outingDeleteBody =>
+      'The outing, its drink records, the bill and the people disappear from your lists and your other devices. This cannot be undone.';
+
+  @override
+  String get outingDeleted => 'Outing deleted';
+
+  @override
   String gameTurnOf(String name) {
     return 'Turn: $name';
   }

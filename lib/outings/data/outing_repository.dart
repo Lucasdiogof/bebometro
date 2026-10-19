@@ -212,6 +212,45 @@ class OutingRepository {
     );
   }
 
+  /// Corrects the kind of outing and its start time. The start cannot be in
+  /// the future, after the end, or after the first record of the outing
+  /// ([earliestRecord]).
+  Future<void> edit(
+    String id, {
+    required OutingType type,
+    required DateTime startedAt,
+    DateTime? earliestRecord,
+  }) async {
+    final outing = byId(id);
+    if (outing == null) return;
+    if (startedAt.isAfter(DateTime.now().add(const Duration(minutes: 5)))) {
+      throw ArgumentError(tr.outingStartFuture);
+    }
+    final end = outing.endedAt;
+    if (end != null && startedAt.isAfter(end)) {
+      throw ArgumentError(tr.outingStartAfterEnd);
+    }
+    if (earliestRecord != null && startedAt.isAfter(earliestRecord)) {
+      throw ArgumentError(tr.outingStartAfterRecords);
+    }
+    await _save(
+      outing.copyWith(type: type, startedAt: startedAt, updatedAt: DateTime.now()),
+    );
+  }
+
+  /// Soft delete: the outing leaves every list and the tombstone is synced.
+  /// (The caller deletes the records of the outing too.)
+  Future<void> delete(String id) async {
+    final row = _store.get(LocalStore.outings, id);
+    if (row == null || row['deleted_at'] != null) return;
+    final now = DateTime.now().toUtc().toIso8601String();
+    await _store.put(LocalStore.outings, {
+      ...row,
+      'deleted_at': now,
+      'updated_at': now,
+    });
+  }
+
   Future<void> _save(Outing outing) =>
       _store.put(LocalStore.outings, outing.toJson());
 }

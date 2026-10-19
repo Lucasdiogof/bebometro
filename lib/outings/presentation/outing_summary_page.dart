@@ -25,6 +25,7 @@ import '../../tab/presentation/tab_entry_card.dart';
 import '../../tab/data/tab_repository.dart';
 import '../../tab/domain/tab_calc.dart';
 import '../../tab/domain/tab_models.dart';
+import 'outing_actions.dart';
 import 'price_fix_page.dart';
 import '../../places/presentation/change_outing_place.dart';
 import 'outing_page.dart' show EntryTile;
@@ -131,6 +132,17 @@ class _SummaryViewState extends State<_SummaryView> {
                 icon: const Icon(Icons.ios_share_rounded),
               ),
               const SyncBadge(),
+              PopupMenuButton<String>(
+                tooltip: tr.commonMoreOptions,
+                onSelected: (v) {
+                  if (v == 'edit') showEditOutingSheet(context, outing);
+                  if (v == 'delete') confirmDeleteOuting(context, outing);
+                },
+                itemBuilder: (_) => [
+                  PopupMenuItem(value: 'edit', child: Text(tr.outingEditTitle)),
+                  PopupMenuItem(value: 'delete', child: Text(tr.outingDelete)),
+                ],
+              ),
             ],
           ),
           body: Column(

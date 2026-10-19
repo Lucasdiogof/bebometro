@@ -258,6 +258,8 @@ class Outing {
   }
 
   Outing copyWith({
+    OutingType? type,
+    DateTime? startedAt,
     DateTime? endedAt,
     FeedbackMood? feedbackMood,
     FeedbackStatus? feedbackStatus,
@@ -270,7 +272,7 @@ class Outing {
     required DateTime updatedAt,
   }) => Outing(
     id: id,
-    type: type,
+    type: type ?? this.type,
     nickname: nickname,
     address: address,
     placeId: placeId,
@@ -278,7 +280,7 @@ class Outing {
     state: state,
     placeName: placeName,
     point: point,
-    startedAt: startedAt,
+    startedAt: startedAt ?? this.startedAt,
     endedAt: endedAt ?? this.endedAt,
     feedbackMood: feedbackMood ?? this.feedbackMood,
     feedbackStatus: feedbackStatus ?? this.feedbackStatus,

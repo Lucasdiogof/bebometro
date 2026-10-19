@@ -5746,6 +5746,39 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get outingEditTitle => 'Editar rolê';
+
+  @override
+  String get outingEditKind => 'Tipo de rolê';
+
+  @override
+  String get outingEditStart => 'Início';
+
+  @override
+  String get outingStartFuture => 'O início não pode estar no futuro.';
+
+  @override
+  String get outingStartAfterEnd =>
+      'O início precisa ser antes do fim do rolê.';
+
+  @override
+  String get outingStartAfterRecords =>
+      'Já há bebidas registradas antes desse horário. Escolha um início anterior ao primeiro registro.';
+
+  @override
+  String get outingDelete => 'Excluir rolê';
+
+  @override
+  String get outingDeleteTitle => 'Excluir este rolê?';
+
+  @override
+  String get outingDeleteBody =>
+      'O rolê, os registros de bebida, a comanda e as pessoas somem das suas listas e dos seus outros aparelhos. Não dá para desfazer.';
+
+  @override
+  String get outingDeleted => 'Rolê excluído';
+
+  @override
   String gameTurnOf(String name) {
     return 'Vez de $name';
   }

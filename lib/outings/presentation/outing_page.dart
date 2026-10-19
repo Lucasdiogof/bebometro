@@ -13,6 +13,7 @@ import '../../core/widgets/state_views.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/drink_entry_page.dart';
 import '../../places/presentation/change_outing_place.dart';
+import 'outing_actions.dart';
 import '../../scan/data/scan_draft_store.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../table/presentation/table_scene.dart';
@@ -688,6 +689,8 @@ class _OutingViewState extends State<_OutingView> {
               if (v == 'finish') _finish();
               if (v == 'tracking') _toggleTracking();
               if (v == 'place') changeOutingPlace(context, outing);
+              if (v == 'edit') showEditOutingSheet(context, outing);
+              if (v == 'delete') confirmDeleteOuting(context, outing);
               if (v == 'map') openOutingInMaps(context, outing);
             },
             itemBuilder: (_) {
@@ -707,8 +710,11 @@ class _OutingViewState extends State<_OutingView> {
                   ),
                 if (outingHasMapTarget(outing))
                   PopupMenuItem(value: 'map', child: Text(tr.placeOpenInMaps)),
+                PopupMenuItem(value: 'edit', child: Text(tr.outingEditTitle)),
                 PopupMenuItem(value: 'place', child: Text(tr.placeCorrect)),
-                PopupMenuItem(value: 'finish', child: Text(tr.outingFinish)),
+                if (outing.isActive)
+                  PopupMenuItem(value: 'finish', child: Text(tr.outingFinish)),
+                PopupMenuItem(value: 'delete', child: Text(tr.outingDelete)),
               ];
             },
           ),

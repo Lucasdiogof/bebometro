@@ -9213,6 +9213,66 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 bebida sua} other{{count} bebidas suas}}'**
   String drinkCountYours(int count);
 
+  /// No description provided for @outingEditTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar rolê'**
+  String get outingEditTitle;
+
+  /// No description provided for @outingEditKind.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo de rolê'**
+  String get outingEditKind;
+
+  /// No description provided for @outingEditStart.
+  ///
+  /// In pt, this message translates to:
+  /// **'Início'**
+  String get outingEditStart;
+
+  /// No description provided for @outingStartFuture.
+  ///
+  /// In pt, this message translates to:
+  /// **'O início não pode estar no futuro.'**
+  String get outingStartFuture;
+
+  /// No description provided for @outingStartAfterEnd.
+  ///
+  /// In pt, this message translates to:
+  /// **'O início precisa ser antes do fim do rolê.'**
+  String get outingStartAfterEnd;
+
+  /// No description provided for @outingStartAfterRecords.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já há bebidas registradas antes desse horário. Escolha um início anterior ao primeiro registro.'**
+  String get outingStartAfterRecords;
+
+  /// No description provided for @outingDelete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir rolê'**
+  String get outingDelete;
+
+  /// No description provided for @outingDeleteTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir este rolê?'**
+  String get outingDeleteTitle;
+
+  /// No description provided for @outingDeleteBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'O rolê, os registros de bebida, a comanda e as pessoas somem das suas listas e dos seus outros aparelhos. Não dá para desfazer.'**
+  String get outingDeleteBody;
+
+  /// No description provided for @outingDeleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rolê excluído'**
+  String get outingDeleted;
+
   /// No description provided for @gameTurnOf.
   ///
   /// In pt, this message translates to:

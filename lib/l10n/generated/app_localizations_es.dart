@@ -5762,6 +5762,39 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get outingEditTitle => 'Editar salida';
+
+  @override
+  String get outingEditKind => 'Tipo de salida';
+
+  @override
+  String get outingEditStart => 'Inicio';
+
+  @override
+  String get outingStartFuture => 'El inicio no puede estar en el futuro.';
+
+  @override
+  String get outingStartAfterEnd =>
+      'El inicio debe ser antes del final de la salida.';
+
+  @override
+  String get outingStartAfterRecords =>
+      'Hay bebidas registradas antes de esa hora. Elige un inicio anterior al primer registro.';
+
+  @override
+  String get outingDelete => 'Eliminar salida';
+
+  @override
+  String get outingDeleteTitle => '¿Eliminar esta salida?';
+
+  @override
+  String get outingDeleteBody =>
+      'La salida, sus registros de bebida, la cuenta y las personas desaparecen de tus listas y de tus otros dispositivos. No se puede deshacer.';
+
+  @override
+  String get outingDeleted => 'Salida eliminada';
+
+  @override
   String gameTurnOf(String name) {
     return 'Turno: $name';
   }

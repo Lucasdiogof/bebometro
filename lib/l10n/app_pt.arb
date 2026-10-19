@@ -3642,6 +3642,16 @@
       }
     }
   },
+  "outingEditTitle": "Editar rolê",
+  "outingEditKind": "Tipo de rolê",
+  "outingEditStart": "Início",
+  "outingStartFuture": "O início não pode estar no futuro.",
+  "outingStartAfterEnd": "O início precisa ser antes do fim do rolê.",
+  "outingStartAfterRecords": "Já há bebidas registradas antes desse horário. Escolha um início anterior ao primeiro registro.",
+  "outingDelete": "Excluir rolê",
+  "outingDeleteTitle": "Excluir este rolê?",
+  "outingDeleteBody": "O rolê, os registros de bebida, a comanda e as pessoas somem das suas listas e dos seus outros aparelhos. Não dá para desfazer.",
+  "outingDeleted": "Rolê excluído",
   "gameTurnOf": "Vez de {name}",
   "@gameTurnOf": {
     "placeholders": {
