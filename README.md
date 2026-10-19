@@ -107,7 +107,7 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 **Resenha: offline party games**
 
 - Never Have I Ever, Most Likely To and Truth or Dare.
-- Player nicknames, light/adult modes, optional points, custom cards and resumable games.
+- Player nicknames (or pick the people of the outing), light/adult modes, no scores: the person who reads is highlighted and the reader rotates; custom cards and resumable games.
 - Skipping has no penalty. Games do not require drinking or automatically add drinks to an outing.
 
 **Sharing and export**

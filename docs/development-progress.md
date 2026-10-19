@@ -108,3 +108,18 @@ conferência de referências/intervalos/traduções) e `flutter gen-l10n`.
 | Categoria `ready_to_drink` (enum, textos pt/en/es, filtros/busca por `values`, OCR por palavras do rótulo, tamanhos sugeridos 269/275/350, mesa = lata, estatísticas, exportação pelo código) | Sim (`4356c90`) | Migration `20261019000000` **pendente** (amplia os `check` de `custom_drinks` e `drink_entries`); até lá a sincronização mantém essas linhas pendentes com o aviso "aguarda atualização do servidor" | n/a | Não |
 | "Sobre estes dados" no detalhe (fonte por campo, tipo, mercado, data de consulta, endereço que abre/copia, aviso de divergência sempre visível) | Sim (`4356c90`) | n/a | n/a | Não |
 | Catálogo v6 (136 produtos, 20 RTDs) | Sim (`d678cd5`) | n/a | `catalog_tool.py check`: 0 problemas | Não |
+
+## Checkpoint 19/10/2026 (rodada mesa, pessoas, resenha, catálogo)
+
+**Implementado e commitado na main** (`44c6926` interface de pessoas/pedidos, `192801e` resenha sem pontos, `53d8e5f` catálogo + busca chop, depois teste de migração): ver `docs/table-design.md` (seção "Implementado") e `docs/catalog-coverage.md`.
+
+**Testado de verdade:** `flutter analyze` sem erros (só avisos `info` antigos); `flutter test`: 96+ testes passam, incluindo o cenário do casal (conta R$ 202,40, parcelas 99,00 e 103,40, Lucas 1.600 ml, pagamento quita o bar), garrafa 600 ml, comida 100/3, pessoa adicionada depois, correções, fixture antiga lida/salva/relida sem mudar, sessão de jogo antiga com pontos, busca "chopp heineken"/"chopp brahma"/Spritzgerald/Fitzgerald/vinho tinto/inexistente. Isso é teste de domínio, **não** fluxo aprovado na interface.
+
+**Não executado / bloqueado**
+- **QA de interface (casal, quatro chopps, conta, resenha, quebra de palavras em en, fonte grande, offline, segunda instalação):** o emulador Android não sobe nesta máquina (`WHPX: Failed to setup partition, hr=80070005`, acesso negado ao Windows Hypervisor Platform; precisa de permissão/ativação no Windows). Fallback: app web em `http://localhost:8099` (`flutter run -d web-server --web-port 8099 --dart-define-from-file=env.json`), que abre na tela de entrar. **Falta uma conta de QA logada**: criar conta/entrar exige digitar senha num serviço remoto (Supabase), o que a sessão não faz; o responsável precisa entrar (ou criar uma conta de QA) nessa aba. Os pedidos de chopp do relato anterior **não foram confirmados como salvos** e nada foi repetido (não há dados nesta instalação web).
+- **Migration `20261022000000_table_attribution.sql`:** versionada no repositório, **não aplicada nem verificada** por esta sessão (sem `SUPABASE_ACCESS_TOKEN`). Até ser aplicada, registros com atribuição ficam pendentes no aparelho com aviso, sem enviar linha degradada.
+- iOS/Live Activity: sem ambiente, não validado.
+
+**Próxima ação exata:** (1) entrar numa conta de QA na aba `localhost:8099` (ou liberar WHPX para o emulador); (2) aplicar a migration `20261022000000` com token; (3) percorrer na interface os cenários A-J do plano e registrar aqui com capturas; (4) revisar quebra de palavras dos botões inferiores em inglês ("Drink"/"Other item").
+
+**Conta QA:** `qa.bebometro.a.fc6438` (da rodada anterior; senha não registrada). Build usado: debug web a partir da main após o commit do teste de migração.

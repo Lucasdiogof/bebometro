@@ -156,3 +156,43 @@ Entradas só com URL, rótulo e data (sem trecho copiado), por cautela com os te
 - Aviso sobre o passado: valores já presentes que vieram de rótulos transcritos no OFF (p.ex. Itaipava Pilsen, Smirnoff Ice Tropical) são
   fotos lidas à mão, não dados importados; seguem com a procedência de cada campo.
 
+
+## Rodada 19/10/2026: pesquisa de mesa (catalog v6 + 170 itens)
+
+Fonte: apêndice A do plano "Bebômetro: rolê, pessoas e conta da mesa" (195 candidatos). **Não são 195 novos**: o diff contra o catálogo real
+deu **24 já existentes** (13 drinks que já tinham receita ou produto, 3 chopes que são formas de serviço de produtos já cadastrados,
+8 cervejas), **1 não importado** (Petra Ultra Puro Malte Sem Glúten: possível duplicata de `petra-ultra`, não provada) e **170 novos**:
+91 drinks (inclui Spritzgerald e Fitzgerald), 46 vinhos e espumantes, 23 cervejas, 10 chopes. Nenhum ID existente mudou ou sumiu
+(`catalog_tool.py ids`: lost none, renamed none, values changed none).
+
+Antes: 136 produtos, 62 marcas. Depois: **306 produtos**, 72 marcas, 15 receitas (inalteradas). Aliases de busca: `chope spaten`/`chopp spaten`
+e equivalentes para Patagonia Weisse e Amber Lager (6 aliases). 13 atalhos genéricos novos no app (sem teor nem volume): Chope IPA, Chope de
+trigo, Vinho rosé, Espumante brut, Espumante moscatel, Sangria, Clericot, Batida, Caipirinha de fruta, Cozumel, Dose de destilado,
+Energético, Drink sem álcool (+ alias "drink da casa").
+
+Campos conhecidos nos novos: só os que a pesquisa trouxe com fonte: Amstel Ultra (4%, garrafa 275 ml e lata 269 ml), Baden Baden Peach
+(4,9%, lata 350 ml), Lagunitas IPA (6,2%, lata 350 ml), Colombina Romaria (9%), Praya Receita Clássica (355 long neck, 269 lata, 600 garrafa),
+Praya Lager (330 long neck). Todo o resto: teor, volume, ingredientes e estilo **desconhecidos** (vinhos e espumantes: nenhum teor).
+O chope Lagunitas não herda o teor da lata; o chope Heineken não herda nada da garrafa. Chope e cerveja da mesma marca são itens
+distintos (forma de serviço): `heineken-lager-chope` x `heineken-heineken`, `brahma-claro-chope`/`black`/`escuro` x `brahma-chopp` (lata/garrafa).
+
+Spritzgerald (`drink-spritzgerald`) é um drink com nome, preço e pessoa e **composição desconhecida**; a nota cita a versão da Monin (EUA)
+como referência, sem importar receita nem teor. Fitzgerald (`drink-fitzgerald`) é outro item (Difford's Guide), não sinônimo.
+
+Procedência: nomes de coquetéis (IBA, Monin, Difford's) e de Petra (índice de busca, página bloqueada) ficam como `evidence: secondary`;
+produtos de fabricantes e das lojas oficiais do grupo ficam como dado do fabricante, mas **só o nome** consta (nota explícita).
+Sugestões de copo (nunca tamanho oficial): chope 200/300/400/500 ml; vinho por taça 100/125/150 ml e garrafa 750 ml.
+Busca: "chop", "chopp" e "chope" são a mesma palavra (`searchKey`); com "chop" na busca o chope servido vem antes da lata/garrafa.
+
+Cobertura depois (`catalog_tool.py coverage`):
+```
+TOTAL           306  abv 116  abv-variants   3  ingred  36  sizes  83  style 103  field-sourced  61
+beer             99  abv  74  abv-variants   2  ingred  30  sizes  51  style  53  field-sourced  37
+cocktail         91  abv   0  abv-variants   0  ingred   0  sizes   0  style   0  field-sourced   0
+draft            17  abv   7  abv-variants   0  ingred   1  sizes   0  style   3  field-sourced   0
+nonAlcoholic      3  abv   2  abv-variants   0  ingred   1  sizes   2  style   0  field-sourced   1
+readyToDrink     20  abv   8  abv-variants   0  ingred   0  sizes  17  style   0  field-sourced  20
+spirit           30  abv  25  abv-variants   1  ingred   4  sizes  13  style  30  field-sourced   3
+wine             46  abv   0  abv-variants   0  ingred   0  sizes   0  style  17  field-sourced   0
+brands: 72
+```

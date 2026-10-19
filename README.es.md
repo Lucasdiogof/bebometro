@@ -107,7 +107,7 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 **Resenha: juegos sin conexión**
 
 - Yo nunca, Quién es más probable y Verdad o reto.
-- Apodos, modos suave/adultos, puntos opcionales, tarjetas propias y partidas reanudables.
+- Apodos (o las personas de la salida), modos suave/adultos, sin puntos: quien lee la pregunta aparece destacado y la lectura rota; tarjetas propias y partidas reanudables.
 - Saltar no tiene castigo. Los juegos no exigen beber ni registran bebidas automáticamente.
 
 **Compartir y exportar**

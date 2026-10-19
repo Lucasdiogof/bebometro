@@ -107,7 +107,7 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 **Resenha: jogos offline**
 
 - Eu nunca, Quem é mais provável e Verdade ou desafio.
-- Apelidos dos participantes, modos Leve/+18, pontos opcionais, cartas próprias e retomada da partida.
+- Apelidos (ou as pessoas do rolê), modos Leve/+18, sem pontos: quem lê a pergunta fica em destaque e a leitura gira; cartas próprias e retomada da partida.
 - Pular não gera punição. Os jogos não exigem consumo nem registram bebidas automaticamente.
 
 **Compartilhamento e exportação**

@@ -217,7 +217,7 @@ Checklist por bloco em `docs/development-progress.md`. Nada foi compilado, anali
   "Esse rolê ainda está acontecendo?" para rolê aberto há 8 h sem registros: Continuar (não pergunta por 24 h) ou Encerrar com horário
   ajustável; nunca encerra sozinho. Bebida adicionada depois a um rolê encerrado assume o horário final como padrão.
 - **Resenha** (`lib/games/`): Eu nunca, Quem é mais provável, Verdade ou desafio; offline, sem conta, sem rolê ativo. Apelidos, Leve ou +18
-  (confirmação de adultos; +18 mistura as leves com flerte/humor, tudo opcional), pontos opcionais, pular sem punição, sem repetir cartas até
+  (confirmação de adultos; +18 mistura as leves com flerte/humor, tudo opcional), sem pontos (removidos em 19/10/2026; leitor em destaque), pular sem punição, sem repetir cartas até
   acabar (depois pode reembaralhar), partida salva e retomável, cartas próprias (criar/excluir). 134 cartas originais em
   `assets/games/cards_v1.json` com ids estáveis; nenhuma carta pede para beber nem registra bebida.
 - **Copão e virar o copo** (`lib/glass/`): copão opcional no rolê (volume conhecido somado, escala explícita, "+N sem volume", sem metas);

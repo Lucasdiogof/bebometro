@@ -47,3 +47,14 @@ atualizado com o que foi feito de fato (ver `docs/qa-report.md` para as provas).
 
 ## Fora de escopo (confirmado)
 Pix/reembolso entre pessoas, agenda de amigos, rede social, convites, ficha nutricional, conta obrigatória para convidados.
+
+## Implementado em 19/10/2026 (resumo; provas em `docs/qa-report.md`)
+- **Domínio:** atribuição de consumo, rateio por pedido, comida, serviço e pagamentos (`tab_calc.dart`, testes `table_calc_test.dart`, cenários A-E do plano).
+- **Interface:** pessoas no início e durante o rolê, abas Pedidos / Por pessoa / Conta, novo pedido por pessoa (`lib/table/presentation`).
+- **Sincronização/migração:** migration `20261022000000_table_attribution.sql`, envio sem forma degradada, exportação, estatística pessoal só do "Você";
+  fixture de dados antigos lida, salva e relida sem mudar totais, IDs nem atribuição (`test/migration_fixture_test.dart`).
+- **Tela bloqueada:** o atalho só repete pedido individual do "Você"; se o registro virar de outra pessoa/garrafa compartilhada antes do
+  processamento, o comando fica pendente (`PendingReason.notPersonal`), nunca atribuído ao dono.
+- **Resenha:** sem pontos (opção, placar, contadores removidos; partidas antigas abrem e ignoram a pontuação), leitor em destaque separado de quem
+  responde, "Passar a vez", "Trocar leitor", rotação persistida, importação das pessoas do rolê por escolha (`test/game_session_test.dart`).
+- **Catálogo:** ver `docs/catalog-coverage.md` (170 itens, busca chop/chopp/chope, atalhos genéricos).
