@@ -5725,6 +5725,16 @@ class AppLocalizationsPt extends AppLocalizations {
       'Para dividir uma garrafa ou jarra entre pessoas da mesa, use \"Novo pedido\" na tela do rolê e escolha \"Garrafa ou jarra compartilhada\": lá você diz quanto cada um tomou.';
 
   @override
+  String get formPortionsTitle => 'Quanto cada pessoa tomou';
+
+  @override
+  String get formPortionsHint =>
+      'Deixe em branco se não souber: fica desconhecido, nunca zero. A soma não pode passar do tamanho da garrafa.';
+
+  @override
+  String get formPortionMl => 'ml';
+
+  @override
   String gameTurnOf(String name) {
     return 'Vez de $name';
   }

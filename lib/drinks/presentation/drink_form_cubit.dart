@@ -303,6 +303,13 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     ),
   );
 
+  /// Corrects how much one person of a shared bottle drank (null = unknown).
+  void setPortion(String key, int? ml) {
+    final current = state.draft.portions;
+    if (current == null) return;
+    _set(state.draft.withPortions({...current, key: ml}));
+  }
+
   /// Stable per form, so a repeated "save" never creates a second row.
   final String _entryId;
 

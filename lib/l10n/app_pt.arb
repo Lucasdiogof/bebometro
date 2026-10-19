@@ -3631,6 +3631,9 @@
     }
   },
   "entrySharedUseOrder": "Para dividir uma garrafa ou jarra entre pessoas da mesa, use \"Novo pedido\" na tela do rolê e escolha \"Garrafa ou jarra compartilhada\": lá você diz quanto cada um tomou.",
+  "formPortionsTitle": "Quanto cada pessoa tomou",
+  "formPortionsHint": "Deixe em branco se não souber: fica desconhecido, nunca zero. A soma não pode passar do tamanho da garrafa.",
+  "formPortionMl": "ml",
   "gameTurnOf": "Vez de {name}",
   "@gameTurnOf": {
     "placeholders": {

@@ -9189,6 +9189,24 @@ abstract class AppLocalizations {
   /// **'Para dividir uma garrafa ou jarra entre pessoas da mesa, use \"Novo pedido\" na tela do rolê e escolha \"Garrafa ou jarra compartilhada\": lá você diz quanto cada um tomou.'**
   String get entrySharedUseOrder;
 
+  /// No description provided for @formPortionsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quanto cada pessoa tomou'**
+  String get formPortionsTitle;
+
+  /// No description provided for @formPortionsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Deixe em branco se não souber: fica desconhecido, nunca zero. A soma não pode passar do tamanho da garrafa.'**
+  String get formPortionsHint;
+
+  /// No description provided for @formPortionMl.
+  ///
+  /// In pt, this message translates to:
+  /// **'ml'**
+  String get formPortionMl;
+
   /// No description provided for @gameTurnOf.
   ///
   /// In pt, this message translates to:

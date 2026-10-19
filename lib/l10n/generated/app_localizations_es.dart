@@ -5741,6 +5741,16 @@ class AppLocalizationsEs extends AppLocalizations {
       'Para dividir una botella o jarra entre personas de la mesa, usa \"Nuevo pedido\" en la pantalla de la salida y elige \"Botella o jarra compartida\": ahí indicas cuánto tomó cada uno.';
 
   @override
+  String get formPortionsTitle => 'Cuánto tomó cada persona';
+
+  @override
+  String get formPortionsHint =>
+      'Déjalo en blanco si no lo sabes: queda desconocido, nunca cero. La suma no puede superar el tamaño de la botella.';
+
+  @override
+  String get formPortionMl => 'ml';
+
+  @override
   String gameTurnOf(String name) {
     return 'Turno: $name';
   }

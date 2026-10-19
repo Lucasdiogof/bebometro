@@ -5710,6 +5710,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'To split a bottle or jug between people at the table, use \"New order\" on the outing screen and pick \"Shared bottle or jug\": there you say how much each person had.';
 
   @override
+  String get formPortionsTitle => 'How much each person had';
+
+  @override
+  String get formPortionsHint =>
+      'Leave blank if you do not know: it stays unknown, never zero. The sum cannot exceed the bottle size.';
+
+  @override
+  String get formPortionMl => 'ml';
+
+  @override
   String gameTurnOf(String name) {
     return 'Turn: $name';
   }

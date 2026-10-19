@@ -245,6 +245,7 @@ class DrinkDraft {
     bool? personalEdited,
     DateTime? consumedAt,
     Composition? composition,
+    Map<String, int?>? Function()? newPortions,
   }) => DrinkDraft(
     name: name,
     category: category,
@@ -260,7 +261,7 @@ class DrinkDraft {
     reference: reference,
     entryOrigin: entryOrigin,
     consumerId: consumerId,
-    portions: portions,
+    portions: newPortions != null ? newPortions() : portions,
     composition: composition ?? this.composition,
     consumedAt: consumedAt ?? this.consumedAt,
     presentationLabel: presentationLabel != null
@@ -439,6 +440,16 @@ class DrinkDraft {
     return _withComponents(list);
   }
 
+  /// A shared bottle with per-person portions: [p] maps a participant id (or
+  /// [ownerPortionKey]) to the ml that person drank, null = unknown (never
+  /// zero). The owner's own portion and the head count follow it.
+  DrinkDraft withPortions(Map<String, int?> p) => _copy(
+    newPortions: () => p,
+    personalMl: () => p[ownerPortionKey],
+    peopleCount: p.length,
+    personalEdited: true,
+  );
+
   DrinkDraft addComponent(EntryComponent component) =>
       _withComponents([...components, component]);
 
@@ -483,7 +494,18 @@ class DrinkDraft {
     if (abv != null && (abv < 0 || abv > 100)) {
       result['abv'] = tr.draftAbvRange;
     }
-    if (isShared && container != null && container > 0) {
+    final people = portions;
+    if (isShared && people != null && container != null && container > 0) {
+      // Per-person portions (a bottle shared at a table): the owner may not
+      // have drunk any of it, and unknown portions stay unknown.
+      var known = leftoverMl;
+      for (final v in people.values) {
+        known += v ?? 0;
+      }
+      if (known > container) {
+        result['personal'] = tr.draftShareOver(formatMl(container));
+      }
+    } else if (isShared && container != null && container > 0) {
       final personal = personalMl;
       if (personal == null || personal <= 0) {
         result['personal'] = tr.draftShareRequired;
