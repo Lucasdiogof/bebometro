@@ -102,18 +102,19 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 
 - iOS 16.2+: a Live Activity on the lock screen and, on compatible iPhones, in the Dynamic Island, showing elapsed time and the number of alcoholic drink records. Android: one silent, low-importance notification updated in place with a native chronometer (no foreground service). Web: no native surface; tracking stays inside the app.
 - Off until you turn it on (offered once, on the first outing, and in Settings). Spending and the place nickname are hidden by default; the address is never shown. It can be hidden per outing and removed by you at any time, and a removed surface is not brought back for that outing.
-- “Abrir”, “Mais uma” and “Água” open the app on the right outing and ask for confirmation; nothing is registered just by tapping. The counter counts records, not standard doses, and a shared bottle is one record.
+- “Abrir”, “Mais uma” and “Água” open the app on the right outing. “Mais uma” repeats only the last individual order of **yours** (never a guest's or a shared bottle) and “Água” logs water for you; both show “Undo”. The counter counts records, not standard doses, and a shared bottle is one record.
 
 **Resenha: offline party games**
 
 - Never Have I Ever, Most Likely To and Truth or Dare.
 - Player nicknames (or pick the people of the outing), light/adult modes, no scores: the person who reads is highlighted and the reader rotates; custom cards and resumable games.
 - Skipping has no penalty. Games do not require drinking or automatically add drinks to an outing.
+- **Pretend breathalyzer:** a made-up visual instrument. The microphone (only after you tap “Start”) just senses how hard you blow; the sound is processed on the device, never recorded or sent, and released when you leave or the app goes to the background. Without a microphone, “Hold to play”. The result is random, with no number, no verdict and no link to the recorded consumption; nothing is saved.
 
 **Sharing and export**
 
 - A configurable summary card; full addresses and intoxication reports are excluded from the card.
-- JSON export of personal records and CSV exports of outings and drinks.
+- JSON export (everything on the device: outings, records of every person, bills) and CSV exports (outings and drinks; the consumer column says whose each record is; the per-outing totals are yours).
 - System sharing where supported, with text-copy alternatives. Browser support varies.
 
 ## Data and calculation rules

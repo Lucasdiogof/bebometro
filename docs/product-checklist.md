@@ -1,3 +1,5 @@
+> Estado funcional completo, por funcionalidade: [`functional-audit.md`](functional-audit.md) (19/10/2026).
+
 # Bebômetro: checklist de produto
 
 Quatro estados são mantidos **separados**: **Código** (implementado em código), **Externo** (configurado fora do

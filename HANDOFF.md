@@ -885,3 +885,25 @@ Relatório completo e atualizado: [`docs/qa-report.md`](docs/qa-report.md). Resu
   concedeu no SQL Editor; a exclusão da conta de QA B foi comprovada no banco (0 linhas, 0 arquivos, sem usuário, `done`). **Aberto:** versionar essa
   concessão numa migration (hoje só existe no projeto).
 - Conta de QA mantida: A (`qa.bebometro.a.fc6438`). B excluída.
+
+## Rodada final de funcionalidades (19/10/2026)
+
+Tabela completa por funcionalidade (o que existe, o que falta implementar, o que só falta validar): [`docs/functional-audit.md`](docs/functional-audit.md). Prova
+na web e testes: [`docs/qa-report.md`](docs/qa-report.md). Não revalidado em aparelho: tudo o que for Android/iOS.
+
+**Mudou nesta rodada:** Bafômetro de brincadeira (`lib/games/*/bafometro_page.dart`, `breath_toy.dart`, `breath_input.dart`; pacote `record` 7.1.2 só com `startStream`, sem
+arquivo; `RECORD_AUDIO` no Android e `NSMicrophoneUsageDescription` no iOS; microfone pedido só depois de "Começar", liberado ao sair/segundo plano; fallback "Segurar para
+brincar"; resultado sorteado, sem números/veredito/histórico); editar rolê (tipo e início) e excluir rolê; editor das porções de garrafa compartilhada e correção do bloqueio
+de garrafa sem porção do dono; formulário antigo não cria garrafa dividida em mesa; "Mais uma" vinda da tela bloqueada só do Você; rótulos "seu/suas" em Home, histórico,
+estatísticas, local e orçamento; resumo com "Pessoas e conta" e registros da mesa com dono; "Preencher preços" por pessoa; busca do histórico por bebida e pessoa; aviso ao
+sair de Novo pedido e Iniciar rolê com dados; troca de senha envia o código sozinha; JSON sem rolês/locais excluídos; compartilhar um rolê inexistente mostra erro.
+
+**Correções de leitura deste HANDOFF (o código manda):** não existem as telas "conferir e-mail", "Agora o Bebômetro usa conta" nem "Recuperando seu histórico" com "Tentar de
+novo" (o gate vai direto ao app; o retry é "Sincronizar agora") e Minha conta não tem "registros antigos"; os atalhos "Mais uma"/"Água" da tela bloqueada **registram na hora**
+(com Desfazer) em vez de pedir confirmação; o e-mail de recuperação existe só em pt-BR; a concessão do `service_role` foi versionada em `20261021000000`.
+
+**Migrations:** `20261022000000_table_attribution.sql` aplicada e verificada em 19/10/2026 (projeto `jiisoqkryhmtopaojyyu`). Nenhuma migration nova nesta rodada.
+
+**Ainda por implementar (escopo atual):** troca de e-mail e link de termos; adicionar/tirar pessoas de uma garrafa já criada; sincronizar favoritos, partida e cartas próprias;
+descrições de conflito para locais e bebidas próprias; OCR na web; estatística da mesa (decisão: fora).
+**Só falta validar/configurar:** tudo em Android/iOS (microfone, câmera/OCR, tela bloqueada, sensores, teclado virtual, fonte do sistema), segunda instalação e conflito entre dois aparelhos.

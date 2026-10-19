@@ -102,18 +102,19 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 
 - iOS 16.2+: uma Live Activity na tela bloqueada e, nos iPhones compatíveis, na Dynamic Island, com o tempo e a quantidade de registros de bebida alcoólica. Android: uma notificação silenciosa, de baixa importância, atualizada no lugar, com cronômetro nativo (sem foreground service). Web: sem superfície nativa; o acompanhamento fica dentro do app.
 - Desligado até você ativar (oferecido uma vez, no primeiro rolê, e em Configurações). Gastos e apelido do local ficam ocultos por padrão; o endereço nunca aparece. Dá para ocultar por rolê e remover a qualquer momento, e o que você removeu não volta naquele rolê.
-- “Abrir”, “Mais uma” e “Água” abrem o app no rolê certo e pedem confirmação; nada é registrado só por tocar. O contador conta registros, não doses-padrão, e uma garrafa compartilhada é um registro.
+- “Abrir”, “Mais uma” e “Água” abrem o app no rolê certo. “Mais uma” repete só o último pedido individual **seu** (nunca o de um convidado nem uma garrafa compartilhada) e “Água” registra água para você; os dois aparecem com “Desfazer”. O contador conta registros, não doses-padrão, e uma garrafa compartilhada é um registro.
 
 **Resenha: jogos offline**
 
 - Eu nunca, Quem é mais provável e Verdade ou desafio.
 - Apelidos (ou as pessoas do rolê), modos Leve/+18, sem pontos: quem lê a pergunta fica em destaque e a leitura gira; cartas próprias e retomada da partida.
 - Pular não gera punição. Os jogos não exigem consumo nem registram bebidas automaticamente.
+- **Bafômetro de brincadeira:** um instrumento visual de mentira. O microfone (só depois do toque em “Começar”) apenas sente a força do sopro; o som é processado no aparelho, não é gravado nem enviado e é liberado ao sair ou ir para segundo plano. Sem microfone, “Segurar para brincar”. O resultado é sorteado, sem número, sem veredito e sem ligação com o consumo registrado; nada é salvo.
 
 **Compartilhamento e exportação**
 
 - Cartão de resumo configurável; endereço completo e relato de embriaguez não entram no cartão.
-- Exportação dos registros pessoais em JSON e dos rolês e bebidas em CSV.
+- Exportação em JSON (tudo o que está no aparelho: rolês, registros de todas as pessoas, comandas) e em CSV (rolês e bebidas; a coluna de consumidor diz de quem é cada registro; os totais por rolê são os seus).
 - Compartilhamento do sistema quando disponível, com alternativas de copiar texto. O suporte na web depende do navegador.
 
 ## Regras dos dados e cálculos

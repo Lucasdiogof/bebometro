@@ -102,18 +102,19 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 
 - iOS 16.2+: una Live Activity en la pantalla de bloqueo y, en los iPhone compatibles, en la Dynamic Island, con el tiempo y la cantidad de registros de bebida alcohólica. Android: una notificación silenciosa, de baja importancia, actualizada en su lugar, con cronómetro nativo (sin servicio en primer plano). Web: sin superficie nativa; el seguimiento queda dentro de la app.
 - Desactivado hasta que lo actives (se ofrece una vez, en la primera salida, y en Ajustes). Los gastos y el apodo del lugar están ocultos por defecto; la dirección nunca aparece. Se puede ocultar por salida y quitar en cualquier momento, y lo que quitaste no vuelve en esa salida.
-- “Abrir”, “Otra más” y “Agua” abren la app en la salida correcta y piden confirmación; nada se registra solo por tocar. El contador cuenta registros, no dosis estándar, y una botella compartida es un registro.
+- “Abrir”, “Otra más” y “Agua” abren la app en la salida correcta. “Otra más” repite solo el último pedido individual **tuyo** (nunca el de un invitado ni una botella compartida) y “Agua” registra agua para ti; ambos muestran “Deshacer”. El contador cuenta registros, no dosis estándar, y una botella compartida es un registro.
 
 **Resenha: juegos sin conexión**
 
 - Yo nunca, Quién es más probable y Verdad o reto.
 - Apodos (o las personas de la salida), modos suave/adultos, sin puntos: quien lee la pregunta aparece destacado y la lectura rota; tarjetas propias y partidas reanudables.
 - Saltar no tiene castigo. Los juegos no exigen beber ni registran bebidas automáticamente.
+- **Alcoholímetro de broma:** un instrumento visual de mentira. El micrófono (solo después de tocar “Empezar”) únicamente siente la fuerza del soplido; el sonido se procesa en el dispositivo, no se graba ni se envía y se libera al salir o pasar a segundo plano. Sin micrófono, “Mantener para jugar”. El resultado es al azar, sin número, sin veredicto y sin relación con el consumo registrado; no se guarda nada.
 
 **Compartir y exportar**
 
 - Tarjeta de resumen configurable; excluye la dirección completa y el relato de embriaguez.
-- Exportación de registros personales a JSON y de salidas y bebidas a CSV.
+- Exportación a JSON (todo lo que está en el dispositivo: salidas, registros de todas las personas, cuentas) y a CSV (salidas y bebidas; la columna de consumidor indica de quién es cada registro; los totales por salida son los tuyos).
 - Compartir mediante el sistema cuando sea compatible, con alternativas de copiar texto. En la web depende del navegador.
 
 ## Reglas de datos y cálculos
