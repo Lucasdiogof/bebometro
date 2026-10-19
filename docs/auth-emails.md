@@ -18,8 +18,8 @@
 | App: pedir código (`resetPasswordForEmail`, sem `redirectTo`) | Implementado |
 | App: verificar (`verifyOTP(type: OtpType.recovery, email, token)`) | Implementado |
 | App: nova senha (`updateUser(password)`, só no estado `passwordRecovery`) | Implementado |
-| Template `recovery.html` com `{{ .Token }}`, sem link | Implementado no repositório; **não aplicado nem lido de volta daqui** |
-| `mailer_otp_length = 6` | **Não conferido** (a API pública não mostra; precisa de token administrativo) |
+| Template `recovery.html` com `{{ .Token }}`, sem link | Implementado e **aplicado no servidor**: lido de volta em 19/10/2026 (dry run de `scripts/apply_recovery_code.py`): tem `{{ .Token }}`, sem link, idêntico ao repositório |
+| `mailer_otp_length = 6` | **Lido em 19/10/2026** com token pessoal: 6 (validade `mailer_otp_exp` = 3600 s; `mailer_autoconfirm` = true) |
 | E-mail real com código recebido | **Não observado** |
 | Troca de senha concluída no app | **Não validado** |
 
