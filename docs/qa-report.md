@@ -187,3 +187,15 @@ iPhone/Live Activity/compartilhamento iOS, caixa de e-mail de QA (código de 6 d
   Folga à direita no `StatTile` e tempo da Home com `FittedBox`.
 - Verificado depois da correção no mesmo emulador. `flutter analyze` sem erros/avisos; 42 testes passaram.
 - **Live Activity (iOS), observação de truncamento:** título com `minimumScaleFactor(0.7)` e contagem com até 2 linhas na tela bloqueada (`OutingLiveActivity.swift`). **Não compilado nem visto**: depende de reconferência no iPhone.
+
+### Rodada 5, continuação (19/10/2026)
+- **Defeito encontrado e corrigido: tela vermelha ao sair da conta pela tela "Minha conta" (build debug).** Passos: entrar, Configurações → Minha conta → Sair →
+  Sair. Esperado: voltar à tela de entrada. Observado: erro `'_dependents.isEmpty': is not true` (framework.dart:6281), tela vermelha. Causa (console do
+  `flutter run`): `app.dart` removia o provedor do `SyncCubit` ao fechar o escopo da conta enquanto a tela "Minha conta" ainda saía da tela (a transição de saída
+  do Android leva cerca de 800 ms) e se reconstruía → `ProviderNotFoundException` e, em seguida, a asserção. Em release a asserção não existe, mas o erro de build
+  continuava. Correção: o último `SyncCubit` (já fechado) fica no lugar até a próxima conta entrar, com a mesma chave; e `account_page.dart` não lê o
+  armazenamento da conta depois que o escopo fechou. Um primeiro palpite (esperar 450 ms antes de fechar o escopo) **não resolveu** e foi desfeito.
+  Verificado no emulador: entrar → sair → entrar de novo, sem exceção no console; água registrada depois.
+- **Recuperação por código, parte observável sem e-mail:** "Já tenho um código" + código errado: erro no campo, e a tela de nova senha **não** abre. Não foi pedido
+  envio de código (não há caixa de QA). A mensagem de erro aparecia cortada ("…ask for a ne…"); agora admite 2 linhas.
+- `flutter analyze`: sem erros/avisos; 42 testes passaram.

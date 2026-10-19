@@ -426,6 +426,7 @@ class _ResetCodePageState extends State<ResetCodePage> {
             labelText: tr.authCodeLabel,
             prefixIcon: const Icon(Icons.pin_outlined),
             errorText: _codeError,
+            errorMaxLines: 2,
             counterText: '',
           ),
         ),

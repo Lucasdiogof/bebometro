@@ -123,7 +123,11 @@ class _AccountPageState extends State<AccountPage> {
       appBar: AppBar(title: Text(tr.settingsAccount)),
       body: BlocBuilder<SyncCubit, SyncState>(
         builder: (context, sync) {
-          final rowsWaiting = getIt<LocalStore>().pendingCount;
+          // While signing out this screen is still animating away after the
+          // account's data scope was closed: nothing to count then.
+          final rowsWaiting = AccountScope.isOpen
+              ? getIt<LocalStore>().pendingCount
+              : 0;
           final filesWaiting = (sync.pending - rowsWaiting).clamp(0, 1 << 30);
           return ListView(
             padding: const EdgeInsets.fromLTRB(

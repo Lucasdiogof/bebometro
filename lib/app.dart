@@ -23,6 +23,10 @@ class BebometroApp extends StatefulWidget {
 
 class _BebometroAppState extends State<BebometroApp>
     with WidgetsBindingObserver {
+  /// Last account's sync cubit and its id (see the builder below).
+  SyncCubit? _sync;
+  String? _syncUid;
+
   @override
   void initState() {
     super.initState();
@@ -102,13 +106,26 @@ class _BebometroAppState extends State<BebometroApp>
               // Every route of an account sees that account's sync state.
               child: ValueListenableBuilder<String?>(
                 valueListenable: AccountScope.current,
-                builder: (context, uid, _) => uid == null
-                    ? child!
-                    : BlocProvider.value(
-                        key: ValueKey(uid),
-                        value: getIt<SyncCubit>(),
-                        child: child!,
-                      ),
+                builder: (context, uid, _) {
+                  if (uid != null) {
+                    _syncUid = uid;
+                    _sync = getIt<SyncCubit>();
+                  }
+                  final sync = _sync;
+                  // Signing out must NOT take the provider away while a route
+                  // that was just closed is still animating out and listening
+                  // to it (it would throw ProviderNotFound and trip the
+                  // "_dependents.isEmpty" assertion). The last cubit (already
+                  // closed) stays in place until the next account signs in;
+                  // the same key keeps the tree from being rebuilt.
+                  return sync == null
+                      ? child!
+                      : BlocProvider.value(
+                          key: ValueKey(_syncUid),
+                          value: sync,
+                          child: child!,
+                        );
+                },
               ),
             ),
           ),
