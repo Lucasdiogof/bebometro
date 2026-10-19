@@ -102,6 +102,10 @@ class SyncState {
             ? tr.syncLabelConflicts(conflicts)
             : tr.syncLabelSynced;
       case SyncStatus.pending:
+        // Offline with nothing to send: say so instead of "0 pending".
+        if (notice == SyncNotice.offline && pending == 0) {
+          return tr.syncLabelOffline;
+        }
         return tr.syncLabelPending(pending);
       case SyncStatus.syncing:
         return tr.syncLabelSyncing;
@@ -529,12 +533,38 @@ class SyncCubit extends Cubit<SyncState> {
     } on AuthException catch (e) {
       _log('auth/network error: ${e.message}');
       _failures++;
-      _problem(SyncStatus.failed, SyncNotice.offline, retryIn: _backoff);
+      _offlineOrFailed(e);
     } catch (e, st) {
       _log('sync error: $e\n$st');
       _failures++;
-      _problem(SyncStatus.failed, SyncNotice.offline, retryIn: _backoff);
+      _offlineOrFailed(e);
     }
+  }
+
+  /// No connection is not a failure: the data is safe on the device and goes
+  /// out by itself, so the state is "pending" (retried with backoff). Anything
+  /// else the server or the SDK throws stays "failed".
+  void _offlineOrFailed(Object e) {
+    _problem(
+      _isNetworkError(e) ? SyncStatus.pending : SyncStatus.failed,
+      SyncNotice.offline,
+      retryIn: _backoff,
+    );
+  }
+
+  /// Type names are matched as text so this also holds on the web, where the
+  /// exceptions come from the browser client (no dart:io here).
+  static bool _isNetworkError(Object e) {
+    if (e is AuthRetryableFetchException || e is TimeoutException) return true;
+    final t = '${e.runtimeType} $e';
+    return t.contains('SocketException') ||
+        t.contains('ClientException') ||
+        t.contains('Failed host lookup') ||
+        t.contains('Network is unreachable') ||
+        t.contains('Connection refused') ||
+        t.contains('Connection closed') ||
+        t.contains('Connection reset') ||
+        t.contains('XMLHttpRequest');
   }
 
   /// "Synced" only when nothing is left: rows edited meanwhile get another

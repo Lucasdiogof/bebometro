@@ -54,7 +54,10 @@ class _SettingsViewState extends State<_SettingsView> {
         s.conflicts > 0
             ? tr.settingsSyncDoneConflicts(s.conflicts)
             : tr.settingsSyncDone,
-      SyncStatus.pending => tr.settingsSyncStillPending(s.pending),
+      SyncStatus.pending =>
+        s.notice == SyncNotice.offline
+            ? (s.message ?? tr.syncLabelOffline)
+            : tr.settingsSyncStillPending(s.pending),
       SyncStatus.syncing => tr.syncLabelSyncing,
       SyncStatus.failed ||
       SyncStatus.localOnly => s.message ?? tr.settingsSyncFailed,

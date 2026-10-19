@@ -9296,6 +9296,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Horário corrigido. Toque original: {time}'**
   String entryOriginalTapCorrected(String time);
+
+  /// No description provided for @syncLabelOffline.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem conexão'**
+  String get syncLabelOffline;
 }
 
 class _AppLocalizationsDelegate

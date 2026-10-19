@@ -178,3 +178,11 @@ iPhone/Live Activity/compartilhamento iOS, caixa de e-mail de QA (código de 6 d
 ## Próximo passo exato
 1. Versionar a migration de permissões do `service_role` (hoje só aplicada à mão no projeto) para novos ambientes.
 2. Repetir a exclusão **pela interface** com uma conta nova (esta rodada comprovou o servidor, chamando a função com a sessão da própria conta; a tela já havia mostrado a falha corretamente) e excluir também a A quando o QA terminar.
+
+## Rodada 5 (19/10/2026, Android emulador, build debug)
+- **Sem conexão agora aparece como "pendente", não "falhou":** com a rede desligada e um registro novo, o indicador de nuvem passou a **âmbar com seta de envio**
+  (antes: vermelho "nuvem cortada"); ao religar a rede voltou sozinho para "sincronizado" (cerca de 90 s, backoff). Só erros de rede entram nesse caso;
+  falhas reais do servidor continuam "falhou". Sem nada a enviar, o rótulo é "Sem conexão". Textos pt/en/es (`syncLabelOffline`).
+- **Layout corrigido (capturas):** na Home, "57 h 49 min" encostava no número de bebidas ("min2"); no rolê, "300 ml (+2 sem volume)" encostava em "R$ 0,00".
+  Folga à direita no `StatTile` e tempo da Home com `FittedBox`.
+- Verificado depois da correção no mesmo emulador. `flutter analyze` sem erros/avisos; 42 testes passaram.

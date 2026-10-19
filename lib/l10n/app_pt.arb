@@ -3707,5 +3707,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "syncLabelOffline": "Sem conexão"
 }

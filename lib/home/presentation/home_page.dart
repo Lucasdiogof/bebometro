@@ -285,13 +285,25 @@ class _ActiveCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(tr.homeTime, style: AppText.caption),
-                    const SizedBox(height: AppSpace.xs),
-                    ElapsedText(since: outing.startedAt, style: AppText.value),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.only(right: AppSpace.sm),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(tr.homeTime, style: AppText.caption),
+                      const SizedBox(height: AppSpace.xs),
+                      // Long outings ("57 h 49 min") shrink instead of running
+                      // into the next column.
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: ElapsedText(
+                          since: outing.startedAt,
+                          style: AppText.value,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Expanded(

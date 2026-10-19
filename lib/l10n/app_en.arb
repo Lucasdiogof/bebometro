@@ -1530,5 +1530,6 @@
   "pendingReviewNote": "Original lock-screen tap: {time}",
   "entryFromLockScreen": "Added from the lock screen",
   "entryOriginalTap": "Original tap: {time}",
-  "entryOriginalTapCorrected": "Time corrected. Original tap: {time}"
+  "entryOriginalTapCorrected": "Time corrected. Original tap: {time}",
+  "syncLabelOffline": "No connection"
 }

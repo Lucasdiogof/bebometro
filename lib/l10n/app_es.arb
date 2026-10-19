@@ -1530,5 +1530,6 @@
   "pendingReviewNote": "Toque original en la pantalla de bloqueo: {time}",
   "entryFromLockScreen": "Añadido desde la pantalla de bloqueo",
   "entryOriginalTap": "Toque original: {time}",
-  "entryOriginalTapCorrected": "Hora corregida. Toque original: {time}"
+  "entryOriginalTapCorrected": "Hora corregida. Toque original: {time}",
+  "syncLabelOffline": "Sin conexión"
 }

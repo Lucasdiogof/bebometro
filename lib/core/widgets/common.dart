@@ -77,32 +77,37 @@ class StatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: 15, color: AppColors.textMuted),
-              const SizedBox(width: 5),
-            ],
-            Flexible(
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppText.caption,
+    // The right gap keeps a long value (scaled down to fit) from touching the
+    // neighbouring column in a row of tiles.
+    return Padding(
+      padding: const EdgeInsets.only(right: AppSpace.sm),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              if (icon != null) ...[
+                Icon(icon, size: 15, color: AppColors.textMuted),
+                const SizedBox(width: 5),
+              ],
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.caption,
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSpace.xs),
-        FittedBox(
-          fit: BoxFit.scaleDown,
-          alignment: Alignment.centerLeft,
-          child: Text(value, style: AppText.value),
-        ),
-      ],
+            ],
+          ),
+          const SizedBox(height: AppSpace.xs),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(value, style: AppText.value),
+          ),
+        ],
+      ),
     );
   }
 }
