@@ -262,3 +262,12 @@ Plataforma: **web debug** (Android: emulador não sobe nesta máquina, `WHPX hr=
 - Migration `20261022000000` aplicada e verificada (colunas, constraints, gatilho; reaplicada sem erro).
 - Rolê "Bar QA Mesa": 4 Chopp do Você (sem consumidor, 400 ml, R$ 15), Spritzgerald da Ana com `consumer_id`, volume nulo preservado, preço R$ 32; a exclusão chegou como **tombstone** (`deleted_at`); mover para Você e voltar terminou com a Ana como consumidora.
 - Comanda `outing_tabs`: `schema_version` 2, `auto_link` verdadeiro, serviço ligado, pessoas, itens (Batata, Couvert cortesia, Sobremesa sem preço) e 1 pagamento de R$ 202,40.
+
+### Complemento (19/10/2026, mesma sessão web, build com as correções)
+Aprovado pela interface depois das correções:
+- **Rótulo "Entered spending" a 360 px** aparece inteiro (escala em vez de cortar).
+- **Espanhol a 360 px:** "Bebida / Comida / Otro ítem" em uma linha, "Uno más para Ana", "Eliminar uno", "Registro eliminado / Deshacer".
+- **Desfazer da exclusão:** 2× Spritzgerald → "Eliminar uno" → 1× → Desfazer → 2× (R$ 64,00).
+- **Offline → reabrir → reconectar** (rede do Supabase bloqueada por script na página, não é teste de aparelho): "Uno más para Ana" criou o 3º Spritzgerald **só no aparelho**, o ícone de nuvem foi para "pendente de envio" e o servidor continuou com 2 vivas; depois de recarregar a página (app fechado e reaberto, sem o bloqueio) o servidor passou a ter **3 vivas, 4 linhas e 4 ids distintos**: uma linha nova, nenhuma duplicada.
+
+Continuam **não executados**: segunda instalação/conta (exige digitar senha numa instalação nova, que a sessão não faz), conflito de mesma comanda entre dois aparelhos, fonte ampliada do sistema, comando da tela bloqueada (só Android/iOS), Android e iOS.
