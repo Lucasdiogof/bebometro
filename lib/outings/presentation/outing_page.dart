@@ -516,10 +516,9 @@ class _OutingViewState extends State<_OutingView> {
     final r = tabState.result;
     final me = doc.me;
     if (filter.isTable) {
-      final servings =
-          tabState.entries.length + doc.extras.length;
+      final items = TableOrders.itemCount(doc, tabState.entries.values);
       return [
-        StatTile(label: tr.tileOrders, value: '$servings'),
+        StatTile(label: tr.tileItems, value: '$items'),
         StatTile(
           label: tr.tileTableTotal,
           value: r.isPartial

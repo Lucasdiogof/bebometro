@@ -9687,11 +9687,11 @@ abstract class AppLocalizations {
   /// **'Conta'**
   String get tabBill;
 
-  /// No description provided for @tileOrders.
+  /// No description provided for @tileItems.
   ///
   /// In pt, this message translates to:
-  /// **'Pedidos'**
-  String get tileOrders;
+  /// **'Itens'**
+  String get tileItems;
 
   /// No description provided for @tileTableTotal.
   ///

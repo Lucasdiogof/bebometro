@@ -153,6 +153,21 @@ class TableOrders {
     return out;
   }
 
+  /// Units on the table: every live drink record plus every unit of the extras
+  /// (a dish with quantity 2 is two). This is the number of the "Itens" tile;
+  /// the list heading counts [rows] (one row groups equal orders, so
+  /// "4x Chopp" is one row and four items).
+  static int itemCount(TabDoc doc, Iterable<DrinkEntry> entries) {
+    var n = 0;
+    for (final e in entries) {
+      if (!e.isDeleted) n++;
+    }
+    for (final x in doc.extras) {
+      n += x.quantity < 1 ? 1 : x.quantity;
+    }
+    return n;
+  }
+
   /// The order row of one drink record, never a food/extra row. [rows] puts
   /// extras in the list too, so `rows(...).first` is not "the row of this
   /// record" when a dish was added after the drink.

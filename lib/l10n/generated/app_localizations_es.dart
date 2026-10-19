@@ -6039,7 +6039,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tabBill => 'Cuenta';
 
   @override
-  String get tileOrders => 'Pedidos';
+  String get tileItems => 'Ítems';
 
   @override
   String get tileTableTotal => 'Total de la mesa';

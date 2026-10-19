@@ -6007,7 +6007,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabBill => 'Bill';
 
   @override
-  String get tileOrders => 'Orders';
+  String get tileItems => 'Items';
 
   @override
   String get tileTableTotal => 'Table total';

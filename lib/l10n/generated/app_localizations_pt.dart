@@ -6024,7 +6024,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get tabBill => 'Conta';
 
   @override
-  String get tileOrders => 'Pedidos';
+  String get tileItems => 'Itens';
 
   @override
   String get tileTableTotal => 'Total da mesa';

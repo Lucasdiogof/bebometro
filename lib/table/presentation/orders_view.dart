@@ -160,11 +160,17 @@ class OrderTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpace.sm),
-          Text(
-            _price,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              color: row.isPending ? AppColors.textMuted : AppColors.text,
+          // With a large system font the price may wrap onto two lines
+          // ("R$" / "60,00") instead of squeezing the title to nothing.
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 96),
+            child: Text(
+              _price,
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: row.isPending ? AppColors.textMuted : AppColors.text,
+              ),
             ),
           ),
           PopupMenuButton<String>(

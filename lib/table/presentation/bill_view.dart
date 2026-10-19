@@ -167,7 +167,17 @@ class _Row extends StatelessWidget {
       child: Row(
         children: [
           Expanded(child: Text(label, style: bold ? AppText.subtitle : AppText.caption)),
-          Text(value, key: keyName == null ? null : ValueKey(keyName), style: style),
+          const SizedBox(width: AppSpace.sm),
+          // Wraps (right-aligned) when the system font is large, never overflows.
+          Flexible(
+            flex: 2,
+            child: Text(
+              value,
+              key: keyName == null ? null : ValueKey(keyName),
+              textAlign: TextAlign.end,
+              style: style,
+            ),
+          ),
         ],
       ),
     );
