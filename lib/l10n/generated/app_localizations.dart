@@ -7092,7 +7092,7 @@ abstract class AppLocalizations {
   /// No description provided for @splitPaidAmount.
   ///
   /// In pt, this message translates to:
-  /// **'Valor pago ao estabelecimento'**
+  /// **'Valor pago ao bar'**
   String get splitPaidAmount;
 
   /// No description provided for @splitNoteOptional.

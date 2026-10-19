@@ -4351,7 +4351,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get splitWhoPaid => 'Quem pagou';
 
   @override
-  String get splitPaidAmount => 'Valor pago ao estabelecimento';
+  String get splitPaidAmount => 'Valor pago ao bar';
 
   @override
   String get splitNoteOptional => 'Observação (opcional)';

@@ -90,12 +90,13 @@ class StatTile extends StatelessWidget {
                 Icon(icon, size: 15, color: AppColors.textMuted),
                 const SizedBox(width: 5),
               ],
+              // One line, scaled down when the translation is long (never cut
+              // mid-word with an ellipsis on a narrow phone).
               Flexible(
-                child: Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppText.caption,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(label, maxLines: 1, style: AppText.caption),
                 ),
               ),
             ],

@@ -4337,7 +4337,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get splitWhoPaid => 'Who paid';
 
   @override
-  String get splitPaidAmount => 'Amount paid to the venue';
+  String get splitPaidAmount => 'Amount paid';
 
   @override
   String get splitNoteOptional => 'Note (optional)';
@@ -5554,7 +5554,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String gameTurnOf(String name) {
-    return '$name\'s turn';
+    return 'Turn: $name';
   }
 
   @override

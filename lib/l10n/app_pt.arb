@@ -2674,7 +2674,7 @@
   "splitRegisterPayment": "Registrar pagamento",
   "splitEditPayment": "Editar pagamento",
   "splitWhoPaid": "Quem pagou",
-  "splitPaidAmount": "Valor pago ao estabelecimento",
+  "splitPaidAmount": "Valor pago ao bar",
   "splitNoteOptional": "Observação (opcional)",
   "splitPaymentPositive": "Informe um valor maior que zero.",
   "splitTotalKnown": "Total conhecido {amount}",
