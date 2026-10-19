@@ -123,3 +123,11 @@ conferência de referências/intervalos/traduções) e `flutter gen-l10n`.
 **Próxima ação exata:** (1) entrar numa conta de QA na aba `localhost:8099` (ou liberar WHPX para o emulador); (2) aplicar a migration `20261022000000` com token; (3) percorrer na interface os cenários A-J do plano e registrar aqui com capturas; (4) revisar quebra de palavras dos botões inferiores em inglês ("Drink"/"Other item").
 
 **Conta QA:** `qa.bebometro.a.fc6438` (da rodada anterior; senha não registrada). Build usado: debug web a partir da main após o commit do teste de migração.
+
+### Atualização do checkpoint (19/10/2026, noite)
+- **QA pela web feito** com a conta do responsável logada no navegador embutido: cenário do casal aprovado (R$ 202,40; 99,00; 103,40; 1.600 ml; bar quitado), editar/excluir/repetir/mover/cortesia/preço desconhecido/pessoa depois/recarregar e Resenha sem pontos. Detalhes e defeitos corrigidos em `docs/qa-report.md` (rodada 19/10, mesa/pessoas/resenha/catálogo).
+- **Sincronização observada** no servidor (consulta ao banco): atribuição, volume nulo, tombstone, comanda v2, pagamento.
+- **Builds:** `flutter build web --release` OK; testes: 100 passam; `flutter analyze` sem erros.
+- **Ainda pendente:** offline/reabrir/reconectar, segunda instalação, conflito de comanda, fonte ampliada, espanhol na tela, Desfazer da exclusão pela UI, Android (emulador sem WHPX), iOS/Live Activity.
+- **Próxima ação exata:** liberar o emulador ou um aparelho Android e repetir os cenários F (offline) e G (tela bloqueada); revisar na tela o rótulo "Logged spend" / "Gasto informado" a 360 px após o rebuild.
+- **Dados de QA no servidor:** rolê "Bar QA Mesa" na conta do responsável (tem 1 pagamento e 2 Spritzgerald da Ana); pode ser excluído por ele.

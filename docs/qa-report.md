@@ -218,3 +218,47 @@ Decisão posterior: o e-mail de recuperação passa a ser só em pt-BR e central
 repositório; **aplicados no servidor em 19/10/2026** com `scripts/apply_recovery_code.py --apply` e conferidos por um segundo dry run: "Would change: nothing", template idêntico ao repositório; o script confirmou que SMTP, `site_url`, template de confirmação, `mailer_otp_exp` e `mailer_autoconfirm` não mudaram). Código errado já fora validado em 17/10; código antigo e
 e-mail em English e Español deixam de se aplicar (e-mail só em pt-BR).
 **Concluído (19/10/2026):** novo código pedido e e-mail conferido pelo responsável ("ta show, tudo pronto"): cartão centralizado, assunto novo, 6 dígitos, sem link. O fluxo de recuperação de senha por código está aprovado.
+
+## Rodada 19/10/2026: mesa, pessoas, resenha, catálogo (web, `flutter run -d web-server`, Chrome embutido, conta de QA do responsável)
+
+Plataforma: **web debug** (Android: emulador não sobe nesta máquina, `WHPX hr=80070005`, não contornado; iOS: sem ambiente). Larguras ~640 px e 360 px. Capturas só ficam na sessão; as medições estão abaixo. Rolê de QA: "Bar QA Mesa" (Você, Ana, "Maria Eduarda Albuquerqu", nome cortado em 24 caracteres pelo limite do campo).
+
+### Aprovado pela interface
+| Cenário | Resultado visto |
+|---|---|
+| Iniciar rolê com pessoa (Ana) | Você e Ana na tela; abas Pedidos / Por pessoa / Conta |
+| Pedido de catálogo: "chopp heineken" | Sugestão compacta em uma fileira ("Heineken Lager (chope)"), formulário não é escondido |
+| Spritzgerald | Só ele aparece (nem Fitzgerald nem Spritz); "Do catálogo"; sem volume nem teor exigidos |
+| Você 4 × Chopp 400 ml R$ 15 | "4 × R$ 15,00 = R$ 60,00"; sugestões de copo 200/300/400/500 ml marcadas como editáveis |
+| Ana 2 × Spritzgerald R$ 32 sem volume | Mesa R$ 124, "2 sem volume", consumo da Ana "desconhecido" |
+| Batata R$ 60 dividida | Subtotal R$ 184,00; sua parte R$ 90,00 |
+| Serviço 10% | R$ 18,40; **total R$ 202,40; Você R$ 99,00; Ana R$ 103,40**; "Divisão completa" |
+| Consumo conhecido do Você | 4 bebidas · **1.600 ml**; nenhuma bebida da Ana entra |
+| Você paga R$ 202,40 | Bar quitado; Você "pagou R$ 103,40 acima da parcela"; Ana **"Coberto por outro pagamento: o bar está quitado"** (defeito encontrado e corrigido, abaixo); parcelas e consumos intactos |
+| Recarregar a página | Rolê, pedidos, serviço, pagamento e partida de jogo preservados; Home mostra só 4 bebidas e R$ 60,00 (as da Ana não entram) |
+| "Mais uma para Ana" | 3× Spritzgerald; sua parte continua R$ 99 (defeito encontrado e corrigido, abaixo) |
+| Passar para outra pessoa | Os 3 Spritzgerald para Você: sua parte R$ 99 → R$ 204,60, total da mesa igual; **Desfazer** restaurou |
+| Excluir um | 3× → 2× (R$ 64,00) |
+| Cortesia | "Cortesia", total não muda |
+| Preço desconhecido | Total vira "R$ 237,60+" e "1 sem preço" (parcial) |
+| Adicionar pessoa depois | Aparece na barra; pedidos anteriores continuam só "Você, Ana" |
+| Inglês, 360 px | Botões "Drink / Food / Other item" em uma linha; turno do jogo, textos traduzidos |
+| Resenha (Truth or dare) | **Sem pontos** (a seção sumiu); "Ana, read the question" com avatar e "Your turn to read"; "Answers: You · Truth"; Next gira o leitor ("You, read the question" / "Ana's turn"); Pass the turn e Change reader; "People from the outing" importa por escolha; **retomada após recarregar** mantém leitor, vez e 23 cartas |
+
+### Defeitos encontrados e corrigidos (commits na main)
+1. **Bar quitado por outra pessoa, mas a Ana aparecia com "falta pagar R$ 103,40"** (aba Por pessoa, tela Dividir conta e texto compartilhado): agora "coberto por outro pagamento". `showCoveredShareWhenVenueSettled`.
+2. **"Mais uma para Ana" não fazia nada quando havia comida mais recente que a bebida** (`TableOrders.rows(...).first` pegava a linha da comida): `TableOrders.rowOfEntry`; teste `table_calc_test.dart` "repeat button targets the drink". `fixRepeatButtonPickedLaterDish`.
+3. Em inglês, "You's turn" (Resenha): agora "Turn: You" / "Turno: …".
+4. "Entered spen…" cortado na Home a 360 px: rótulo do `StatTile` encolhe em vez de cortar. "Valor pago ao estabele…" no diálogo de pagamento: rótulos curtos (pt/en/es).
+(2, 3 e 4 corrigidos no código e cobertos por teste ou análise; **4 não foi revisto na tela depois da correção**.)
+
+### Não verificado pela interface
+- Desfazer da **exclusão** (o snackbar expirou antes do toque; o toque seguinte abriu "Outro item"). Desfazer de "passar para outra pessoa" foi verificado.
+- Fonte ampliada do sistema (o painel do navegador não altera a escala de texto), espanhol na tela (só inglês e português vistos), teclado, nomes longos além do limite de 24 caracteres do campo.
+- Offline (criar sem rede, fechar, reabrir, reconectar), segunda instalação/conta, conflito de mesma comanda, comando da tela bloqueada, exclusão de conta: **não executados**.
+- Android e iOS: bloqueados (emulador/Mac).
+
+### Sincronização observada (servidor, consulta ao banco, projeto `jiisoqkryhmtopaojyyu`)
+- Migration `20261022000000` aplicada e verificada (colunas, constraints, gatilho; reaplicada sem erro).
+- Rolê "Bar QA Mesa": 4 Chopp do Você (sem consumidor, 400 ml, R$ 15), Spritzgerald da Ana com `consumer_id`, volume nulo preservado, preço R$ 32; a exclusão chegou como **tombstone** (`deleted_at`); mover para Você e voltar terminou com a Ana como consumidora.
+- Comanda `outing_tabs`: `schema_version` 2, `auto_link` verdadeiro, serviço ligado, pessoas, itens (Batata, Couvert cortesia, Sobremesa sem preço) e 1 pagamento de R$ 202,40.
