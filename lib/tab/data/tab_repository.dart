@@ -20,7 +20,11 @@ class TabRepository {
     _drinks.changes.listen((_) => _changes.add(null));
   }
 
-  static const schemaVersion = 1;
+  /// 2: participants can be marked as left and a tab can include every record
+  /// of the outing by itself (people at the table). The server refuses to move
+  /// this number backwards (migration 20261022000000), so an older app cannot
+  /// overwrite a tab saved by this one.
+  static const schemaVersion = 2;
 
   final LocalStore _store;
   final DrinkRepository _drinks;

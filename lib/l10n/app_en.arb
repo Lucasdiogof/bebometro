@@ -1509,6 +1509,7 @@
   "pendingReasonEnded": "The outing ended before this was saved. Review it to add it there.",
   "pendingReasonOutside": "The tap time is outside the outing's period. Adjust the time in the review.",
   "pendingReasonNoDrink": "It is not possible to tell which drink to repeat. Choose the drink and review it.",
+  "pendingReasonNotPersonal": "The order the button showed was given to someone else or became a shared bottle. Choose what to log for you and review it.",
   "pendingReasonFailed": "It could not be saved. You can try again.",
   "pendingReasonUnsupported": "This version of the app does not recognise this request. You can discard it.",
   "pendingReasonInReview": "Being reviewed.",

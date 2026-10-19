@@ -75,6 +75,31 @@ class DrinkRepository {
     return list.isEmpty ? null : list.last;
   }
 
+  /// What the lock-screen "Mais uma" may repeat on its own: the latest
+  /// alcoholic INDIVIDUAL order of the owner. A guest's order and a shared
+  /// bottle stay in the app, where the person is chosen explicitly.
+  DrinkEntry? lastPersonalIndividual(String outingId) {
+    final list = entriesFor(
+      outingId,
+    ).where((e) => e.isAlcoholic && isPersonalIndividual(e)).toList();
+    return list.isEmpty ? null : list.last;
+  }
+
+  /// Latest alcoholic record that matches [where] (for "Mais uma para Ana").
+  DrinkEntry? lastAlcoholicWhere(
+    String outingId,
+    bool Function(DrinkEntry) where,
+  ) {
+    final list = entriesFor(
+      outingId,
+    ).where((e) => e.isAlcoholic && where(e)).toList();
+    return list.isEmpty ? null : list.last;
+  }
+
+  /// An individual (not shared) order that belongs to the owner.
+  static bool isPersonalIndividual(DrinkEntry e) =>
+      e.consumerId == null && e.portions == null && !e.isShared;
+
   /// Saves an entry. Idempotent by id: repeating the call with the same id
   /// never creates a second row.
   Future<void> save(DrinkEntry entry) async {

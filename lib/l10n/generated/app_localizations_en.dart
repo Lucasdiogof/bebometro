@@ -5698,6 +5698,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'It is not possible to tell which drink to repeat. Choose the drink and review it.';
 
   @override
+  String get pendingReasonNotPersonal =>
+      'The order the button showed was given to someone else or became a shared bottle. Choose what to log for you and review it.';
+
+  @override
   String get pendingReasonFailed => 'It could not be saved. You can try again.';
 
   @override

@@ -126,6 +126,10 @@ class ExportBuilder {
         'alcool_puro_ml_conhecido',
         'alcool_completo',
         'composicao_json',
+        // Added at the end so older readers keep their column positions:
+        // "voce" = the account owner, otherwise the participant id.
+        'consumidor',
+        'porcoes_json',
       ],
       for (final e in entries)
         () {
@@ -154,6 +158,8 @@ class ExportBuilder {
             alcohol?.pureMl,
             alcohol?.isComplete,
             e.composition == null ? null : jsonEncode(e.composition!.toJson()),
+            e.portions != null ? null : (e.consumerId ?? 'voce'),
+            e.portions == null ? null : jsonEncode(e.portions),
           ];
         }(),
     ];

@@ -19,6 +19,8 @@ importação futura leia sempre o mesmo formato.
   Esse formato é fixo (pensado para planilhas pt-BR) e **não muda com o idioma do app**.
 - Nomes das colunas fixos (`id`, `inicio_utc`, `tipo`, `categoria`, `preco_tipo`, ...), em português, como nas primeiras
   versões: são identificadores, não texto de tela.
+- `bebometro-bebidas.csv` ganhou, **no fim**, `consumidor` (`voce` = o dono da conta; senão o id do participante; vazio quando há porções) e
+  `porcoes_json` (garrafa compartilhada: `{"me": ml, "<id>": ml}`; `null` = volume desconhecido). Registros antigos saem como `voce`.
 - Valores de categorias são **códigos**, não rótulos:
   - `tipo`: `bar`, `club`, `barbecue`, `home`, `restaurant`, `beach`, `other`.
   - `relato`: `smooth`, `cheerful`, `drunk`, `wasted`. `acordou`: `great`, `ok`, `tired`, `bad`.

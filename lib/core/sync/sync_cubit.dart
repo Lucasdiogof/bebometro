@@ -458,6 +458,14 @@ class SyncCubit extends Cubit<SyncState> {
                 continue;
               }
               if (_columnGap(e, collection)) {
+                // A record that says WHO drank it is never sent without that:
+                // another device would read it as a drink of the owner. It
+                // stays pending (with the "server not updated" notice).
+                if (collection == LocalStore.drinkEntries &&
+                    carriesAttribution(row)) {
+                  schemaGaps++;
+                  continue;
+                }
                 final core = _withoutOptionalColumns(collection, row);
                 if (core != null) {
                   try {
@@ -466,7 +474,16 @@ class SyncCubit extends Cubit<SyncState> {
                     // later is then based on it and is not refused as a
                     // (false) concurrent edit.
                     await _upsert(client, collection, [core]);
-                    schemaGaps++; // not acked: the full row is retried later
+                    // Nothing was lost when the only missing columns were the
+                    // empty attribution ones (an ordinary record of the
+                    // owner): that write is complete. Otherwise the full row
+                    // is retried later.
+                    if (collection == LocalStore.drinkEntries &&
+                        !hasOtherOptionalColumns(row)) {
+                      await ack(id);
+                    } else {
+                      schemaGaps++;
+                    }
                     continue;
                   } on PostgrestException catch (e2) {
                     _log('core row $collection/$id rejected: ${e2.code}');
@@ -623,6 +640,10 @@ class SyncCubit extends Cubit<SyncState> {
       'entry_origin',
       'origin_command_id',
       'origin_tapped_at',
+      // Who drank it (migration 20261022000000). Always present in the row;
+      // see [carriesAttribution] for when losing them is not acceptable.
+      'consumer_id',
+      'portions',
     ],
     'custom_drinks': ['components'],
   };
@@ -801,6 +822,25 @@ class SyncCubit extends Cubit<SyncState> {
   /// must not lose its place_id to get past a validation.
   bool _columnGap(PostgrestException e, String collection) =>
       e.code == 'PGRST204' || e.code == '42703';
+
+  /// The drink record names a person (a guest as consumer, or per-person
+  /// portions): sending it without those columns would turn it into a drink of
+  /// the owner on every other device.
+  @visibleForTesting
+  static bool carriesAttribution(Map<String, dynamic> row) =>
+      row['consumer_id'] != null || row['portions'] != null;
+
+  /// The row has a newer optional column other than the attribution pair (a
+  /// composition, an ABV source, a lock-screen origin), which a partial write
+  /// would drop.
+  @visibleForTesting
+  static bool hasOtherOptionalColumns(Map<String, dynamic> row) {
+    const attribution = {'consumer_id', 'portions'};
+    for (final k in _optionalColumns['drink_entries']!) {
+      if (!attribution.contains(k) && row[k] != null) return true;
+    }
+    return false;
+  }
 
   /// The row without its newer optional columns, or null if it had none.
   Map<String, dynamic>? _withoutOptionalColumns(

@@ -123,7 +123,12 @@ StatsReport buildStats({
     for (final o in allOutings)
       if (range.contains(o.startedAt)) o,
   ];
-  final entries = [for (final o in outings) ...entriesOf(o.id)];
+  // Personal statistics: only the owner's own drinks (never a guest's).
+  final entries = [
+    for (final o in outings)
+      for (final e in entriesOf(o.id))
+        if (e.isMine) e,
+  ];
 
   final byCategory = <DrinkCategory, List<DrinkEntry>>{};
   var alcoholicMl = 0;

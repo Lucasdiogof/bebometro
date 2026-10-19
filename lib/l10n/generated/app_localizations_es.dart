@@ -5730,6 +5730,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se puede saber qué bebida repetir. Elige la bebida y revísala.';
 
   @override
+  String get pendingReasonNotPersonal =>
+      'El pedido que mostraba el botón pasó a otra persona o se volvió botella compartida. Elige qué registrar para ti y revísalo.';
+
+  @override
   String get pendingReasonFailed =>
       'No se pudo guardar. Puedes intentarlo de nuevo.';
 

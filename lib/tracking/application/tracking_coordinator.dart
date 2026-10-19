@@ -196,7 +196,7 @@ class TrackingCoordinator {
     final snapshot = TrackingSnapshot.of(
       outing: current,
       entries: _drinks.entriesFor(current.id),
-      lastAlcoholic: _drinks.lastAlcoholic(current.id),
+      lastAlcoholic: _drinks.lastPersonalIndividual(current.id),
       showSpend: _prefs.showSpend,
       showPlace: _prefs.showPlace,
       accountId: AccountScope.userId,
@@ -336,6 +336,12 @@ class TrackingCoordinator {
             !c.at.isAfter(now.add(const Duration(minutes: 5)));
         final reason = source == null
             ? PendingReason.missingDrink
+            // The shortcut only ever repeats an individual order of the owner.
+            // If that record was given to someone else (or became a shared
+            // bottle) after the tap, it is NOT turned into the owner's drink
+            // just to empty the queue: the person reviews it.
+            : !DrinkRepository.isPersonalIndividual(source)
+            ? PendingReason.notPersonal
             : !inPeriod
             ? PendingReason.outsidePeriod
             : !outing.isActive
@@ -439,6 +445,10 @@ class TrackingCoordinator {
 
 /// Why a lock-screen command waits for the person.
 enum PendingReason {
+  /// The record the button showed is no longer an individual order of the
+  /// owner (it was given to a guest or turned into a shared bottle).
+  notPersonal,
+
   /// The outing was closed before the app could save the tap: needs an
   /// explicit "add to that outing".
   outingEnded,

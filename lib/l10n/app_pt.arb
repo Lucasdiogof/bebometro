@@ -3644,6 +3644,7 @@
   "pendingReasonEnded": "O rolê foi encerrado antes do registro. Revise para adicionar a ele.",
   "pendingReasonOutside": "O horário do toque está fora do período do rolê. Ajuste o horário na revisão.",
   "pendingReasonNoDrink": "Não dá para saber qual bebida repetir. Escolha a bebida e revise.",
+  "pendingReasonNotPersonal": "O pedido que o botão mostrava foi para outra pessoa ou virou garrafa compartilhada. Escolha o que registrar para você e revise.",
   "pendingReasonFailed": "Não foi possível salvar. Você pode tentar novamente.",
   "pendingReasonUnsupported": "Esta versão do app não reconhece este pedido. Você pode descartá-lo.",
   "pendingReasonInReview": "Em revisão.",

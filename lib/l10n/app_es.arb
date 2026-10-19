@@ -1509,6 +1509,7 @@
   "pendingReasonEnded": "La salida terminó antes del registro. Revísalo para añadirlo a ella.",
   "pendingReasonOutside": "La hora del toque está fuera del período de la salida. Ajusta la hora en la revisión.",
   "pendingReasonNoDrink": "No se puede saber qué bebida repetir. Elige la bebida y revísala.",
+  "pendingReasonNotPersonal": "El pedido que mostraba el botón pasó a otra persona o se volvió botella compartida. Elige qué registrar para ti y revísalo.",
   "pendingReasonFailed": "No se pudo guardar. Puedes intentarlo de nuevo.",
   "pendingReasonUnsupported": "Esta versión de la app no reconoce esta solicitud. Puedes descartarla.",
   "pendingReasonInReview": "En revisión.",

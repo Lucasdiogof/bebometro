@@ -34,7 +34,9 @@ class ActiveOutingCubit extends Cubit<ActiveOutingState> {
     emit(
       ActiveOutingState(
         outing: outing,
-        entryCount: outing == null ? 0 : _drinks.entriesFor(outing.id).length,
+        entryCount: outing == null
+            ? 0
+            : _drinks.entriesFor(outing.id).where((e) => e.isMine).length,
       ),
     );
   }

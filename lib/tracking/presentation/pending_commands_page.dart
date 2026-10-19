@@ -84,6 +84,7 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
     PendingReason.outingEnded => tr.pendingReasonEnded,
     PendingReason.outsidePeriod => tr.pendingReasonOutside,
     PendingReason.missingDrink => tr.pendingReasonNoDrink,
+    PendingReason.notPersonal => tr.pendingReasonNotPersonal,
     PendingReason.saveFailed => tr.pendingReasonFailed,
     PendingReason.unsupported => tr.pendingReasonUnsupported,
     PendingReason.inReview => tr.pendingReasonInReview,
@@ -164,7 +165,7 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
     final seen = <String>{};
     final out = <DrinkEntry>[];
     for (final e in getIt<DrinkRepository>().entriesFor(p.outing.id).reversed) {
-      if (!e.isAlcoholic) continue;
+      if (!e.isAlcoholic || !DrinkRepository.isPersonalIndividual(e)) continue;
       final key =
           '${e.catalogItemId ?? e.name}|${e.presentation}|${e.containerMl}|${e.isShared}';
       if (seen.add(key)) out.add(e);
@@ -315,7 +316,8 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
                     onPressed: busy ? null : () => _review(p, p.source!),
                     child: Text(tr.pendingReviewAdd),
                   ),
-                if (p.reason == PendingReason.missingDrink)
+                if (p.reason == PendingReason.missingDrink ||
+                    p.reason == PendingReason.notPersonal)
                   FilledButton(
                     onPressed: busy ? null : () => _chooseAndReview(p),
                     child: Text(tr.pendingChooseDrink),

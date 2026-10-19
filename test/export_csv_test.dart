@@ -15,6 +15,7 @@ DrinkEntry entry({
   int? bill,
   int? personalMl = 400,
   double? abv = 4.8,
+  String? consumerId,
 }) => DrinkEntry(
   id: id,
   outingId: 'o1',
@@ -30,6 +31,7 @@ DrinkEntry entry({
   isShared: shared,
   peopleCount: people,
   billTotalCents: bill,
+  consumerId: consumerId,
   createdAt: _t,
   updatedAt: _t,
 );
@@ -79,6 +81,21 @@ void main() {
       // unknown volume stays an empty cell between separators
       expect(rows[2], contains(';;'));
       expect(rows[2].split(';')[10], '');
+    });
+
+    test('who drank it is a fixed code at the end of the row', () {
+      final csv = ExportBuilder.drinksCsv([
+        entry(id: 'o'),
+        entry(id: 'g', consumerId: 'p-ana'),
+      ]);
+      final rows = lines(csv);
+      final header = rows.first.split(';');
+      expect(
+        header.sublist(header.length - 2).map((c) => c.replaceAll('"', '')).toList(),
+        ['consumidor', 'porcoes_json'],
+      );
+      expect(rows[1].split(';')[rows[1].split(';').length - 2], '"voce"');
+      expect(rows[2].split(';')[rows[2].split(';').length - 2], '"p-ana"');
     });
 
     test('a quote in a name is escaped', () {

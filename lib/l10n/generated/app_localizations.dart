@@ -9165,6 +9165,12 @@ abstract class AppLocalizations {
   /// **'Não dá para saber qual bebida repetir. Escolha a bebida e revise.'**
   String get pendingReasonNoDrink;
 
+  /// No description provided for @pendingReasonNotPersonal.
+  ///
+  /// In pt, this message translates to:
+  /// **'O pedido que o botão mostrava foi para outra pessoa ou virou garrafa compartilhada. Escolha o que registrar para você e revise.'**
+  String get pendingReasonNotPersonal;
+
   /// No description provided for @pendingReasonFailed.
   ///
   /// In pt, this message translates to:
