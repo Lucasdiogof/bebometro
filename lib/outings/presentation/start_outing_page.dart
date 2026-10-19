@@ -44,6 +44,34 @@ class _StartOutingView extends StatefulWidget {
 class _StartOutingViewState extends State<_StartOutingView> {
   bool _showAddress = false;
 
+  /// Something was typed or chosen (place, guests): leaving asks first.
+  static bool _dirty(StartOutingState s) =>
+      s.place != null ||
+      s.nickname.trim().isNotEmpty ||
+      s.address.trim().isNotEmpty ||
+      s.guests.isNotEmpty;
+
+  Future<void> _confirmDiscard() async {
+    final leave = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(tr.entryDiscardTitle),
+        content: Text(tr.entryDiscardBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(tr.entryKeepEditing),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(tr.entryDiscard),
+          ),
+        ],
+      ),
+    );
+    if (leave == true && mounted) Navigator.of(context).pop();
+  }
+
   Future<void> _pick(StartOutingCubit cubit) async {
     final draft = await PlacePickerPage.open(
       context,
@@ -59,257 +87,281 @@ class _StartOutingViewState extends State<_StartOutingView> {
     return BlocListener<StartOutingCubit, StartOutingState>(
       listenWhen: (p, c) => p.createdId != c.createdId && c.createdId != null,
       listener: (context, state) => Navigator.of(context).pop(state.createdId),
-      child: Scaffold(
-        appBar: AppBar(title: Text(tr.startTitle)),
-        body: SafeArea(
-          bottom: false,
-          child: BlocBuilder<StartOutingCubit, StartOutingState>(
-            builder: (context, state) {
-              final placeError = state.showErrors ? state.placeError : null;
-              final shortcuts = cubit.shortcuts;
-              return Column(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
-                      padding: const EdgeInsets.fromLTRB(
-                        AppSpace.gutter,
-                        0,
-                        AppSpace.gutter,
-                        AppSpace.xl,
-                      ),
-                      children: [
-                        SectionTitle(tr.startWhatKind),
-                        OutingTypePicker(
-                          selected: state.type,
-                          onSelected: cubit.setType,
-                        ),
-                        SectionTitle(tr.startWhere),
-                        if (state.place != null)
-                          _ChosenPlace(
-                            place: state.place!,
-                            onClear: () => cubit.selectPlace(null),
-                          )
-                        else ...[
-                          SurfaceCard(
-                            onTap: () => _pick(cubit),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.search_rounded,
-                                  color: AppColors.amber,
-                                ),
-                                const SizedBox(width: AppSpace.md),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        tr.startSearchPlace,
-                                        style: AppText.subtitle,
-                                      ),
-                                      Text(
-                                        tr.startSearchPlaceHint,
-                                        style: AppText.caption,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.chevron_right_rounded,
-                                  color: AppColors.textMuted,
-                                ),
-                              ],
-                            ),
+      child: BlocBuilder<StartOutingCubit, StartOutingState>(
+        buildWhen: (p, c) =>
+            _dirty(p) != _dirty(c) || p.createdId != c.createdId,
+        builder: (context, st) => PopScope(
+          canPop: !_dirty(st) || st.createdId != null,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop) _confirmDiscard();
+          },
+          child: Scaffold(
+            appBar: AppBar(title: Text(tr.startTitle)),
+            body: SafeArea(
+              bottom: false,
+              child: BlocBuilder<StartOutingCubit, StartOutingState>(
+                builder: (context, state) {
+                  final placeError = state.showErrors ? state.placeError : null;
+                  final shortcuts = cubit.shortcuts;
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: ListView(
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          padding: const EdgeInsets.fromLTRB(
+                            AppSpace.gutter,
+                            0,
+                            AppSpace.gutter,
+                            AppSpace.xl,
                           ),
-                          const SizedBox(height: AppSpace.md),
-                          if (shortcuts.isNotEmpty) ...[
-                            Text(tr.startSavedPlaces, style: AppText.caption),
-                            const SizedBox(height: AppSpace.sm),
-                            SizedBox(
-                              height: 44,
-                              child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: shortcuts.length,
-                                separatorBuilder: (_, _) =>
-                                    const SizedBox(width: AppSpace.sm),
-                                itemBuilder: (context, i) {
-                                  final p = shortcuts[i];
-                                  return ActionChip(
-                                    avatar: Icon(
-                                      p.favorite
-                                          ? Icons.star_rounded
-                                          : p.type.icon,
-                                      size: 18,
+                          children: [
+                            SectionTitle(tr.startWhatKind),
+                            OutingTypePicker(
+                              selected: state.type,
+                              onSelected: cubit.setType,
+                            ),
+                            SectionTitle(tr.startWhere),
+                            if (state.place != null)
+                              _ChosenPlace(
+                                place: state.place!,
+                                onClear: () => cubit.selectPlace(null),
+                              )
+                            else ...[
+                              SurfaceCard(
+                                onTap: () => _pick(cubit),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.search_rounded,
                                       color: AppColors.amber,
                                     ),
-                                    label: ConstrainedBox(
-                                      constraints: const BoxConstraints(
-                                        maxWidth: 180,
-                                      ),
-                                      child: Text(
-                                        p.displayName,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                                    const SizedBox(width: AppSpace.md),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            tr.startSearchPlace,
+                                            style: AppText.subtitle,
+                                          ),
+                                          Text(
+                                            tr.startSearchPlaceHint,
+                                            style: AppText.caption,
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    onPressed: () => cubit.selectPlace(p),
-                                  );
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: AppSpace.md),
-                            Text(tr.startOrNickname, style: AppText.caption),
-                            const SizedBox(height: AppSpace.sm),
-                          ],
-                          TextField(
-                            textCapitalization: TextCapitalization.words,
-                            textInputAction: TextInputAction.next,
-                            decoration: InputDecoration(
-                              labelText: tr.startNicknameLabel,
-                              hintText: tr.startNicknameHint,
-                              errorText: placeError,
-                            ),
-                            onChanged: cubit.setNickname,
-                          ),
-                          if (!_showAddress)
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: TextButton.icon(
-                                onPressed: () =>
-                                    setState(() => _showAddress = true),
-                                icon: const Icon(Icons.add_rounded),
-                                label: Text(tr.startAddAddress),
-                              ),
-                            )
-                          else ...[
-                            const SizedBox(height: AppSpace.md),
-                            TextField(
-                              textCapitalization: TextCapitalization.words,
-                              textInputAction: TextInputAction.next,
-                              decoration: InputDecoration(
-                                labelText: tr.startAddressLabel,
-                                hintText: tr.startAddressHint,
-                                helperText: tr.startAddressHelper,
-                                errorText: placeError == null ? null : ' ',
-                              ),
-                              onChanged: cubit.setAddress,
-                            ),
-                            const SizedBox(height: AppSpace.md),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: TextField(
-                                    textCapitalization:
-                                        TextCapitalization.words,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: InputDecoration(
-                                      labelText: tr.startCityLabel,
+                                    const Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: AppColors.textMuted,
                                     ),
-                                    onChanged: cubit.setCity,
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: AppSpace.md),
+                              if (shortcuts.isNotEmpty) ...[
+                                Text(
+                                  tr.startSavedPlaces,
+                                  style: AppText.caption,
+                                ),
+                                const SizedBox(height: AppSpace.sm),
+                                SizedBox(
+                                  height: 44,
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: shortcuts.length,
+                                    separatorBuilder: (_, _) =>
+                                        const SizedBox(width: AppSpace.sm),
+                                    itemBuilder: (context, i) {
+                                      final p = shortcuts[i];
+                                      return ActionChip(
+                                        avatar: Icon(
+                                          p.favorite
+                                              ? Icons.star_rounded
+                                              : p.type.icon,
+                                          size: 18,
+                                          color: AppColors.amber,
+                                        ),
+                                        label: ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                            maxWidth: 180,
+                                          ),
+                                          child: Text(
+                                            p.displayName,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        onPressed: () => cubit.selectPlace(p),
+                                      );
+                                    },
                                   ),
                                 ),
-                                const SizedBox(width: AppSpace.sm),
-                                Expanded(
-                                  flex: 1,
-                                  child: TextField(
-                                    textCapitalization:
-                                        TextCapitalization.characters,
-                                    maxLength: 2,
-                                    decoration: InputDecoration(
-                                      labelText: tr.startStateLabel,
-                                      counterText: '',
-                                      errorText: state.showErrors
-                                          ? state.stateError
-                                          : null,
-                                    ),
-                                    onChanged: cubit.setState,
+                                const SizedBox(height: AppSpace.md),
+                                Text(
+                                  tr.startOrNickname,
+                                  style: AppText.caption,
+                                ),
+                                const SizedBox(height: AppSpace.sm),
+                              ],
+                              TextField(
+                                textCapitalization: TextCapitalization.words,
+                                textInputAction: TextInputAction.next,
+                                decoration: InputDecoration(
+                                  labelText: tr.startNicknameLabel,
+                                  hintText: tr.startNicknameHint,
+                                  errorText: placeError,
+                                ),
+                                onChanged: cubit.setNickname,
+                              ),
+                              if (!_showAddress)
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: TextButton.icon(
+                                    onPressed: () =>
+                                        setState(() => _showAddress = true),
+                                    icon: const Icon(Icons.add_rounded),
+                                    label: Text(tr.startAddAddress),
                                   ),
+                                )
+                              else ...[
+                                const SizedBox(height: AppSpace.md),
+                                TextField(
+                                  textCapitalization: TextCapitalization.words,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: InputDecoration(
+                                    labelText: tr.startAddressLabel,
+                                    hintText: tr.startAddressHint,
+                                    helperText: tr.startAddressHelper,
+                                    errorText: placeError == null ? null : ' ',
+                                  ),
+                                  onChanged: cubit.setAddress,
+                                ),
+                                const SizedBox(height: AppSpace.md),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 3,
+                                      child: TextField(
+                                        textCapitalization:
+                                            TextCapitalization.words,
+                                        textInputAction: TextInputAction.next,
+                                        decoration: InputDecoration(
+                                          labelText: tr.startCityLabel,
+                                        ),
+                                        onChanged: cubit.setCity,
+                                      ),
+                                    ),
+                                    const SizedBox(width: AppSpace.sm),
+                                    Expanded(
+                                      flex: 1,
+                                      child: TextField(
+                                        textCapitalization:
+                                            TextCapitalization.characters,
+                                        maxLength: 2,
+                                        decoration: InputDecoration(
+                                          labelText: tr.startStateLabel,
+                                          counterText: '',
+                                          errorText: state.showErrors
+                                              ? state.stateError
+                                              : null,
+                                        ),
+                                        onChanged: cubit.setState,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
-                            ),
-                          ],
-                          SwitchListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(tr.startSavePlace),
-                            subtitle: Text(tr.startSavePlaceHint),
-                            value: state.saveAsPlace,
-                            activeThumbColor: AppColors.amber,
-                            onChanged: cubit.setSaveAsPlace,
-                          ),
-                        ],
-                        SectionTitle(tr.startWhen),
-                        SurfaceCard(
-                          onTap: () async {
-                            final picked = await pickDateTime(
-                              context,
-                              state.startedAt,
-                            );
-                            if (picked != null) cubit.setStartedAt(picked);
-                          },
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.schedule_rounded,
-                                color: AppColors.amber,
-                              ),
-                              const SizedBox(width: AppSpace.md),
-                              Expanded(
-                                child: Text(
-                                  formatDateTime(state.startedAt),
-                                  style: AppText.subtitle,
-                                ),
-                              ),
-                              Text(
-                                tr.commonEdit,
-                                style: const TextStyle(color: AppColors.amber),
+                              SwitchListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: Text(tr.startSavePlace),
+                                subtitle: Text(tr.startSavePlaceHint),
+                                value: state.saveAsPlace,
+                                activeThumbColor: AppColors.amber,
+                                onChanged: cubit.setSaveAsPlace,
                               ),
                             ],
-                          ),
-                        ),
-                        SectionTitle(tr.startWho),
-                        _GuestsEditor(
-                          guests: state.guests,
-                          onAdd: cubit.addGuest,
-                          onRemove: cubit.removeGuest,
-                        ),
-                        SectionTitle(tr.startBudgetSection),
-                        MoneyField(
-                          label: tr.startBudgetLabel,
-                          helper: tr.startBudgetHelper,
-                          onChanged: cubit.setBudgetCents,
-                        ),
-                        if (state.error != null)
-                          Padding(
-                            padding: const EdgeInsets.only(top: AppSpace.md),
-                            child: Text(
-                              state.error!,
-                              style: const TextStyle(color: AppColors.danger),
+                            SectionTitle(tr.startWhen),
+                            SurfaceCard(
+                              onTap: () async {
+                                final picked = await pickDateTime(
+                                  context,
+                                  state.startedAt,
+                                );
+                                if (picked != null) cubit.setStartedAt(picked);
+                              },
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.schedule_rounded,
+                                    color: AppColors.amber,
+                                  ),
+                                  const SizedBox(width: AppSpace.md),
+                                  Expanded(
+                                    child: Text(
+                                      formatDateTime(state.startedAt),
+                                      style: AppText.subtitle,
+                                    ),
+                                  ),
+                                  Text(
+                                    tr.commonEdit,
+                                    style: const TextStyle(
+                                      color: AppColors.amber,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  BottomActionBar(
-                    child: FilledButton.icon(
-                      onPressed: state.submitting ? null : cubit.submit,
-                      icon: state.submitting
-                          ? const SizedBox(
-                              width: 18,
-                              height: 18,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(Icons.play_arrow_rounded),
-                      label: Text(tr.startBegin),
-                    ),
-                  ),
-                ],
-              );
-            },
+                            SectionTitle(tr.startWho),
+                            _GuestsEditor(
+                              guests: state.guests,
+                              onAdd: cubit.addGuest,
+                              onRemove: cubit.removeGuest,
+                            ),
+                            SectionTitle(tr.startBudgetSection),
+                            MoneyField(
+                              label: tr.startBudgetLabel,
+                              helper: tr.startBudgetHelper,
+                              onChanged: cubit.setBudgetCents,
+                            ),
+                            if (state.error != null)
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: AppSpace.md,
+                                ),
+                                child: Text(
+                                  state.error!,
+                                  style: const TextStyle(
+                                    color: AppColors.danger,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      BottomActionBar(
+                        child: FilledButton.icon(
+                          onPressed: state.submitting ? null : cubit.submit,
+                          icon: state.submitting
+                              ? const SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Icon(Icons.play_arrow_rounded),
+                          label: Text(tr.startBegin),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
           ),
         ),
       ),
