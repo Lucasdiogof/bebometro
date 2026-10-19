@@ -6675,4 +6675,28 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get bottleImpactConfirm => 'Guardar igualmente';
+
+  @override
+  String get outingRestoreConflictTitle => 'Ya hay una salida en curso';
+
+  @override
+  String get outingRestoreConflictBody =>
+      'Esta salida estaba en curso cuando se eliminó. Puede volver ya finalizada, en el momento de la eliminación. La salida actual no cambia.';
+
+  @override
+  String get outingRestoreAsEnded => 'Restaurar finalizada';
+
+  @override
+  String get outingRestored => 'Salida restaurada';
+
+  @override
+  String get outingRestoredEnded => 'Salida restaurada como finalizada';
+
+  @override
+  String get outingRestoreNothing =>
+      'Nada que deshacer: la salida ya se restauró o cambió.';
+
+  @override
+  String get outingRestoreFailed =>
+      'No se pudo restaurar la salida. Inténtalo de nuevo.';
 }

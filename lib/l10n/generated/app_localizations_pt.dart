@@ -6656,4 +6656,28 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get bottleImpactConfirm => 'Salvar mesmo assim';
+
+  @override
+  String get outingRestoreConflictTitle => 'Já existe um rolê em andamento';
+
+  @override
+  String get outingRestoreConflictBody =>
+      'Este rolê estava em andamento quando foi excluído. Ele pode voltar já encerrado, no horário da exclusão. O rolê atual não é alterado.';
+
+  @override
+  String get outingRestoreAsEnded => 'Restaurar encerrado';
+
+  @override
+  String get outingRestored => 'Rolê restaurado';
+
+  @override
+  String get outingRestoredEnded => 'Rolê restaurado como encerrado';
+
+  @override
+  String get outingRestoreNothing =>
+      'Nada a desfazer: o rolê já foi restaurado ou mudou.';
+
+  @override
+  String get outingRestoreFailed =>
+      'Não foi possível restaurar o rolê. Tente de novo.';
 }

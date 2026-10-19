@@ -18,6 +18,7 @@ import '../../drinks/presentation/my_drinks_cubit.dart';
 import '../../history/presentation/history_cubit.dart';
 import '../../home/presentation/home_cubit.dart';
 import '../../outing_drinks/data/outing_drink_repository.dart';
+import '../../outings/data/outing_deletion.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/domain/outing.dart';
 import '../../places/data/device_location.dart';
@@ -193,6 +194,9 @@ class AccountScope {
       ..registerSingleton<OutingRepository>(OutingRepository(store))
       ..registerSingleton<DrinkRepository>(
         DrinkRepository(store, _bundledCatalog),
+      )
+      ..registerSingleton<OutingDeletion>(
+        OutingDeletion(getIt<OutingRepository>(), getIt<DrinkRepository>()),
       )
       ..registerSingleton<TrackingCoordinator>(
         TrackingCoordinator(

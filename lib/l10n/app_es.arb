@@ -1846,5 +1846,12 @@
   "bottleImpactJoins": "entra en la botella",
   "bottleImpactLeaves": "sale de la botella",
   "bottleImpactNoChange": "Sin cambios para esta persona.",
-  "bottleImpactConfirm": "Guardar igualmente"
+  "bottleImpactConfirm": "Guardar igualmente",
+  "outingRestoreConflictTitle": "Ya hay una salida en curso",
+  "outingRestoreConflictBody": "Esta salida estaba en curso cuando se eliminó. Puede volver ya finalizada, en el momento de la eliminación. La salida actual no cambia.",
+  "outingRestoreAsEnded": "Restaurar finalizada",
+  "outingRestored": "Salida restaurada",
+  "outingRestoredEnded": "Salida restaurada como finalizada",
+  "outingRestoreNothing": "Nada que deshacer: la salida ya se restauró o cambió.",
+  "outingRestoreFailed": "No se pudo restaurar la salida. Inténtalo de nuevo."
 }

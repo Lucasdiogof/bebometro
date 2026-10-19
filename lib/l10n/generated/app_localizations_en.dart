@@ -6640,4 +6640,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bottleImpactConfirm => 'Save anyway';
+
+  @override
+  String get outingRestoreConflictTitle => 'Another outing is running';
+
+  @override
+  String get outingRestoreConflictBody =>
+      'This outing was running when it was deleted. It can come back already finished, at the time it was deleted. The current outing is not changed.';
+
+  @override
+  String get outingRestoreAsEnded => 'Restore as finished';
+
+  @override
+  String get outingRestored => 'Outing restored';
+
+  @override
+  String get outingRestoredEnded => 'Outing restored as finished';
+
+  @override
+  String get outingRestoreNothing =>
+      'Nothing to undo: the outing was already restored or has changed.';
+
+  @override
+  String get outingRestoreFailed => 'Could not restore the outing. Try again.';
 }

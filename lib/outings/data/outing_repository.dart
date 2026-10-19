@@ -239,16 +239,43 @@ class OutingRepository {
   }
 
   /// Soft delete: the outing leaves every list and the tombstone is synced.
-  /// (The caller deletes the records of the outing too.)
-  Future<void> delete(String id) async {
+  /// (The caller deletes the records of the outing too.) [at] is the stamp of
+  /// the tombstone: the same one goes on the records deleted together with it,
+  /// so a restore can tell what this operation removed.
+  Future<void> delete(String id, {DateTime? at}) async {
     final row = _store.get(LocalStore.outings, id);
     if (row == null || row['deleted_at'] != null) return;
-    final now = DateTime.now().toUtc().toIso8601String();
+    final now = (at ?? DateTime.now()).toUtc().toIso8601String();
     await _store.put(LocalStore.outings, {
       ...row,
       'deleted_at': now,
       'updated_at': now,
     });
+  }
+
+  /// Brings back an outing deleted at exactly [deletedAt]. Does nothing (and
+  /// returns false) when it is not deleted, or was deleted by another
+  /// operation, so a repeated or late call never revives anything. With
+  /// [endedAt] the outing comes back finished at that moment.
+  Future<bool> restore(
+    String id, {
+    required DateTime deletedAt,
+    DateTime? endedAt,
+  }) async {
+    final row = _store.get(LocalStore.outings, id);
+    if (row == null) return false;
+    final stamp = DateTime.tryParse('${row['deleted_at']}');
+    if (stamp == null || !stamp.isAtSameMomentAs(deletedAt.toUtc())) {
+      return false;
+    }
+    final now = DateTime.now().toUtc().toIso8601String();
+    await _store.put(LocalStore.outings, {
+      ...row,
+      'deleted_at': null,
+      'updated_at': now,
+      if (endedAt != null) 'ended_at': endedAt.toUtc().toIso8601String(),
+    });
+    return true;
   }
 
   Future<void> _save(Outing outing) =>

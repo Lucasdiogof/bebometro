@@ -10676,6 +10676,48 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Salvar mesmo assim'**
   String get bottleImpactConfirm;
+
+  /// No description provided for @outingRestoreConflictTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já existe um rolê em andamento'**
+  String get outingRestoreConflictTitle;
+
+  /// No description provided for @outingRestoreConflictBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este rolê estava em andamento quando foi excluído. Ele pode voltar já encerrado, no horário da exclusão. O rolê atual não é alterado.'**
+  String get outingRestoreConflictBody;
+
+  /// No description provided for @outingRestoreAsEnded.
+  ///
+  /// In pt, this message translates to:
+  /// **'Restaurar encerrado'**
+  String get outingRestoreAsEnded;
+
+  /// No description provided for @outingRestored.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rolê restaurado'**
+  String get outingRestored;
+
+  /// No description provided for @outingRestoredEnded.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rolê restaurado como encerrado'**
+  String get outingRestoredEnded;
+
+  /// No description provided for @outingRestoreNothing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nada a desfazer: o rolê já foi restaurado ou mudou.'**
+  String get outingRestoreNothing;
+
+  /// No description provided for @outingRestoreFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível restaurar o rolê. Tente de novo.'**
+  String get outingRestoreFailed;
 }
 
 class _AppLocalizationsDelegate

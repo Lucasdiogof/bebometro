@@ -1846,5 +1846,12 @@
   "bottleImpactJoins": "joins the bottle",
   "bottleImpactLeaves": "leaves the bottle",
   "bottleImpactNoChange": "No change for this person.",
-  "bottleImpactConfirm": "Save anyway"
+  "bottleImpactConfirm": "Save anyway",
+  "outingRestoreConflictTitle": "Another outing is running",
+  "outingRestoreConflictBody": "This outing was running when it was deleted. It can come back already finished, at the time it was deleted. The current outing is not changed.",
+  "outingRestoreAsEnded": "Restore as finished",
+  "outingRestored": "Outing restored",
+  "outingRestoredEnded": "Outing restored as finished",
+  "outingRestoreNothing": "Nothing to undo: the outing was already restored or has changed.",
+  "outingRestoreFailed": "Could not restore the outing. Try again."
 }

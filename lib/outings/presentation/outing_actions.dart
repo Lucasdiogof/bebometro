@@ -7,6 +7,7 @@ import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../l10n/l10n.dart';
+import '../data/outing_deletion.dart';
 import '../data/outing_repository.dart';
 import '../domain/outing.dart';
 import 'outing_type_picker.dart';
@@ -113,7 +114,8 @@ Future<void> showEditOutingSheet(BuildContext context, Outing outing) async {
 }
 
 /// Asks, then removes the outing and its records from every list (soft delete:
-/// the tombstone reaches the other devices). Returns true when it was deleted.
+/// the tombstone reaches the other devices) and offers "Desfazer" for
+/// [OutingDeletion.undoWindow]. Returns true when it was deleted.
 Future<bool> confirmDeleteOuting(BuildContext context, Outing outing) async {
   final ok = await showDialog<bool>(
     context: context,
@@ -135,15 +137,80 @@ Future<bool> confirmDeleteOuting(BuildContext context, Outing outing) async {
       ],
     ),
   );
-  if (ok != true) return false;
-  final drinks = getIt<DrinkRepository>();
-  for (final e in drinks.entriesFor(outing.id)) {
-    await drinks.delete(e.id);
-  }
-  await getIt<OutingRepository>().delete(outing.id);
-  if (context.mounted) {
-    Navigator.of(context).popUntil((r) => r.isFirst);
-    showToast(context, tr.outingDeleted);
-  }
+  if (ok != true || !context.mounted) return false;
+  final deletion = getIt<OutingDeletion>();
+  final deleted = await deletion.delete(outing.id);
+  if (deleted == null) return false;
+  if (!context.mounted) return true;
+  // Both outlive this screen (it is about to close).
+  final messenger = ScaffoldMessenger.of(context);
+  final rootContext = Navigator.of(context, rootNavigator: true).context;
+  Navigator.of(context).popUntil((r) => r.isFirst);
+  var undone = false;
+  messenger
+    ..hideCurrentSnackBar()
+    ..showSnackBar(
+      SnackBar(
+        content: Text(tr.outingDeleted),
+        duration: OutingDeletion.undoWindow,
+        action: SnackBarAction(
+          label: tr.commonUndo,
+          onPressed: () {
+            // A second tap cannot run it twice.
+            if (undone) return;
+            undone = true;
+            _undoDelete(rootContext, messenger, deletion, deleted);
+          },
+        ),
+      ),
+    );
   return true;
+}
+
+Future<void> _undoDelete(
+  BuildContext rootContext,
+  ScaffoldMessengerState messenger,
+  OutingDeletion deletion,
+  DeletedOuting deleted,
+) async {
+  void say(String text) => messenger
+    ..hideCurrentSnackBar()
+    ..showSnackBar(
+      SnackBar(content: Text(text), duration: const Duration(seconds: 3)),
+    );
+  try {
+    var asEnded = false;
+    if (deletion.needsChoice(deleted)) {
+      // Another outing is running: never ended by itself. The person decides.
+      final choice = await showDialog<bool>(
+        context: rootContext,
+        builder: (ctx) => AlertDialog(
+          title: Text(tr.outingRestoreConflictTitle),
+          content: Text(tr.outingRestoreConflictBody),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(tr.commonCancel),
+            ),
+            TextButton(
+              key: const ValueKey('restore-ended'),
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text(tr.outingRestoreAsEnded),
+            ),
+          ],
+        ),
+      );
+      if (choice != true) return;
+      asEnded = true;
+    }
+    final outcome = await deletion.restore(deleted, asEnded: asEnded);
+    say(switch (outcome) {
+      RestoreOutcome.restored => tr.outingRestored,
+      RestoreOutcome.restoredEnded => tr.outingRestoredEnded,
+      RestoreOutcome.nothingToRestore => tr.outingRestoreNothing,
+      RestoreOutcome.needsChoice => tr.outingRestoreFailed,
+    });
+  } catch (_) {
+    say(tr.outingRestoreFailed);
+  }
 }

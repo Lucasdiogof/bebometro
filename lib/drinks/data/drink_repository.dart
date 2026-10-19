@@ -166,11 +166,24 @@ class DrinkRepository {
     );
   }
 
-  Future<void> delete(String id) async {
+  /// [at] stamps the tombstone (see [restoreDeletedAt]).
+  Future<void> delete(String id, {DateTime? at}) async {
     final entry = entryById(id);
     if (entry == null || entry.isDeleted) return;
-    final now = DateTime.now();
+    final now = at ?? DateTime.now();
     await save(entry.copyWith(deletedAt: now, updatedAt: now));
+  }
+
+  /// Restores [id] only if it was deleted at exactly [at]; a record deleted
+  /// earlier (or by another action) stays deleted.
+  Future<bool> restoreDeletedAt(String id, DateTime at) async {
+    final entry = entryById(id);
+    final stamp = entry?.deletedAt;
+    if (entry == null || stamp == null || !stamp.isAtSameMomentAs(at)) {
+      return false;
+    }
+    await save(entry.copyWith(clearDeleted: true, updatedAt: DateTime.now()));
+    return true;
   }
 
   Future<void> restore(String id) async {

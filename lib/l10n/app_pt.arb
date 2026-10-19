@@ -4272,5 +4272,12 @@
   "bottleImpactJoins": "entra na garrafa",
   "bottleImpactLeaves": "sai da garrafa",
   "bottleImpactNoChange": "Sem mudança para esta pessoa.",
-  "bottleImpactConfirm": "Salvar mesmo assim"
+  "bottleImpactConfirm": "Salvar mesmo assim",
+  "outingRestoreConflictTitle": "Já existe um rolê em andamento",
+  "outingRestoreConflictBody": "Este rolê estava em andamento quando foi excluído. Ele pode voltar já encerrado, no horário da exclusão. O rolê atual não é alterado.",
+  "outingRestoreAsEnded": "Restaurar encerrado",
+  "outingRestored": "Rolê restaurado",
+  "outingRestoredEnded": "Rolê restaurado como encerrado",
+  "outingRestoreNothing": "Nada a desfazer: o rolê já foi restaurado ou mudou.",
+  "outingRestoreFailed": "Não foi possível restaurar o rolê. Tente de novo."
 }
