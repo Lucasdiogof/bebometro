@@ -205,3 +205,10 @@ Em outro ambiente (emulador Android 17, APK release gerado do `main`): Ajustes �
 erro; entrar de novo trouxe o rolê em andamento e os totais (4 bebidas), sem exceção de provedor no log (os `SIGABRT` repetidos são do processo do
 sistema `android.hardwar`). `flutter analyze`: 18 itens, todos `info` de estilo (sem erros nem avisos); 42 testes passando. iPhone continua sem validação.
 
+### Recuperação de senha por código: e-mail real recebido (19/10/2026)
+Observado pelo responsável (captura da caixa de entrada, sem o código nem o endereço aqui): o e-mail de recuperação chegou com o assunto
+trilíngue "Redefinir senha · Reset password · Restablecer contraseña", remetente "Bebômetro", **código de 6 dígitos** e **nenhum link**, corpo em
+português (idioma da conta) e a frase de validade curta. Template e `mailer_otp_length = 6` já estavam aplicados (dry run de 19/10).
+Observação de layout: na captura em janela larga o cartão do código aparece deslocado para a direita (não centrado); conferir em outros clientes de e-mail.
+**Ainda não observado:** digitar o código no app, definir a nova senha e entrar com ela; e-mail em English e Español.
+
