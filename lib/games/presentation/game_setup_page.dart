@@ -4,12 +4,15 @@ import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/common.dart';
+import '../../outings/data/outing_repository.dart';
+import '../../tab/data/tab_repository.dart';
 import '../data/game_repository.dart';
 import '../domain/game_models.dart';
 import 'game_play_page.dart';
 import '../../l10n/l10n.dart';
 
-/// Participants (nicknames only), mode and optional points, then start.
+/// Participants (nicknames only; the running outing's people can be picked),
+/// mode, then start. There is no score.
 class GameSetupPage extends StatefulWidget {
   const GameSetupPage({super.key, required this.game});
 
@@ -26,7 +29,6 @@ class _GameSetupPageState extends State<GameSetupPage> {
   );
   GameMode _mode = GameMode.light;
   bool _adultsConfirmed = false;
-  bool _points = false;
   String? _error;
 
   @override
@@ -53,6 +55,89 @@ class _GameSetupPageState extends State<GameSetupPage> {
     });
   }
 
+  /// Names of the people on the running outing's table (who is still there).
+  List<String> get _outingPeople {
+    final outing = getIt<OutingRepository>().active;
+    if (outing == null) return const [];
+    final tab = getIt<TabRepository>().load(outing.id);
+    return [
+      for (final p in tab.participants)
+        if (!p.left) p.displayName,
+    ];
+  }
+
+  Future<void> _importFromOuting() async {
+    final names = _outingPeople;
+    final picked = await showModalBottomSheet<Set<String>>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (ctx) {
+        final chosen = {
+          for (final n in names)
+            if (_players.any((p) => p.toLowerCase() == n.toLowerCase())) n,
+        };
+        return StatefulBuilder(
+          builder: (ctx, setSheet) => SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpace.gutter,
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(tr.gameImportTitle, style: AppText.title),
+                  ),
+                ),
+                Flexible(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      for (final n in names)
+                        CheckboxListTile(
+                          value: chosen.contains(n),
+                          title: Text(n),
+                          onChanged: (v) => setSheet(() {
+                            if (v == true) {
+                              chosen.add(n);
+                            } else {
+                              chosen.remove(n);
+                            }
+                          }),
+                        ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(AppSpace.gutter),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      onPressed: () => Navigator.pop(ctx, chosen),
+                      child: Text(tr.gameImportUse),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    if (picked == null) return;
+    setState(() {
+      for (final n in picked) {
+        if (_players.length < 20 &&
+            !_players.any((p) => p.toLowerCase() == n.toLowerCase())) {
+          _players.add(n);
+        }
+      }
+      _error = null;
+    });
+  }
+
   bool get _canStart =>
       _players.length >= widget.game.minPlayers &&
       (_mode == GameMode.light || _adultsConfirmed);
@@ -67,7 +152,6 @@ class _GameSetupPageState extends State<GameSetupPage> {
           game: widget.game,
           mode: _mode,
           players: List.of(_players),
-          usePoints: _points,
         ),
       ),
     );
@@ -114,7 +198,16 @@ class _GameSetupPageState extends State<GameSetupPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpace.md),
+                if (_outingPeople.isNotEmpty)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      onPressed: _importFromOuting,
+                      icon: const Icon(Icons.group_add_outlined),
+                      label: Text(tr.gameImportFromOuting),
+                    ),
+                  ),
+                const SizedBox(height: AppSpace.sm),
                 if (_players.isEmpty)
                   Text(tr.gameNeedPlayers(g.minPlayers), style: AppText.caption)
                 else
@@ -167,15 +260,6 @@ class _GameSetupPageState extends State<GameSetupPage> {
                         setState(() => _adultsConfirmed = v ?? false),
                     title: Text(tr.gameAdultConfirm),
                   ),
-                SectionTitle(tr.gamePoints),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(tr.gameCountPoints),
-                  subtitle: Text(tr.gameCountPointsHint),
-                  value: _points,
-                  activeThumbColor: AppColors.amber,
-                  onChanged: (v) => setState(() => _points = v),
-                ),
                 const SizedBox(height: AppSpace.md),
                 Text(tr.gameNoDrinkNote, style: AppText.caption),
               ],

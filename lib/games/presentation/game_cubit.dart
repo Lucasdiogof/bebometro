@@ -53,15 +53,12 @@ class GameCubit extends Cubit<GameState> {
     required GameType game,
     required GameMode mode,
     required List<String> players,
-    required bool usePoints,
   }) async {
     final session = GameSession(
       game: game,
       mode: mode,
       players: players,
-      usePoints: usePoints,
       startedAt: DateTime.now(),
-      scores: {for (final p in players) p: 0},
     );
     await _enter(session);
   }
@@ -125,7 +122,11 @@ class GameCubit extends Cubit<GameState> {
   void next() {
     final s = state.session;
     if (s == null) return;
-    final advanced = s.copyWith(turn: s.turn + 1, currentCardId: () => null);
+    final advanced = s.copyWith(
+      turn: s.turn + 1,
+      currentCardId: () => null,
+      readerOverride: () => null,
+    );
     _repo.saveSession(advanced);
     if (s.game == GameType.truthOrDare) {
       emit(GameState(session: advanced));
@@ -144,21 +145,32 @@ class GameCubit extends Cubit<GameState> {
     _draw(cleared, card?.kind == CardKind.statement ? null : card?.kind);
   }
 
-  void addPoint(String player) {
+  /// Hands the reading to someone else, keeping the same card.
+  void changeReader(int index) {
     final s = state.session;
-    if (s == null || !s.usePoints) return;
-    final scores = {...s.scores, player: (s.scores[player] ?? 0) + 1};
-    final next = s.copyWith(scores: scores);
+    if (s == null || index < 0 || index >= s.players.length) return;
+    final next = s.copyWith(readerOverride: () => index);
     _repo.saveSession(next);
     emit(GameState(session: next, card: state.card));
   }
 
-  void removePoint(String player) {
+  /// "Passar a vez": the rotation moves on without drawing a card. In truth
+  /// or dare the next person is asked and the card on screen is dropped; in
+  /// the other games the same card is read by the next reader.
+  void passTurn() {
     final s = state.session;
-    if (s == null || !s.usePoints) return;
-    final current = s.scores[player] ?? 0;
-    if (current <= 0) return;
-    final next = s.copyWith(scores: {...s.scores, player: current - 1});
+    if (s == null) return;
+    if (s.game == GameType.truthOrDare) {
+      final next = s.copyWith(
+        turn: s.turn + 1,
+        currentCardId: () => null,
+        readerOverride: () => null,
+      );
+      _repo.saveSession(next);
+      emit(GameState(session: next));
+      return;
+    }
+    final next = s.copyWith(turn: s.turn + 1, readerOverride: () => null);
     _repo.saveSession(next);
     emit(GameState(session: next, card: state.card));
   }

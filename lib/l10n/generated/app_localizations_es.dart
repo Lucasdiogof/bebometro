@@ -5497,16 +5497,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Confirmo que todas las personas que van a jugar son adultas (18+) y aceptaron el modo +18.';
 
   @override
-  String get gamePoints => 'Puntos';
-
-  @override
-  String get gameCountPoints => 'Contar puntos (opcional)';
-
-  @override
-  String get gameCountPointsHint =>
-      'Se puede jugar solo conversando, sin marcador.';
-
-  @override
   String get gameNoDrinkNote =>
       'Las cartas nunca piden beber, tomar chupitos ni acumular bebidas, y nada aquí registra bebidas en tu salida.';
 
@@ -5553,6 +5543,40 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gameReshuffle => 'Barajar de nuevo';
 
   @override
+  String gameReaderCall(String name) {
+    return '$name, lee la pregunta';
+  }
+
+  @override
+  String get gameReaderLabel => 'Te toca leer';
+
+  @override
+  String gameResponder(String name) {
+    return 'Responde: $name';
+  }
+
+  @override
+  String get gameEveryoneAnswers => 'Todos responden';
+
+  @override
+  String get gamePassTurn => 'Pasar el turno';
+
+  @override
+  String get gameChangeReader => 'Cambiar lector';
+
+  @override
+  String get gameChooseReader => '¿Quién lee?';
+
+  @override
+  String get gameImportFromOuting => 'Personas de la salida';
+
+  @override
+  String get gameImportTitle => '¿Quién de la salida juega?';
+
+  @override
+  String get gameImportUse => 'Usar seleccionados';
+
+  @override
   String gameTurnOf(String name) {
     return 'Turno de $name';
   }
@@ -5567,20 +5591,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gameNoDareLeft => 'Se acabaron las cartas de reto. Elige otra.';
 
   @override
-  String gameWhoReads(String name) {
-    return 'Lee: $name';
-  }
-
-  @override
   String get gameOptional => 'Opcional: se puede saltar sin castigo.';
-
-  @override
-  String get gameTapToScore => 'Toca el nombre para sumar 1 punto';
-
-  @override
-  String gamePlusOne(String name) {
-    return '+1 para $name';
-  }
 
   @override
   String get gameSkip => 'Pasar';

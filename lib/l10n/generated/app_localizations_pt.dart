@@ -5482,15 +5482,6 @@ class AppLocalizationsPt extends AppLocalizations {
       'Confirmo que todas as pessoas que vão jogar são adultas (18+) e toparam o modo +18.';
 
   @override
-  String get gamePoints => 'Pontos';
-
-  @override
-  String get gameCountPoints => 'Contar pontos (opcional)';
-
-  @override
-  String get gameCountPointsHint => 'Dá para jogar só na conversa, sem placar.';
-
-  @override
   String get gameNoDrinkNote =>
       'As cartas nunca pedem para beber, virar doses ou acumular bebidas, e nada aqui registra bebidas no seu rolê.';
 
@@ -5537,6 +5528,40 @@ class AppLocalizationsPt extends AppLocalizations {
   String get gameReshuffle => 'Embaralhar de novo';
 
   @override
+  String gameReaderCall(String name) {
+    return '$name, leia a pergunta';
+  }
+
+  @override
+  String get gameReaderLabel => 'Sua vez de ler';
+
+  @override
+  String gameResponder(String name) {
+    return 'Responde: $name';
+  }
+
+  @override
+  String get gameEveryoneAnswers => 'Todo mundo responde';
+
+  @override
+  String get gamePassTurn => 'Passar a vez';
+
+  @override
+  String get gameChangeReader => 'Trocar leitor';
+
+  @override
+  String get gameChooseReader => 'Quem vai ler?';
+
+  @override
+  String get gameImportFromOuting => 'Pessoas do rolê';
+
+  @override
+  String get gameImportTitle => 'Quem do rolê vai jogar?';
+
+  @override
+  String get gameImportUse => 'Usar selecionados';
+
+  @override
   String gameTurnOf(String name) {
     return 'Vez de $name';
   }
@@ -5551,20 +5576,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get gameNoDareLeft => 'Acabaram as cartas de desafio. Escolha outra.';
 
   @override
-  String gameWhoReads(String name) {
-    return 'Quem lê: $name';
-  }
-
-  @override
   String get gameOptional => 'Opcional: pode pular sem punição.';
-
-  @override
-  String get gameTapToScore => 'Toque no nome para somar 1 ponto';
-
-  @override
-  String gamePlusOne(String name) {
-    return '+1 para $name';
-  }
 
   @override
   String get gameSkip => 'Pular';

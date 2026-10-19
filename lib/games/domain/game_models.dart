@@ -170,18 +170,19 @@ GameCard? drawCard(
   return pool[rng.nextInt(pool.length)];
 }
 
-/// A game in progress, kept on the device so it can be resumed.
+/// A game in progress, kept on the device so it can be resumed. There is no
+/// score: nothing here ranks people. Old saved matches that still carry
+/// `use_points`/`scores` are read and those fields are ignored.
 class GameSession {
   const GameSession({
     required this.game,
     required this.mode,
     required this.players,
-    required this.usePoints,
     required this.startedAt,
     this.usedIds = const [],
     this.currentCardId,
     this.turn = 0,
-    this.scores = const {},
+    this.readerOverride,
   });
 
   final GameType game;
@@ -189,44 +190,63 @@ class GameSession {
 
   /// Nicknames only; no accounts.
   final List<String> players;
-  final bool usePoints;
   final DateTime startedAt;
   final List<String> usedIds;
   final String? currentCardId;
 
-  /// Index of whose turn it is (taken modulo the number of players).
+  /// Rotation counter: who is up (taken modulo the number of players).
   final int turn;
-  final Map<String, int> scores;
 
-  String get currentPlayer => players[turn % players.length];
+  /// Someone else reads this card ("Trocar leitor"); cleared on the next one.
+  final int? readerOverride;
+
+  int get _n => players.length;
+
+  /// Truth or dare: the person who answers (chooses truth or dare).
+  /// Never have I ever / who is most likely: everybody answers.
+  int get responderIndex => turn % _n;
+
+  String? get responder =>
+      game == GameType.truthOrDare ? players[responderIndex] : null;
+
+  /// Who reads the card aloud. In truth or dare it is never the person who
+  /// answers (when there is someone else); otherwise it follows the rotation.
+  int get readerIndex {
+    final o = readerOverride;
+    if (o != null && o >= 0 && o < _n) return o;
+    if (game == GameType.truthOrDare && _n > 1) return (turn + 1) % _n;
+    return turn % _n;
+  }
+
+  String get reader => players[readerIndex];
 
   GameSession copyWith({
     List<String>? usedIds,
     String? Function()? currentCardId,
     int? turn,
-    Map<String, int>? scores,
+    int? Function()? readerOverride,
   }) => GameSession(
     game: game,
     mode: mode,
     players: players,
-    usePoints: usePoints,
     startedAt: startedAt,
     usedIds: usedIds ?? this.usedIds,
     currentCardId: currentCardId != null ? currentCardId() : this.currentCardId,
     turn: turn ?? this.turn,
-    scores: scores ?? this.scores,
+    readerOverride: readerOverride != null
+        ? readerOverride()
+        : this.readerOverride,
   );
 
   Map<String, dynamic> toJson() => {
     'game': game.code,
     'mode': mode.code,
     'players': players,
-    'use_points': usePoints,
     'started_at': startedAt.toIso8601String(),
     'used_ids': usedIds,
     'current_card_id': currentCardId,
     'turn': turn,
-    'scores': scores,
+    if (readerOverride != null) 'reader_override': readerOverride,
   };
 
   static GameSession? fromJson(Map<String, dynamic> j) {
@@ -238,15 +258,12 @@ class GameSession {
       game: game,
       mode: mode,
       players: players,
-      usePoints: j['use_points'] as bool? ?? false,
       startedAt:
           DateTime.tryParse(j['started_at'] as String? ?? '') ?? DateTime.now(),
       usedIds: (j['used_ids'] as List?)?.cast<String>() ?? const [],
       currentCardId: j['current_card_id'] as String?,
       turn: (j['turn'] as num?)?.toInt() ?? 0,
-      scores: ((j['scores'] as Map?) ?? const {}).map(
-        (k, v) => MapEntry(k as String, (v as num).toInt()),
-      ),
+      readerOverride: (j['reader_override'] as num?)?.toInt(),
     );
   }
 }

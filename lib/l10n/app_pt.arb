@@ -3501,9 +3501,6 @@
   "gameLightNote": "Sem conteúdo sexual. Para qualquer turma.",
   "gameAdultNote": "Mistura as cartas leves com flerte e humor para adultos. Nada explícito, e tudo pode ser pulado sem punição.",
   "gameAdultConfirm": "Confirmo que todas as pessoas que vão jogar são adultas (18+) e toparam o modo +18.",
-  "gamePoints": "Pontos",
-  "gameCountPoints": "Contar pontos (opcional)",
-  "gameCountPointsHint": "Dá para jogar só na conversa, sem placar.",
   "gameNoDrinkNote": "As cartas nunca pedem para beber, virar doses ou acumular bebidas, e nada aqui registra bebidas no seu rolê.",
   "gameStart": "Começar",
   "gameFinishTitle": "Encerrar a partida?",
@@ -3529,6 +3526,30 @@
   "gameOutOfCards": "Acabaram as cartas",
   "gameOutOfCardsHint": "Dá para embaralhar tudo de novo ou encerrar a partida.",
   "gameReshuffle": "Embaralhar de novo",
+  "gameReaderCall": "{name}, leia a pergunta",
+  "@gameReaderCall": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gameReaderLabel": "Sua vez de ler",
+  "gameResponder": "Responde: {name}",
+  "@gameResponder": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gameEveryoneAnswers": "Todo mundo responde",
+  "gamePassTurn": "Passar a vez",
+  "gameChangeReader": "Trocar leitor",
+  "gameChooseReader": "Quem vai ler?",
+  "gameImportFromOuting": "Pessoas do rolê",
+  "gameImportTitle": "Quem do rolê vai jogar?",
+  "gameImportUse": "Usar selecionados",
   "gameTurnOf": "Vez de {name}",
   "@gameTurnOf": {
     "placeholders": {
@@ -3540,24 +3561,7 @@
   "gameTruthOrDareQ": "Verdade ou desafio?",
   "gameNoTruthLeft": "Acabaram as cartas de verdade. Escolha outra.",
   "gameNoDareLeft": "Acabaram as cartas de desafio. Escolha outra.",
-  "gameWhoReads": "Quem lê: {name}",
-  "@gameWhoReads": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "gameOptional": "Opcional: pode pular sem punição.",
-  "gameTapToScore": "Toque no nome para somar 1 ponto",
-  "gamePlusOne": "+1 para {name}",
-  "@gamePlusOne": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "gameSkip": "Pular",
   "gameNext": "Próxima",
   "gameSavedNote": "A partida fica salva: você pode sair e retomar em {hub}.",

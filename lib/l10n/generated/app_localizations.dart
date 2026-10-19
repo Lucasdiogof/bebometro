@@ -8781,24 +8781,6 @@ abstract class AppLocalizations {
   /// **'Confirmo que todas as pessoas que vão jogar são adultas (18+) e toparam o modo +18.'**
   String get gameAdultConfirm;
 
-  /// No description provided for @gamePoints.
-  ///
-  /// In pt, this message translates to:
-  /// **'Pontos'**
-  String get gamePoints;
-
-  /// No description provided for @gameCountPoints.
-  ///
-  /// In pt, this message translates to:
-  /// **'Contar pontos (opcional)'**
-  String get gameCountPoints;
-
-  /// No description provided for @gameCountPointsHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Dá para jogar só na conversa, sem placar.'**
-  String get gameCountPointsHint;
-
   /// No description provided for @gameNoDrinkNote.
   ///
   /// In pt, this message translates to:
@@ -8865,6 +8847,66 @@ abstract class AppLocalizations {
   /// **'Embaralhar de novo'**
   String get gameReshuffle;
 
+  /// No description provided for @gameReaderCall.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name}, leia a pergunta'**
+  String gameReaderCall(String name);
+
+  /// No description provided for @gameReaderLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua vez de ler'**
+  String get gameReaderLabel;
+
+  /// No description provided for @gameResponder.
+  ///
+  /// In pt, this message translates to:
+  /// **'Responde: {name}'**
+  String gameResponder(String name);
+
+  /// No description provided for @gameEveryoneAnswers.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todo mundo responde'**
+  String get gameEveryoneAnswers;
+
+  /// No description provided for @gamePassTurn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passar a vez'**
+  String get gamePassTurn;
+
+  /// No description provided for @gameChangeReader.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar leitor'**
+  String get gameChangeReader;
+
+  /// No description provided for @gameChooseReader.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem vai ler?'**
+  String get gameChooseReader;
+
+  /// No description provided for @gameImportFromOuting.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pessoas do rolê'**
+  String get gameImportFromOuting;
+
+  /// No description provided for @gameImportTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem do rolê vai jogar?'**
+  String get gameImportTitle;
+
+  /// No description provided for @gameImportUse.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar selecionados'**
+  String get gameImportUse;
+
   /// No description provided for @gameTurnOf.
   ///
   /// In pt, this message translates to:
@@ -8889,29 +8931,11 @@ abstract class AppLocalizations {
   /// **'Acabaram as cartas de desafio. Escolha outra.'**
   String get gameNoDareLeft;
 
-  /// No description provided for @gameWhoReads.
-  ///
-  /// In pt, this message translates to:
-  /// **'Quem lê: {name}'**
-  String gameWhoReads(String name);
-
   /// No description provided for @gameOptional.
   ///
   /// In pt, this message translates to:
   /// **'Opcional: pode pular sem punição.'**
   String get gameOptional;
-
-  /// No description provided for @gameTapToScore.
-  ///
-  /// In pt, this message translates to:
-  /// **'Toque no nome para somar 1 ponto'**
-  String get gameTapToScore;
-
-  /// No description provided for @gamePlusOne.
-  ///
-  /// In pt, this message translates to:
-  /// **'+1 para {name}'**
-  String gamePlusOne(String name);
 
   /// No description provided for @gameSkip.
   ///

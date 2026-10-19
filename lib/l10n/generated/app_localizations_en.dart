@@ -5466,16 +5466,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'I confirm that everyone playing is an adult (18+) and agreed to the 18+ mode.';
 
   @override
-  String get gamePoints => 'Points';
-
-  @override
-  String get gameCountPoints => 'Keep score (optional)';
-
-  @override
-  String get gameCountPointsHint =>
-      'You can play just by talking, without a scoreboard.';
-
-  @override
   String get gameNoDrinkNote =>
       'The cards never ask you to drink, take shots or pile up drinks, and nothing here logs drinks in your outing.';
 
@@ -5522,6 +5512,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameReshuffle => 'Shuffle again';
 
   @override
+  String gameReaderCall(String name) {
+    return '$name, read the question';
+  }
+
+  @override
+  String get gameReaderLabel => 'Your turn to read';
+
+  @override
+  String gameResponder(String name) {
+    return 'Answers: $name';
+  }
+
+  @override
+  String get gameEveryoneAnswers => 'Everybody answers';
+
+  @override
+  String get gamePassTurn => 'Pass the turn';
+
+  @override
+  String get gameChangeReader => 'Change reader';
+
+  @override
+  String get gameChooseReader => 'Who reads?';
+
+  @override
+  String get gameImportFromOuting => 'People from the outing';
+
+  @override
+  String get gameImportTitle => 'Who from the outing plays?';
+
+  @override
+  String get gameImportUse => 'Use selected';
+
+  @override
   String gameTurnOf(String name) {
     return '$name\'s turn';
   }
@@ -5536,20 +5560,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameNoDareLeft => 'Out of dare cards. Pick another.';
 
   @override
-  String gameWhoReads(String name) {
-    return 'Reads: $name';
-  }
-
-  @override
   String get gameOptional => 'Optional: you can skip it without penalty.';
-
-  @override
-  String get gameTapToScore => 'Tap a name to add 1 point';
-
-  @override
-  String gamePlusOne(String name) {
-    return '+1 for $name';
-  }
 
   @override
   String get gameSkip => 'Skip';

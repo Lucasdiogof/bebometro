@@ -5,6 +5,8 @@ import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/common.dart';
+import '../../table/presentation/person_avatar.dart';
+import '../../tab/domain/tab_models.dart';
 import '../domain/game_models.dart';
 import 'game_cubit.dart';
 import '../../l10n/l10n.dart';
@@ -17,19 +19,16 @@ class GamePlayPage extends StatelessWidget {
     required GameType this.game,
     required GameMode this.mode,
     required List<String> this.players,
-    required bool this.usePoints,
   });
 
   const GamePlayPage.resume({super.key})
     : game = null,
       mode = null,
-      players = null,
-      usePoints = null;
+      players = null;
 
   final GameType? game;
   final GameMode? mode;
   final List<String>? players;
-  final bool? usePoints;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,6 @@ class GamePlayPage extends StatelessWidget {
             game: game!,
             mode: mode!,
             players: players!,
-            usePoints: usePoints!,
           );
         }
         return cubit;
@@ -131,7 +129,6 @@ class _PlayView extends StatelessWidget {
                   child: _Stage(state: state),
                 ),
               ),
-              if (session.usePoints) _Scoreboard(session: session),
               _Controls(state: state),
             ],
           ),
@@ -177,7 +174,9 @@ class _Stage extends StatelessWidget {
       child = _Panel(
         key: ValueKey('choice-${session.turn}'),
         children: [
-          Text(tr.gameTurnOf(session.currentPlayer), style: AppText.title),
+          _ReaderBanner(session: session),
+          const SizedBox(height: AppSpace.lg),
+          Text(tr.gameTurnOf(session.responder!), style: AppText.title),
           const SizedBox(height: AppSpace.sm),
           Text(tr.gameTruthOrDareQ, style: AppText.subtitle),
           if (state.noticeKind != null) ...[
@@ -207,22 +206,17 @@ class _Stage extends StatelessWidget {
       child = _Panel(
         key: ValueKey(card.id),
         children: [
-          if (session.game == GameType.truthOrDare)
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppSpace.md),
-              child: Text(
-                '${session.currentPlayer} · ${card.kind.label}',
-                style: AppText.caption.copyWith(color: AppColors.amber),
-              ),
-            )
-          else
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppSpace.md),
-              child: Text(
-                tr.gameWhoReads(session.currentPlayer),
-                style: AppText.caption,
-              ),
+          _ReaderBanner(session: session),
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpace.md, bottom: AppSpace.lg),
+            child: Text(
+              session.game == GameType.truthOrDare
+                  ? '${tr.gameResponder(session.responder!)} · ${card.kind.label}'
+                  : tr.gameEveryoneAnswers,
+              textAlign: TextAlign.center,
+              style: AppText.caption.copyWith(color: AppColors.amber),
             ),
+          ),
           Text(
             card.text,
             textAlign: TextAlign.center,
@@ -253,6 +247,53 @@ class _Stage extends StatelessWidget {
         ),
       ),
       child: child,
+    );
+  }
+}
+
+/// "Ana, leia a pergunta": the reader, big, with initial + words (never only
+/// color). The reader is not the one who answers in truth or dare.
+class _ReaderBanner extends StatelessWidget {
+  const _ReaderBanner({required this.session});
+
+  final GameSession session;
+
+  @override
+  Widget build(BuildContext context) {
+    final name = session.reader;
+    return Semantics(
+      container: true,
+      label: tr.gameReaderCall(name),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ExcludeSemantics(
+            child: PersonAvatar(
+              person: Participant(id: 'game:$name', name: name),
+              index: session.readerIndex,
+              size: 48,
+            ),
+          ),
+          const SizedBox(width: AppSpace.md),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  tr.gameReaderLabel,
+                  style: AppText.overline.copyWith(color: AppColors.amber),
+                ),
+                Text(
+                  tr.gameReaderCall(name),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.title,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -288,69 +329,54 @@ class _Panel extends StatelessWidget {
   }
 }
 
-class _Scoreboard extends StatelessWidget {
-  const _Scoreboard({required this.session});
-
-  final GameSession session;
-
-  @override
-  Widget build(BuildContext context) {
-    final cubit = context.read<GameCubit>();
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        AppSpace.gutter,
-        0,
-        AppSpace.gutter,
-        AppSpace.sm,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(tr.gameTapToScore, style: AppText.caption),
-          const SizedBox(height: AppSpace.xs),
-          Wrap(
-            spacing: AppSpace.sm,
-            runSpacing: AppSpace.sm,
-            children: [
-              for (final p in session.players)
-                ActionChip(
-                  label: Text('$p · ${session.scores[p] ?? 0}'),
-                  onPressed: () {
-                    cubit.addPoint(p);
-                    final messenger = ScaffoldMessenger.of(context);
-                    messenger
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(
-                        SnackBar(
-                          content: Text(tr.gamePlusOne(p)),
-                          duration: const Duration(seconds: 3),
-                          persist: false,
-                          action: SnackBarAction(
-                            label: tr.commonUndo,
-                            onPressed: () => cubit.removePoint(p),
-                          ),
-                        ),
-                      );
-                  },
-                ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _Controls extends StatelessWidget {
   const _Controls({required this.state});
 
   final GameState state;
 
+  Future<void> _pickReader(BuildContext context) async {
+    final cubit = context.read<GameCubit>();
+    final session = state.session!;
+    final index = await showModalBottomSheet<int>(
+      context: context,
+      showDragHandle: true,
+      builder: (ctx) => SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
+              child: Text(tr.gameChooseReader, style: AppText.title),
+            ),
+            for (var i = 0; i < session.players.length; i++)
+              ListTile(
+                leading: PersonAvatar(
+                  person: Participant(
+                    id: 'game:${session.players[i]}',
+                    name: session.players[i],
+                  ),
+                  index: i,
+                ),
+                title: Text(session.players[i]),
+                trailing: i == session.readerIndex
+                    ? const Icon(Icons.check_rounded)
+                    : null,
+                onTap: () => Navigator.pop(ctx, i),
+              ),
+          ],
+        ),
+      ),
+    );
+    if (index != null) cubit.changeReader(index);
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<GameCubit>();
+    final session = state.session!;
     final showCardControls =
         state.card != null && !state.exhausted && !state.awaitingChoice;
+    final canPass = !state.exhausted && session.players.length > 1;
     return BottomActionBar(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -374,8 +400,26 @@ class _Controls extends StatelessWidget {
                   ),
                 ),
               ],
-            )
-          else
+            ),
+          if (canPass)
+            Padding(
+              padding: EdgeInsets.only(top: showCardControls ? AppSpace.xs : 0),
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: cubit.passTurn,
+                    child: Text(tr.gamePassTurn),
+                  ),
+                  if (showCardControls)
+                    TextButton(
+                      onPressed: () => _pickReader(context),
+                      child: Text(tr.gameChangeReader),
+                    ),
+                ],
+              ),
+            ),
+          if (!showCardControls && !canPass)
             Text(
               tr.gameSavedNote(tr.navGames),
               textAlign: TextAlign.center,
