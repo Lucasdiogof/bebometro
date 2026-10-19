@@ -94,14 +94,14 @@ sobre bebidas alcoólicas e modo +18 dos jogos).
 
 ## Itens BEB-001 a BEB-007 (estado em 16/10/2026)
 
-Nenhum item foi **validado em execução**: nada foi compilado, analisado, testado nem aberto em aparelho.
+Atualizado após a rodada de QA de 16-19/10 (`docs/qa-report.md`). "Validado em execução" só onde há evidência no relatório; BEB-002, BEB-004 e BEB-006 seguem sem validação própria (BEB-004 só existe no iPhone).
 
 | Item | Implementado | Conferido por leitura | Validado em execução | Pendente de aparelho |
 |---|---|---|---|---|
-| BEB-001 propagação de preço para bebidas iguais | Sim (`bb65e02`) | Sim | Não | Salvar com preço e aplicar a "sem preço"/"todos" |
+| BEB-001 propagação de preço para bebidas iguais | Sim (`bb65e02`) | Sim | **Sim, Android (emulador), 16-17/10:** oferta "2 sem preço e 0 com outro preço", aplicar só aos sem preço, "só este" respeitado, bebida diferente intacta; regra coberta também por `test/price_propagation_test.dart` | Web e iPhone |
 | BEB-002 remoção do CTA do Copão | Sim (`623da6a`) | Sim | Não | Conferir o card Copão |
-| BEB-003 destaque para Encerrar rolê | Sim (`623da6a`) | Sim | Não | Botão, ícone na barra e atalho na Home |
+| BEB-003 destaque para Encerrar rolê | Sim (`623da6a`) | Sim | **Parcial, Android:** botão "Encerrar rolê" na Home e ícone de bandeira na barra do rolê vistos em captura; encerrar e resumo exercitados na rodada de QA | Conferir o botão de largura total no fim do rolê |
 | BEB-004 Mais uma na tela bloqueada | Sim (`bf29c90`, `c932b0b`, `bbb7698`, `cb4fe29`, revisão de sincronização em 16/10) | Sim | Não | iOS 17+: toque, fila, pendentes, origem (roteiro em `lock-screen-one-tap.md`) |
-| BEB-005 taxa de serviço 5/10/20% | Sim (`862e310`) | Sim | Não | Comanda com taxa ligada/desligada |
+| BEB-005 taxa de serviço 5/10/20% | Sim (`862e310`) | Sim | **Sim, Android:** 5/10/20% = R$ 5,25 / 10,50 / 21,00 sobre R$ 105, desligar recalcula; cálculo coberto por `test/tab_calc_test.dart` (inclui 12,34%) | iPhone |
 | BEB-006 layout do Compartilhar | Sim (`7b986bb`) | Sim | Não | Tela estreita e fonte ampliada |
-| BEB-007 falha no compartilhamento | Fragilidades corrigidas (`7b986bb`, `c932b0b`, âncora da folha em 16/10); **causa original não reproduzida** | Sim | Não | Compartilhar cartão, comanda e exportação no iPhone (e no iPad, se houver) |
+| BEB-007 falha no compartilhamento | Fragilidades corrigidas (`7b986bb`, `c932b0b`, âncora da folha em 16/10); **causa original não reproduzida** | Sim | **Parcial, Android:** o seletor do sistema abre e cancelar volta sem erro e sem cópia (resumo e exportação JSON) | Compartilhar de verdade no iPhone (e no iPad, se houver) |
