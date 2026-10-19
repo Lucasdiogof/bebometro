@@ -271,6 +271,12 @@ class _StartOutingViewState extends State<_StartOutingView> {
                             ],
                           ),
                         ),
+                        SectionTitle(tr.startWho),
+                        _GuestsEditor(
+                          guests: state.guests,
+                          onAdd: cubit.addGuest,
+                          onRemove: cubit.removeGuest,
+                        ),
                         SectionTitle(tr.startBudgetSection),
                         MoneyField(
                           label: tr.startBudgetLabel,
@@ -307,6 +313,107 @@ class _StartOutingViewState extends State<_StartOutingView> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// "Quem está no rolê?": the owner is always there; names are added fast and
+/// can be repeated. Nothing here is an account, an invitation or a contact.
+class _GuestsEditor extends StatefulWidget {
+  const _GuestsEditor({
+    required this.guests,
+    required this.onAdd,
+    required this.onRemove,
+  });
+
+  final List<String> guests;
+  final ValueChanged<String> onAdd;
+  final ValueChanged<int> onRemove;
+
+  @override
+  State<_GuestsEditor> createState() => _GuestsEditorState();
+}
+
+class _GuestsEditorState extends State<_GuestsEditor> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    final text = _controller.text;
+    if (text.trim().isEmpty) return;
+    widget.onAdd(text);
+    _controller.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(tr.startWhoHint, style: AppText.caption),
+        const SizedBox(height: AppSpace.sm),
+        Wrap(
+          spacing: AppSpace.sm,
+          runSpacing: AppSpace.sm,
+          children: [
+            Chip(
+              avatar: const Icon(Icons.person_rounded, size: 18),
+              label: Text(tr.tabMe),
+            ),
+            for (var i = 0; i < widget.guests.length; i++)
+              InputChip(
+                key: ValueKey('guest-$i'),
+                avatar: CircleAvatar(
+                  backgroundColor: AppColors.amber,
+                  child: Text(
+                    widget.guests[i].characters.first.toUpperCase(),
+                    style: const TextStyle(
+                      color: Color(0xFF241800),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                label: Text(widget.guests[i]),
+                deleteButtonTooltipMessage: tr.startWhoRemove(widget.guests[i]),
+                onDeleted: () => widget.onRemove(i),
+              ),
+          ],
+        ),
+        const SizedBox(height: AppSpace.sm),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                key: const ValueKey('guest-name'),
+                controller: _controller,
+                textCapitalization: TextCapitalization.words,
+                textInputAction: TextInputAction.done,
+                maxLength: 24,
+                decoration: InputDecoration(
+                  labelText: tr.startWhoName,
+                  counterText: '',
+                ),
+                onSubmitted: (_) => _submit(),
+              ),
+            ),
+            const SizedBox(width: AppSpace.sm),
+            FilledButton.tonal(
+              key: const ValueKey('guest-add'),
+              // The app theme asks for full-width buttons; inside a Row the
+              // minimum width must be zero.
+              style: FilledButton.styleFrom(minimumSize: const Size(0, 56)),
+              onPressed: _submit,
+              child: Text(tr.startWhoAdd),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

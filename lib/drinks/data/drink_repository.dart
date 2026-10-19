@@ -106,6 +106,31 @@ class DrinkRepository {
     await _store.put(LocalStore.drinkEntries, entry.toJson());
   }
 
+  /// Saves several records one after the other (an order of many servings).
+  /// Each id is saved on its own, idempotently, so a retry never duplicates.
+  Future<void> saveAll(List<DrinkEntry> entries) async {
+    for (final e in entries) {
+      await save(e);
+    }
+  }
+
+  /// Gives an individual record to another person (null = the owner). Price,
+  /// time, composition and the lock-screen origin stay untouched. A shared
+  /// bottle is not reassigned this way (its portions are edited as portions).
+  Future<void> reassign(String id, {required String? consumerId}) async {
+    final entry = entryById(id);
+    if (entry == null || entry.isDeleted || entry.portions != null) return;
+    await save(
+      entry.copyWithAttribution(
+        consumerId: consumerId,
+        portions: null,
+        personalMl: entry.personalMl,
+        peopleCount: entry.peopleCount,
+        updatedAt: DateTime.now(),
+      ),
+    );
+  }
+
   /// Other records of the same outing that are the same drink as [entry]
   /// (see [DrinkEntry.isEquivalentTo]).
   List<DrinkEntry> equivalentsOf(DrinkEntry entry) => [

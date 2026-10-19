@@ -49,9 +49,14 @@ class DrinkFormState {
     this.deleted = false,
     this.dirty = false,
     this.error,
+    this.consumerPending = false,
   });
 
   final DrinkDraft draft;
+
+  /// The outing has people and the form was opened without saying whose drink
+  /// it is: the person must be chosen (nothing is assumed) before saving.
+  final bool consumerPending;
 
   /// Known sizes for the chosen product (chips above the free volume field).
   final List<Presentation> presentations;
@@ -98,7 +103,9 @@ class DrinkFormState {
     bool? dirty,
     String? error,
     PriceSuggestion? suggestion,
+    bool? consumerPending,
   }) => DrinkFormState(
+    consumerPending: consumerPending ?? this.consumerPending,
     draft: draft ?? this.draft,
     presentations: presentations,
     sizesAreGeneric: sizesAreGeneric,
@@ -144,8 +151,10 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     DrinkRepository drinks,
     Outing outing,
     CatalogItem item,
-    List<DrinkEntry> candidates,
-  ) {
+    List<DrinkEntry> candidates, {
+    String? consumerId,
+    bool consumerPending = false,
+  }) {
     final now = DateTime.now();
     final end = outing.endedAt;
     final draft = DrinkDraft.fromItem(
@@ -154,12 +163,13 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       now: (end != null && now.isAfter(end)) ? end : now,
       notBefore: outing.startedAt,
       notAfter: outing.endedAt,
-    );
+    ).withConsumer(consumerId);
     return DrinkFormCubit._(
       drinks,
       outing.id,
       candidates,
       DrinkFormState(
+        consumerPending: consumerPending,
         draft: draft,
         suggestionAtPlace: outing.placeId != null,
         suggestion: suggestPrice(candidates, _keyOf(draft)),
@@ -281,6 +291,17 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
 
   final DrinkRepository _drinks;
   final String _outingId;
+
+  String get outingId => _outingId;
+
+  /// Whose drink it is (null = the owner). Chosen explicitly on a table.
+  void setConsumer(String? id) => emit(
+    state.copyWith(
+      draft: state.draft.withConsumer(id),
+      dirty: true,
+      consumerPending: false,
+    ),
+  );
 
   /// Stable per form, so a repeated "save" never creates a second row.
   final String _entryId;
@@ -422,7 +443,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
 
   Future<void> submit() async {
     if (state.saving || state.saved || state.deleted) return;
-    if (!state.draft.isValid) {
+    if (state.consumerPending || !state.draft.isValid) {
       emit(state.copyWith(showErrors: true));
       return;
     }

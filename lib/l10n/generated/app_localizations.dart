@@ -9308,6 +9308,804 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Sem conexão'**
   String get syncLabelOffline;
+
+  /// No description provided for @startWho.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem está no rolê?'**
+  String get startWho;
+
+  /// No description provided for @startWhoHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você já está. Adicione quem vai pedir ou dividir a conta; dá para mudar depois.'**
+  String get startWhoHint;
+
+  /// No description provided for @startWhoName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome da pessoa'**
+  String get startWhoName;
+
+  /// No description provided for @startWhoAdd.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar'**
+  String get startWhoAdd;
+
+  /// No description provided for @startWhoRemove.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar {name}'**
+  String startWhoRemove(String name);
+
+  /// No description provided for @orderTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo pedido'**
+  String get orderTitle;
+
+  /// No description provided for @orderWhat.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que foi pedido?'**
+  String get orderWhat;
+
+  /// No description provided for @orderNameLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do pedido'**
+  String get orderNameLabel;
+
+  /// No description provided for @orderNameHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escreva o nome ou procure no catálogo'**
+  String get orderNameHint;
+
+  /// No description provided for @orderFromCatalog.
+  ///
+  /// In pt, this message translates to:
+  /// **'Do catálogo: {name}'**
+  String orderFromCatalog(String name);
+
+  /// No description provided for @orderUseTextOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar só o texto'**
+  String get orderUseTextOnly;
+
+  /// No description provided for @orderNotInCatalog.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não achou no catálogo? Sem problema: fica registrado como “{text}” só neste rolê.'**
+  String orderNotInCatalog(String text);
+
+  /// No description provided for @orderKind.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo'**
+  String get orderKind;
+
+  /// No description provided for @orderFor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para quem?'**
+  String get orderFor;
+
+  /// No description provided for @orderForHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque em quem vai beber e diga quantas.'**
+  String get orderForHint;
+
+  /// No description provided for @orderEach.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cada um o seu'**
+  String get orderEach;
+
+  /// No description provided for @orderSharedBottle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Garrafa ou jarra compartilhada'**
+  String get orderSharedBottle;
+
+  /// No description provided for @orderMore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais um para {name}'**
+  String orderMore(String name);
+
+  /// No description provided for @orderLess.
+  ///
+  /// In pt, this message translates to:
+  /// **'Menos um para {name}'**
+  String orderLess(String name);
+
+  /// No description provided for @orderSharers.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem divide?'**
+  String get orderSharers;
+
+  /// No description provided for @orderPortionMl.
+  ///
+  /// In pt, this message translates to:
+  /// **'ml de {name}'**
+  String orderPortionMl(String name);
+
+  /// No description provided for @orderPortionHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Opcional. Em branco = não sei.'**
+  String get orderPortionHint;
+
+  /// No description provided for @orderDivideVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dividir volume igualmente'**
+  String get orderDivideVolume;
+
+  /// No description provided for @orderDivideNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'É uma estimativa: assume que cada um bebeu a mesma quantidade. Dividir só o preço não prova isso.'**
+  String get orderDivideNote;
+
+  /// No description provided for @orderBottles.
+  ///
+  /// In pt, this message translates to:
+  /// **'Garrafas'**
+  String get orderBottles;
+
+  /// No description provided for @orderLeftover.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sobra (ml)'**
+  String get orderLeftover;
+
+  /// No description provided for @orderPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço'**
+  String get orderPrice;
+
+  /// No description provided for @orderPriceEach.
+  ///
+  /// In pt, this message translates to:
+  /// **'Por unidade'**
+  String get orderPriceEach;
+
+  /// No description provided for @orderPriceTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total do pedido'**
+  String get orderPriceTotal;
+
+  /// No description provided for @orderPriceEachLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor de cada'**
+  String get orderPriceEachLabel;
+
+  /// No description provided for @orderPriceTotalLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor total do pedido'**
+  String get orderPriceTotalLabel;
+
+  /// No description provided for @orderPriceTotalHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Promoção? Informe o total: o app reparte em centavos exatos.'**
+  String get orderPriceTotalHelper;
+
+  /// No description provided for @orderPriceBottleLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço da garrafa (total)'**
+  String get orderPriceBottleLabel;
+
+  /// No description provided for @orderLineSummary.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count} × {price} = {total}'**
+  String orderLineSummary(int count, String price, String total);
+
+  /// No description provided for @orderSplitEach.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cada um paga {each} se dividir igual.'**
+  String orderSplitEach(String each);
+
+  /// No description provided for @orderDetails.
+  ///
+  /// In pt, this message translates to:
+  /// **'Detalhes (opcional)'**
+  String get orderDetails;
+
+  /// No description provided for @orderVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume servido (ml)'**
+  String get orderVolume;
+
+  /// No description provided for @orderVolumeNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sugestões editáveis; não são o tamanho oficial da marca nem do bar.'**
+  String get orderVolumeNote;
+
+  /// No description provided for @orderAbv.
+  ///
+  /// In pt, this message translates to:
+  /// **'Teor alcoólico (%)'**
+  String get orderAbv;
+
+  /// No description provided for @orderUseRecipe.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar a receita de referência'**
+  String get orderUseRecipe;
+
+  /// No description provided for @orderUseRecipeNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só se foi assim que o bar preparou. Sem confirmar, o drink fica sem composição.'**
+  String get orderUseRecipeNote;
+
+  /// No description provided for @orderSummaryFor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para: {who}'**
+  String orderSummaryFor(String who);
+
+  /// No description provided for @orderSave.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar ao rolê'**
+  String get orderSave;
+
+  /// No description provided for @orderErrName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Diga o que foi pedido.'**
+  String get orderErrName;
+
+  /// No description provided for @orderErrNobody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha pelo menos uma pessoa.'**
+  String get orderErrNobody;
+
+  /// No description provided for @orderErrSharers.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para dividir, escolha pelo menos duas pessoas.'**
+  String get orderErrSharers;
+
+  /// No description provided for @orderErrPortions.
+  ///
+  /// In pt, this message translates to:
+  /// **'As porções e a sobra passam do tamanho da garrafa.'**
+  String get orderErrPortions;
+
+  /// No description provided for @orderErrPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe o valor ou escolha outra opção.'**
+  String get orderErrPrice;
+
+  /// No description provided for @orderErrVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume inválido.'**
+  String get orderErrVolume;
+
+  /// No description provided for @orderErrAbv.
+  ///
+  /// In pt, this message translates to:
+  /// **'O teor vai de 0 a 100%.'**
+  String get orderErrAbv;
+
+  /// No description provided for @orderAdded.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionado: {summary}'**
+  String orderAdded(String summary);
+
+  /// No description provided for @actionDrink.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebida'**
+  String get actionDrink;
+
+  /// No description provided for @actionFood.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comida'**
+  String get actionFood;
+
+  /// No description provided for @actionOther.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outro item'**
+  String get actionOther;
+
+  /// No description provided for @tabOrders.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedidos'**
+  String get tabOrders;
+
+  /// No description provided for @tabPeople.
+  ///
+  /// In pt, this message translates to:
+  /// **'Por pessoa'**
+  String get tabPeople;
+
+  /// No description provided for @tabBill.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conta'**
+  String get tabBill;
+
+  /// No description provided for @tileOrders.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedidos'**
+  String get tileOrders;
+
+  /// No description provided for @tileTableTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total da mesa'**
+  String get tileTableTotal;
+
+  /// No description provided for @tileYourShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua parte'**
+  String get tileYourShare;
+
+  /// No description provided for @tileTheirShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Parte'**
+  String get tileTheirShare;
+
+  /// No description provided for @tileVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume'**
+  String get tileVolume;
+
+  /// No description provided for @billTotalKnownShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'{total}+'**
+  String billTotalKnownShort(String total);
+
+  /// No description provided for @ordersTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Pedidos} one{1 pedido} other{{count} pedidos}}'**
+  String ordersTitle(int count);
+
+  /// No description provided for @ordersEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum pedido ainda'**
+  String get ordersEmptyTitle;
+
+  /// No description provided for @ordersEmptyBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Use Bebida, Comida ou Outro item para registrar o primeiro.'**
+  String get ordersEmptyBody;
+
+  /// No description provided for @orderEachPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'{price} cada'**
+  String orderEachPrice(String price);
+
+  /// No description provided for @ordersEveryone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos'**
+  String get ordersEveryone;
+
+  /// No description provided for @ordersUnassigned.
+  ///
+  /// In pt, this message translates to:
+  /// **'sem pessoa'**
+  String get ordersUnassigned;
+
+  /// No description provided for @ordersMoveTo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passar para outra pessoa'**
+  String get ordersMoveTo;
+
+  /// No description provided for @ordersDeleteOne.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir um'**
+  String get ordersDeleteOne;
+
+  /// No description provided for @noticeMovedTo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passado para {name}'**
+  String noticeMovedTo(String name);
+
+  /// No description provided for @moveCustomTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este pedido tem divisão personalizada'**
+  String get moveCustomTitle;
+
+  /// No description provided for @moveCustomBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atualizar a divisão do custo para {name} ou manter como está?'**
+  String moveCustomBody(String name);
+
+  /// No description provided for @moveFollow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seguir {name}'**
+  String moveFollow(String name);
+
+  /// No description provided for @moveKeepSplit.
+  ///
+  /// In pt, this message translates to:
+  /// **'Manter a divisão'**
+  String get moveKeepSplit;
+
+  /// No description provided for @repeatFor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais uma para {who}'**
+  String repeatFor(String who);
+
+  /// No description provided for @repeatLeftTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'{names} saiu'**
+  String repeatLeftTitle(String names);
+
+  /// No description provided for @repeatLeftBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse pedido não é repetido para quem saiu. Escolha para quem repetir.'**
+  String get repeatLeftBody;
+
+  /// No description provided for @repeatLeftAdjust.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolher pessoas'**
+  String get repeatLeftAdjust;
+
+  /// No description provided for @tableIllustrated.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mesa ilustrada'**
+  String get tableIllustrated;
+
+  /// No description provided for @tableIllustratedHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só uma imagem dos pedidos; a lista e os valores ficam acima.'**
+  String get tableIllustratedHint;
+
+  /// No description provided for @legacyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conta já usada neste rolê'**
+  String get legacyTitle;
+
+  /// No description provided for @legacyBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para atribuir pedidos a pessoas, passe para o modo mesa: todos os registros do rolê entram na conta, divididos por quem bebeu. Vínculos, extras e pagamentos atuais ficam.'**
+  String get legacyBody;
+
+  /// No description provided for @legacyAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar a mesa'**
+  String get legacyAction;
+
+  /// No description provided for @extraWhoPresent.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos os presentes'**
+  String get extraWhoPresent;
+
+  /// No description provided for @peopleTable.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mesa'**
+  String get peopleTable;
+
+  /// No description provided for @peopleLeftTag.
+  ///
+  /// In pt, this message translates to:
+  /// **'saiu'**
+  String get peopleLeftTag;
+
+  /// No description provided for @peopleAdd.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pessoa'**
+  String get peopleAdd;
+
+  /// No description provided for @peopleAddTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar pessoa'**
+  String get peopleAddTitle;
+
+  /// No description provided for @peopleRename.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renomear'**
+  String get peopleRename;
+
+  /// No description provided for @peopleMarkLeft.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcar que saiu'**
+  String get peopleMarkLeft;
+
+  /// No description provided for @peopleMarkLeftHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Continua nos pedidos antigos e não entra em itens novos por padrão.'**
+  String get peopleMarkLeftHint;
+
+  /// No description provided for @peopleBack.
+  ///
+  /// In pt, this message translates to:
+  /// **'Voltou à mesa'**
+  String get peopleBack;
+
+  /// No description provided for @peopleBackHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volta a ser escolhida nos itens novos.'**
+  String get peopleBackHint;
+
+  /// No description provided for @peopleRemove.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover da mesa'**
+  String get peopleRemove;
+
+  /// No description provided for @peopleRemoveHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ninguém consumiu nem paga por esta pessoa.'**
+  String get peopleRemoveHint;
+
+  /// No description provided for @peopleRemoveBlocked.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tem pedidos, parcela ou pagamento: marque que saiu.'**
+  String get peopleRemoveBlocked;
+
+  /// No description provided for @peopleUnassigned.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, one{1 registro é de uma pessoa que não está na mesa} other{{count} registros são de pessoas que não estão na mesa}}: ficam sem atribuição, nunca viram seus.'**
+  String peopleUnassigned(int count);
+
+  /// No description provided for @peopleDrankNothing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não bebeu nada.'**
+  String get peopleDrankNothing;
+
+  /// No description provided for @peopleDrankLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, one{1 bebida} other{{count} bebidas}} · {ml}'**
+  String peopleDrankLine(int count, String ml);
+
+  /// No description provided for @peopleDrinksCost.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebidas'**
+  String get peopleDrinksCost;
+
+  /// No description provided for @peopleFoodCost.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comida e outros'**
+  String get peopleFoodCost;
+
+  /// No description provided for @peopleDiscount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desconto'**
+  String get peopleDiscount;
+
+  /// No description provided for @peopleService.
+  ///
+  /// In pt, this message translates to:
+  /// **'Serviço'**
+  String get peopleService;
+
+  /// No description provided for @peopleShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Parcela'**
+  String get peopleShare;
+
+  /// No description provided for @peoplePaidToVenue.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pagou ao bar'**
+  String get peoplePaidToVenue;
+
+  /// No description provided for @peopleStillOwes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda falta {amount} da parcela'**
+  String peopleStillOwes(String amount);
+
+  /// No description provided for @peoplePaidMore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pagou {amount} acima da parcela'**
+  String peoplePaidMore(String amount);
+
+  /// No description provided for @peopleEven.
+  ///
+  /// In pt, this message translates to:
+  /// **'Parcela paga'**
+  String get peopleEven;
+
+  /// No description provided for @peopleCovered.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bar já quitado pela mesa'**
+  String get peopleCovered;
+
+  /// No description provided for @peopleSeeOrders.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver pedidos de {name}'**
+  String peopleSeeOrders(String name);
+
+  /// No description provided for @billSubtotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Subtotal'**
+  String get billSubtotal;
+
+  /// No description provided for @billSubtotalKnown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Subtotal conhecido'**
+  String get billSubtotalKnown;
+
+  /// No description provided for @billDiscount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desconto'**
+  String get billDiscount;
+
+  /// No description provided for @billService.
+  ///
+  /// In pt, this message translates to:
+  /// **'Serviço {rate} sobre {base}'**
+  String billService(String rate, String base);
+
+  /// No description provided for @billTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total da conta'**
+  String get billTotal;
+
+  /// No description provided for @billTotalKnown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total conhecido'**
+  String get billTotalKnown;
+
+  /// No description provided for @billYourShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua parte'**
+  String get billYourShare;
+
+  /// No description provided for @billPartial.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, one{1 item sem preço: a conta é parcial} other{{count} itens sem preço: a conta é parcial}}'**
+  String billPartial(int count);
+
+  /// No description provided for @billUnassigned.
+  ///
+  /// In pt, this message translates to:
+  /// **'Falta atribuir {amount}'**
+  String billUnassigned(String amount);
+
+  /// No description provided for @billOverAssigned.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atribuído a mais: {amount}'**
+  String billOverAssigned(String amount);
+
+  /// No description provided for @billPaidToVenue.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pago ao bar'**
+  String get billPaidToVenue;
+
+  /// No description provided for @billSettled.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bar quitado'**
+  String get billSettled;
+
+  /// No description provided for @billDue.
+  ///
+  /// In pt, this message translates to:
+  /// **'A pagar ao bar'**
+  String get billDue;
+
+  /// No description provided for @billOverpaid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pago a mais ao bar: {amount}'**
+  String billOverpaid(String amount);
+
+  /// No description provided for @billNoTransfers.
+  ///
+  /// In pt, this message translates to:
+  /// **'O app não faz cobrança nem Pix e não diz quem deve pagar quem.'**
+  String get billNoTransfers;
+
+  /// No description provided for @billSettings.
+  ///
+  /// In pt, this message translates to:
+  /// **'Serviço, desconto e itens'**
+  String get billSettings;
+
+  /// No description provided for @billSplitAndPay.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dividir e registrar pagamentos'**
+  String get billSplitAndPay;
+
+  /// No description provided for @formForWhom.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para quem?'**
+  String get formForWhom;
+
+  /// No description provided for @formForWhomPending.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha para quem foi esta bebida.'**
+  String get formForWhomPending;
+
+  /// No description provided for @formForWhomShared.
+  ///
+  /// In pt, this message translates to:
+  /// **'Garrafa compartilhada: as pessoas ficam nas porções do pedido.'**
+  String get formForWhomShared;
+
+  /// No description provided for @orderOpenCatalog.
+  ///
+  /// In pt, this message translates to:
+  /// **'Catálogo completo, rótulo ou cardápio'**
+  String get orderOpenCatalog;
 }
 
 class _AppLocalizationsDelegate

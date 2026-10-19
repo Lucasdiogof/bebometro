@@ -1,8 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../places/data/place_repository.dart';
 import '../../places/domain/place.dart';
 import '../../places/domain/place_draft.dart';
+import '../../tab/data/tab_repository.dart';
+import '../../tab/domain/tab_models.dart';
 import '../data/outing_repository.dart';
 import '../domain/outing.dart';
 import '../../l10n/l10n.dart';
@@ -18,6 +21,7 @@ class StartOutingState {
     this.place,
     this.saveAsPlace = true,
     this.budgetCents,
+    this.guests = const [],
     this.submitting = false,
     this.showErrors = false,
     this.error,
@@ -38,6 +42,9 @@ class StartOutingState {
   /// Save the typed place for next time (ignored when [place] is chosen).
   final bool saveAsPlace;
   final int? budgetCents;
+
+  /// Names of the people at the table besides the owner ("Você" is always in).
+  final List<String> guests;
   final bool submitting;
   final bool showErrors;
   final String? error;
@@ -67,6 +74,7 @@ class StartOutingState {
     PlaceDraft? Function()? place,
     bool? saveAsPlace,
     int? Function()? budgetCents,
+    List<String>? guests,
     bool? submitting,
     bool? showErrors,
     String? error,
@@ -81,6 +89,7 @@ class StartOutingState {
     place: place != null ? place() : this.place,
     saveAsPlace: saveAsPlace ?? this.saveAsPlace,
     budgetCents: budgetCents != null ? budgetCents() : this.budgetCents,
+    guests: guests ?? this.guests,
     submitting: submitting ?? this.submitting,
     showErrors: showErrors ?? this.showErrors,
     error: error,
@@ -89,11 +98,13 @@ class StartOutingState {
 }
 
 class StartOutingCubit extends Cubit<StartOutingState> {
-  StartOutingCubit(this._outings, this._places)
+  StartOutingCubit(this._outings, this._places, this._tabs)
     : super(StartOutingState(type: OutingType.bar, startedAt: DateTime.now()));
 
   final OutingRepository _outings;
   final PlaceRepository _places;
+  final TabRepository _tabs;
+  static const _uuid = Uuid();
 
   /// Saved places offered as shortcuts: recent first, then favourites.
   List<Place> get shortcuts {
@@ -114,6 +125,26 @@ class StartOutingCubit extends Cubit<StartOutingState> {
   void setStartedAt(DateTime v) => emit(state.copyWith(startedAt: v));
   void setSaveAsPlace(bool v) => emit(state.copyWith(saveAsPlace: v));
   void setBudgetCents(int? v) => emit(state.copyWith(budgetCents: () => v));
+
+  /// People at the table. Same name twice is allowed (two "João"): the id, not
+  /// the name, is the identity.
+  void addGuest(String name) {
+    final clean = name.trim();
+    if (clean.isEmpty || state.guests.length >= 29) return;
+    emit(state.copyWith(guests: [...state.guests, clean]));
+  }
+
+  void removeGuest(int index) {
+    if (index < 0 || index >= state.guests.length) return;
+    emit(
+      state.copyWith(
+        guests: [
+          for (var i = 0; i < state.guests.length; i++)
+            if (i != index) state.guests[i],
+        ],
+      ),
+    );
+  }
 
   /// Picks a saved place (its type becomes the outing type) or clears it.
   void selectPlace(Place? place) => emit(
@@ -161,6 +192,19 @@ class StartOutingCubit extends Cubit<StartOutingState> {
         budgetCents: state.budgetCents,
         startedAt: state.startedAt,
       );
+      // Every new outing is a table: "Você" plus whoever was added. The tab
+      // includes the records of the outing by itself (no second write).
+      final me = Participant(id: _uuid.v4(), name: tr.tabMe, isMe: true);
+      final guests = [
+        for (final g in state.guests) Participant(id: _uuid.v4(), name: g),
+      ];
+      await _tabs.update(outing.id, (_) {
+        final base = TabDoc.forTable(outing.id, me);
+        return base.copyWith(
+          participants: [me, ...guests],
+          equalIds: [me.id, for (final g in guests) g.id],
+        );
+      });
       emit(state.copyWith(submitting: false, createdId: outing.id));
     } on ActiveOutingExistsException {
       final active = _outings.active;

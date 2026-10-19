@@ -3709,5 +3709,346 @@
       }
     }
   },
-  "syncLabelOffline": "Sem conexão"
+  "syncLabelOffline": "Sem conexão",
+  "startWho": "Quem está no rolê?",
+  "startWhoHint": "Você já está. Adicione quem vai pedir ou dividir a conta; dá para mudar depois.",
+  "startWhoName": "Nome da pessoa",
+  "startWhoAdd": "Adicionar",
+  "startWhoRemove": "Tirar {name}",
+  "@startWhoRemove": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "orderTitle": "Novo pedido",
+  "orderWhat": "O que foi pedido?",
+  "orderNameLabel": "Nome do pedido",
+  "orderNameHint": "Escreva o nome ou procure no catálogo",
+  "orderFromCatalog": "Do catálogo: {name}",
+  "@orderFromCatalog": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "orderUseTextOnly": "Usar só o texto",
+  "orderNotInCatalog": "Não achou no catálogo? Sem problema: fica registrado como “{text}” só neste rolê.",
+  "@orderNotInCatalog": {
+      "placeholders": {
+          "text": {
+              "type": "String"
+          }
+      }
+  },
+  "orderKind": "Tipo",
+  "orderFor": "Para quem?",
+  "orderForHint": "Toque em quem vai beber e diga quantas.",
+  "orderEach": "Cada um o seu",
+  "orderSharedBottle": "Garrafa ou jarra compartilhada",
+  "orderMore": "Mais um para {name}",
+  "@orderMore": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "orderLess": "Menos um para {name}",
+  "@orderLess": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "orderSharers": "Quem divide?",
+  "orderPortionMl": "ml de {name}",
+  "@orderPortionMl": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "orderPortionHint": "Opcional. Em branco = não sei.",
+  "orderDivideVolume": "Dividir volume igualmente",
+  "orderDivideNote": "É uma estimativa: assume que cada um bebeu a mesma quantidade. Dividir só o preço não prova isso.",
+  "orderBottles": "Garrafas",
+  "orderLeftover": "Sobra (ml)",
+  "orderPrice": "Preço",
+  "orderPriceEach": "Por unidade",
+  "orderPriceTotal": "Total do pedido",
+  "orderPriceEachLabel": "Valor de cada",
+  "orderPriceTotalLabel": "Valor total do pedido",
+  "orderPriceTotalHelper": "Promoção? Informe o total: o app reparte em centavos exatos.",
+  "orderPriceBottleLabel": "Preço da garrafa (total)",
+  "orderLineSummary": "{count} × {price} = {total}",
+  "@orderLineSummary": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          },
+          "price": {
+              "type": "String"
+          },
+          "total": {
+              "type": "String"
+          }
+      }
+  },
+  "orderSplitEach": "Cada um paga {each} se dividir igual.",
+  "@orderSplitEach": {
+      "placeholders": {
+          "each": {
+              "type": "String"
+          }
+      }
+  },
+  "orderDetails": "Detalhes (opcional)",
+  "orderVolume": "Volume servido (ml)",
+  "orderVolumeNote": "Sugestões editáveis; não são o tamanho oficial da marca nem do bar.",
+  "orderAbv": "Teor alcoólico (%)",
+  "orderUseRecipe": "Usar a receita de referência",
+  "orderUseRecipeNote": "Só se foi assim que o bar preparou. Sem confirmar, o drink fica sem composição.",
+  "orderSummaryFor": "Para: {who}",
+  "@orderSummaryFor": {
+      "placeholders": {
+          "who": {
+              "type": "String"
+          }
+      }
+  },
+  "orderSave": "Adicionar ao rolê",
+  "orderErrName": "Diga o que foi pedido.",
+  "orderErrNobody": "Escolha pelo menos uma pessoa.",
+  "orderErrSharers": "Para dividir, escolha pelo menos duas pessoas.",
+  "orderErrPortions": "As porções e a sobra passam do tamanho da garrafa.",
+  "orderErrPrice": "Informe o valor ou escolha outra opção.",
+  "orderErrVolume": "Volume inválido.",
+  "orderErrAbv": "O teor vai de 0 a 100%.",
+  "orderAdded": "Adicionado: {summary}",
+  "@orderAdded": {
+      "placeholders": {
+          "summary": {
+              "type": "String"
+          }
+      }
+  },
+  "actionDrink": "Bebida",
+  "actionFood": "Comida",
+  "actionOther": "Outro item",
+  "tabOrders": "Pedidos",
+  "tabPeople": "Por pessoa",
+  "tabBill": "Conta",
+  "tileOrders": "Pedidos",
+  "tileTableTotal": "Total da mesa",
+  "tileYourShare": "Sua parte",
+  "tileTheirShare": "Parte",
+  "tileVolume": "Volume",
+  "billTotalKnownShort": "{total}+",
+  "@billTotalKnownShort": {
+      "placeholders": {
+          "total": {
+              "type": "String"
+          }
+      }
+  },
+  "ordersTitle": "{count, plural, =0{Pedidos} one{1 pedido} other{{count} pedidos}}",
+  "@ordersTitle": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "ordersEmptyTitle": "Nenhum pedido ainda",
+  "ordersEmptyBody": "Use Bebida, Comida ou Outro item para registrar o primeiro.",
+  "orderEachPrice": "{price} cada",
+  "@orderEachPrice": {
+      "placeholders": {
+          "price": {
+              "type": "String"
+          }
+      }
+  },
+  "ordersEveryone": "Todos",
+  "ordersUnassigned": "sem pessoa",
+  "ordersMoveTo": "Passar para outra pessoa",
+  "ordersDeleteOne": "Excluir um",
+  "noticeMovedTo": "Passado para {name}",
+  "@noticeMovedTo": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "moveCustomTitle": "Este pedido tem divisão personalizada",
+  "moveCustomBody": "Atualizar a divisão do custo para {name} ou manter como está?",
+  "@moveCustomBody": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "moveFollow": "Seguir {name}",
+  "@moveFollow": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "moveKeepSplit": "Manter a divisão",
+  "repeatFor": "Mais uma para {who}",
+  "@repeatFor": {
+      "placeholders": {
+          "who": {
+              "type": "String"
+          }
+      }
+  },
+  "repeatLeftTitle": "{names} saiu",
+  "@repeatLeftTitle": {
+      "placeholders": {
+          "names": {
+              "type": "String"
+          }
+      }
+  },
+  "repeatLeftBody": "Esse pedido não é repetido para quem saiu. Escolha para quem repetir.",
+  "repeatLeftAdjust": "Escolher pessoas",
+  "tableIllustrated": "Mesa ilustrada",
+  "tableIllustratedHint": "Só uma imagem dos pedidos; a lista e os valores ficam acima.",
+  "legacyTitle": "Conta já usada neste rolê",
+  "legacyBody": "Para atribuir pedidos a pessoas, passe para o modo mesa: todos os registros do rolê entram na conta, divididos por quem bebeu. Vínculos, extras e pagamentos atuais ficam.",
+  "legacyAction": "Usar a mesa",
+  "extraWhoPresent": "Todos os presentes",
+  "peopleTable": "Mesa",
+  "peopleLeftTag": "saiu",
+  "peopleAdd": "Pessoa",
+  "peopleAddTitle": "Adicionar pessoa",
+  "peopleRename": "Renomear",
+  "peopleMarkLeft": "Marcar que saiu",
+  "peopleMarkLeftHint": "Continua nos pedidos antigos e não entra em itens novos por padrão.",
+  "peopleBack": "Voltou à mesa",
+  "peopleBackHint": "Volta a ser escolhida nos itens novos.",
+  "peopleRemove": "Remover da mesa",
+  "peopleRemoveHint": "Ninguém consumiu nem paga por esta pessoa.",
+  "peopleRemoveBlocked": "Tem pedidos, parcela ou pagamento: marque que saiu.",
+  "peopleUnassigned": "{count, plural, one{1 registro é de uma pessoa que não está na mesa} other{{count} registros são de pessoas que não estão na mesa}}: ficam sem atribuição, nunca viram seus.",
+  "@peopleUnassigned": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "peopleDrankNothing": "Ainda não bebeu nada.",
+  "peopleDrankLine": "{count, plural, one{1 bebida} other{{count} bebidas}} · {ml}",
+  "@peopleDrankLine": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          },
+          "ml": {
+              "type": "String"
+          }
+      }
+  },
+  "peopleDrinksCost": "Bebidas",
+  "peopleFoodCost": "Comida e outros",
+  "peopleDiscount": "Desconto",
+  "peopleService": "Serviço",
+  "peopleShare": "Parcela",
+  "peoplePaidToVenue": "Pagou ao bar",
+  "peopleStillOwes": "Ainda falta {amount} da parcela",
+  "@peopleStillOwes": {
+      "placeholders": {
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "peoplePaidMore": "Pagou {amount} acima da parcela",
+  "@peoplePaidMore": {
+      "placeholders": {
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "peopleEven": "Parcela paga",
+  "peopleCovered": "Bar já quitado pela mesa",
+  "peopleSeeOrders": "Ver pedidos de {name}",
+  "@peopleSeeOrders": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "billSubtotal": "Subtotal",
+  "billSubtotalKnown": "Subtotal conhecido",
+  "billDiscount": "Desconto",
+  "billService": "Serviço {rate} sobre {base}",
+  "@billService": {
+      "placeholders": {
+          "rate": {
+              "type": "String"
+          },
+          "base": {
+              "type": "String"
+          }
+      }
+  },
+  "billTotal": "Total da conta",
+  "billTotalKnown": "Total conhecido",
+  "billYourShare": "Sua parte",
+  "billPartial": "{count, plural, one{1 item sem preço: a conta é parcial} other{{count} itens sem preço: a conta é parcial}}",
+  "@billPartial": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "billUnassigned": "Falta atribuir {amount}",
+  "@billUnassigned": {
+      "placeholders": {
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "billOverAssigned": "Atribuído a mais: {amount}",
+  "@billOverAssigned": {
+      "placeholders": {
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "billPaidToVenue": "Pago ao bar",
+  "billSettled": "Bar quitado",
+  "billDue": "A pagar ao bar",
+  "billOverpaid": "Pago a mais ao bar: {amount}",
+  "@billOverpaid": {
+      "placeholders": {
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "billNoTransfers": "O app não faz cobrança nem Pix e não diz quem deve pagar quem.",
+  "billSettings": "Serviço, desconto e itens",
+  "billSplitAndPay": "Dividir e registrar pagamentos",
+  "formForWhom": "Para quem?",
+  "formForWhomPending": "Escolha para quem foi esta bebida.",
+  "formForWhomShared": "Garrafa compartilhada: as pessoas ficam nas porções do pedido.",
+  "orderOpenCatalog": "Catálogo completo, rótulo ou cardápio"
 }

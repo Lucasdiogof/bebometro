@@ -29,23 +29,43 @@ import '../../l10n/l10n.dart';
 /// Catálogo tab: explore, search, filter, favourite and manage own drinks with
 /// no running outing; registering from there starts (or reuses) an outing.
 class AddDrinkPage extends StatelessWidget {
-  const AddDrinkPage({super.key, this.outingId});
+  const AddDrinkPage({
+    super.key,
+    this.outingId,
+    this.consumerId,
+    this.choosePerson = true,
+  });
 
   final String? outingId;
+
+  /// Who the drink is for (null = the owner), already decided by the caller;
+  /// with [choosePerson] and no decision, the form asks.
+  final String? consumerId;
+  final bool choosePerson;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<CatalogCubit>(),
-      child: _AddDrinkView(outingId: outingId),
+      child: _AddDrinkView(
+        outingId: outingId,
+        consumerId: consumerId,
+        choosePerson: choosePerson,
+      ),
     );
   }
 }
 
 class _AddDrinkView extends StatelessWidget {
-  const _AddDrinkView({required this.outingId});
+  const _AddDrinkView({
+    required this.outingId,
+    required this.consumerId,
+    required this.choosePerson,
+  });
 
   final String? outingId;
+  final String? consumerId;
+  final bool choosePerson;
 
   bool get _explore => outingId == null;
 
@@ -88,7 +108,12 @@ class _AddDrinkView extends StatelessWidget {
   ) async {
     final outcome = await Navigator.of(context).push<EntryOutcome>(
       MaterialPageRoute(
-        builder: (_) => DrinkEntryPage.create(outingId: id, item: item),
+        builder: (_) => DrinkEntryPage.create(
+          outingId: id,
+          item: item,
+          consumerId: consumerId,
+          choose: choosePerson,
+        ),
       ),
     );
     if (!context.mounted) return;

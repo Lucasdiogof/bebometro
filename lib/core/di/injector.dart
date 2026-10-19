@@ -264,6 +264,7 @@ class AccountScope {
         () => StartOutingCubit(
           getIt<OutingRepository>(),
           getIt<PlaceRepository>(),
+          getIt<TabRepository>(),
         ),
       )
       ..registerFactory<CatalogCubit>(
@@ -282,15 +283,19 @@ class AccountScope {
       )
       ..registerFactoryParam<
         DrinkFormCubit,
-        ({String outingId, CatalogItem item}),
+        ({String outingId, CatalogItem item, String? consumerId, bool choose}),
         void
       >((args, _) {
         final outing = getIt<OutingRepository>().byId(args.outingId)!;
+        final people = getIt<TabRepository>().load(outing.id).present.length;
         return DrinkFormCubit.forItem(
           getIt<DrinkRepository>(),
           outing,
           args.item,
           _priceCandidates(outing),
+          consumerId: args.consumerId,
+          // With people at the table and no person given, it must be chosen.
+          consumerPending: args.choose && people > 1,
         );
       }, instanceName: 'new')
       ..registerFactoryParam<DrinkFormCubit, DrinkEntry, void>((entry, _) {

@@ -31,6 +31,7 @@ class TabState {
 
   /// Drink records not on the tab yet, oldest first.
   List<DrinkEntry> get available {
+    if (doc.autoLink) return const [];
     final covered = doc.coveredEntryIds;
     return [
       for (final e in entries.values)
@@ -239,6 +240,67 @@ class TabCubit extends Cubit<TabState> {
       ),
     );
   }
+
+  /// Marks that a person left (or is back). Their orders, shares and payments
+  /// stay; they are just not picked by default for new items.
+  Future<void> setLeft(String id, bool left) => _edit(
+    (d) => d.copyWith(
+      participants: [
+        for (final p in d.participants)
+          if (p.id == id && !p.isMe) p.copyWith(left: left) else p,
+      ],
+    ),
+  );
+
+  /// A person can be deleted only when nothing refers to them: no record they
+  /// drank, no portion, no share, no payment. Otherwise they can only leave.
+  bool canRemove(String id) {
+    final doc = state.doc;
+    if (doc.participant(id)?.isMe ?? true) return false;
+    if (hasLinks(id)) return false;
+    for (final e in state.entries.values) {
+      if (e.consumerId == id || (e.portions?.containsKey(id) ?? false)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /// Puts an old outing on the table model when that cannot change a number:
+  /// only if its tab was never used (nothing linked, no extras, no payments).
+  /// Returns whether the outing is a table afterwards. An outing whose tab
+  /// was used keeps its explicit links until the person converts it.
+  Future<bool> ensureTable() async {
+    if (state.doc.autoLink) return true;
+    final d = state.doc;
+    if (d.links.isNotEmpty || d.extras.isNotEmpty || d.payments.isNotEmpty) {
+      return false;
+    }
+    await _edit((d) {
+      if (d.autoLink) return d;
+      final me = d.me ?? Participant(id: newId(), name: tr.tabMe, isMe: true);
+      final people = d.me == null ? [me, ...d.participants] : d.participants;
+      return d.copyWith(
+        participants: people,
+        equalIds: d.me == null ? [me.id, ...d.equalIds] : d.equalIds,
+        mode: SplitMode.item,
+        autoLink: true,
+      );
+    });
+    return true;
+  }
+
+  /// Converts a tab that was already used: every record of the outing is now on
+  /// the tab, split by who drank it. Records that were not charged before join
+  /// the bill; the existing links, extras, payments and settings are kept.
+  Future<void> convertToTable() => _edit((d) {
+    final me = d.me ?? Participant(id: newId(), name: tr.tabMe, isMe: true);
+    return d.copyWith(
+      participants: d.me == null ? [me, ...d.participants] : d.participants,
+      equalIds: d.me == null ? [me.id, ...d.equalIds] : d.equalIds,
+      autoLink: true,
+    );
+  });
 
   /// True when removing the participant would change shares or payments.
   bool hasLinks(String id) {

@@ -5823,4 +5823,499 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get syncLabelOffline => 'Sin conexión';
+
+  @override
+  String get startWho => '¿Quién está en la salida?';
+
+  @override
+  String get startWhoHint =>
+      'Tú ya estás. Añade a quien va a pedir o dividir la cuenta; puedes cambiarlo después.';
+
+  @override
+  String get startWhoName => 'Nombre de la persona';
+
+  @override
+  String get startWhoAdd => 'Añadir';
+
+  @override
+  String startWhoRemove(String name) {
+    return 'Quitar a $name';
+  }
+
+  @override
+  String get orderTitle => 'Nuevo pedido';
+
+  @override
+  String get orderWhat => '¿Qué se pidió?';
+
+  @override
+  String get orderNameLabel => 'Nombre del pedido';
+
+  @override
+  String get orderNameHint => 'Escribe el nombre o busca en el catálogo';
+
+  @override
+  String orderFromCatalog(String name) {
+    return 'Del catálogo: $name';
+  }
+
+  @override
+  String get orderUseTextOnly => 'Usar solo el texto';
+
+  @override
+  String orderNotInCatalog(String text) {
+    return '¿No está en el catálogo? No pasa nada: se guarda como “$text” solo en esta salida.';
+  }
+
+  @override
+  String get orderKind => 'Tipo';
+
+  @override
+  String get orderFor => '¿Para quién?';
+
+  @override
+  String get orderForHint => 'Toca a quien va a beber y di cuántas.';
+
+  @override
+  String get orderEach => 'Cada uno la suya';
+
+  @override
+  String get orderSharedBottle => 'Botella o jarra compartida';
+
+  @override
+  String orderMore(String name) {
+    return 'Uno más para $name';
+  }
+
+  @override
+  String orderLess(String name) {
+    return 'Uno menos para $name';
+  }
+
+  @override
+  String get orderSharers => '¿Quién comparte?';
+
+  @override
+  String orderPortionMl(String name) {
+    return 'ml de $name';
+  }
+
+  @override
+  String get orderPortionHint => 'Opcional. En blanco = no sé.';
+
+  @override
+  String get orderDivideVolume => 'Dividir el volumen por igual';
+
+  @override
+  String get orderDivideNote =>
+      'Es una estimación: supone que cada uno bebió lo mismo. Dividir solo el precio no lo demuestra.';
+
+  @override
+  String get orderBottles => 'Botellas';
+
+  @override
+  String get orderLeftover => 'Sobra (ml)';
+
+  @override
+  String get orderPrice => 'Precio';
+
+  @override
+  String get orderPriceEach => 'Por unidad';
+
+  @override
+  String get orderPriceTotal => 'Total del pedido';
+
+  @override
+  String get orderPriceEachLabel => 'Precio de cada una';
+
+  @override
+  String get orderPriceTotalLabel => 'Precio total del pedido';
+
+  @override
+  String get orderPriceTotalHelper =>
+      '¿Promoción? Indica el total: la app lo reparte en centavos exactos.';
+
+  @override
+  String get orderPriceBottleLabel => 'Precio de la botella (total)';
+
+  @override
+  String orderLineSummary(int count, String price, String total) {
+    return '$count × $price = $total';
+  }
+
+  @override
+  String orderSplitEach(String each) {
+    return 'Cada uno paga $each si se divide por igual.';
+  }
+
+  @override
+  String get orderDetails => 'Detalles (opcional)';
+
+  @override
+  String get orderVolume => 'Volumen servido (ml)';
+
+  @override
+  String get orderVolumeNote =>
+      'Sugerencias editables; no son el tamaño oficial de la marca ni del bar.';
+
+  @override
+  String get orderAbv => 'Graduación (%)';
+
+  @override
+  String get orderUseRecipe => 'Usar la receta de referencia';
+
+  @override
+  String get orderUseRecipeNote =>
+      'Solo si así lo preparó el bar. Sin confirmar, el trago queda sin composición.';
+
+  @override
+  String orderSummaryFor(String who) {
+    return 'Para: $who';
+  }
+
+  @override
+  String get orderSave => 'Añadir a la salida';
+
+  @override
+  String get orderErrName => 'Di qué se pidió.';
+
+  @override
+  String get orderErrNobody => 'Elige al menos una persona.';
+
+  @override
+  String get orderErrSharers => 'Para compartir, elige al menos dos personas.';
+
+  @override
+  String get orderErrPortions =>
+      'Las porciones y la sobra superan el tamaño de la botella.';
+
+  @override
+  String get orderErrPrice => 'Indica el precio o elige otra opción.';
+
+  @override
+  String get orderErrVolume => 'Volumen no válido.';
+
+  @override
+  String get orderErrAbv => 'La graduación va de 0 a 100%.';
+
+  @override
+  String orderAdded(String summary) {
+    return 'Añadido: $summary';
+  }
+
+  @override
+  String get actionDrink => 'Bebida';
+
+  @override
+  String get actionFood => 'Comida';
+
+  @override
+  String get actionOther => 'Otro ítem';
+
+  @override
+  String get tabOrders => 'Pedidos';
+
+  @override
+  String get tabPeople => 'Por persona';
+
+  @override
+  String get tabBill => 'Cuenta';
+
+  @override
+  String get tileOrders => 'Pedidos';
+
+  @override
+  String get tileTableTotal => 'Total de la mesa';
+
+  @override
+  String get tileYourShare => 'Tu parte';
+
+  @override
+  String get tileTheirShare => 'Parte';
+
+  @override
+  String get tileVolume => 'Volumen';
+
+  @override
+  String billTotalKnownShort(String total) {
+    return '$total+';
+  }
+
+  @override
+  String ordersTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pedidos',
+      one: '1 pedido',
+      zero: 'Pedidos',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ordersEmptyTitle => 'Ningún pedido todavía';
+
+  @override
+  String get ordersEmptyBody =>
+      'Usa Bebida, Comida u Otro ítem para registrar el primero.';
+
+  @override
+  String orderEachPrice(String price) {
+    return '$price cada uno';
+  }
+
+  @override
+  String get ordersEveryone => 'Todos';
+
+  @override
+  String get ordersUnassigned => 'sin persona';
+
+  @override
+  String get ordersMoveTo => 'Pasar a otra persona';
+
+  @override
+  String get ordersDeleteOne => 'Eliminar uno';
+
+  @override
+  String noticeMovedTo(String name) {
+    return 'Pasado a $name';
+  }
+
+  @override
+  String get moveCustomTitle => 'Este pedido tiene una división personalizada';
+
+  @override
+  String moveCustomBody(String name) {
+    return '¿Actualizar la división del costo a $name o dejarla como está?';
+  }
+
+  @override
+  String moveFollow(String name) {
+    return 'Seguir a $name';
+  }
+
+  @override
+  String get moveKeepSplit => 'Mantener la división';
+
+  @override
+  String repeatFor(String who) {
+    return 'Uno más para $who';
+  }
+
+  @override
+  String repeatLeftTitle(String names) {
+    return '$names se fue';
+  }
+
+  @override
+  String get repeatLeftBody =>
+      'Este pedido no se repite para quien se fue. Elige para quién repetirlo.';
+
+  @override
+  String get repeatLeftAdjust => 'Elegir personas';
+
+  @override
+  String get tableIllustrated => 'Mesa ilustrada';
+
+  @override
+  String get tableIllustratedHint =>
+      'Solo una imagen de los pedidos; la lista y los valores están arriba.';
+
+  @override
+  String get legacyTitle => 'Esta salida ya tiene una cuenta';
+
+  @override
+  String get legacyBody =>
+      'Para asignar pedidos a personas, pasa al modo mesa: todos los registros de la salida entran en la cuenta, divididos por quien bebió. Los vínculos, extras y pagos actuales se mantienen.';
+
+  @override
+  String get legacyAction => 'Usar la mesa';
+
+  @override
+  String get extraWhoPresent => 'Todos los presentes';
+
+  @override
+  String get peopleTable => 'Mesa';
+
+  @override
+  String get peopleLeftTag => 'se fue';
+
+  @override
+  String get peopleAdd => 'Persona';
+
+  @override
+  String get peopleAddTitle => 'Añadir persona';
+
+  @override
+  String get peopleRename => 'Renombrar';
+
+  @override
+  String get peopleMarkLeft => 'Marcar que se fue';
+
+  @override
+  String get peopleMarkLeftHint =>
+      'Sigue en los pedidos anteriores y no se elige por defecto en los nuevos.';
+
+  @override
+  String get peopleBack => 'Volvió a la mesa';
+
+  @override
+  String get peopleBackHint => 'Vuelve a elegirse en los ítems nuevos.';
+
+  @override
+  String get peopleRemove => 'Quitar de la mesa';
+
+  @override
+  String get peopleRemoveHint =>
+      'No hay consumo, parte ni pago de esta persona.';
+
+  @override
+  String get peopleRemoveBlocked =>
+      'Tiene pedidos, parte o pago: márcala como que se fue.';
+
+  @override
+  String peopleUnassigned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count registros son de personas que no están en la mesa',
+      one: '1 registro es de alguien que no está en la mesa',
+    );
+    return '$_temp0: quedan sin asignar, nunca son tuyos.';
+  }
+
+  @override
+  String get peopleDrankNothing => 'Todavía no bebió nada.';
+
+  @override
+  String peopleDrankLine(int count, String ml) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bebidas',
+      one: '1 bebida',
+    );
+    return '$_temp0 · $ml';
+  }
+
+  @override
+  String get peopleDrinksCost => 'Bebidas';
+
+  @override
+  String get peopleFoodCost => 'Comida y otros';
+
+  @override
+  String get peopleDiscount => 'Descuento';
+
+  @override
+  String get peopleService => 'Servicio';
+
+  @override
+  String get peopleShare => 'Parte';
+
+  @override
+  String get peoplePaidToVenue => 'Pagó al local';
+
+  @override
+  String peopleStillOwes(String amount) {
+    return 'Aún falta $amount de la parte';
+  }
+
+  @override
+  String peoplePaidMore(String amount) {
+    return 'Pagó $amount por encima de la parte';
+  }
+
+  @override
+  String get peopleEven => 'Parte pagada';
+
+  @override
+  String get peopleCovered => 'Local ya saldado por la mesa';
+
+  @override
+  String peopleSeeOrders(String name) {
+    return 'Ver pedidos de $name';
+  }
+
+  @override
+  String get billSubtotal => 'Subtotal';
+
+  @override
+  String get billSubtotalKnown => 'Subtotal conocido';
+
+  @override
+  String get billDiscount => 'Descuento';
+
+  @override
+  String billService(String rate, String base) {
+    return 'Servicio $rate sobre $base';
+  }
+
+  @override
+  String get billTotal => 'Total de la cuenta';
+
+  @override
+  String get billTotalKnown => 'Total conocido';
+
+  @override
+  String get billYourShare => 'Tu parte';
+
+  @override
+  String billPartial(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ítems sin precio: la cuenta es parcial',
+      one: '1 ítem sin precio: la cuenta es parcial',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String billUnassigned(String amount) {
+    return 'Falta asignar $amount';
+  }
+
+  @override
+  String billOverAssigned(String amount) {
+    return 'Asignado de más: $amount';
+  }
+
+  @override
+  String get billPaidToVenue => 'Pagado al local';
+
+  @override
+  String get billSettled => 'Local saldado';
+
+  @override
+  String get billDue => 'Pendiente con el local';
+
+  @override
+  String billOverpaid(String amount) {
+    return 'Pagado de más al local: $amount';
+  }
+
+  @override
+  String get billNoTransfers =>
+      'La app no cobra ni hace Pix ni dice quién debe pagar a quién.';
+
+  @override
+  String get billSettings => 'Servicio, descuento e ítems';
+
+  @override
+  String get billSplitAndPay => 'Dividir y registrar pagos';
+
+  @override
+  String get formForWhom => '¿Para quién?';
+
+  @override
+  String get formForWhomPending => 'Elige para quién es esta bebida.';
+
+  @override
+  String get formForWhomShared =>
+      'Botella compartida: las personas están en las porciones del pedido.';
+
+  @override
+  String get orderOpenCatalog => 'Catálogo completo, etiqueta o menú';
 }

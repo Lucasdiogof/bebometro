@@ -170,11 +170,16 @@ class OutingCubit extends Cubit<OutingState> {
     }
   }
 
-  Future<void> addWater() async {
+  /// A glass of water. [consumerId] is the person it is for (null = the
+  /// owner); the table view never calls this without choosing a person.
+  Future<void> addWater({String? consumerId}) async {
     if (state.outing?.isActive != true || !_acquire()) return;
     try {
       final now = DateTime.now();
-      final draft = DrinkDraft.fromItem(CatalogSource.water, now: now);
+      final draft = DrinkDraft.fromItem(
+        CatalogSource.water,
+        now: now,
+      ).withConsumer(consumerId);
       final entry = draft.toEntry(
         id: _drinks.newId(),
         outingId: outingId,
@@ -194,6 +199,47 @@ class OutingCubit extends Cubit<OutingState> {
     } finally {
       _busy = false;
     }
+  }
+
+  /// Tells that an order was added, with an Undo that removes every record
+  /// of it (they were saved together).
+  void announceAdded(String summary, List<String> ids) {
+    _notices.add(
+      OutingNotice(
+        tr.orderAdded(summary),
+        undoLabel: tr.commonUndo,
+        undo: () async {
+          for (final id in ids) {
+            await _drinks.delete(id);
+          }
+        },
+      ),
+    );
+  }
+
+  /// Gives individual records to another person (null = the owner). Price,
+  /// time and everything else stay; Undo puts each one back with its previous
+  /// person. [toName] is only for the message.
+  Future<void> moveEntries(
+    List<DrinkEntry> entries,
+    String? toConsumerId, {
+    required String toName,
+  }) async {
+    final before = {for (final e in entries) e.id: e.consumerId};
+    for (final e in entries) {
+      await _drinks.reassign(e.id, consumerId: toConsumerId);
+    }
+    _notices.add(
+      OutingNotice(
+        tr.noticeMovedTo(toName),
+        undoLabel: tr.commonUndo,
+        undo: () async {
+          for (final kv in before.entries) {
+            await _drinks.reassign(kv.key, consumerId: kv.value);
+          }
+        },
+      ),
+    );
   }
 
   Future<void> deleteEntry(DrinkEntry entry) async {

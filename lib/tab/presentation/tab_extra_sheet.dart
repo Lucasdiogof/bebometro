@@ -10,11 +10,20 @@ import '../../l10n/l10n.dart';
 
 /// Add or edit an extra line of the tab. Returns the extra, or null when
 /// cancelled. Nothing here touches drink records or the catalog.
+///
+/// On a table ([explicitWho]) "who takes part" is always written as the ticked
+/// people (so a person who arrives later never inherits the dish), starts with
+/// everybody still present, and is shown open. [categories] limits the kinds
+/// offered (food, or the "other" ones).
 Future<TabExtra?> showTabExtraSheet(
   BuildContext context, {
   required String newId,
   required List<Participant> participants,
   TabExtra? existing,
+  bool explicitWho = false,
+  ExtraCategory? defaultCategory,
+  List<ExtraCategory>? categories,
+  String? title,
 }) {
   return showModalBottomSheet<TabExtra>(
     context: context,
@@ -24,6 +33,10 @@ Future<TabExtra?> showTabExtraSheet(
       newId: newId,
       participants: participants,
       existing: existing,
+      explicitWho: explicitWho,
+      defaultCategory: defaultCategory,
+      categories: categories,
+      title: title,
     ),
   );
 }
@@ -33,11 +46,19 @@ class _ExtraForm extends StatefulWidget {
     required this.newId,
     required this.participants,
     this.existing,
+    this.explicitWho = false,
+    this.defaultCategory,
+    this.categories,
+    this.title,
   });
 
   final String newId;
   final List<Participant> participants;
   final TabExtra? existing;
+  final bool explicitWho;
+  final ExtraCategory? defaultCategory;
+  final List<ExtraCategory>? categories;
+  final String? title;
 
   @override
   State<_ExtraForm> createState() => _ExtraFormState();
@@ -64,14 +85,17 @@ class _ExtraFormState extends State<_ExtraForm> {
     _price = TextEditingController(
       text: e?.cents == null ? '' : centsToInput(e!.cents!),
     );
-    _category = e?.category ?? ExtraCategory.food;
+    _category = e?.category ?? widget.defaultCategory ?? ExtraCategory.food;
     _kind = e?.priceKind ?? PriceKind.informed;
     _basis = e?.basis ?? PriceBasis.total;
     _service = e?.service ?? _category.defaultService;
     _serviceTouched = e != null;
     _who = {
       for (final p in widget.participants)
-        if (e?.assign == null || e!.assign!.containsKey(p.id)) p.id,
+        if (e != null
+            ? (e.assign == null || e.assign!.containsKey(p.id))
+            : (!widget.explicitWho || !p.left))
+          p.id,
     };
   }
 
@@ -102,9 +126,13 @@ class _ExtraFormState extends State<_ExtraForm> {
       }
     }
     final old = widget.existing;
-    // Everybody ticked (or nobody to choose from) = shared by all.
+    // Everybody ticked (or nobody to choose from) = shared by all. On a table
+    // the ticked people are always written out: "everybody" never means
+    // someone who arrives later.
     Map<String, int>? assign;
-    if (widget.participants.isNotEmpty &&
+    if (widget.explicitWho && widget.participants.isNotEmpty) {
+      assign = {for (final id in _who) id: old?.assign?[id] ?? 1};
+    } else if (widget.participants.isNotEmpty &&
         _who.length != widget.participants.length) {
       assign = {for (final id in _who) id: old?.assign?[id] ?? 1};
     } else if (old?.assign != null && widget.participants.isNotEmpty) {
@@ -145,7 +173,10 @@ class _ExtraFormState extends State<_ExtraForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.existing == null ? tr.tabExtraNew : tr.scanMenuEditItem,
+                widget.title ??
+                    (widget.existing == null
+                        ? tr.tabExtraNew
+                        : tr.scanMenuEditItem),
                 style: AppText.title,
               ),
               const SizedBox(height: AppSpace.xs),
@@ -155,7 +186,7 @@ class _ExtraFormState extends State<_ExtraForm> {
                 spacing: AppSpace.sm,
                 runSpacing: AppSpace.sm,
                 children: [
-                  for (final c in ExtraCategory.values)
+                  for (final c in widget.categories ?? ExtraCategory.values)
                     ChoiceChip(
                       avatar: Icon(c.icon, size: 18),
                       label: Text(c.label),
@@ -268,6 +299,9 @@ class _ExtraFormState extends State<_ExtraForm> {
               ),
               if (widget.participants.isNotEmpty)
                 ExpansionTile(
+                  key: const ValueKey('extra-who'),
+                  initiallyExpanded:
+                      widget.explicitWho && widget.participants.length > 1,
                   tilePadding: EdgeInsets.zero,
                   title: Text(tr.tabExtraWho, style: AppText.subtitle),
                   subtitle: Text(
@@ -280,8 +314,22 @@ class _ExtraFormState extends State<_ExtraForm> {
                     style: AppText.caption,
                   ),
                   children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        key: const ValueKey('extra-who-present'),
+                        onPressed: () => setState(() {
+                          _who = {
+                            for (final p in widget.participants)
+                              if (!p.left) p.id,
+                          };
+                        }),
+                        child: Text(tr.extraWhoPresent),
+                      ),
+                    ),
                     for (final p in widget.participants)
                       CheckboxListTile(
+                        key: ValueKey('extra-who-${p.id}'),
                         dense: true,
                         contentPadding: EdgeInsets.zero,
                         activeColor: AppColors.amber,

@@ -17,6 +17,8 @@ import '../domain/price_history.dart';
 import 'drink_form_cubit.dart';
 import 'unit_dropdown.dart';
 import '../../l10n/l10n.dart';
+import '../../tab/data/tab_repository.dart';
+import '../../table/presentation/person_avatar.dart';
 
 /// How the entry screen was closed, when it changed something.
 enum EntryOutcome { saved, deleted }
@@ -30,9 +32,16 @@ class DrinkEntryPage extends StatelessWidget {
     Key? key,
     required String outingId,
     required CatalogItem item,
+    String? consumerId,
+    bool choose = true,
   }) => DrinkEntryPage._(
     () => getIt<DrinkFormCubit>(
-      param1: (outingId: outingId, item: item),
+      param1: (
+        outingId: outingId,
+        item: item,
+        consumerId: consumerId,
+        choose: choose,
+      ),
       instanceName: 'new',
     ),
     key: key,
@@ -261,6 +270,7 @@ class _DrinkEntryView extends StatelessWidget {
                           ),
                         ),
                       _Header(draft: d),
+                      _ConsumerSection(state: state),
                       if (d.isRecipe) ...[
                         _RecipeSection(state: state, errors: errors),
                       ] else ...[
@@ -1447,6 +1457,73 @@ class _BulkPriceSheet extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// "Para quem?": on a table the drink is attributed to a person, chosen in
+/// view of the screen (nothing is assumed). A shared bottle keeps its people in
+/// the order's portions, so there is nothing to pick here.
+class _ConsumerSection extends StatelessWidget {
+  const _ConsumerSection({required this.state});
+
+  final DrinkFormState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<DrinkFormCubit>();
+    final doc = getIt<TabRepository>().load(cubit.outingId);
+    final people = doc.present;
+    final d = state.draft;
+    if (doc.participants.length < 2 && d.consumerId == null) {
+      return const SizedBox.shrink();
+    }
+    if (d.portions != null) {
+      return Padding(
+        padding: const EdgeInsets.only(top: AppSpace.md),
+        child: Text(tr.formForWhomShared, style: AppText.caption),
+      );
+    }
+    final ownerId = doc.me?.id;
+    final selected = d.consumerId ?? (state.consumerPending ? null : ownerId);
+    // A person who left is still shown when this record belongs to them.
+    final shown = [
+      ...people,
+      for (final p in doc.participants)
+        if (p.left && p.id == d.consumerId) p,
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SectionTitle(tr.formForWhom),
+        Wrap(
+          spacing: AppSpace.sm,
+          runSpacing: AppSpace.sm,
+          children: [
+            for (final p in shown)
+              ChoiceChip(
+                key: ValueKey('for-${p.id}'),
+                avatar: PersonAvatar(
+                  person: p,
+                  size: 22,
+                  index: doc.participants.indexOf(p),
+                ),
+                label: Text(p.displayName),
+                selected: selected == p.id,
+                showCheckmark: false,
+                onSelected: (_) => cubit.setConsumer(p.id == ownerId ? null : p.id),
+              ),
+          ],
+        ),
+        if (state.consumerPending && state.showErrors)
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpace.xs),
+            child: Text(
+              tr.formForWhomPending,
+              style: const TextStyle(color: AppColors.danger),
+            ),
+          ),
+      ],
     );
   }
 }
