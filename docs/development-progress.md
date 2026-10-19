@@ -134,3 +134,7 @@ conferência de referências/intervalos/traduções) e `flutter gen-l10n`.
 
 ### Fechamento (19/10/2026)
 Ver "Fechamento da entrega" em `docs/qa-report.md`: contagens "Itens" x "pedidos" separadas; barra inferior conferida; cenário principal com evidência na aba Cuenta; offline reaberto sem rede comprovado na web (simulado); teste de fonte 1,0/1,3/2,0 a 360 px (automatizado); 111 testes, analyze e build web OK. Pendentes: Android/iOS, segunda instalação, conflito entre aparelhos.
+
+### Rodada seguinte (19/10/2026)
+Quatro itens: pessoas em garrafa registrada (feito), Desfazer exclusão de rolê (feito, janela de 10 s), termos/privacidade (**bloqueado**: não existe página do Bebômetro no site lucksrei.com), descrição de conflitos de locais e bebidas
+(feito). Documentação da tela bloqueada corrigida por plataforma. `flutter analyze` sem erros, 156 testes, build web release. Pendente: ver tudo isso em aparelho/UI e testar o Desfazer e a garrafa com sincronização entre dois aparelhos.

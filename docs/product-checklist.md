@@ -94,6 +94,15 @@ sobre bebidas alcoólicas e modo +18 dos jogos).
   mão, então o histórico do painel pode não listar nenhuma delas. Rodar o arquivo de novo é seguro (idempotente). Para conferir o estado real:
   `supabase/queries/diagnose_delete_account.sql` (somente leitura).
 
+## Rodada 19/10/2026 (continuação)
+
+| Item | Implementado | Testes automatizados | Em aparelho/UI |
+|---|---|---|---|
+| Pessoas em garrafa já registrada | Sim | `bottle_people_test`, `bottle_people_cubit_test` | Não visto |
+| Desfazer exclusão de rolê (10 s) | Sim | `outing_undo_delete_test` | Não visto; sincronização entre dois aparelhos não exercitada |
+| Links de termos e privacidade | **Não** (sem página do Bebômetro; dependência externa, ver `functional-audit.md`) | — | — |
+| Descrição de conflitos de locais/bebidas/receitas | Sim | `conflict_describer_test` | Tela não vista |
+
 ## Itens BEB-001 a BEB-007 (estado em 16/10/2026)
 
 Atualizado após a rodada de QA de 16-19/10 (`docs/qa-report.md`). "Validado em execução" só onde há evidência no relatório; BEB-002, BEB-004 e BEB-006 seguem sem validação própria (BEB-004 só existe no iPhone).

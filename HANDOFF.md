@@ -904,6 +904,11 @@ no iOS 17+ o toque vira um comando persistido na fila e o app o salva quando rod
 
 **Migrations:** `20261022000000_table_attribution.sql` aplicada e verificada em 19/10/2026 (projeto `jiisoqkryhmtopaojyyu`). Nenhuma migration nova nesta rodada.
 
-**Ainda por implementar (escopo atual):** troca de e-mail e link de termos; adicionar/tirar pessoas de uma garrafa já criada; sincronizar favoritos, partida e cartas próprias;
-descrições de conflito para locais e bebidas próprias; OCR na web; estatística da mesa (decisão: fora).
+**Rodada seguinte (19/10/2026), quatro itens (detalhes em `docs/functional-audit.md`):** (1) adicionar/tirar pessoas de garrafa já registrada (`bottle_people.dart`, volume e valor independentes, escolha explícita ao tirar, prévia do impacto);
+(2) Desfazer exclusão de rolê por 10 s (`outing_deletion.dart`, carimbo comum de exclusão, conflito de rolê ativo vira "restaurar encerrado"); (3) links de termos/privacidade **não feitos**: não existe página do Bebômetro
+(`lucksrei.com/privacy/` é do site e não cita o app) e o site é outro projeto; (4) conflitos de locais/bebidas/receitas descritos por nome e campos (`conflict_describer.dart`). Documentação da tela bloqueada corrigida por plataforma.
+Estado: `flutter analyze` sem erros, 156 testes passam, build web release OK. Nada disso foi visto em aparelho.
+
+**Ainda por implementar (escopo atual):** troca de e-mail; links de termos e privacidade (dependem de páginas do Bebômetro no site lucksrei.com); sincronizar favoritos, partida e cartas próprias;
+OCR na web; estatística da mesa (decisão: fora).
 **Só falta validar/configurar:** tudo em Android/iOS (microfone, câmera/OCR, tela bloqueada, sensores, teclado virtual, fonte do sistema), segunda instalação e conflito entre dois aparelhos.
