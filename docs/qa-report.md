@@ -186,3 +186,4 @@ iPhone/Live Activity/compartilhamento iOS, caixa de e-mail de QA (código de 6 d
 - **Layout corrigido (capturas):** na Home, "57 h 49 min" encostava no número de bebidas ("min2"); no rolê, "300 ml (+2 sem volume)" encostava em "R$ 0,00".
   Folga à direita no `StatTile` e tempo da Home com `FittedBox`.
 - Verificado depois da correção no mesmo emulador. `flutter analyze` sem erros/avisos; 42 testes passaram.
+- **Live Activity (iOS), observação de truncamento:** título com `minimumScaleFactor(0.7)` e contagem com até 2 linhas na tela bloqueada (`OutingLiveActivity.swift`). **Não compilado nem visto**: depende de reconferência no iPhone.

@@ -135,11 +135,14 @@ private struct LockScreenView: View {
                         .font(.headline)
                         .foregroundColor(Palette.text)
                         .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                     HStack(spacing: 6) {
+                        // Two lines on the lock screen: "Nenhum registro de bebida
+                        // alcoólica" was cut off next to the timer.
                         Text(countText(s))
                             .font(.subheadline)
                             .foregroundColor(Palette.muted)
-                            .lineLimit(1)
+                            .lineLimit(2)
                             .minimumScaleFactor(0.8)
                         QuickLoggedBadge(count: s.quickLogged, pending: s.texts?.pending)
                     }
