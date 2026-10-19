@@ -29,8 +29,8 @@ conta nem faz login por código. `resetPasswordForEmail` só envia e-mail para c
 uma conta com esse e-mail...").
 
 **Variável do template (documentação oficial "Email Templates", conferida em 14/10/2026):** `{{ .Token }}` é o código numérico de uso
-único; `{{ .ConfirmationURL }}` é o link. O `recovery.html` usa só `{{ .Token }}`. O idioma vem de `{{ .Data.language }}` (pt como
-padrão).
+único; `{{ .ConfirmationURL }}` é o link. O `recovery.html` usa só `{{ .Token }}`. **Decisão de 19/10/2026: o e-mail de recuperação é só em pt-BR** (assunto "Redefinir senha"; o
+template não depende mais de `{{ .Data.language }}`) e é centralizado com tabela (`align="center"`), porque `margin:0 auto` em `div` não centraliza em todos os clientes.
 
 ### Comportamentos conferidos por leitura do código (não é teste)
 
@@ -58,7 +58,7 @@ se diferente, `mailer_otp_length = 6`; depois lê de volta e para com erro se SM
 `mailer_otp_exp` ou `mailer_autoconfirm` tiverem mudado. Não envia e-mail.
 
 Alternativa manual: Auth → Email Templates → **Reset password** (colar `supabase/email-templates/recovery.html`, assunto
-`Redefinir senha · Reset password · Restablecer contraseña`) e Auth → Providers → Email → **Email OTP Length = 6**.
+`Redefinir senha`) e Auth → Providers → Email → **Email OTP Length = 6**.
 
 Depois: pedir um código para uma conta **própria**, conferir que o e-mail mostra 6 dígitos e nenhum link, digitar no app e salvar
 uma senha nova.
@@ -72,9 +72,8 @@ uma senha nova.
 | Change email address | `supabase/email-templates/email_change.html` | Não (o app não troca e-mail) |
 | Confirm signup | `supabase/email-templates/confirmation.html` | Não (confirmação desligada) |
 
-Cada tipo tem um template por projeto (Go templates) e um assunto; por isso os assuntos são trilíngues. O idioma vem de
-`user_metadata.language`, gravado pelo app no cadastro e ao trocar de idioma com a conta aberta. Contas sem o campo recebem
-português. Quem pede recuperação sem estar logado recebe no idioma **gravado na conta**, não no do aparelho.
+Cada tipo tem um template por projeto (Go templates) e um assunto. A recuperação (único e-mail em uso) é só em pt-BR. Os outros três
+templates ainda escolhem o idioma por `user_metadata.language` (gravado pelo app no cadastro e ao trocar de idioma), com português como padrão.
 
 `scripts/apply_auth_email.py` aplica SMTP + os quatro templates (amplo; usar só para refazer tudo). A opção que ligava "Confirm
 email" foi **removida**.

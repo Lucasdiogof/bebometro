@@ -32,7 +32,7 @@ TPL = os.path.join(HERE, '..', 'supabase', 'email-templates')
 
 SUBJECTS = {
     'confirmation': 'Confirme seu e-mail · Confirm your email · Confirma tu correo',
-    'recovery': 'Redefinir senha · Reset password · Restablecer contraseña',
+    'recovery': 'Redefinir senha',
     'email_change': 'Confirme o novo e-mail · Confirm your new email · Confirma tu nuevo correo',
     'reauthentication': 'Código de verificação · Verification code · Código de verificación',
 }

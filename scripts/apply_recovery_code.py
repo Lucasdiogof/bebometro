@@ -22,7 +22,7 @@ REF = 'jiisoqkryhmtopaojyyu'
 API = f'https://api.supabase.com/v1/projects/{REF}/config/auth'
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(HERE, '..', 'supabase', 'email-templates', 'recovery.html')
-SUBJECT = 'Redefinir senha · Reset password · Restablecer contraseña'
+SUBJECT = 'Redefinir senha'
 CODE_LENGTH = 6
 # Settings that must not move while this runs.
 WATCHED = ('mailer_autoconfirm', 'smtp_host', 'smtp_admin_email', 'site_url',

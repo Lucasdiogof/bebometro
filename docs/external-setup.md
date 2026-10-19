@@ -163,7 +163,7 @@ quando o campo não existe.
 | Tipo no painel (Auth → Email Templates) | Arquivo | Assunto (colar no campo *Subject*) |
 |---|---|---|
 | Confirm signup | `confirmation.html` | `Confirme seu e-mail · Confirm your email · Confirma tu correo` |
-| Reset password | `recovery.html` | `Redefinir senha · Reset password · Restablecer contraseña` |
+| Reset password | `recovery.html` | `Redefinir senha` |
 | Change email address | `email_change.html` | `Confirme o novo e-mail · Confirm your new email · Confirma tu nuevo correo` |
 | Reauthentication | `reauthentication.html` | `Código de verificação · Verification code · Código de verificación` |
 

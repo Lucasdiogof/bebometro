@@ -212,3 +212,9 @@ português (idioma da conta) e a frase de validade curta. Template e `mailer_otp
 Observação de layout: na captura em janela larga o cartão do código aparece deslocado para a direita (não centrado); conferir em outros clientes de e-mail.
 **Ainda não observado:** digitar o código no app, definir a nova senha e entrar com ela; e-mail em English e Español.
 
+### Recuperação de senha: fluxo completo concluído (19/10/2026)
+Informado pelo responsável após receber o e-mail real: digitou o código de 6 dígitos no app, definiu a nova senha e entrou com ela, **tudo certo**.
+Decisão posterior: o e-mail de recuperação passa a ser só em pt-BR e centralizado (`recovery.html` e assunto "Redefinir senha" alterados no
+repositório; **ainda não aplicados no servidor**, ver `scripts/apply_recovery_code.py`). Código errado já fora validado em 17/10; código antigo e
+e-mail em English e Español deixam de se aplicar (e-mail só em pt-BR).
+

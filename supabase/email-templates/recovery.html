@@ -1,23 +1,33 @@
-<!-- Bebômetro · auth e-mail "recovery" · pt-BR (default), en, es.
+<!-- Bebômetro · auth e-mail "recovery" · pt-BR only.
      Code only: no link and no button (the app asks for the 6-digit code).
-     The language comes from user_metadata.language (set by the app). Anything else, or
-     an account that never recorded it, gets Portuguese. Subject: Redefinir senha · Reset password · Restablecer contraseña -->
-<div style="font-family:Arial,Helvetica,sans-serif;max-width:480px;margin:0 auto;padding:24px;color:#222;line-height:1.5">
-<p style="margin:0 0 16px;font-size:14px;font-weight:700;color:#C77D0A">Bebômetro</p>
-{{ if and .Data .Data.language (eq .Data.language "en") }}
-<h2>Your password reset code</h2>
-<p>Enter this code in the Bebômetro app to create a new password:</p>
-<p style="margin:20px 0;padding:16px;background:#FFF4DC;border-radius:8px;text-align:center;font-size:32px;font-weight:700;letter-spacing:8px;color:#151311">{{ .Token }}</p>
-<p>The code expires soon. If you did not ask for it, you can ignore this email.</p>
-{{ else if and .Data .Data.language (eq .Data.language "es") }}
-<h2>Tu código para restablecer la contraseña</h2>
-<p>Escribe este código en la app Bebômetro para crear una nueva contraseña:</p>
-<p style="margin:20px 0;padding:16px;background:#FFF4DC;border-radius:8px;text-align:center;font-size:32px;font-weight:700;letter-spacing:8px;color:#151311">{{ .Token }}</p>
-<p>El código caduca pronto. Si no lo pediste, puedes ignorar este correo.</p>
-{{ else }}
-<h2>Seu código para redefinir a senha</h2>
-<p>Digite este código no app Bebômetro para criar uma nova senha:</p>
-<p style="margin:20px 0;padding:16px;background:#FFF4DC;border-radius:8px;text-align:center;font-size:32px;font-weight:700;letter-spacing:8px;color:#151311">{{ .Token }}</p>
-<p>O código expira em pouco tempo. Se você não pediu, pode ignorar este e-mail.</p>
-{{ end }}
-</div>
+     Centered with a table (align="center"), which e-mail clients honor more than "margin:0 auto" on a div.
+     Subject: Redefinir senha -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center" style="width:100%;background:#ffffff">
+  <tr>
+    <td align="center" style="padding:24px 16px">
+      <table role="presentation" width="480" cellpadding="0" cellspacing="0" border="0" align="center" style="width:100%;max-width:480px;font-family:Arial,Helvetica,sans-serif;color:#222;line-height:1.5">
+        <tr>
+          <td align="center" style="padding:0 0 16px;font-size:14px;font-weight:700;color:#C77D0A">Bebômetro</td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:0 0 8px;font-size:22px;font-weight:700;color:#151311">Seu código para redefinir a senha</td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:0 0 8px;font-size:14px">Digite este código no app Bebômetro para criar uma nova senha:</td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:12px 0">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="width:100%">
+              <tr>
+                <td align="center" style="padding:16px;background:#FFF4DC;border-radius:8px;font-size:32px;font-weight:700;letter-spacing:8px;color:#151311">{{ .Token }}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:8px 0 0;font-size:13px;color:#555">O código expira em pouco tempo. Se você não pediu, pode ignorar este e-mail.</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
