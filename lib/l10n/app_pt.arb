@@ -2401,6 +2401,7 @@
       }
     }
   },
+  "tabShareCovered": " · coberto por outro pagamento",
   "tabShareMissing": " · falta {amount}",
   "@tabShareMissing": {
     "placeholders": {
@@ -2760,6 +2761,7 @@
       }
     }
   },
+  "splitBalanceCovered": "coberto por outro pagamento (bar quitado)",
   "splitBalanceMissing": "falta pagar {amount}{provisional, select, true{ (provisório)} other{}}",
   "@splitBalanceMissing": {
     "placeholders": {
@@ -3970,6 +3972,7 @@
   "peopleService": "Serviço",
   "peopleShare": "Parcela",
   "peoplePaidToVenue": "Pagou ao bar",
+  "peopleCoveredByPayment": "Coberto por outro pagamento: o bar está quitado",
   "peopleStillOwes": "Ainda falta {amount} da parcela",
   "@peopleStillOwes": {
       "placeholders": {

@@ -41,6 +41,7 @@ class PeopleView extends StatelessWidget {
               person: doc.participants[i],
               index: i,
               breakdown: breakdown[doc.participants[i].id]!,
+              venueSettled: result.venueSettled,
               consumption: consumption[doc.participants[i].id],
               itemMode: doc.mode == SplitMode.item,
               settled: result.venueSettled,
@@ -74,6 +75,7 @@ class _PersonCard extends StatelessWidget {
     required this.person,
     required this.index,
     required this.breakdown,
+    required this.venueSettled,
     required this.consumption,
     required this.itemMode,
     required this.settled,
@@ -84,6 +86,10 @@ class _PersonCard extends StatelessWidget {
   final Participant person;
   final int index;
   final PersonBreakdown breakdown;
+
+  /// The venue was paid in full by someone: a positive balance here is
+  /// covered by that payment, not a debt to the venue.
+  final bool venueSettled;
   final PersonConsumption? consumption;
   final bool itemMode;
   final bool settled;
@@ -107,6 +113,8 @@ class _PersonCard extends StatelessWidget {
     final diff = b.balanceCents;
     final status = b.shareCents == 0 && b.paidCents == 0
         ? null
+        : diff > 0 && venueSettled
+        ? tr.peopleCoveredByPayment
         : diff > 0
         ? tr.peopleStillOwes(formatCents(diff))
         : diff < 0

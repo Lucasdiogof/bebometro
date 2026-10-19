@@ -6646,6 +6646,12 @@ abstract class AppLocalizations {
   /// **' · pagou {amount}'**
   String tabSharePaid(String amount);
 
+  /// No description provided for @tabShareCovered.
+  ///
+  /// In pt, this message translates to:
+  /// **' · coberto por outro pagamento'**
+  String get tabShareCovered;
+
   /// No description provided for @tabShareMissing.
   ///
   /// In pt, this message translates to:
@@ -7250,6 +7256,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Pagou {paid} · {balance}'**
   String splitPaidLine(String paid, String balance);
+
+  /// No description provided for @splitBalanceCovered.
+  ///
+  /// In pt, this message translates to:
+  /// **'coberto por outro pagamento (bar quitado)'**
+  String get splitBalanceCovered;
 
   /// No description provided for @splitBalanceMissing.
   ///
@@ -9974,6 +9986,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Pagou ao bar'**
   String get peoplePaidToVenue;
+
+  /// No description provided for @peopleCoveredByPayment.
+  ///
+  /// In pt, this message translates to:
+  /// **'Coberto por outro pagamento: o bar está quitado'**
+  String get peopleCoveredByPayment;
 
   /// No description provided for @peopleStillOwes.
   ///

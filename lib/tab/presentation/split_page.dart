@@ -505,10 +505,13 @@ class _SplitViewState extends State<_SplitView> {
                         Text(
                           tr.splitPaidLine(
                             formatCents(r.paidBy(p.id)),
-                            _balanceText(
-                              r.balanceOf(p.id),
-                              provisional: r.isPartial || r.unassigned != 0,
-                            ),
+                            r.venueSettled && r.balanceOf(p.id) > 0
+                                ? tr.splitBalanceCovered
+                                : _balanceText(
+                                    r.balanceOf(p.id),
+                                    provisional:
+                                        r.isPartial || r.unassigned != 0,
+                                  ),
                           ),
                           style: AppText.caption,
                         ),

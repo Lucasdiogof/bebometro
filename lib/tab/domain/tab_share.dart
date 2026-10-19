@@ -100,7 +100,9 @@ class TabShareText {
         if (includePayments) {
           line += tr.tabSharePaid(formatCents(result.paidBy(p.id)));
           final bal = result.balanceOf(p.id);
-          if (bal > 0) {
+          if (bal > 0 && result.venueSettled) {
+            line += tr.tabShareCovered;
+          } else if (bal > 0) {
             line += tr.tabShareMissing(formatCents(bal));
           } else if (bal < 0) {
             line += tr.tabShareOver(formatCents(-bal));

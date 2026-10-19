@@ -4069,6 +4069,9 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get tabShareCovered => ' · cubierto por otro pago';
+
+  @override
   String tabShareMissing(String amount) {
     return ' · falta $amount';
   }
@@ -4471,6 +4474,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String splitPaidLine(String paid, String balance) {
     return 'Pagó $paid · $balance';
   }
+
+  @override
+  String get splitBalanceCovered => 'cubierto por otro pago (local saldado)';
 
   @override
   String splitBalanceMissing(String amount, String provisional) {
@@ -6227,6 +6233,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get peoplePaidToVenue => 'Pagó al local';
+
+  @override
+  String get peopleCoveredByPayment => 'Cubierto por otro pago: el local está saldado';
 
   @override
   String peopleStillOwes(String amount) {
