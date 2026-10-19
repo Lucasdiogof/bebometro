@@ -899,8 +899,8 @@ estatísticas, local e orçamento; resumo com "Pessoas e conta" e registros da m
 sair de Novo pedido e Iniciar rolê com dados; troca de senha envia o código sozinha; JSON sem rolês/locais excluídos; compartilhar um rolê inexistente mostra erro.
 
 **Correções de leitura deste HANDOFF (o código manda):** não existem as telas "conferir e-mail", "Agora o Bebômetro usa conta" nem "Recuperando seu histórico" com "Tentar de
-novo" (o gate vai direto ao app; o retry é "Sincronizar agora") e Minha conta não tem "registros antigos"; os atalhos "Mais uma"/"Água" da tela bloqueada **registram na hora**
-(com Desfazer) em vez de pedir confirmação; o e-mail de recuperação existe só em pt-BR; a concessão do `service_role` foi versionada em `20261021000000`.
+novo" (o gate vai direto ao app; o retry é "Sincronizar agora") e Minha conta não tem "registros antigos"; os atalhos "Mais uma"/"Água" da tela bloqueada **não pedem confirmação**: no Android e no iOS 16 abrem o app, que salva o registro quando está na tela (com Desfazer);
+no iOS 17+ o toque vira um comando persistido na fila e o app o salva quando roda ("+N aguardando registro" = recebido, não salvo; sem promessa de execução imediata em segundo plano); o e-mail de recuperação existe só em pt-BR; a concessão do `service_role` foi versionada em `20261021000000`.
 
 **Migrations:** `20261022000000_table_attribution.sql` aplicada e verificada em 19/10/2026 (projeto `jiisoqkryhmtopaojyyu`). Nenhuma migration nova nesta rodada.
 

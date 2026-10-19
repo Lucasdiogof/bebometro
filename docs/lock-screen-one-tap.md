@@ -1,7 +1,13 @@
 # "Mais uma" na tela bloqueada com um toque (BEB-004) e compartilhamento (BEB-007): validação no iPhone
 
-**Nada disto foi compilado nem executado** (sem Xcode, sem iPhone, sem `flutter build` nesta rodada). O que segue descreve o que o código faz,
-o que depende do iOS e o roteiro para validar em aparelho.
+**Estado (19/10/2026):** o app e a extensão compilam (simulador e Release) e o Release foi instalado e aberto em um iPhone 15 Pro; o responsável viu a Live Activity na
+tela bloqueada e o botão "Mais uma" funcionando depois do primeiro registro. **Não confirmados em aparelho:** fila com vários toques, horário original, pendentes, app fechado,
+Android. O texto abaixo descreve o que o código faz e o roteiro de validação.
+
+**Resumo por plataforma (confirmado no código, não por execução):**
+- **iOS 17+:** o botão enfileira um comando (`UserDefaults`); o Flutter o lê quando roda e só então salva o registro. "+N aguardando registro" = recebido, **não** salvo. Não há promessa de execução imediata em segundo plano.
+- **iOS 16.2 a 16.x e Android:** o botão/ação é um link que abre o app; o registro é salvo quando o app está na tela do rolê (com Desfazer), não em segundo plano.
+- Em todos: o toque vale uma vez (id do registro derivado do comando) e o que não se encaixa vai para "Registros pendentes".
 
 ## O que foi feito
 - **iOS 17+:** o chip "Mais uma" da Live Activity (tela bloqueada e Dynamic Island expandida) virou um **botão de verdade** (`AnotherDrinkIntent`,
