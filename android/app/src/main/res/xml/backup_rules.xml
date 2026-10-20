@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 11 and older (android:fullBackupContent): same exclusions as data_extraction_rules.xml
+     cloud-backup. Old versions cannot tell cloud backup from device transfer, so both are covered. -->
+<full-backup-content>
+    <!-- Holds the Supabase session (refresh token) together with the local copy of the records. -->
+    <exclude domain="sharedpref" path="FlutterSharedPreferences.xml" />
+    <!-- Lock-screen tracking state: meaningless on another install. -->
+    <exclude domain="sharedpref" path="bebometro_tracking.xml" />
+    <!-- Unconfirmed photos stay out of cloud backups; confirmed ones live in the account. -->
+    <exclude domain="file" path="app_flutter/outing_photos/" />
+</full-backup-content>
