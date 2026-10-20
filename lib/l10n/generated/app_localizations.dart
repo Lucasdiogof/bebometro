@@ -2044,6 +2044,36 @@ abstract class AppLocalizations {
   /// **'Exportar meus dados'**
   String get settingsExport;
 
+  /// No description provided for @settingsLegal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Privacidade e suporte'**
+  String get settingsLegal;
+
+  /// No description provided for @settingsLegalPrivacy.
+  ///
+  /// In pt, this message translates to:
+  /// **'Política de privacidade'**
+  String get settingsLegalPrivacy;
+
+  /// No description provided for @settingsLegalTerms.
+  ///
+  /// In pt, this message translates to:
+  /// **'Termos de uso'**
+  String get settingsLegalTerms;
+
+  /// No description provided for @settingsLegalSupport.
+  ///
+  /// In pt, this message translates to:
+  /// **'Suporte'**
+  String get settingsLegalSupport;
+
+  /// No description provided for @settingsLegalDeletion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Exclusão de conta e dados'**
+  String get settingsLegalDeletion;
+
   /// No description provided for @settingsLanguage.
   ///
   /// In pt, this message translates to:

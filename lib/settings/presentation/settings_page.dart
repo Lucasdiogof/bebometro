@@ -16,6 +16,7 @@ import '../../places/presentation/places_page.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../tracking/presentation/tracking_settings_section.dart';
 import 'language_settings_section.dart';
+import 'legal_links_section.dart';
 import 'settings_cubit.dart';
 import '../../l10n/l10n.dart';
 
@@ -235,6 +236,8 @@ class _SettingsViewState extends State<_SettingsView> {
                     ],
                   ),
                 ),
+                SectionTitle(tr.settingsLegal),
+                const LegalLinksSection(),
                 SectionTitle(tr.settingsStorage),
                 BlocBuilder<SettingsCubit, SettingsState>(
                   builder: (context, s) => SurfaceCard(

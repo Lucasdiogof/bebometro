@@ -1241,6 +1241,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsExport => 'Export my data';
 
   @override
+  String get settingsLegal => 'Privacy and support';
+
+  @override
+  String get settingsLegalPrivacy => 'Privacy policy';
+
+  @override
+  String get settingsLegalTerms => 'Terms of use';
+
+  @override
+  String get settingsLegalSupport => 'Support';
+
+  @override
+  String get settingsLegalDeletion => 'Account and data deletion';
+
+  @override
   String get settingsLanguage => 'Language';
 
   @override

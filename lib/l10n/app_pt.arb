@@ -713,6 +713,11 @@
   "settingsBudgetAlertsHint": "Um aviso ao chegar a 80% e a 100% do orçamento do rolê, uma vez por patamar.",
   "settingsDrinkRecords": "Registros de bebida",
   "settingsExport": "Exportar meus dados",
+  "settingsLegal": "Privacidade e suporte",
+  "settingsLegalPrivacy": "Política de privacidade",
+  "settingsLegalTerms": "Termos de uso",
+  "settingsLegalSupport": "Suporte",
+  "settingsLegalDeletion": "Exclusão de conta e dados",
   "settingsLanguage": "Idioma",
   "settingsLastSync": "Última sincronização: {when}",
   "@settingsLastSync": {
