@@ -4971,6 +4971,56 @@ class AppLocalizationsPt extends AppLocalizations {
   String get exportFailed => 'Não foi possível gerar o arquivo.';
 
   @override
+  String get exportFullTitle => 'Pacote completo com fotos (ZIP)';
+
+  @override
+  String get exportFullBody =>
+      'Os mesmos dados do JSON e dos CSV, mais as fotos de rótulos e cardápios e um arquivo de conferência (manifest.json) com o SHA-256 de cada arquivo. Opcional: as exportações simples continuam funcionando sem fotos.';
+
+  @override
+  String get exportFullButton => 'Gerar pacote com fotos';
+
+  @override
+  String exportFullBuilding(int done, int total) {
+    return 'Reunindo fotos: $done de $total';
+  }
+
+  @override
+  String get exportFullCancel => 'Cancelar';
+
+  @override
+  String get exportFullCancelled =>
+      'Exportação cancelada. Nada foi compartilhado.';
+
+  @override
+  String get exportFullUnsynced =>
+      'Há dados ainda não sincronizados ou o histórico da nuvem ainda não foi lido neste aparelho. O pacote leva só o que está aqui agora.';
+
+  @override
+  String exportFullDone(int photos) {
+    return 'Pacote verificado: $photos fotos incluídas.';
+  }
+
+  @override
+  String get exportFullOmittedTitle => 'Algumas fotos ficaram de fora';
+
+  @override
+  String exportFullOmittedBody(int count) {
+    return '$count fotos não entraram no pacote (arquivo ausente, ilegível, falha ao baixar da nuvem ou limite de tamanho). A lista, com o motivo de cada uma, está no manifest.json. Compartilhar mesmo assim?';
+  }
+
+  @override
+  String get exportFullIntegrityFailed =>
+      'A conferência final falhou: o pacote não confere com o manifest. Nada foi compartilhado. Tente de novo.';
+
+  @override
+  String get exportFullShareAnyway => 'Compartilhar mesmo assim';
+
+  @override
+  String get exportFullNote =>
+      'Fotos são incluídas só se o arquivo está neste aparelho ou pôde ser baixado da área privada da sua conta.';
+
+  @override
   String get exportJsonNote =>
       'Dados pessoais exportados pela própria pessoa. Valores em centavos, volumes em ml, horários em UTC. Campos nulos são desconhecidos, não zero.';
 

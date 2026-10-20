@@ -1318,6 +1318,35 @@
   "exportCopied": "Copiado",
   "exportShareUnavailable": "Compartir no está disponible aquí. Usa \"Copiar texto\" para guardar el contenido.",
   "exportFailed": "No se pudo generar el archivo.",
+  "exportFullTitle": "Paquete completo con fotos (ZIP)",
+  "exportFullBody": "Los mismos datos del JSON y de los CSV, más las fotos de etiquetas y cartas y un archivo de verificación (manifest.json) con el SHA-256 de cada archivo. Opcional: las exportaciones simples siguen funcionando sin fotos.",
+  "exportFullButton": "Generar paquete con fotos",
+  "exportFullBuilding": "Reuniendo fotos: {done} de {total}",
+  "@exportFullBuilding": {
+    "placeholders": {
+      "done": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "exportFullCancel": "Cancelar",
+  "exportFullCancelled": "Exportación cancelada. No se compartió nada.",
+  "exportFullUnsynced": "Hay datos aún sin sincronizar o el historial de la nube todavía no se leyó en este dispositivo. El paquete lleva solo lo que está aquí ahora.",
+  "exportFullDone": "Paquete verificado: {photos} fotos incluidas.",
+  "@exportFullDone": {
+    "placeholders": {
+      "photos": {"type": "int"}
+    }
+  },
+  "exportFullOmittedTitle": "Algunas fotos quedaron fuera",
+  "exportFullOmittedBody": "{count} fotos no entraron en el paquete (archivo ausente, ilegible, falla al descargar de la nube o límite de tamaño). La lista, con el motivo de cada una, está en manifest.json. ¿Compartir de todos modos?",
+  "@exportFullOmittedBody": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "exportFullIntegrityFailed": "La verificación final falló: el paquete no coincide con el manifest. No se compartió nada. Inténtalo de nuevo.",
+  "exportFullShareAnyway": "Compartir de todos modos",
+  "exportFullNote": "Las fotos se incluyen solo si el archivo está en este dispositivo o se pudo descargar del área privada de tu cuenta.",
   "exportJsonNote": "Datos personales exportados por la propia persona. Valores en centavos (BRL), volúmenes en ml, horas en UTC. Los campos nulos son desconocidos, no cero.",
   "shareCardTitle": "Compartir resumen",
   "shareCardIntro": "Elige qué aparece. La dirección y tu relato nunca entran, y nada se publica solo.",

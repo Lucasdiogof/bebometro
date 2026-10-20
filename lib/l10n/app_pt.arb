@@ -3147,6 +3147,35 @@
   "exportCopied": "Copiado",
   "exportShareUnavailable": "Compartilhar não está disponível aqui. Use \"Copiar texto\" para guardar o conteúdo.",
   "exportFailed": "Não foi possível gerar o arquivo.",
+  "exportFullTitle": "Pacote completo com fotos (ZIP)",
+  "exportFullBody": "Os mesmos dados do JSON e dos CSV, mais as fotos de rótulos e cardápios e um arquivo de conferência (manifest.json) com o SHA-256 de cada arquivo. Opcional: as exportações simples continuam funcionando sem fotos.",
+  "exportFullButton": "Gerar pacote com fotos",
+  "exportFullBuilding": "Reunindo fotos: {done} de {total}",
+  "@exportFullBuilding": {
+    "placeholders": {
+      "done": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "exportFullCancel": "Cancelar",
+  "exportFullCancelled": "Exportação cancelada. Nada foi compartilhado.",
+  "exportFullUnsynced": "Há dados ainda não sincronizados ou o histórico da nuvem ainda não foi lido neste aparelho. O pacote leva só o que está aqui agora.",
+  "exportFullDone": "Pacote verificado: {photos} fotos incluídas.",
+  "@exportFullDone": {
+    "placeholders": {
+      "photos": {"type": "int"}
+    }
+  },
+  "exportFullOmittedTitle": "Algumas fotos ficaram de fora",
+  "exportFullOmittedBody": "{count} fotos não entraram no pacote (arquivo ausente, ilegível, falha ao baixar da nuvem ou limite de tamanho). A lista, com o motivo de cada uma, está no manifest.json. Compartilhar mesmo assim?",
+  "@exportFullOmittedBody": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "exportFullIntegrityFailed": "A conferência final falhou: o pacote não confere com o manifest. Nada foi compartilhado. Tente de novo.",
+  "exportFullShareAnyway": "Compartilhar mesmo assim",
+  "exportFullNote": "Fotos são incluídas só se o arquivo está neste aparelho ou pôde ser baixado da área privada da sua conta.",
   "exportJsonNote": "Dados pessoais exportados pela própria pessoa. Valores em centavos, volumes em ml, horários em UTC. Campos nulos são desconhecidos, não zero.",
   "shareCardTitle": "Compartilhar resumo",
   "shareCardIntro": "Escolha o que aparece. O endereço e o seu relato nunca entram, e nada é publicado sozinho.",

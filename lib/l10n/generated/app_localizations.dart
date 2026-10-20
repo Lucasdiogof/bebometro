@@ -8019,6 +8019,84 @@ abstract class AppLocalizations {
   /// **'Não foi possível gerar o arquivo.'**
   String get exportFailed;
 
+  /// No description provided for @exportFullTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pacote completo com fotos (ZIP)'**
+  String get exportFullTitle;
+
+  /// No description provided for @exportFullBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os mesmos dados do JSON e dos CSV, mais as fotos de rótulos e cardápios e um arquivo de conferência (manifest.json) com o SHA-256 de cada arquivo. Opcional: as exportações simples continuam funcionando sem fotos.'**
+  String get exportFullBody;
+
+  /// No description provided for @exportFullButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar pacote com fotos'**
+  String get exportFullButton;
+
+  /// No description provided for @exportFullBuilding.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reunindo fotos: {done} de {total}'**
+  String exportFullBuilding(int done, int total);
+
+  /// No description provided for @exportFullCancel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar'**
+  String get exportFullCancel;
+
+  /// No description provided for @exportFullCancelled.
+  ///
+  /// In pt, this message translates to:
+  /// **'Exportação cancelada. Nada foi compartilhado.'**
+  String get exportFullCancelled;
+
+  /// No description provided for @exportFullUnsynced.
+  ///
+  /// In pt, this message translates to:
+  /// **'Há dados ainda não sincronizados ou o histórico da nuvem ainda não foi lido neste aparelho. O pacote leva só o que está aqui agora.'**
+  String get exportFullUnsynced;
+
+  /// No description provided for @exportFullDone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pacote verificado: {photos} fotos incluídas.'**
+  String exportFullDone(int photos);
+
+  /// No description provided for @exportFullOmittedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Algumas fotos ficaram de fora'**
+  String get exportFullOmittedTitle;
+
+  /// No description provided for @exportFullOmittedBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count} fotos não entraram no pacote (arquivo ausente, ilegível, falha ao baixar da nuvem ou limite de tamanho). A lista, com o motivo de cada uma, está no manifest.json. Compartilhar mesmo assim?'**
+  String exportFullOmittedBody(int count);
+
+  /// No description provided for @exportFullIntegrityFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'A conferência final falhou: o pacote não confere com o manifest. Nada foi compartilhado. Tente de novo.'**
+  String get exportFullIntegrityFailed;
+
+  /// No description provided for @exportFullShareAnyway.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar mesmo assim'**
+  String get exportFullShareAnyway;
+
+  /// No description provided for @exportFullNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fotos são incluídas só se o arquivo está neste aparelho ou pôde ser baixado da área privada da sua conta.'**
+  String get exportFullNote;
+
   /// No description provided for @exportJsonNote.
   ///
   /// In pt, this message translates to:

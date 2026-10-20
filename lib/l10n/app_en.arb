@@ -1318,6 +1318,35 @@
   "exportCopied": "Copied",
   "exportShareUnavailable": "Sharing is not available here. Use \"Copy text\" to keep the content.",
   "exportFailed": "Could not create the file.",
+  "exportFullTitle": "Full package with photos (ZIP)",
+  "exportFullBody": "The same data as the JSON and CSV files, plus the photos of labels and menus and a check file (manifest.json) with the SHA-256 of every file. Optional: the plain exports still work without photos.",
+  "exportFullButton": "Build package with photos",
+  "exportFullBuilding": "Gathering photos: {done} of {total}",
+  "@exportFullBuilding": {
+    "placeholders": {
+      "done": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "exportFullCancel": "Cancel",
+  "exportFullCancelled": "Export cancelled. Nothing was shared.",
+  "exportFullUnsynced": "Some data is not synced yet, or the cloud history has not been read on this device yet. The package only carries what is here right now.",
+  "exportFullDone": "Package verified: {photos} photos included.",
+  "@exportFullDone": {
+    "placeholders": {
+      "photos": {"type": "int"}
+    }
+  },
+  "exportFullOmittedTitle": "Some photos were left out",
+  "exportFullOmittedBody": "{count} photos are not in the package (missing file, unreadable, cloud download failed or size limit). The list, with the reason for each, is in manifest.json. Share anyway?",
+  "@exportFullOmittedBody": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "exportFullIntegrityFailed": "The final check failed: the package does not match its manifest. Nothing was shared. Try again.",
+  "exportFullShareAnyway": "Share anyway",
+  "exportFullNote": "Photos are included only when the file is on this device or could be downloaded from the private area of your account.",
   "exportJsonNote": "Personal data exported by the person themselves. Amounts in cents (BRL), volumes in ml, times in UTC. Null fields are unknown, not zero.",
   "shareCardTitle": "Share summary",
   "shareCardIntro": "Choose what appears. The address and your personal report never go in, and nothing is published on its own.",

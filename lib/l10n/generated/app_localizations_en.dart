@@ -4957,6 +4957,55 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportFailed => 'Could not create the file.';
 
   @override
+  String get exportFullTitle => 'Full package with photos (ZIP)';
+
+  @override
+  String get exportFullBody =>
+      'The same data as the JSON and CSV files, plus the photos of labels and menus and a check file (manifest.json) with the SHA-256 of every file. Optional: the plain exports still work without photos.';
+
+  @override
+  String get exportFullButton => 'Build package with photos';
+
+  @override
+  String exportFullBuilding(int done, int total) {
+    return 'Gathering photos: $done of $total';
+  }
+
+  @override
+  String get exportFullCancel => 'Cancel';
+
+  @override
+  String get exportFullCancelled => 'Export cancelled. Nothing was shared.';
+
+  @override
+  String get exportFullUnsynced =>
+      'Some data is not synced yet, or the cloud history has not been read on this device yet. The package only carries what is here right now.';
+
+  @override
+  String exportFullDone(int photos) {
+    return 'Package verified: $photos photos included.';
+  }
+
+  @override
+  String get exportFullOmittedTitle => 'Some photos were left out';
+
+  @override
+  String exportFullOmittedBody(int count) {
+    return '$count photos are not in the package (missing file, unreadable, cloud download failed or size limit). The list, with the reason for each, is in manifest.json. Share anyway?';
+  }
+
+  @override
+  String get exportFullIntegrityFailed =>
+      'The final check failed: the package does not match its manifest. Nothing was shared. Try again.';
+
+  @override
+  String get exportFullShareAnyway => 'Share anyway';
+
+  @override
+  String get exportFullNote =>
+      'Photos are included only when the file is on this device or could be downloaded from the private area of your account.';
+
+  @override
   String get exportJsonNote =>
       'Personal data exported by the person themselves. Amounts in cents (BRL), volumes in ml, times in UTC. Null fields are unknown, not zero.';
 

@@ -4984,6 +4984,56 @@ class AppLocalizationsEs extends AppLocalizations {
   String get exportFailed => 'No se pudo generar el archivo.';
 
   @override
+  String get exportFullTitle => 'Paquete completo con fotos (ZIP)';
+
+  @override
+  String get exportFullBody =>
+      'Los mismos datos del JSON y de los CSV, más las fotos de etiquetas y cartas y un archivo de verificación (manifest.json) con el SHA-256 de cada archivo. Opcional: las exportaciones simples siguen funcionando sin fotos.';
+
+  @override
+  String get exportFullButton => 'Generar paquete con fotos';
+
+  @override
+  String exportFullBuilding(int done, int total) {
+    return 'Reuniendo fotos: $done de $total';
+  }
+
+  @override
+  String get exportFullCancel => 'Cancelar';
+
+  @override
+  String get exportFullCancelled =>
+      'Exportación cancelada. No se compartió nada.';
+
+  @override
+  String get exportFullUnsynced =>
+      'Hay datos aún sin sincronizar o el historial de la nube todavía no se leyó en este dispositivo. El paquete lleva solo lo que está aquí ahora.';
+
+  @override
+  String exportFullDone(int photos) {
+    return 'Paquete verificado: $photos fotos incluidas.';
+  }
+
+  @override
+  String get exportFullOmittedTitle => 'Algunas fotos quedaron fuera';
+
+  @override
+  String exportFullOmittedBody(int count) {
+    return '$count fotos no entraron en el paquete (archivo ausente, ilegible, falla al descargar de la nube o límite de tamaño). La lista, con el motivo de cada una, está en manifest.json. ¿Compartir de todos modos?';
+  }
+
+  @override
+  String get exportFullIntegrityFailed =>
+      'La verificación final falló: el paquete no coincide con el manifest. No se compartió nada. Inténtalo de nuevo.';
+
+  @override
+  String get exportFullShareAnyway => 'Compartir de todos modos';
+
+  @override
+  String get exportFullNote =>
+      'Las fotos se incluyen solo si el archivo está en este dispositivo o se pudo descargar del área privada de tu cuenta.';
+
+  @override
   String get exportJsonNote =>
       'Datos personales exportados por la propia persona. Valores en centavos (BRL), volúmenes en ml, horas en UTC. Los campos nulos son desconocidos, no cero.';
 
