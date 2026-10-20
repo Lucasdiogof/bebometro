@@ -778,9 +778,8 @@ class _OutingDrinkReviewPageState extends State<OutingDrinkReviewPage> {
                   ),
                   if (_sourceText != null && _sourceText!.trim().isNotEmpty)
                     Theme(
-                      data: Theme.of(
-                        context,
-                      ).copyWith(dividerColor: Colors.transparent),
+                      data: Theme.of(context)
+                          .copyWith(dividerColor: Colors.transparent),
                       child: ExpansionTile(
                         tilePadding: EdgeInsets.zero,
                         title: Text(

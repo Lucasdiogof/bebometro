@@ -256,16 +256,13 @@ class Recipe {
   const Recipe({
     required this.id,
     required this.name,
-    required List<EntryComponent> components,
+    required this._components,
     this.source,
-    String? method,
-    String? garnish,
-    String? note,
+    this._method,
+    this._garnish,
+    this._note,
     this.translations = const {},
-  }) : _components = components,
-       _method = method,
-       _garnish = garnish,
-       _note = note;
+  });
 
   final String id;
   final String name;

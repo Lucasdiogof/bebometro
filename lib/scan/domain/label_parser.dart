@@ -242,8 +242,9 @@ DrinkCategory? guessCategory(String text) {
   }
   if (has(
     r'agua mineral|agua sem gas|agua com gas|agua sin gas|mineral water|sparkling water',
-  ))
+  )) {
     return DrinkCategory.water;
+  }
   if (has(
     r'refrigerante|refresco|gaseosa|soda|suco|jugo|juice|guarana|energetico|sem alcool|sin alcohol|alcohol free',
   )) {

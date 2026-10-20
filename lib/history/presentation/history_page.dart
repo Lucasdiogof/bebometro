@@ -40,16 +40,15 @@ class _HistoryView extends StatelessWidget {
         actions: [
           IconButton(
             tooltip: tr.statsTitle,
-            onPressed: () => Navigator.of(
-              context,
-            ).push(MaterialPageRoute(builder: (_) => const StatsPage())),
+            onPressed: () =>
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => const StatsPage())),
             icon: const Icon(Icons.insights_outlined),
           ),
           IconButton(
             tooltip: tr.settingsSavedPlaces,
-            onPressed: () => Navigator.of(
-              context,
-            ).push(MaterialPageRoute(builder: (_) => const PlacesPage())),
+            onPressed: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => const PlacesPage())),
             icon: const Icon(Icons.place_outlined),
           ),
           const SettingsAction(),

@@ -46,9 +46,11 @@ class CatalogMatch {
   final double rank;
 }
 
-List<String> _tokens(String text) => normalizeText(
-  text,
-).split(RegExp(r'[^a-z0-9]+')).where((t) => t.length >= 3).toList();
+List<String> _tokens(String text) =>
+    normalizeText(text)
+        .split(RegExp(r'[^a-z0-9]+'))
+        .where((t) => t.length >= 3)
+        .toList();
 
 /// Up to [limit] products that share words with the query, best first.
 List<CatalogMatch> matchCatalog(

@@ -486,8 +486,9 @@ class DrinkDraft {
           result['component_abv_$i'] = tr.draftAbvRange;
         }
         final qty = components[i].amount;
-        if (qty != null && qty < 0)
+        if (qty != null && qty < 0) {
           result['component_ml_$i'] = tr.draftAmountInvalid;
+        }
       }
     } else if (container == null || container <= 0) {
       result['volume'] = tr.draftVolumeRequired;

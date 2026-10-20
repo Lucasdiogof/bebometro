@@ -87,9 +87,8 @@ _Parsed _parse(String input) {
     final cut = cleaned.lastIndexOf(decimal);
     final intPart = cleaned.substring(0, cut);
     if (intPart.contains(decimal) ||
-        !RegExp(
-          r'^\d{1,3}(' + RegExp.escape(group) + r'\d{3})*$',
-        ).hasMatch(intPart)) {
+        !RegExp(r'^\d{1,3}(' + RegExp.escape(group) + r'\d{3})*$')
+            .hasMatch(intPart)) {
       return const _Parsed(null, NumberInputProblem.invalid);
     }
     text = '${intPart.replaceAll(group, '')}.${cleaned.substring(cut + 1)}';
@@ -98,9 +97,8 @@ _Parsed _parse(String input) {
     final parts = cleaned.split(mark);
     if (parts.length > 2) {
       // "1.500.000": only valid as thousands groups.
-      if (!RegExp(
-        r'^\d{1,3}(' + RegExp.escape(mark) + r'\d{3})+$',
-      ).hasMatch(cleaned)) {
+      if (!RegExp(r'^\d{1,3}(' + RegExp.escape(mark) + r'\d{3})+$')
+          .hasMatch(cleaned)) {
         return const _Parsed(null, NumberInputProblem.invalid);
       }
       text = parts.join();

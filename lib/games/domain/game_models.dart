@@ -85,11 +85,11 @@ class GameCard {
     required this.game,
     required this.mode,
     required this.kind,
-    required String text,
+    required this._text,
     this.translations = const {},
     this.optional = false,
     this.isCustom = false,
-  }) : _text = text;
+  });
 
   /// Stable id ("ni-l-01"; custom cards are "custom:`<uuid>`").
   final String id;

@@ -170,7 +170,7 @@ class SourceRef {
 class CatalogItem {
   const CatalogItem({
     required this.id,
-    required String name,
+    required this._name,
     this.nameI18n = const {},
     required this.category,
     required this.presentations,
@@ -179,7 +179,7 @@ class CatalogItem {
     this.abvPercent,
     this.ingredients,
     this.origin = InfoOrigin.generic,
-    String? note,
+    this._note,
     this.noteI18n = const {},
     this.aliases = const [],
     this.source,
@@ -191,8 +191,7 @@ class CatalogItem {
     this.advertisedCents,
     this.fieldSources = const [],
     this.market,
-  }) : _name = name,
-       _note = note;
+  });
 
   final String id;
   final String _name;

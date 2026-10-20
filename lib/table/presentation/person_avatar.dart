@@ -7,7 +7,12 @@ import '../../tab/domain/tab_models.dart';
 /// position in the tab, which makes two "João" tell apart without using the
 /// name as an identity.
 class PersonAvatar extends StatelessWidget {
-  const PersonAvatar({super.key, required this.person, this.size = 32, this.index});
+  const PersonAvatar({
+    super.key,
+    required this.person,
+    this.size = 32,
+    this.index,
+  });
 
   final Participant person;
   final double size;

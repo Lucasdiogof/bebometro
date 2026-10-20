@@ -121,59 +121,81 @@ void main() {
     });
   });
 
-  test('no result text looks like a measurement or a verdict, in any language', () {
-    final bad = RegExp(
-      r'[0-9%]|mg|promil|BAC|blood|sangre|sangue|sóbri|sobri|sober|dirig|driv|conduc',
-      caseSensitive: false,
-    );
-    for (final code in const ['pt', 'en', 'es']) {
-      final t = lookupAppLocalizations(Locale(code));
-      final texts = [
-        t.bafoR1T, t.bafoR1L, t.bafoR2T, t.bafoR2L, t.bafoR3T, t.bafoR3L,
-        t.bafoR4T, t.bafoR4L, t.bafoR5T, t.bafoR5L, t.bafoR6T, t.bafoR6L,
-        t.bafoR7T, t.bafoR7L, t.bafoR8T, t.bafoR8L,
-      ];
-      for (final s in texts) {
-        expect(bad.hasMatch(s), isFalse, reason: '$code: $s');
+  test(
+    'no result text looks like a measurement or a verdict, in any language',
+    () {
+      final bad = RegExp(
+        r'[0-9%]|mg|promil|BAC|blood|sangre|sangue|sóbri|sobri|sober|dirig|driv|conduc',
+        caseSensitive: false,
+      );
+      for (final code in const ['pt', 'en', 'es']) {
+        final t = lookupAppLocalizations(Locale(code));
+        final texts = [
+          t.bafoR1T,
+          t.bafoR1L,
+          t.bafoR2T,
+          t.bafoR2L,
+          t.bafoR3T,
+          t.bafoR3L,
+          t.bafoR4T,
+          t.bafoR4L,
+          t.bafoR5T,
+          t.bafoR5L,
+          t.bafoR6T,
+          t.bafoR6L,
+          t.bafoR7T,
+          t.bafoR7L,
+          t.bafoR8T,
+          t.bafoR8L,
+        ];
+        for (final s in texts) {
+          expect(bad.hasMatch(s), isFalse, reason: '$code: $s');
+        }
       }
-    }
-  });
+    },
+  );
 
-  testWidgets('the microphone is untouched until Start; released after blowing', (tester) async {
-    _tall(tester);
-    final input = _FakeInput(BreathStart.started);
-    await tester.pumpWidget(_app(() => input));
-    expect(input.starts, 0);
-    expect(find.text('Bafômetro de brincadeira'), findsOneWidget);
-    await tester.tap(find.text('Começar'));
-    await _settle(tester);
-    expect(input.starts, 1);
-    for (var i = 0; i < 60; i++) {
-      input.controller.add(1.0);
-      await tester.pump(const Duration(milliseconds: 100));
-    }
-    await tester.pump(const Duration(seconds: 3));
-    await _settle(tester);
-    expect(find.text('Tentar de novo'), findsOneWidget);
-    expect(find.textContaining('Sorteado ao acaso'), findsOneWidget);
-    expect(input.stops, greaterThanOrEqualTo(1));
-    await tester.pumpWidget(const SizedBox());
-  });
+  testWidgets(
+    'the microphone is untouched until Start; released after blowing',
+    (tester) async {
+      _tall(tester);
+      final input = _FakeInput(BreathStart.started);
+      await tester.pumpWidget(_app(() => input));
+      expect(input.starts, 0);
+      expect(find.text('Bafômetro de brincadeira'), findsOneWidget);
+      await tester.tap(find.text('Começar'));
+      await _settle(tester);
+      expect(input.starts, 1);
+      for (var i = 0; i < 60; i++) {
+        input.controller.add(1.0);
+        await tester.pump(const Duration(milliseconds: 100));
+      }
+      await tester.pump(const Duration(seconds: 3));
+      await _settle(tester);
+      expect(find.text('Tentar de novo'), findsOneWidget);
+      expect(find.textContaining('Sorteado ao acaso'), findsOneWidget);
+      expect(input.stops, greaterThanOrEqualTo(1));
+      await tester.pumpWidget(const SizedBox());
+    },
+  );
 
-  testWidgets('denied permission offers hold-to-play and never claims a detected blow', (tester) async {
-    _tall(tester);
-    final input = _FakeInput(BreathStart.denied);
-    await tester.pumpWidget(_app(() => input));
-    await tester.tap(find.text('Começar'));
-    await _settle(tester);
-    expect(find.textContaining('Sem acesso ao microfone'), findsOneWidget);
-    expect(find.text('Segurar para brincar'), findsOneWidget);
-    expect(find.text('Começar'), findsNothing);
-    await tester.tap(find.text('Segurar para brincar'));
-    await tester.pump();
-    expect(find.textContaining('nada é detectado'), findsOneWidget);
-    await tester.pumpWidget(const SizedBox());
-  });
+  testWidgets(
+    'denied permission offers hold-to-play and never claims a detected blow',
+    (tester) async {
+      _tall(tester);
+      final input = _FakeInput(BreathStart.denied);
+      await tester.pumpWidget(_app(() => input));
+      await tester.tap(find.text('Começar'));
+      await _settle(tester);
+      expect(find.textContaining('Sem acesso ao microfone'), findsOneWidget);
+      expect(find.text('Segurar para brincar'), findsOneWidget);
+      expect(find.text('Começar'), findsNothing);
+      await tester.tap(find.text('Segurar para brincar'));
+      await tester.pump();
+      expect(find.textContaining('nada é detectado'), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+    },
+  );
 
   testWidgets('leaving the screen releases the microphone', (tester) async {
     _tall(tester);
@@ -202,32 +224,49 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('English and Spanish screens build without overflow at 360 px', (tester) async {
+  testWidgets('English and Spanish screens build without overflow at 360 px', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(360, 740);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.reset);
     for (final loc in const [Locale('en'), Locale('es')]) {
-      await tester.pumpWidget(_app(() => _FakeInput(BreathStart.started), locale: loc));
+      await tester.pumpWidget(
+        _app(() => _FakeInput(BreathStart.started), locale: loc),
+      );
       await tester.pump();
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox());
     }
   });
 
-  testWidgets('large system text (1.3 and 2.0) at 360 px does not overflow, ready or blowing', (tester) async {
-    tester.view.physicalSize = const Size(360, 740);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.reset);
-    for (final scale in const [1.3, 2.0]) {
-      for (final loc in const [Locale('pt', 'BR'), Locale('en'), Locale('es')]) {
-        await tester.pumpWidget(_app(() => _FakeInput(BreathStart.started), locale: loc, scale: scale));
-        await tester.pump();
-        expect(tester.takeException(), isNull, reason: '$loc x$scale ready');
-        await tester.tap(find.byType(TextButton).first);
-        await _settle(tester);
-        expect(tester.takeException(), isNull, reason: '$loc x$scale manual');
-        await tester.pumpWidget(const SizedBox());
+  testWidgets(
+    'large system text (1.3 and 2.0) at 360 px does not overflow, ready or blowing',
+    (tester) async {
+      tester.view.physicalSize = const Size(360, 740);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+      for (final scale in const [1.3, 2.0]) {
+        for (final loc in const [
+          Locale('pt', 'BR'),
+          Locale('en'),
+          Locale('es'),
+        ]) {
+          await tester.pumpWidget(
+            _app(
+              () => _FakeInput(BreathStart.started),
+              locale: loc,
+              scale: scale,
+            ),
+          );
+          await tester.pump();
+          expect(tester.takeException(), isNull, reason: '$loc x$scale ready');
+          await tester.tap(find.byType(TextButton).first);
+          await _settle(tester);
+          expect(tester.takeException(), isNull, reason: '$loc x$scale manual');
+          await tester.pumpWidget(const SizedBox());
+        }
       }
-    }
-  });
+    },
+  );
 }

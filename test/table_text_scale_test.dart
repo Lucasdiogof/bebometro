@@ -25,42 +25,50 @@ const _me = Participant(id: 'p-me', name: 'Você', isMe: true);
 const _ana = Participant(id: 'p-ana', name: _longName);
 const _bob = Participant(id: 'p-bob', name: 'Bob', left: true);
 
-DrinkEntry _drink(String id, String name, {String? consumer, int? ml = 400, int cents = 1500}) =>
-    DrinkEntry(
-      id: id,
-      outingId: 'o1',
-      consumedAt: _t,
-      name: name,
-      category: DrinkCategory.draft,
-      createdAt: _t,
-      updatedAt: _t,
-      containerMl: ml,
-      personalMl: ml,
-      priceKind: PriceKind.informed,
-      paidCents: cents,
-      peopleCount: 1,
-      consumerId: consumer,
-    );
+DrinkEntry _drink(
+  String id,
+  String name, {
+  String? consumer,
+  int? ml = 400,
+  int cents = 1500,
+}) => DrinkEntry(
+  id: id,
+  outingId: 'o1',
+  consumedAt: _t,
+  name: name,
+  category: DrinkCategory.draft,
+  createdAt: _t,
+  updatedAt: _t,
+  containerMl: ml,
+  personalMl: ml,
+  priceKind: PriceKind.informed,
+  paidCents: cents,
+  peopleCount: 1,
+  consumerId: consumer,
+);
 
 TabDoc _doc() => TabDoc(
-      outingId: 'o1',
-      participants: const [_me, _ana, _bob],
-      extras: [
-        TabExtra(
-          id: 'x1',
-          description: 'Porção de batata frita com cheddar e bacon para a mesa toda',
-          category: ExtraCategory.food,
-          createdAt: _t,
-          priceKind: PriceKind.informed,
-          cents: 6000,
-          assign: {_me.id: 1, _ana.id: 1},
-        ),
-      ],
-      serviceOn: true,
-      mode: SplitMode.item,
-      autoLink: true,
-      payments: [TabPayment(id: 'pay1', participantId: _me.id, cents: 9000, at: _t)],
-    );
+  outingId: 'o1',
+  participants: const [_me, _ana, _bob],
+  extras: [
+    TabExtra(
+      id: 'x1',
+      description:
+          'Porção de batata frita com cheddar e bacon para a mesa toda',
+      category: ExtraCategory.food,
+      createdAt: _t,
+      priceKind: PriceKind.informed,
+      cents: 6000,
+      assign: {_me.id: 1, _ana.id: 1},
+    ),
+  ],
+  serviceOn: true,
+  mode: SplitMode.item,
+  autoLink: true,
+  payments: [
+    TabPayment(id: 'pay1', participantId: _me.id, cents: 9000, at: _t),
+  ],
+);
 
 final _entries = [
   for (var i = 0; i < 4; i++) _drink('c$i', 'Chopp de trigo artesanal da casa'),
@@ -81,7 +89,8 @@ Widget _app(Widget child, Locale locale, double scale) {
       GlobalCupertinoLocalizations.delegate,
     ],
     builder: (context, c) => MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(scale)),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: TextScaler.linear(scale)),
       child: c!,
     ),
     home: Scaffold(body: SingleChildScrollView(child: child)),
@@ -96,61 +105,64 @@ void main() {
     for (final scale in scales) {
       final label = '${locale.languageCode} x$scale';
 
-      testWidgets('people bar, orders, people and bill do not overflow ($label)', (tester) async {
-        tester.view.physicalSize = const Size(360, 740);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.reset);
+      testWidgets(
+        'people bar, orders, people and bill do not overflow ($label)',
+        (tester) async {
+          tester.view.physicalSize = const Size(360, 740);
+          tester.view.devicePixelRatio = 1.0;
+          addTearDown(tester.view.reset);
 
-        final doc = _doc();
-        final byId = {for (final e in _entries) e.id: e};
-        final result = TabCalculator.compute(doc, byId);
-        final rows = TableOrders.rows(doc, byId, const PersonFilter.table());
-        final consumption = TabCalculator.consumption(doc, _entries);
+          final doc = _doc();
+          final byId = {for (final e in _entries) e.id: e};
+          final result = TabCalculator.compute(doc, byId);
+          final rows = TableOrders.rows(doc, byId, const PersonFilter.table());
+          final consumption = TabCalculator.consumption(doc, _entries);
 
-        await tester.pumpWidget(
-          _app(
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                PeopleBar(
-                  doc: doc,
-                  filter: const PersonFilter.table(),
-                  onChanged: (_) {},
-                  onAdd: () {},
-                  onManage: (_) {},
-                ),
-                OrdersView(
-                  rows: rows,
-                  doc: doc,
-                  active: true,
-                  onEdit: (_) {},
-                  onRepeat: (_) {},
-                  onDelete: (_) {},
-                  onMove: (_) {},
-                ),
-                PeopleView(
-                  doc: doc,
-                  result: result,
-                  consumption: consumption,
-                  onSeeOrders: (_) {},
-                  onManage: (_) {},
-                ),
-                BillView(
-                  doc: doc,
-                  result: result,
-                  onSettings: () {},
-                  onSplit: () {},
-                  onShare: () {},
-                ),
-              ],
+          await tester.pumpWidget(
+            _app(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  PeopleBar(
+                    doc: doc,
+                    filter: const PersonFilter.table(),
+                    onChanged: (_) {},
+                    onAdd: () {},
+                    onManage: (_) {},
+                  ),
+                  OrdersView(
+                    rows: rows,
+                    doc: doc,
+                    active: true,
+                    onEdit: (_) {},
+                    onRepeat: (_) {},
+                    onDelete: (_) {},
+                    onMove: (_) {},
+                  ),
+                  PeopleView(
+                    doc: doc,
+                    result: result,
+                    consumption: consumption,
+                    onSeeOrders: (_) {},
+                    onManage: (_) {},
+                  ),
+                  BillView(
+                    doc: doc,
+                    result: result,
+                    onSettings: () {},
+                    onSplit: () {},
+                    onShare: () {},
+                  ),
+                ],
+              ),
+              locale,
+              scale,
             ),
-            locale,
-            scale,
-          ),
-        );
-        await tester.pump(const Duration(milliseconds: 400));
-        expect(tester.takeException(), isNull, reason: label);
-      });
+          );
+          await tester.pump(const Duration(milliseconds: 400));
+          expect(tester.takeException(), isNull, reason: label);
+        },
+      );
     }
   }
 
@@ -161,19 +173,24 @@ void main() {
     expect(TableOrders.rows(doc, byId, const PersonFilter.table()).length, 3);
   });
 
-  test('a deleted record is not an item and a dish with quantity counts its units', () {
-    final doc = _doc().copyWith(extras: [
-      TabExtra(
-        id: 'x2',
-        description: 'Pastel',
-        category: ExtraCategory.food,
-        createdAt: _t,
-        quantity: 3,
-        priceKind: PriceKind.informed,
-        cents: 900,
-      ),
-    ]);
-    final gone = _drink('gone', 'Chopp').copyWith(deletedAt: _t);
-    expect(TableOrders.itemCount(doc, [_entries.first, gone]), 1 + 3);
-  });
+  test(
+    'a deleted record is not an item and a dish with quantity counts its units',
+    () {
+      final doc = _doc().copyWith(
+        extras: [
+          TabExtra(
+            id: 'x2',
+            description: 'Pastel',
+            category: ExtraCategory.food,
+            createdAt: _t,
+            quantity: 3,
+            priceKind: PriceKind.informed,
+            cents: 900,
+          ),
+        ],
+      );
+      final gone = _drink('gone', 'Chopp').copyWith(deletedAt: _t);
+      expect(TableOrders.itemCount(doc, [_entries.first, gone]), 1 + 3);
+    },
+  );
 }

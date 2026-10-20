@@ -61,8 +61,9 @@ class CatalogLoader {
       try {
         items.add(_recipe(json, consultedOn));
       } catch (e) {
-        if (kDebugMode)
+        if (kDebugMode) {
           debugPrint('[catalog] skipped recipe ${json['id']}: $e');
+        }
       }
     }
     return items;

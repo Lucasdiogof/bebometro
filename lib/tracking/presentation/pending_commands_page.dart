@@ -234,8 +234,9 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
       );
       if (outcome == EntryOutcome.saved) {
         final ok = await _coordinator.acknowledgeSaved(p);
-        if (mounted)
+        if (mounted) {
           showToast(context, ok ? tr.pendingSaved : tr.pendingRetryFailed);
+        }
       }
     } finally {
       _coordinator.endReview(p);

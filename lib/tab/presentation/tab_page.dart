@@ -467,8 +467,9 @@ class _GroupTile extends StatelessWidget {
         formatCents(group.sumCents!),
       );
     }
-    if (group.count > 1)
+    if (group.count > 1) {
       return tr.tabGroupHeaderNoPrice(l.title, '${group.count}');
+    }
     if (l.quantity > 1) {
       return l.totalCents == null
           ? tr.tabGroupQtyNoPrice(l.title, '${l.quantity}')

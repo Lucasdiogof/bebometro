@@ -110,7 +110,10 @@ void main() {
   });
 
   test('two people can become one: volume and cost handed over explicitly', () {
-    final two = BottlePeople.equal({ownerPortionKey: 200, 'ana': 300}, leftoverMl: 100);
+    final two = BottlePeople.equal({
+      ownerPortionKey: 200,
+      'ana': 300,
+    }, leftoverMl: 100);
     expect(two.canRemoveAny, isTrue);
     expect(
       () => two.remove('ana', volume: VolumeFate.toLeftover),
@@ -138,11 +141,14 @@ void main() {
     expect(p.add('cris').withPortion('cris', 100).isOverBottle(600), isTrue);
   });
 
-  test('the link keeps "everyone equally" as null and explicit splits by id', () {
-    expect(_base().toLinkAssign('me-id'), isNull);
-    final p = _base().withWeight('ana', 2).withWeight('bob', 0);
-    expect(p.toLinkAssign('me-id'), {'me-id': 1, 'ana': 2});
-  });
+  test(
+    'the link keeps "everyone equally" as null and explicit splits by id',
+    () {
+      expect(_base().toLinkAssign('me-id'), isNull);
+      final p = _base().withWeight('ana', 2).withWeight('bob', 0);
+      expect(p.toLinkAssign('me-id'), {'me-id': 1, 'ana': 2});
+    },
+  );
 
   test('weights come back from the link, owner by participant id', () {
     final entry = DrinkEntry(

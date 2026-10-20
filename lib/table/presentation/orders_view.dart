@@ -117,12 +117,10 @@ class OrderTile extends StatelessWidget {
     final icon = row.isFood
         ? row.extra!.category.icon
         : (entry?.category.icon ?? Icons.local_bar_outlined);
-    final title = row.quantity > 1 ? '${row.quantity}× ${row.title}' : row.title;
-    final subtitle = [
-      _who(),
-      if (row.shared) tr.tabShared,
-      ?_each,
-    ].join(' · ');
+    final title = row.quantity > 1
+        ? '${row.quantity}× ${row.title}'
+        : row.title;
+    final subtitle = [_who(), if (row.shared) tr.tabShared, ?_each].join(' · ');
     return SurfaceCard(
       key: ValueKey('order-${row.key}'),
       onTap: onEdit,
@@ -140,7 +138,12 @@ class OrderTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.subtitle),
+                Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.subtitle,
+                ),
                 const SizedBox(height: 2),
                 Row(
                   children: [
@@ -176,7 +179,10 @@ class OrderTile extends StatelessWidget {
           PopupMenuButton<String>(
             key: ValueKey('order-menu-${row.key}'),
             tooltip: tr.entryOptions,
-            icon: const Icon(Icons.more_vert_rounded, color: AppColors.textMuted),
+            icon: const Icon(
+              Icons.more_vert_rounded,
+              color: AppColors.textMuted,
+            ),
             onSelected: (v) {
               switch (v) {
                 case 'edit':
@@ -197,7 +203,9 @@ class OrderTile extends StatelessWidget {
                 PopupMenuItem(value: 'move', child: Text(tr.ordersMoveTo)),
               PopupMenuItem(
                 value: 'delete',
-                child: Text(row.quantity > 1 ? tr.ordersDeleteOne : tr.commonDelete),
+                child: Text(
+                  row.quantity > 1 ? tr.ordersDeleteOne : tr.commonDelete,
+                ),
               ),
             ],
           ),
@@ -220,7 +228,11 @@ class _Faces extends StatelessWidget {
         if (doc.participant(id) != null) doc.participant(id)!,
     ];
     if (people.isEmpty) {
-      return const Icon(Icons.help_outline_rounded, size: 18, color: AppColors.textMuted);
+      return const Icon(
+        Icons.help_outline_rounded,
+        size: 18,
+        color: AppColors.textMuted,
+      );
     }
     final shown = people.take(3).toList();
     return SizedBox(

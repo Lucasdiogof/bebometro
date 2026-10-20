@@ -54,7 +54,10 @@ class BillView extends StatelessWidget {
                 _Row(tr.billDiscount, '−${formatCents(r.discount)}'),
               if (doc.serviceOn)
                 _Row(
-                  tr.billService(formatBp(doc.serviceBp), formatCents(r.serviceBase)),
+                  tr.billService(
+                    formatBp(doc.serviceBp),
+                    formatCents(r.serviceBase),
+                  ),
                   '+${formatCents(r.service)}',
                   keyName: 'bill-service',
                 ),
@@ -66,7 +69,11 @@ class BillView extends StatelessWidget {
                 keyName: 'bill-total',
               ),
               if (me != null && doc.participants.length > 1)
-                _Row(tr.billYourShare, formatCents(r.shareOf(me.id)), keyName: 'bill-me'),
+                _Row(
+                  tr.billYourShare,
+                  formatCents(r.shareOf(me.id)),
+                  keyName: 'bill-me',
+                ),
               if (r.isPartial)
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpace.sm),
@@ -88,13 +95,21 @@ class BillView extends StatelessWidget {
                   ),
                 ),
               const Divider(height: AppSpace.xl),
-              _Row(tr.billPaidToVenue, formatCents(r.paidTotal), keyName: 'bill-paid'),
+              _Row(
+                tr.billPaidToVenue,
+                formatCents(r.paidTotal),
+                keyName: 'bill-paid',
+              ),
               if (r.venueSettled)
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpace.sm),
                   child: Row(
                     children: [
-                      const Icon(Icons.verified_outlined, color: AppColors.amber, size: 20),
+                      const Icon(
+                        Icons.verified_outlined,
+                        color: AppColors.amber,
+                        size: 20,
+                      ),
                       const SizedBox(width: AppSpace.sm),
                       Expanded(
                         child: Text(
@@ -166,7 +181,12 @@ class _Row extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
         children: [
-          Expanded(child: Text(label, style: bold ? AppText.subtitle : AppText.caption)),
+          Expanded(
+            child: Text(
+              label,
+              style: bold ? AppText.subtitle : AppText.caption,
+            ),
+          ),
           const SizedBox(width: AppSpace.sm),
           // Wraps (right-aligned) when the system font is large, never overflows.
           Flexible(

@@ -44,9 +44,10 @@ void main() {
     test('starts with a BOM and fixed Portuguese column names', () {
       final csv = ExportBuilder.drinksCsv([entry()]);
       expect(csv.startsWith(ExportBuilder.bom), isTrue);
-      final header = lines(
-        csv,
-      ).first.split(';').map((c) => c.replaceAll('"', '')).toList();
+      final header = lines(csv).first
+          .split(';')
+          .map((c) => c.replaceAll('"', ''))
+          .toList();
       expect(header.first, 'id');
       expect(header, containsAll(['categoria', 'preco_tipo', 'pago_centavos']));
     });
@@ -91,7 +92,10 @@ void main() {
       final rows = lines(csv);
       final header = rows.first.split(';');
       expect(
-        header.sublist(header.length - 2).map((c) => c.replaceAll('"', '')).toList(),
+        header
+            .sublist(header.length - 2)
+            .map((c) => c.replaceAll('"', ''))
+            .toList(),
         ['consumidor', 'porcoes_json'],
       );
       expect(rows[1].split(';')[rows[1].split(';').length - 2], '"voce"');

@@ -18,7 +18,8 @@ class CatalogSource {
   static const _unknownNote =
       'Atalho genérico: teor e volume ficam desconhecidos até você informar.';
   static const _unknownNoteI18n = {
-    'en': 'Generic shortcut: ABV and volume stay unknown until you fill them in.',
+    'en':
+        'Generic shortcut: ABV and volume stay unknown until you fill them in.',
     'es': 'Atajo genérico: el contenido de alcohol y el volumen quedan desconocidos hasta que los informes.',
   };
 
@@ -242,13 +243,11 @@ class CatalogSource {
       noteI18n: {
         'en':
             'Build the composition: the ingredients, amounts and ABV you know.',
-        'es':
-            'Arma la composición: los ingredientes, cantidades y graduaciones que conozcas.',
+        'es': 'Arma la composición: los ingredientes, cantidades y graduaciones que conozcas.',
       },
       category: DrinkCategory.cocktail,
       presentations: [],
-      note:
-          'Monte a composição: ingredientes, quantidades e teores que você souber.',
+      note: 'Monte a composição: ingredientes, quantidades e teores que você souber.',
       recipe: Recipe(
         id: 'recipe:custom-blank',
         name: 'Drink personalizado',
@@ -634,7 +633,11 @@ class CatalogSource {
       id: 'generic-caipirinha-fruta',
       name: 'Caipirinha de fruta',
       nameI18n: {'en': 'Fruit caipirinha', 'es': 'Caipirinha de fruta'},
-      aliases: ['caipirinha de morango', 'caipirinha de maracuja', 'caipifruta'],
+      aliases: [
+        'caipirinha de morango',
+        'caipirinha de maracuja',
+        'caipifruta',
+      ],
       category: DrinkCategory.cocktail,
       note: _unknownNote,
       noteI18n: _unknownNoteI18n,

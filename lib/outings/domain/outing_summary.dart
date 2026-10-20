@@ -39,10 +39,7 @@ class OutingSummary {
   /// Summary of the given (non-deleted) entries. By default only the owner's
   /// own drinks count ([DrinkEntry.isMine]): a guest's drink never inflates
   /// personal numbers. Pass `mineOnly: false` for the whole table.
-  factory OutingSummary.of(
-    List<DrinkEntry> all, {
-    bool mineOnly = true,
-  }) {
+  factory OutingSummary.of(List<DrinkEntry> all, {bool mineOnly = true}) {
     final entries = mineOnly
         ? [
             for (final e in all)

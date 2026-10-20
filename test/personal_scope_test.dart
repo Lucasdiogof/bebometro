@@ -58,17 +58,24 @@ void main() {
       expect(e(consumer: 'nobody').isMine, isFalse);
     });
 
-    test('a shared bottle counts for the owner only when the owner is in it', () {
-      final withMe = e(
-        shared: true,
-        portions: {ownerPortionKey: 400, 'ana': 200},
-        ml: 600,
-      );
-      final withoutMe = e(shared: true, portions: {'ana': 300, 'bia': 300}, ml: 600);
-      expect(withMe.isMine, isTrue);
-      expect(withoutMe.isMine, isFalse);
-      expect(OutingSummary.of([withMe, withoutMe]).entryCount, 1);
-    });
+    test(
+      'a shared bottle counts for the owner only when the owner is in it',
+      () {
+        final withMe = e(
+          shared: true,
+          portions: {ownerPortionKey: 400, 'ana': 200},
+          ml: 600,
+        );
+        final withoutMe = e(
+          shared: true,
+          portions: {'ana': 300, 'bia': 300},
+          ml: 600,
+        );
+        expect(withMe.isMine, isTrue);
+        expect(withoutMe.isMine, isFalse);
+        expect(OutingSummary.of([withMe, withoutMe]).entryCount, 1);
+      },
+    );
 
     test('legacy records (no consumer) are the owner\'s', () {
       expect(e().isMine, isTrue);
@@ -89,12 +96,15 @@ void main() {
       expect(DrinkRepository.isPersonalIndividual(e(shared: true)), isFalse);
     });
 
-    test('repeating an order keeps the person: Mais uma para Ana stays Ana\'s', () {
-      final ana = e(consumer: 'ana');
-      final again = ana.repeated(newId: 'n', at: _t);
-      expect(again.consumerId, 'ana');
-      expect(again.isMine, isFalse);
-    });
+    test(
+      'repeating an order keeps the person: Mais uma para Ana stays Ana\'s',
+      () {
+        final ana = e(consumer: 'ana');
+        final again = ana.repeated(newId: 'n', at: _t);
+        expect(again.consumerId, 'ana');
+        expect(again.isMine, isFalse);
+      },
+    );
   });
 
   group('sync never degrades an attributed record', () {

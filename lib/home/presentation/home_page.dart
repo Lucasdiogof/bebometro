@@ -308,7 +308,10 @@ class _ActiveCard extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: StatTile(label: tr.homeYourDrinks, value: '${s.entryCount}'),
+                child: StatTile(
+                  label: tr.homeYourDrinks,
+                  value: '${s.entryCount}',
+                ),
               ),
               Expanded(
                 child: StatTile(

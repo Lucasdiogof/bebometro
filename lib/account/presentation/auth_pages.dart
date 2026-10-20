@@ -98,9 +98,9 @@ class _SignInPageState extends State<SignInPage> {
         ),
         const SizedBox(height: AppSpace.md),
         OutlinedButton(
-          onPressed: () => Navigator.of(
-            context,
-          ).push(MaterialPageRoute(builder: (_) => const SignUpPage())),
+          onPressed: () =>
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const SignUpPage())),
           child: Text(tr.authCreateAccount),
         ),
       ],

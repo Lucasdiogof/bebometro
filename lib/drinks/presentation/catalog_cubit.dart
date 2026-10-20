@@ -174,9 +174,10 @@ class CatalogCubit extends Cubit<CatalogState> {
     final all = _drinks.catalog();
     final byId = {for (final i in all) i.id: i};
 
-    final tokens = searchKey(
-      _query,
-    ).split(' ').where((t) => t.isNotEmpty).toList();
+    final tokens = searchKey(_query)
+        .split(' ')
+        .where((t) => t.isNotEmpty)
+        .toList();
     final wantsDraft = tokens.contains('chop');
     final items = all.where((i) => _matches(i, _filters, tokens)).toList()
       ..sort((a, b) {
@@ -188,9 +189,8 @@ class CatalogCubit extends Cubit<CatalogState> {
           final bd = b.category == DrinkCategory.draft;
           if (ad != bd) return ad ? -1 : 1;
         }
-        return normalizeText(
-          a.displayName,
-        ).compareTo(normalizeText(b.displayName));
+        return normalizeText(a.displayName)
+            .compareTo(normalizeText(b.displayName));
       });
 
     const preferredStyles = [

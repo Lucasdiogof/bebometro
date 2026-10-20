@@ -306,10 +306,11 @@ class _OrderPageState extends State<OrderPage> {
     if (_kind != PriceKind.informed || cents == null || _servings <= 0) {
       return null;
     }
-    if (_shared)
+    if (_shared) {
       return tr.orderSplitEach(
         formatCents(cents ~/ (_sharers.isEmpty ? 1 : _sharers.length)),
       );
+    }
     if (_servings == 1) return null;
     return _basis == PriceBasis.unit
         ? tr.orderLineSummary(

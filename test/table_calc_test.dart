@@ -46,15 +46,16 @@ DrinkEntry drink({
   );
 }
 
-TabExtra food(int cents, List<String> ids, {String name = 'Batata'}) => TabExtra(
-  id: 'f-$name-$cents',
-  description: name,
-  category: ExtraCategory.food,
-  createdAt: _t,
-  priceKind: PriceKind.informed,
-  cents: cents,
-  assign: {for (final i in ids) i: 1},
-);
+TabExtra food(int cents, List<String> ids, {String name = 'Batata'}) =>
+    TabExtra(
+      id: 'f-$name-$cents',
+      description: name,
+      category: ExtraCategory.food,
+      createdAt: _t,
+      priceKind: PriceKind.informed,
+      cents: cents,
+      assign: {for (final i in ids) i: 1},
+    );
 
 TabDoc table({
   List<Participant> people = const [_me, _ana],
@@ -76,7 +77,9 @@ TabDoc table({
   payments: payments,
 );
 
-Map<String, DrinkEntry> byId(List<DrinkEntry> l) => {for (final e in l) e.id: e};
+Map<String, DrinkEntry> byId(List<DrinkEntry> l) => {
+  for (final e in l) e.id: e,
+};
 
 void main() {
   group('A: couple at the bar', () {
@@ -98,7 +101,9 @@ void main() {
           ),
       ];
       doc = table(
-        extras: [food(6000, [_me.id, _ana.id])],
+        extras: [
+          food(6000, [_me.id, _ana.id]),
+        ],
         service: true,
       );
       r = TabCalculator.compute(doc, byId(entries));
@@ -111,12 +116,15 @@ void main() {
       expect(r.isPartial, isFalse);
     });
 
-    test('each person owes what they ordered plus half the food, service included', () {
-      expect(r.shareOf(_me.id), 9900);
-      expect(r.shareOf(_ana.id), 10340);
-      expect(r.shareOf(_me.id) + r.shareOf(_ana.id), r.total);
-      expect(r.splitComplete, isTrue);
-    });
+    test(
+      'each person owes what they ordered plus half the food, service included',
+      () {
+        expect(r.shareOf(_me.id), 9900);
+        expect(r.shareOf(_ana.id), 10340);
+        expect(r.shareOf(_me.id) + r.shareOf(_ana.id), r.total);
+        expect(r.splitComplete, isTrue);
+      },
+    );
 
     test('breakdown per person adds up to the share', () {
       final b = TabCalculator.breakdown(doc, r);
@@ -188,7 +196,10 @@ void main() {
       // And if the bill goes down, the excess is shown, not erased.
       final cheaper = TabCalculator.compute(
         paid,
-        byId([entries.first.copyWithPrice(kind: PriceKind.unknown, updatedAt: _t), ...entries.skip(1)]),
+        byId([
+          entries.first.copyWithPrice(kind: PriceKind.unknown, updatedAt: _t),
+          ...entries.skip(1),
+        ]),
       );
       expect(cheaper.isPartial, isTrue);
     });
@@ -236,7 +247,10 @@ void main() {
 
     test('repeating gives another bottle, not a duplicate of the first', () {
       final a = bottle();
-      final again = a.repeated(newId: 'b2', at: _t.add(const Duration(hours: 1)));
+      final again = a.repeated(
+        newId: 'b2',
+        at: _t.add(const Duration(hours: 1)),
+      );
       expect(again.id, isNot(a.id));
       expect(again.portions, a.portions);
       final doc = table();
@@ -264,14 +278,15 @@ void main() {
       const carol = Participant(id: 'p-carol', name: 'Carol');
       final doc = table(
         people: const [_me, _ana, carol],
-        extras: [food(10000, [_me.id, _ana.id, carol.id], name: 'Porção')],
+        extras: [
+          food(10000, [_me.id, _ana.id, carol.id], name: 'Porção'),
+        ],
       );
       final r = TabCalculator.compute(doc, const {});
-      expect([r.shareOf(_me.id), r.shareOf(_ana.id), r.shareOf(carol.id)], [
-        3334,
-        3333,
-        3333,
-      ]);
+      expect(
+        [r.shareOf(_me.id), r.shareOf(_ana.id), r.shareOf(carol.id)],
+        [3334, 3333, 3333],
+      );
       expect(r.splitComplete, isTrue);
     });
 
@@ -279,47 +294,55 @@ void main() {
       const dani = Participant(id: 'p-dani', name: 'Dani');
       final doc = table(
         people: const [_me, _ana, dani],
-        extras: [food(6000, [_me.id, _ana.id])],
+        extras: [
+          food(6000, [_me.id, _ana.id]),
+        ],
       );
       final r = TabCalculator.compute(doc, const {});
       expect(r.shareOf(dani.id), 0);
       expect(r.shareOf(_me.id) + r.shareOf(_ana.id), 6000);
     });
 
-    test('"everybody" is the list of who is present, never someone who left', () {
-      const gone = Participant(id: 'p-gone', name: 'Zé', left: true);
-      final doc = table(people: const [_me, _ana, gone]);
-      expect([for (final p in doc.present) p.id], [_me.id, _ana.id]);
-    });
+    test(
+      '"everybody" is the list of who is present, never someone who left',
+      () {
+        const gone = Participant(id: 'p-gone', name: 'Zé', left: true);
+        final doc = table(people: const [_me, _ana, gone]);
+        expect([for (final p in doc.present) p.id], [_me.id, _ana.id]);
+      },
+    );
   });
 
   group('E: corrections', () {
-    test('moving a drink to Ana moves the consumption and the default cost', () {
-      final wrong = drink(id: 'w1', cents: 3200, name: 'Spritzgerald');
-      final doc = table();
-      var r = TabCalculator.compute(doc, byId([wrong]));
-      expect(r.shareOf(_me.id), 3200);
-      final fixed = wrong.copyWithAttribution(
-        consumerId: _ana.id,
-        portions: null,
-        personalMl: wrong.personalMl,
-        peopleCount: 1,
-        updatedAt: _t,
-      );
-      r = TabCalculator.compute(doc, byId([fixed]));
-      expect(r.shareOf(_me.id), 0);
-      expect(r.shareOf(_ana.id), 3200);
-      expect(fixed.isMine, isFalse);
-      // Undo: back to the owner.
-      final back = fixed.copyWithAttribution(
-        consumerId: null,
-        portions: null,
-        personalMl: fixed.personalMl,
-        peopleCount: 1,
-        updatedAt: _t,
-      );
-      expect(TabCalculator.compute(doc, byId([back])).shareOf(_me.id), 3200);
-    });
+    test(
+      'moving a drink to Ana moves the consumption and the default cost',
+      () {
+        final wrong = drink(id: 'w1', cents: 3200, name: 'Spritzgerald');
+        final doc = table();
+        var r = TabCalculator.compute(doc, byId([wrong]));
+        expect(r.shareOf(_me.id), 3200);
+        final fixed = wrong.copyWithAttribution(
+          consumerId: _ana.id,
+          portions: null,
+          personalMl: wrong.personalMl,
+          peopleCount: 1,
+          updatedAt: _t,
+        );
+        r = TabCalculator.compute(doc, byId([fixed]));
+        expect(r.shareOf(_me.id), 0);
+        expect(r.shareOf(_ana.id), 3200);
+        expect(fixed.isMine, isFalse);
+        // Undo: back to the owner.
+        final back = fixed.copyWithAttribution(
+          consumerId: null,
+          portions: null,
+          personalMl: fixed.personalMl,
+          peopleCount: 1,
+          updatedAt: _t,
+        );
+        expect(TabCalculator.compute(doc, byId([back])).shareOf(_me.id), 3200);
+      },
+    );
 
     test('deleting the food recalculates the service', () {
       final dish = food(6000, [_me.id, _ana.id]);
@@ -333,15 +356,18 @@ void main() {
       expect(r.service, 100);
     });
 
-    test('an unpriced item makes the bill partial; a courtesy is a known zero', () {
-      final free = drink(id: 'c1', kind: PriceKind.complimentary);
-      final unknown = drink(id: 'u1', kind: PriceKind.unknown);
-      final doc = table();
-      expect(TabCalculator.compute(doc, byId([free])).isPartial, isFalse);
-      final r = TabCalculator.compute(doc, byId([free, unknown]));
-      expect(r.isPartial, isTrue);
-      expect(r.pendingCount, 1);
-    });
+    test(
+      'an unpriced item makes the bill partial; a courtesy is a known zero',
+      () {
+        final free = drink(id: 'c1', kind: PriceKind.complimentary);
+        final unknown = drink(id: 'u1', kind: PriceKind.unknown);
+        final doc = table();
+        expect(TabCalculator.compute(doc, byId([free])).isPartial, isFalse);
+        final r = TabCalculator.compute(doc, byId([free, unknown]));
+        expect(r.isPartial, isTrue);
+        expect(r.pendingCount, 1);
+      },
+    );
 
     test('a record of someone who is not on the tab stays unassigned', () {
       final stray = drink(id: 's1', consumerId: 'nobody', cents: 1000);

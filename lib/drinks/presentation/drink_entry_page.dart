@@ -412,29 +412,30 @@ class _DrinkEntryView extends StatelessWidget {
                           const SizedBox(height: AppSpace.md),
                           Text(tr.entrySharedUseOrder, style: AppText.caption),
                         ] else ...[
-                        SectionTitle(tr.entryIndividualOrShared),
-                        SizedBox(
-                          width: double.infinity,
-                          child: SegmentedButton<bool>(
-                            showSelectedIcon: false,
-                            segments: [
-                              ButtonSegment(
-                                value: false,
-                                label: Text(tr.entryOnlyMine),
-                              ),
-                              ButtonSegment(
-                                value: true,
-                                label: Text(tr.entryShared),
-                              ),
-                            ],
-                            selected: {d.isShared},
-                            onSelectionChanged: (s) => cubit.setShared(s.first),
+                          SectionTitle(tr.entryIndividualOrShared),
+                          SizedBox(
+                            width: double.infinity,
+                            child: SegmentedButton<bool>(
+                              showSelectedIcon: false,
+                              segments: [
+                                ButtonSegment(
+                                  value: false,
+                                  label: Text(tr.entryOnlyMine),
+                                ),
+                                ButtonSegment(
+                                  value: true,
+                                  label: Text(tr.entryShared),
+                                ),
+                              ],
+                              selected: {d.isShared},
+                              onSelectionChanged: (s) =>
+                                  cubit.setShared(s.first),
+                            ),
                           ),
-                        ),
-                        if (d.isShared) ...[
-                          const SizedBox(height: AppSpace.md),
-                          _SharingCard(draft: d, errors: errors),
-                        ],
+                          if (d.isShared) ...[
+                            const SizedBox(height: AppSpace.md),
+                            _SharingCard(draft: d, errors: errors),
+                          ],
                         ],
                       ],
                       SectionTitle(tr.entryPriceSection),
@@ -503,7 +504,9 @@ class _DrinkEntryView extends StatelessWidget {
                           ),
                         ),
                       FilledButton(
-                        onPressed: state.saving ? null : () => _submit(context, cubit),
+                        onPressed: state.saving
+                            ? null
+                            : () => _submit(context, cubit),
                         child: state.saving
                             ? const SizedBox(
                                 width: 20,
@@ -1538,7 +1541,8 @@ class _ConsumerSection extends StatelessWidget {
                 label: Text(p.displayName),
                 selected: selected == p.id,
                 showCheckmark: false,
-                onSelected: (_) => cubit.setConsumer(p.id == ownerId ? null : p.id),
+                onSelected: (_) =>
+                    cubit.setConsumer(p.id == ownerId ? null : p.id),
               ),
           ],
         ),

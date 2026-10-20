@@ -156,8 +156,7 @@ class GeoSearch {
   Future<List<GeoResult>> nearby(GeoPoint p, {int radiusMeters = 300}) => _get(
     'https://api.geoapify.com/v2/places',
     {
-      'categories':
-          'catering.bar,catering.pub,catering.biergarten,catering.restaurant,adult.nightclub',
+      'categories': 'catering.bar,catering.pub,catering.biergarten,catering.restaurant,adult.nightclub',
       'filter': 'circle:${p.lng},${p.lat},$radiusMeters',
       'bias': 'proximity:${p.lng},${p.lat}',
       'lang': 'pt',
@@ -185,14 +184,14 @@ class GeoSearch {
     Map<String, String> params,
     Object? Function(Map<String, dynamic>) pick,
   ) async {
-    if (!configured)
+    if (!configured) {
       throw const GeoSearchException(GeoSearchError.notConfigured);
-    final uri = Uri.parse(
-      base,
-    ).replace(queryParameters: {...params, 'apiKey': _key});
-    final cacheKey = Uri.parse(
-      base,
-    ).replace(queryParameters: params).toString();
+    }
+    final uri = Uri.parse(base)
+        .replace(queryParameters: {...params, 'apiKey': _key});
+    final cacheKey = Uri.parse(base)
+        .replace(queryParameters: params)
+        .toString();
     final hit = _cache.remove(cacheKey);
     if (hit != null) return _cache[cacheKey] = hit; // most recent last
 

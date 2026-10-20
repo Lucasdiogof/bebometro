@@ -400,8 +400,9 @@ class TabCalculator {
     var base = 0;
     for (var i = 0; i < lines.length; i++) {
       final t = lines[i].totalCents;
-      if (doc.serviceOn && t != null && lines[i].service)
+      if (doc.serviceOn && t != null && lines[i].service) {
         base += t - discounts[i];
+      }
     }
     final serviceTotal = doc.serviceOn
         ? percentOf(base, doc.serviceBp.clamp(0, 10000).toInt())

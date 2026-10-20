@@ -127,13 +127,19 @@ class ConflictDescriber {
     ].whereType<String>().join(' / ');
     final hasPoint = j['latitude'] != null && j['longitude'] != null;
     return [
-      ConflictField(tr.conflictFieldName, _or(j['nickname'] ?? j['provider_name'])),
+      ConflictField(
+        tr.conflictFieldName,
+        _or(j['nickname'] ?? j['provider_name']),
+      ),
       ConflictField(
         tr.conflictFieldType,
         OutingType.fromCode(_text(j['type']) ?? 'other').label,
       ),
       ConflictField(tr.conflictFieldAddress, _or(j['address'])),
-      ConflictField(tr.conflictFieldCity, city.isEmpty ? tr.conflictNotInformed : city),
+      ConflictField(
+        tr.conflictFieldCity,
+        city.isEmpty ? tr.conflictNotInformed : city,
+      ),
       ConflictField(
         tr.conflictFieldFavorite,
         j['favorite'] == true ? tr.conflictYes : tr.conflictNo,

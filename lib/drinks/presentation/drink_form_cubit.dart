@@ -166,11 +166,9 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     super.initial, {
     String? entryId,
     this.reviewNote,
-    TabRepository? tabs,
-    BottlePeople? initialPeople,
-  }) : _entryId = entryId ?? _drinks.newId(),
-       _tabs = tabs,
-       _initialPeople = initialPeople;
+    this._tabs,
+    this._initialPeople,
+  }) : _entryId = entryId ?? _drinks.newId();
 
   final TabRepository? _tabs;
 
@@ -381,7 +379,8 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     final doc = tabs.load(_outingId);
     return [
       for (final p in doc.present)
-        if (!people.has(p.isMe ? ownerPortionKey : p.id)) p.isMe ? ownerPortionKey : p.id,
+        if (!people.has(p.isMe ? ownerPortionKey : p.id))
+          p.isMe ? ownerPortionKey : p.id,
     ];
   }
 
@@ -430,11 +429,15 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     // only changes when the owner stops paying.
     final bill = draft.billTotalCents;
     if (draft.priceKind == PriceKind.informed) {
-      final owner = next.has(ownerPortionKey) ? next.weightOf(ownerPortionKey) : 0;
+      final owner = next.has(ownerPortionKey)
+          ? next.weightOf(ownerPortionKey)
+          : 0;
       if (owner <= 0) {
         draft = draft.withPaidCents(0);
       } else if (bill != null) {
-        draft = draft.withPaidCents(next.costShares(bill)[ownerPortionKey] ?? 0);
+        draft = draft.withPaidCents(
+          next.costShares(bill)[ownerPortionKey] ?? 0,
+        );
       }
     }
     emit(
@@ -481,7 +484,9 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       now: DateTime.now(),
     );
     final link = doc.linkFor(existing.id) ?? TabLink(entryId: existing.id);
-    final nextLink = link.copyWith(assign: () => people.toLinkAssign(doc.me?.id));
+    final nextLink = link.copyWith(
+      assign: () => people.toLinkAssign(doc.me?.id),
+    );
     final nextDoc = doc.copyWith(
       links: [
         for (final l in doc.links)
@@ -490,7 +495,10 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
       ],
     );
     final a = TabCalculator.compute(doc, entries);
-    final b = TabCalculator.compute(nextDoc, {...entries, existing.id: draftEntry});
+    final b = TabCalculator.compute(nextDoc, {
+      ...entries,
+      existing.id: draftEntry,
+    });
     String idOf(String key) =>
         key == ownerPortionKey ? (doc.me?.id ?? key) : key;
     final keys = <String>{...before.keys, ...people.keys};
@@ -562,6 +570,7 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     }
     _set(state.draft.withLeftoverMl(ml));
   }
+
   void setPriceKind(PriceKind k) => _set(state.draft.withPriceKind(k));
   void setPaidCents(int? c) => _set(state.draft.withPaidCents(c));
   void setBillTotalCents(int? c) => _set(state.draft.withBillTotalCents(c));
@@ -657,7 +666,8 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
     if (state.saving || state.saved || state.deleted) return;
     final people = state.people;
     // Cost left to distribute needs someone to receive it.
-    final noPayer = people != null &&
+    final noPayer =
+        people != null &&
         state.draft.priceKind == PriceKind.informed &&
         !people.hasPayer;
     if (state.consumerPending || !state.draft.isValid || noPayer) {
@@ -678,7 +688,9 @@ class DrinkFormCubit extends Cubit<DrinkFormState> {
         final ownerId = tabs.load(_outingId).me?.id;
         await tabs.update(_outingId, (doc) {
           final link = doc.linkFor(entry.id) ?? TabLink(entryId: entry.id);
-          final next = link.copyWith(assign: () => people.toLinkAssign(ownerId));
+          final next = link.copyWith(
+            assign: () => people.toLinkAssign(ownerId),
+          );
           return doc.copyWith(
             links: [
               for (final l in doc.links)

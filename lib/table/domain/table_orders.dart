@@ -81,8 +81,7 @@ class TableOrders {
     return [keyOf(e.consumerId)];
   }
 
-  static List<String> _takersOf(TabExtra x, TabDoc doc) =>
-      x.assign == null
+  static List<String> _takersOf(TabExtra x, TabDoc doc) => x.assign == null
       ? [for (final p in doc.participants) p.id]
       : [
           for (final p in doc.participants)
@@ -109,8 +108,12 @@ class TableOrders {
       consumers[key] = who;
     }
     for (final kv in groups.entries) {
-      final list = kv.value..sort((a, b) => a.consumedAt.compareTo(b.consumedAt));
-      final first = TabCalculator.entryLine(list.first, TabLink(entryId: list.first.id));
+      final list = kv.value
+        ..sort((a, b) => a.consumedAt.compareTo(b.consumedAt));
+      final first = TabCalculator.entryLine(
+        list.first,
+        TabLink(entryId: list.first.id),
+      );
       final total = first.totalCents == null
           ? null
           : first.totalCents! * list.length;

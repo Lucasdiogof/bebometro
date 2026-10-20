@@ -38,11 +38,7 @@ class GamePlayPage extends StatelessWidget {
         if (game == null) {
           cubit.resume();
         } else {
-          cubit.begin(
-            game: game!,
-            mode: mode!,
-            players: players!,
-          );
+          cubit.begin(game: game!, mode: mode!, players: players!);
         }
         return cubit;
       },
@@ -208,7 +204,10 @@ class _Stage extends StatelessWidget {
         children: [
           _ReaderBanner(session: session),
           Padding(
-            padding: const EdgeInsets.only(top: AppSpace.md, bottom: AppSpace.lg),
+            padding: const EdgeInsets.only(
+              top: AppSpace.md,
+              bottom: AppSpace.lg,
+            ),
             child: Text(
               session.game == GameType.truthOrDare
                   ? '${tr.gameResponder(session.responder!)} · ${card.kind.label}'

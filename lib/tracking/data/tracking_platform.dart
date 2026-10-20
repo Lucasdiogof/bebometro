@@ -200,8 +200,9 @@ class TrackingPlatform {
       final outing = item['outingId'] as String?;
       final kind = item['kind'] as String?;
       final secs = item['at'];
-      if (id == null || outing == null || kind == null || secs is! num)
+      if (id == null || outing == null || kind == null || secs is! num) {
         continue;
+      }
       out.add(
         TrackingCommand(
           id,

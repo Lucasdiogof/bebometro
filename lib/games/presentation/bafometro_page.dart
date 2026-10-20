@@ -253,7 +253,8 @@ class _BafometroPageState extends State<BafometroPage>
                       child: CustomPaint(
                         painter: _DialPainter(
                           needle: _needle,
-                          shake: _phase == BreathPhase.blowing &&
+                          shake:
+                              _phase == BreathPhase.blowing &&
                               !reduceMotion(context),
                           segments: BreathToy.resultCount,
                         ),
@@ -353,9 +354,7 @@ class _BafometroPageState extends State<BafometroPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _who == null
-                        ? tr.bafoResultAnon
-                        : tr.bafoResultFor(_who!),
+                    _who == null ? tr.bafoResultAnon : tr.bafoResultFor(_who!),
                     style: AppText.caption.copyWith(color: AppColors.amber),
                   ),
                   const SizedBox(height: AppSpace.xs),
@@ -546,7 +545,11 @@ class _DialPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
     canvas.drawLine(center, tip, needlePaint);
     canvas.drawCircle(center, radius * 0.09, Paint()..color = AppColors.foam);
-    canvas.drawCircle(center, radius * 0.045, Paint()..color = AppColors.background);
+    canvas.drawCircle(
+      center,
+      radius * 0.045,
+      Paint()..color = AppColors.background,
+    );
   }
 
   @override

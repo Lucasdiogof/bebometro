@@ -32,12 +32,14 @@ class BottlePeople {
 
   /// Everyone of the bottle splits the cost equally (the default of a bottle
   /// that was never adjusted).
-  factory BottlePeople.equal(Map<String, int?> portions, {int leftoverMl = 0}) =>
-      BottlePeople(
-        portions: Map.of(portions),
-        weights: {for (final k in portions.keys) k: 1},
-        leftoverMl: leftoverMl,
-      );
+  factory BottlePeople.equal(
+    Map<String, int?> portions, {
+    int leftoverMl = 0,
+  }) => BottlePeople(
+    portions: Map.of(portions),
+    weights: {for (final k in portions.keys) k: 1},
+    leftoverMl: leftoverMl,
+  );
 
   List<String> get keys => portions.keys.toList();
 
@@ -120,7 +122,9 @@ class BottlePeople {
         case VolumeFate.toLeftover:
           nextLeftover += ml;
         case VolumeFate.toPerson:
-          if (volumeTo == null || volumeTo == key || !nextPortions.containsKey(volumeTo)) {
+          if (volumeTo == null ||
+              volumeTo == key ||
+              !nextPortions.containsKey(volumeTo)) {
             throw ArgumentError('volume needs another person of the bottle');
           }
           nextPortions[volumeTo] = (nextPortions[volumeTo] ?? 0) + ml;
@@ -135,7 +139,9 @@ class BottlePeople {
         case MoneyFate.spreadOnOthers:
           break;
         case MoneyFate.toPerson:
-          if (moneyTo == null || moneyTo == key || !nextPortions.containsKey(moneyTo)) {
+          if (moneyTo == null ||
+              moneyTo == key ||
+              !nextPortions.containsKey(moneyTo)) {
             throw ArgumentError('cost needs another person of the bottle');
           }
           nextWeights[moneyTo] = (nextWeights[moneyTo] ?? 0) + w;
@@ -158,8 +164,13 @@ class BottlePeople {
   /// Cents of [totalCents] per key, by weight, in whole cents (sums exactly to
   /// the total while someone has a weight).
   Map<String, int> costShares(int totalCents) {
-    final ks = [for (final k in keys) if (weightOf(k) > 0) k];
-    final parts = TabCalculator.allocate(totalCents, [for (final k in ks) weightOf(k)]);
+    final ks = [
+      for (final k in keys)
+        if (weightOf(k) > 0) k,
+    ];
+    final parts = TabCalculator.allocate(totalCents, [
+      for (final k in ks) weightOf(k),
+    ]);
     return {for (var i = 0; i < ks.length; i++) ks[i]: parts[i]};
   }
 

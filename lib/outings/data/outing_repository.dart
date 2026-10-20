@@ -234,7 +234,11 @@ class OutingRepository {
       throw ArgumentError(tr.outingStartAfterRecords);
     }
     await _save(
-      outing.copyWith(type: type, startedAt: startedAt, updatedAt: DateTime.now()),
+      outing.copyWith(
+        type: type,
+        startedAt: startedAt,
+        updatedAt: DateTime.now(),
+      ),
     );
   }
 

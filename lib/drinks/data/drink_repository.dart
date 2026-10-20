@@ -79,9 +79,9 @@ class DrinkRepository {
   /// alcoholic INDIVIDUAL order of the owner. A guest's order and a shared
   /// bottle stay in the app, where the person is chosen explicitly.
   DrinkEntry? lastPersonalIndividual(String outingId) {
-    final list = entriesFor(
-      outingId,
-    ).where((e) => e.isAlcoholic && isPersonalIndividual(e)).toList();
+    final list = entriesFor(outingId)
+        .where((e) => e.isAlcoholic && isPersonalIndividual(e))
+        .toList();
     return list.isEmpty ? null : list.last;
   }
 
@@ -90,9 +90,9 @@ class DrinkRepository {
     String outingId,
     bool Function(DrinkEntry) where,
   ) {
-    final list = entriesFor(
-      outingId,
-    ).where((e) => e.isAlcoholic && where(e)).toList();
+    final list = entriesFor(outingId)
+        .where((e) => e.isAlcoholic && where(e))
+        .toList();
     return list.isEmpty ? null : list.last;
   }
 

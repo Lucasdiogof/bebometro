@@ -14,9 +14,8 @@ class AppRoutes {
     if (_settingsOpen) return;
     _settingsOpen = true;
     try {
-      await Navigator.of(
-        context,
-      ).push<void>(MaterialPageRoute(builder: (_) => const SettingsPage()));
+      await Navigator.of(context)
+          .push<void>(MaterialPageRoute(builder: (_) => const SettingsPage()));
     } finally {
       _settingsOpen = false;
     }

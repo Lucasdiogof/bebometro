@@ -44,10 +44,7 @@ void main() {
   setUp(() => _n = 0);
 
   test('4 chopps for Lucas: four records of the owner, R\$ 15 each', () {
-    final list = OrderBuilder.build(
-      input(units: {_lucas: 4}),
-      newId: nextId,
-    );
+    final list = OrderBuilder.build(input(units: {_lucas: 4}), newId: nextId);
     expect(list.length, 4);
     expect(list.map((e) => e.consumerId).toSet(), {null});
     expect(list.every((e) => e.isMine), isTrue);
@@ -71,8 +68,14 @@ void main() {
     expect(list.length, 2);
     expect(list.every((e) => e.consumerId == _ana), isTrue);
     expect(list.every((e) => !e.isMine), isTrue);
-    expect(list.every((e) => e.containerMl == null && e.personalMl == null), isTrue);
-    expect(list.every((e) => e.abvPercent == null && e.composition == null), isTrue);
+    expect(
+      list.every((e) => e.containerMl == null && e.personalMl == null),
+      isTrue,
+    );
+    expect(
+      list.every((e) => e.abvPercent == null && e.composition == null),
+      isTrue,
+    );
     expect(list.map((e) => e.name).toSet(), {'Spritzgerald'});
     expect(list.map((e) => e.paidCents).toSet(), {3200});
   });
@@ -88,11 +91,7 @@ void main() {
 
   test('the price of the whole order is spread in whole cents', () {
     final list = OrderBuilder.build(
-      input(
-        units: {_ana: 3},
-        basis: PriceBasis.total,
-        cents: 10000,
-      ),
+      input(units: {_ana: 3}, basis: PriceBasis.total, cents: 10000),
       newId: nextId,
     );
     final prices = list.map((e) => e.paidCents!).toList();
@@ -165,22 +164,28 @@ void main() {
         bottle(portions: {_lucas: 400, _ana: 300}),
       );
       expect(p, contains(OrderProblem.portionsOverBottle));
-      expect(() => OrderBuilder.build(bottle(portions: {_lucas: 400, _ana: 300}), newId: nextId), throwsArgumentError);
+      expect(
+        () => OrderBuilder.build(
+          bottle(portions: {_lucas: 400, _ana: 300}),
+          newId: nextId,
+        ),
+        throwsArgumentError,
+      );
     });
 
     test('"divide the volume equally" is an explicit estimate', () {
-      expect(
-        OrderBuilder.equalPortions([_lucas, _ana], 600, 0),
-        {_lucas: 300, _ana: 300},
-      );
-      expect(
-        OrderBuilder.equalPortions([_lucas, _ana], 600, 100),
-        {_lucas: 250, _ana: 250},
-      );
-      expect(
-        OrderBuilder.equalPortions([_lucas, _ana], null, 0),
-        {_lucas: null, _ana: null},
-      );
+      expect(OrderBuilder.equalPortions([_lucas, _ana], 600, 0), {
+        _lucas: 300,
+        _ana: 300,
+      });
+      expect(OrderBuilder.equalPortions([_lucas, _ana], 600, 100), {
+        _lucas: 250,
+        _ana: 250,
+      });
+      expect(OrderBuilder.equalPortions([_lucas, _ana], null, 0), {
+        _lucas: null,
+        _ana: null,
+      });
     });
 
     test('splitting the price in two does not claim each drank half', () {

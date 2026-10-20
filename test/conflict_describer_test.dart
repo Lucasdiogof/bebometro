@@ -42,10 +42,7 @@ void main() {
       _place(address: null),
       _place(),
     )!;
-    expect(
-      v.local.fields.any((f) => f.value == 'não informado'),
-      isTrue,
-    );
+    expect(v.local.fields.any((f) => f.value == 'não informado'), isTrue);
   });
 
   test('an edit and a deletion are told apart', () {
@@ -60,30 +57,38 @@ void main() {
     expect(v.name, 'Bar do Zé 2');
   });
 
-  test('a drink shows volume, abv and unknowns; a missing remote is allowed', () {
-    final local = {
-      'id': 'd1',
-      'name': 'Meu chope',
-      'category': 'draft',
-      'brand': null,
-      'style': 'Pilsen',
-      'volume_ml': 300,
-      'abv_percent': 4.8,
-      'ingredients': null,
-      'updated_at': '2026-10-19T10:00:00Z',
-    };
-    final remote = {...local, 'volume_ml': 400, 'abv_percent': null};
-    final v = ConflictDescriber.describe(LocalStore.customDrinks, local, remote)!;
-    expect(v.differing.length, 2);
-    final vol = v.local.fields.firstWhere((f) => f.value.contains('300'));
-    expect(vol.value, contains('ml'));
-    expect(
-      v.remote!.fields.any((f) => f.value == 'não informado'),
-      isTrue,
-    );
-    final alone = ConflictDescriber.describe(LocalStore.customDrinks, local, null)!;
-    expect(alone.remote, isNull);
-  });
+  test(
+    'a drink shows volume, abv and unknowns; a missing remote is allowed',
+    () {
+      final local = {
+        'id': 'd1',
+        'name': 'Meu chope',
+        'category': 'draft',
+        'brand': null,
+        'style': 'Pilsen',
+        'volume_ml': 300,
+        'abv_percent': 4.8,
+        'ingredients': null,
+        'updated_at': '2026-10-19T10:00:00Z',
+      };
+      final remote = {...local, 'volume_ml': 400, 'abv_percent': null};
+      final v = ConflictDescriber.describe(
+        LocalStore.customDrinks,
+        local,
+        remote,
+      )!;
+      expect(v.differing.length, 2);
+      final vol = v.local.fields.firstWhere((f) => f.value.contains('300'));
+      expect(vol.value, contains('ml'));
+      expect(v.remote!.fields.any((f) => f.value == 'não informado'), isTrue);
+      final alone = ConflictDescriber.describe(
+        LocalStore.customDrinks,
+        local,
+        null,
+      )!;
+      expect(alone.remote, isNull);
+    },
+  );
 
   test('a recipe lists each ingredient and flags composition changes', () {
     Map<String, dynamic> recipe(double gin) => {
@@ -91,7 +96,13 @@ void main() {
       'name': 'Gin tônica',
       'category': 'cocktail',
       'components': [
-        {'name': 'Gin', 'alcoholic': true, 'amount': gin, 'unit': 'ml', 'abv_percent': 40},
+        {
+          'name': 'Gin',
+          'alcoholic': true,
+          'amount': gin,
+          'unit': 'ml',
+          'abv_percent': 40,
+        },
         {'name': 'Tônica', 'alcoholic': false, 'amount': 150, 'unit': 'ml'},
       ],
       'updated_at': '2026-10-19T10:00:00Z',

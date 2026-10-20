@@ -32,32 +32,48 @@ void main() {
   test('the start cannot be in the future, after the end, or after the first record', () async {
     final (repo, o) = await _repo();
     expect(
-      () => repo.edit(o.id, type: o.type, startedAt: DateTime.now().add(const Duration(hours: 1))),
+      () => repo.edit(
+        o.id,
+        type: o.type,
+        startedAt: DateTime.now().add(const Duration(hours: 1)),
+      ),
       throwsArgumentError,
     );
     final first = o.startedAt.add(const Duration(minutes: 20));
     expect(
-      () => repo.edit(o.id, type: o.type, startedAt: first.add(const Duration(minutes: 5)), earliestRecord: first),
+      () => repo.edit(
+        o.id,
+        type: o.type,
+        startedAt: first.add(const Duration(minutes: 5)),
+        earliestRecord: first,
+      ),
       throwsArgumentError,
     );
     await repo.finish(o.id, o.startedAt.add(const Duration(hours: 1)));
     expect(
-      () => repo.edit(o.id, type: o.type, startedAt: o.startedAt.add(const Duration(hours: 1, minutes: 5))),
+      () => repo.edit(
+        o.id,
+        type: o.type,
+        startedAt: o.startedAt.add(const Duration(hours: 1, minutes: 5)),
+      ),
       throwsArgumentError,
     );
     // nothing was changed by the refused attempts
     expect(repo.byId(o.id)!.startedAt.difference(o.startedAt).inSeconds, 0);
   });
 
-  test('delete is a tombstone: the outing leaves every list and stays out', () async {
-    final (repo, o) = await _repo();
-    expect(repo.active?.id, o.id);
-    await repo.delete(o.id);
-    expect(repo.byId(o.id), isNull);
-    expect(repo.active, isNull);
-    expect(repo.all(), isEmpty);
-    // a second delete is harmless
-    await repo.delete(o.id);
-    expect(repo.all(), isEmpty);
-  });
+  test(
+    'delete is a tombstone: the outing leaves every list and stays out',
+    () async {
+      final (repo, o) = await _repo();
+      expect(repo.active?.id, o.id);
+      await repo.delete(o.id);
+      expect(repo.byId(o.id), isNull);
+      expect(repo.active, isNull);
+      expect(repo.all(), isEmpty);
+      // a second delete is harmless
+      await repo.delete(o.id);
+      expect(repo.all(), isEmpty);
+    },
+  );
 }

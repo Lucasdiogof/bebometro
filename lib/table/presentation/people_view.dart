@@ -140,12 +140,19 @@ class _PersonCard extends StatelessWidget {
               IconButton(
                 tooltip: tr.entryOptions,
                 onPressed: onManage,
-                icon: const Icon(Icons.more_vert_rounded, color: AppColors.textMuted),
+                icon: const Icon(
+                  Icons.more_vert_rounded,
+                  color: AppColors.textMuted,
+                ),
               ),
             ],
           ),
           const SizedBox(height: AppSpace.sm),
-          Text(_drank, key: ValueKey('drank-${person.id}'), style: AppText.caption),
+          Text(
+            _drank,
+            key: ValueKey('drank-${person.id}'),
+            style: AppText.caption,
+          ),
           const Divider(height: AppSpace.xl),
           if (itemMode) ...[
             _Line(tr.peopleDrinksCost, b.drinksCents),
@@ -159,7 +166,11 @@ class _PersonCard extends StatelessWidget {
             bold: true,
             keyName: 'share-${person.id}',
           ),
-          _Line(tr.peoplePaidToVenue, b.paidCents, keyName: 'paid-${person.id}'),
+          _Line(
+            tr.peoplePaidToVenue,
+            b.paidCents,
+            keyName: 'paid-${person.id}',
+          ),
           if (status != null)
             Padding(
               padding: const EdgeInsets.only(top: AppSpace.xs),

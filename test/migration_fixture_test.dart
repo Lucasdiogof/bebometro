@@ -13,22 +13,32 @@ import 'package:flutter_test/flutter_test.dart';
 final _t = DateTime.utc(2026, 10, 10, 22);
 
 Map<String, dynamic> _oldEntry(Map<String, dynamic> extra) => {
-      'id': 'x',
-      'outing_id': 'o-old',
-      'consumed_at': _t.toIso8601String(),
-      'name': 'Chopp',
-      'category': 'draft',
-      'created_at': _t.toIso8601String(),
-      'updated_at': _t.toIso8601String(),
-      'price_kind': 'informed',
-      'is_shared': false,
-      'people_count': 1,
-      ...extra,
-    };
+  'id': 'x',
+  'outing_id': 'o-old',
+  'consumed_at': _t.toIso8601String(),
+  'name': 'Chopp',
+  'category': 'draft',
+  'created_at': _t.toIso8601String(),
+  'updated_at': _t.toIso8601String(),
+  'price_kind': 'informed',
+  'is_shared': false,
+  'people_count': 1,
+  ...extra,
+};
 
 final _oldEntries = [
-  _oldEntry({'id': 'old-1', 'container_ml': 400, 'personal_ml': 400, 'paid_cents': 1500}),
-  _oldEntry({'id': 'old-2', 'container_ml': 400, 'personal_ml': 400, 'paid_cents': 1500}),
+  _oldEntry({
+    'id': 'old-1',
+    'container_ml': 400,
+    'personal_ml': 400,
+    'paid_cents': 1500,
+  }),
+  _oldEntry({
+    'id': 'old-2',
+    'container_ml': 400,
+    'personal_ml': 400,
+    'paid_cents': 1500,
+  }),
   _oldEntry({
     'id': 'old-bottle',
     'name': 'Vinho',
@@ -58,10 +68,30 @@ final _oldTab = {
   ],
   'extras': <Map<String, dynamic>>[],
   'links': [
-    {'entry_id': 'old-1', 'service': true, 'assign': null, 'merged': <String>[]},
-    {'entry_id': 'old-2', 'service': true, 'assign': {'p-me': 1}, 'merged': <String>[]},
-    {'entry_id': 'old-bottle', 'service': true, 'assign': {'p-me': 1, 'p-guest': 2}, 'merged': <String>[]},
-    {'entry_id': 'old-ocr', 'service': true, 'assign': null, 'merged': <String>[]},
+    {
+      'entry_id': 'old-1',
+      'service': true,
+      'assign': null,
+      'merged': <String>[],
+    },
+    {
+      'entry_id': 'old-2',
+      'service': true,
+      'assign': {'p-me': 1},
+      'merged': <String>[],
+    },
+    {
+      'entry_id': 'old-bottle',
+      'service': true,
+      'assign': {'p-me': 1, 'p-guest': 2},
+      'merged': <String>[],
+    },
+    {
+      'entry_id': 'old-ocr',
+      'service': true,
+      'assign': null,
+      'merged': <String>[],
+    },
   ],
   'service_on': true,
   'service_bp': 1000,
@@ -71,20 +101,22 @@ final _oldTab = {
   'equal_ids': ['p-me', 'p-guest'],
   'custom': <String, int>{},
   'payments': [
-    {'id': 'pay-1', 'participant_id': 'p-me', 'cents': 5000, 'at': '2026-10-10T23:00:00.000Z'},
+    {
+      'id': 'pay-1',
+      'participant_id': 'p-me',
+      'cents': 5000,
+      'at': '2026-10-10T23:00:00.000Z',
+    },
   ],
 };
 
 ({TabDoc doc, Map<String, DrinkEntry> entries}) _read(
   List<Map<String, dynamic>> entries,
   Map<String, dynamic> tab,
-) =>
-    (
-      doc: TabDoc.fromJson('o-old', tab),
-      entries: {
-        for (final j in entries) j['id'] as String: DrinkEntry.fromJson(j),
-      },
-    );
+) => (
+  doc: TabDoc.fromJson('o-old', tab),
+  entries: {for (final j in entries) j['id'] as String: DrinkEntry.fromJson(j)},
+);
 
 void main() {
   test('old records and tab open as before: everything is the owner\'s', () {
@@ -105,7 +137,8 @@ void main() {
     final first = _read(_oldEntries, _oldTab);
     final resultA = TabCalculator.compute(first.doc, first.entries);
 
-    final savedDoc = jsonDecode(jsonEncode(first.doc.toJson())) as Map<String, dynamic>;
+    final savedDoc =
+        jsonDecode(jsonEncode(first.doc.toJson())) as Map<String, dynamic>;
     final savedEntries = [
       for (final e in first.entries.values)
         jsonDecode(jsonEncode(e.toJson())) as Map<String, dynamic>,
@@ -120,8 +153,14 @@ void main() {
       expect(resultB.shareOf(p.id), resultA.shareOf(p.id), reason: p.id);
     }
     expect(second.entries.keys.toSet(), first.entries.keys.toSet());
-    expect({for (final l in second.doc.links) l.entryId}, {for (final l in first.doc.links) l.entryId});
-    expect(second.doc.payments.map((p) => (p.id, p.cents)), first.doc.payments.map((p) => (p.id, p.cents)));
+    expect(
+      {for (final l in second.doc.links) l.entryId},
+      {for (final l in first.doc.links) l.entryId},
+    );
+    expect(
+      second.doc.payments.map((p) => (p.id, p.cents)),
+      first.doc.payments.map((p) => (p.id, p.cents)),
+    );
     // Saving did not invent attribution for old rows.
     for (final e in second.entries.values) {
       expect(e.consumerId, isNull);
@@ -131,7 +170,10 @@ void main() {
     final third = _read([
       for (final e in second.entries.values) e.toJson(),
     ], second.doc.toJson());
-    expect(TabCalculator.compute(third.doc, third.entries).total, resultA.total);
+    expect(
+      TabCalculator.compute(third.doc, third.entries).total,
+      resultA.total,
+    );
   });
 
   test('the old bill: 2 draft + shared bottle once + gin, service 10%, paid R\$ 50 stays', () {

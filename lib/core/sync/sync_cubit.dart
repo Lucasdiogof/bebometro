@@ -365,8 +365,9 @@ class SyncCubit extends Cubit<SyncState> {
             await _store.clearPending(entry.key, entry.value);
             continue;
           }
-          if (conflicts.isHeld(collection, id))
+          if (conflicts.isHeld(collection, id)) {
             continue; // waiting for a choice
+          }
           if (LocalStore.outingChildren.contains(collection) &&
               failedOutings.contains(row['outing_id'])) {
             rejected++; // its outing is not on the server yet

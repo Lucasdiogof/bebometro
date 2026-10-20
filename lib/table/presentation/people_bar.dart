@@ -30,8 +30,14 @@ class PeopleBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final present = [for (final p in doc.participants) if (!p.left) p];
-    final left = [for (final p in doc.participants) if (p.left) p];
+    final present = [
+      for (final p in doc.participants)
+        if (!p.left) p,
+    ];
+    final left = [
+      for (final p in doc.participants)
+        if (p.left) p,
+    ];
     final ordered = [...present, ...left];
     return SizedBox(
       height: 48,
@@ -78,7 +84,11 @@ class PeopleBar extends StatelessWidget {
             ),
           ActionChip(
             key: const ValueKey('add-person'),
-            avatar: const Icon(Icons.person_add_alt_1_rounded, size: 18, color: AppColors.amber),
+            avatar: const Icon(
+              Icons.person_add_alt_1_rounded,
+              size: 18,
+              color: AppColors.amber,
+            ),
             label: Text(tr.peopleAdd),
             onPressed: onAdd,
           ),

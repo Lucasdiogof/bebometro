@@ -96,7 +96,10 @@ class BottlePeopleEditor extends StatelessWidget {
                         icon: const Icon(Icons.remove_circle_outline),
                         onPressed: people.weightOf(key) <= 0
                             ? null
-                            : () => cubit.setWeight(key, people.weightOf(key) - 1),
+                            : () => cubit.setWeight(
+                                key,
+                                people.weightOf(key) - 1,
+                              ),
                       ),
                       IconButton(
                         key: ValueKey('more-$key'),
@@ -104,7 +107,10 @@ class BottlePeopleEditor extends StatelessWidget {
                         icon: const Icon(Icons.add_circle_outline),
                         onPressed: people.weightOf(key) >= 20
                             ? null
-                            : () => cubit.setWeight(key, people.weightOf(key) + 1),
+                            : () => cubit.setWeight(
+                                key,
+                                people.weightOf(key) + 1,
+                              ),
                       ),
                     ],
                   ),
@@ -145,7 +151,10 @@ class BottlePeopleEditor extends StatelessWidget {
         if (error != null)
           Padding(
             padding: const EdgeInsets.only(top: AppSpace.sm),
-            child: Text(error!, style: const TextStyle(color: AppColors.danger)),
+            child: Text(
+              error!,
+              style: const TextStyle(color: AppColors.danger),
+            ),
           ),
       ],
     );
@@ -260,13 +269,17 @@ class _RemoveDialogState extends State<_RemoveDialog> {
     return _Resolution(
       volume: !_needsVolume
           ? null
-          : (_volume == 'leftover' ? VolumeFate.toLeftover : VolumeFate.toPerson),
+          : (_volume == 'leftover'
+                ? VolumeFate.toLeftover
+                : VolumeFate.toPerson),
       volumeTo: _volume != null && _volume!.startsWith('to:')
           ? _volume!.substring(3)
           : null,
       money: !_needsMoney
           ? null
-          : (_money == 'spread' ? MoneyFate.spreadOnOthers : MoneyFate.toPerson),
+          : (_money == 'spread'
+                ? MoneyFate.spreadOnOthers
+                : MoneyFate.toPerson),
       moneyTo: _money != null && _money!.startsWith('to:')
           ? _money!.substring(3)
           : null,
@@ -378,7 +391,12 @@ class _RemoveDialogState extends State<_RemoveDialog> {
 /// A whole-ml field that follows outside changes (a volume handed over by
 /// someone who left) without fighting the person typing.
 class _MlField extends StatefulWidget {
-  const _MlField({super.key, required this.value, required this.onChanged, this.label});
+  const _MlField({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    this.label,
+  });
 
   final int? value;
   final ValueChanged<int?> onChanged;
@@ -433,7 +451,10 @@ Future<bool> confirmBottleImpact(
   required TabDoc doc,
   required List<BottleImpactRow> rows,
 }) async {
-  final changed = [for (final r in rows) if (r.changed) r];
+  final changed = [
+    for (final r in rows)
+      if (r.changed) r,
+  ];
   if (changed.isEmpty) return true;
   String ml(int? v) => v == null ? tr.volumeUnknown : formatMl(v);
   final ok = await showDialog<bool>(
@@ -462,7 +483,9 @@ Future<bool> confirmBottleImpact(
                       style: AppText.subtitle,
                     ),
                     if (r.mlBefore != r.mlAfter)
-                      Text(tr.bottleImpactVolume(ml(r.mlBefore), ml(r.mlAfter))),
+                      Text(
+                        tr.bottleImpactVolume(ml(r.mlBefore), ml(r.mlAfter)),
+                      ),
                     if (r.costBefore != r.costAfter)
                       Text(
                         tr.bottleImpactCost(

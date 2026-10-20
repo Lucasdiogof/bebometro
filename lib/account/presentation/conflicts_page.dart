@@ -185,7 +185,9 @@ class _ConflictsPageState extends State<ConflictsPage> {
         : (remoteDeleted ? tr.conflictRestore : tr.conflictKeepLocal);
     final keepEffect = localDeleted
         ? tr.conflictEffectKeepDeletion
-        : (remoteDeleted ? tr.conflictEffectRestore : tr.conflictEffectKeepLocal);
+        : (remoteDeleted
+              ? tr.conflictEffectRestore
+              : tr.conflictEffectKeepLocal);
     final keepDone = localDeleted
         ? tr.conflictDeletionKept
         : (remoteDeleted ? tr.conflictRestored : tr.conflictKeptLocal);
@@ -296,10 +298,7 @@ class _ConflictsPageState extends State<ConflictsPage> {
                 child: Text.rich(
                   TextSpan(
                     children: [
-                      TextSpan(
-                        text: '${f.label}: ',
-                        style: AppText.caption,
-                      ),
+                      TextSpan(text: '${f.label}: ', style: AppText.caption),
                       TextSpan(text: f.value),
                       // Text, not only color: the marker says which fields
                       // are not the same on both sides.

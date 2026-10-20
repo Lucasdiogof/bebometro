@@ -54,11 +54,17 @@ class _NameDialogState extends State<_NameDialog> {
         maxLength: 24,
         textCapitalization: TextCapitalization.words,
         textInputAction: TextInputAction.done,
-        decoration: InputDecoration(labelText: tr.startWhoName, counterText: ''),
+        decoration: InputDecoration(
+          labelText: tr.startWhoName,
+          counterText: '',
+        ),
         onSubmitted: (_) => _ok(),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: Text(tr.commonCancel)),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(tr.commonCancel),
+        ),
         FilledButton(
           key: const ValueKey('person-name-ok'),
           onPressed: _ok,
@@ -105,18 +111,27 @@ Future<void> managePersonFlow(
           if (!person.isMe)
             ListTile(
               key: const ValueKey('person-left'),
-              leading: Icon(person.left ? Icons.login_rounded : Icons.logout_rounded),
+              leading: Icon(
+                person.left ? Icons.login_rounded : Icons.logout_rounded,
+              ),
               title: Text(person.left ? tr.peopleBack : tr.peopleMarkLeft),
-              subtitle: Text(person.left ? tr.peopleBackHint : tr.peopleMarkLeftHint),
+              subtitle: Text(
+                person.left ? tr.peopleBackHint : tr.peopleMarkLeftHint,
+              ),
               onTap: () => Navigator.pop(ctx, 'left'),
             ),
           if (!person.isMe)
             ListTile(
               key: const ValueKey('person-remove'),
               enabled: canRemove,
-              leading: Icon(Icons.person_remove_outlined, color: canRemove ? AppColors.danger : null),
+              leading: Icon(
+                Icons.person_remove_outlined,
+                color: canRemove ? AppColors.danger : null,
+              ),
               title: Text(tr.peopleRemove),
-              subtitle: Text(canRemove ? tr.peopleRemoveHint : tr.peopleRemoveBlocked),
+              subtitle: Text(
+                canRemove ? tr.peopleRemoveHint : tr.peopleRemoveBlocked,
+              ),
               onTap: canRemove ? () => Navigator.pop(ctx, 'remove') : null,
             ),
         ],
