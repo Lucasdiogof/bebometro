@@ -280,6 +280,7 @@
   "outingNoDrinksBody": "Log the first one and the \"One more\" button appears down here.",
   "outingNoVolume": "{count, plural, =1{1 without volume} other{{count} without volume}}",
   "outingNotFound": "This outing wasn't found.",
+  "trackingOutingGone": "This outing no longer exists on this device.",
   "outingNothingToRepeat": "There is no drink to repeat in this outing.",
   "outingOpenScan": "There is an open label or menu reading. It stays tied to this outing and shows up in its summary.",
   "outingRecords": "Records ({count})",

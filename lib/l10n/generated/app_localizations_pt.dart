@@ -1092,6 +1092,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get outingNotFound => 'Esse rolê não foi encontrado.';
 
   @override
+  String get trackingOutingGone => 'Esse rolê não existe mais neste aparelho.';
+
+  @override
   String get outingNothingToRepeat => 'Não há bebida para repetir neste rolê.';
 
   @override

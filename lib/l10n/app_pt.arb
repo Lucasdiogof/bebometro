@@ -624,6 +624,7 @@
     }
   },
   "outingNotFound": "Esse rolê não foi encontrado.",
+  "trackingOutingGone": "Esse rolê não existe mais neste aparelho.",
   "outingNothingToRepeat": "Não há bebida para repetir neste rolê.",
   "outingOpenScan": "Há uma leitura de rótulo ou cardápio em aberto. Ela continua ligada a este rolê e aparece no resumo dele.",
   "outingRecords": "Registros ({count})",

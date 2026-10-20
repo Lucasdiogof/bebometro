@@ -336,7 +336,8 @@ class _OutingViewState extends State<_OutingView> {
       return;
     }
     final names = [
-      for (final id in gone) doc.participant(id)?.displayName ?? tr.ordersUnassigned,
+      for (final id in gone)
+        doc.participant(id)?.displayName ?? tr.ordersUnassigned,
     ].join(', ');
     final go = await showDialog<bool>(
       context: context,
@@ -541,7 +542,10 @@ class _OutingViewState extends State<_OutingView> {
               ? formatMl(c.knownMl)
               : (c.knownMl == 0
                     ? tr.volumeUnknown
-                    : tr.volumeKnownPlusUnknown(formatMl(c.knownMl), c.unknownCount)));
+                    : tr.volumeKnownPlusUnknown(
+                        formatMl(c.knownMl),
+                        c.unknownCount,
+                      )));
     return [
       StatTile(label: tr.homeDrinks, value: '${c?.count ?? 0}'),
       StatTile(
@@ -566,10 +570,8 @@ class _OutingViewState extends State<_OutingView> {
     padding: const EdgeInsets.symmetric(horizontal: 8),
   );
 
-  Widget _actionLabel(String text) => FittedBox(
-    fit: BoxFit.scaleDown,
-    child: Text(text, maxLines: 1),
-  );
+  Widget _actionLabel(String text) =>
+      FittedBox(fit: BoxFit.scaleDown, child: Text(text, maxLines: 1));
 
   DrinkEntry? _lastFor(TabState tabState, PersonFilter filter) {
     final doc = tabState.doc;
@@ -604,10 +606,7 @@ class _OutingViewState extends State<_OutingView> {
     final prefs = context.watch<TablePrefsCubit>().state;
     final prefsCubit = context.read<TablePrefsCubit>();
     final scenario = prefs.scenarioFor(outing.id, outing.type);
-    final consumption = TabCalculator.consumption(
-      doc,
-      tabState.entries.values,
-    );
+    final consumption = TabCalculator.consumption(doc, tabState.entries.values);
     final rows = TableOrders.rows(doc, tabState.entries, filter);
     final last = _lastFor(tabState, filter);
     final viewEntries = [
@@ -670,7 +669,10 @@ class _OutingViewState extends State<_OutingView> {
               style: AppText.title,
             ),
             Text(
-              tr.outingTypeSince(outing.type.label, formatTime(outing.startedAt)),
+              tr.outingTypeSince(
+                outing.type.label,
+                formatTime(outing.startedAt),
+              ),
               style: AppText.caption,
             ),
           ],
@@ -747,7 +749,10 @@ class _OutingViewState extends State<_OutingView> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(tr.outingRunningFor, style: AppText.caption),
+                                Text(
+                                  tr.outingRunningFor,
+                                  style: AppText.caption,
+                                ),
                                 ElapsedText(
                                   since: outing.startedAt,
                                   style: AppText.headline,
@@ -761,7 +766,12 @@ class _OutingViewState extends State<_OutingView> {
                       Row(
                         key: const ValueKey('tiles'),
                         children: [
-                          for (final t in _tiles(state, tabState, filter, consumption))
+                          for (final t in _tiles(
+                            state,
+                            tabState,
+                            filter,
+                            consumption,
+                          ))
                             Expanded(child: t),
                         ],
                       ),
@@ -835,15 +845,26 @@ class _OutingViewState extends State<_OutingView> {
                   ),
                   const SizedBox(height: AppSpace.md),
                   SurfaceCard(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpace.md),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpace.md,
+                    ),
                     child: Theme(
-                      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                      data: Theme.of(context)
+                          .copyWith(dividerColor: Colors.transparent),
                       child: ExpansionTile(
                         key: const ValueKey('illustrated-table'),
                         tilePadding: EdgeInsets.zero,
-                        childrenPadding: const EdgeInsets.only(bottom: AppSpace.md),
-                        title: Text(tr.tableIllustrated, style: AppText.subtitle),
-                        subtitle: Text(tr.tableIllustratedHint, style: AppText.caption),
+                        childrenPadding: const EdgeInsets.only(
+                          bottom: AppSpace.md,
+                        ),
+                        title: Text(
+                          tr.tableIllustrated,
+                          style: AppText.subtitle,
+                        ),
+                        subtitle: Text(
+                          tr.tableIllustratedHint,
+                          style: AppText.caption,
+                        ),
                         children: [
                           TableScene(
                             entries: viewEntries,
@@ -921,14 +942,22 @@ class _OutingViewState extends State<_OutingView> {
                 if (isMeView || doc.participants.length <= 1) ...[
                   const SizedBox(height: AppSpace.md),
                   SurfaceCard(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpace.md),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpace.md,
+                    ),
                     child: Theme(
-                      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                      data: Theme.of(context)
+                          .copyWith(dividerColor: Colors.transparent),
                       child: ExpansionTile(
                         tilePadding: EdgeInsets.zero,
-                        childrenPadding: const EdgeInsets.only(bottom: AppSpace.md),
+                        childrenPadding: const EdgeInsets.only(
+                          bottom: AppSpace.md,
+                        ),
                         title: Text(tr.glassBigTitle, style: AppText.subtitle),
-                        subtitle: Text(tr.glassBigSubtitle, style: AppText.caption),
+                        subtitle: Text(
+                          tr.glassBigSubtitle,
+                          style: AppText.caption,
+                        ),
                         children: [
                           AccumulatedGlass(
                             alcoholicMl: summary.alcoholicMl,
@@ -950,7 +979,10 @@ class _OutingViewState extends State<_OutingView> {
                     minimumSize: const Size.fromHeight(52),
                     foregroundColor: AppColors.amber,
                     side: const BorderSide(color: AppColors.amber, width: 1.5),
-                    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   onPressed: _finishing ? null : _finish,
                   icon: const Icon(Icons.flag_outlined),
@@ -1060,11 +1092,7 @@ class _LegacyBanner extends StatelessWidget {
 }
 
 class _RepeatButton extends StatelessWidget {
-  const _RepeatButton({
-    required this.entry,
-    required this.onPressed,
-    this.who,
-  });
+  const _RepeatButton({required this.entry, required this.onPressed, this.who});
 
   final DrinkEntry entry;
   final VoidCallback onPressed;
@@ -1287,7 +1315,7 @@ class _FinishSheetState extends State<_FinishSheet> {
           AppSpace.xl,
           0,
           AppSpace.xl,
-          AppSpace.lg + MediaQuery.of(context).viewInsets.bottom,
+          AppSpace.lg + MediaQuery.viewInsetsOf(context).bottom,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

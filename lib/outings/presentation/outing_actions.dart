@@ -30,7 +30,7 @@ Future<void> showEditOutingSheet(BuildContext context, Outing outing) async {
           AppSpace.gutter,
           0,
           AppSpace.gutter,
-          MediaQuery.of(ctx).viewInsets.bottom + AppSpace.lg,
+          MediaQuery.viewInsetsOf(ctx).bottom + AppSpace.lg,
         ),
         child: SingleChildScrollView(
           child: Column(

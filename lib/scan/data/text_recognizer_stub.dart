@@ -1,3 +1,4 @@
+import '../../l10n/l10n.dart';
 import '../domain/ocr_models.dart';
 import 'text_recognizer.dart';
 
@@ -9,7 +10,6 @@ class _UnsupportedRecognizer implements TextRecognizer {
   bool get isSupported => false;
 
   @override
-  Future<OcrResult> recognizeFile(String path) async => throw const OcrFailure(
-    'A leitura automática não está disponível neste dispositivo.',
-  );
+  Future<OcrResult> recognizeFile(String path) async =>
+      throw OcrFailure(tr.ocrUnavailable);
 }

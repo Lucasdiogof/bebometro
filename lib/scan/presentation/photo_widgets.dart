@@ -10,7 +10,7 @@ import '../../l10n/l10n.dart';
 
 /// Square thumbnail of an outing photo. When the file is gone (or the web
 /// session ended) it shows a quiet placeholder: the text history is intact.
-class PhotoThumb extends StatelessWidget {
+class PhotoThumb extends StatefulWidget {
   const PhotoThumb({
     super.key,
     required this.photoId,
@@ -23,8 +23,27 @@ class PhotoThumb extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
+  State<PhotoThumb> createState() => _PhotoThumbState();
+}
+
+class _PhotoThumbState extends State<PhotoThumb> {
+  /// Read once per photo: `build` must not hit storage again on every rebuild
+  /// (it made the thumbnail flash and re-read the file while scrolling).
+  late Future<Uint8List?> _bytes = _load();
+
+  Future<Uint8List?> _load() =>
+      getIt<OutingDrinkRepository>().photoBytes(widget.photoId);
+
+  @override
+  void didUpdateWidget(PhotoThumb oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.photoId != widget.photoId) _bytes = _load();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final repo = getIt<OutingDrinkRepository>();
+    final onTap = widget.onTap;
+    final size = widget.size;
     return Semantics(
       button: onTap != null,
       label: tr.scanPhoto,
@@ -37,7 +56,7 @@ class PhotoThumb extends StatelessWidget {
             width: size,
             height: size,
             child: FutureBuilder<Uint8List?>(
-              future: repo.photoBytes(photoId),
+              future: _bytes,
               builder: (context, snap) {
                 final bytes = snap.data;
                 if (bytes != null) {

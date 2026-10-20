@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/navigation/outing_flow.dart';
 import '../../core/widgets/common.dart';
+import '../../l10n/l10n.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../outings/presentation/outing_summary_page.dart';
 import '../data/tracking_platform.dart';
@@ -105,14 +106,14 @@ class TrackingLinks {
 
     final outing = _outings.byId(link.outingId);
     if (outing == null) {
-      if (!navigator.mounted) return;
-      showToast(context, 'Esse rolê não existe mais neste aparelho.');
+      if (!context.mounted) return;
+      showToast(context, tr.trackingOutingGone);
       _coordinator.schedule(immediate: true);
       return;
     }
     if (!outing.isActive) {
       _coordinator.schedule(immediate: true);
-      if (!navigator.mounted) return;
+      if (!context.mounted) return;
       unawaited(
         navigator.push(
           MaterialPageRoute<void>(
@@ -127,7 +128,7 @@ class TrackingLinks {
       TrackingActions.pending.value = PendingTrackingAction(outing.id, action);
     }
     if (TrackingActions.visibleOuting.value != outing.id) {
-      if (!navigator.mounted) return;
+      if (!context.mounted) return;
       unawaited(OutingFlow.open(context, outing.id));
     }
   }

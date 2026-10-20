@@ -47,7 +47,7 @@ Future<void> showEntryGroupSheet(
     builder: (ctx) => SafeArea(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(ctx).size.height * 0.75,
+          maxHeight: MediaQuery.sizeOf(ctx).height * 0.75,
         ),
         child: ListView(
           shrinkWrap: true,

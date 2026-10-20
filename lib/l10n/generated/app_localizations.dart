@@ -1780,6 +1780,12 @@ abstract class AppLocalizations {
   /// **'Esse rolê não foi encontrado.'**
   String get outingNotFound;
 
+  /// No description provided for @trackingOutingGone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse rolê não existe mais neste aparelho.'**
+  String get trackingOutingGone;
+
   /// No description provided for @outingNothingToRepeat.
   ///
   /// In pt, this message translates to:

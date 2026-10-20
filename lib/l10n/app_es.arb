@@ -280,6 +280,7 @@
   "outingNoDrinksBody": "Registra la primera y el botón \"Otra más\" aparece aquí abajo.",
   "outingNoVolume": "{count, plural, =1{1 sin volumen} other{{count} sin volumen}}",
   "outingNotFound": "No se encontró esta salida.",
+  "trackingOutingGone": "Esta salida ya no existe en este dispositivo.",
   "outingNothingToRepeat": "No hay bebida para repetir en esta salida.",
   "outingOpenScan": "Hay una lectura de etiqueta o carta abierta. Sigue vinculada a esta salida y aparece en su resumen.",
   "outingRecords": "Registros ({count})",

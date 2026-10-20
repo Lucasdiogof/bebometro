@@ -104,7 +104,7 @@ class _FeedbackDetailsState extends State<_FeedbackDetails> {
           AppSpace.xl,
           0,
           AppSpace.xl,
-          AppSpace.lg + MediaQuery.of(context).viewInsets.bottom,
+          AppSpace.lg + MediaQuery.viewInsetsOf(context).bottom,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

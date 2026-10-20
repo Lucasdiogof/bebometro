@@ -1092,6 +1092,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get outingNotFound => 'This outing wasn\'t found.';
 
   @override
+  String get trackingOutingGone =>
+      'This outing no longer exists on this device.';
+
+  @override
   String get outingNothingToRepeat =>
       'There is no drink to repeat in this outing.';
 
