@@ -13,6 +13,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  archive: ^4.0.0
+  crypto: ^3.0.0
   cupertino_icons: ^1.0.8
   flutter_bloc: ^9.1.1
   flutter_map: ^8.2.1
