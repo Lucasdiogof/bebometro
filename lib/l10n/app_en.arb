@@ -1479,7 +1479,7 @@
   "gameNeedPlayers": "{count, plural, =1{Add at least 1 player.} other{Add at least {count} players.}}",
   "gameRemovePlayer": "Remove {name}",
   "gameMode": "Mode",
-  "gameLightNote": "No sexual content. For any group.",
+  "gameLightNote": "No sexual content. For any adult group.",
   "gameAdultNote": "Mixes the light cards with flirting and humor for adults. Nothing explicit, and everything can be skipped without penalty.",
   "gameAdultConfirm": "I confirm that everyone playing is an adult (18+) and agreed to the 18+ mode.",
   "gameNoDrinkNote": "The cards never ask you to drink, take shots or pile up drinks, and nothing here logs drinks in your outing.",

@@ -5530,7 +5530,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameMode => 'Mode';
 
   @override
-  String get gameLightNote => 'No sexual content. For any group.';
+  String get gameLightNote => 'No sexual content. For any adult group.';
 
   @override
   String get gameAdultNote =>

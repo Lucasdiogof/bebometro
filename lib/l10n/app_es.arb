@@ -1479,7 +1479,7 @@
   "gameNeedPlayers": "{count, plural, =1{Añade al menos 1 participante.} other{Añade al menos {count} participantes.}}",
   "gameRemovePlayer": "Quitar a {name}",
   "gameMode": "Modo",
-  "gameLightNote": "Sin contenido sexual. Para cualquier grupo.",
+  "gameLightNote": "Sin contenido sexual. Para cualquier grupo de adultos.",
   "gameAdultNote": "Mezcla las cartas ligeras con coqueteo y humor para adultos. Nada explícito, y todo se puede saltar sin castigo.",
   "gameAdultConfirm": "Confirmo que todas las personas que van a jugar son adultas (18+) y aceptaron el modo +18.",
   "gameNoDrinkNote": "Las cartas nunca piden beber, tomar chupitos ni acumular bebidas, y nada aquí registra bebidas en tu salida.",

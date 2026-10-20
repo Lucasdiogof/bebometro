@@ -5560,7 +5560,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gameMode => 'Modo';
 
   @override
-  String get gameLightNote => 'Sin contenido sexual. Para cualquier grupo.';
+  String get gameLightNote =>
+      'Sin contenido sexual. Para cualquier grupo de adultos.';
 
   @override
   String get gameAdultNote =>

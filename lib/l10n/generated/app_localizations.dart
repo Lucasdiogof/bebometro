@@ -8892,7 +8892,7 @@ abstract class AppLocalizations {
   /// No description provided for @gameLightNote.
   ///
   /// In pt, this message translates to:
-  /// **'Sem conteúdo sexual. Para qualquer turma.'**
+  /// **'Sem conteúdo sexual. Para qualquer turma adulta.'**
   String get gameLightNote;
 
   /// No description provided for @gameAdultNote.
