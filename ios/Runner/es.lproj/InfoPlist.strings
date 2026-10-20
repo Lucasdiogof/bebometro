@@ -1,7 +1,8 @@
 /* Permission descriptions. iOS shows them in the SYSTEM language: the app language
    chosen in Settings cannot change them. */
-"NSLocationWhenInUseUsageDescription" = "Solo cuando tocas \"Usar mi ubicación\": para sugerir lugares cercanos y marcar el punto en el mapa. Bebômetro no sigue tus desplazamientos.";
-"NSCameraUsageDescription" = "La cámara se usa solo para fotografiar etiquetas y cartas de la salida. Las fotos se quedan en tu dispositivo.";
-"NSPhotoLibraryUsageDescription" = "La galería se usa solo para que elijas fotos de etiquetas y cartas de la salida.";
+"NSLocationWhenInUseUsageDescription" = "Solo cuando tocas \"Usar mi ubicación\": para sugerir lugares cercanos y marcar el punto en el mapa. Tu posición se envía al servicio de búsqueda de lugares solo en ese momento. Bebômetro no sigue tus desplazamientos.";
+"NSCameraUsageDescription" = "La cámara se usa solo cuando tocas para fotografiar una etiqueta o carta. La foto se queda en tu dispositivo hasta que la confirmes; las confirmadas se envían al área privada de tu cuenta.";
+"NSPhotoLibraryUsageDescription" = "La galería se usa solo para que elijas fotos de etiquetas y cartas. La foto elegida se queda en tu dispositivo hasta que la confirmes; las confirmadas se envían al área privada de tu cuenta.";
 "NSMotionUsageDescription" = "El movimiento del dispositivo se usa solo para inclinar la cerveza en \"Inclinar el vaso\". No se graba nada.";
 "NSPhotoLibraryAddUsageDescription" = "Se usa solo cuando eliges guardar en la galería una imagen que compartiste desde Bebômetro.";
+"NSMicrophoneUsageDescription" = "El micrófono se usa solo en el alcoholímetro de broma, para sentir la fuerza del soplido. El sonido no se graba ni se envía.";
