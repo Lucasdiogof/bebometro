@@ -55,8 +55,6 @@
 	<string>O microfone é usado só na brincadeira do bafômetro, para sentir a força do sopro. O som não é gravado nem enviado.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>O movimento do aparelho é usado só para inclinar a cerveja no "Virar o copo". Nada é gravado.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Usada só quando você escolhe salvar na galeria uma imagem que compartilhou do Bebômetro.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>A galeria é usada só para você escolher fotos de rótulos e cardápios. A foto escolhida fica no aparelho até você confirmá-la; as confirmadas são enviadas para a área privada da sua conta.</string>
 	<key>NSSupportsLiveActivities</key>

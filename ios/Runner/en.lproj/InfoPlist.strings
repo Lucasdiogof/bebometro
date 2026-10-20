@@ -4,5 +4,4 @@
 "NSCameraUsageDescription" = "The camera is only used when you tap to photograph a label or menu. The photo stays on your device until you confirm it; confirmed photos are uploaded to the private area of your account.";
 "NSPhotoLibraryUsageDescription" = "The photo library is only used so you can pick photos of labels and menus. The chosen photo stays on your device until you confirm it; confirmed photos are uploaded to the private area of your account.";
 "NSMotionUsageDescription" = "Device motion is only used to tilt the beer in \"Tilt the glass\". Nothing is recorded.";
-"NSPhotoLibraryAddUsageDescription" = "Used only when you choose to save an image you shared from Bebômetro to your photo library.";
 "NSMicrophoneUsageDescription" = "The microphone is only used in the joke breathalyser, to sense how hard you blow. Sound is not recorded or sent.";
