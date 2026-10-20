@@ -18,7 +18,16 @@ class ExportPhotoRef {
   /// Object path in the private bucket, when the photo was uploaded.
   final String? storagePath;
 
-  String get zipPath => 'photos/$outingId/$id.jpg';
+  /// Always plain ASCII, no separators and no dots at the start: ids come from
+  /// synced rows, and an extracted ZIP must never write outside its folder
+  /// (no `..`, no `/`, no drive letters) on Windows, macOS or Android.
+  String get zipPath =>
+      'photos/${ExportPhotoRef.safeSegment(outingId)}/${ExportPhotoRef.safeSegment(id)}.jpg';
+
+  static String safeSegment(String raw) {
+    final cleaned = raw.replaceAll(RegExp(r'[^A-Za-z0-9_-]'), '_');
+    return cleaned.isEmpty ? '_' : cleaned;
+  }
 }
 
 /// A photo that is not in the package. The reason code also goes into
@@ -91,10 +100,18 @@ class ExportPackageBuilder {
     }
     final omitted = <OmittedFile>[];
     var photoBytes = 0;
+    final taken = <String>{};
     for (var i = 0; i < photos.length; i++) {
       if (isCancelled?.call() ?? false) throw const ExportCancelled();
       onProgress?.call(i, photos.length);
       final p = photos[i];
+      var path = p.zipPath;
+      // Two photos can end up with the same name (ids that differ only in
+      // characters that were replaced): never overwrite one with the other.
+      for (var n = 2; files.containsKey(path) || taken.contains(path); n++) {
+        path = p.zipPath.replaceFirst(RegExp(r'\.jpg$'), '-$n.jpg');
+      }
+      taken.add(path);
       var failure = omittedMissing;
       Uint8List? bytes;
       try {
@@ -111,15 +128,15 @@ class ExportPackageBuilder {
         if (bytes == null) failure = omittedDownloadFailed;
       }
       if (bytes == null || bytes.isEmpty) {
-        omitted.add(OmittedFile(p.zipPath, failure));
+        omitted.add(OmittedFile(path, failure));
         continue;
       }
       if (photoBytes + bytes.length > maxPhotoBytes) {
-        omitted.add(OmittedFile(p.zipPath, omittedSizeLimit));
+        omitted.add(OmittedFile(path, omittedSizeLimit));
         continue;
       }
       photoBytes += bytes.length;
-      files[p.zipPath] = bytes;
+      files[path] = bytes;
     }
     if (isCancelled?.call() ?? false) throw const ExportCancelled();
     onProgress?.call(photos.length, photos.length);
