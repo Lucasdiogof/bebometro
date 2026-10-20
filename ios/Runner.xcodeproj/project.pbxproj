@@ -22,6 +22,7 @@
 		BE0B0001000000000000000E /* OutingLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B00010000000000000008 /* OutingLiveActivity.swift */; };
 		BE0B0001000000000000000F /* OutingActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B00010000000000000009 /* OutingActivityAttributes.swift */; };
 		BE0B00010000000000000010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE0B0001000000000000000B /* Assets.xcassets */; };
+		BE0B00010000000000000020 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BE0B00010000000000000021 /* PrivacyInfo.xcprivacy */; };
 		BE0B00010000000000000011 /* BebometroLiveActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BE0B00010000000000000002 /* BebometroLiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BE0B00010000000000000012 /* OutingActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B00010000000000000009 /* OutingActivityAttributes.swift */; };
 		BE0B00010000000000000013 /* TrackingChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B0001000000000000000C /* TrackingChannel.swift */; };
@@ -103,6 +104,7 @@
 		BE0B00010000000000000008 /* OutingLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutingLiveActivity.swift; sourceTree = "<group>"; };
 		BE0B00010000000000000009 /* OutingActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutingActivityAttributes.swift; sourceTree = "<group>"; };
 		BE0B0001000000000000000A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BE0B00010000000000000021 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		BE0B0001000000000000000B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE0B0001000000000000001B /* AnotherDrinkIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherDrinkIntent.swift; sourceTree = "<group>"; };
 		BE0B0001000000000000000C /* TrackingChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingChannel.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				BE0B0001000000000000001B /* AnotherDrinkIntent.swift */,
 				BE0B0001000000000000000B /* Assets.xcassets */,
 				BE0B0001000000000000000A /* Info.plist */,
+				BE0B00010000000000000021 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BebometroLiveActivity;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE0B00010000000000000010 /* Assets.xcassets in Resources */,
+				BE0B00010000000000000020 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
