@@ -169,6 +169,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Calculated only from what was entered: volume × ABV for simple drinks and amount × ABV of each component for cocktails. For cocktails the declared recipe counts, not what the bar served. It is not blood alcohol concentration and doesn\'t tell whether you can drive.';
 
   @override
+  String get drinkResponsibly =>
+      'Drink responsibly. If you drink, don\'t drive.';
+
+  @override
   String alcoholIncompletePill(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

@@ -170,6 +170,9 @@ class AppLocalizationsPt extends AppLocalizations {
       'Calculado só com o que foi informado: volume × teor nas bebidas simples e quantidade × teor de cada componente nos drinks. Em drinks vale a receita declarada, não o que o bar serviu. Não é a concentração de álcool no sangue e não indica se você pode dirigir.';
 
   @override
+  String get drinkResponsibly => 'Beba com moderação. Se beber, não dirija.';
+
+  @override
   String alcoholIncompletePill(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

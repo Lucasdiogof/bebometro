@@ -86,6 +86,7 @@
   },
   "alcoholDeclared": "Álcool puro declarado",
   "alcoholExplain": "Calculado só com o que foi informado: volume × teor nas bebidas simples e quantidade × teor de cada componente nos drinks. Em drinks vale a receita declarada, não o que o bar serviu. Não é a concentração de álcool no sangue e não indica se você pode dirigir.",
+  "drinkResponsibly": "Beba com moderação. Se beber, não dirija.",
   "alcoholIncompletePill": "{count, plural, =1{1 registro com teor ou quantidade desconhecidos: o total é um mínimo} other{{count} registros com teor ou quantidade desconhecidos: o total é um mínimo}}",
   "@alcoholIncompletePill": {
     "placeholders": {

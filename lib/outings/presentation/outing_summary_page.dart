@@ -318,7 +318,8 @@ class _SummaryViewState extends State<_SummaryView> {
                               onChange: (_) {},
                             ),
                           ],
-                          if (s.unpricedCount > 0 || (table && unpricedAll > 0)) ...[
+                          if (s.unpricedCount > 0 ||
+                              (table && unpricedAll > 0)) ...[
                             const SizedBox(height: AppSpace.md),
                             InfoPill(
                               tr.summaryUnpricedPill(
@@ -638,6 +639,8 @@ class _AlcoholInfo extends StatelessWidget {
           const SizedBox(height: AppSpace.sm),
         ],
         Text(tr.alcoholExplain, style: AppText.caption),
+        const SizedBox(height: AppSpace.xs),
+        Text(tr.drinkResponsibly, style: AppText.caption),
       ],
     );
   }

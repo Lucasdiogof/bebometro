@@ -37,6 +37,7 @@
   "alcoholAtLeast": "at least {amount}",
   "alcoholDeclared": "Declared pure alcohol",
   "alcoholExplain": "Calculated only from what was entered: volume × ABV for simple drinks and amount × ABV of each component for cocktails. For cocktails the declared recipe counts, not what the bar served. It is not blood alcohol concentration and doesn't tell whether you can drive.",
+  "drinkResponsibly": "Drink responsibly. If you drink, don't drive.",
   "alcoholIncompletePill": "{count, plural, =1{1 record with unknown ABV or amount: the total is a minimum} other{{count} records with unknown ABV or amount: the total is a minimum}}",
   "alcoholNoVolumePill": "{count, plural, =1{1 record without volume (not counted in the volume)} other{{count} records without volume (not counted in the volume)}}",
   "appName": "Bebômetro",

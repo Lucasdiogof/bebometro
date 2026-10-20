@@ -37,6 +37,7 @@
   "alcoholAtLeast": "al menos {amount}",
   "alcoholDeclared": "Alcohol puro declarado",
   "alcoholExplain": "Calculado solo con lo informado: volumen × graduación en bebidas simples y cantidad × graduación de cada componente en los cócteles. En cócteles vale la receta declarada, no lo que sirvió el bar. No es la concentración de alcohol en sangre y no indica si puedes conducir.",
+  "drinkResponsibly": "Bebe con moderación. Si bebes, no conduzcas.",
   "alcoholIncompletePill": "{count, plural, =1{1 registro con graduación o cantidad desconocida: el total es un mínimo} other{{count} registros con graduación o cantidad desconocida: el total es un mínimo}}",
   "alcoholNoVolumePill": "{count, plural, =1{1 registro sin volumen informado (no entra en el volumen)} other{{count} registros sin volumen informado (no entran en el volumen)}}",
   "appName": "Bebômetro",

@@ -322,6 +322,12 @@ abstract class AppLocalizations {
   /// **'Calculado só com o que foi informado: volume × teor nas bebidas simples e quantidade × teor de cada componente nos drinks. Em drinks vale a receita declarada, não o que o bar serviu. Não é a concentração de álcool no sangue e não indica se você pode dirigir.'**
   String get alcoholExplain;
 
+  /// No description provided for @drinkResponsibly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Beba com moderação. Se beber, não dirija.'**
+  String get drinkResponsibly;
+
   /// No description provided for @alcoholIncompletePill.
   ///
   /// In pt, this message translates to:
