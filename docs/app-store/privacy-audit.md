@@ -26,14 +26,26 @@ Definição Apple de "collect": transmitir o dado para fora do aparelho de modo 
 
 Fora do app (A CONFIRMAR): logs de infraestrutura (IP) de Supabase e Resend, sem controle do app.
 
-### 1.1 Financial Info x Purchases (decisão e dúvida)
-Definições Apple: Payment Info = forma/cartão/conta bancária (não se aplica: nada disso existe no app); Credit Info = score (não); **Other Financial Info = "salary, income, assets, debts, or any other financial information"**; **Purchase History = "an account's or individual's purchases or purchase tendencies"**.
-- Preços pagos por bebida e histórico de gastos = compras/tendências de compra, então **Purchase History: declarar**.
-- Orçamento do rolê, divisão da conta e "pagamentos anotados" (quem pagou/deve quanto) = valores digitados pelo usuário que se aproximam de "debts / any other financial information": **Other Financial Info: declarar com cautela**.
-- Pró de declarar os dois: a Apple costuma preferir declaração cautelosa; omitir o que um revisor entende como coletado arrisca rejeição ou correção forçada. Contra: o rótulo público fica mais carregado ("Financial Info" parece cartão/banco ao usuário, embora aqui seja só anotação). **Ambiguidade explícita**: é defensável tirar Other Financial Info (argumento: são anotações pessoais de rateio, sem valor financeiro real do usuário) e manter só Purchase History. Decisão atual do manifest e desta tabela: declarar ambos; o dono pode reduzir.
+### 1.1 Financial Info x Purchases: campo a campo (rodada final)
+Definições oficiais (Apple "App privacy details", lidas em 20/10/2026, https://developer.apple.com/app-store/app-privacy-details/): **Payment Info** = forma de pagamento, número de cartão ou conta bancária; **Credit Info** = score; **Other Financial Info** = salary, income, assets, debts, or any other financial information; **Purchase History** = an account's or individual's purchases or purchase tendencies.
+Campos realmente armazenados/enviados ao Supabase (migrações) e a decisão por campo:
+
+| Campo (tabela.coluna) | O que é | Categoria Apple | Justificativa | Risco de sub / super declaração |
+|---|---|---|---|---|
+| `drink_entries.paid_cents` | quanto o usuário pagou por uma bebida | **Purchase History** | é uma compra individual | sub: alto se omitido (é o caso típico da categoria); super: nenhum |
+| `drink_entries.price_kind` (`informed`/`complimentary`/`unknown`), `price_source` | se pagou, ganhou ou não informou | **Purchase History** | tendência de compra | sub: baixo (acompanha paid_cents) |
+| `drink_entries.bill_total_cents` | total da conta quando dividida | **Purchase History** | valor de uma compra | sub: baixo (mesma categoria) |
+| `outings.budget_cents` | teto de gasto que o usuário se impôs para a noite | **Other Financial Info** | informação financeira pessoal ("any other financial information"), não é compra | sub: médio; super: baixo-médio (é a linha mais discutível, pois é um planejamento de gasto de baixo valor) |
+| `outing_tabs.data` (jsonb): rateio/divisão, pagamentos anotados ("quem pagou quanto"), extras, serviço, desconto | divisão da conta entre apelidos e quem já pagou | **Other Financial Info** (rateio e pagamentos = quem deve/pagou quanto, próximo de "debts") e **Purchase History** (itens e totais da compra) | valores de dívida entre pessoas e de compra, digitados pelo usuário | sub: médio se omitir Other Financial; super: baixo |
+| `outing_drinks.advertised_cents` | preço impresso no cardápio lido por OCR | nenhuma específica: **Other User Content** | é dado do estabelecimento, não compra do usuário; só vira compra quando o usuário registra o pagamento em `paid_cents` | sub e super: baixo |
+| `outing_drinks.components`, receitas, `custom_drinks` | composição e teor | **Other User Content** | conteúdo criado pelo usuário | n/a |
+| Cartão, conta bancária, serviço de pagamento, score | **não existem no app** | Payment Info / Credit Info: **não declarar** | nada é coletado | super se declarado |
+
+Decisão final sugerida: **declarar Purchase History e Other Financial Info** (os dois, como já está no manifest), com Payment Info e Credit Info marcados como não coletados. Pró: a Apple prefere declaração cautelosa e as duas definições cobrem campos reais (compras e dívidas/orçamento). Contra: o rótulo público mostra "Financial Info" (o usuário pode supor cartão/banco). Ambiguidade que permanece para o dono: se ele entender que `budget_cents` e o rateio são só anotações pessoais sem valor financeiro, pode remover Other Financial Info; a recomendação deste documento é manter.
 
 ### 1.2 Manifest x App Store Connect
-O `PrivacyInfo.xcprivacy` alimenta o Privacy Report do Xcode; o ASC é a declaração pública e deve repetir a tabela acima. Estado do manifest (`ios/Runner/PrivacyInfo.xcprivacy`): tracking=false; 10 tipos (Email, Name, UserID, PreciseLocation, PhotosorVideos, OtherUserContent, Health, OtherFinancialInfo, PurchaseHistory, SearchHistory) com propósito `NSPrivacyCollectedDataTypePurposeAppFunctionality`; só SearchHistory com `LinkedToUser=false`. Required-reason API: UserDefaults `CA92.1` (`TrackingChannel.swift:20`). Extensão (`ios/BebometroLiveActivity/PrivacyInfo.xcprivacy`, novo, no `project.pbxproj`): sem dados, UserDefaults `CA92.1`. Plugins: `shared_preferences_foundation` declara `1C8F.1`; app_links, image_picker_ios, package_info_plus, sensors_plus, share_plus, url_launcher_ios, geolocator_apple, record_ios trazem manifest vazio; path_provider_foundation e google_mlkit_* não trazem no pacote Flutter.
+O `PrivacyInfo.xcprivacy` alimenta o Privacy Report do Xcode; o ASC é a declaração pública e deve repetir a tabela acima. Estado do manifest (`ios/Runner/PrivacyInfo.xcprivacy`): tracking=false; 10 tipos (Email, Name, UserID, PreciseLocation, PhotosorVideos, OtherUserContent, Health, OtherFinancialInfo, PurchaseHistory, SearchHistory) com propósito `NSPrivacyCollectedDataTypePurposeAppFunctionality`; só SearchHistory com `NSPrivacyCollectedDataTypeLinked=false`. Required-reason API: UserDefaults `CA92.1` (`TrackingChannel.swift:20`). Extensão (`ios/BebometroLiveActivity/PrivacyInfo.xcprivacy`, novo, no `project.pbxproj`): sem dados, UserDefaults `CA92.1`. Plugins: `shared_preferences_foundation` declara `1C8F.1`; app_links, image_picker_ios, package_info_plus, sensors_plus, share_plus, url_launcher_ios, geolocator_apple, record_ios trazem manifest vazio; path_provider_foundation e google_mlkit_* não trazem no pacote Flutter.
+**Correção da rodada final**: o manifest usava a chave `NSPrivacyCollectedDataTypeLinkedToUser`, que não é a chave documentada; foi trocada por `NSPrivacyCollectedDataTypeLinked` (a que as SDKs publicadas usam; exemplos reais: documentação de manifests da Unity, https://docs.unity.com/authentication/en/manual/ApplePrivacySurvey, consultada em 20/10/2026). **Fonte oficial**: as páginas da Apple sobre o manifest (`describing-data-use-in-privacy-manifests` e `nsprivacycollecteddatatypes`) não carregaram pelo fetch em 20/10/2026 (só o título); as constantes de tipos e finalidades vêm das SDKs publicadas e de conhecimento prévio. As categorias e definições do App Store Connect (seção 1.1) vieram da página oficial `app-privacy-details`, que carregou.
 **Pendente de Xcode**: abrir o projeto, conferir o arquivo em "Copy Bundle Resources" do alvo da extensão, rodar Archive e "Generate Privacy Report"; conferir as constantes `NSPrivacyCollectedDataType*` (não consegui ler a página da Apple sobre o manifest). Nenhuma validação iOS está concluída.
 
 ### 1.3 Geoapify (fonte: geoapify.com/privacy-policy e /terms-and-conditions, lidos em 20/10/2026)
@@ -44,9 +56,12 @@ O `PrivacyInfo.xcprivacy` alimenta o Privacy Report do Xcode; o ASC é a declara
 - Plano gratuito: uso comercial permitido "com algumas limitações", atribuição obrigatória (Termos). Limites numéricos não lidos.
 
 ### 1.4 Região do Supabase (projeto jiisoqkryhmtopaojyyu)
-- `supabase/config.toml` e documentos do repo: não trazem a região. `supabase projects list` aqui só enxerga o OrbiJob. Nenhum token foi extraído.
-- Evidência pública, sem credenciais: `db.jiisoqkryhmtopaojyyu.supabase.co` resolve (DNS) para o IPv6 `2600:1f18:5b28:203:5f27:76bc:24fc:5d18`, que está dentro de `2600:1f18::/33`, publicado pela AWS em `ip-ranges.json` como **us-east-1** (EC2). O host da API (`<ref>.supabase.co`) está atrás da Cloudflare e não revela região.
-- Conclusão: **indício forte de AWS us-east-1 (Norte da Virgínia, EUA), NÃO CONFIRMADO oficialmente**. Passo do dono: painel Supabase > Project Settings > General > Region (ou Infrastructure). Implicação: se for EUA, a política deve dizer que os dados são tratados nos EUA (transferência internacional, LGPD art. 33).
+**NÃO CONFIRMADO.** Fontes oficiais tentadas em 20/10/2026, todas sem a região:
+- Repositório local principal (somente leitura): `supabase/.temp/` só tem `cli-latest`; não existe `pooler-url` nem `project-ref`. Não há `supabase/config.toml`. Os docs do repo não citam região.
+- Variáveis de ambiente da sessão `SUPABASE_*`: nenhuma definida (nenhum token disponível, então não houve chamada à Management API). Nenhum token foi extraído de cofre ou arquivo de configuração.
+- `supabase projects list` aqui só enxerga o projeto do OrbiJob.
+Indício **não oficial, não usar nas lojas nem no site**: o host de banco resolve para um IPv6 dentro da faixa `2600:1f18::/33`, que a AWS publica como us-east-1. DNS não prova a região do projeto e não deve ser citado como confirmação.
+**Passo exato para o dono**: abrir https://supabase.com/dashboard, escolher o projeto do Bebômetro > Project Settings > General > "Region" (ou a seção Infrastructure), tirar um print e enviar. Até lá, o site deve manter "provedores podem tratar dados em outros países".
 
 ## 2. Classificação etária: 18+
 
@@ -96,15 +111,35 @@ Categoria do app: utilitário/estilo de vida (não jogo). Respostas: Violence: n
 ## 4. Backups
 **O que o app persiste (CONFIRMADO NO CÓDIGO)**: `FlutterSharedPreferences.xml` (Android) / `UserDefaults` (iOS) contém a cópia local dos registros (`local_store.dart`), preferências e **a sessão do Supabase** (supabase_flutter grava o token no mesmo armazenamento); `bebometro_tracking.xml` (estado da tela bloqueada, `TrackingNotifier.kt:31`); fotos em `<documentos>/outing_photos/` (`photo_files_io.dart:19`; Android: `app_flutter/outing_photos/`). Exportações não ficam em disco: vão direto ao share sheet.
 **Android** (novo): `android:allowBackup="true"`, `android:dataExtractionRules="@xml/data_extraction_rules"` (Android 12+) e `android:fullBackupContent="@xml/backup_rules"` (Android 11-). Backup em nuvem (Google) **exclui** `FlutterSharedPreferences.xml` (sessão e cópia local), `bebometro_tracking.xml` e `app_flutter/outing_photos/`; a transferência aparelho-a-aparelho (`<device-transfer/>`) mantém tudo no Android 12+. Efeito: ao restaurar de backup na nuvem o usuário entra de novo (a senha ele tem) e o histórico volta da conta; registros ainda não sincronizados e fotos não confirmadas daquele aparelho não vêm. No Android 11-, que não separa nuvem de transferência, as mesmas exclusões valem para ambos. Não desliguei o backup: a restauração continua funcionando.
-**iOS**: `UserDefaults` não permite excluir uma chave do backup do iCloud/iTunes, então a sessão acompanha o backup do aparelho (o backup do iOS é criptografado quando o usuário o cifra). Fotos em `Documents/outing_photos` entram no backup; **decisão: manter** (protege fotos ainda não confirmadas contra perda; `NSURLIsExcludedFromBackupKey` exigiria código nativo não testável aqui). **Risco aceito e pendente de decisão do dono**.
-**Pendente de teste em aparelho**: `adb shell bmgr backupnow` / `bmgr restore` e transferência D2D, para ver as regras valendo.
+**iOS: NÃO aprovado.** Evidência (código do app e do pacote `supabase_flutter` 2.18.3, `lib/src/local_storage.dart`): sem `localStorage` customizado em `lib/core/di/injector.dart:87`, a sessão é salva por `SharedPreferencesLocalStorage` e o verificador PKCE por `SharedPreferencesGotrueAsyncStorage`, ambos em `SharedPreferences`, que no iOS é o `UserDefaults.standard` (plist em `Library/Preferences/<bundle>.plist`). Esse plist **entra no backup do iTunes/iCloud** (Library, exceto Caches e tmp). `Documents/outing_photos` também entra (path_provider usa `Documents`).
+
+| Dado | Onde (iOS) | Entra no backup iOS | Sensibilidade | Mitigação possível |
+|---|---|---|---|---|
+| Sessão Supabase (access e refresh token, uid, e-mail do usuário dentro do JSON da sessão) | UserDefaults plist (chave de sessão do supabase_flutter) | **Sim** | **Alta** (o refresh token permite abrir a conta em outro aparelho) | `LocalStorage` próprio no Keychain com `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` (não migra em backup para outro aparelho). Exige dependência nativa nova (ex.: flutter_secure_storage) e `pod install`; plano de migração: no primeiro start ler a chave antiga do SharedPreferences, gravar no Keychain, apagar a antiga; se falhar, pedir novo login. **Não implementado** (sem Xcode e sem aparelho não dá para testar) |
+| Código PKCE (verifier) | UserDefaults | Sim | Média, curta duração | mesma mitigação |
+| Registros locais (rolês, bebidas, locais com lat/lng, comandas com apelidos, notas, humor/ressaca, `source_text` do OCR, fila `sync.pending`, cursores) | UserDefaults (`local_store.dart`, chaves `col.*`, `rev.*`, `sync.pending`) | **Sim** | Alta (conteúdo pessoal e dados de saúde informados) | só excluir tudo exigiria sair do UserDefaults (mover para arquivo em Application Support com `isExcludedFromBackup`); mudança grande de armazenamento, **proposta** com migração de dados; benefício limitado porque esses dados também estão na conta |
+| `last_uid`, `last_email`, nome de exibição, preferências, favoritos, estado de jogos | UserDefaults (`auth_controller.dart:272-273`, `device_store.dart`) | **Sim** | Média (e-mail) | idem |
+| Fotos de rótulo/cardápio ainda não confirmadas e confirmadas | `Documents/outing_photos/*.jpg` | **Sim** | Alta | `NSURLIsExcludedFromBackupKey` no diretório (código nativo, ~15 linhas em Swift via MethodChannel, **proposta**; risco: foto não confirmada fica sem cópia se o aparelho for perdido). Mover para Library/Caches não é recomendado: o sistema pode apagar |
+| Estado da tela bloqueada (`tracking.commands`) | UserDefaults (app e extensão) | Sim | Baixa | nenhuma necessária |
+| Exportações (JSON/CSV/ZIP) | não ficam em disco (vão direto ao share sheet); a cópia temporária do share_plus fica em tmp | Não | n/a | n/a |
+
+Conclusão: no iOS o backup cifrado do usuário carrega sessão, registros e fotos. A mitigação que realmente importa é o Keychain ThisDeviceOnly para a sessão; ela não foi implementada e **fica como pendência de decisão do dono e de teste no Mac/aparelho**. Até lá o risco é o de qualquer app que usa o armazenamento padrão do supabase_flutter (backup protegido pela conta Apple do usuário).
+**Pendente de teste em aparelho (Android)**: `adb shell bmgr backupnow` e `bmgr restore`, e transferência D2D, para ver as regras valendo.
 
 ## 5. Retenção de registros com `deleted_at` (política proposta)
+### 5.0 Impacto verificado por análise de código (rodada final)
+- **Sincronização** (`lib/core/sync/cloud_pull.dart`, `local_store.dart`, `sync_cubit.dart`, migração `20261018000000`): a exclusão é uma linha com `deleted_at` (tombstone) que o servidor carimba com `server_updated_at` e `revision`; os outros aparelhos a recebem no próximo pull incremental (cursor por `server_updated_at`, janela de 2 min). O envio (`_upsert`) só manda linhas com edição pendente, por UUID. Consequências de purgar cedo: (1) um aparelho que ficou offline além da janela nunca recebe o tombstone e continua exibindo o item apagado; (2) se esse aparelho editar o item (ou tiver edição pendente), o upsert **recria** a linha no servidor (revision 1): ressurreição. Não há limite de tempo que o servidor possa impor a um aparelho offline; janela maior só reduz a chance.
+- **Exportação**: não inclui apagados (JSON filtra `deleted_at == null`, CSV usa repositórios que filtram, pacote ZIP só fotos sem `deleted_at`). A purga não muda a exportação.
+- **Backup**: um backup antigo restaurado depois da purga (iOS, ou Android por transferência aparelho-a-aparelho) traz itens que já foram apagados e não recebe mais o tombstone: o item volta a aparecer e pode ser reenviado se for editado. No backup em nuvem do Android as regras novas excluem os registros locais, então o aparelho restaurado começa do zero e puxa só o que existe.
+- **Fotos**: a linha só deve ser purgada com `storage_path` nulo (objeto já removido), senão o arquivo fica órfão no Storage.
+- **Cascata**: apagar um `outings` apaga as linhas filhas por `on delete cascade`; a purga de um rolê só vale se não houver filho vivo.
+- **Script endurecido (ainda NÃO APLICAR, não executado)**: piso de 90 dias e padrão de **180**; `outing_photos` só com `storage_path` nulo; `outings` só sem filhos vivos. **Proposta de salvaguarda no app (não implementada)**: se o último pull completo for mais antigo que a janela, fazer reconciliação completa (listar ids vivos no servidor e marcar como apagados os locais ausentes e sem edição pendente).
+
 Tabelas com `deleted_at` (CONFIRMADO nas migrações): outings, places, custom_drinks, drink_entries, outing_drinks, outing_photos, outing_tabs. Hoje nada apaga essas linhas; ficam até a exclusão da conta.
-- **Proposta do dono (a decidir): purgar 90 dias após a exclusão.** Justificativa: a exclusão precisa chegar (tombstone) a todos os aparelhos da pessoa; 90 dias cobre aparelho secundário offline por meses e evita guardar dado "apagado" para sempre. Contra: um aparelho offline por mais de 90 dias pode reenviar o registro apagado. O texto de privacidade passa a ser mais forte e verificável.
+- **Proposta do dono (a decidir): purgar 180 dias após a exclusão (piso 90).** Justificativa: a exclusão precisa chegar (tombstone) a todos os aparelhos da pessoa; 180 dias cobre aparelho secundário offline por meses e evita guardar dado "apagado" para sempre. Contra: um aparelho offline por mais que a janela pode reenviar o registro apagado. O texto de privacidade passa a ser mais forte e verificável.
 - Fotos: o app remove o objeto do Storage quando a pessoa apaga a foto (o `storage_path` fica nulo depois); linhas marcadas com `storage_path` ainda preenchido têm objeto a remover pela API do Storage antes de qualquer purga SQL.
 - **Scripts preparados, NÃO executados, NÃO migração**: `supabase/ops/report_deleted_rows.sql` (somente leitura: contagem por tabela e idade) e `supabase/ops/purge_deleted_rows.DO_NOT_APPLY.sql` (função idempotente, em lotes, por idade, com dry-run, backup em `purge_backup` na mesma transação, plano de rollback e passo A descrito para os arquivos). Não foram rodados contra nenhum banco; a sintaxe não foi validada em Postgres.
-- **Texto sugerido para o site, depois da decisão**: "Quando você apaga um item no app, ele some das suas listas e dos seus aparelhos. No servidor ele fica marcado como apagado por até 90 dias, para que a exclusão chegue a todos os seus aparelhos, e depois é removido definitivamente. Fotos apagadas são removidas da área privada na hora da exclusão."
+- **Texto sugerido para o site, depois da decisão**: "Quando você apaga um item no app, ele some das suas listas e dos seus aparelhos. No servidor ele fica marcado como apagado por até 180 dias, para que a exclusão chegue a todos os seus aparelhos, e depois é removido definitivamente. Fotos apagadas são removidas da área privada na hora da exclusão."
 
 ## 6. URLs, contato e textos de loja
 - Marketing: https://lucksrei.com/projects/bebometro/
@@ -131,10 +166,27 @@ Tabelas com `deleted_at` (CONFIRMADO nas migrações): outings, places, custom_d
 8. Exclusão de conta exige login recente (10 min).
 
 ## 9. Decisões e perguntas pendentes do dono
-1. Declarar Other Financial Info junto com Purchase History, ou só Purchase History? 2. Confirmar a região do Supabase no painel. 3. Aprovar 90 dias (ou outro) e autorizar a execução do script de purga (após relatório e backup). 4. Aceitar backup do iOS incluindo a sessão e as fotos. 5. Confirmar copyright e e-mail de loja. 6. Conferir o texto 18+ nos Termos. 7. Escrever à Geoapify sobre retenção de erros e chave (opcional).
+1. Declarar Other Financial Info junto com Purchase History, ou só Purchase History? 2. Confirmar a região do Supabase no painel. 3. Aprovar 180 dias (piso 90; ou outro) e autorizar a execução do script de purga (após relatório e backup). 4. Aceitar backup do iOS incluindo a sessão e as fotos. 5. Confirmar copyright e e-mail de loja. 6. Conferir o texto 18+ nos Termos. 7. Escrever à Geoapify sobre retenção de erros e chave (opcional).
 
 ## 10. Riscos
 - Manifests, `project.pbxproj` e entitlements sem Xcode: pendente de Archive e Privacy Report.
 - Regras de backup Android não testadas em aparelho; erro de caminho deixaria o arquivo em backup (falha segura, nunca perda de dado).
 - Scripts de purga não rodados; uma purga mal escolhida é irreversível para arquivos do Storage.
 - Respostas de classificação etária são candidatas; a redação literal dos formulários ASC e IARC precisa ser conferida lá.
+
+## 11. Campos finais sugeridos para o App Store Connect (propostos, nada submetido)
+| Campo | Valor sugerido |
+|---|---|
+| App Privacy: tipos coletados | Email Address, Name, Health, Other Financial Info, Purchase History, Precise Location, Search History, Photos or Videos, Other User Content, User ID |
+| Para cada tipo | Purposes: **App Functionality**; Tracking: **No**; Linked to identity: **Yes**, exceto Search History = **No** |
+| Não coletado | Payment Info, Credit Info, Contacts, Sensitive Info, Browsing History, Device ID, Usage Data, Diagnostics, Audio, Gameplay Content, Customer Support, Other Data |
+| Classificação etária | proposta **18+** (Alcohol, Tobacco, or Drug Use or References = Frequent; demais conforme 2.1); redação literal do questionário a conferir no ASC |
+| Privacy Policy URL | https://lucksrei.com/projects/bebometro/privacy/ |
+| Support URL | https://lucksrei.com/projects/bebometro/support/ |
+| Marketing URL | https://lucksrei.com/projects/bebometro/ |
+| Termos | https://lucksrei.com/projects/bebometro/terms/ |
+| Exclusão de conta (Play) | https://lucksrei.com/projects/bebometro/data-deletion/ |
+| Copyright (provisório) | © 2026 LUCAS DIOGO FRANCA |
+| Contato público | marketing@lucksrei.com (sem telefone nem WhatsApp) |
+
+Coerência 18+ verificada em 20/10/2026: página do app, política, termos (seção 5) e suporte do site dizem "destinado a maiores de 18"; no app o `gameLightNote` foi ajustado para "turma adulta"; nenhum texto fala em crianças/família. Validação iOS completa: ver `docs/app-store/xcode-validation-checklist.md` (pendente de Mac).
