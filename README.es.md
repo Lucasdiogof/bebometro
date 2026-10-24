@@ -22,12 +22,12 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 
 ## Disponibilidad
 
-- **Plataformas:** Android e iOS son prioritarias; el proyecto también contempla Flutter web.
-- **Idioma de la app:** portugués de Brasil. Estos README están en inglés, portugués y español; esto no implica una interfaz multilingüe.
+- **Plataformas:** Android e iOS son prioritarias; la versión web está publicada en [bebometro.lucksrei.com](https://bebometro.lucksrei.com).
+- **Idiomas de la app:** portugués de Brasil, inglés y español, elegidos en Ajustes (por defecto sigue el dispositivo).
 - **Apariencia:** tema oscuro, detalles ámbar, icono con una **B** en una chapa de botella y logotipo escrito independiente.
 - **Etapa:** desarrollo activo; no hay un lanzamiento en tiendas documentado en este repositorio.
 
-> **Estado de validación — 13/10/2026:** las funciones siguientes están implementadas en código. El documento de continuidad informa que esta entrega no se ha compilado, ejecutado en Flutter ni validado visualmente. Las consultas a la API de Supabase no demuestran sincronización de extremo a extremo desde la app. Consulta el [checklist](docs/development-progress.md).
+> **Estado de validación — 19/10/2026:** `flutter analyze` sin errores, 156 pruebas pasan y el build web de release funciona. El escenario principal de la salida (una pareja dividiendo la cuenta) se recorrió en la app web y la sincronización se observó en la base de datos. Aún no validado: dispositivos Android e iOS (incluido el seguimiento en la pantalla de bloqueo), lectura de fotos en etiquetas reales, lugares y mapa, una segunda instalación y conflictos entre dispositivos. Detalles: [checklist](docs/development-progress.md) e [informe de QA](docs/qa-report.md).
 
 ## Cómo funciona una salida
 
@@ -200,10 +200,10 @@ Para web, añade `-d chrome` al comando de ejecución. Son instrucciones de conf
 - **No verificado:** los intérpretes de etiqueta y carta son heurísticos y no se probaron con fotos reales, por lo que no se promete precisión. La migración `20261015000000` fue aplicada por el responsable; la sincronización de esas tablas y fotos desde la app aún no se observó.
 - **Regla de alcance (implementada):** los artículos personalizados, fotos y precios de la carta pertenecen al ID de la salida, incluso después de medianoche. No entran al catálogo global, no se convierten automáticamente en artículos personales reutilizables ni alimentan sugerencias para visitas futuras.
 - **Lugares y mapa:** escritos en el código, sin ejecutar; búsqueda, mapa y GPS nunca se observaron funcionando. Dependen de la clave de Geoapify (aún no configurada) y de `flutter pub get` (paquetes nuevos). La migración `20261017000000` fue aplicada por el responsable.
-- **Cuenta y sincronización:** escritas en el código, sin ejecutar. La migración `20261018000000` fue aplicada por el responsable; el SMTP está configurado; faltan aplicar la plantilla de recuperación por código y la longitud de 6 dígitos (`scripts/apply_recovery_code.py`) y verificar `delete-account` por completo. Nada de esto se observó funcionando en la app.
+- **Cuenta y sincronización:** migraciones aplicadas por el responsable, SMTP configurado y plantilla de recuperación con código de 6 dígitos aplicada (17/10/2026). La sincronización se observó en el servidor durante el QA web; faltan verificar `delete-account` por completo, una segunda instalación y conflictos entre dispositivos.
 - **Idiomas (pt-BR, en, es):** localización oficial de Flutter con archivos ARB, elección manual del idioma en Ajustes (preferencia del dispositivo, disponible antes de iniciar sesión, cambio sin reiniciar), contenido de catálogo/recetas/cartas traducido, textos nativos de la pantalla de bloqueo enviados por la app y exportaciones independientes del idioma. Escrito en código, sin compilar ni ejecutar. Las plantillas de correo de Supabase en los tres idiomas están preparadas en `supabase/email-templates/`, pero **no se aplicaron**; los textos de permisos de iOS siguen el idioma del sistema. Consulta el [checklist de i18n](docs/i18n-checklist.md).
 - **Más adelante:** precios regionales basados en observaciones reales y ampliación del catálogo.
-- **Validación pendiente:** resolución de dependencias, compilación, flujos en dispositivo/navegador, revisión visual y sincronización de extremo a extremo. La física de la cerveza a pantalla completa y los ejes del sensor están implementados en el código, pero nunca se observaron en un dispositivo.
+- **Validación pendiente:** flujos en dispositivos Android e iOS, modo sin conexión en un dispositivo real, una segunda instalación y conflictos entre dispositivos. La física de la cerveza a pantalla completa y los ejes del sensor están implementados en el código, pero nunca se observaron en un dispositivo.
 
 Las bebidas personales reutilizables creadas antes de este alcance se conservaron; dentro de una salida, los nuevos registros manuales quedan solo en ella.
 
@@ -224,4 +224,4 @@ No se concede una licencia de código abierto. La visibilidad del código no aut
 
 ## Acerca de
 
-Un producto **Lucksrei**, desarrollado por **Lucas Diogo França**. [lucksrei.com](https://lucksrei.com/)
+Un producto **Lucksrei**, desarrollado por **Lucas Diogo França**. Caso de estudio: [lucksrei.com/projects/bebometro](https://lucksrei.com/projects/bebometro/) · [privacidad](https://lucksrei.com/projects/bebometro/privacy/) · [términos](https://lucksrei.com/projects/bebometro/terms/) · [soporte](https://lucksrei.com/projects/bebometro/support/)

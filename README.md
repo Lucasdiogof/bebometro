@@ -22,12 +22,12 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 
 ## Availability
 
-- **Platforms:** Android and iOS are the priority; the project also targets Flutter web.
-- **App language:** Portuguese (Brazil). These READMEs are available in English, Portuguese and Spanish; this does not imply a multilingual app.
+- **Platforms:** Android and iOS are the priority; the web build is published at [bebometro.lucksrei.com](https://bebometro.lucksrei.com).
+- **App languages:** Portuguese (Brazil), English and Spanish, chosen in Settings (follows the device by default).
 - **Appearance:** dark theme, amber accents, a bottle-cap **B** icon and a separate wordmark.
 - **Stage:** active development; no store release is documented in this repository.
 
-> **Validation status — October 13, 2026:** the features below are implemented in source code. The development handoff reports no Flutter compilation, device execution or visual validation for this delivery. Supabase API checks do not establish end-to-end app synchronization. See the [development checklist](docs/development-progress.md).
+> **Validation status — October 19, 2026:** `flutter analyze` is clean, 156 tests pass and the web release build works. The main outing scenario (a couple splitting a tab) was run in the web app and its synchronization was observed in the database. Still not validated: Android and iOS devices (including the lock-screen tracking), photo reading on real labels, places and map, a second installation and conflicts between devices. Details: [development checklist](docs/development-progress.md) and [QA report](docs/qa-report.md).
 
 ## The outing flow
 
@@ -200,10 +200,10 @@ For web, add `-d chrome` to the run command. These are setup instructions, not e
 - **Not verified:** the label and menu parsers are heuristic and were not tested on real photos, so no accuracy is claimed. The `20261015000000` migration was applied by the maintainer; synchronization of these tables and photos from the app has not been observed.
 - **Scope rule (implemented):** custom items, photos and menu prices belong to the outing ID, even across midnight. They do not enter the global catalog, do not automatically become reusable personal items and do not feed future-visit price suggestions.
 - **Places and map:** written in code, not executed; search, map and GPS have never been observed working. They need the Geoapify key (not configured yet) and `flutter pub get` (new packages). Migration `20261017000000` was applied by the maintainer.
-- **Account and sync:** written in code, not executed. Migration `20261018000000` was applied by the maintainer; SMTP is configured; the recovery-code template and the 6-digit code length still have to be applied (`scripts/apply_recovery_code.py`) and the full `delete-account` check is pending. None of this has been observed working in the app.
+- **Account and sync:** migrations applied by the maintainer, SMTP configured and the 6-digit recovery-code template applied (2026-10-17). Sync was observed on the server during the web QA; the full `delete-account` check, a second installation and cross-device conflicts are still pending.
 - **Languages (pt-BR, en, es):** official Flutter localization with ARB files, a manual language choice in Settings (device preference, available before sign-in, switches without restarting), localized catalog/recipe/card content, native lock-screen texts sent by the app, and language-independent exports. Written in code, not compiled or run. Supabase e-mail templates for the three languages are prepared in `supabase/email-templates/` but **not applied**; iOS permission texts follow the system language. See the [i18n checklist](docs/i18n-checklist.md).
 - **Later:** regional prices backed by real observations and additional catalog coverage.
-- **Pending validation:** dependency resolution, compilation, device/browser flows, visual review and end-to-end synchronization. The full-screen beer physics and sensor axes are implemented in code but have not been observed on a device.
+- **Pending validation:** Android and iOS device flows, offline on a real device, a second installation and cross-device conflicts. The full-screen beer physics and sensor axes are implemented in code but have not been observed on a device.
 
 The reusable personal drinks created before this scope were preserved; inside an outing, new manual drinks are outing-only.
 
@@ -224,4 +224,4 @@ No open-source license is granted. Source visibility does not grant permission t
 
 ## About
 
-A **Lucksrei** product, developed by **Lucas Diogo França**. [lucksrei.com](https://lucksrei.com/)
+A **Lucksrei** product, developed by **Lucas Diogo França**. Case study: [lucksrei.com/projects/bebometro](https://lucksrei.com/projects/bebometro/) · [privacy](https://lucksrei.com/projects/bebometro/privacy/) · [terms](https://lucksrei.com/projects/bebometro/terms/) · [support](https://lucksrei.com/projects/bebometro/support/)

@@ -22,12 +22,12 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 
 ## Disponibilidade
 
-- **Plataformas:** Android e iOS são prioridade; o projeto também contempla Flutter web.
-- **Idioma do app:** português do Brasil. Os READMEs têm versões em português, inglês e espanhol; isso não significa que a interface esteja traduzida.
+- **Plataformas:** Android e iOS são prioridade; a versão web está publicada em [bebometro.lucksrei.com](https://bebometro.lucksrei.com).
+- **Idiomas do app:** português do Brasil, inglês e espanhol, escolhidos em Ajustes (por padrão segue o aparelho).
 - **Aparência:** tema escuro, destaques âmbar, ícone com **B** na tampinha e marca escrita separada.
 - **Estágio:** desenvolvimento ativo; não há lançamento em lojas documentado neste repositório.
 
-> **Estado da validação — 13/10/2026:** os recursos abaixo estão implementados em código. O handoff registra que esta entrega não foi compilada, executada no Flutter nem validada visualmente. Consultas à API do Supabase não comprovam a sincronização ponta a ponta pelo app. Consulte o [checklist](docs/development-progress.md).
+> **Estado da validação — 19/10/2026:** `flutter analyze` sem erros, 156 testes passando e build web release funcionando. O cenário principal do rolê (casal dividindo a comanda) foi percorrido no app web e a sincronização foi observada no banco. Ainda não validado: aparelhos Android e iOS (inclusive o acompanhamento na tela bloqueada), leitura de fotos em rótulos reais, locais e mapa, segunda instalação e conflito entre aparelhos. Detalhes: [checklist](docs/development-progress.md) e [relatório de QA](docs/qa-report.md).
 
 ## Como funciona o rolê
 
@@ -200,10 +200,10 @@ Na web, acrescente `-d chrome` ao comando de execução. São instruções de co
 - **Não verificado:** os interpretadores de rótulo e cardápio são heurísticos e não foram testados com fotos reais, então não se promete precisão. A migration `20261015000000` foi aplicada pelo responsável; a sincronização dessas tabelas e fotos pelo app ainda não foi observada.
 - **Regra de escopo (implementada):** itens personalizados, fotos e preços de cardápio pertencem ao ID do rolê, inclusive após a meia-noite. Não entram no catálogo global, não viram itens pessoais reutilizáveis automaticamente e não alimentam sugestões em visitas futuras.
 - **Locais e mapa:** escritos no código, não executados; busca, mapa e GPS nunca foram observados funcionando. Dependem da chave Geoapify (ainda não configurada) e de `flutter pub get` (pacotes novos). A migration `20261017000000` foi aplicada pelo responsável.
-- **Conta e sincronização:** escritas no código, não executadas. A migration `20261018000000` foi aplicada pelo responsável; o SMTP está configurado; faltam aplicar o template de recuperação por código e o comprimento de 6 dígitos (`scripts/apply_recovery_code.py`) e conferir a `delete-account` por completo. Nada disso foi observado funcionando no app.
+- **Conta e sincronização:** migrations aplicadas pelo responsável, SMTP configurado e template de recuperação por código de 6 dígitos aplicado (17/10/2026). A sincronização foi observada no servidor durante o QA web; faltam conferir a `delete-account` por completo, uma segunda instalação e conflitos entre aparelhos.
 - **Idiomas (pt-BR, en, es):** localização oficial do Flutter com arquivos ARB, escolha manual do idioma em Configurações (preferência do aparelho, disponível antes do login, troca sem reiniciar), conteúdo de catálogo/receitas/cartas traduzido, textos nativos da tela bloqueada enviados pelo app e exportações independentes do idioma. Escrito em código, não compilado nem executado. Os templates de e-mail do Supabase nos três idiomas estão preparados em `supabase/email-templates/`, mas **não foram aplicados**; os textos de permissão do iOS seguem o idioma do sistema. Veja o [checklist de i18n](docs/i18n-checklist.md).
 - **Depois:** preços regionais sustentados por observações reais e ampliação do catálogo.
-- **Validação pendente:** resolução de dependências, compilação, fluxos em aparelho/navegador, revisão visual e sincronização ponta a ponta. A física da cerveja em tela cheia e os eixos do sensor estão implementados no código, mas nunca foram observados em aparelho.
+- **Validação pendente:** fluxos em aparelho Android e iOS, offline em aparelho real, segunda instalação e conflitos entre aparelhos. A física da cerveja em tela cheia e os eixos do sensor estão implementados no código, mas nunca foram observados em aparelho.
 
 As bebidas pessoais reutilizáveis criadas antes desse escopo foram preservadas; dentro de um rolê, novos cadastros manuais ficam só nele.
 
@@ -224,4 +224,4 @@ Não é concedida licença de código aberto. A visibilidade do código não con
 
 ## Sobre
 
-Um produto **Lucksrei**, desenvolvido por **Lucas Diogo França**. [lucksrei.com](https://lucksrei.com/)
+Um produto **Lucksrei**, desenvolvido por **Lucas Diogo França**. Case: [lucksrei.com/projects/bebometro](https://lucksrei.com/projects/bebometro/) · [privacidade](https://lucksrei.com/projects/bebometro/privacy/) · [termos](https://lucksrei.com/projects/bebometro/terms/) · [suporte](https://lucksrei.com/projects/bebometro/support/)
