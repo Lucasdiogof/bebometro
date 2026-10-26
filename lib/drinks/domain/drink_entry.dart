@@ -334,75 +334,107 @@ class DrinkEntry {
   DrinkEntry copyWithBillTotal({
     required int? billTotalCents,
     required DateTime updatedAt,
-  }) => DrinkEntry(
-    id: id,
-    outingId: outingId,
-    consumedAt: consumedAt,
-    name: name,
-    category: category,
-    brand: brand,
-    style: style,
-    presentation: presentation,
-    catalogItemId: catalogItemId,
-    abvPercent: abvPercent,
-    abvSource: abvSource,
-    ingredients: ingredients,
-    composition: composition,
-    containerMl: containerMl,
-    isShared: isShared,
-    peopleCount: peopleCount,
-    personalMl: personalMl,
-    leftoverMl: leftoverMl,
-    priceKind: priceKind,
-    paidCents: paidCents,
-    billTotalCents: billTotalCents,
-    createdAt: createdAt,
-    entryOrigin: entryOrigin,
-    consumerId: consumerId,
-    portions: portions,
-    payers: payers,
-    updatedAt: updatedAt,
-    deletedAt: deletedAt,
-  );
+  }) {
+    // A record that names its payers derives the owner's cost from the total.
+    var paid = paidCents;
+    final w = payers;
+    if (w != null &&
+        billTotalCents != null &&
+        priceKind == PriceKind.informed) {
+      final order = w.keys.toList();
+      final parts = _allocate(billTotalCents, [for (final k in order) w[k]!]);
+      final i = order.indexOf(ownerPortionKey);
+      paid = i < 0 ? 0 : parts[i];
+    }
+    return DrinkEntry(
+      id: id,
+      outingId: outingId,
+      consumedAt: consumedAt,
+      name: name,
+      category: category,
+      brand: brand,
+      style: style,
+      presentation: presentation,
+      catalogItemId: catalogItemId,
+      abvPercent: abvPercent,
+      abvSource: abvSource,
+      ingredients: ingredients,
+      composition: composition,
+      containerMl: containerMl,
+      isShared: isShared,
+      peopleCount: peopleCount,
+      personalMl: personalMl,
+      leftoverMl: leftoverMl,
+      priceKind: priceKind,
+      paidCents: paid,
+      billTotalCents: billTotalCents,
+      createdAt: createdAt,
+      entryOrigin: entryOrigin,
+      consumerId: consumerId,
+      portions: portions,
+      payers: payers,
+      updatedAt: updatedAt,
+      deletedAt: deletedAt,
+    );
+  }
 
-  /// Same record with a new payment. Consumption (volumes) is untouched, and
-  /// for shared drinks only what the user paid changes, never the bill total.
+  /// Same record with a new price. Who consumed it and who pays are untouched.
+  /// For a shared record that names its payers, [paidCents] is the price of the
+  /// whole order and the owner's cost is derived from the payers; for older
+  /// shared records it stays what the owner paid (and the bill total is kept).
   DrinkEntry copyWithPrice({
     required PriceKind kind,
     int? paidCents,
     required DateTime updatedAt,
-  }) => DrinkEntry(
-    id: id,
-    outingId: outingId,
-    consumedAt: consumedAt,
-    name: name,
-    category: category,
-    brand: brand,
-    style: style,
-    presentation: presentation,
-    catalogItemId: catalogItemId,
-    abvPercent: abvPercent,
-    abvSource: abvSource,
-    ingredients: ingredients,
-    composition: composition,
-    containerMl: containerMl,
-    isShared: isShared,
-    peopleCount: peopleCount,
-    personalMl: personalMl,
-    leftoverMl: leftoverMl,
-    priceKind: kind,
-    paidCents: kind == PriceKind.informed
-        ? paidCents
-        : (kind == PriceKind.complimentary ? 0 : null),
-    billTotalCents: kind == PriceKind.informed ? billTotalCents : null,
-    createdAt: createdAt,
-    entryOrigin: entryOrigin,
-    consumerId: consumerId,
-    portions: portions,
-    payers: payers,
-    updatedAt: updatedAt,
-    deletedAt: deletedAt,
-  );
+  }) {
+    final w = payers;
+    final wholeOrder =
+        w != null &&
+        isShared &&
+        kind == PriceKind.informed &&
+        paidCents != null;
+    int? ownerShare;
+    if (wholeOrder) {
+      final order = w.keys.toList();
+      final parts = _allocate(paidCents, [for (final k in order) w[k]!]);
+      final i = order.indexOf(ownerPortionKey);
+      ownerShare = i < 0 ? 0 : parts[i];
+    }
+    return DrinkEntry(
+      id: id,
+      outingId: outingId,
+      consumedAt: consumedAt,
+      name: name,
+      category: category,
+      brand: brand,
+      style: style,
+      presentation: presentation,
+      catalogItemId: catalogItemId,
+      abvPercent: abvPercent,
+      abvSource: abvSource,
+      ingredients: ingredients,
+      composition: composition,
+      containerMl: containerMl,
+      isShared: isShared,
+      peopleCount: peopleCount,
+      personalMl: personalMl,
+      leftoverMl: leftoverMl,
+      priceKind: kind,
+      paidCents: kind == PriceKind.informed
+          ? (wholeOrder ? ownerShare : paidCents)
+          : (kind == PriceKind.complimentary ? 0 : null),
+      billTotalCents: kind == PriceKind.informed
+          ? (wholeOrder ? paidCents : billTotalCents)
+          : null,
+      createdAt: createdAt,
+      entryOrigin: entryOrigin,
+      consumerId: consumerId,
+      portions: portions,
+      payers: payers,
+      updatedAt: updatedAt,
+      deletedAt: deletedAt,
+    );
+  }
 
   /// Same record attributed to someone else (or to the owner with a null
   /// [consumerId]) and/or with other portions. Price and bill stay untouched.

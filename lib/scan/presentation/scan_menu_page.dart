@@ -763,18 +763,6 @@ class _CandidateCard extends StatelessWidget {
                         ),
                         if (c.description != null)
                           Text(c.description!, style: AppText.caption),
-                        if (c.volumeMl != null)
-                          Text(
-                            tr.scanMenuSize(formatMl(c.volumeMl!)),
-                            style: AppText.caption,
-                          ),
-                        if (c.ingredients.isNotEmpty)
-                          Text(
-                            tr.scanMenuIngredientsCited(
-                              c.ingredients.join(', '),
-                            ),
-                            style: AppText.caption,
-                          ),
                       ],
                     ),
                   ),
@@ -878,9 +866,7 @@ class _CandidateEditor extends StatefulWidget {
 class _CandidateEditorState extends State<_CandidateEditor> {
   late final TextEditingController _name;
   late final TextEditingController _description;
-  late final TextEditingController _volume;
   late final TextEditingController _price;
-  late final TextEditingController _ingredients;
   DrinkCategory? _category;
   String? _problem;
 
@@ -890,17 +876,15 @@ class _CandidateEditorState extends State<_CandidateEditor> {
     final c = widget.candidate;
     _name = TextEditingController(text: c.name);
     _description = TextEditingController(text: c.description ?? '');
-    _volume = TextEditingController(text: c.volumeMl?.toString() ?? '');
     _price = TextEditingController(
       text: c.priceCents == null ? '' : centsToInput(c.priceCents!),
     );
-    _ingredients = TextEditingController(text: c.ingredients.join(', '));
     _category = c.category;
   }
 
   @override
   void dispose() {
-    for (final c in [_name, _description, _volume, _price, _ingredients]) {
+    for (final c in [_name, _description, _price]) {
       c.dispose();
     }
     super.dispose();
@@ -910,12 +894,6 @@ class _CandidateEditorState extends State<_CandidateEditor> {
     final name = _name.text.trim();
     if (name.isEmpty) {
       setState(() => _problem = tr.scanMenuNeedName);
-      return;
-    }
-    final volumeText = _volume.text.trim();
-    final volume = parseInteger(volumeText);
-    if (volumeText.isNotEmpty && (volume == null || volume <= 0)) {
-      setState(() => _problem = tr.scanMenuInvalidSize);
       return;
     }
     final priceText = _price.text.trim();
@@ -932,13 +910,7 @@ class _CandidateEditorState extends State<_CandidateEditor> {
         name: name,
         description: () => description.isEmpty ? null : description,
         category: () => _category,
-        volumeMl: () => volume,
         priceCents: () => price,
-        ingredients: _ingredients.text
-            .split(RegExp(r'[,;\n]'))
-            .map((s) => s.trim())
-            .where((s) => s.isNotEmpty)
-            .toList(),
       ),
     );
   }
@@ -988,41 +960,14 @@ class _CandidateEditorState extends State<_CandidateEditor> {
                 ],
               ),
               const SizedBox(height: AppSpace.md),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _volume,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: tr.scanMenuSizeOptional,
-                        suffixText: 'ml',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: AppSpace.md),
-                  Expanded(
-                    child: TextField(
-                      controller: _price,
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
-                      decoration: InputDecoration(
-                        labelText: tr.scanMenuPriceOptional,
-                        prefixText: r'R$ ',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpace.md),
               TextField(
-                controller: _ingredients,
-                minLines: 1,
-                maxLines: 3,
+                controller: _price,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 decoration: InputDecoration(
-                  labelText: tr.scanMenuCitedOptional,
-                  helperText: tr.scanMenuCitedHelper,
+                  labelText: tr.scanMenuPriceOptional,
+                  prefixText: r'R$ ',
                 ),
               ),
               if (_problem != null) ...[

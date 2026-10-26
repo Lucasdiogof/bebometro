@@ -108,7 +108,7 @@ class PriceFixCubit extends Cubit<PriceFixState> {
     final doc = _tabs?.load(outingId);
     final byKey = <(ComparableKey, String?), List<DrinkEntry>>{};
     for (final e in visible) {
-      byKey.putIfAbsent((ComparableKey.of(e), e.consumerId), () => []).add(e);
+      byKey.putIfAbsent((ComparableKey.of(e), _who(e)), () => []).add(e);
     }
     final groups = [
       for (final list in byKey.values)
@@ -121,6 +121,12 @@ class PriceFixCubit extends Cubit<PriceFixState> {
         selected: state.selected.intersection(ids),
       ),
     );
+  }
+
+  /// Same drink for the same people (who drank it and who pays) is one group.
+  static String? _who(DrinkEntry e) {
+    final payers = (e.payers?.keys.toList() ?? const <String>[])..sort();
+    return '${e.consumerId}|${payers.join(',')}';
   }
 
   static String _label(DrinkEntry e, TabDoc? doc) {
@@ -165,7 +171,7 @@ class PriceFixCubit extends Cubit<PriceFixState> {
   void setComplimentary(bool v) => emit(state.copyWith(complimentary: v));
 
   String _priceText(DrinkEntry e) => switch (e.priceKind) {
-    PriceKind.informed => _money(e.paidCents ?? 0),
+    PriceKind.informed => _money(e.totalCostCents ?? e.paidCents ?? 0),
     PriceKind.complimentary => tr.priceComplimentary,
     PriceKind.unknown => tr.priceNone,
   };

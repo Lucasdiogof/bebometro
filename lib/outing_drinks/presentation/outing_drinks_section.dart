@@ -159,8 +159,6 @@ class _OutingDrinksSectionState extends State<OutingDrinksSection> {
   String _subtitle(OutingDrink d) {
     final parts = <String>[
       d.category.label,
-      if (d.volumeMl != null) formatMl(d.volumeMl!),
-      if (d.abvPercent != null) formatAbv(d.abvPercent!),
       if (d.advertisedCents != null)
         tr.outingDrinksMenuPrice(formatCents(d.advertisedCents!)),
     ];

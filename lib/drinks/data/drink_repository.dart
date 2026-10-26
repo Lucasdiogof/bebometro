@@ -222,7 +222,7 @@ class DrinkRepository {
     String? itemId,
     required String name,
     required DrinkCategory category,
-    required int volumeMl,
+    int? volumeMl,
     String? brand,
     String? style,
     double? abvPercent,
@@ -230,7 +230,9 @@ class DrinkRepository {
   }) async {
     final trimmed = name.trim();
     if (trimmed.isEmpty) throw ArgumentError(tr.repoDrinkName);
-    if (volumeMl <= 0) throw ArgumentError(tr.repoDrinkVolume);
+    if (volumeMl != null && volumeMl <= 0) {
+      throw ArgumentError(tr.repoDrinkVolume);
+    }
     if (abvPercent != null && (abvPercent < 0 || abvPercent > 100)) {
       throw ArgumentError(tr.repoAbvRange);
     }

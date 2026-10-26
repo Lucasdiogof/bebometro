@@ -98,8 +98,10 @@ class _PriceFixView extends StatelessWidget {
   Future<void> _editOne(BuildContext context, DrinkEntry e) async {
     final cubit = context.read<PriceFixCubit>();
     final controller = TextEditingController(
-      text: e.priceKind == PriceKind.informed && e.paidCents != null
-          ? centsToInput(e.paidCents!)
+      text:
+          e.priceKind == PriceKind.informed &&
+              (e.totalCostCents ?? e.paidCents) != null
+          ? centsToInput((e.totalCostCents ?? e.paidCents)!)
           : '',
     );
     String? error;
@@ -251,7 +253,9 @@ class _PriceFixView extends StatelessWidget {
                                 title: Text(formatDateTime(e.consumedAt)),
                                 subtitle: Text(switch (e.priceKind) {
                                   PriceKind.informed => tr.priceFixCurrent(
-                                    formatCents(e.paidCents ?? 0),
+                                    formatCents(
+                                      e.totalCostCents ?? e.paidCents ?? 0,
+                                    ),
                                   ),
                                   PriceKind.complimentary =>
                                     tr.priceComplimentary,

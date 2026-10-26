@@ -205,9 +205,6 @@ class _OutingScanSectionState extends State<OutingScanSection> {
                           Text(
                             [
                               d.origin.label,
-                              if (d.volumeMl != null) formatMl(d.volumeMl!),
-                              if (d.abvPercent != null)
-                                formatAbv(d.abvPercent!),
                               if (d.advertisedCents != null)
                                 tr.outingDrinksMenuPrice(
                                   formatCents(d.advertisedCents!),

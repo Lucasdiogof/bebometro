@@ -14,7 +14,7 @@ import 'catalog_cubit.dart';
 import '../../l10n/l10n.dart';
 
 /// What the user chose in the detail sheet.
-enum DetailAction { register, edit, delete, copyRecipe }
+enum DetailAction { register, edit, delete }
 
 /// Small tag telling where a drink's data comes from. It never claims
 /// certification or safety.
@@ -142,27 +142,10 @@ class _DrinkDetailSheet extends StatelessWidget {
                     child: OriginBadge(item.origin),
                   ),
                   const SizedBox(height: AppSpace.lg),
-                  if (item.isRecipe)
-                    _RecipeBlock(item: item)
-                  else ...[
+                  ...[
                     _Row(
                       tr.catalogStyle,
                       item.displayStyle ?? tr.detailNotGiven,
-                    ),
-                    _Row(tr.detailAbv, _abvText(item)),
-                    if (item.abvSource != null)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: AppSpace.sm),
-                        child: Text(
-                          tr.detailAbvFrom(item.abvSource!.displayLabel),
-                          style: AppText.caption,
-                        ),
-                      ),
-                    _Row(
-                      tr.detailIngredients,
-                      item.ingredients == null
-                          ? tr.detailIngredientsNone
-                          : item.ingredients!.join(', '),
                     ),
                     SectionTitle(tr.detailPresentations),
                     if (item.category == DrinkCategory.spirit)
@@ -197,27 +180,8 @@ class _DrinkDetailSheet extends StatelessWidget {
                     const SizedBox(height: AppSpace.md),
                     Text(item.note!, style: AppText.caption),
                   ],
-                  if (!item.isRecipe && item.abvVariants.isNotEmpty) ...[
-                    const SizedBox(height: AppSpace.md),
-                    // Divergence stays visible; the details are folded below.
-                    InfoPill(
-                      tr.aboutDataDivergence,
-                      icon: Icons.compare_arrows_rounded,
-                      warning: true,
-                    ),
-                  ],
                   const SizedBox(height: AppSpace.md),
                   _AboutDataTile(item: item),
-                  if (item.isRecipe)
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton.icon(
-                        onPressed: () =>
-                            Navigator.pop(context, DetailAction.copyRecipe),
-                        icon: const Icon(Icons.copy_all_outlined, size: 18),
-                        label: Text(tr.detailMakeMine),
-                      ),
-                    ),
                   if (item.isCustom) ...[
                     const SizedBox(height: AppSpace.md),
                     Row(
@@ -454,78 +418,6 @@ class _SourceLines extends StatelessWidget {
             ),
         ],
       ),
-    );
-  }
-}
-
-String _abvText(CatalogItem item) {
-  if (item.abvPercent != null) return formatAbv(item.abvPercent!);
-  if (item.abvVariants.isNotEmpty) {
-    final lines = item.abvVariants
-        .map((v) => '${formatAbv(v.value)} (${v.displayScope})')
-        .join('\n');
-    return tr.detailAbvVaries(lines);
-  }
-  return tr.detailNotGiven;
-}
-
-/// A reference or personal recipe: components with their amounts, and what the
-/// recipe is (and is not).
-class _RecipeBlock extends StatelessWidget {
-  const _RecipeBlock({required this.item});
-
-  final CatalogItem item;
-
-  @override
-  Widget build(BuildContext context) {
-    final recipe = item.recipe!;
-    final isReference = item.origin == InfoOrigin.recipe;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          isReference ? tr.detailRecipeReference : tr.detailRecipeMine,
-          style: AppText.caption,
-        ),
-        SectionTitle(tr.entryCompositionTitle),
-        if (recipe.components.isEmpty)
-          Text(tr.detailNoIngredientsYet, style: AppText.caption)
-        else
-          for (final c in recipe.components)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      c.optional ? tr.entryOptionalMark(c.name) : c.name,
-                      style: AppText.body,
-                    ),
-                  ),
-                  Text(c.amountLabel, style: AppText.caption),
-                  if (c.alcoholic)
-                    const Padding(
-                      padding: EdgeInsets.only(left: AppSpace.sm),
-                      child: Icon(
-                        Icons.local_bar_outlined,
-                        size: 14,
-                        color: AppColors.amber,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-        const SizedBox(height: AppSpace.sm),
-        Text(tr.detailAlcoholLegend, style: AppText.caption),
-        if (recipe.method != null) ...[
-          SectionTitle(tr.detailMethod),
-          Text(recipe.method!, style: AppText.body),
-        ],
-        if (recipe.garnish != null) ...[
-          const SizedBox(height: AppSpace.sm),
-          Text(tr.detailGarnish(recipe.garnish!), style: AppText.caption),
-        ],
-      ],
     );
   }
 }

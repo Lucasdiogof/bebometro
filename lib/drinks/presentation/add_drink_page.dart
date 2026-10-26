@@ -21,7 +21,6 @@ import 'my_drinks_page.dart';
 import 'custom_drink_page.dart';
 import 'drink_detail_sheet.dart';
 import '../../table/presentation/order_page.dart';
-import 'recipe_editor_page.dart';
 import '../../l10n/l10n.dart';
 
 /// The drink catalog. With an [outingId] it is the "add drink" step of that
@@ -232,13 +231,6 @@ class _AddDrinkView extends StatelessWidget {
         await _pick(context, item);
       case DetailAction.edit:
         await _custom(context, editing: item);
-      case DetailAction.copyRecipe:
-        final saved = await Navigator.of(context).push<CatalogItem>(
-          MaterialPageRoute(builder: (_) => RecipeEditorPage(copyFrom: item)),
-        );
-        if (saved != null && context.mounted) {
-          showToast(context, tr.catalogRecipeSaved);
-        }
       case DetailAction.delete:
         final ok = await showDialog<bool>(
           context: context,

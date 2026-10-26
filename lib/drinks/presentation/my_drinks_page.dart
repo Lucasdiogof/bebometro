@@ -4,14 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
-import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../domain/catalog_item.dart';
 import 'custom_drink_page.dart';
 import '../../table/presentation/order_page.dart';
 import 'my_drinks_cubit.dart';
-import 'recipe_editor_page.dart';
 import '../../l10n/l10n.dart';
 
 /// Manages the user's own drinks and recipes: list, register, edit,
@@ -56,11 +54,7 @@ class _MyDrinksView extends StatelessWidget {
         }
       case _Action.edit:
         await Navigator.of(context).push<CatalogItem>(
-          MaterialPageRoute(
-            builder: (_) => item.isRecipe
-                ? RecipeEditorPage(editing: item)
-                : CustomDrinkPage(editing: item),
-          ),
+          MaterialPageRoute(builder: (_) => CustomDrinkPage(editing: item)),
         );
       case _Action.duplicate:
         await cubit.duplicate(item);
@@ -94,17 +88,9 @@ class _MyDrinksView extends StatelessWidget {
   }
 
   String _subtitle(CatalogItem item) {
-    final recipe = item.recipe;
-    if (recipe != null) {
-      return tr.myDrinksRecipeSubtitle(recipe.components.length);
-    }
-    final parts = <String>[
-      item.category.label,
-      if (item.presentations.isNotEmpty)
-        formatMl(item.presentations.first.volumeMl),
-      if (item.abvPercent != null) formatAbv(item.abvPercent!),
-    ];
-    return parts.join(' · ');
+    return item.category.canBeAlcoholic
+        ? tr.orderKindAlcoholic
+        : tr.orderKindSoft;
   }
 
   @override
@@ -147,7 +133,13 @@ class _MyDrinksView extends StatelessWidget {
                               ),
                               child: SurfaceCard(
                                 onTap: state.activeOutingId == null
-                                    ? () => _run(context, _Action.edit, item)
+                                    ? (item.isRecipe
+                                          ? null
+                                          : () => _run(
+                                              context,
+                                              _Action.edit,
+                                              item,
+                                            ))
                                     : () =>
                                           _run(context, _Action.register, item),
                                 padding: const EdgeInsets.fromLTRB(
@@ -195,10 +187,13 @@ class _MyDrinksView extends StatelessWidget {
                                           value: _Action.register,
                                           child: Text(tr.myDrinksActionLog),
                                         ),
-                                        PopupMenuItem(
-                                          value: _Action.edit,
-                                          child: Text(tr.commonEdit),
-                                        ),
+                                        // A recipe made in an older version
+                                        // is kept as it is (no editor now).
+                                        if (!item.isRecipe)
+                                          PopupMenuItem(
+                                            value: _Action.edit,
+                                            child: Text(tr.commonEdit),
+                                          ),
                                         PopupMenuItem(
                                           value: _Action.duplicate,
                                           child: Text(
@@ -230,18 +225,6 @@ class _MyDrinksView extends StatelessWidget {
                         ),
                         icon: const Icon(Icons.add_rounded),
                         label: Text(tr.myDrinksNewDrink),
-                      ),
-                    ),
-                    const SizedBox(width: AppSpace.sm),
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => const RecipeEditorPage(),
-                          ),
-                        ),
-                        icon: const Icon(Icons.receipt_long_outlined),
-                        label: Text(tr.myDrinksNewRecipe),
                       ),
                     ),
                   ],
