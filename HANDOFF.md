@@ -987,3 +987,8 @@ Rótulo da Home agora "Custo das suas bebidas" (só bebidas atribuídas a Você;
 Deploy `a753d55` publicado (rótulo novo no bundle). Regressão de JS observada no navegador com `tool/web_regression/main.dart` (PASS; `1 << 40` = 0 em JS compilado).
 Home: o custo inclui bebida só da Ana paga por Você (`test/home_cost_scope_test.dart`). Pendentes: login autenticado no site publicado, comparação entre duas instalações
 e o patch do workflow (`docs/deploy-web-workflow.patch`, exige token com escopo `workflow`).
+
+## Fechamento 26/10 (site publicado)
+Workflow com guarda de defines vazios e `GEOAPIFY_KEY` aplicado (`c7b915d`, deploy ok). No site publicado: login nas duas origens, mapa (busca + tiles), recuperação do
+rolê em B, valores iguais A x B e uma edição propagada A -> B (R$ 40 -> 41 -> 40, restaurada). Evidências em `docs/qa-report.md`. Pendente de validação humana: GPS ("Usar minha localização"),
+iPhone/Android reais.

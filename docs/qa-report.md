@@ -343,3 +343,19 @@ mesmos 4 pedidos, a Batata, o serviço 10 %, o pagamento de R$ 121 e o mesmo tot
 - **Recuperação e edição entre duas instalações:** **pendentes** (a janela isolada anterior não está acessível a esta sessão e sem login não dá para comparar pela interface).
 - **Mapa:** `GEOAPIFY_KEY` está nos secrets do repositório, mas o workflow atual **não** a passa ao build; o patch `docs/deploy-web-workflow.patch` está **não aplicado**
   (falta o escopo `workflow` no token do `gh`). Mapa no site publicado: **não observado**.
+
+### Site publicado, mapa e duas instalações (26/10/2026, depois da autorização do workflow)
+Ambientes: **A** = `https://bebometro.lucksrei.com`, **B** = `https://bebometro.lucasdiogo1234.workers.dev` (duas origens, armazenamento separado, ambas
+com a conta `lucasdiogo1234@gmail.com`, no navegador embutido). Nada abaixo é localhost.
+
+| Item | Resultado |
+|---|---|
+| Workflow | patch `docs/deploy-web-workflow.patch` aplicado (`c7b915d`); push só passou depois de o `gh` receber o escopo `workflow`. Deploy de `c7b915d` (inclui `9a1d34b` e `94fb7ff`): sucesso |
+| Login autenticado (A e B) | **comprovado**: ambos entram e mostram o rolê da conta |
+| Mapa (A, site publicado) | **comprovado pela interface**: Locais salvos → Novo local → Buscar no mapa → "Avenida Goias Goiania" devolveu 7+ resultados (Goiânia, GO); ao escolher um, "Conferir local" carregou o mapa com tiles do Geoapify (escuro, ruas amarelas), pino e atribuição "Powered by Geoapify · © OpenStreetMap · © OpenMapTiles". **Nada foi salvo** (continua 1 local). GPS não testado |
+| Recuperação em B | **comprovada**: rolê "QA Bar Ficticio", 4 bebidas, "Custo das suas bebidas" R$ 124,00; Locais salvos com o mesmo local |
+| Comparação A x B (consumidores, pagantes, serviço, pagamento, totais) | **iguais** e iguais ao servidor: Subtotal R$ 184,00, serviço 10 % +R$ 18,40, total R$ 202,40, sua parte R$ 169,40, pago ao bar R$ 121,00, a pagar R$ 81,40; Você: bebidas 124,00 + comida 30,00 + serviço 15,40 = 169,40, pagou 121,00; "2× Drink da Ana" compartilhado, pago por Você |
+| Edição propagada | em A, "Cerveja Offline" R$ 40 → R$ 41: A mostrou R$ 203,50 / sua parte R$ 170,50 (e o aviso "Saldos atualizados: Você R$ 48,40 → R$ 49,50"); **B atualizou sozinha, sem recarregar** (203,50 / 170,50; bebidas 125,00; serviço 15,50); servidor `paid_cents` 4100, revisão 2. **Restaurado** para R$ 40 em A: A e B voltaram a 202,40 / 169,40; servidor 4000 |
+| Sem duplicação | servidor: 4 pedidos vivos, 7 no total (3 apagados logicamente, preservados), 1 rolê, 1 local; nada criado nem apagado |
+
+Observação de interface: ao abrir o rolê, a Home mostra o aviso "Esse rolê ainda está acontecendo?" (rolê aberto há ~9 h); escolhi "Continuar".
