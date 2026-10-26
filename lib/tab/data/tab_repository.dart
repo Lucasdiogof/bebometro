@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import '../../core/data/local_store.dart';
 import '../../drinks/data/drink_repository.dart';
@@ -63,9 +64,16 @@ class TabRepository {
   /// Read-modify-write without any await in between, so two quick edits can
   /// never overwrite each other.
   Future<void> update(String outingId, TabDoc Function(TabDoc) change) {
-    final next = change(load(outingId));
-    final now = DateTime.now().toUtc().toIso8601String();
+    final before = load(outingId);
+    final next = change(before);
     final existing = _store.get(LocalStore.outingTabs, outingId);
+    // Nothing changed (a new order on a tab that already lists every record):
+    // no write, so no pending upload and no revision bump for the tab.
+    if (existing != null &&
+        jsonEncode(next.toJson()) == jsonEncode(before.toJson())) {
+      return Future.value();
+    }
+    final now = DateTime.now().toUtc().toIso8601String();
     return _store.put(LocalStore.outingTabs, {
       'id': outingId,
       'outing_id': outingId,
