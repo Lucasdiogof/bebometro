@@ -319,11 +319,27 @@ mesmos 4 pedidos, a Batata, o serviço 10 %, o pagamento de R$ 121 e o mesmo tot
   é cálculo financeiro. O teste de limites foi tentado em `flutter test --platform chrome` mas o Chrome fechou a conexão antes de carregar
   neste ambiente: **rodou só na VM** (onde 64 bits não reproduzem o defeito); a proteção contra o retorno é o teste de varredura.
 - Não regravar a comanda sem mudança: coberto por teste (`skipUnchangedTabWrites`, `e8ddd68`).
-- Rótulo da Home: o valor é `OutingSummary.informedCents` (visão do dono): custo das **bebidas** atribuído a Você (pedidos de que participa,
-  pelo custo que ele arca). Não inclui extras da comanda (Batata), serviço nem pagamentos. O rótulo passou de "Seu gasto" para "Custo das suas
+- Rótulo da Home: o valor é `OutingSummary.informedCents` (visão do dono): o que Você **arca** nos pedidos de bebida (`ownerCostCents`), não importa quem bebeu: entram os pedidos que Você bebeu **e** os que só outra pessoa bebeu mas Você paga (pagadores). "Suas bebidas" (contagem) é outra coisa: só o que Você bebeu. Não inclui extras da comanda (Batata), serviço nem pagamentos. O rótulo passou de "Seu gasto" para "Custo das suas
   bebidas" (en: "Cost of your drinks", es: "Costo de tus bebidas"); a fórmula não mudou.
 - Push do workflow recusado: o token do `gh` tem escopo `repo` sem `workflow`, então o GitHub rejeita mudanças em `.github/workflows`.
   Todos os commits do código chegaram à `origin/main` (local = origin no início desta rodada). A melhoria do workflow ficou como patch:
   `docs/deploy-web-workflow.patch` (só passa `--dart-define` de segredos não vazios e também passa `GEOAPIFY_KEY`, que hoje **não** é passado: o
   mapa fica desligado no site). Para aplicar: `git apply docs/deploy-web-workflow.patch` e subir com um token com escopo `workflow`
   (`gh auth refresh -s workflow`) ou editar o arquivo no GitHub.
+
+### Fechamento da rodada (26/10/2026)
+- **Deploy de `a753d55`:** `deploy-web.yml` concluiu com sucesso; o bundle servido em `bebometro.lucksrei.com` contém o rótulo novo
+  ("Custo das suas bebidas"), a URL do Supabase e a chave publicável (e nenhum `service_role`). O workflow lê exatamente `SUPABASE_PUBLISHABLE_KEY`
+  (e `SUPABASE_URL`); o nome `SUPABASE_KEY` não existe no repositório.
+- **Regressão de JavaScript, observada no navegador:** `tool/web_regression/main.dart` (código real de `TabCalculator`) compilado para a web e aberto
+  no navegador embutido: **PASS** em "a pagar ao bar" 100-10, excedente, "pagou pelos outros", cotas personalizadas e 5 bilhões de centavos. A mesma
+  página mostra que `1 << 40` em tempo de execução vale **0** nesse JavaScript (a causa do defeito original). Execução local (`http://127.0.0.1`), não o site publicado.
+  `flutter test --platform chrome` continua sem carregar neste ambiente (nem com um teste trivial).
+- **Home, "Custo das suas bebidas":** conferido por código e por teste (`test/home_cost_scope_test.dart`): uma bebida que só a Ana bebeu e que Você paga
+  integralmente **entra** no custo (R$ 30 → R$ 30) e **não** conta como "Suas bebidas"; bebida de Você paga pela Ana conta como sua e custa R$ 0;
+  divisão 50/50 custa metade; pedido sem preço é sinalizado e não vira zero. Nenhum filtro indevido encontrado; a descrição anterior ("pedidos de que participa")
+  era imprecisa e foi corrigida acima. Consumidor e pagante continuam independentes.
+- **Login autenticado no site publicado:** **pendente** (precisa de uma sessão sua; o navegador embutido ficou na tela "Entrar").
+- **Recuperação e edição entre duas instalações:** **pendentes** (a janela isolada anterior não está acessível a esta sessão e sem login não dá para comparar pela interface).
+- **Mapa:** `GEOAPIFY_KEY` está nos secrets do repositório, mas o workflow atual **não** a passa ao build; o patch `docs/deploy-web-workflow.patch` está **não aplicado**
+  (falta o escopo `workflow` no token do `gh`). Mapa no site publicado: **não observado**.

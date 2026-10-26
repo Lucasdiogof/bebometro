@@ -982,3 +982,8 @@ Causa: secrets `SUPABASE_URL`/`SUPABASE_PUBLISHABLE_KEY` ausentes no repositóri
 os dois (valores públicos) e republicado; o bundle servido agora contém a URL e a chave publicável (sem `service_role`) e o login responde pelo servidor.
 Patch do workflow (não aplicado, falta escopo `workflow` no token): `docs/deploy-web-workflow.patch`. Evidências por ambiente em `docs/qa-report.md`.
 Rótulo da Home agora "Custo das suas bebidas" (só bebidas atribuídas a Você; sem extras, serviço nem pagamentos).
+
+## Rodada 26/10 (fechamento)
+Deploy `a753d55` publicado (rótulo novo no bundle). Regressão de JS observada no navegador com `tool/web_regression/main.dart` (PASS; `1 << 40` = 0 em JS compilado).
+Home: o custo inclui bebida só da Ana paga por Você (`test/home_cost_scope_test.dart`). Pendentes: login autenticado no site publicado, comparação entre duas instalações
+e o patch do workflow (`docs/deploy-web-workflow.patch`, exige token com escopo `workflow`).
