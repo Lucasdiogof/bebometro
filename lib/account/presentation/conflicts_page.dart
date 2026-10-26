@@ -328,9 +328,13 @@ class _ConflictsPageState extends State<ConflictsPage> {
     switch (collection) {
       case LocalStore.drinkEntries:
         return [
-          '${j['name'] ?? tr.drinkFallbackName} · '
-              '${j['personal_ml'] is num ? formatMl((j['personal_ml'] as num).toInt()) : '?'}',
-          tr.conflictPaid(money(j['paid_cents'])),
+          '${j['name'] ?? tr.drinkFallbackName}'
+              '${j['is_shared'] == true ? ' · ${tr.tabShared}' : ''}',
+          tr.conflictPaid(
+            money(
+              j['is_shared'] == true ? j['bill_total_cents'] : j['paid_cents'],
+            ),
+          ),
         ];
       case LocalStore.outingTabs:
         final data = j['data'] is Map ? j['data'] as Map : const {};

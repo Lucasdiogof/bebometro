@@ -99,12 +99,10 @@ class _PersonCard extends StatelessWidget {
   String get _drank {
     final c = consumption;
     if (c == null || c.count == 0) return tr.peopleDrankNothing;
-    final ml = c.knownMl == 0 && c.unknownCount > 0
-        ? tr.volumeUnknown
-        : (c.unknownCount == 0
-              ? formatMl(c.knownMl)
-              : tr.volumeKnownPlusUnknown(formatMl(c.knownMl), c.unknownCount));
-    return tr.peopleDrankLine(c.count, ml);
+    return [
+      if (c.individualCount > 0) tr.peopleOrdersCount(c.individualCount),
+      if (c.sharedCount > 0) tr.peopleSharedCount(c.sharedCount),
+    ].join(' · ');
   }
 
   @override

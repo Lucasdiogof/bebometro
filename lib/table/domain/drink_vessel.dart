@@ -110,25 +110,12 @@ bool hasFoam(DrinkEntry e, VesselKind kind) =>
 /// It is derived only from the time elapsed since the record's own time, so
 /// it needs no background timer, survives restarts, and a record entered
 /// retroactively is simply further along instead of starting again. It never
-/// reads or changes volume, alcohol, price or any other record state.
-///
-/// A shared bottle only empties by the user's own portion; the rest stays,
-/// because the picture must not suggest that the whole content was counted.
+/// reads or changes the price, who paid or any other record state: it is only
+/// a picture.
 double vesselFill(DrinkEntry e, VesselKind kind, DateTime now) {
   final total = kind.emptyingTime.inSeconds;
   final elapsed = now.difference(e.consumedAt).inSeconds;
-  final p = (elapsed / total).clamp(0.0, 1.0).toDouble();
-  return 1 - p * (1 - _restingFill(e));
-}
-
-/// Level the vessel settles at once the animation is complete.
-double _restingFill(DrinkEntry e) {
-  final personal = e.personalMl;
-  final container = e.containerMl;
-  if (e.isShared && personal != null && container != null && container > 0) {
-    return (1 - personal / container).clamp(0.0, 1.0).toDouble();
-  }
-  return 0;
+  return 1 - (elapsed / total).clamp(0.0, 1.0).toDouble();
 }
 
 /// Spoken description of a vessel (for screen readers and tooltips).
@@ -137,11 +124,11 @@ String vesselSemantics(DrinkEntry e, VesselKind kind, {int count = 1}) {
     count > 1 ? tr.tableSemanticsMany('$count', e.name) : e.name,
     kind.label,
     if (count == 1) formatTime(e.consumedAt),
-    if (count == 1 && e.personalMl != null) formatMl(e.personalMl!),
-    if (count == 1 && e.isShared && e.personalMl != null)
-      tr.tableSemanticsSharedPart,
-    if (count == 1 && e.priceKind == PriceKind.informed && e.paidCents != null)
-      formatCents(e.paidCents!),
+    if (count == 1 && e.isShared) tr.tabShared,
+    if (count == 1 &&
+        e.priceKind == PriceKind.informed &&
+        e.totalCostCents != null)
+      formatCents(e.totalCostCents!),
   ];
   return '${parts.join(', ')}. ${tr.tableSemanticsTap}';
 }

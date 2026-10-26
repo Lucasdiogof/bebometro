@@ -6401,9 +6401,6 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get peopleDrankNothing => 'Ainda não bebeu nada.';
-
-  @override
   String peopleDrankLine(int count, String ml) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -6916,5 +6913,46 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String ordersPays(String names) {
     return 'Paga: $names';
+  }
+
+  @override
+  String get tileOrders => 'Pedidos';
+
+  @override
+  String get tileShared => 'Compartilhados';
+
+  @override
+  String get peopleDrankNothing => 'Nenhum pedido ainda.';
+
+  @override
+  String peopleOrdersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pedidos',
+      one: '1 pedido',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String peopleSharedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Participou de $count pedidos compartilhados',
+      one: 'Participou de 1 pedido compartilhado',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statsSharedNote(String count) {
+    return '$count compartilhados';
+  }
+
+  @override
+  String tableSharedPeople(String count) {
+    return 'Pedido compartilhado por $count pessoas';
   }
 }

@@ -46,7 +46,7 @@ void main() {
       ];
       final mine = OutingSummary.of(list);
       expect(mine.entryCount, 2);
-      expect(mine.personalMl, 800);
+      expect(mine.sharedCount, 0);
       expect(mine.informedCents, 3000);
       final table = OutingSummary.of(list, mineOnly: false);
       expect(table.entryCount, 4);

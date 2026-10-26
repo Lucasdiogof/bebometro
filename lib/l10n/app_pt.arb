@@ -4055,7 +4055,6 @@
           }
       }
   },
-  "peopleDrankNothing": "Ainda não bebeu nada.",
   "peopleDrankLine": "{count, plural, one{1 bebida} other{{count} bebidas}} · {ml}",
   "@peopleDrankLine": {
       "placeholders": {
@@ -4410,6 +4409,41 @@
   "@ordersPays": {
       "placeholders": {
           "names": {
+              "type": "String"
+          }
+      }
+  },
+  "tileOrders": "Pedidos",
+  "tileShared": "Compartilhados",
+  "peopleDrankNothing": "Nenhum pedido ainda.",
+  "peopleOrdersCount": "{count, plural, =1{1 pedido} other{{count} pedidos}}",
+  "@peopleOrdersCount": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "peopleSharedCount": "{count, plural, =1{Participou de 1 pedido compartilhado} other{Participou de {count} pedidos compartilhados}}",
+  "@peopleSharedCount": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "statsSharedNote": "{count} compartilhados",
+  "@statsSharedNote": {
+      "placeholders": {
+          "count": {
+              "type": "String"
+          }
+      }
+  },
+  "tableSharedPeople": "Pedido compartilhado por {count} pessoas",
+  "@tableSharedPeople": {
+      "placeholders": {
+          "count": {
               "type": "String"
           }
       }

@@ -142,17 +142,16 @@ void main() {
       }
     });
 
-    test('Lucas consumption is only his 1.600 ml; Ana drinks are not his', () {
-      final c = TabCalculator.consumption(doc, entries);
-      expect(c[_me.id]!.count, 4);
-      expect(c[_me.id]!.knownMl, 1600);
-      expect(c[_me.id]!.volumeComplete, isTrue);
-      expect(c[_ana.id]!.count, 2);
-      expect(c[_ana.id]!.knownMl, 0);
-      expect(c[_ana.id]!.unknownCount, 2);
-      expect(c[_ana.id]!.volumeComplete, isFalse);
-      expect(entries.where((e) => e.isMine).length, 4);
-    });
+    test(
+      'Lucas consumption is only his four drinks; Ana drinks are not his',
+      () {
+        final c = TabCalculator.consumption(doc, entries);
+        expect(c[_me.id]!.individualCount, 4);
+        expect(c[_me.id]!.sharedCount, 0);
+        expect(c[_ana.id]!.individualCount, 2);
+        expect(entries.where((e) => e.isMine).length, 4);
+      },
+    );
 
     test('paying the whole bill does not make it his consumption', () {
       final paid = doc.copyWith(
@@ -166,7 +165,7 @@ void main() {
       expect(pr.shareOf(_ana.id), 10340);
       // The bar is settled; Lucas paid above his own share.
       expect(pr.balanceOf(_me.id), 9900 - 20240);
-      expect(TabCalculator.consumption(paid, entries)[_me.id]!.knownMl, 1600);
+      expect(TabCalculator.consumption(paid, entries)[_me.id]!.count, 4);
       expect(pr.venueSettled, isTrue);
       expect(pr.venueDueCents, 0);
       expect(pr.paidForOthers(_me.id), 20240 - 9900);
@@ -217,7 +216,7 @@ void main() {
       portions: {ownerPortionKey: 400, _ana.id: 200},
     );
 
-    test('volumes 400/200 and cost 15/15 by default', () {
+    test('both took part, no unit of their own, and cost 15/15 by default', () {
       final e = bottle();
       final doc = table();
       final r = TabCalculator.compute(doc, byId([e]));
@@ -225,12 +224,13 @@ void main() {
       expect(r.shareOf(_me.id), 1500);
       expect(r.shareOf(_ana.id), 1500);
       final c = TabCalculator.consumption(doc, [e]);
-      expect(c[_me.id]!.knownMl, 400);
-      expect(c[_ana.id]!.knownMl, 200);
+      expect(c[_me.id]!.sharedCount, 1);
+      expect(c[_me.id]!.individualCount, 0);
+      expect(c[_ana.id]!.sharedCount, 1);
       expect(e.isMine, isTrue);
     });
 
-    test('changing only who pays does not change volumes', () {
+    test('changing only who pays does not change who took part', () {
       final e = bottle();
       final doc = table(
         links: [
@@ -241,8 +241,8 @@ void main() {
       expect(r.shareOf(_me.id), 3000);
       expect(r.shareOf(_ana.id), 0);
       final c = TabCalculator.consumption(doc, [e]);
-      expect(c[_me.id]!.knownMl, 400);
-      expect(c[_ana.id]!.knownMl, 200);
+      expect(c[_me.id]!.sharedCount, 1);
+      expect(c[_ana.id]!.sharedCount, 1);
     });
 
     test('repeating gives another bottle, not a duplicate of the first', () {
@@ -256,10 +256,13 @@ void main() {
       final doc = table();
       final r = TabCalculator.compute(doc, byId([a, again]));
       expect(r.total, 6000);
-      expect(TabCalculator.consumption(doc, [a, again])[_me.id]!.knownMl, 800);
+      expect(
+        TabCalculator.consumption(doc, [a, again])[_me.id]!.sharedCount,
+        2,
+      );
     });
 
-    test('an unknown portion stays unknown, never zero', () {
+    test('an unknown portion still counts as taking part', () {
       final e = bottle().copyWithAttribution(
         consumerId: null,
         portions: {ownerPortionKey: 400, _ana.id: null},
@@ -268,8 +271,7 @@ void main() {
         updatedAt: _t,
       );
       final c = TabCalculator.consumption(table(), [e]);
-      expect(c[_ana.id]!.knownMl, 0);
-      expect(c[_ana.id]!.unknownCount, 1);
+      expect(c[_ana.id]!.sharedCount, 1);
     });
   });
 

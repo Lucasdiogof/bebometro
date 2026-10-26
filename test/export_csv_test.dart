@@ -93,13 +93,23 @@ void main() {
       final header = rows.first.split(';');
       expect(
         header
-            .sublist(header.length - 2)
+            .sublist(header.length - 3)
             .map((c) => c.replaceAll('"', ''))
             .toList(),
-        ['consumidor', 'porcoes_json'],
+        ['consumidor', 'porcoes_json', 'pagantes_json'],
       );
-      expect(rows[1].split(';')[rows[1].split(';').length - 2], '"voce"');
-      expect(rows[2].split(';')[rows[2].split(';').length - 2], '"p-ana"');
+      expect(rows[1].split(';')[rows[1].split(';').length - 3], '"voce"');
+      expect(rows[2].split(';')[rows[2].split(';').length - 3], '"p-ana"');
+    });
+
+    test('payers are exported apart from who drank it', () {
+      final withPayers = DrinkEntry.fromJson({
+        ...entry(id: 'p').toJson(),
+        'payers': {'me': 1, 'p-ana': 1},
+      });
+      final rows = lines(ExportBuilder.drinksCsv([withPayers, entry(id: 'q')]));
+      expect(rows[1].split(';').last, contains('p-ana'));
+      expect(rows[2].split(';').last, '');
     });
 
     test('a quote in a name is escaped', () {

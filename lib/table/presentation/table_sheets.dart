@@ -94,15 +94,12 @@ Future<void> showEntryGroupSheet(
 
 String _summaryLine(DrinkEntry e) => [
   formatTime(e.consumedAt),
-  if (e.personalMl != null)
-    formatMl(e.personalMl!)
-  else
-    tr.recordsUnknownVolume,
+  if (e.isShared) tr.tabShared,
   _price(e),
 ].join(' · ');
 
 String _price(DrinkEntry e) => switch (e.priceKind) {
-  PriceKind.informed => formatCents(e.paidCents ?? 0),
+  PriceKind.informed => formatCents(e.totalCostCents ?? e.paidCents ?? 0),
   PriceKind.complimentary => tr.priceComplimentary,
   PriceKind.unknown => tr.priceNone,
 };
@@ -122,8 +119,6 @@ class _EntryDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final e = entry;
     final kind = vesselKindFor(e);
-    final personal = e.personalMl;
-    final container = e.containerMl;
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
@@ -151,28 +146,13 @@ class _EntryDetail extends StatelessWidget {
               tr.entryTimeSection,
               formatDateTime(e.consumedAt),
             ),
-            _Line(
-              Icons.opacity_rounded,
-              tr.tableYourVolume,
-              personal == null ? tr.detailNotGiven : formatMl(personal),
-            ),
-            if (e.isShared && personal != null && container != null)
+            if (e.isShared)
               _Line(
                 Icons.groups_outlined,
                 tr.entryShared,
-                tr.tableSharedLine(
-                  formatMl(personal),
-                  formatMl(container),
-                  '${e.peopleCount}',
-                ),
+                tr.tableSharedPeople('${e.peopleCount}'),
               ),
             _Line(Icons.payments_outlined, tr.tabFillPriceTitle, _price(e)),
-            if (e.isMixed && e.composition!.customized)
-              _Line(
-                Icons.tune_rounded,
-                tr.entryCompositionTitle,
-                tr.tableRecipeAdjusted,
-              ),
             const SizedBox(height: AppSpace.lg),
             FilledButton.icon(
               onPressed: () => onEdit(e),

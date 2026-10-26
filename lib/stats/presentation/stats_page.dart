@@ -150,6 +150,12 @@ class _StatsView extends StatelessWidget {
                               ),
                             ),
                           ),
+                          Expanded(
+                            child: StatTile(
+                              label: tr.tileShared,
+                              value: '${report.sharedCount}',
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: AppSpace.lg),
@@ -176,69 +182,6 @@ class _StatsView extends StatelessWidget {
                     ],
                   ),
                 ),
-                SectionTitle(tr.statsVolumeSection),
-                SurfaceCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: StatTile(
-                              label: tr.statsAlcoholicVolume,
-                              value: formatMl(report.alcoholicMl),
-                              icon: Icons.local_bar_outlined,
-                            ),
-                          ),
-                          Expanded(
-                            child: StatTile(
-                              label: tr.statsNonAlcoholicVolume,
-                              value: formatMl(report.nonAlcoholicMl),
-                              icon: Icons.water_drop_outlined,
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (report.unknownVolumeCount > 0) ...[
-                        const SizedBox(height: AppSpace.sm),
-                        InfoPill(
-                          tr.statsUnknownVolume(report.unknownVolumeCount),
-                          icon: Icons.opacity_outlined,
-                          warning: true,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                SectionTitle(tr.statsAlcoholSection),
-                SurfaceCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      StatTile(
-                        label: tr.statsPureAlcohol,
-                        value: report.alcoholIncomplete
-                            ? tr.entryAtLeast(
-                                formatGrams(report.pureAlcoholGrams),
-                              )
-                            : formatGrams(report.pureAlcoholGrams),
-                        icon: Icons.science_outlined,
-                      ),
-                      if (report.alcoholIncomplete) ...[
-                        const SizedBox(height: AppSpace.sm),
-                        InfoPill(
-                          tr.statsIncompleteAlcohol(
-                            report.incompleteAlcoholCount,
-                          ),
-                          icon: Icons.help_outline_rounded,
-                          warning: true,
-                        ),
-                      ],
-                      const SizedBox(height: AppSpace.sm),
-                      Text(tr.statsAlcoholNote, style: AppText.caption),
-                    ],
-                  ),
-                ),
                 if (report.alcoholic.isNotEmpty) ...[
                   SectionTitle(tr.statsAlcoholByCategory),
                   _Bars(
@@ -247,8 +190,8 @@ class _StatsView extends StatelessWidget {
                         _Bar(
                           label: c.category.label,
                           value: c.count,
-                          note: c.unknownVolumeCount > 0
-                              ? tr.statsNoVolumeNote('${c.unknownVolumeCount}')
+                          note: c.sharedCount > 0
+                              ? tr.statsSharedNote('${c.sharedCount}')
                               : null,
                           onTap: () => _openEntries(
                             context,

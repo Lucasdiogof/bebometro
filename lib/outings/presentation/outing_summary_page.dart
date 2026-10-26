@@ -272,9 +272,9 @@ class _SummaryViewState extends State<_SummaryView> {
                               ),
                               Expanded(
                                 child: StatTile(
-                                  label: tr.outingYourVolume,
-                                  value: s.volumeLabel,
-                                  icon: Icons.opacity_rounded,
+                                  label: tr.tileShared,
+                                  value: '${s.sharedCount}',
+                                  icon: Icons.groups_2_outlined,
                                 ),
                               ),
                             ],
@@ -282,10 +282,6 @@ class _SummaryViewState extends State<_SummaryView> {
                           if (s.groups.isNotEmpty) ...[
                             const Divider(height: 28),
                             for (final g in s.groups) _GroupRow(group: g),
-                          ],
-                          if (s.alcoholicCount > 0) ...[
-                            const Divider(height: 28),
-                            _AlcoholInfo(summary: s),
                           ],
                         ],
                       ),
@@ -584,55 +580,8 @@ class _GroupRow extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: AppSpace.sm),
-          Text(
-            group.personalMl == null
-                ? tr.groupVolumeUnknownShort
-                : formatMl(group.personalMl!),
-            style: AppText.caption,
-          ),
         ],
       ),
-    );
-  }
-}
-
-class _AlcoholInfo extends StatelessWidget {
-  const _AlcoholInfo({required this.summary});
-
-  final OutingSummary summary;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        StatTile(
-          label: tr.alcoholDeclared,
-          value: summary.alcoholIncomplete
-              ? tr.alcoholAtLeast(formatGrams(summary.pureAlcoholGrams))
-              : formatGrams(summary.pureAlcoholGrams),
-          icon: Icons.science_outlined,
-        ),
-        const SizedBox(height: AppSpace.sm),
-        if (summary.incompleteAlcoholCount > 0) ...[
-          InfoPill(
-            tr.alcoholIncompletePill(summary.incompleteAlcoholCount),
-            icon: Icons.help_outline_rounded,
-            warning: true,
-          ),
-          const SizedBox(height: AppSpace.sm),
-        ],
-        if (summary.unknownVolumeCount > 0) ...[
-          InfoPill(
-            tr.alcoholNoVolumePill(summary.unknownVolumeCount),
-            icon: Icons.opacity_outlined,
-            warning: true,
-          ),
-          const SizedBox(height: AppSpace.sm),
-        ],
-        Text(tr.alcoholExplain, style: AppText.caption),
-      ],
     );
   }
 }

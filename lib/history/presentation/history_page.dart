@@ -239,8 +239,9 @@ class _OutingCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpace.xs),
                 Text(
-                  '${getIt<TabRepository>().load(o.id).participants.length > 1 ? tr.drinkCountYours(s.entryCount) : tr.drinkCount(s.entryCount)}'
-                  ' · ${s.volumeLabel}',
+                  getIt<TabRepository>().load(o.id).participants.length > 1
+                      ? tr.drinkCountYours(s.entryCount)
+                      : tr.drinkCount(s.entryCount),
                   style: AppText.caption.copyWith(color: AppColors.text),
                 ),
               ],

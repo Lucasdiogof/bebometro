@@ -1698,7 +1698,6 @@
   "peopleRemoveHint": "No hay consumo, parte ni pago de esta persona.",
   "peopleRemoveBlocked": "Tiene pedidos, parte o pago: márcala como que se fue.",
   "peopleUnassigned": "{count, plural, one{1 registro es de alguien que no está en la mesa} other{{count} registros son de personas que no están en la mesa}}: quedan sin asignar, nunca son tuyos.",
-  "peopleDrankNothing": "Todavía no bebió nada.",
   "peopleDrankLine": "{count, plural, one{1 bebida} other{{count} bebidas}} · {ml}",
   "peopleDrinksCost": "Bebidas",
   "peopleFoodCost": "Comida y otros",
@@ -1984,6 +1983,41 @@
   "@ordersPays": {
       "placeholders": {
           "names": {
+              "type": "String"
+          }
+      }
+  },
+  "tileOrders": "Pedidos",
+  "tileShared": "Compartidos",
+  "peopleDrankNothing": "Ningún pedido todavía.",
+  "peopleOrdersCount": "{count, plural, =1{1 pedido} other{{count} pedidos}}",
+  "@peopleOrdersCount": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "peopleSharedCount": "{count, plural, =1{Participó en 1 pedido compartido} other{Participó en {count} pedidos compartidos}}",
+  "@peopleSharedCount": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "statsSharedNote": "{count} compartidos",
+  "@statsSharedNote": {
+      "placeholders": {
+          "count": {
+              "type": "String"
+          }
+      }
+  },
+  "tableSharedPeople": "Pedido compartido por {count} personas",
+  "@tableSharedPeople": {
+      "placeholders": {
+          "count": {
               "type": "String"
           }
       }

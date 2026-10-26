@@ -17,7 +17,6 @@ import '../../scan/data/scan_draft_store.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../table/presentation/table_scene.dart';
 import '../../table/presentation/table_sheets.dart';
-import '../../glass/presentation/accumulated_glass.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../outings/data/outing_repository.dart';
 import '../../tab/data/tab_repository.dart';
@@ -513,22 +512,9 @@ class _OutingViewState extends State<_OutingView> {
     final id = filter.personId!;
     final c = consumption[id];
     final isMe = id == me?.id;
-    final volume = c == null || c.count == 0
-        ? formatMl(0)
-        : (c.unknownCount == 0
-              ? formatMl(c.knownMl)
-              : (c.knownMl == 0
-                    ? tr.volumeUnknown
-                    : tr.volumeKnownPlusUnknown(
-                        formatMl(c.knownMl),
-                        c.unknownCount,
-                      )));
     return [
-      StatTile(label: tr.homeDrinks, value: '${c?.count ?? 0}'),
-      StatTile(
-        label: isMe ? tr.outingYourVolume : tr.tileVolume,
-        value: isMe ? state.summary!.volumeLabel : volume,
-      ),
+      StatTile(label: tr.tileOrders, value: '${c?.individualCount ?? 0}'),
+      StatTile(label: tr.tileShared, value: '${c?.sharedCount ?? 0}'),
       StatTile(
         label: isMe ? tr.tileYourShare : tr.tileTheirShare,
         value: formatCents(r.shareOf(id)),
@@ -595,7 +581,6 @@ class _OutingViewState extends State<_OutingView> {
     ]..sort((a, b) => a.consumedAt.compareTo(b.consumedAt));
     final showLegacy = outing.isActive && !doc.autoLink;
     final isMeView = !filter.isTable && filter.personId == doc.me?.id;
-    final c = filter.isTable ? null : consumption[filter.personId];
     final pills = filter.isTable
         ? [
             if (result.pendingCount > 0)
@@ -604,32 +589,12 @@ class _OutingViewState extends State<_OutingView> {
                 icon: Icons.sell_outlined,
                 warning: true,
               ),
-            if (consumption.values.any((x) => x.unknownCount > 0))
-              InfoPill(
-                tr.outingNoVolume(
-                  consumption.values.fold(0, (a, x) => a + x.unknownCount),
-                ),
-                icon: Icons.opacity_outlined,
-                warning: true,
-              ),
           ]
         : [
             if (isMeView && summary.unpricedCount > 0)
               InfoPill(
                 tr.homeUnpriced(summary.unpricedCount),
                 icon: Icons.sell_outlined,
-                warning: true,
-              ),
-            if ((c?.unknownCount ?? 0) > 0)
-              InfoPill(
-                tr.outingNoVolume(c!.unknownCount),
-                icon: Icons.opacity_outlined,
-                warning: true,
-              ),
-            if (isMeView && summary.incompleteAlcoholCount > 0)
-              InfoPill(
-                tr.outingAlcoholIncomplete(summary.incompleteAlcoholCount),
-                icon: Icons.help_outline_rounded,
                 warning: true,
               ),
           ];
@@ -916,36 +881,6 @@ class _OutingViewState extends State<_OutingView> {
                       ),
                     ),
                   ),
-                if (isMeView || doc.participants.length <= 1) ...[
-                  const SizedBox(height: AppSpace.md),
-                  SurfaceCard(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpace.md,
-                    ),
-                    child: Theme(
-                      data: Theme.of(context)
-                          .copyWith(dividerColor: Colors.transparent),
-                      child: ExpansionTile(
-                        tilePadding: EdgeInsets.zero,
-                        childrenPadding: const EdgeInsets.only(
-                          bottom: AppSpace.md,
-                        ),
-                        title: Text(tr.glassBigTitle, style: AppText.subtitle),
-                        subtitle: Text(
-                          tr.glassBigSubtitle,
-                          style: AppText.caption,
-                        ),
-                        children: [
-                          AccumulatedGlass(
-                            alcoholicMl: summary.alcoholicMl,
-                            otherMl: summary.otherMl,
-                            unknownVolumeCount: summary.unknownVolumeCount,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
                 const SizedBox(height: AppSpace.lg),
                 // A real, findable button (not a lost link). Amber outline, no
                 // red: finishing is normal, and the sheet still asks. Finishing
@@ -1078,17 +1013,10 @@ class _RepeatButton extends StatelessWidget {
   final String? who;
 
   String get _what {
-    final container = entry.containerMl;
-    final personal = entry.personalMl;
-    if (entry.isMixed) {
-      return entry.composition!.customized
-          ? tr.repeatAdjusted(entry.name)
-          : entry.name;
-    }
-    final size = container == null ? '' : ' ${formatMl(container)}';
-    return entry.isShared && personal != null
-        ? '${entry.name}$size · ${tr.repeatYourPart(formatMl(personal))}'
-        : '${entry.name}$size';
+    final p = entry.presentation;
+    return p == null || entry.name.toLowerCase().contains(p.toLowerCase())
+        ? entry.name
+        : '${entry.name} ${localizePresentation(p)}';
   }
 
   @override
@@ -1134,8 +1062,8 @@ class _RepeatButton extends StatelessWidget {
                           [
                             _what,
                             if (entry.priceKind == PriceKind.informed &&
-                                entry.paidCents != null)
-                              formatCents(entry.paidCents!),
+                                entry.totalCostCents != null)
+                              formatCents(entry.totalCostCents!),
                           ].join(' · '),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -1179,35 +1107,20 @@ class EntryTile extends StatelessWidget {
   final VoidCallback? onRepeat;
 
   String get _priceText => switch (entry.priceKind) {
-    PriceKind.informed => formatCents(entry.paidCents ?? 0),
+    PriceKind.informed => formatCents(
+      entry.totalCostCents ?? entry.paidCents ?? 0,
+    ),
     PriceKind.complimentary => tr.priceComplimentary,
     PriceKind.unknown => tr.priceNone,
   };
 
   @override
   Widget build(BuildContext context) {
-    final personal = entry.personalMl;
-    final container = entry.containerMl;
-    final alcohol = entry.alcohol;
     final meta = <String>[
       ?who,
       formatTime(entry.consumedAt),
-      if (entry.isMixed && entry.composition!.customized)
-        tr.groupRecipeAdjusted,
-      if (entry.presentation != null && !entry.isShared)
-        localizePresentation(entry.presentation!),
-      if (entry.isShared && personal != null && container != null)
-        tr.entrySharedPart(
-          entry.peopleCount,
-          formatMl(personal),
-          formatMl(container),
-        )
-      else if (personal == null)
-        tr.groupVolumeUnknown
-      else if (entry.presentation == null)
-        formatMl(personal),
-      if (entry.isMixed && alcohol != null && !alcohol.isComplete)
-        tr.entryAlcoholIncomplete,
+      if (entry.presentation != null) localizePresentation(entry.presentation!),
+      if (entry.isShared) tr.tabShared,
     ];
     return SurfaceCard(
       onTap: onTap,

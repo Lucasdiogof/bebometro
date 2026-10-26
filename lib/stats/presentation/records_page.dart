@@ -57,10 +57,12 @@ class RecordsPage extends StatelessWidget {
             title: e.name,
             subtitle:
                 '${formatDateTime(e.consumedAt)}'
-                '${e.personalMl == null ? ' · ${tr.recordsUnknownVolume}' : ' · ${formatMl(e.personalMl!)}'}'
+                '${e.isShared ? ' · ${tr.tabShared}' : ''}'
                 '${outing == null ? '' : ' · ${outing.displayName}'}',
             trailing: switch (e.priceKind) {
-              PriceKind.informed => formatCents(e.paidCents ?? 0),
+              PriceKind.informed => formatCents(
+                e.totalCostCents ?? e.paidCents ?? 0,
+              ),
               PriceKind.complimentary => tr.priceComplimentary,
               PriceKind.unknown => tr.priceNone,
             },

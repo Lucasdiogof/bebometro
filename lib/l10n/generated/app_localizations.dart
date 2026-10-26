@@ -10299,12 +10299,6 @@ abstract class AppLocalizations {
   /// **'{count, plural, one{1 registro é de uma pessoa que não está na mesa} other{{count} registros são de pessoas que não estão na mesa}}: ficam sem atribuição, nunca viram seus.'**
   String peopleUnassigned(int count);
 
-  /// No description provided for @peopleDrankNothing.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ainda não bebeu nada.'**
-  String get peopleDrankNothing;
-
   /// No description provided for @peopleDrankLine.
   ///
   /// In pt, this message translates to:
@@ -11132,6 +11126,48 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Paga: {names}'**
   String ordersPays(String names);
+
+  /// No description provided for @tileOrders.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedidos'**
+  String get tileOrders;
+
+  /// No description provided for @tileShared.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhados'**
+  String get tileShared;
+
+  /// No description provided for @peopleDrankNothing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum pedido ainda.'**
+  String get peopleDrankNothing;
+
+  /// No description provided for @peopleOrdersCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 pedido} other{{count} pedidos}}'**
+  String peopleOrdersCount(int count);
+
+  /// No description provided for @peopleSharedCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Participou de 1 pedido compartilhado} other{Participou de {count} pedidos compartilhados}}'**
+  String peopleSharedCount(int count);
+
+  /// No description provided for @statsSharedNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count} compartilhados'**
+  String statsSharedNote(String count);
+
+  /// No description provided for @tableSharedPeople.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedido compartilhado por {count} pessoas'**
+  String tableSharedPeople(String count);
 }
 
 class _AppLocalizationsDelegate

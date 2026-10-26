@@ -181,23 +181,27 @@ class PersonBreakdown {
   int get balanceCents => shareCents - paidCents;
 }
 
-/// What one person drank, apart from who paid.
+/// What one person consumed, apart from who paid. Units of their own are told
+/// apart from orders shared with others: a shared order is never counted as a
+/// whole unit for each participant.
 class PersonConsumption {
   const PersonConsumption({
-    required this.count,
-    required this.knownMl,
-    required this.unknownCount,
+    required this.individualCount,
+    required this.sharedCount,
     required this.alcoholicCount,
   });
 
-  final int count;
-  final int knownMl;
+  /// Records that are only theirs (each one is a unit they had).
+  final int individualCount;
 
-  /// Records of this person whose volume is not known (not counted in ml).
-  final int unknownCount;
+  /// Shared orders they took part in (nobody said how much each one had).
+  final int sharedCount;
+
+  /// Of the individual ones, those with alcohol.
   final int alcoholicCount;
 
-  bool get volumeComplete => unknownCount == 0;
+  /// Both together: orders the person is part of.
+  int get count => individualCount + sharedCount;
 }
 
 class TabCalculator {
@@ -621,14 +625,14 @@ class TabCalculator {
   /// Key of the consumption that belongs to nobody on the tab.
   static const unassignedKey = '?';
 
-  /// Consumption per person (never mixed with money): how many records and the
-  /// known ml; unknown volumes are counted apart, never as zero. A record whose
-  /// person is not on the tab is "unassigned" under [unassignedKey].
+  /// Consumption per person (never mixed with money): their own units and the
+  /// shared orders they took part in. A record whose person is not on the tab
+  /// is "unassigned" under [unassignedKey].
   static Map<String, PersonConsumption> consumption(
     TabDoc doc,
     Iterable<DrinkEntry> entries,
   ) {
-    final acc = <String, List<int>>{}; // id -> [count, ml, unknown, alcoholic]
+    final acc = <String, List<int>>{}; // id -> [individual, shared, alcoholic]
     String keyOf(String? raw) {
       if (raw == null || raw == ownerPortionKey) {
         return doc.me?.id ?? ownerPortionKey;
@@ -636,35 +640,27 @@ class TabCalculator {
       return doc.participant(raw) == null ? unassignedKey : raw;
     }
 
-    void add(String key, int? ml, bool alcoholic) {
-      final a = acc.putIfAbsent(key, () => [0, 0, 0, 0]);
-      a[0]++;
-      if (ml == null) {
-        a[2]++;
-      } else {
-        a[1] += ml;
-      }
-      if (alcoholic) a[3]++;
-    }
+    List<int> of(String key) => acc.putIfAbsent(key, () => [0, 0, 0]);
 
     for (final e in entries) {
       if (e.isDeleted) continue;
       final p = e.portions;
       if (p != null) {
-        for (final kv in p.entries) {
-          add(keyOf(kv.key), kv.value, e.isAlcoholic);
+        for (final k in p.keys) {
+          of(keyOf(k))[1]++;
         }
       } else {
-        add(keyOf(e.consumerId), e.personalMl, e.isAlcoholic);
+        final a = of(keyOf(e.consumerId));
+        a[0]++;
+        if (e.isAlcoholic) a[2]++;
       }
     }
     return {
       for (final kv in acc.entries)
         kv.key: PersonConsumption(
-          count: kv.value[0],
-          knownMl: kv.value[1],
-          unknownCount: kv.value[2],
-          alcoholicCount: kv.value[3],
+          individualCount: kv.value[0],
+          sharedCount: kv.value[1],
+          alcoholicCount: kv.value[2],
         ),
     };
   }

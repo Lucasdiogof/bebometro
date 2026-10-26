@@ -1698,7 +1698,6 @@
   "peopleRemoveHint": "Nothing was drunk, split or paid for this person.",
   "peopleRemoveBlocked": "It has orders, a share or a payment: mark as left instead.",
   "peopleUnassigned": "{count, plural, one{1 record belongs to someone who is not on the table} other{{count} records belong to people who are not on the table}}: they stay unassigned, never yours.",
-  "peopleDrankNothing": "Has not drunk anything yet.",
   "peopleDrankLine": "{count, plural, one{1 drink} other{{count} drinks}} · {ml}",
   "peopleDrinksCost": "Drinks",
   "peopleFoodCost": "Food and other",
@@ -1984,6 +1983,41 @@
   "@ordersPays": {
       "placeholders": {
           "names": {
+              "type": "String"
+          }
+      }
+  },
+  "tileOrders": "Orders",
+  "tileShared": "Shared",
+  "peopleDrankNothing": "No orders yet.",
+  "peopleOrdersCount": "{count, plural, =1{1 order} other{{count} orders}}",
+  "@peopleOrdersCount": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "peopleSharedCount": "{count, plural, =1{Took part in 1 shared order} other{Took part in {count} shared orders}}",
+  "@peopleSharedCount": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "statsSharedNote": "{count} shared",
+  "@statsSharedNote": {
+      "placeholders": {
+          "count": {
+              "type": "String"
+          }
+      }
+  },
+  "tableSharedPeople": "Order shared by {count} people",
+  "@tableSharedPeople": {
+      "placeholders": {
+          "count": {
               "type": "String"
           }
       }

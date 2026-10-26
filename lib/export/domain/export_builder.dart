@@ -102,8 +102,8 @@ class ExportBuilder {
     return _csv(rows);
   }
 
-  /// One row per drink record. Pure alcohol is only filled when it could be
-  /// computed; "alcool_completo" says whether anything was missing.
+  /// One row per drink record. No alcohol is computed any more; the raw ABV and
+  /// volume columns only carry what older records stored.
   static String drinksCsv(List<DrinkEntry> entries) {
     final rows = <List<Object?>>[
       [
@@ -123,17 +123,17 @@ class ExportBuilder {
         'preco_tipo',
         'pago_centavos',
         'total_conta_centavos',
-        'alcool_puro_ml_conhecido',
-        'alcool_completo',
         'composicao_json',
         // Added at the end so older readers keep their column positions:
         // "voce" = the account owner, otherwise the participant id.
         'consumidor',
         'porcoes_json',
+        // Who bears the cost, apart from who consumed (weights by person; empty
+        // on records that never named payers).
+        'pagantes_json',
       ],
       for (final e in entries)
         () {
-          final alcohol = e.alcohol;
           return <Object?>[
             e.id,
             e.outingId,
@@ -155,11 +155,10 @@ class ExportBuilder {
             },
             e.paidCents,
             e.billTotalCents,
-            alcohol?.pureMl,
-            alcohol?.isComplete,
             e.composition == null ? null : jsonEncode(e.composition!.toJson()),
             e.portions != null ? null : (e.consumerId ?? 'voce'),
             e.portions == null ? null : jsonEncode(e.portions),
+            e.payers == null ? null : jsonEncode(e.payers),
           ];
         }(),
     ];

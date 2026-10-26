@@ -26,8 +26,7 @@ class TableItem {
 }
 
 String _groupKey(DrinkEntry e) =>
-    '${vesselKindFor(e).name}|${e.name}|${e.presentation}|${e.personalMl}|'
-    '${e.isShared}|${e.composition?.customized}';
+    '${vesselKindFor(e).name}|${e.name}|${e.presentation}|${e.isShared}';
 
 class Slot {
   const Slot({

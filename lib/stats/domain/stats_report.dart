@@ -36,17 +36,15 @@ class CategoryStat {
   const CategoryStat({
     required this.category,
     required this.count,
-    required this.knownMl,
-    required this.unknownVolumeCount,
+    required this.sharedCount,
     required this.entries,
   });
 
   final DrinkCategory category;
   final int count;
 
-  /// Sum of the volumes that are known.
-  final int knownMl;
-  final int unknownVolumeCount;
+  /// Of [count], the shared orders (not a unit of their own).
+  final int sharedCount;
   final List<DrinkEntry> entries;
 }
 
@@ -75,11 +73,7 @@ class StatsReport {
     required this.entries,
     required this.alcoholic,
     required this.nonAlcoholic,
-    required this.alcoholicMl,
-    required this.nonAlcoholicMl,
-    required this.unknownVolumeCount,
-    required this.pureAlcoholGrams,
-    required this.incompleteAlcoholCount,
+    required this.sharedCount,
     required this.informedCents,
     required this.pricedCount,
     required this.unpricedCount,
@@ -95,11 +89,11 @@ class StatsReport {
   /// Per category, split in alcoholic drinks and water/non-alcoholic ones.
   final List<CategoryStat> alcoholic;
   final List<CategoryStat> nonAlcoholic;
-  final int alcoholicMl;
-  final int nonAlcoholicMl;
-  final int unknownVolumeCount;
-  final double pureAlcoholGrams;
-  final int incompleteAlcoholCount;
+
+  /// Orders shared with others (counted once in [entries]).
+  final int sharedCount;
+
+  /// Cost attributed to the owner, whoever drank it.
   final int informedCents;
   final int pricedCount;
   final int unpricedCount;
@@ -108,7 +102,6 @@ class StatsReport {
   final int withoutMood;
 
   bool get isEmpty => outings.isEmpty && entries.isEmpty;
-  bool get alcoholIncomplete => incompleteAlcoholCount > 0;
 }
 
 /// Builds the report from finished/running outings that started in [range]
@@ -123,40 +116,31 @@ StatsReport buildStats({
     for (final o in allOutings)
       if (range.contains(o.startedAt)) o,
   ];
-  // Personal statistics: only the owner's own drinks (never a guest's).
+  // Personal statistics: the orders the owner took part in (never a guest's
+  // alone); the cost is what the owner bears, whoever drank it.
+  final all = [for (final o in outings) ...entriesOf(o.id)];
   final entries = [
-    for (final o in outings)
-      for (final e in entriesOf(o.id))
-        if (e.isMine) e,
+    for (final e in all)
+      if (e.isMine) e,
   ];
 
   final byCategory = <DrinkCategory, List<DrinkEntry>>{};
-  var alcoholicMl = 0;
-  var nonAlcoholicMl = 0;
-  var unknownVolume = 0;
-  var pure = 0.0;
-  var incomplete = 0;
+  var shared = 0;
   var informed = 0;
   var priced = 0;
   var unpriced = 0;
   for (final e in entries) {
     byCategory.putIfAbsent(e.category, () => []).add(e);
-    final ml = e.personalMl;
-    if (ml == null) {
-      unknownVolume++;
-    } else if (e.isAlcoholic) {
-      alcoholicMl += ml;
-    } else {
-      nonAlcoholicMl += ml;
-    }
-    final alcohol = e.alcohol;
-    if (alcohol != null) {
-      pure += alcohol.pureMl;
-      if (!alcohol.isComplete) incomplete++;
+    if (e.isShared) shared++;
+  }
+  for (final e in all) {
+    // Records the owner neither drank nor pays do not enter the owner's numbers.
+    if (!e.isMine && !(e.payers?.containsKey(ownerPortionKey) ?? false)) {
+      continue;
     }
     if (e.hasPrice) {
       priced++;
-      informed += e.effectivePaidCents;
+      informed += e.ownerCostCents ?? 0;
     } else {
       unpriced++;
     }
@@ -165,8 +149,7 @@ StatsReport buildStats({
   CategoryStat stat(DrinkCategory c, List<DrinkEntry> list) => CategoryStat(
     category: c,
     count: list.length,
-    knownMl: list.fold(0, (s, e) => s + (e.personalMl ?? 0)),
-    unknownVolumeCount: list.where((e) => e.personalMl == null).length,
+    sharedCount: list.where((e) => e.isShared).length,
     entries: list,
   );
 
@@ -223,11 +206,7 @@ StatsReport buildStats({
     entries: entries,
     alcoholic: alcoholic,
     nonAlcoholic: nonAlcoholic,
-    alcoholicMl: alcoholicMl,
-    nonAlcoholicMl: nonAlcoholicMl,
-    unknownVolumeCount: unknownVolume,
-    pureAlcoholGrams: pure * 0.789,
-    incompleteAlcoholCount: incomplete,
+    sharedCount: shared,
     informedCents: informed,
     pricedCount: priced,
     unpricedCount: unpriced,

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
-import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart' show reduceMotion;
 import '../../drinks/domain/drink_entry.dart';
 import '../domain/drink_vessel.dart';
@@ -208,7 +207,6 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
     final h = kVesselH * slot.scale;
     final lead = item.lead;
     final kind = vesselKindFor(lead);
-    final shared = lead.isShared && lead.personalMl != null && item.count == 1;
 
     Widget vessel;
     if (item.isOverflow) {
@@ -283,28 +281,6 @@ class _TableSceneState extends State<TableScene> with WidgetsBindingObserver {
                     fontSize: 11,
                     fontWeight: FontWeight.w800,
                   ),
-                ),
-              ),
-            ),
-          if (shared)
-            Positioned(
-              left: -8,
-              right: -8,
-              bottom: -14,
-              child: Text(
-                tr.tableYours(formatMl(lead.personalMl!)),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      color: Colors.black.withValues(alpha: 0.7),
-                      blurRadius: 3,
-                    ),
-                  ],
                 ),
               ),
             ),
