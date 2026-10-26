@@ -1,66 +1,50 @@
 import 'dart:math';
 
-/// Phases of the "bafômetro de brincadeira".
+/// Phases of the Bafômetro.
 enum BreathPhase { ready, blowing, revealing, result }
 
-/// Pure logic of the toy: a bar that fills while somebody "blows" (sound level
-/// from the microphone, or a held button) and a RANDOM, fictional result.
+/// Pure logic of the blow: a bar that fills while somebody "blows" (sound
+/// level from the microphone, or a held button).
 ///
-/// Nothing here measures anything. No unit, percentage or number about the
-/// body is ever produced, the result does not depend on drinks or on any
-/// record, and nothing is stored.
+/// The sound is only an interaction: its strength or length decides nothing
+/// about the level that is shown (see `PartyMeter`). About one second of
+/// enough sound fills the bar, and a normal short blow is enough.
 class BreathToy {
-  BreathToy({Random? random, this.threshold = 0.5, this.fillSeconds = 2.5})
-    : _rng = random ?? Random();
+  BreathToy({this.threshold = 0.25, this.fillSeconds = 1.0});
 
-  final Random _rng;
-
-  /// Interaction level (0..1) above which the bar fills.
+  /// Interaction level (0..1) above which the bar fills. Low on purpose: a
+  /// normal, short blow close to the phone has to be enough.
   final double threshold;
 
-  /// Seconds of steady blowing needed to fill the bar.
+  /// Seconds of enough sound needed to fill the bar.
   final double fillSeconds;
-
-  /// How many fictional results exist (texts live in the ARB files).
-  static const resultCount = 8;
 
   double _fill = 0;
   double _quiet = 0;
 
-  /// 0..1, only drives the bar and the needle.
+  /// 0..1, only drives the bar.
   double get fill => _fill;
 
   /// Seconds in a row below the threshold (for a "get closer" hint).
   double get quietSeconds => _quiet;
 
-  bool get full => _fill >= 1;
+  bool get full => _fill >= 0.999;
 
   void reset() {
     _fill = 0;
     _quiet = 0;
   }
 
-  /// [level] is 0..1 interaction intensity; [dt] the seconds since the last
-  /// call. Louder blowing fills faster; silence slowly drains the bar.
+  /// [level] is 0..1 sound intensity; [dt] the seconds since the last call.
+  /// Any sound above the threshold fills at the same speed; a pause drains
+  /// the bar slowly so a breath taken in the middle does not start over.
   void update(double level, double dt) {
-    final l = level.clamp(0.0, 1.0);
-    if (l >= threshold) {
+    if (level.clamp(0.0, 1.0) >= threshold) {
       _quiet = 0;
-      _fill = min(1.0, _fill + dt / fillSeconds * (0.5 + 0.5 * l));
+      _fill = min(1.0, _fill + dt / fillSeconds);
     } else {
       _quiet += dt;
-      _fill = max(0.0, _fill - dt * 0.2);
+      _fill = max(0.0, _fill - dt * 0.5);
     }
   }
-
-  /// Index of the fictional result, never the same twice in a row.
-  int pickResult({int? previous}) {
-    if (resultCount < 2 || previous == null) return _rng.nextInt(resultCount);
-    final i = _rng.nextInt(resultCount - 1);
-    return i >= previous ? i + 1 : i;
-  }
-
-  /// Where the needle lands for result [index]: the middle of its dial
-  /// segment, as a fraction of the dial (0 = far left, 1 = far right).
-  static double needleFor(int index) => (index + 0.5) / resultCount;
 }

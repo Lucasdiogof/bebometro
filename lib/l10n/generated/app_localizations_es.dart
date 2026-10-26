@@ -5587,45 +5587,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gameImportUse => 'Usar seleccionados';
 
   @override
-  String get bafoTitle => 'Alcoholímetro de broma';
-
-  @override
-  String get bafoHubBody =>
-      'Sopla (o mantén el botón) y mira un resultado inventado, al azar.';
-
-  @override
-  String get bafoDisclaimer =>
-      'De broma: no mide alcohol ni nada de tu cuerpo y no dice si alguien puede conducir.';
-
-  @override
-  String get bafoWho => '¿Quién sopla? (opcional)';
-
-  @override
-  String get bafoSomeone => 'Alguien';
-
-  @override
-  String get bafoMicNote =>
-      'Al tocar en Empezar, la app pide el micrófono solo para sentir la fuerza del soplido, como juego. El sonido se procesa en el dispositivo: no se graba ni se envía.';
-
-  @override
   String get bafoStart => 'Empezar';
 
   @override
   String get bafoHoldOption => 'Prefiero mantener el botón (sin micrófono)';
 
   @override
-  String get bafoBlowPrompt =>
-      'Sopla en el micrófono hasta que se llene la barra';
-
-  @override
-  String get bafoHoldPrompt => 'Mantén el botón hasta que se llene la barra';
-
-  @override
   String get bafoHoldButton => 'Mantener para jugar';
-
-  @override
-  String get bafoHoldNote =>
-      'Modo manual: no se detecta nada, solo cuenta el tiempo que mantienes.';
 
   @override
   String get bafoDenied =>
@@ -5636,81 +5604,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Este dispositivo no puede usar el micrófono aquí. Puedes jugar manteniendo el botón.';
 
   @override
-  String get bafoHintLouder => 'Acércate y sopla con ganas.';
-
-  @override
   String get bafoStop => 'Parar';
-
-  @override
-  String get bafoReveal => 'La máquina de mentira está pensando…';
-
-  @override
-  String bafoResultFor(String name) {
-    return 'Resultado de broma para $name';
-  }
-
-  @override
-  String get bafoResultAnon => 'Resultado de broma';
-
-  @override
-  String get bafoFictional => 'Sorteado al azar. No es una medición.';
 
   @override
   String get bafoAgain => 'Intentar de nuevo';
 
   @override
   String get bafoDone => 'Terminar';
-
-  @override
-  String get bafoDialSemantics => 'Esfera del alcoholímetro de broma';
-
-  @override
-  String get bafoR1T => 'Respiración de nube';
-
-  @override
-  String get bafoR1L => 'Ligera como un suspiro de dibujo animado.';
-
-  @override
-  String get bafoR2T => 'Viento de ventilador';
-
-  @override
-  String get bafoR2L => 'La máquina de mentira recibió una brisa simpática.';
-
-  @override
-  String get bafoR3T => 'Soplido de vela de pastel';
-
-  @override
-  String get bafoR3L => 'Hora de pedir un deseo... de botana.';
-
-  @override
-  String get bafoR4T => 'Huracán de karaoke';
-
-  @override
-  String get bafoR4L => 'Tu aliento cantó más fuerte que el aparato.';
-
-  @override
-  String get bafoR5T => 'Dragón de cartón';
-
-  @override
-  String get bafoR5L => 'Soltó fuego imaginario. Nadie salió herido.';
-
-  @override
-  String get bafoR6T => 'Ventolera de historieta';
-
-  @override
-  String get bafoR6L => 'La aguja giró por puro dramatismo.';
-
-  @override
-  String get bafoR7T => 'Globo de fiesta';
-
-  @override
-  String get bafoR7L => 'Se infló y se desinfló, sin exagerar.';
-
-  @override
-  String get bafoR8T => 'Silbido de tetera';
-
-  @override
-  String get bafoR8L => 'Casi silbó. Recuerda: la máquina es de mentira.';
 
   @override
   String get homeYourDrinks => 'Tus bebidas';
@@ -6974,4 +6874,41 @@ class AppLocalizationsEs extends AppLocalizations {
   String tableSharedPeople(String count) {
     return 'Pedido compartido por $count personas';
   }
+
+  @override
+  String get bafoTitle => 'Bafômetro';
+
+  @override
+  String get bafoHubBody =>
+      'Elige a alguien de la salida, sopla y mira el medidor.';
+
+  @override
+  String get bafoWho => '¿Quién va a soplar?';
+
+  @override
+  String get bafoEmptyTitle => 'Sin salida por ahora';
+
+  @override
+  String get bafoEmptyBody =>
+      'Empieza una salida y agrega a las personas para usar el Bafômetro.';
+
+  @override
+  String get bafoSimulation => 'Simulación';
+
+  @override
+  String get bafoAnother => 'Otra persona';
+
+  @override
+  String bafoMeterSemantics(String name) {
+    return 'Medidor de $name';
+  }
+
+  @override
+  String get bafoBlowPrompt => 'Sopla en el micrófono';
+
+  @override
+  String get bafoHoldPrompt => 'Mantén el botón';
+
+  @override
+  String get bafoHintLouder => 'Acércate al micrófono.';
 }

@@ -1469,45 +1469,14 @@
   "gameImportFromOuting": "Personas de la salida",
   "gameImportTitle": "¿Quién de la salida juega?",
   "gameImportUse": "Usar seleccionados",
-  "bafoTitle": "Alcoholímetro de broma",
-  "bafoHubBody": "Sopla (o mantén el botón) y mira un resultado inventado, al azar.",
-  "bafoDisclaimer": "De broma: no mide alcohol ni nada de tu cuerpo y no dice si alguien puede conducir.",
-  "bafoWho": "¿Quién sopla? (opcional)",
-  "bafoSomeone": "Alguien",
-  "bafoMicNote": "Al tocar en Empezar, la app pide el micrófono solo para sentir la fuerza del soplido, como juego. El sonido se procesa en el dispositivo: no se graba ni se envía.",
   "bafoStart": "Empezar",
   "bafoHoldOption": "Prefiero mantener el botón (sin micrófono)",
-  "bafoBlowPrompt": "Sopla en el micrófono hasta que se llene la barra",
-  "bafoHoldPrompt": "Mantén el botón hasta que se llene la barra",
   "bafoHoldButton": "Mantener para jugar",
-  "bafoHoldNote": "Modo manual: no se detecta nada, solo cuenta el tiempo que mantienes.",
   "bafoDenied": "Sin acceso al micrófono. Puedes jugar manteniendo el botón.",
   "bafoUnsupported": "Este dispositivo no puede usar el micrófono aquí. Puedes jugar manteniendo el botón.",
-  "bafoHintLouder": "Acércate y sopla con ganas.",
   "bafoStop": "Parar",
-  "bafoReveal": "La máquina de mentira está pensando…",
-  "bafoResultFor": "Resultado de broma para {name}",
-  "bafoResultAnon": "Resultado de broma",
-  "bafoFictional": "Sorteado al azar. No es una medición.",
   "bafoAgain": "Intentar de nuevo",
   "bafoDone": "Terminar",
-  "bafoDialSemantics": "Esfera del alcoholímetro de broma",
-  "bafoR1T": "Respiración de nube",
-  "bafoR1L": "Ligera como un suspiro de dibujo animado.",
-  "bafoR2T": "Viento de ventilador",
-  "bafoR2L": "La máquina de mentira recibió una brisa simpática.",
-  "bafoR3T": "Soplido de vela de pastel",
-  "bafoR3L": "Hora de pedir un deseo... de botana.",
-  "bafoR4T": "Huracán de karaoke",
-  "bafoR4L": "Tu aliento cantó más fuerte que el aparato.",
-  "bafoR5T": "Dragón de cartón",
-  "bafoR5L": "Soltó fuego imaginario. Nadie salió herido.",
-  "bafoR6T": "Ventolera de historieta",
-  "bafoR6L": "La aguja giró por puro dramatismo.",
-  "bafoR7T": "Globo de fiesta",
-  "bafoR7L": "Se infló y se desinfló, sin exagerar.",
-  "bafoR8T": "Silbido de tetera",
-  "bafoR8L": "Casi silbó. Recuerda: la máquina es de mentira.",
   "homeYourDrinks": "Tus bebidas",
   "outingRecordsTable": "Registros de la mesa ({count})",
   "summaryPeopleTitle": "Personas y cuenta",
@@ -2021,5 +1990,23 @@
               "type": "String"
           }
       }
-  }
+  },
+  "bafoTitle": "Bafômetro",
+  "bafoHubBody": "Elige a alguien de la salida, sopla y mira el medidor.",
+  "bafoWho": "¿Quién va a soplar?",
+  "bafoEmptyTitle": "Sin salida por ahora",
+  "bafoEmptyBody": "Empieza una salida y agrega a las personas para usar el Bafômetro.",
+  "bafoSimulation": "Simulación",
+  "bafoAnother": "Otra persona",
+  "bafoMeterSemantics": "Medidor de {name}",
+  "@bafoMeterSemantics": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bafoBlowPrompt": "Sopla en el micrófono",
+  "bafoHoldPrompt": "Mantén el botón",
+  "bafoHintLouder": "Acércate al micrófono."
 }

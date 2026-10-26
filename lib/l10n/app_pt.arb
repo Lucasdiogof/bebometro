@@ -3553,24 +3553,12 @@
   "gameImportFromOuting": "Pessoas do rolê",
   "gameImportTitle": "Quem do rolê vai jogar?",
   "gameImportUse": "Usar selecionados",
-  "bafoTitle": "Bafômetro de brincadeira",
-  "bafoHubBody": "Sopre (ou segure o botão) e veja um resultado sorteado, de mentira.",
-  "bafoDisclaimer": "De brincadeira: não mede álcool nem nada do seu corpo e não diz se alguém pode dirigir.",
-  "bafoWho": "Quem vai soprar? (opcional)",
-  "bafoSomeone": "Alguém",
-  "bafoMicNote": "Ao tocar em Começar, o app pede o microfone só para sentir a força do sopro, como brincadeira. O som é processado no aparelho: não é gravado nem enviado.",
   "bafoStart": "Começar",
   "bafoHoldOption": "Prefiro segurar o botão (sem microfone)",
-  "bafoBlowPrompt": "Sopre no microfone até a barra encher",
-  "bafoHoldPrompt": "Segure o botão até a barra encher",
   "bafoHoldButton": "Segurar para brincar",
-  "bafoHoldNote": "Modo manual: nada é detectado, conta só o tempo que você segura.",
   "bafoDenied": "Sem acesso ao microfone. Dá para brincar segurando o botão.",
   "bafoUnsupported": "Este aparelho não consegue usar o microfone aqui. Dá para brincar segurando o botão.",
-  "bafoHintLouder": "Chegue mais perto e sopre com vontade.",
   "bafoStop": "Parar",
-  "bafoReveal": "A máquina de mentira está pensando…",
-  "bafoResultFor": "Resultado de brincadeira para {name}",
   "@bafoResultFor": {
     "placeholders": {
       "name": {
@@ -3578,27 +3566,8 @@
       }
     }
   },
-  "bafoResultAnon": "Resultado de brincadeira",
-  "bafoFictional": "Sorteado ao acaso. Não é uma medição.",
   "bafoAgain": "Tentar de novo",
   "bafoDone": "Concluir",
-  "bafoDialSemantics": "Mostrador do bafômetro de brincadeira",
-  "bafoR1T": "Respiração de nuvem",
-  "bafoR1L": "Leve como um suspiro de desenho animado.",
-  "bafoR2T": "Vento de ventilador",
-  "bafoR2L": "A máquina de mentira recebeu uma brisa simpática.",
-  "bafoR3T": "Sopro de vela de bolo",
-  "bafoR3L": "Dá para fazer um pedido... de petisco.",
-  "bafoR4T": "Furacão de karaokê",
-  "bafoR4L": "Seu fôlego cantou mais alto que o aparelho.",
-  "bafoR5T": "Dragão de papelão",
-  "bafoR5L": "Soltou fogo imaginário. Ninguém se machucou.",
-  "bafoR6T": "Ventania de gibi",
-  "bafoR6L": "A agulha girou por pura dramaticidade.",
-  "bafoR7T": "Balão de festa",
-  "bafoR7L": "Encheu e murchou, sem exageros.",
-  "bafoR8T": "Assobio de chaleira",
-  "bafoR8L": "Quase apitou. Lembrete: a máquina é de mentira.",
   "homeYourDrinks": "Suas bebidas",
   "outingRecordsTable": "Registros da mesa ({count})",
   "@outingRecordsTable": {
@@ -4447,5 +4416,23 @@
               "type": "String"
           }
       }
-  }
+  },
+  "bafoTitle": "Bafômetro",
+  "bafoHubBody": "Escolha alguém do rolê, sopre e veja o medidor.",
+  "bafoWho": "Quem vai soprar?",
+  "bafoEmptyTitle": "Sem rolê por aqui",
+  "bafoEmptyBody": "Comece um rolê e adicione as pessoas para usar o Bafômetro.",
+  "bafoSimulation": "Simulação",
+  "bafoAnother": "Outra pessoa",
+  "bafoMeterSemantics": "Medidor de {name}",
+  "@bafoMeterSemantics": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "bafoBlowPrompt": "Sopre no microfone",
+  "bafoHoldPrompt": "Segure o botão",
+  "bafoHintLouder": "Chegue mais perto do microfone."
 }

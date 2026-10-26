@@ -1,12 +1,16 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bebometro/core/theme/app_theme.dart';
+import 'package:bebometro/drinks/domain/drink_category.dart';
+import 'package:bebometro/drinks/domain/drink_entry.dart';
 import 'package:bebometro/games/data/breath_input.dart';
 import 'package:bebometro/games/domain/breath_toy.dart';
+import 'package:bebometro/games/domain/party_meter.dart';
 import 'package:bebometro/games/presentation/bafometro_page.dart';
 import 'package:bebometro/l10n/l10n.dart';
+import 'package:bebometro/tab/domain/tab_calc.dart';
+import 'package:bebometro/tab/domain/tab_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -29,8 +33,12 @@ class _FakeInput implements BreathInput {
   Future<void> stop() async => stops++;
 }
 
+const _ana = BafoPerson(id: 'ana', name: 'Ana', alcoholicOrders: 3);
+const _bia = BafoPerson(id: 'bia', name: 'Bia', alcoholicOrders: 0);
+
 Widget _app(
   BreathInput Function() factory, {
+  BafoRoster roster = const BafoRoster([_ana]),
   Locale locale = const Locale('pt', 'BR'),
   bool reduce = false,
   double scale = 1.0,
@@ -53,7 +61,7 @@ Widget _app(
       ),
       child: child!,
     ),
-    home: BafometroPage(inputFactory: factory),
+    home: BafometroPage(inputFactory: factory, rosterLoader: () => roster),
   );
 }
 
@@ -65,8 +73,6 @@ Uint8List _pcm(int v, int n) {
   return b.buffer.asUint8List();
 }
 
-/// Lets queued microtasks and a few frames run (the screen awaits the
-/// microphone and the reveal animation).
 void _tall(WidgetTester tester) {
   tester.view.physicalSize = const Size(400, 1400);
   tester.view.devicePixelRatio = 1.0;
@@ -79,38 +85,63 @@ Future<void> _settle(WidgetTester tester, [int frames = 6]) async {
   }
 }
 
+/// About a second of sound is enough.
+Future<void> _blow(WidgetTester tester, _FakeInput input) async {
+  for (var i = 0; i < 16; i++) {
+    input.controller.add(0.6);
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+  await tester.pump(const Duration(seconds: 3));
+  await _settle(tester);
+}
+
+DrinkEntry _entry(
+  String id, {
+  String? consumer,
+  DrinkCategory category = DrinkCategory.beer,
+  Map<String, int?>? portions,
+}) => DrinkEntry(
+  id: id,
+  outingId: 'o',
+  consumedAt: DateTime(2026, 10, 20, 21),
+  name: 'x',
+  category: category,
+  createdAt: DateTime(2026, 10, 20, 21),
+  updatedAt: DateTime(2026, 10, 20, 21),
+  consumerId: consumer,
+  isShared: portions != null,
+  portions: portions,
+);
+
 void main() {
   group('BreathToy (pure logic)', () {
-    test('fills only above the threshold and drains in silence', () {
+    test('about one second of enough sound fills the bar', () {
       final toy = BreathToy();
-      toy.update(0.2, 1.0);
-      expect(toy.fill, 0);
-      toy.update(1.0, 1.0);
-      expect(toy.fill, greaterThan(0.3));
-      final before = toy.fill;
-      toy.update(0.0, 1.0);
-      expect(toy.fill, lessThan(before));
       for (var i = 0; i < 10; i++) {
-        toy.update(1.0, 0.5);
+        toy.update(0.4, 0.1);
       }
       expect(toy.full, isTrue);
     });
 
-    test('the result is random, in range, and never repeats back to back', () {
-      final toy = BreathToy(random: Random(7));
-      int? prev;
-      for (var i = 0; i < 200; i++) {
-        final r = toy.pickResult(previous: prev);
-        expect(r, inInclusiveRange(0, BreathToy.resultCount - 1));
-        expect(r, isNot(prev));
-        prev = r;
-      }
+    test('a normal, short blow is enough, silence is not', () {
+      final quiet = BreathToy()..update(0.1, 2.0);
+      expect(quiet.fill, 0);
+      final soft = BreathToy()..update(0.3, 1.0);
+      expect(soft.full, isTrue);
     });
 
-    test('the needle lands inside the dial for every result', () {
-      for (var i = 0; i < BreathToy.resultCount; i++) {
-        expect(BreathToy.needleFor(i), inExclusiveRange(0, 1));
-      }
+    test('strength does not change speed or anything else', () {
+      final soft = BreathToy()..update(0.3, 0.5);
+      final loud = BreathToy()..update(1.0, 0.5);
+      expect(soft.fill, loud.fill);
+    });
+
+    test('a pause drains the bar slowly', () {
+      final toy = BreathToy()..update(1.0, 0.6);
+      final before = toy.fill;
+      toy.update(0.0, 0.4);
+      expect(toy.fill, lessThan(before));
+      expect(toy.fill, greaterThan(0));
     });
 
     test('microphone level: silence 0, loud high, empty 0', () {
@@ -121,63 +152,142 @@ void main() {
     });
   });
 
-  test(
-    'no result text looks like a measurement or a verdict, in any language',
-    () {
-      final bad = RegExp(
-        r'[0-9%]|mg|promil|BAC|blood|sangre|sangue|sóbri|sobri|sober|dirig|driv|conduc',
-        caseSensitive: false,
-      );
-      for (final code in const ['pt', 'en', 'es']) {
-        final t = lookupAppLocalizations(Locale(code));
-        final texts = [
-          t.bafoR1T,
-          t.bafoR1L,
-          t.bafoR2T,
-          t.bafoR2L,
-          t.bafoR3T,
-          t.bafoR3L,
-          t.bafoR4T,
-          t.bafoR4L,
-          t.bafoR5T,
-          t.bafoR5L,
-          t.bafoR6T,
-          t.bafoR6L,
-          t.bafoR7T,
-          t.bafoR7L,
-          t.bafoR8T,
-          t.bafoR8L,
-        ];
-        for (final s in texts) {
-          expect(bad.hasMatch(s), isFalse, reason: '$code: $s');
-        }
+  group('PartyMeter (the recreational rule)', () {
+    test('n / (n + 4): rises with orders and never reaches 1', () {
+      expect(PartyMeter.level(0), 0);
+      expect(PartyMeter.level(4), 0.5);
+      var prev = -1.0;
+      for (var n = 0; n < 200; n++) {
+        final l = PartyMeter.level(n);
+        expect(l, greaterThan(prev));
+        expect(l, lessThan(1));
+        prev = l;
       }
-    },
-  );
+    });
+
+    test('only own alcoholic orders count: water, soft and shared do not', () {
+      const me = Participant(id: 'p-me', name: 'Você', isMe: true);
+      const ana = Participant(id: 'p-ana', name: 'Ana');
+      const doc = TabDoc(outingId: 'o', participants: [me, ana]);
+      final entries = [
+        _entry('1', consumer: 'p-ana'),
+        _entry('2', consumer: 'p-ana'),
+        _entry('3', consumer: 'p-ana', category: DrinkCategory.water),
+        _entry('4', consumer: 'p-ana', category: DrinkCategory.nonAlcoholic),
+        _entry('5', portions: {ownerPortionKey: null, 'p-ana': null}),
+        _entry('6'),
+      ];
+      final c = TabCalculator.consumption(doc, entries);
+      expect(c['p-ana']!.alcoholicCount, 2);
+      expect(c['p-me']!.alcoholicCount, 1);
+      expect(c['p-me']!.sharedCount, 1);
+      expect(
+        PartyMeter.level(c['p-ana']!.alcoholicCount),
+        closeTo(1 / 3, 1e-9),
+      );
+    });
+
+    test('the level reads records only: blowing never changes it', () {
+      expect(_ana.level, PartyMeter.level(3));
+      expect(_bia.level, 0);
+    });
+  });
+
+  testWidgets('without people it explains to start an outing', (tester) async {
+    _tall(tester);
+    await tester.pumpWidget(
+      _app(() => _FakeInput(BreathStart.started), roster: BafoRoster.empty),
+    );
+    expect(find.text('Sem rolê por aqui'), findsOneWidget);
+    expect(find.textContaining('Comece um rolê'), findsOneWidget);
+    expect(find.text('Começar'), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('one person is picked by itself and the name is shown', (
+    tester,
+  ) async {
+    _tall(tester);
+    final input = _FakeInput(BreathStart.started);
+    await tester.pumpWidget(_app(() => input));
+    expect(find.byKey(const ValueKey('bafo-name')), findsOneWidget);
+    expect(find.text('Ana'), findsOneWidget);
+    expect(find.byType(ChoiceChip), findsNothing);
+    expect(input.starts, 0); // the microphone waits for "Começar"
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('several people: the names are offered and one must be chosen', (
+    tester,
+  ) async {
+    _tall(tester);
+    final input = _FakeInput(BreathStart.started);
+    await tester.pumpWidget(
+      _app(() => input, roster: const BafoRoster([_ana, _bia])),
+    );
+    expect(find.byType(ChoiceChip), findsNWidgets(2));
+    // Start is blocked until somebody is chosen.
+    await tester.tap(find.text('Começar'));
+    await _settle(tester);
+    expect(input.starts, 0);
+    await tester.tap(find.byKey(const ValueKey('bafo-bia')));
+    await tester.pump();
+    await tester.tap(find.text('Começar'));
+    await _settle(tester);
+    expect(input.starts, 1);
+    await tester.pumpWidget(const SizedBox());
+  });
 
   testWidgets(
-    'the microphone is untouched until Start; released after blowing',
+    'the microphone is untouched until Start; released after blowing; the result is only the name, the meter and "Simulação"',
     (tester) async {
       _tall(tester);
       final input = _FakeInput(BreathStart.started);
       await tester.pumpWidget(_app(() => input));
       expect(input.starts, 0);
-      expect(find.text('Bafômetro de brincadeira'), findsOneWidget);
       await tester.tap(find.text('Começar'));
       await _settle(tester);
       expect(input.starts, 1);
-      for (var i = 0; i < 60; i++) {
-        input.controller.add(1.0);
-        await tester.pump(const Duration(milliseconds: 100));
-      }
-      await tester.pump(const Duration(seconds: 3));
-      await _settle(tester);
+      await _blow(tester, input);
+      expect(find.text('Simulação'), findsOneWidget);
+      expect(find.text('Ana'), findsOneWidget);
       expect(find.text('Tentar de novo'), findsOneWidget);
-      expect(find.textContaining('Sorteado ao acaso'), findsOneWidget);
       expect(input.stops, greaterThanOrEqualTo(1));
+      // nothing that reads as a measurement, a verdict or a joke
+      final all = tester
+          .widgetList<Text>(find.byType(Text))
+          .map((t) => t.data ?? '')
+          .join(' ');
+      expect(
+        RegExp(
+          r'[0-9]|%|mg|g/L|promil|BAC|nível da resenha|sóbri|bêbad|dirig',
+          caseSensitive: false,
+        ).hasMatch(all),
+        isFalse,
+        reason: all,
+      );
       await tester.pumpWidget(const SizedBox());
     },
   );
+
+  testWidgets('another person goes back to the names', (tester) async {
+    _tall(tester);
+    final input = _FakeInput(BreathStart.started);
+    await tester.pumpWidget(
+      _app(() => input, roster: const BafoRoster([_ana, _bia]), reduce: true),
+    );
+    await tester.tap(find.byKey(const ValueKey('bafo-ana')));
+    await tester.pump();
+    await tester.tap(find.text('Começar'));
+    await _settle(tester);
+    await _blow(tester, input);
+    expect(find.text('Simulação'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('bafo-next')));
+    await tester.pump();
+    expect(find.byType(ChoiceChip), findsNWidgets(2));
+    expect(find.text('Simulação'), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+  });
 
   testWidgets(
     'denied permission offers hold-to-play and never claims a detected blow',
@@ -192,7 +302,7 @@ void main() {
       expect(find.text('Começar'), findsNothing);
       await tester.tap(find.text('Segurar para brincar'));
       await tester.pump();
-      expect(find.textContaining('nada é detectado'), findsOneWidget);
+      expect(find.text('Segure o botão'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
     },
   );
@@ -215,38 +325,23 @@ void main() {
     await tester.pumpWidget(_app(() => input, reduce: true));
     await tester.tap(find.text('Começar'));
     await _settle(tester);
-    for (var i = 0; i < 60; i++) {
-      input.controller.add(1.0);
-      await tester.pump(const Duration(milliseconds: 100));
-    }
-    await _settle(tester);
+    await _blow(tester, input);
     expect(find.text('Tentar de novo'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('English and Spanish screens build without overflow at 360 px', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(360, 740);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.reset);
-    for (final loc in const [Locale('en'), Locale('es')]) {
-      await tester.pumpWidget(
-        _app(() => _FakeInput(BreathStart.started), locale: loc),
-      );
-      await tester.pump();
-      expect(tester.takeException(), isNull);
-      await tester.pumpWidget(const SizedBox());
-    }
-  });
-
   testWidgets(
-    'large system text (1.3 and 2.0) at 360 px does not overflow, ready or blowing',
+    'long names and large system text at 360 px do not overflow, in the three languages',
     (tester) async {
       tester.view.physicalSize = const Size(360, 740);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      for (final scale in const [1.3, 2.0]) {
+      const long = BafoPerson(
+        id: 'l',
+        name: 'Maria Fernanda Albuquerque de Souza e Silva Junior Neto',
+        alcoholicOrders: 2,
+      );
+      for (final scale in const [1.0, 1.3, 2.0]) {
         for (final loc in const [
           Locale('pt', 'BR'),
           Locale('en'),
@@ -255,12 +350,15 @@ void main() {
           await tester.pumpWidget(
             _app(
               () => _FakeInput(BreathStart.started),
+              roster: const BafoRoster([long, _ana]),
               locale: loc,
               scale: scale,
             ),
           );
           await tester.pump();
           expect(tester.takeException(), isNull, reason: '$loc x$scale ready');
+          await tester.tap(find.byType(ChoiceChip).first);
+          await tester.pump();
           await tester.tap(find.byType(TextButton).first);
           await _settle(tester);
           expect(tester.takeException(), isNull, reason: '$loc x$scale manual');

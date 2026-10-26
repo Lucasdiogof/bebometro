@@ -4,26 +4,36 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import '../../core/di/injector.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/common.dart';
-import '../../outings/data/outing_repository.dart';
-import '../../tab/data/tab_repository.dart';
+import '../../core/widgets/state_views.dart';
 import '../../l10n/l10n.dart';
+import '../data/bafo_roster.dart';
 import '../data/breath_input.dart';
 import '../domain/breath_toy.dart';
+import '../domain/party_meter.dart';
 
-/// "Bafômetro de brincadeira": a made-up party toy. It measures nothing, shows
-/// no number about the body, never touches the registered consumption, and
-/// saves nothing (no ranking, no history). The microphone, when allowed, only
-/// gives the intensity of the sound as a way to "blow"; the audio is not
-/// recorded or sent. Without it (or by choice) a held button does the same.
+/// Bafômetro: a party toy inside the Resenha. The people are the ones of the
+/// running outing (or of the last one); one blows, and a meter shows a
+/// recreational level taken from that person's own records (see
+/// [PartyMeter]). It measures nothing, shows no unit or number about the
+/// body, says nothing about driving, never changes any record and saves
+/// nothing. The microphone, when allowed, only gives the intensity of the
+/// sound as a way to "blow"; the audio is not recorded or sent. Without it (or
+/// by choice) a held button does the same.
 class BafometroPage extends StatefulWidget {
-  const BafometroPage({super.key, this.inputFactory = MicBreathInput.new});
+  const BafometroPage({
+    super.key,
+    this.inputFactory = MicBreathInput.new,
+    this.rosterLoader = loadBafoRoster,
+  });
 
   /// Where the "blowing" level comes from (replaced in tests).
   final BreathInput Function() inputFactory;
+
+  /// Who can blow (replaced in tests).
+  final BafoRoster Function() rosterLoader;
 
   @override
   State<BafometroPage> createState() => _BafometroPageState();
@@ -36,6 +46,7 @@ class _BafometroPageState extends State<BafometroPage>
   final _toy = BreathToy();
   late final Ticker _ticker;
   late final AnimationController _reveal;
+  late final BafoRoster _roster = widget.rosterLoader();
 
   BreathPhase _phase = BreathPhase.ready;
   _Mode _mode = _Mode.mic;
@@ -46,24 +57,18 @@ class _BafometroPageState extends State<BafometroPage>
   Duration _last = Duration.zero;
   double _needle = 0;
   double _needleFrom = 0;
-  int? _result;
-  int? _previous;
-  String? _who;
+  String? _picked;
   String? _micMessage;
   bool _starting = false;
 
-  /// Names at the running outing's table, offered by choice (never saved).
-  late final List<String> _people = _loadPeople();
-
-  static List<String> _loadPeople() {
-    try {
-      final outing = getIt<OutingRepository>().active;
-      if (outing == null) return const [];
-      final doc = getIt<TabRepository>().load(outing.id);
-      return [for (final p in doc.present) p.displayName];
-    } catch (_) {
-      return const [];
+  /// The person who blows: the only one there is, or the one chosen.
+  BafoPerson? get _person {
+    final people = _roster.people;
+    if (people.length == 1) return people.first;
+    for (final p in people) {
+      if (p.id == _picked) return p;
     }
+    return null;
   }
 
   @override
@@ -73,7 +78,7 @@ class _BafometroPageState extends State<BafometroPage>
     _ticker = createTicker(_onTick);
     _reveal = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1200),
     )..addListener(_onReveal);
   }
 
@@ -110,7 +115,7 @@ class _BafometroPageState extends State<BafometroPage>
 
   /// The permission is asked only now, after the tap on "Começar".
   Future<void> _startMic() async {
-    if (_starting) return;
+    if (_starting || _person == null) return;
     setState(() {
       _starting = true;
       _micMessage = null;
@@ -141,6 +146,7 @@ class _BafometroPageState extends State<BafometroPage>
   }
 
   void _startManual() {
+    if (_person == null) return;
     setState(() {
       _mode = _Mode.manual;
       _micMessage = null;
@@ -166,18 +172,16 @@ class _BafometroPageState extends State<BafometroPage>
     _last = elapsed;
     final level = _mode == _Mode.manual ? (_held ? 1.0 : 0.0) : _level;
     _toy.update(level, dt);
-    setState(() => _needle = _toy.fill);
+    setState(() {});
     if (_toy.full) unawaited(_finishBlowing());
   }
 
   Future<void> _finishBlowing() async {
     _ticker.stop();
     await _releaseMic();
-    if (!mounted) return;
-    final index = _toy.pickResult(previous: _previous);
-    _previous = index;
-    _result = index;
-    final target = BreathToy.needleFor(index);
+    final person = _person;
+    if (!mounted || person == null) return;
+    final target = person.level;
     if (reduceMotion(context)) {
       setState(() {
         _needle = target;
@@ -185,7 +189,7 @@ class _BafometroPageState extends State<BafometroPage>
       });
       return;
     }
-    _needleFrom = _needle;
+    _needleFrom = 0;
     setState(() => _phase = BreathPhase.revealing);
     await _reveal.forward(from: 0);
     if (!mounted) return;
@@ -196,12 +200,12 @@ class _BafometroPageState extends State<BafometroPage>
   }
 
   void _onReveal() {
-    final target = BreathToy.needleFor(_result ?? 0);
-    final t = Curves.elasticOut.transform(_reveal.value);
+    final target = _person?.level ?? 0;
+    final t = Curves.easeOutCubic.transform(_reveal.value);
     setState(() => _needle = _needleFrom + (target - _needleFrom) * t);
   }
 
-  void _backToReady() {
+  void _backToReady({bool choose = false}) {
     _ticker.stop();
     _reveal.stop();
     unawaited(_releaseMic());
@@ -209,6 +213,7 @@ class _BafometroPageState extends State<BafometroPage>
       _phase = BreathPhase.ready;
       _needle = 0;
       _held = false;
+      if (choose) _picked = null;
     });
   }
 
@@ -218,58 +223,58 @@ class _BafometroPageState extends State<BafometroPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(tr.bafoTitle)),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpace.gutter,
-                0,
-                AppSpace.gutter,
-                AppSpace.xl,
+      body: _roster.isEmpty
+          ? Padding(
+              padding: const EdgeInsets.all(AppSpace.gutter),
+              child: EmptyView(
+                icon: Icons.groups_2_outlined,
+                title: tr.bafoEmptyTitle,
+                message: tr.bafoEmptyBody,
               ),
+            )
+          : Column(
               children: [
-                SurfaceCard(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpace.gutter,
+                      0,
+                      AppSpace.gutter,
+                      AppSpace.xl,
+                    ),
                     children: [
-                      const Icon(
-                        Icons.theater_comedy_outlined,
-                        color: AppColors.amber,
+                      if (_phase == BreathPhase.result ||
+                          _phase == BreathPhase.revealing ||
+                          _person != null)
+                        _PersonHeader(
+                          name: _person?.name ?? '',
+                          showSimulation: _phase == BreathPhase.result,
+                        ),
+                      const SizedBox(height: AppSpace.md),
+                      Semantics(
+                        label: tr.bafoMeterSemantics(_person?.name ?? ''),
+                        child: ExcludeSemantics(
+                          child: AspectRatio(
+                            aspectRatio: 2 / 1.25,
+                            child: CustomPaint(
+                              painter: _DialPainter(
+                                needle: _needle,
+                                shake:
+                                    _phase == BreathPhase.blowing &&
+                                    !reduceMotion(context),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      const SizedBox(width: AppSpace.md),
-                      Expanded(
-                        child: Text(tr.bafoDisclaimer, style: AppText.caption),
-                      ),
+                      const SizedBox(height: AppSpace.md),
+                      ..._body(),
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpace.lg),
-                Semantics(
-                  label: tr.bafoDialSemantics,
-                  child: ExcludeSemantics(
-                    child: AspectRatio(
-                      aspectRatio: 2 / 1.25,
-                      child: CustomPaint(
-                        painter: _DialPainter(
-                          needle: _needle,
-                          shake:
-                              _phase == BreathPhase.blowing &&
-                              !reduceMotion(context),
-                          segments: BreathToy.resultCount,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: AppSpace.md),
-                ..._body(),
+                BottomActionBar(child: _actions()),
               ],
             ),
-          ),
-          BottomActionBar(child: _actions()),
-        ],
-      ),
     );
   }
 
@@ -277,18 +282,27 @@ class _BafometroPageState extends State<BafometroPage>
     switch (_phase) {
       case BreathPhase.ready:
         return [
-          if (_people.isNotEmpty) ...[
+          if (_roster.people.length > 1) ...[
             SectionTitle(tr.bafoWho),
             Wrap(
               spacing: AppSpace.sm,
               runSpacing: AppSpace.sm,
               children: [
-                for (final n in _people)
+                for (final p in _roster.people)
                   ChoiceChip(
-                    label: Text(n),
-                    selected: _who == n,
+                    key: ValueKey('bafo-${p.id}'),
+                    label: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 220),
+                      child: Text(
+                        p.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    selected: _picked == p.id,
                     showCheckmark: false,
-                    onSelected: (v) => setState(() => _who = v ? n : null),
+                    onSelected: (v) =>
+                        setState(() => _picked = v ? p.id : null),
                   ),
               ],
             ),
@@ -302,7 +316,6 @@ class _BafometroPageState extends State<BafometroPage>
                 style: const TextStyle(color: AppColors.danger),
               ),
             ),
-          Text(tr.bafoMicNote, style: AppText.caption),
         ];
       case BreathPhase.blowing:
         return [
@@ -321,53 +334,18 @@ class _BafometroPageState extends State<BafometroPage>
               backgroundColor: AppColors.surfaceHigh,
             ),
           ),
-          const SizedBox(height: AppSpace.sm),
-          if (_mode == _Mode.manual)
-            Text(
-              tr.bafoHoldNote,
-              textAlign: TextAlign.center,
-              style: AppText.caption,
-            )
-          else if (_toy.quietSeconds > 5)
+          if (_mode == _Mode.mic && _toy.quietSeconds > 4) ...[
+            const SizedBox(height: AppSpace.sm),
             Text(
               tr.bafoHintLouder,
               textAlign: TextAlign.center,
               style: AppText.caption,
             ),
+          ],
         ];
       case BreathPhase.revealing:
-        return [
-          Text(
-            tr.bafoReveal,
-            textAlign: TextAlign.center,
-            style: AppText.title,
-          ),
-        ];
       case BreathPhase.result:
-        final i = (_result ?? 0) + 1;
-        return [
-          Semantics(
-            liveRegion: true,
-            child: SurfaceCard(
-              highlight: true,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _who == null ? tr.bafoResultAnon : tr.bafoResultFor(_who!),
-                    style: AppText.caption.copyWith(color: AppColors.amber),
-                  ),
-                  const SizedBox(height: AppSpace.xs),
-                  Text(_resultTitle(i), style: AppText.headline),
-                  const SizedBox(height: AppSpace.xs),
-                  Text(_resultLine(i), style: AppText.body),
-                  const SizedBox(height: AppSpace.md),
-                  Text(tr.bafoFictional, style: AppText.caption),
-                ],
-              ),
-            ),
-          ),
-        ];
+        return const [];
     }
   }
 
@@ -375,6 +353,7 @@ class _BafometroPageState extends State<BafometroPage>
     switch (_phase) {
       case BreathPhase.ready:
         final blocked = _micMessage != null;
+        final ready = _person != null;
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -382,7 +361,7 @@ class _BafometroPageState extends State<BafometroPage>
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: _startManual,
+                  onPressed: ready ? _startManual : null,
                   child: Text(tr.bafoHoldButton),
                 ),
               )
@@ -390,13 +369,13 @@ class _BafometroPageState extends State<BafometroPage>
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: _starting ? null : _startMic,
+                  onPressed: _starting || !ready ? null : _startMic,
                   child: Text(tr.bafoStart),
                 ),
               ),
             if (!blocked)
               TextButton(
-                onPressed: _starting ? null : _startManual,
+                onPressed: _starting || !ready ? null : _startManual,
                 child: Text(tr.bafoHoldOption),
               ),
           ],
@@ -440,12 +419,14 @@ class _BafometroPageState extends State<BafometroPage>
       case BreathPhase.revealing:
         return const SizedBox(height: 48);
       case BreathPhase.result:
+        final several = _roster.people.length > 1;
         return Row(
           children: [
             Expanded(
               child: OutlinedButton(
-                onPressed: _backToReady,
-                child: Text(tr.bafoAgain),
+                key: const ValueKey('bafo-next'),
+                onPressed: () => _backToReady(choose: several),
+                child: Text(several ? tr.bafoAnother : tr.bafoAgain),
               ),
             ),
             const SizedBox(width: AppSpace.sm),
@@ -459,82 +440,75 @@ class _BafometroPageState extends State<BafometroPage>
         );
     }
   }
-
-  String _resultTitle(int i) => switch (i) {
-    1 => tr.bafoR1T,
-    2 => tr.bafoR2T,
-    3 => tr.bafoR3T,
-    4 => tr.bafoR4T,
-    5 => tr.bafoR5T,
-    6 => tr.bafoR6T,
-    7 => tr.bafoR7T,
-    _ => tr.bafoR8T,
-  };
-
-  String _resultLine(int i) => switch (i) {
-    1 => tr.bafoR1L,
-    2 => tr.bafoR2L,
-    3 => tr.bafoR3L,
-    4 => tr.bafoR4L,
-    5 => tr.bafoR5L,
-    6 => tr.bafoR6L,
-    7 => tr.bafoR7L,
-    _ => tr.bafoR8L,
-  };
 }
 
-/// A dial with unlabelled colour segments (nothing to read as a measurement)
-/// and a needle. [shake] adds a small tremble while somebody blows.
+/// The name of the person, with "Simulação" small next to the result.
+class _PersonHeader extends StatelessWidget {
+  const _PersonHeader({required this.name, required this.showSimulation});
+
+  final String name;
+  final bool showSimulation;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Flexible(
+          child: Text(
+            name,
+            key: const ValueKey('bafo-name'),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: AppText.headline,
+          ),
+        ),
+        if (showSimulation) ...[
+          const SizedBox(width: AppSpace.sm),
+          Text(
+            tr.bafoSimulation,
+            key: const ValueKey('bafo-simulation'),
+            style: AppText.caption.copyWith(color: AppColors.amber),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+/// A plain dial: one neutral track, the level in amber and a needle. No
+/// colour bands, ticks or labels, so nothing reads as a scale or a limit.
+/// [shake] adds a small tremble while somebody blows.
 class _DialPainter extends CustomPainter {
-  _DialPainter({
-    required this.needle,
-    required this.shake,
-    required this.segments,
-  });
+  _DialPainter({required this.needle, required this.shake});
 
   final double needle;
   final bool shake;
-  final int segments;
-
-  static const _colors = [
-    Color(0xFF8BC98F),
-    Color(0xFFA7CF7E),
-    Color(0xFFC6D26E),
-    Color(0xFFE6CB5C),
-    Color(0xFFF2A81D),
-    Color(0xFFEB8A2B),
-    Color(0xFFE56E3F),
-    Color(0xFFE5604D),
-  ];
 
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height * 0.92);
     final radius = min(size.width / 2 - 8, size.height * 0.86);
-    final rect = Rect.fromCircle(center: center, radius: radius);
     final stroke = radius * 0.22;
-    final sweep = pi / segments;
-    for (var i = 0; i < segments; i++) {
-      final paint = Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = stroke
-        ..color = _colors[i % _colors.length];
+    final arc = Rect.fromCircle(center: center, radius: radius - stroke / 2);
+    final track = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = stroke
+      ..color = AppColors.surfaceHigh;
+    canvas.drawArc(arc, pi, pi, false, track);
+    final level = needle.clamp(0.0, 1.0);
+    if (level > 0) {
       canvas.drawArc(
-        Rect.fromCircle(center: center, radius: radius - stroke / 2),
-        pi + i * sweep + 0.012,
-        sweep - 0.024,
+        arc,
+        pi,
+        pi * level,
         false,
-        paint,
+        track..color = AppColors.amber,
       );
     }
-    // Outer rim and a few unlabelled ticks.
-    final rim = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
-      ..color = AppColors.outline;
-    canvas.drawArc(rect, pi, pi, false, rim);
     final jitter = shake ? sin(needle * 90) * 0.012 : 0.0;
-    final angle = pi + (needle.clamp(0.0, 1.0) + jitter) * pi;
+    final angle = pi + (level + jitter) * pi;
     final tip = Offset(
       center.dx + cos(angle) * (radius - stroke * 0.35),
       center.dy + sin(angle) * (radius - stroke * 0.35),
