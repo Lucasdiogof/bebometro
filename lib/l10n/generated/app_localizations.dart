@@ -304,36 +304,6 @@ abstract class AppLocalizations {
   /// **'Seu nome'**
   String get accountYourName;
 
-  /// No description provided for @alcoholAtLeast.
-  ///
-  /// In pt, this message translates to:
-  /// **'pelo menos {amount}'**
-  String alcoholAtLeast(String amount);
-
-  /// No description provided for @alcoholDeclared.
-  ///
-  /// In pt, this message translates to:
-  /// **'Álcool puro declarado'**
-  String get alcoholDeclared;
-
-  /// No description provided for @alcoholExplain.
-  ///
-  /// In pt, this message translates to:
-  /// **'Calculado só com o que foi informado: volume × teor nas bebidas simples e quantidade × teor de cada componente nos drinks. Em drinks vale a receita declarada, não o que o bar serviu. Não é a concentração de álcool no sangue e não indica se você pode dirigir.'**
-  String get alcoholExplain;
-
-  /// No description provided for @alcoholIncompletePill.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{1 registro com teor ou quantidade desconhecidos: o total é um mínimo} other{{count} registros com teor ou quantidade desconhecidos: o total é um mínimo}}'**
-  String alcoholIncompletePill(int count);
-
-  /// No description provided for @alcoholNoVolumePill.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{1 registro sem volume informado (não entra no volume)} other{{count} registros sem volume informado (não entram no volume)}}'**
-  String alcoholNoVolumePill(int count);
-
   /// No description provided for @appName.
   ///
   /// In pt, this message translates to:
@@ -1204,12 +1174,6 @@ abstract class AppLocalizations {
   /// **'{minutes} min'**
   String durationMinutes(int minutes);
 
-  /// No description provided for @entryAlcoholIncomplete.
-  ///
-  /// In pt, this message translates to:
-  /// **'álcool incompleto'**
-  String get entryAlcoholIncomplete;
-
   /// No description provided for @entryCorrect.
   ///
   /// In pt, this message translates to:
@@ -1227,12 +1191,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Opções do registro'**
   String get entryOptions;
-
-  /// No description provided for @entrySharedPart.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{sua parte {mine} de {total} (1 pessoa)} other{sua parte {mine} de {total} ({count} pessoas)}}'**
-  String entrySharedPart(int count, String mine, String total);
 
   /// No description provided for @feedbackDontAsk.
   ///
@@ -1372,53 +1330,17 @@ abstract class AppLocalizations {
   /// **'Encerrar rolê?'**
   String get finishTitle;
 
-  /// No description provided for @glassBigSubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'O volume informado, somado, num copo.'**
-  String get glassBigSubtitle;
-
-  /// No description provided for @glassBigTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Copão (opcional)'**
-  String get glassBigTitle;
-
   /// No description provided for @glassTipPlay.
   ///
   /// In pt, this message translates to:
   /// **'Brincar de virar o copo'**
   String get glassTipPlay;
 
-  /// No description provided for @groupRecipeAdjusted.
-  ///
-  /// In pt, this message translates to:
-  /// **'receita ajustada'**
-  String get groupRecipeAdjusted;
-
-  /// No description provided for @groupSharedPart.
-  ///
-  /// In pt, this message translates to:
-  /// **'{mine} seus de {total}'**
-  String groupSharedPart(String mine, String total);
-
   /// No description provided for @groupTimes.
   ///
   /// In pt, this message translates to:
   /// **'{count}×'**
   String groupTimes(int count);
-
-  /// No description provided for @groupVolumeUnknown.
-  ///
-  /// In pt, this message translates to:
-  /// **'volume desconhecido'**
-  String get groupVolumeUnknown;
-
-  /// No description provided for @groupVolumeUnknownShort.
-  ///
-  /// In pt, this message translates to:
-  /// **'volume ?'**
-  String get groupVolumeUnknownShort;
 
   /// No description provided for @hangoverMild.
   ///
@@ -1449,12 +1371,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Continuar rolê'**
   String get homeContinueOuting;
-
-  /// No description provided for @homeDrinks.
-  ///
-  /// In pt, this message translates to:
-  /// **'Bebidas'**
-  String get homeDrinks;
 
   /// No description provided for @homeFirstBody.
   ///
@@ -1678,12 +1594,6 @@ abstract class AppLocalizations {
   /// **'Adicionar bebida'**
   String get outingAddDrink;
 
-  /// No description provided for @outingAlcoholIncomplete.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{1 com álcool incompleto} other{{count} com álcool incompleto}}'**
-  String outingAlcoholIncomplete(int count);
-
   /// No description provided for @outingAlreadyEnded.
   ///
   /// In pt, this message translates to:
@@ -1767,12 +1677,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Registre a primeira e o botão \"Mais uma\" aparece aqui embaixo.'**
   String get outingNoDrinksBody;
-
-  /// No description provided for @outingNoVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{1 sem volume} other{{count} sem volume}}'**
-  String outingNoVolume(int count);
 
   /// No description provided for @outingNotFound.
   ///
@@ -1876,12 +1780,6 @@ abstract class AppLocalizations {
   /// **'{type} · desde {time}'**
   String outingTypeSince(String type, String time);
 
-  /// No description provided for @outingYourVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Seu volume'**
-  String get outingYourVolume;
-
   /// No description provided for @placeCorrect.
   ///
   /// In pt, this message translates to:
@@ -1912,12 +1810,6 @@ abstract class AppLocalizations {
   /// **'sem preço'**
   String get priceUnknown;
 
-  /// No description provided for @repeatAdjusted.
-  ///
-  /// In pt, this message translates to:
-  /// **'{name} (ajustada)'**
-  String repeatAdjusted(String name);
-
   /// No description provided for @repeatButton.
   ///
   /// In pt, this message translates to:
@@ -1929,12 +1821,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Mais uma: {drink}'**
   String repeatSemantics(String drink);
-
-  /// No description provided for @repeatYourPart.
-  ///
-  /// In pt, this message translates to:
-  /// **'sua parte {amount}'**
-  String repeatYourPart(String amount);
 
   /// No description provided for @repoAbvRange.
   ///
@@ -2547,18 +2433,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'{value} ml'**
   String unitMl(String value);
-
-  /// No description provided for @volumeKnownPlusUnknown.
-  ///
-  /// In pt, this message translates to:
-  /// **'{known} (+{count} sem volume)'**
-  String volumeKnownPlusUnknown(String known, int count);
-
-  /// No description provided for @volumeUnknown.
-  ///
-  /// In pt, this message translates to:
-  /// **'desconhecido'**
-  String get volumeUnknown;
 
   /// No description provided for @wakeBad.
   ///
@@ -3370,12 +3244,6 @@ abstract class AppLocalizations {
   /// **'Bebida salva em Minhas bebidas'**
   String get catalogDrinkSaved;
 
-  /// No description provided for @catalogRecipeSaved.
-  ///
-  /// In pt, this message translates to:
-  /// **'Receita salva em Minhas bebidas'**
-  String get catalogRecipeSaved;
-
   /// No description provided for @catalogDeleteTitle.
   ///
   /// In pt, this message translates to:
@@ -3508,18 +3376,6 @@ abstract class AppLocalizations {
   /// **'Favoritar'**
   String get catalogFavorite;
 
-  /// No description provided for @entryDeleteTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Excluir registro?'**
-  String get entryDeleteTitle;
-
-  /// No description provided for @entryDeleteBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ele sai do rolê e do resumo.'**
-  String get entryDeleteBody;
-
   /// No description provided for @entryDiscardTitle.
   ///
   /// In pt, this message translates to:
@@ -3550,95 +3406,11 @@ abstract class AppLocalizations {
   /// **'Corrigir registro'**
   String get entryFix;
 
-  /// No description provided for @entryLogCocktail.
-  ///
-  /// In pt, this message translates to:
-  /// **'Registrar drink'**
-  String get entryLogCocktail;
-
   /// No description provided for @entryLogDrink.
   ///
   /// In pt, this message translates to:
   /// **'Registrar bebida'**
   String get entryLogDrink;
-
-  /// No description provided for @entryDrinkAndSize.
-  ///
-  /// In pt, this message translates to:
-  /// **'Bebida e tamanho'**
-  String get entryDrinkAndSize;
-
-  /// No description provided for @entryGenericSpirit.
-  ///
-  /// In pt, this message translates to:
-  /// **'Doses sugeridas, editáveis: não são medidas oficiais de nenhum estabelecimento. A garrafa é a embalagem, não a sua dose.'**
-  String get entryGenericSpirit;
-
-  /// No description provided for @entryGenericSizes.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tamanhos sugeridos: este produto não tem embalagens verificadas no catálogo. Confira na embalagem.'**
-  String get entryGenericSizes;
-
-  /// No description provided for @entryVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume (ml)'**
-  String get entryVolume;
-
-  /// No description provided for @entryOtherSize.
-  ///
-  /// In pt, this message translates to:
-  /// **'Outro tamanho (ml)'**
-  String get entryOtherSize;
-
-  /// No description provided for @entryAbvOptional.
-  ///
-  /// In pt, this message translates to:
-  /// **'Teor alcoólico (opcional)'**
-  String get entryAbvOptional;
-
-  /// No description provided for @entryAbvBlank.
-  ///
-  /// In pt, this message translates to:
-  /// **'Em branco = desconhecido (não conta como zero).'**
-  String get entryAbvBlank;
-
-  /// No description provided for @entryAbvCheck.
-  ///
-  /// In pt, this message translates to:
-  /// **'Confira no rótulo se puder.'**
-  String get entryAbvCheck;
-
-  /// No description provided for @entryAbvVariantsIntro.
-  ///
-  /// In pt, this message translates to:
-  /// **'As fontes divergem. Escolha o que estiver no seu rótulo ou digite:'**
-  String get entryAbvVariantsIntro;
-
-  /// No description provided for @entryBottleShared.
-  ///
-  /// In pt, this message translates to:
-  /// **'Garrafa que está sendo dividida (preenche o volume da garrafa):'**
-  String get entryBottleShared;
-
-  /// No description provided for @entryBottlesInfo.
-  ///
-  /// In pt, this message translates to:
-  /// **'Embalagens do produto: {list}. Para dividir uma garrafa, marque \"Compartilhada\" abaixo.'**
-  String entryBottlesInfo(String list);
-
-  /// No description provided for @entryIndividualOrShared.
-  ///
-  /// In pt, this message translates to:
-  /// **'Individual ou compartilhada'**
-  String get entryIndividualOrShared;
-
-  /// No description provided for @entryOnlyMine.
-  ///
-  /// In pt, this message translates to:
-  /// **'Só minha'**
-  String get entryOnlyMine;
 
   /// No description provided for @entryShared.
   ///
@@ -3646,101 +3418,17 @@ abstract class AppLocalizations {
   /// **'Compartilhada'**
   String get entryShared;
 
-  /// No description provided for @entryPriceSection.
-  ///
-  /// In pt, this message translates to:
-  /// **'Preço (opcional)'**
-  String get entryPriceSection;
-
   /// No description provided for @entryTimeSection.
   ///
   /// In pt, this message translates to:
   /// **'Horário'**
   String get entryTimeSection;
 
-  /// No description provided for @entryYourShare.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sua parte: {amount}'**
-  String entryYourShare(String amount);
-
-  /// No description provided for @entryYourShareUnknown.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sua parte: —'**
-  String get entryYourShareUnknown;
-
   /// No description provided for @entrySaveChanges.
   ///
   /// In pt, this message translates to:
   /// **'Salvar alterações'**
   String get entrySaveChanges;
-
-  /// No description provided for @entryIngredients.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ingredientes: {list}'**
-  String entryIngredients(String list);
-
-  /// No description provided for @entrySharedLine.
-  ///
-  /// In pt, this message translates to:
-  /// **'de {total} · {count} pessoas, com você'**
-  String entrySharedLine(String total, String count);
-
-  /// No description provided for @entryPeople.
-  ///
-  /// In pt, this message translates to:
-  /// **'Pessoas (incluindo você)'**
-  String get entryPeople;
-
-  /// No description provided for @entryFewerPeople.
-  ///
-  /// In pt, this message translates to:
-  /// **'Menos uma pessoa'**
-  String get entryFewerPeople;
-
-  /// No description provided for @entryMorePeople.
-  ///
-  /// In pt, this message translates to:
-  /// **'Mais uma pessoa'**
-  String get entryMorePeople;
-
-  /// No description provided for @entryAdjustShare.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ajustar parcela e sobra'**
-  String get entryAdjustShare;
-
-  /// No description provided for @entryYourShareMl.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sua parte (ml)'**
-  String get entryYourShareMl;
-
-  /// No description provided for @entryEqualSplit.
-  ///
-  /// In pt, this message translates to:
-  /// **'Divisão igual por padrão.'**
-  String get entryEqualSplit;
-
-  /// No description provided for @entryLeftover.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sobra na garrafa (ml)'**
-  String get entryLeftover;
-
-  /// No description provided for @entryOptionalDot.
-  ///
-  /// In pt, this message translates to:
-  /// **'Opcional.'**
-  String get entryOptionalDot;
-
-  /// No description provided for @entryOthersEach.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sobram {amount} {count, plural, =1{para a outra pessoa} other{para cada uma das outras {count} pessoas}}.'**
-  String entryOthersEach(String amount, int count);
 
   /// No description provided for @entryPriceValue.
   ///
@@ -3753,24 +3441,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Não sei'**
   String get entryPriceDontKnow;
-
-  /// No description provided for @entryBillTotal.
-  ///
-  /// In pt, this message translates to:
-  /// **'Total da conta/garrafa (opcional)'**
-  String get entryBillTotal;
-
-  /// No description provided for @entryPaidHelper.
-  ///
-  /// In pt, this message translates to:
-  /// **'O que você pagou, não o que bebeu.'**
-  String get entryPaidHelper;
-
-  /// No description provided for @entrySplitEqually.
-  ///
-  /// In pt, this message translates to:
-  /// **'Dividir igualmente ({count} pessoas)'**
-  String entrySplitEqually(String count);
 
   /// No description provided for @entryComplimentaryNote.
   ///
@@ -3790,347 +3460,11 @@ abstract class AppLocalizations {
   /// **'Adicionar'**
   String get commonAdd;
 
-  /// No description provided for @entryAddIngredient.
-  ///
-  /// In pt, this message translates to:
-  /// **'Adicionar ingrediente'**
-  String get entryAddIngredient;
-
-  /// No description provided for @entryIngredientField.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ingrediente'**
-  String get entryIngredientField;
-
-  /// No description provided for @entryHasAlcohol.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tem álcool'**
-  String get entryHasAlcohol;
-
-  /// No description provided for @entrySaveRecipeTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Salvar como minha receita'**
-  String get entrySaveRecipeTitle;
-
-  /// No description provided for @entryMineSuffix.
-  ///
-  /// In pt, this message translates to:
-  /// **'{name} (minha)'**
-  String entryMineSuffix(String name);
-
-  /// No description provided for @entryRecipeName.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nome da receita'**
-  String get entryRecipeName;
-
-  /// No description provided for @entrySaveRecipeBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Guarda ingredientes, quantidades e teores para reutilizar. Registros antigos não mudam.'**
-  String get entrySaveRecipeBody;
-
-  /// No description provided for @entryRecipeSaved.
-  ///
-  /// In pt, this message translates to:
-  /// **'Receita salva no seu catálogo'**
-  String get entryRecipeSaved;
-
-  /// No description provided for @entryCompositionTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Composição'**
-  String get entryCompositionTitle;
-
-  /// No description provided for @entryCompositionSimple.
-  ///
-  /// In pt, this message translates to:
-  /// **'Informe só o que você sabe.'**
-  String get entryCompositionSimple;
-
-  /// No description provided for @entryCompositionReference.
-  ///
-  /// In pt, this message translates to:
-  /// **'Receita de referência ({source}). Ajuste para o que foi realmente servido.'**
-  String entryCompositionReference(String source);
-
-  /// No description provided for @entryCompositionAdjusted.
-  ///
-  /// In pt, this message translates to:
-  /// **'Composição ajustada'**
-  String get entryCompositionAdjusted;
-
-  /// No description provided for @entryCompositionView.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ver e ajustar composição'**
-  String get entryCompositionView;
-
-  /// No description provided for @entryNoIngredients.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhum ingrediente ainda'**
-  String get entryNoIngredients;
-
-  /// No description provided for @entryDrinkVolumeSection.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume do drink (opcional)'**
-  String get entryDrinkVolumeSection;
-
-  /// No description provided for @entryServedVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume servido (ml)'**
-  String get entryServedVolume;
-
-  /// No description provided for @entryServedVolumeHelper.
-  ///
-  /// In pt, this message translates to:
-  /// **'Se não souber, deixe em branco: o resumo mostra como desconhecido. O tamanho do copo e o gelo não contam como volume bebido.'**
-  String get entryServedVolumeHelper;
-
-  /// No description provided for @entryPureAlcohol.
-  ///
-  /// In pt, this message translates to:
-  /// **'Álcool puro da composição acima'**
-  String get entryPureAlcohol;
-
-  /// No description provided for @entryAtLeast.
-  ///
-  /// In pt, this message translates to:
-  /// **'pelo menos {amount}'**
-  String entryAtLeast(String amount);
-
-  /// No description provided for @entryMissingParts.
-  ///
-  /// In pt, this message translates to:
-  /// **'Faltam teor ou quantidade de: {list}'**
-  String entryMissingParts(String list);
-
-  /// No description provided for @entryDeclaredNote.
-  ///
-  /// In pt, this message translates to:
-  /// **'Vale a composição declarada, assumindo a porção inteira. Não é concentração no sangue.'**
-  String get entryDeclaredNote;
-
-  /// No description provided for @entryOptionalMark.
-  ///
-  /// In pt, this message translates to:
-  /// **'{name} (opcional)'**
-  String entryOptionalMark(String name);
-
-  /// No description provided for @entryRemoveIngredient.
-  ///
-  /// In pt, this message translates to:
-  /// **'Remover ingrediente'**
-  String get entryRemoveIngredient;
-
-  /// No description provided for @entryInRecipe.
-  ///
-  /// In pt, this message translates to:
-  /// **'Na receita: {text}'**
-  String entryInRecipe(String text);
-
   /// No description provided for @entryAmount.
   ///
   /// In pt, this message translates to:
   /// **'Quantidade'**
   String get entryAmount;
-
-  /// No description provided for @entryAmountUnknown.
-  ///
-  /// In pt, this message translates to:
-  /// **'Em branco = desconhecida.'**
-  String get entryAmountUnknown;
-
-  /// No description provided for @entryChooseProduct.
-  ///
-  /// In pt, this message translates to:
-  /// **'Escolher marca/produto'**
-  String get entryChooseProduct;
-
-  /// No description provided for @entryComponentAbv.
-  ///
-  /// In pt, this message translates to:
-  /// **'Teor alcoólico (% vol.)'**
-  String get entryComponentAbv;
-
-  /// No description provided for @entryComponentAbvUnknown.
-  ///
-  /// In pt, this message translates to:
-  /// **'Desconhecido: sem ele o álcool total fica incompleto.'**
-  String get entryComponentAbvUnknown;
-
-  /// No description provided for @entryComponentAlcoholNone.
-  ///
-  /// In pt, this message translates to:
-  /// **'Álcool deste ingrediente: não calculado ({reason}).'**
-  String entryComponentAlcoholNone(String reason);
-
-  /// No description provided for @entryComponentAlcohol.
-  ///
-  /// In pt, this message translates to:
-  /// **'Álcool deste ingrediente: {amount}'**
-  String entryComponentAlcohol(String amount);
-
-  /// No description provided for @entryIncompleteData.
-  ///
-  /// In pt, this message translates to:
-  /// **'dados incompletos'**
-  String get entryIncompleteData;
-
-  /// No description provided for @entryWhichProduct.
-  ///
-  /// In pt, this message translates to:
-  /// **'Qual {name}?'**
-  String entryWhichProduct(String name);
-
-  /// No description provided for @entryNoBrand.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sem marca: informar o teor'**
-  String get entryNoBrand;
-
-  /// No description provided for @entryProductAbv.
-  ///
-  /// In pt, this message translates to:
-  /// **'Teor {abv}'**
-  String entryProductAbv(String abv);
-
-  /// No description provided for @entryProductAbvVaries.
-  ///
-  /// In pt, this message translates to:
-  /// **'Teor varia conforme a fonte'**
-  String get entryProductAbvVaries;
-
-  /// No description provided for @entryProductAbvUnknown.
-  ///
-  /// In pt, this message translates to:
-  /// **'Teor não informado'**
-  String get entryProductAbvUnknown;
-
-  /// No description provided for @entryMenuPrice.
-  ///
-  /// In pt, this message translates to:
-  /// **'Preço do cardápio'**
-  String get entryMenuPrice;
-
-  /// No description provided for @entryMenuPriceBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'O cardápio anunciava {price}. É só uma sugestão: confirme o que foi pago de fato, pois pode ter promoção ou outro pedido. Se for garrafa ou jarra dividida, marque \"Compartilhada\": o valor vira o total da conta, não a sua parte.'**
-  String entryMenuPriceBody(String price);
-
-  /// No description provided for @entryUseAsBillTotal.
-  ///
-  /// In pt, this message translates to:
-  /// **'Usar como total da conta'**
-  String get entryUseAsBillTotal;
-
-  /// No description provided for @entryUseAsPaid.
-  ///
-  /// In pt, this message translates to:
-  /// **'Usar como o que paguei'**
-  String get entryUseAsPaid;
-
-  /// No description provided for @entryHistory.
-  ///
-  /// In pt, this message translates to:
-  /// **'Seu histórico'**
-  String get entryHistory;
-
-  /// No description provided for @entryHistoryShare.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sua parcela foi {price} {scope} em {date}.'**
-  String entryHistoryShare(String price, String scope, String date);
-
-  /// No description provided for @entryHistoryPaid.
-  ///
-  /// In pt, this message translates to:
-  /// **'Você pagou {price} {scope} em {date}.'**
-  String entryHistoryPaid(String price, String scope, String date);
-
-  /// No description provided for @entryUseAsShare.
-  ///
-  /// In pt, this message translates to:
-  /// **'Usar como minha parcela'**
-  String get entryUseAsShare;
-
-  /// No description provided for @entryUseValue.
-  ///
-  /// In pt, this message translates to:
-  /// **'Usar este valor'**
-  String get entryUseValue;
-
-  /// No description provided for @entryHistoryTotal.
-  ///
-  /// In pt, this message translates to:
-  /// **'O total da garrafa/porção foi {price} em {date}.'**
-  String entryHistoryTotal(String price, String date);
-
-  /// No description provided for @entryUseAsTotal.
-  ///
-  /// In pt, this message translates to:
-  /// **'Usar como total'**
-  String get entryUseAsTotal;
-
-  /// No description provided for @entryScopeAtPlace.
-  ///
-  /// In pt, this message translates to:
-  /// **'neste local'**
-  String get entryScopeAtPlace;
-
-  /// No description provided for @entryScopeAtOuting.
-  ///
-  /// In pt, this message translates to:
-  /// **'neste rolê'**
-  String get entryScopeAtOuting;
-
-  /// No description provided for @draftVolumeInvalid.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume inválido'**
-  String get draftVolumeInvalid;
-
-  /// No description provided for @draftAbvRange.
-  ///
-  /// In pt, this message translates to:
-  /// **'O teor vai de 0 a 100%'**
-  String get draftAbvRange;
-
-  /// No description provided for @draftAmountInvalid.
-  ///
-  /// In pt, this message translates to:
-  /// **'Quantidade inválida'**
-  String get draftAmountInvalid;
-
-  /// No description provided for @draftVolumeRequired.
-  ///
-  /// In pt, this message translates to:
-  /// **'Informe o volume em ml'**
-  String get draftVolumeRequired;
-
-  /// No description provided for @draftVolumeTooHigh.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume alto demais'**
-  String get draftVolumeTooHigh;
-
-  /// No description provided for @draftShareRequired.
-  ///
-  /// In pt, this message translates to:
-  /// **'Informe a sua parte em ml'**
-  String get draftShareRequired;
-
-  /// No description provided for @draftShareOver.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sua parte + sobra passam do volume ({volume})'**
-  String draftShareOver(String volume);
 
   /// No description provided for @draftBeforeStart.
   ///
@@ -4150,90 +3484,6 @@ abstract class AppLocalizations {
   /// **'Depois do fim do rolê ({time})'**
   String draftAfterEnd(String time);
 
-  /// No description provided for @draftPaidRequired.
-  ///
-  /// In pt, this message translates to:
-  /// **'Informe o valor ou escolha outra opção'**
-  String get draftPaidRequired;
-
-  /// No description provided for @formSaveRecipeFailed.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não foi possível salvar a receita.'**
-  String get formSaveRecipeFailed;
-
-  /// No description provided for @formSaveFailed.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não foi possível salvar. Nada foi perdido, tente de novo.'**
-  String get formSaveFailed;
-
-  /// No description provided for @priceBulkTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Aplicar este preço às bebidas iguais?'**
-  String get priceBulkTitle;
-
-  /// No description provided for @priceBulkBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'{name} por {price}. Neste rolê há {total} registros iguais: {unpriced} sem preço e {differing} com outro preço. Nada muda sem a sua escolha.'**
-  String priceBulkBody(
-    String name,
-    String price,
-    int total,
-    int unpriced,
-    int differing,
-  );
-
-  /// No description provided for @priceBulkUnpriced.
-  ///
-  /// In pt, this message translates to:
-  /// **'Aplicar aos {count} sem preço'**
-  String priceBulkUnpriced(int count);
-
-  /// No description provided for @priceBulkAll.
-  ///
-  /// In pt, this message translates to:
-  /// **'Aplicar a todos os {count} iguais'**
-  String priceBulkAll(int count);
-
-  /// No description provided for @priceBulkOnlyThis.
-  ///
-  /// In pt, this message translates to:
-  /// **'Só este registro'**
-  String get priceBulkOnlyThis;
-
-  /// No description provided for @priceBulkConfirmTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Substituir preços?'**
-  String get priceBulkConfirmTitle;
-
-  /// No description provided for @priceBulkConfirmBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Isso troca o preço de {count} registros que já tinham outro valor. Os demais rolês não mudam.'**
-  String priceBulkConfirmBody(int count);
-
-  /// No description provided for @priceBulkReplace.
-  ///
-  /// In pt, this message translates to:
-  /// **'Substituir'**
-  String get priceBulkReplace;
-
-  /// No description provided for @priceBulkApplied.
-  ///
-  /// In pt, this message translates to:
-  /// **'Preço aplicado a {count} registros.'**
-  String priceBulkApplied(int count);
-
-  /// No description provided for @formDeleteFailed.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não foi possível excluir. Tente de novo.'**
-  String get formDeleteFailed;
-
   /// No description provided for @detailNotGiven.
   ///
   /// In pt, this message translates to:
@@ -4246,23 +3496,11 @@ abstract class AppLocalizations {
   /// **'Teor alcoólico'**
   String get detailAbv;
 
-  /// No description provided for @detailAbvFrom.
-  ///
-  /// In pt, this message translates to:
-  /// **'Teor: {source}. Não é dado do fabricante.'**
-  String detailAbvFrom(String source);
-
   /// No description provided for @detailIngredients.
   ///
   /// In pt, this message translates to:
   /// **'Ingredientes declarados'**
   String get detailIngredients;
-
-  /// No description provided for @detailIngredientsNone.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não informados'**
-  String get detailIngredientsNone;
 
   /// No description provided for @detailPresentations.
   ///
@@ -4288,24 +3526,6 @@ abstract class AppLocalizations {
   /// **'Embalagens citadas pelo fabricante. O tamanho da embalagem não é o que você bebeu: isso você define ao registrar.'**
   String get detailPackagesNote;
 
-  /// No description provided for @detailMakeMine.
-  ///
-  /// In pt, this message translates to:
-  /// **'Criar minha versão'**
-  String get detailMakeMine;
-
-  /// No description provided for @detailSourceTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Fonte dos dados'**
-  String get detailSourceTitle;
-
-  /// No description provided for @detailSourceLine.
-  ///
-  /// In pt, this message translates to:
-  /// **'{source} · consultado em {date}'**
-  String detailSourceLine(String source, String date);
-
   /// No description provided for @detailCopyAddress.
   ///
   /// In pt, this message translates to:
@@ -4323,48 +3543,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Os dados podem variar por versão e mercado. Confira sempre o rótulo da embalagem.'**
   String get detailMayVary;
-
-  /// No description provided for @detailAbvVaries.
-  ///
-  /// In pt, this message translates to:
-  /// **'Varia conforme a fonte, sem um valor único:\n{lines}'**
-  String detailAbvVaries(String lines);
-
-  /// No description provided for @detailRecipeReference.
-  ///
-  /// In pt, this message translates to:
-  /// **'Receita de referência: mostra como a receita é publicada, não o que um bar serviu.'**
-  String get detailRecipeReference;
-
-  /// No description provided for @detailRecipeMine.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sua receita salva. Ao registrar, você ajusta o que realmente foi servido.'**
-  String get detailRecipeMine;
-
-  /// No description provided for @detailNoIngredientsYet.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sem ingredientes ainda: você monta ao registrar.'**
-  String get detailNoIngredientsYet;
-
-  /// No description provided for @detailAlcoholLegend.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ingredientes com copo ao lado têm álcool. O teor de cada um é informado ao registrar; sem ele o álcool total fica incompleto. Gelo não entra na conta.'**
-  String get detailAlcoholLegend;
-
-  /// No description provided for @detailMethod.
-  ///
-  /// In pt, this message translates to:
-  /// **'Preparo'**
-  String get detailMethod;
-
-  /// No description provided for @detailGarnish.
-  ///
-  /// In pt, this message translates to:
-  /// **'Decoração: {text}'**
-  String detailGarnish(String text);
 
   /// No description provided for @customEditTitle.
   ///
@@ -4414,65 +3592,11 @@ abstract class AppLocalizations {
   /// **'Dê um nome para a bebida'**
   String get customNameRequired;
 
-  /// No description provided for @customBrand.
-  ///
-  /// In pt, this message translates to:
-  /// **'Marca (opcional)'**
-  String get customBrand;
-
-  /// No description provided for @customStyle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Estilo (opcional)'**
-  String get customStyle;
-
-  /// No description provided for @customSizeAndAbv.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tamanho e teor'**
-  String get customSizeAndAbv;
-
-  /// No description provided for @customSize.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tamanho (ml)'**
-  String get customSize;
-
-  /// No description provided for @customSizeRequired.
-  ///
-  /// In pt, this message translates to:
-  /// **'Informe o tamanho em ml'**
-  String get customSizeRequired;
-
-  /// No description provided for @customAbvHelper.
-  ///
-  /// In pt, this message translates to:
-  /// **'Em branco = desconhecido, não conta como zero.'**
-  String get customAbvHelper;
-
-  /// No description provided for @customIngredients.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ingredientes (opcional)'**
-  String get customIngredients;
-
-  /// No description provided for @customIngredientsHelper.
-  ///
-  /// In pt, this message translates to:
-  /// **'Separe por vírgula. Só o que você sabe.'**
-  String get customIngredientsHelper;
-
   /// No description provided for @customSaveUse.
   ///
   /// In pt, this message translates to:
   /// **'Salvar e usar'**
   String get customSaveUse;
-
-  /// No description provided for @recipeUnitLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Unidade'**
-  String get recipeUnitLabel;
 
   /// No description provided for @myDrinksNeedOuting.
   ///
@@ -4509,12 +3633,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Excluída'**
   String get myDrinksDeleted;
-
-  /// No description provided for @myDrinksRecipeSubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{Receita · 1 ingrediente} other{Receita · {count} ingredientes}}'**
-  String myDrinksRecipeSubtitle(int count);
 
   /// No description provided for @myDrinksTitle.
   ///
@@ -4557,150 +3675,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Nova bebida'**
   String get myDrinksNewDrink;
-
-  /// No description provided for @myDrinksNewRecipe.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nova receita'**
-  String get myDrinksNewRecipe;
-
-  /// No description provided for @recipeEditorNameCopy.
-  ///
-  /// In pt, this message translates to:
-  /// **'{name} (minha versão)'**
-  String recipeEditorNameCopy(String name);
-
-  /// No description provided for @recipeEditorNeedName.
-  ///
-  /// In pt, this message translates to:
-  /// **'Dê um nome para a receita.'**
-  String get recipeEditorNeedName;
-
-  /// No description provided for @recipeEditorNeedIngredient.
-  ///
-  /// In pt, this message translates to:
-  /// **'Adicione pelo menos um ingrediente.'**
-  String get recipeEditorNeedIngredient;
-
-  /// No description provided for @recipeEditorIngredientName.
-  ///
-  /// In pt, this message translates to:
-  /// **'Todo ingrediente precisa de um nome.'**
-  String get recipeEditorIngredientName;
-
-  /// No description provided for @recipeEditorAbvRange.
-  ///
-  /// In pt, this message translates to:
-  /// **'O teor de \"{name}\" vai de 0 a 100%.'**
-  String recipeEditorAbvRange(String name);
-
-  /// No description provided for @recipeEditorAmountInvalid.
-  ///
-  /// In pt, this message translates to:
-  /// **'A quantidade de \"{name}\" é inválida.'**
-  String recipeEditorAmountInvalid(String name);
-
-  /// No description provided for @recipeEditorNumberProblem.
-  ///
-  /// In pt, this message translates to:
-  /// **'\"{name}\": {problem}'**
-  String recipeEditorNumberProblem(String name, String problem);
-
-  /// No description provided for @recipeEditorEditTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Editar receita'**
-  String get recipeEditorEditTitle;
-
-  /// No description provided for @recipeEditorNewTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nova receita'**
-  String get recipeEditorNewTitle;
-
-  /// No description provided for @recipeEditorIntro.
-  ///
-  /// In pt, this message translates to:
-  /// **'Registre só o que você sabe. Quantidade ou teor em branco ficam como desconhecidos e o álcool total aparece como incompleto.'**
-  String get recipeEditorIntro;
-
-  /// No description provided for @recipeEditorNameSection.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nome'**
-  String get recipeEditorNameSection;
-
-  /// No description provided for @recipeEditorNameRequired.
-  ///
-  /// In pt, this message translates to:
-  /// **'Dê um nome para a receita'**
-  String get recipeEditorNameRequired;
-
-  /// No description provided for @recipeEditorIngredients.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ingredientes'**
-  String get recipeEditorIngredients;
-
-  /// No description provided for @recipeEditorNoneYet.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhum ingrediente ainda.'**
-  String get recipeEditorNoneYet;
-
-  /// No description provided for @recipeEditorAlcoholSection.
-  ///
-  /// In pt, this message translates to:
-  /// **'Álcool da composição'**
-  String get recipeEditorAlcoholSection;
-
-  /// No description provided for @recipeEditorDeclaredAlcohol.
-  ///
-  /// In pt, this message translates to:
-  /// **'Álcool puro declarado'**
-  String get recipeEditorDeclaredAlcohol;
-
-  /// No description provided for @recipeEditorSaveRecipe.
-  ///
-  /// In pt, this message translates to:
-  /// **'Salvar receita'**
-  String get recipeEditorSaveRecipe;
-
-  /// No description provided for @recipeEditorMoveUp.
-  ///
-  /// In pt, this message translates to:
-  /// **'Mover para cima'**
-  String get recipeEditorMoveUp;
-
-  /// No description provided for @recipeEditorMoveDown.
-  ///
-  /// In pt, this message translates to:
-  /// **'Mover para baixo'**
-  String get recipeEditorMoveDown;
-
-  /// No description provided for @recipeEditorOriginal.
-  ///
-  /// In pt, this message translates to:
-  /// **'Na receita original: {text}'**
-  String recipeEditorOriginal(String text);
-
-  /// No description provided for @recipeEditorRole.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tipo (para escolher a marca ao registrar)'**
-  String get recipeEditorRole;
-
-  /// No description provided for @recipeEditorNoRole.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sem tipo'**
-  String get recipeEditorNoRole;
-
-  /// No description provided for @recipeEditorRemove.
-  ///
-  /// In pt, this message translates to:
-  /// **'Remover'**
-  String get recipeEditorRemove;
 
   /// No description provided for @scanLabelPhotoGone.
   ///
@@ -5230,18 +4204,6 @@ abstract class AppLocalizations {
   /// **'(sem nome)'**
   String get scanMenuNoName;
 
-  /// No description provided for @scanMenuSize.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tamanho no cardápio: {size}'**
-  String scanMenuSize(String size);
-
-  /// No description provided for @scanMenuIngredientsCited.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ingredientes citados: {list}'**
-  String scanMenuIngredientsCited(String list);
-
   /// No description provided for @scanMenuEditItem.
   ///
   /// In pt, this message translates to:
@@ -5308,41 +4270,17 @@ abstract class AppLocalizations {
   /// **'Descrição (opcional)'**
   String get scanMenuDescription;
 
-  /// No description provided for @scanMenuSizeOptional.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tamanho (opcional)'**
-  String get scanMenuSizeOptional;
-
   /// No description provided for @scanMenuPriceOptional.
   ///
   /// In pt, this message translates to:
   /// **'Preço (opcional)'**
   String get scanMenuPriceOptional;
 
-  /// No description provided for @scanMenuCitedOptional.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ingredientes citados (opcional)'**
-  String get scanMenuCitedOptional;
-
-  /// No description provided for @scanMenuCitedHelper.
-  ///
-  /// In pt, this message translates to:
-  /// **'Separe por vírgula. Sem quantidades.'**
-  String get scanMenuCitedHelper;
-
   /// No description provided for @scanMenuNeedName.
   ///
   /// In pt, this message translates to:
   /// **'Dê um nome ao item.'**
   String get scanMenuNeedName;
-
-  /// No description provided for @scanMenuInvalidSize.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tamanho inválido.'**
-  String get scanMenuInvalidSize;
 
   /// No description provided for @scanMenuInvalidPrice.
   ///
@@ -5416,18 +4354,6 @@ abstract class AppLocalizations {
   /// **'Escolha o tipo da bebida.'**
   String get outingReviewNeedType;
 
-  /// No description provided for @outingReviewVolumePositive.
-  ///
-  /// In pt, this message translates to:
-  /// **'O volume precisa ser maior que zero.'**
-  String get outingReviewVolumePositive;
-
-  /// No description provided for @outingReviewAbvRange.
-  ///
-  /// In pt, this message translates to:
-  /// **'O teor vai de 0 a 100%.'**
-  String get outingReviewAbvRange;
-
   /// No description provided for @outingReviewOtherLines.
   ///
   /// In pt, this message translates to:
@@ -5452,48 +4378,6 @@ abstract class AppLocalizations {
   /// **'Descrição do cardápio (opcional)'**
   String get outingReviewDescription;
 
-  /// No description provided for @outingReviewPackageVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume da embalagem (opcional)'**
-  String get outingReviewPackageVolume;
-
-  /// No description provided for @outingReviewVolumeHelper.
-  ///
-  /// In pt, this message translates to:
-  /// **'É o tamanho do produto, não o quanto você bebeu. Em branco = desconhecido.'**
-  String get outingReviewVolumeHelper;
-
-  /// No description provided for @outingReviewAbvSource.
-  ///
-  /// In pt, this message translates to:
-  /// **'Origem: {source}'**
-  String outingReviewAbvSource(String source);
-
-  /// No description provided for @outingReviewIngredientsIntro.
-  ///
-  /// In pt, this message translates to:
-  /// **'Só o que o cardápio ou você informaram. As quantidades ficam desconhecidas até você completar ao registrar; o álcool só é calculado com volume e teor conhecidos.'**
-  String get outingReviewIngredientsIntro;
-
-  /// No description provided for @outingReviewAlcoholChip.
-  ///
-  /// In pt, this message translates to:
-  /// **'Álcool'**
-  String get outingReviewAlcoholChip;
-
-  /// No description provided for @outingReviewDeclaredOptional.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ingredientes declarados (opcional)'**
-  String get outingReviewDeclaredOptional;
-
-  /// No description provided for @outingReviewDeclaredHelper.
-  ///
-  /// In pt, this message translates to:
-  /// **'Separe por vírgula. Só o que está escrito.'**
-  String get outingReviewDeclaredHelper;
-
   /// No description provided for @outingReviewAdvertisedSection.
   ///
   /// In pt, this message translates to:
@@ -5512,54 +4396,6 @@ abstract class AppLocalizations {
   /// **'Só uma sugestão: ao registrar você confirma o que pagou. Valores em reais (R\$).'**
   String get outingReviewMenuPriceHelper;
 
-  /// No description provided for @outingReviewSimilar.
-  ///
-  /// In pt, this message translates to:
-  /// **'Parecidas no catálogo'**
-  String get outingReviewSimilar;
-
-  /// No description provided for @outingReviewSearch.
-  ///
-  /// In pt, this message translates to:
-  /// **'Buscar'**
-  String get outingReviewSearch;
-
-  /// No description provided for @outingReviewSimilarNote.
-  ///
-  /// In pt, this message translates to:
-  /// **'Opcional. Escolher uma é só uma referência: o produto do catálogo nunca é alterado e nada é ligado sozinho.'**
-  String get outingReviewSimilarNote;
-
-  /// No description provided for @outingReviewNothingSimilar.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nada parecido encontrado. Este item fica só no rolê.'**
-  String get outingReviewNothingSimilar;
-
-  /// No description provided for @outingReviewReferenceChosen.
-  ///
-  /// In pt, this message translates to:
-  /// **'Referência escolhida'**
-  String get outingReviewReferenceChosen;
-
-  /// No description provided for @outingReviewUseReference.
-  ///
-  /// In pt, this message translates to:
-  /// **'Usar como referência'**
-  String get outingReviewUseReference;
-
-  /// No description provided for @outingReviewFillEmpty.
-  ///
-  /// In pt, this message translates to:
-  /// **'Preencher campos vazios'**
-  String get outingReviewFillEmpty;
-
-  /// No description provided for @outingReviewCopyIngredients.
-  ///
-  /// In pt, this message translates to:
-  /// **'Copiar ingredientes (sem quantidades)'**
-  String get outingReviewCopyIngredients;
-
   /// No description provided for @outingReviewOriginSection.
   ///
   /// In pt, this message translates to:
@@ -5577,12 +4413,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Lido da foto e conferido por você. Leitura automática pode errar: confira cada campo.'**
   String get outingReviewOriginPhoto;
-
-  /// No description provided for @outingReviewReferenceNote.
-  ///
-  /// In pt, this message translates to:
-  /// **'Com referência do catálogo (não é o mesmo registro).'**
-  String get outingReviewReferenceNote;
 
   /// No description provided for @outingReviewSourceText.
   ///
@@ -7701,65 +6531,11 @@ abstract class AppLocalizations {
   /// **'Registros com preço'**
   String get statsPricedRecords;
 
-  /// No description provided for @statsVolumeSection.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume pessoal informado'**
-  String get statsVolumeSection;
-
-  /// No description provided for @statsAlcoholicVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Bebidas com álcool'**
-  String get statsAlcoholicVolume;
-
-  /// No description provided for @statsNonAlcoholicVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Água e sem álcool'**
-  String get statsNonAlcoholicVolume;
-
-  /// No description provided for @statsUnknownVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{1 registro sem volume: não entra nas somas} other{{count} registros sem volume: não entram nas somas}}'**
-  String statsUnknownVolume(int count);
-
-  /// No description provided for @statsAlcoholSection.
-  ///
-  /// In pt, this message translates to:
-  /// **'Álcool calculado'**
-  String get statsAlcoholSection;
-
-  /// No description provided for @statsPureAlcohol.
-  ///
-  /// In pt, this message translates to:
-  /// **'Álcool puro dos dados conhecidos'**
-  String get statsPureAlcohol;
-
-  /// No description provided for @statsIncompleteAlcohol.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{1 registro com teor ou quantidade desconhecidos} other{{count} registros com teor ou quantidade desconhecidos}}'**
-  String statsIncompleteAlcohol(int count);
-
-  /// No description provided for @statsAlcoholNote.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume × teor (ou quantidade × teor dos componentes dos drinks). Não é concentração no sangue.'**
-  String get statsAlcoholNote;
-
   /// No description provided for @statsAlcoholByCategory.
   ///
   /// In pt, this message translates to:
   /// **'Com álcool, por categoria'**
   String get statsAlcoholByCategory;
-
-  /// No description provided for @statsNoVolumeNote.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count} sem volume'**
-  String statsNoVolumeNote(String count);
 
   /// No description provided for @statsNonAlcoholicSection.
   ///
@@ -7850,12 +6626,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Local salvo'**
   String get statsSavedPlaceFallback;
-
-  /// No description provided for @recordsUnknownVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'volume desconhecido'**
-  String get recordsUnknownVolume;
 
   /// No description provided for @historyEmptyTitle.
   ///
@@ -8379,12 +7149,6 @@ abstract class AppLocalizations {
   /// **'{count} registros de {name}'**
   String tableSemanticsMany(String count, String name);
 
-  /// No description provided for @tableSemanticsSharedPart.
-  ///
-  /// In pt, this message translates to:
-  /// **'sua parte de bebida compartilhada'**
-  String get tableSemanticsSharedPart;
-
   /// No description provided for @tableSemanticsTap.
   ///
   /// In pt, this message translates to:
@@ -8427,30 +7191,6 @@ abstract class AppLocalizations {
   /// **'Mais {count} registros. Toque para ver a lista.'**
   String tableOverflowSemantics(String count);
 
-  /// No description provided for @tableYours.
-  ///
-  /// In pt, this message translates to:
-  /// **'{amount} seus'**
-  String tableYours(String amount);
-
-  /// No description provided for @tableYourVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Seu volume'**
-  String get tableYourVolume;
-
-  /// No description provided for @tableSharedLine.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sua parte: {mine} de {total} ({count} pessoas)'**
-  String tableSharedLine(String mine, String total, String count);
-
-  /// No description provided for @tableRecipeAdjusted.
-  ///
-  /// In pt, this message translates to:
-  /// **'Receita ajustada'**
-  String get tableRecipeAdjusted;
-
   /// No description provided for @tableScenarioTitle.
   ///
   /// In pt, this message translates to:
@@ -8480,48 +7220,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Entendi'**
   String get tableUnderstood;
-
-  /// No description provided for @glassSemantics.
-  ///
-  /// In pt, this message translates to:
-  /// **'Copão: {total} de volume informado, em uma escala de até {scale}{unknown, plural, =0{} =1{, mais 1 registro sem volume} other{, mais {unknown} registros sem volume}}.'**
-  String glassSemantics(String total, String scale, int unknown);
-
-  /// No description provided for @glassVolumeReported.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume informado'**
-  String get glassVolumeReported;
-
-  /// No description provided for @glassScale.
-  ///
-  /// In pt, this message translates to:
-  /// **'Escala: até {scale}'**
-  String glassScale(String scale);
-
-  /// No description provided for @glassAlcoholic.
-  ///
-  /// In pt, this message translates to:
-  /// **'Com álcool: {amount}'**
-  String glassAlcoholic(String amount);
-
-  /// No description provided for @glassOther.
-  ///
-  /// In pt, this message translates to:
-  /// **'Água e sem álcool: {amount}'**
-  String glassOther(String amount);
-
-  /// No description provided for @glassNoVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'+ {count} sem volume (não entram)'**
-  String glassNoVolume(String count);
-
-  /// No description provided for @glassNote.
-  ///
-  /// In pt, this message translates to:
-  /// **'Só uma forma de ver a soma dos volumes registrados. Não representa álcool no corpo, capacidade nem meta.'**
-  String get glassNote;
 
   /// No description provided for @tipNoSensor.
   ///
@@ -9003,30 +7701,6 @@ abstract class AppLocalizations {
   /// **'{count, plural, =0{Nenhuma bebida} one{1 bebida} other{{count} bebidas}}'**
   String summaryPersonDrinks(int count);
 
-  /// No description provided for @entrySharedUseOrder.
-  ///
-  /// In pt, this message translates to:
-  /// **'Para dividir uma garrafa ou jarra entre pessoas da mesa, use \"Novo pedido\" na tela do rolê e escolha \"Garrafa ou jarra compartilhada\": lá você diz quanto cada um tomou.'**
-  String get entrySharedUseOrder;
-
-  /// No description provided for @formPortionsTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Quanto cada pessoa tomou'**
-  String get formPortionsTitle;
-
-  /// No description provided for @formPortionsHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Deixe em branco se não souber: fica desconhecido, nunca zero. A soma não pode passar do tamanho da garrafa.'**
-  String get formPortionsHint;
-
-  /// No description provided for @formPortionMl.
-  ///
-  /// In pt, this message translates to:
-  /// **'ml'**
-  String get formPortionMl;
-
   /// No description provided for @drinkCountYours.
   ///
   /// In pt, this message translates to:
@@ -9309,12 +7983,6 @@ abstract class AppLocalizations {
   /// **'Teores documentados (sem média)'**
   String get aboutDataVariantsTitle;
 
-  /// No description provided for @aboutDataDivergence.
-  ///
-  /// In pt, this message translates to:
-  /// **'As fontes divergem sobre o teor'**
-  String get aboutDataDivergence;
-
   /// No description provided for @aboutDataRegistryNote.
   ///
   /// In pt, this message translates to:
@@ -9585,42 +8253,6 @@ abstract class AppLocalizations {
   /// **'Usar só o texto'**
   String get orderUseTextOnly;
 
-  /// No description provided for @orderNotInCatalog.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não achou no catálogo? Sem problema: fica registrado como “{text}” só neste rolê.'**
-  String orderNotInCatalog(String text);
-
-  /// No description provided for @orderKind.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tipo'**
-  String get orderKind;
-
-  /// No description provided for @orderFor.
-  ///
-  /// In pt, this message translates to:
-  /// **'Para quem?'**
-  String get orderFor;
-
-  /// No description provided for @orderForHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Toque em quem vai beber e diga quantas.'**
-  String get orderForHint;
-
-  /// No description provided for @orderEach.
-  ///
-  /// In pt, this message translates to:
-  /// **'Cada um o seu'**
-  String get orderEach;
-
-  /// No description provided for @orderSharedBottle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Garrafa ou jarra compartilhada'**
-  String get orderSharedBottle;
-
   /// No description provided for @orderMore.
   ///
   /// In pt, this message translates to:
@@ -9632,48 +8264,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Menos um para {name}'**
   String orderLess(String name);
-
-  /// No description provided for @orderSharers.
-  ///
-  /// In pt, this message translates to:
-  /// **'Quem divide?'**
-  String get orderSharers;
-
-  /// No description provided for @orderPortionMl.
-  ///
-  /// In pt, this message translates to:
-  /// **'ml de {name}'**
-  String orderPortionMl(String name);
-
-  /// No description provided for @orderPortionHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Opcional. Em branco = não sei.'**
-  String get orderPortionHint;
-
-  /// No description provided for @orderDivideVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Dividir volume igualmente'**
-  String get orderDivideVolume;
-
-  /// No description provided for @orderDivideNote.
-  ///
-  /// In pt, this message translates to:
-  /// **'É uma estimativa: assume que cada um bebeu a mesma quantidade. Dividir só o preço não prova isso.'**
-  String get orderDivideNote;
-
-  /// No description provided for @orderBottles.
-  ///
-  /// In pt, this message translates to:
-  /// **'Garrafas'**
-  String get orderBottles;
-
-  /// No description provided for @orderLeftover.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sobra (ml)'**
-  String get orderLeftover;
 
   /// No description provided for @orderPrice.
   ///
@@ -9705,65 +8295,11 @@ abstract class AppLocalizations {
   /// **'Valor total do pedido'**
   String get orderPriceTotalLabel;
 
-  /// No description provided for @orderPriceTotalHelper.
-  ///
-  /// In pt, this message translates to:
-  /// **'Promoção? Informe o total: o app reparte em centavos exatos.'**
-  String get orderPriceTotalHelper;
-
-  /// No description provided for @orderPriceBottleLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Preço da garrafa (total)'**
-  String get orderPriceBottleLabel;
-
   /// No description provided for @orderLineSummary.
   ///
   /// In pt, this message translates to:
   /// **'{count} × {price} = {total}'**
   String orderLineSummary(int count, String price, String total);
-
-  /// No description provided for @orderSplitEach.
-  ///
-  /// In pt, this message translates to:
-  /// **'Cada um paga {each} se dividir igual.'**
-  String orderSplitEach(String each);
-
-  /// No description provided for @orderDetails.
-  ///
-  /// In pt, this message translates to:
-  /// **'Detalhes (opcional)'**
-  String get orderDetails;
-
-  /// No description provided for @orderVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume servido (ml)'**
-  String get orderVolume;
-
-  /// No description provided for @orderVolumeNote.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sugestões editáveis; não são o tamanho oficial da marca nem do bar.'**
-  String get orderVolumeNote;
-
-  /// No description provided for @orderAbv.
-  ///
-  /// In pt, this message translates to:
-  /// **'Teor alcoólico (%)'**
-  String get orderAbv;
-
-  /// No description provided for @orderUseRecipe.
-  ///
-  /// In pt, this message translates to:
-  /// **'Usar a receita de referência'**
-  String get orderUseRecipe;
-
-  /// No description provided for @orderUseRecipeNote.
-  ///
-  /// In pt, this message translates to:
-  /// **'Só se foi assim que o bar preparou. Sem confirmar, o drink fica sem composição.'**
-  String get orderUseRecipeNote;
 
   /// No description provided for @orderSummaryFor.
   ///
@@ -9783,41 +8319,11 @@ abstract class AppLocalizations {
   /// **'Diga o que foi pedido.'**
   String get orderErrName;
 
-  /// No description provided for @orderErrNobody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Escolha pelo menos uma pessoa.'**
-  String get orderErrNobody;
-
-  /// No description provided for @orderErrSharers.
-  ///
-  /// In pt, this message translates to:
-  /// **'Para dividir, escolha pelo menos duas pessoas.'**
-  String get orderErrSharers;
-
-  /// No description provided for @orderErrPortions.
-  ///
-  /// In pt, this message translates to:
-  /// **'As porções e a sobra passam do tamanho da garrafa.'**
-  String get orderErrPortions;
-
   /// No description provided for @orderErrPrice.
   ///
   /// In pt, this message translates to:
   /// **'Informe o valor ou escolha outra opção.'**
   String get orderErrPrice;
-
-  /// No description provided for @orderErrVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume inválido.'**
-  String get orderErrVolume;
-
-  /// No description provided for @orderErrAbv.
-  ///
-  /// In pt, this message translates to:
-  /// **'O teor vai de 0 a 100%.'**
-  String get orderErrAbv;
 
   /// No description provided for @orderAdded.
   ///
@@ -9884,12 +8390,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Parte'**
   String get tileTheirShare;
-
-  /// No description provided for @tileVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume'**
-  String get tileVolume;
 
   /// No description provided for @billTotalKnownShort.
   ///
@@ -10113,12 +8613,6 @@ abstract class AppLocalizations {
   /// **'{count, plural, one{1 registro é de uma pessoa que não está na mesa} other{{count} registros são de pessoas que não estão na mesa}}: ficam sem atribuição, nunca viram seus.'**
   String peopleUnassigned(int count);
 
-  /// No description provided for @peopleDrankLine.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, one{1 bebida} other{{count} bebidas}} · {ml}'**
-  String peopleDrankLine(int count, String ml);
-
   /// No description provided for @peopleDrinksCost.
   ///
   /// In pt, this message translates to:
@@ -10178,12 +8672,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Parcela paga'**
   String get peopleEven;
-
-  /// No description provided for @peopleCovered.
-  ///
-  /// In pt, this message translates to:
-  /// **'Bar já quitado pela mesa'**
-  String get peopleCovered;
 
   /// No description provided for @peopleSeeOrders.
   ///
@@ -10293,203 +8781,11 @@ abstract class AppLocalizations {
   /// **'Dividir e registrar pagamentos'**
   String get billSplitAndPay;
 
-  /// No description provided for @formForWhom.
-  ///
-  /// In pt, this message translates to:
-  /// **'Para quem?'**
-  String get formForWhom;
-
-  /// No description provided for @formForWhomPending.
-  ///
-  /// In pt, this message translates to:
-  /// **'Escolha para quem foi esta bebida.'**
-  String get formForWhomPending;
-
-  /// No description provided for @formForWhomShared.
-  ///
-  /// In pt, this message translates to:
-  /// **'Garrafa compartilhada: as pessoas ficam nas porções do pedido.'**
-  String get formForWhomShared;
-
   /// No description provided for @orderOpenCatalog.
   ///
   /// In pt, this message translates to:
   /// **'Catálogo completo, rótulo ou cardápio'**
   String get orderOpenCatalog;
-
-  /// No description provided for @bottleAddPerson.
-  ///
-  /// In pt, this message translates to:
-  /// **'Adicionar pessoa'**
-  String get bottleAddPerson;
-
-  /// No description provided for @bottleAddTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Quem entra nesta garrafa?'**
-  String get bottleAddTitle;
-
-  /// No description provided for @bottleAddNone.
-  ///
-  /// In pt, this message translates to:
-  /// **'Todas as pessoas do rolê já estão nesta garrafa.'**
-  String get bottleAddNone;
-
-  /// No description provided for @bottleAddHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'A pessoa entra com volume desconhecido e uma parte do valor. O volume das outras não muda.'**
-  String get bottleAddHint;
-
-  /// No description provided for @bottleRemoveTooltip.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tirar {name} da garrafa'**
-  String bottleRemoveTooltip(String name);
-
-  /// No description provided for @bottleMinPeople.
-  ///
-  /// In pt, this message translates to:
-  /// **'Uma garrafa precisa de pelo menos uma pessoa. Para outro uso, exclua o registro.'**
-  String get bottleMinPeople;
-
-  /// No description provided for @bottleRemoveTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tirar {name}?'**
-  String bottleRemoveTitle(String name);
-
-  /// No description provided for @bottleRemoveVolumeAsk.
-  ///
-  /// In pt, this message translates to:
-  /// **'{name} tem {volume} registrados. O que fazer com esse volume?'**
-  String bottleRemoveVolumeAsk(String name, String volume);
-
-  /// No description provided for @bottleRemoveVolumeLeftover.
-  ///
-  /// In pt, this message translates to:
-  /// **'Passar para a sobra da garrafa'**
-  String get bottleRemoveVolumeLeftover;
-
-  /// No description provided for @bottleRemoveVolumeTo.
-  ///
-  /// In pt, this message translates to:
-  /// **'Passar para {name}'**
-  String bottleRemoveVolumeTo(String name);
-
-  /// No description provided for @bottleRemoveMoneyAsk.
-  ///
-  /// In pt, this message translates to:
-  /// **'{name} tem parte do valor. O que fazer com ela?'**
-  String bottleRemoveMoneyAsk(String name);
-
-  /// No description provided for @bottleRemoveMoneySpread.
-  ///
-  /// In pt, this message translates to:
-  /// **'Dividir entre quem fica pagando'**
-  String get bottleRemoveMoneySpread;
-
-  /// No description provided for @bottleRemoveMoneyTo.
-  ///
-  /// In pt, this message translates to:
-  /// **'Passar para {name}'**
-  String bottleRemoveMoneyTo(String name);
-
-  /// No description provided for @bottleRemoveConfirm.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tirar da garrafa'**
-  String get bottleRemoveConfirm;
-
-  /// No description provided for @bottleRemoveNoPayer.
-  ///
-  /// In pt, this message translates to:
-  /// **'Alguém precisa continuar pagando a garrafa: passe a parte para outra pessoa.'**
-  String get bottleRemoveNoPayer;
-
-  /// No description provided for @bottleCostTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Divisão do valor'**
-  String get bottleCostTitle;
-
-  /// No description provided for @bottleCostHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Separada do volume: cada parte conta na divisão do valor da garrafa. Zero partes = não paga nada dela.'**
-  String get bottleCostHint;
-
-  /// No description provided for @bottleCostParts.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =0{0 partes} =1{1 parte} other{{count} partes}}'**
-  String bottleCostParts(int count);
-
-  /// No description provided for @bottleCostLess.
-  ///
-  /// In pt, this message translates to:
-  /// **'Menos uma parte de {name}'**
-  String bottleCostLess(String name);
-
-  /// No description provided for @bottleCostMore.
-  ///
-  /// In pt, this message translates to:
-  /// **'Mais uma parte para {name}'**
-  String bottleCostMore(String name);
-
-  /// No description provided for @bottleLeftoverLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sobra na garrafa'**
-  String get bottleLeftoverLabel;
-
-  /// No description provided for @bottleImpactTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'O que muda ao salvar'**
-  String get bottleImpactTitle;
-
-  /// No description provided for @bottleImpactBody.
-  ///
-  /// In pt, this message translates to:
-  /// **'Pagamentos já registrados não mudam nem trocam de pessoa; só a parte de cada um na comanda e o volume.'**
-  String get bottleImpactBody;
-
-  /// No description provided for @bottleImpactVolume.
-  ///
-  /// In pt, this message translates to:
-  /// **'Volume: {before} → {after}'**
-  String bottleImpactVolume(String before, String after);
-
-  /// No description provided for @bottleImpactCost.
-  ///
-  /// In pt, this message translates to:
-  /// **'Valor na comanda: {before} → {after}'**
-  String bottleImpactCost(String before, String after);
-
-  /// No description provided for @bottleImpactJoins.
-  ///
-  /// In pt, this message translates to:
-  /// **'entra na garrafa'**
-  String get bottleImpactJoins;
-
-  /// No description provided for @bottleImpactLeaves.
-  ///
-  /// In pt, this message translates to:
-  /// **'sai da garrafa'**
-  String get bottleImpactLeaves;
-
-  /// No description provided for @bottleImpactNoChange.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sem mudança para esta pessoa.'**
-  String get bottleImpactNoChange;
-
-  /// No description provided for @bottleImpactConfirm.
-  ///
-  /// In pt, this message translates to:
-  /// **'Salvar mesmo assim'**
-  String get bottleImpactConfirm;
 
   /// No description provided for @outingRestoreConflictTitle.
   ///

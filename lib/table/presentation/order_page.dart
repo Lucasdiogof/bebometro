@@ -11,6 +11,7 @@ import '../../drinks/domain/catalog_item.dart';
 import '../../drinks/domain/drink_category.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/add_drink_page.dart';
+import '../../outings/data/outing_repository.dart';
 import '../../l10n/l10n.dart';
 import '../../tab/data/tab_repository.dart';
 import '../../tab/domain/tab_calc.dart';
@@ -215,6 +216,11 @@ class _OrderPageState extends State<OrderPage> {
   /// Hidden legacy data of the record being corrected (see [OrderInput]).
   DrinkEntry? _template;
 
+  /// The time of the record being corrected (only when the order is one
+  /// record) and the one picked now. Null = not shown / unchanged.
+  DateTime? _originalAt;
+  DateTime? _at;
+
   bool get _editing => widget.edit != null;
 
   /// The order the form was filled from: the one corrected or the one copied.
@@ -292,6 +298,9 @@ class _OrderPageState extends State<OrderPage> {
     }
     final first = row.entries.first;
     _template = first;
+    if (_editing && row.entries.length == 1) {
+      _originalAt = _at = first.consumedAt;
+    }
     _name.text = first.name;
     _kind = first.isAlcoholic ? OrderKind.alcoholic : OrderKind.soft;
     _priceKind = first.priceKind;
@@ -435,7 +444,7 @@ class _OrderPageState extends State<OrderPage> {
       containerMl: p?.volumeMl,
       template: _template,
       fixedId: widget.review?.entryId,
-      fixedAt: widget.review?.at,
+      fixedAt: widget.review?.at ?? (_at == _originalAt ? null : _at),
       origin: widget.review?.origin,
       existing: widget.edit?.entries ?? const [],
       existingExtra: widget.edit?.extra,
@@ -578,11 +587,46 @@ class _OrderPageState extends State<OrderPage> {
     if (item != null && mounted) _pick(item);
   }
 
+  Future<void> _pickTime() async {
+    final at = _at;
+    if (at == null) return;
+    final t = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(at),
+    );
+    if (t == null || !mounted) return;
+    setState(() => _at = DateTime(at.year, at.month, at.day, t.hour, t.minute));
+  }
+
+  /// A time that changed must stay inside the outing and not be in the future.
+  String? _timeProblem() {
+    final at = _at;
+    if (at == null || at == _originalAt) return null;
+    final outing = getIt<OutingRepository>().byId(widget.outingId);
+    if (outing == null) return null;
+    if (at.isBefore(outing.startedAt)) {
+      return tr.draftBeforeStart(formatTime(outing.startedAt));
+    }
+    final end = outing.endedAt;
+    if (end != null && at.isAfter(end)) {
+      return tr.draftAfterEnd(formatTime(end));
+    }
+    if (at.isAfter(DateTime.now().add(const Duration(minutes: 5)))) {
+      return tr.draftNotFuture;
+    }
+    return null;
+  }
+
   Future<void> _save() async {
     if (_saving) return;
     final input = _input();
     if (OrderBuilder.problems(input).isNotEmpty) {
       setState(() => _showErrors = true);
+      return;
+    }
+    final timeProblem = _timeProblem();
+    if (timeProblem != null) {
+      showToast(context, timeProblem);
       return;
     }
     setState(() => _saving = true);
@@ -724,6 +768,7 @@ class _OrderPageState extends State<OrderPage> {
                     AppSpace.xl,
                   ),
                   children: [
+                    ..._originNote(),
                     SectionTitle(tr.orderWhat),
                     TextField(
                       key: const ValueKey('order-name'),
@@ -920,6 +965,16 @@ class _OrderPageState extends State<OrderPage> {
                           style: AppText.caption,
                         ),
                       ),
+                    if (_at != null)
+                      ListTile(
+                        key: const ValueKey('order-time'),
+                        contentPadding: EdgeInsets.zero,
+                        leading: const Icon(Icons.schedule_rounded),
+                        title: Text(tr.entryTimeSection),
+                        subtitle: Text(formatDateTime(_at!)),
+                        trailing: const Icon(Icons.edit_outlined, size: 18),
+                        onTap: _pickTime,
+                      ),
                     SectionTitle(tr.orderWhoConsumed),
                     Text(tr.orderConsumedHint, style: AppText.caption),
                     const SizedBox(height: AppSpace.sm),
@@ -1058,6 +1113,22 @@ class _OrderPageState extends State<OrderPage> {
         ),
       ),
     );
+  }
+
+  /// A record that came from the lock screen says so, with the tap time; the
+  /// tap time never changes, even when the time of the record is corrected.
+  List<Widget> _originNote() {
+    final origin = _template?.entryOrigin;
+    if (!_editing || origin == null || !origin.isLockScreen) return const [];
+    final corrected = _template!.timeCorrected || _at != _originalAt;
+    final tap = formatTime(origin.tappedAt);
+    return [
+      const SizedBox(height: AppSpace.sm),
+      InfoPill(
+        '${tr.entryFromLockScreen}. ${corrected ? tr.entryOriginalTapCorrected(tap) : tr.entryOriginalTap(tap)}',
+        icon: Icons.lock_clock_outlined,
+      ),
+    ];
   }
 
   List<Widget> _customFields(OrderInput input, Set<OrderProblem> problems) {

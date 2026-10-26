@@ -158,41 +158,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get accountYourName => 'Seu nome';
 
   @override
-  String alcoholAtLeast(String amount) {
-    return 'pelo menos $amount';
-  }
-
-  @override
-  String get alcoholDeclared => 'Álcool puro declarado';
-
-  @override
-  String get alcoholExplain =>
-      'Calculado só com o que foi informado: volume × teor nas bebidas simples e quantidade × teor de cada componente nos drinks. Em drinks vale a receita declarada, não o que o bar serviu. Não é a concentração de álcool no sangue e não indica se você pode dirigir.';
-
-  @override
-  String alcoholIncompletePill(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other:
-          '$count registros com teor ou quantidade desconhecidos: o total é um mínimo',
-      one: '1 registro com teor ou quantidade desconhecidos: o total é um mínimo',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String alcoholNoVolumePill(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count registros sem volume informado (não entram no volume)',
-      one: '1 registro sem volume informado (não entra no volume)',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get appName => 'Bebômetro';
 
   @override
@@ -734,9 +699,6 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get entryAlcoholIncomplete => 'álcool incompleto';
-
-  @override
   String get entryCorrect => 'Corrigir';
 
   @override
@@ -744,17 +706,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get entryOptions => 'Opções do registro';
-
-  @override
-  String entrySharedPart(int count, String mine, String total) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'sua parte $mine de $total ($count pessoas)',
-      one: 'sua parte $mine de $total (1 pessoa)',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get feedbackDontAsk => 'Não perguntar';
@@ -849,32 +800,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get finishTitle => 'Encerrar rolê?';
 
   @override
-  String get glassBigSubtitle => 'O volume informado, somado, num copo.';
-
-  @override
-  String get glassBigTitle => 'Copão (opcional)';
-
-  @override
   String get glassTipPlay => 'Brincar de virar o copo';
-
-  @override
-  String get groupRecipeAdjusted => 'receita ajustada';
-
-  @override
-  String groupSharedPart(String mine, String total) {
-    return '$mine seus de $total';
-  }
 
   @override
   String groupTimes(int count) {
     return '$count×';
   }
-
-  @override
-  String get groupVolumeUnknown => 'volume desconhecido';
-
-  @override
-  String get groupVolumeUnknownShort => 'volume ?';
 
   @override
   String get hangoverMild => 'Leve';
@@ -890,9 +821,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get homeContinueOuting => 'Continuar rolê';
-
-  @override
-  String get homeDrinks => 'Bebidas';
 
   @override
   String get homeFirstBody =>
@@ -1021,17 +949,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get outingAddDrink => 'Adicionar bebida';
 
   @override
-  String outingAlcoholIncomplete(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count com álcool incompleto',
-      one: '1 com álcool incompleto',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get outingAlreadyEnded => 'Esse rolê já foi encerrado.';
 
   @override
@@ -1076,17 +993,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get outingNoDrinksBody =>
       'Registre a primeira e o botão \"Mais uma\" aparece aqui embaixo.';
-
-  @override
-  String outingNoVolume(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count sem volume',
-      one: '1 sem volume',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get outingNotFound => 'Esse rolê não foi encontrado.';
@@ -1145,9 +1051,6 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get outingYourVolume => 'Seu volume';
-
-  @override
   String get placeCorrect => 'Corrigir local';
 
   @override
@@ -1163,21 +1066,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get priceUnknown => 'sem preço';
 
   @override
-  String repeatAdjusted(String name) {
-    return '$name (ajustada)';
-  }
-
-  @override
   String get repeatButton => 'Mais uma';
 
   @override
   String repeatSemantics(String drink) {
     return 'Mais uma: $drink';
-  }
-
-  @override
-  String repeatYourPart(String amount) {
-    return 'sua parte $amount';
   }
 
   @override
@@ -1569,14 +1462,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String unitMl(String value) {
     return '$value ml';
   }
-
-  @override
-  String volumeKnownPlusUnknown(String known, int count) {
-    return '$known (+$count sem volume)';
-  }
-
-  @override
-  String get volumeUnknown => 'desconhecido';
 
   @override
   String get wakeBad => 'Mal';
@@ -2026,9 +1911,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get catalogDrinkSaved => 'Bebida salva em Minhas bebidas';
 
   @override
-  String get catalogRecipeSaved => 'Receita salva em Minhas bebidas';
-
-  @override
   String get catalogDeleteTitle => 'Excluir esta bebida?';
 
   @override
@@ -2117,12 +1999,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get catalogFavorite => 'Favoritar';
 
   @override
-  String get entryDeleteTitle => 'Excluir registro?';
-
-  @override
-  String get entryDeleteBody => 'Ele sai do rolê e do resumo.';
-
-  @override
   String get entryDiscardTitle => 'Descartar alterações?';
 
   @override
@@ -2138,137 +2014,22 @@ class AppLocalizationsPt extends AppLocalizations {
   String get entryFix => 'Corrigir registro';
 
   @override
-  String get entryLogCocktail => 'Registrar drink';
-
-  @override
   String get entryLogDrink => 'Registrar bebida';
-
-  @override
-  String get entryDrinkAndSize => 'Bebida e tamanho';
-
-  @override
-  String get entryGenericSpirit =>
-      'Doses sugeridas, editáveis: não são medidas oficiais de nenhum estabelecimento. A garrafa é a embalagem, não a sua dose.';
-
-  @override
-  String get entryGenericSizes =>
-      'Tamanhos sugeridos: este produto não tem embalagens verificadas no catálogo. Confira na embalagem.';
-
-  @override
-  String get entryVolume => 'Volume (ml)';
-
-  @override
-  String get entryOtherSize => 'Outro tamanho (ml)';
-
-  @override
-  String get entryAbvOptional => 'Teor alcoólico (opcional)';
-
-  @override
-  String get entryAbvBlank => 'Em branco = desconhecido (não conta como zero).';
-
-  @override
-  String get entryAbvCheck => 'Confira no rótulo se puder.';
-
-  @override
-  String get entryAbvVariantsIntro =>
-      'As fontes divergem. Escolha o que estiver no seu rótulo ou digite:';
-
-  @override
-  String get entryBottleShared =>
-      'Garrafa que está sendo dividida (preenche o volume da garrafa):';
-
-  @override
-  String entryBottlesInfo(String list) {
-    return 'Embalagens do produto: $list. Para dividir uma garrafa, marque \"Compartilhada\" abaixo.';
-  }
-
-  @override
-  String get entryIndividualOrShared => 'Individual ou compartilhada';
-
-  @override
-  String get entryOnlyMine => 'Só minha';
 
   @override
   String get entryShared => 'Compartilhada';
 
   @override
-  String get entryPriceSection => 'Preço (opcional)';
-
-  @override
   String get entryTimeSection => 'Horário';
 
   @override
-  String entryYourShare(String amount) {
-    return 'Sua parte: $amount';
-  }
-
-  @override
-  String get entryYourShareUnknown => 'Sua parte: —';
-
-  @override
   String get entrySaveChanges => 'Salvar alterações';
-
-  @override
-  String entryIngredients(String list) {
-    return 'Ingredientes: $list';
-  }
-
-  @override
-  String entrySharedLine(String total, String count) {
-    return 'de $total · $count pessoas, com você';
-  }
-
-  @override
-  String get entryPeople => 'Pessoas (incluindo você)';
-
-  @override
-  String get entryFewerPeople => 'Menos uma pessoa';
-
-  @override
-  String get entryMorePeople => 'Mais uma pessoa';
-
-  @override
-  String get entryAdjustShare => 'Ajustar parcela e sobra';
-
-  @override
-  String get entryYourShareMl => 'Sua parte (ml)';
-
-  @override
-  String get entryEqualSplit => 'Divisão igual por padrão.';
-
-  @override
-  String get entryLeftover => 'Sobra na garrafa (ml)';
-
-  @override
-  String get entryOptionalDot => 'Opcional.';
-
-  @override
-  String entryOthersEach(String amount, int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'para cada uma das outras $count pessoas',
-      one: 'para a outra pessoa',
-    );
-    return 'Sobram $amount $_temp0.';
-  }
 
   @override
   String get entryPriceValue => 'Valor';
 
   @override
   String get entryPriceDontKnow => 'Não sei';
-
-  @override
-  String get entryBillTotal => 'Total da conta/garrafa (opcional)';
-
-  @override
-  String get entryPaidHelper => 'O que você pagou, não o que bebeu.';
-
-  @override
-  String entrySplitEqually(String count) {
-    return 'Dividir igualmente ($count pessoas)';
-  }
 
   @override
   String entryComplimentaryNote(String amount) {
@@ -2283,209 +2044,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get commonAdd => 'Adicionar';
 
   @override
-  String get entryAddIngredient => 'Adicionar ingrediente';
-
-  @override
-  String get entryIngredientField => 'Ingrediente';
-
-  @override
-  String get entryHasAlcohol => 'Tem álcool';
-
-  @override
-  String get entrySaveRecipeTitle => 'Salvar como minha receita';
-
-  @override
-  String entryMineSuffix(String name) {
-    return '$name (minha)';
-  }
-
-  @override
-  String get entryRecipeName => 'Nome da receita';
-
-  @override
-  String get entrySaveRecipeBody =>
-      'Guarda ingredientes, quantidades e teores para reutilizar. Registros antigos não mudam.';
-
-  @override
-  String get entryRecipeSaved => 'Receita salva no seu catálogo';
-
-  @override
-  String get entryCompositionTitle => 'Composição';
-
-  @override
-  String get entryCompositionSimple => 'Informe só o que você sabe.';
-
-  @override
-  String entryCompositionReference(String source) {
-    return 'Receita de referência ($source). Ajuste para o que foi realmente servido.';
-  }
-
-  @override
-  String get entryCompositionAdjusted => 'Composição ajustada';
-
-  @override
-  String get entryCompositionView => 'Ver e ajustar composição';
-
-  @override
-  String get entryNoIngredients => 'Nenhum ingrediente ainda';
-
-  @override
-  String get entryDrinkVolumeSection => 'Volume do drink (opcional)';
-
-  @override
-  String get entryServedVolume => 'Volume servido (ml)';
-
-  @override
-  String get entryServedVolumeHelper =>
-      'Se não souber, deixe em branco: o resumo mostra como desconhecido. O tamanho do copo e o gelo não contam como volume bebido.';
-
-  @override
-  String get entryPureAlcohol => 'Álcool puro da composição acima';
-
-  @override
-  String entryAtLeast(String amount) {
-    return 'pelo menos $amount';
-  }
-
-  @override
-  String entryMissingParts(String list) {
-    return 'Faltam teor ou quantidade de: $list';
-  }
-
-  @override
-  String get entryDeclaredNote =>
-      'Vale a composição declarada, assumindo a porção inteira. Não é concentração no sangue.';
-
-  @override
-  String entryOptionalMark(String name) {
-    return '$name (opcional)';
-  }
-
-  @override
-  String get entryRemoveIngredient => 'Remover ingrediente';
-
-  @override
-  String entryInRecipe(String text) {
-    return 'Na receita: $text';
-  }
-
-  @override
   String get entryAmount => 'Quantidade';
-
-  @override
-  String get entryAmountUnknown => 'Em branco = desconhecida.';
-
-  @override
-  String get entryChooseProduct => 'Escolher marca/produto';
-
-  @override
-  String get entryComponentAbv => 'Teor alcoólico (% vol.)';
-
-  @override
-  String get entryComponentAbvUnknown =>
-      'Desconhecido: sem ele o álcool total fica incompleto.';
-
-  @override
-  String entryComponentAlcoholNone(String reason) {
-    return 'Álcool deste ingrediente: não calculado ($reason).';
-  }
-
-  @override
-  String entryComponentAlcohol(String amount) {
-    return 'Álcool deste ingrediente: $amount';
-  }
-
-  @override
-  String get entryIncompleteData => 'dados incompletos';
-
-  @override
-  String entryWhichProduct(String name) {
-    return 'Qual $name?';
-  }
-
-  @override
-  String get entryNoBrand => 'Sem marca: informar o teor';
-
-  @override
-  String entryProductAbv(String abv) {
-    return 'Teor $abv';
-  }
-
-  @override
-  String get entryProductAbvVaries => 'Teor varia conforme a fonte';
-
-  @override
-  String get entryProductAbvUnknown => 'Teor não informado';
-
-  @override
-  String get entryMenuPrice => 'Preço do cardápio';
-
-  @override
-  String entryMenuPriceBody(String price) {
-    return 'O cardápio anunciava $price. É só uma sugestão: confirme o que foi pago de fato, pois pode ter promoção ou outro pedido. Se for garrafa ou jarra dividida, marque \"Compartilhada\": o valor vira o total da conta, não a sua parte.';
-  }
-
-  @override
-  String get entryUseAsBillTotal => 'Usar como total da conta';
-
-  @override
-  String get entryUseAsPaid => 'Usar como o que paguei';
-
-  @override
-  String get entryHistory => 'Seu histórico';
-
-  @override
-  String entryHistoryShare(String price, String scope, String date) {
-    return 'Sua parcela foi $price $scope em $date.';
-  }
-
-  @override
-  String entryHistoryPaid(String price, String scope, String date) {
-    return 'Você pagou $price $scope em $date.';
-  }
-
-  @override
-  String get entryUseAsShare => 'Usar como minha parcela';
-
-  @override
-  String get entryUseValue => 'Usar este valor';
-
-  @override
-  String entryHistoryTotal(String price, String date) {
-    return 'O total da garrafa/porção foi $price em $date.';
-  }
-
-  @override
-  String get entryUseAsTotal => 'Usar como total';
-
-  @override
-  String get entryScopeAtPlace => 'neste local';
-
-  @override
-  String get entryScopeAtOuting => 'neste rolê';
-
-  @override
-  String get draftVolumeInvalid => 'Volume inválido';
-
-  @override
-  String get draftAbvRange => 'O teor vai de 0 a 100%';
-
-  @override
-  String get draftAmountInvalid => 'Quantidade inválida';
-
-  @override
-  String get draftVolumeRequired => 'Informe o volume em ml';
-
-  @override
-  String get draftVolumeTooHigh => 'Volume alto demais';
-
-  @override
-  String get draftShareRequired => 'Informe a sua parte em ml';
-
-  @override
-  String draftShareOver(String volume) {
-    return 'Sua parte + sobra passam do volume ($volume)';
-  }
 
   @override
   String draftBeforeStart(String time) {
@@ -2501,77 +2060,13 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get draftPaidRequired => 'Informe o valor ou escolha outra opção';
-
-  @override
-  String get formSaveRecipeFailed => 'Não foi possível salvar a receita.';
-
-  @override
-  String get formSaveFailed =>
-      'Não foi possível salvar. Nada foi perdido, tente de novo.';
-
-  @override
-  String get priceBulkTitle => 'Aplicar este preço às bebidas iguais?';
-
-  @override
-  String priceBulkBody(
-    String name,
-    String price,
-    int total,
-    int unpriced,
-    int differing,
-  ) {
-    return '$name por $price. Neste rolê há $total registros iguais: $unpriced sem preço e $differing com outro preço. Nada muda sem a sua escolha.';
-  }
-
-  @override
-  String priceBulkUnpriced(int count) {
-    return 'Aplicar aos $count sem preço';
-  }
-
-  @override
-  String priceBulkAll(int count) {
-    return 'Aplicar a todos os $count iguais';
-  }
-
-  @override
-  String get priceBulkOnlyThis => 'Só este registro';
-
-  @override
-  String get priceBulkConfirmTitle => 'Substituir preços?';
-
-  @override
-  String priceBulkConfirmBody(int count) {
-    return 'Isso troca o preço de $count registros que já tinham outro valor. Os demais rolês não mudam.';
-  }
-
-  @override
-  String get priceBulkReplace => 'Substituir';
-
-  @override
-  String priceBulkApplied(int count) {
-    return 'Preço aplicado a $count registros.';
-  }
-
-  @override
-  String get formDeleteFailed => 'Não foi possível excluir. Tente de novo.';
-
-  @override
   String get detailNotGiven => 'Não informado';
 
   @override
   String get detailAbv => 'Teor alcoólico';
 
   @override
-  String detailAbvFrom(String source) {
-    return 'Teor: $source. Não é dado do fabricante.';
-  }
-
-  @override
   String get detailIngredients => 'Ingredientes declarados';
-
-  @override
-  String get detailIngredientsNone => 'Não informados';
 
   @override
   String get detailPresentations => 'Apresentações';
@@ -2589,17 +2084,6 @@ class AppLocalizationsPt extends AppLocalizations {
       'Embalagens citadas pelo fabricante. O tamanho da embalagem não é o que você bebeu: isso você define ao registrar.';
 
   @override
-  String get detailMakeMine => 'Criar minha versão';
-
-  @override
-  String get detailSourceTitle => 'Fonte dos dados';
-
-  @override
-  String detailSourceLine(String source, String date) {
-    return '$source · consultado em $date';
-  }
-
-  @override
   String get detailCopyAddress => 'Copiar endereço';
 
   @override
@@ -2608,35 +2092,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get detailMayVary =>
       'Os dados podem variar por versão e mercado. Confira sempre o rótulo da embalagem.';
-
-  @override
-  String detailAbvVaries(String lines) {
-    return 'Varia conforme a fonte, sem um valor único:\n$lines';
-  }
-
-  @override
-  String get detailRecipeReference =>
-      'Receita de referência: mostra como a receita é publicada, não o que um bar serviu.';
-
-  @override
-  String get detailRecipeMine =>
-      'Sua receita salva. Ao registrar, você ajusta o que realmente foi servido.';
-
-  @override
-  String get detailNoIngredientsYet =>
-      'Sem ingredientes ainda: você monta ao registrar.';
-
-  @override
-  String get detailAlcoholLegend =>
-      'Ingredientes com copo ao lado têm álcool. O teor de cada um é informado ao registrar; sem ele o álcool total fica incompleto. Gelo não entra na conta.';
-
-  @override
-  String get detailMethod => 'Preparo';
-
-  @override
-  String detailGarnish(String text) {
-    return 'Decoração: $text';
-  }
 
   @override
   String get customEditTitle => 'Editar bebida';
@@ -2666,36 +2121,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get customNameRequired => 'Dê um nome para a bebida';
 
   @override
-  String get customBrand => 'Marca (opcional)';
-
-  @override
-  String get customStyle => 'Estilo (opcional)';
-
-  @override
-  String get customSizeAndAbv => 'Tamanho e teor';
-
-  @override
-  String get customSize => 'Tamanho (ml)';
-
-  @override
-  String get customSizeRequired => 'Informe o tamanho em ml';
-
-  @override
-  String get customAbvHelper =>
-      'Em branco = desconhecido, não conta como zero.';
-
-  @override
-  String get customIngredients => 'Ingredientes (opcional)';
-
-  @override
-  String get customIngredientsHelper =>
-      'Separe por vírgula. Só o que você sabe.';
-
-  @override
   String get customSaveUse => 'Salvar e usar';
-
-  @override
-  String get recipeUnitLabel => 'Unidade';
 
   @override
   String get myDrinksNeedOuting => 'Inicie um rolê para registrar uma bebida.';
@@ -2719,17 +2145,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get myDrinksDeleted => 'Excluída';
 
   @override
-  String myDrinksRecipeSubtitle(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Receita · $count ingredientes',
-      one: 'Receita · 1 ingrediente',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get myDrinksTitle => 'Minhas bebidas e receitas';
 
   @override
@@ -2750,91 +2165,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get myDrinksNewDrink => 'Nova bebida';
-
-  @override
-  String get myDrinksNewRecipe => 'Nova receita';
-
-  @override
-  String recipeEditorNameCopy(String name) {
-    return '$name (minha versão)';
-  }
-
-  @override
-  String get recipeEditorNeedName => 'Dê um nome para a receita.';
-
-  @override
-  String get recipeEditorNeedIngredient =>
-      'Adicione pelo menos um ingrediente.';
-
-  @override
-  String get recipeEditorIngredientName =>
-      'Todo ingrediente precisa de um nome.';
-
-  @override
-  String recipeEditorAbvRange(String name) {
-    return 'O teor de \"$name\" vai de 0 a 100%.';
-  }
-
-  @override
-  String recipeEditorAmountInvalid(String name) {
-    return 'A quantidade de \"$name\" é inválida.';
-  }
-
-  @override
-  String recipeEditorNumberProblem(String name, String problem) {
-    return '\"$name\": $problem';
-  }
-
-  @override
-  String get recipeEditorEditTitle => 'Editar receita';
-
-  @override
-  String get recipeEditorNewTitle => 'Nova receita';
-
-  @override
-  String get recipeEditorIntro =>
-      'Registre só o que você sabe. Quantidade ou teor em branco ficam como desconhecidos e o álcool total aparece como incompleto.';
-
-  @override
-  String get recipeEditorNameSection => 'Nome';
-
-  @override
-  String get recipeEditorNameRequired => 'Dê um nome para a receita';
-
-  @override
-  String get recipeEditorIngredients => 'Ingredientes';
-
-  @override
-  String get recipeEditorNoneYet => 'Nenhum ingrediente ainda.';
-
-  @override
-  String get recipeEditorAlcoholSection => 'Álcool da composição';
-
-  @override
-  String get recipeEditorDeclaredAlcohol => 'Álcool puro declarado';
-
-  @override
-  String get recipeEditorSaveRecipe => 'Salvar receita';
-
-  @override
-  String get recipeEditorMoveUp => 'Mover para cima';
-
-  @override
-  String get recipeEditorMoveDown => 'Mover para baixo';
-
-  @override
-  String recipeEditorOriginal(String text) {
-    return 'Na receita original: $text';
-  }
-
-  @override
-  String get recipeEditorRole => 'Tipo (para escolher a marca ao registrar)';
-
-  @override
-  String get recipeEditorNoRole => 'Sem tipo';
-
-  @override
-  String get recipeEditorRemove => 'Remover';
 
   @override
   String get scanLabelPhotoGone =>
@@ -3188,16 +2518,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get scanMenuNoName => '(sem nome)';
 
   @override
-  String scanMenuSize(String size) {
-    return 'Tamanho no cardápio: $size';
-  }
-
-  @override
-  String scanMenuIngredientsCited(String list) {
-    return 'Ingredientes citados: $list';
-  }
-
-  @override
   String get scanMenuEditItem => 'Editar item';
 
   @override
@@ -3234,22 +2554,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get scanMenuDescription => 'Descrição (opcional)';
 
   @override
-  String get scanMenuSizeOptional => 'Tamanho (opcional)';
-
-  @override
   String get scanMenuPriceOptional => 'Preço (opcional)';
 
   @override
-  String get scanMenuCitedOptional => 'Ingredientes citados (opcional)';
-
-  @override
-  String get scanMenuCitedHelper => 'Separe por vírgula. Sem quantidades.';
-
-  @override
   String get scanMenuNeedName => 'Dê um nome ao item.';
-
-  @override
-  String get scanMenuInvalidSize => 'Tamanho inválido.';
 
   @override
   String get scanMenuInvalidPrice => 'Preço inválido.';
@@ -3290,13 +2598,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get outingReviewNeedType => 'Escolha o tipo da bebida.';
 
   @override
-  String get outingReviewVolumePositive =>
-      'O volume precisa ser maior que zero.';
-
-  @override
-  String get outingReviewAbvRange => 'O teor vai de 0 a 100%.';
-
-  @override
   String get outingReviewOtherLines => 'Outras linhas lidas (toque para usar):';
 
   @override
@@ -3309,33 +2610,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get outingReviewDescription => 'Descrição do cardápio (opcional)';
 
   @override
-  String get outingReviewPackageVolume => 'Volume da embalagem (opcional)';
-
-  @override
-  String get outingReviewVolumeHelper =>
-      'É o tamanho do produto, não o quanto você bebeu. Em branco = desconhecido.';
-
-  @override
-  String outingReviewAbvSource(String source) {
-    return 'Origem: $source';
-  }
-
-  @override
-  String get outingReviewIngredientsIntro =>
-      'Só o que o cardápio ou você informaram. As quantidades ficam desconhecidas até você completar ao registrar; o álcool só é calculado com volume e teor conhecidos.';
-
-  @override
-  String get outingReviewAlcoholChip => 'Álcool';
-
-  @override
-  String get outingReviewDeclaredOptional =>
-      'Ingredientes declarados (opcional)';
-
-  @override
-  String get outingReviewDeclaredHelper =>
-      'Separe por vírgula. Só o que está escrito.';
-
-  @override
   String get outingReviewAdvertisedSection => 'Preço anunciado';
 
   @override
@@ -3346,33 +2620,6 @@ class AppLocalizationsPt extends AppLocalizations {
       'Só uma sugestão: ao registrar você confirma o que pagou. Valores em reais (R\$).';
 
   @override
-  String get outingReviewSimilar => 'Parecidas no catálogo';
-
-  @override
-  String get outingReviewSearch => 'Buscar';
-
-  @override
-  String get outingReviewSimilarNote =>
-      'Opcional. Escolher uma é só uma referência: o produto do catálogo nunca é alterado e nada é ligado sozinho.';
-
-  @override
-  String get outingReviewNothingSimilar =>
-      'Nada parecido encontrado. Este item fica só no rolê.';
-
-  @override
-  String get outingReviewReferenceChosen => 'Referência escolhida';
-
-  @override
-  String get outingReviewUseReference => 'Usar como referência';
-
-  @override
-  String get outingReviewFillEmpty => 'Preencher campos vazios';
-
-  @override
-  String get outingReviewCopyIngredients =>
-      'Copiar ingredientes (sem quantidades)';
-
-  @override
   String get outingReviewOriginSection => 'Origem dos dados';
 
   @override
@@ -3381,10 +2628,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get outingReviewOriginPhoto =>
       'Lido da foto e conferido por você. Leitura automática pode errar: confira cada campo.';
-
-  @override
-  String get outingReviewReferenceNote =>
-      'Com referência do catálogo (não é o mesmo registro).';
 
   @override
   String get outingReviewSourceText => 'Texto lido na foto';
@@ -4762,53 +4005,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get statsPricedRecords => 'Registros com preço';
 
   @override
-  String get statsVolumeSection => 'Volume pessoal informado';
-
-  @override
-  String get statsAlcoholicVolume => 'Bebidas com álcool';
-
-  @override
-  String get statsNonAlcoholicVolume => 'Água e sem álcool';
-
-  @override
-  String statsUnknownVolume(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count registros sem volume: não entram nas somas',
-      one: '1 registro sem volume: não entra nas somas',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get statsAlcoholSection => 'Álcool calculado';
-
-  @override
-  String get statsPureAlcohol => 'Álcool puro dos dados conhecidos';
-
-  @override
-  String statsIncompleteAlcohol(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count registros com teor ou quantidade desconhecidos',
-      one: '1 registro com teor ou quantidade desconhecidos',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get statsAlcoholNote =>
-      'Volume × teor (ou quantidade × teor dos componentes dos drinks). Não é concentração no sangue.';
-
-  @override
   String get statsAlcoholByCategory => 'Com álcool, por categoria';
-
-  @override
-  String statsNoVolumeNote(String count) {
-    return '$count sem volume';
-  }
 
   @override
   String get statsNonAlcoholicSection => 'Água e sem álcool, à parte';
@@ -4879,9 +4076,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get statsSavedPlaceFallback => 'Local salvo';
-
-  @override
-  String get recordsUnknownVolume => 'volume desconhecido';
 
   @override
   String get historyEmptyTitle => 'Nenhum rolê encerrado';
@@ -5201,9 +4395,6 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get tableSemanticsSharedPart => 'sua parte de bebida compartilhada';
-
-  @override
   String get tableSemanticsTap => 'Toque para ver os detalhes.';
 
   @override
@@ -5247,22 +4438,6 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String tableYours(String amount) {
-    return '$amount seus';
-  }
-
-  @override
-  String get tableYourVolume => 'Seu volume';
-
-  @override
-  String tableSharedLine(String mine, String total, String count) {
-    return 'Sua parte: $mine de $total ($count pessoas)';
-  }
-
-  @override
-  String get tableRecipeAdjusted => 'Receita ajustada';
-
-  @override
   String get tableScenarioTitle => 'Cenário da mesa';
 
   @override
@@ -5278,45 +4453,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get tableUnderstood => 'Entendi';
-
-  @override
-  String glassSemantics(String total, String scale, int unknown) {
-    String _temp0 = intl.Intl.pluralLogic(
-      unknown,
-      locale: localeName,
-      other: ', mais $unknown registros sem volume',
-      one: ', mais 1 registro sem volume',
-      zero: '',
-    );
-    return 'Copão: $total de volume informado, em uma escala de até $scale$_temp0.';
-  }
-
-  @override
-  String get glassVolumeReported => 'Volume informado';
-
-  @override
-  String glassScale(String scale) {
-    return 'Escala: até $scale';
-  }
-
-  @override
-  String glassAlcoholic(String amount) {
-    return 'Com álcool: $amount';
-  }
-
-  @override
-  String glassOther(String amount) {
-    return 'Água e sem álcool: $amount';
-  }
-
-  @override
-  String glassNoVolume(String count) {
-    return '+ $count sem volume (não entram)';
-  }
-
-  @override
-  String get glassNote =>
-      'Só uma forma de ver a soma dos volumes registrados. Não representa álcool no corpo, capacidade nem meta.';
 
   @override
   String get tipNoSensor => 'Sem sensor de movimento. Arraste para inclinar.';
@@ -5625,20 +4761,6 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get entrySharedUseOrder =>
-      'Para dividir uma garrafa ou jarra entre pessoas da mesa, use \"Novo pedido\" na tela do rolê e escolha \"Garrafa ou jarra compartilhada\": lá você diz quanto cada um tomou.';
-
-  @override
-  String get formPortionsTitle => 'Quanto cada pessoa tomou';
-
-  @override
-  String get formPortionsHint =>
-      'Deixe em branco se não souber: fica desconhecido, nunca zero. A soma não pode passar do tamanho da garrafa.';
-
-  @override
-  String get formPortionMl => 'ml';
-
-  @override
   String drinkCountYours(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -5801,9 +4923,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get aboutDataVariantsTitle => 'Teores documentados (sem média)';
-
-  @override
-  String get aboutDataDivergence => 'As fontes divergem sobre o teor';
 
   @override
   String get aboutDataRegistryNote =>
@@ -5979,26 +5098,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get orderUseTextOnly => 'Usar só o texto';
 
   @override
-  String orderNotInCatalog(String text) {
-    return 'Não achou no catálogo? Sem problema: fica registrado como “$text” só neste rolê.';
-  }
-
-  @override
-  String get orderKind => 'Tipo';
-
-  @override
-  String get orderFor => 'Para quem?';
-
-  @override
-  String get orderForHint => 'Toque em quem vai beber e diga quantas.';
-
-  @override
-  String get orderEach => 'Cada um o seu';
-
-  @override
-  String get orderSharedBottle => 'Garrafa ou jarra compartilhada';
-
-  @override
   String orderMore(String name) {
     return 'Mais um para $name';
   }
@@ -6007,30 +5106,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String orderLess(String name) {
     return 'Menos um para $name';
   }
-
-  @override
-  String get orderSharers => 'Quem divide?';
-
-  @override
-  String orderPortionMl(String name) {
-    return 'ml de $name';
-  }
-
-  @override
-  String get orderPortionHint => 'Opcional. Em branco = não sei.';
-
-  @override
-  String get orderDivideVolume => 'Dividir volume igualmente';
-
-  @override
-  String get orderDivideNote =>
-      'É uma estimativa: assume que cada um bebeu a mesma quantidade. Dividir só o preço não prova isso.';
-
-  @override
-  String get orderBottles => 'Garrafas';
-
-  @override
-  String get orderLeftover => 'Sobra (ml)';
 
   @override
   String get orderPrice => 'Preço';
@@ -6048,41 +5123,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get orderPriceTotalLabel => 'Valor total do pedido';
 
   @override
-  String get orderPriceTotalHelper =>
-      'Promoção? Informe o total: o app reparte em centavos exatos.';
-
-  @override
-  String get orderPriceBottleLabel => 'Preço da garrafa (total)';
-
-  @override
   String orderLineSummary(int count, String price, String total) {
     return '$count × $price = $total';
   }
-
-  @override
-  String orderSplitEach(String each) {
-    return 'Cada um paga $each se dividir igual.';
-  }
-
-  @override
-  String get orderDetails => 'Detalhes (opcional)';
-
-  @override
-  String get orderVolume => 'Volume servido (ml)';
-
-  @override
-  String get orderVolumeNote =>
-      'Sugestões editáveis; não são o tamanho oficial da marca nem do bar.';
-
-  @override
-  String get orderAbv => 'Teor alcoólico (%)';
-
-  @override
-  String get orderUseRecipe => 'Usar a receita de referência';
-
-  @override
-  String get orderUseRecipeNote =>
-      'Só se foi assim que o bar preparou. Sem confirmar, o drink fica sem composição.';
 
   @override
   String orderSummaryFor(String who) {
@@ -6096,24 +5139,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get orderErrName => 'Diga o que foi pedido.';
 
   @override
-  String get orderErrNobody => 'Escolha pelo menos uma pessoa.';
-
-  @override
-  String get orderErrSharers =>
-      'Para dividir, escolha pelo menos duas pessoas.';
-
-  @override
-  String get orderErrPortions =>
-      'As porções e a sobra passam do tamanho da garrafa.';
-
-  @override
   String get orderErrPrice => 'Informe o valor ou escolha outra opção.';
-
-  @override
-  String get orderErrVolume => 'Volume inválido.';
-
-  @override
-  String get orderErrAbv => 'O teor vai de 0 a 100%.';
 
   @override
   String orderAdded(String summary) {
@@ -6149,9 +5175,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get tileTheirShare => 'Parte';
-
-  @override
-  String get tileVolume => 'Volume';
 
   @override
   String billTotalKnownShort(String total) {
@@ -6302,17 +5325,6 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String peopleDrankLine(int count, String ml) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count bebidas',
-      one: '1 bebida',
-    );
-    return '$_temp0 · $ml';
-  }
-
-  @override
   String get peopleDrinksCost => 'Bebidas';
 
   @override
@@ -6346,9 +5358,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get peopleEven => 'Parcela paga';
-
-  @override
-  String get peopleCovered => 'Bar já quitado pela mesa';
 
   @override
   String peopleSeeOrders(String name) {
@@ -6424,139 +5433,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get billSplitAndPay => 'Dividir e registrar pagamentos';
 
   @override
-  String get formForWhom => 'Para quem?';
-
-  @override
-  String get formForWhomPending => 'Escolha para quem foi esta bebida.';
-
-  @override
-  String get formForWhomShared =>
-      'Garrafa compartilhada: as pessoas ficam nas porções do pedido.';
-
-  @override
   String get orderOpenCatalog => 'Catálogo completo, rótulo ou cardápio';
-
-  @override
-  String get bottleAddPerson => 'Adicionar pessoa';
-
-  @override
-  String get bottleAddTitle => 'Quem entra nesta garrafa?';
-
-  @override
-  String get bottleAddNone =>
-      'Todas as pessoas do rolê já estão nesta garrafa.';
-
-  @override
-  String get bottleAddHint =>
-      'A pessoa entra com volume desconhecido e uma parte do valor. O volume das outras não muda.';
-
-  @override
-  String bottleRemoveTooltip(String name) {
-    return 'Tirar $name da garrafa';
-  }
-
-  @override
-  String get bottleMinPeople =>
-      'Uma garrafa precisa de pelo menos uma pessoa. Para outro uso, exclua o registro.';
-
-  @override
-  String bottleRemoveTitle(String name) {
-    return 'Tirar $name?';
-  }
-
-  @override
-  String bottleRemoveVolumeAsk(String name, String volume) {
-    return '$name tem $volume registrados. O que fazer com esse volume?';
-  }
-
-  @override
-  String get bottleRemoveVolumeLeftover => 'Passar para a sobra da garrafa';
-
-  @override
-  String bottleRemoveVolumeTo(String name) {
-    return 'Passar para $name';
-  }
-
-  @override
-  String bottleRemoveMoneyAsk(String name) {
-    return '$name tem parte do valor. O que fazer com ela?';
-  }
-
-  @override
-  String get bottleRemoveMoneySpread => 'Dividir entre quem fica pagando';
-
-  @override
-  String bottleRemoveMoneyTo(String name) {
-    return 'Passar para $name';
-  }
-
-  @override
-  String get bottleRemoveConfirm => 'Tirar da garrafa';
-
-  @override
-  String get bottleRemoveNoPayer =>
-      'Alguém precisa continuar pagando a garrafa: passe a parte para outra pessoa.';
-
-  @override
-  String get bottleCostTitle => 'Divisão do valor';
-
-  @override
-  String get bottleCostHint =>
-      'Separada do volume: cada parte conta na divisão do valor da garrafa. Zero partes = não paga nada dela.';
-
-  @override
-  String bottleCostParts(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count partes',
-      one: '1 parte',
-      zero: '0 partes',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String bottleCostLess(String name) {
-    return 'Menos uma parte de $name';
-  }
-
-  @override
-  String bottleCostMore(String name) {
-    return 'Mais uma parte para $name';
-  }
-
-  @override
-  String get bottleLeftoverLabel => 'Sobra na garrafa';
-
-  @override
-  String get bottleImpactTitle => 'O que muda ao salvar';
-
-  @override
-  String get bottleImpactBody =>
-      'Pagamentos já registrados não mudam nem trocam de pessoa; só a parte de cada um na comanda e o volume.';
-
-  @override
-  String bottleImpactVolume(String before, String after) {
-    return 'Volume: $before → $after';
-  }
-
-  @override
-  String bottleImpactCost(String before, String after) {
-    return 'Valor na comanda: $before → $after';
-  }
-
-  @override
-  String get bottleImpactJoins => 'entra na garrafa';
-
-  @override
-  String get bottleImpactLeaves => 'sai da garrafa';
-
-  @override
-  String get bottleImpactNoChange => 'Sem mudança para esta pessoa.';
-
-  @override
-  String get bottleImpactConfirm => 'Salvar mesmo assim';
 
   @override
   String get outingRestoreConflictTitle => 'Já existe um rolê em andamento';

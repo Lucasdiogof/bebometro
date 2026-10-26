@@ -76,7 +76,6 @@
   "accountSyncFirst": "Sincronizar antes",
   "accountYourData": "Seus dados",
   "accountYourName": "Seu nome",
-  "alcoholAtLeast": "pelo menos {amount}",
   "@alcoholAtLeast": {
     "placeholders": {
       "amount": {
@@ -84,9 +83,6 @@
       }
     }
   },
-  "alcoholDeclared": "Álcool puro declarado",
-  "alcoholExplain": "Calculado só com o que foi informado: volume × teor nas bebidas simples e quantidade × teor de cada componente nos drinks. Em drinks vale a receita declarada, não o que o bar serviu. Não é a concentração de álcool no sangue e não indica se você pode dirigir.",
-  "alcoholIncompletePill": "{count, plural, =1{1 registro com teor ou quantidade desconhecidos: o total é um mínimo} other{{count} registros com teor ou quantidade desconhecidos: o total é um mínimo}}",
   "@alcoholIncompletePill": {
     "placeholders": {
       "count": {
@@ -94,7 +90,6 @@
       }
     }
   },
-  "alcoholNoVolumePill": "{count, plural, =1{1 registro sem volume informado (não entra no volume)} other{{count} registros sem volume informado (não entram no volume)}}",
   "@alcoholNoVolumePill": {
     "placeholders": {
       "count": {
@@ -435,11 +430,9 @@
       }
     }
   },
-  "entryAlcoholIncomplete": "álcool incompleto",
   "entryCorrect": "Corrigir",
   "entryRepeat": "Repetir",
   "entryOptions": "Opções do registro",
-  "entrySharedPart": "{count, plural, =1{sua parte {mine} de {total} (1 pessoa)} other{sua parte {mine} de {total} ({count} pessoas)}}",
   "@entrySharedPart": {
     "placeholders": {
       "count": {
@@ -504,11 +497,7 @@
   },
   "finishKeepGoing": "Continuar o rolê",
   "finishTitle": "Encerrar rolê?",
-  "glassBigSubtitle": "O volume informado, somado, num copo.",
-  "glassBigTitle": "Copão (opcional)",
   "glassTipPlay": "Brincar de virar o copo",
-  "groupRecipeAdjusted": "receita ajustada",
-  "groupSharedPart": "{mine} seus de {total}",
   "@groupSharedPart": {
     "placeholders": {
       "mine": {
@@ -527,14 +516,11 @@
       }
     }
   },
-  "groupVolumeUnknown": "volume desconhecido",
-  "groupVolumeUnknownShort": "volume ?",
   "hangoverMild": "Leve",
   "hangoverModerate": "Moderada",
   "hangoverNone": "Nenhuma",
   "hangoverStrong": "Forte",
   "homeContinueOuting": "Continuar rolê",
-  "homeDrinks": "Bebidas",
   "homeFirstBody": "Quando você encerrar um rolê, o resumo do mês aparece aqui, só com o que você registrou.",
   "homeFirstTitle": "Seu primeiro rolê começa aqui",
   "homeIdleBody": "Anote o que bebeu e quanto gastou, sem complicação.",
@@ -586,7 +572,6 @@
   "numberAmbiguous": "Formato ambíguo. Use vírgula ou ponto só para os centavos (ex.: 1500 ou 15,50).",
   "numberInvalid": "Número inválido.",
   "outingAddDrink": "Adicionar bebida",
-  "outingAlcoholIncomplete": "{count, plural, =1{1 com álcool incompleto} other{{count} com álcool incompleto}}",
   "@outingAlcoholIncomplete": {
     "placeholders": {
       "count": {
@@ -615,7 +600,6 @@
   "outingLog": "Registrar",
   "outingNoDrinks": "Nenhuma bebida ainda",
   "outingNoDrinksBody": "Registre a primeira e o botão \"Mais uma\" aparece aqui embaixo.",
-  "outingNoVolume": "{count, plural, =1{1 sem volume} other{{count} sem volume}}",
   "@outingNoVolume": {
     "placeholders": {
       "count": {
@@ -657,13 +641,11 @@
       }
     }
   },
-  "outingYourVolume": "Seu volume",
   "placeCorrect": "Corrigir local",
   "placeOpenInMaps": "Abrir no mapa",
   "priceComplimentary": "Cortesia",
   "priceNone": "Sem preço",
   "priceUnknown": "sem preço",
-  "repeatAdjusted": "{name} (ajustada)",
   "@repeatAdjusted": {
     "placeholders": {
       "name": {
@@ -680,7 +662,6 @@
       }
     }
   },
-  "repeatYourPart": "sua parte {amount}",
   "@repeatYourPart": {
     "placeholders": {
       "amount": {
@@ -894,7 +875,6 @@
       }
     }
   },
-  "volumeKnownPlusUnknown": "{known} (+{count} sem volume)",
   "@volumeKnownPlusUnknown": {
     "placeholders": {
       "known": {
@@ -905,7 +885,6 @@
       }
     }
   },
-  "volumeUnknown": "desconhecido",
   "wakeBad": "Mal",
   "wakeGreat": "Bem",
   "wakeOk": "Normal",
@@ -1090,7 +1069,6 @@
     }
   },
   "catalogDrinkSaved": "Bebida salva em Minhas bebidas",
-  "catalogRecipeSaved": "Receita salva em Minhas bebidas",
   "catalogDeleteTitle": "Excluir esta bebida?",
   "catalogDeleteBody": "Ela sai do catálogo. Os registros que você já fez com ela continuam como estão.",
   "catalogClearFilters": "Limpar filtros",
@@ -1134,26 +1112,12 @@
   "catalogDetails": "Detalhes",
   "catalogUnfavorite": "Remover dos favoritos",
   "catalogFavorite": "Favoritar",
-  "entryDeleteTitle": "Excluir registro?",
-  "entryDeleteBody": "Ele sai do rolê e do resumo.",
   "entryDiscardTitle": "Descartar alterações?",
   "entryDiscardBody": "O que você preencheu aqui será perdido.",
   "entryKeepEditing": "Continuar editando",
   "entryDiscard": "Descartar",
   "entryFix": "Corrigir registro",
-  "entryLogCocktail": "Registrar drink",
   "entryLogDrink": "Registrar bebida",
-  "entryDrinkAndSize": "Bebida e tamanho",
-  "entryGenericSpirit": "Doses sugeridas, editáveis: não são medidas oficiais de nenhum estabelecimento. A garrafa é a embalagem, não a sua dose.",
-  "entryGenericSizes": "Tamanhos sugeridos: este produto não tem embalagens verificadas no catálogo. Confira na embalagem.",
-  "entryVolume": "Volume (ml)",
-  "entryOtherSize": "Outro tamanho (ml)",
-  "entryAbvOptional": "Teor alcoólico (opcional)",
-  "entryAbvBlank": "Em branco = desconhecido (não conta como zero).",
-  "entryAbvCheck": "Confira no rótulo se puder.",
-  "entryAbvVariantsIntro": "As fontes divergem. Escolha o que estiver no seu rótulo ou digite:",
-  "entryBottleShared": "Garrafa que está sendo dividida (preenche o volume da garrafa):",
-  "entryBottlesInfo": "Embalagens do produto: {list}. Para dividir uma garrafa, marque \"Compartilhada\" abaixo.",
   "@entryBottlesInfo": {
     "placeholders": {
       "list": {
@@ -1161,12 +1125,8 @@
       }
     }
   },
-  "entryIndividualOrShared": "Individual ou compartilhada",
-  "entryOnlyMine": "Só minha",
   "entryShared": "Compartilhada",
-  "entryPriceSection": "Preço (opcional)",
   "entryTimeSection": "Horário",
-  "entryYourShare": "Sua parte: {amount}",
   "@entryYourShare": {
     "placeholders": {
       "amount": {
@@ -1174,9 +1134,7 @@
       }
     }
   },
-  "entryYourShareUnknown": "Sua parte: —",
   "entrySaveChanges": "Salvar alterações",
-  "entryIngredients": "Ingredientes: {list}",
   "@entryIngredients": {
     "placeholders": {
       "list": {
@@ -1184,7 +1142,6 @@
       }
     }
   },
-  "entrySharedLine": "de {total} · {count} pessoas, com você",
   "@entrySharedLine": {
     "placeholders": {
       "total": {
@@ -1195,15 +1152,6 @@
       }
     }
   },
-  "entryPeople": "Pessoas (incluindo você)",
-  "entryFewerPeople": "Menos uma pessoa",
-  "entryMorePeople": "Mais uma pessoa",
-  "entryAdjustShare": "Ajustar parcela e sobra",
-  "entryYourShareMl": "Sua parte (ml)",
-  "entryEqualSplit": "Divisão igual por padrão.",
-  "entryLeftover": "Sobra na garrafa (ml)",
-  "entryOptionalDot": "Opcional.",
-  "entryOthersEach": "Sobram {amount} {count, plural, =1{para a outra pessoa} other{para cada uma das outras {count} pessoas}}.",
   "@entryOthersEach": {
     "placeholders": {
       "amount": {
@@ -1216,9 +1164,6 @@
   },
   "entryPriceValue": "Valor",
   "entryPriceDontKnow": "Não sei",
-  "entryBillTotal": "Total da conta/garrafa (opcional)",
-  "entryPaidHelper": "O que você pagou, não o que bebeu.",
-  "entrySplitEqually": "Dividir igualmente ({count} pessoas)",
   "@entrySplitEqually": {
     "placeholders": {
       "count": {
@@ -1236,11 +1181,6 @@
   },
   "entryNoPriceNote": "Sem preço: aparece como \"sem preço\" no resumo.",
   "commonAdd": "Adicionar",
-  "entryAddIngredient": "Adicionar ingrediente",
-  "entryIngredientField": "Ingrediente",
-  "entryHasAlcohol": "Tem álcool",
-  "entrySaveRecipeTitle": "Salvar como minha receita",
-  "entryMineSuffix": "{name} (minha)",
   "@entryMineSuffix": {
     "placeholders": {
       "name": {
@@ -1248,12 +1188,6 @@
       }
     }
   },
-  "entryRecipeName": "Nome da receita",
-  "entrySaveRecipeBody": "Guarda ingredientes, quantidades e teores para reutilizar. Registros antigos não mudam.",
-  "entryRecipeSaved": "Receita salva no seu catálogo",
-  "entryCompositionTitle": "Composição",
-  "entryCompositionSimple": "Informe só o que você sabe.",
-  "entryCompositionReference": "Receita de referência ({source}). Ajuste para o que foi realmente servido.",
   "@entryCompositionReference": {
     "placeholders": {
       "source": {
@@ -1261,14 +1195,6 @@
       }
     }
   },
-  "entryCompositionAdjusted": "Composição ajustada",
-  "entryCompositionView": "Ver e ajustar composição",
-  "entryNoIngredients": "Nenhum ingrediente ainda",
-  "entryDrinkVolumeSection": "Volume do drink (opcional)",
-  "entryServedVolume": "Volume servido (ml)",
-  "entryServedVolumeHelper": "Se não souber, deixe em branco: o resumo mostra como desconhecido. O tamanho do copo e o gelo não contam como volume bebido.",
-  "entryPureAlcohol": "Álcool puro da composição acima",
-  "entryAtLeast": "pelo menos {amount}",
   "@entryAtLeast": {
     "placeholders": {
       "amount": {
@@ -1276,7 +1202,6 @@
       }
     }
   },
-  "entryMissingParts": "Faltam teor ou quantidade de: {list}",
   "@entryMissingParts": {
     "placeholders": {
       "list": {
@@ -1284,8 +1209,6 @@
       }
     }
   },
-  "entryDeclaredNote": "Vale a composição declarada, assumindo a porção inteira. Não é concentração no sangue.",
-  "entryOptionalMark": "{name} (opcional)",
   "@entryOptionalMark": {
     "placeholders": {
       "name": {
@@ -1293,8 +1216,6 @@
       }
     }
   },
-  "entryRemoveIngredient": "Remover ingrediente",
-  "entryInRecipe": "Na receita: {text}",
   "@entryInRecipe": {
     "placeholders": {
       "text": {
@@ -1303,11 +1224,6 @@
     }
   },
   "entryAmount": "Quantidade",
-  "entryAmountUnknown": "Em branco = desconhecida.",
-  "entryChooseProduct": "Escolher marca/produto",
-  "entryComponentAbv": "Teor alcoólico (% vol.)",
-  "entryComponentAbvUnknown": "Desconhecido: sem ele o álcool total fica incompleto.",
-  "entryComponentAlcoholNone": "Álcool deste ingrediente: não calculado ({reason}).",
   "@entryComponentAlcoholNone": {
     "placeholders": {
       "reason": {
@@ -1315,7 +1231,6 @@
       }
     }
   },
-  "entryComponentAlcohol": "Álcool deste ingrediente: {amount}",
   "@entryComponentAlcohol": {
     "placeholders": {
       "amount": {
@@ -1323,8 +1238,6 @@
       }
     }
   },
-  "entryIncompleteData": "dados incompletos",
-  "entryWhichProduct": "Qual {name}?",
   "@entryWhichProduct": {
     "placeholders": {
       "name": {
@@ -1332,8 +1245,6 @@
       }
     }
   },
-  "entryNoBrand": "Sem marca: informar o teor",
-  "entryProductAbv": "Teor {abv}",
   "@entryProductAbv": {
     "placeholders": {
       "abv": {
@@ -1341,10 +1252,6 @@
       }
     }
   },
-  "entryProductAbvVaries": "Teor varia conforme a fonte",
-  "entryProductAbvUnknown": "Teor não informado",
-  "entryMenuPrice": "Preço do cardápio",
-  "entryMenuPriceBody": "O cardápio anunciava {price}. É só uma sugestão: confirme o que foi pago de fato, pois pode ter promoção ou outro pedido. Se for garrafa ou jarra dividida, marque \"Compartilhada\": o valor vira o total da conta, não a sua parte.",
   "@entryMenuPriceBody": {
     "placeholders": {
       "price": {
@@ -1352,10 +1259,6 @@
       }
     }
   },
-  "entryUseAsBillTotal": "Usar como total da conta",
-  "entryUseAsPaid": "Usar como o que paguei",
-  "entryHistory": "Seu histórico",
-  "entryHistoryShare": "Sua parcela foi {price} {scope} em {date}.",
   "@entryHistoryShare": {
     "placeholders": {
       "price": {
@@ -1369,7 +1272,6 @@
       }
     }
   },
-  "entryHistoryPaid": "Você pagou {price} {scope} em {date}.",
   "@entryHistoryPaid": {
     "placeholders": {
       "price": {
@@ -1383,9 +1285,6 @@
       }
     }
   },
-  "entryUseAsShare": "Usar como minha parcela",
-  "entryUseValue": "Usar este valor",
-  "entryHistoryTotal": "O total da garrafa/porção foi {price} em {date}.",
   "@entryHistoryTotal": {
     "placeholders": {
       "price": {
@@ -1396,16 +1295,6 @@
       }
     }
   },
-  "entryUseAsTotal": "Usar como total",
-  "entryScopeAtPlace": "neste local",
-  "entryScopeAtOuting": "neste rolê",
-  "draftVolumeInvalid": "Volume inválido",
-  "draftAbvRange": "O teor vai de 0 a 100%",
-  "draftAmountInvalid": "Quantidade inválida",
-  "draftVolumeRequired": "Informe o volume em ml",
-  "draftVolumeTooHigh": "Volume alto demais",
-  "draftShareRequired": "Informe a sua parte em ml",
-  "draftShareOver": "Sua parte + sobra passam do volume ({volume})",
   "@draftShareOver": {
     "placeholders": {
       "volume": {
@@ -1430,11 +1319,6 @@
       }
     }
   },
-  "draftPaidRequired": "Informe o valor ou escolha outra opção",
-  "formSaveRecipeFailed": "Não foi possível salvar a receita.",
-  "formSaveFailed": "Não foi possível salvar. Nada foi perdido, tente de novo.",
-  "priceBulkTitle": "Aplicar este preço às bebidas iguais?",
-  "priceBulkBody": "{name} por {price}. Neste rolê há {total} registros iguais: {unpriced} sem preço e {differing} com outro preço. Nada muda sem a sua escolha.",
   "@priceBulkBody": {
     "placeholders": {
       "name": {
@@ -1454,7 +1338,6 @@
       }
     }
   },
-  "priceBulkUnpriced": "Aplicar aos {count} sem preço",
   "@priceBulkUnpriced": {
     "placeholders": {
       "count": {
@@ -1462,7 +1345,6 @@
       }
     }
   },
-  "priceBulkAll": "Aplicar a todos os {count} iguais",
   "@priceBulkAll": {
     "placeholders": {
       "count": {
@@ -1470,9 +1352,6 @@
       }
     }
   },
-  "priceBulkOnlyThis": "Só este registro",
-  "priceBulkConfirmTitle": "Substituir preços?",
-  "priceBulkConfirmBody": "Isso troca o preço de {count} registros que já tinham outro valor. Os demais rolês não mudam.",
   "@priceBulkConfirmBody": {
     "placeholders": {
       "count": {
@@ -1480,8 +1359,6 @@
       }
     }
   },
-  "priceBulkReplace": "Substituir",
-  "priceBulkApplied": "Preço aplicado a {count} registros.",
   "@priceBulkApplied": {
     "placeholders": {
       "count": {
@@ -1489,10 +1366,8 @@
       }
     }
   },
-  "formDeleteFailed": "Não foi possível excluir. Tente de novo.",
   "detailNotGiven": "Não informado",
   "detailAbv": "Teor alcoólico",
-  "detailAbvFrom": "Teor: {source}. Não é dado do fabricante.",
   "@detailAbvFrom": {
     "placeholders": {
       "source": {
@@ -1501,14 +1376,10 @@
     }
   },
   "detailIngredients": "Ingredientes declarados",
-  "detailIngredientsNone": "Não informados",
   "detailPresentations": "Apresentações",
   "detailBottleNotDose": "Tamanho da garrafa não é tamanho da dose. Ao registrar, você escolhe uma dose sugerida (editável) ou compartilha a garrafa.",
   "detailUnverifiedPackages": "Embalagens não verificadas para este produto. Ao registrar, você pode escolher um tamanho sugerido ou digitar o volume.",
   "detailPackagesNote": "Embalagens citadas pelo fabricante. O tamanho da embalagem não é o que você bebeu: isso você define ao registrar.",
-  "detailMakeMine": "Criar minha versão",
-  "detailSourceTitle": "Fonte dos dados",
-  "detailSourceLine": "{source} · consultado em {date}",
   "@detailSourceLine": {
     "placeholders": {
       "source": {
@@ -1522,7 +1393,6 @@
   "detailCopyAddress": "Copiar endereço",
   "detailAddressCopied": "Endereço copiado",
   "detailMayVary": "Os dados podem variar por versão e mercado. Confira sempre o rótulo da embalagem.",
-  "detailAbvVaries": "Varia conforme a fonte, sem um valor único:\n{lines}",
   "@detailAbvVaries": {
     "placeholders": {
       "lines": {
@@ -1530,12 +1400,6 @@
       }
     }
   },
-  "detailRecipeReference": "Receita de referência: mostra como a receita é publicada, não o que um bar serviu.",
-  "detailRecipeMine": "Sua receita salva. Ao registrar, você ajusta o que realmente foi servido.",
-  "detailNoIngredientsYet": "Sem ingredientes ainda: você monta ao registrar.",
-  "detailAlcoholLegend": "Ingredientes com copo ao lado têm álcool. O teor de cada um é informado ao registrar; sem ele o álcool total fica incompleto. Gelo não entra na conta.",
-  "detailMethod": "Preparo",
-  "detailGarnish": "Decoração: {text}",
   "@detailGarnish": {
     "placeholders": {
       "text": {
@@ -1551,16 +1415,7 @@
   "customIdentification": "Identificação",
   "customName": "Nome da bebida",
   "customNameRequired": "Dê um nome para a bebida",
-  "customBrand": "Marca (opcional)",
-  "customStyle": "Estilo (opcional)",
-  "customSizeAndAbv": "Tamanho e teor",
-  "customSize": "Tamanho (ml)",
-  "customSizeRequired": "Informe o tamanho em ml",
-  "customAbvHelper": "Em branco = desconhecido, não conta como zero.",
-  "customIngredients": "Ingredientes (opcional)",
-  "customIngredientsHelper": "Separe por vírgula. Só o que você sabe.",
   "customSaveUse": "Salvar e usar",
-  "recipeUnitLabel": "Unidade",
   "myDrinksNeedOuting": "Inicie um rolê para registrar uma bebida.",
   "myDrinksLogged": "Bebida registrada",
   "myDrinksCopied": "Cópia criada",
@@ -1574,7 +1429,6 @@
   },
   "myDrinksDeleteBody": "Sai do seu catálogo. Os registros que você já fez continuam como estão.",
   "myDrinksDeleted": "Excluída",
-  "myDrinksRecipeSubtitle": "{count, plural, =1{Receita · 1 ingrediente} other{Receita · {count} ingredientes}}",
   "@myDrinksRecipeSubtitle": {
     "placeholders": {
       "count": {
@@ -1589,8 +1443,6 @@
   "myDrinksActionLog": "Registrar",
   "myDrinksActionDuplicate": "Duplicar",
   "myDrinksNewDrink": "Nova bebida",
-  "myDrinksNewRecipe": "Nova receita",
-  "recipeEditorNameCopy": "{name} (minha versão)",
   "@recipeEditorNameCopy": {
     "placeholders": {
       "name": {
@@ -1598,10 +1450,6 @@
       }
     }
   },
-  "recipeEditorNeedName": "Dê um nome para a receita.",
-  "recipeEditorNeedIngredient": "Adicione pelo menos um ingrediente.",
-  "recipeEditorIngredientName": "Todo ingrediente precisa de um nome.",
-  "recipeEditorAbvRange": "O teor de \"{name}\" vai de 0 a 100%.",
   "@recipeEditorAbvRange": {
     "placeholders": {
       "name": {
@@ -1609,7 +1457,6 @@
       }
     }
   },
-  "recipeEditorAmountInvalid": "A quantidade de \"{name}\" é inválida.",
   "@recipeEditorAmountInvalid": {
     "placeholders": {
       "name": {
@@ -1617,7 +1464,6 @@
       }
     }
   },
-  "recipeEditorNumberProblem": "\"{name}\": {problem}",
   "@recipeEditorNumberProblem": {
     "placeholders": {
       "name": {
@@ -1628,19 +1474,6 @@
       }
     }
   },
-  "recipeEditorEditTitle": "Editar receita",
-  "recipeEditorNewTitle": "Nova receita",
-  "recipeEditorIntro": "Registre só o que você sabe. Quantidade ou teor em branco ficam como desconhecidos e o álcool total aparece como incompleto.",
-  "recipeEditorNameSection": "Nome",
-  "recipeEditorNameRequired": "Dê um nome para a receita",
-  "recipeEditorIngredients": "Ingredientes",
-  "recipeEditorNoneYet": "Nenhum ingrediente ainda.",
-  "recipeEditorAlcoholSection": "Álcool da composição",
-  "recipeEditorDeclaredAlcohol": "Álcool puro declarado",
-  "recipeEditorSaveRecipe": "Salvar receita",
-  "recipeEditorMoveUp": "Mover para cima",
-  "recipeEditorMoveDown": "Mover para baixo",
-  "recipeEditorOriginal": "Na receita original: {text}",
   "@recipeEditorOriginal": {
     "placeholders": {
       "text": {
@@ -1648,9 +1481,6 @@
       }
     }
   },
-  "recipeEditorRole": "Tipo (para escolher a marca ao registrar)",
-  "recipeEditorNoRole": "Sem tipo",
-  "recipeEditorRemove": "Remover",
   "scanLabelPhotoGone": "A foto desta leitura não está mais disponível neste aparelho. O texto foi mantido: tire outra foto ou continue sem ela.",
   "scanPhotoSaveFailed": "Não foi possível guardar a foto no aparelho.",
   "scanRotateFailed": "Não foi possível girar a imagem.",
@@ -1847,7 +1677,6 @@
     }
   },
   "scanMenuNoName": "(sem nome)",
-  "scanMenuSize": "Tamanho no cardápio: {size}",
   "@scanMenuSize": {
     "placeholders": {
       "size": {
@@ -1855,7 +1684,6 @@
       }
     }
   },
-  "scanMenuIngredientsCited": "Ingredientes citados: {list}",
   "@scanMenuIngredientsCited": {
     "placeholders": {
       "list": {
@@ -1881,12 +1709,8 @@
   "scanMenuNewItem": "Novo item",
   "scanMenuName": "Nome",
   "scanMenuDescription": "Descrição (opcional)",
-  "scanMenuSizeOptional": "Tamanho (opcional)",
   "scanMenuPriceOptional": "Preço (opcional)",
-  "scanMenuCitedOptional": "Ingredientes citados (opcional)",
-  "scanMenuCitedHelper": "Separe por vírgula. Sem quantidades.",
   "scanMenuNeedName": "Dê um nome ao item.",
-  "scanMenuInvalidSize": "Tamanho inválido.",
   "scanMenuInvalidPrice": "Preço inválido.",
   "commonApply": "Aplicar",
   "originManual": "Cadastro neste rolê",
@@ -1899,15 +1723,10 @@
   "outingReviewDrinkSection": "Bebida",
   "outingReviewNeedName": "Dê um nome para a bebida.",
   "outingReviewNeedType": "Escolha o tipo da bebida.",
-  "outingReviewVolumePositive": "O volume precisa ser maior que zero.",
-  "outingReviewAbvRange": "O teor vai de 0 a 100%.",
   "outingReviewOtherLines": "Outras linhas lidas (toque para usar):",
   "outingReviewPickType": "Escolha o tipo da bebida",
   "outingReviewTypeUnknown": "Tipo não identificado: escolha um.",
   "outingReviewDescription": "Descrição do cardápio (opcional)",
-  "outingReviewPackageVolume": "Volume da embalagem (opcional)",
-  "outingReviewVolumeHelper": "É o tamanho do produto, não o quanto você bebeu. Em branco = desconhecido.",
-  "outingReviewAbvSource": "Origem: {source}",
   "@outingReviewAbvSource": {
     "placeholders": {
       "source": {
@@ -1915,25 +1734,12 @@
       }
     }
   },
-  "outingReviewIngredientsIntro": "Só o que o cardápio ou você informaram. As quantidades ficam desconhecidas até você completar ao registrar; o álcool só é calculado com volume e teor conhecidos.",
-  "outingReviewAlcoholChip": "Álcool",
-  "outingReviewDeclaredOptional": "Ingredientes declarados (opcional)",
-  "outingReviewDeclaredHelper": "Separe por vírgula. Só o que está escrito.",
   "outingReviewAdvertisedSection": "Preço anunciado",
   "outingReviewMenuPriceOptional": "Preço do cardápio (opcional)",
   "outingReviewMenuPriceHelper": "Só uma sugestão: ao registrar você confirma o que pagou. Valores em reais (R$).",
-  "outingReviewSimilar": "Parecidas no catálogo",
-  "outingReviewSearch": "Buscar",
-  "outingReviewSimilarNote": "Opcional. Escolher uma é só uma referência: o produto do catálogo nunca é alterado e nada é ligado sozinho.",
-  "outingReviewNothingSimilar": "Nada parecido encontrado. Este item fica só no rolê.",
-  "outingReviewReferenceChosen": "Referência escolhida",
-  "outingReviewUseReference": "Usar como referência",
-  "outingReviewFillEmpty": "Preencher campos vazios",
-  "outingReviewCopyIngredients": "Copiar ingredientes (sem quantidades)",
   "outingReviewOriginSection": "Origem dos dados",
   "outingReviewOriginManual": "Preenchido por você.",
   "outingReviewOriginPhoto": "Lido da foto e conferido por você. Leitura automática pode errar: confira cada campo.",
-  "outingReviewReferenceNote": "Com referência do catálogo (não é o mesmo registro).",
   "outingReviewSourceText": "Texto lido na foto",
   "outingReviewConfirmContinue": "Confirmar e continuar",
   "outingReviewSaveOnly": "Salvar só neste rolê",
@@ -3036,10 +2842,6 @@
   "statsDrinksLogged": "Suas bebidas registradas",
   "statsDrinksOfPeriod": "Suas bebidas do período",
   "statsPricedRecords": "Registros com preço",
-  "statsVolumeSection": "Volume pessoal informado",
-  "statsAlcoholicVolume": "Bebidas com álcool",
-  "statsNonAlcoholicVolume": "Água e sem álcool",
-  "statsUnknownVolume": "{count, plural, =1{1 registro sem volume: não entra nas somas} other{{count} registros sem volume: não entram nas somas}}",
   "@statsUnknownVolume": {
     "placeholders": {
       "count": {
@@ -3047,9 +2849,6 @@
       }
     }
   },
-  "statsAlcoholSection": "Álcool calculado",
-  "statsPureAlcohol": "Álcool puro dos dados conhecidos",
-  "statsIncompleteAlcohol": "{count, plural, =1{1 registro com teor ou quantidade desconhecidos} other{{count} registros com teor ou quantidade desconhecidos}}",
   "@statsIncompleteAlcohol": {
     "placeholders": {
       "count": {
@@ -3057,9 +2856,7 @@
       }
     }
   },
-  "statsAlcoholNote": "Volume × teor (ou quantidade × teor dos componentes dos drinks). Não é concentração no sangue.",
   "statsAlcoholByCategory": "Com álcool, por categoria",
-  "statsNoVolumeNote": "{count} sem volume",
   "@statsNoVolumeNote": {
     "placeholders": {
       "count": {
@@ -3119,7 +2916,6 @@
   },
   "statsNoSavedPlace": "Sem local salvo",
   "statsSavedPlaceFallback": "Local salvo",
-  "recordsUnknownVolume": "volume desconhecido",
   "historyEmptyTitle": "Nenhum rolê encerrado",
   "historyEmptyBody": "Quando você encerrar um rolê, ele aparece aqui.",
   "historySearchHint": "Buscar por local, bebida ou pessoa",
@@ -3304,7 +3100,6 @@
       }
     }
   },
-  "tableSemanticsSharedPart": "sua parte de bebida compartilhada",
   "tableSemanticsTap": "Toque para ver os detalhes.",
   "tableOthersTitle": "Outros registros ({count})",
   "@tableOthersTitle": {
@@ -3350,7 +3145,6 @@
       }
     }
   },
-  "tableYours": "{amount} seus",
   "@tableYours": {
     "placeholders": {
       "amount": {
@@ -3358,8 +3152,6 @@
       }
     }
   },
-  "tableYourVolume": "Seu volume",
-  "tableSharedLine": "Sua parte: {mine} de {total} ({count} pessoas)",
   "@tableSharedLine": {
     "placeholders": {
       "mine": {
@@ -3373,13 +3165,11 @@
       }
     }
   },
-  "tableRecipeAdjusted": "Receita ajustada",
   "tableScenarioTitle": "Cenário da mesa",
   "tableScenarioNote": "Só muda a ilustração. O local, o tipo e os registros do rolê continuam iguais.",
   "tableAboutTitle": "Sobre a mesa",
   "tableAboutBody": "Animação ilustrativa das bebidas registradas.\n\nOs recipientes esvaziam só como efeito visual, com base no horário do registro. Isso não mede quanto você bebeu, não indica álcool no corpo e não muda nenhum registro: os totais vêm apenas do que você informou.",
   "tableUnderstood": "Entendi",
-  "glassSemantics": "Copão: {total} de volume informado, em uma escala de até {scale}{unknown, plural, =0{} =1{, mais 1 registro sem volume} other{, mais {unknown} registros sem volume}}.",
   "@glassSemantics": {
     "placeholders": {
       "total": {
@@ -3393,8 +3183,6 @@
       }
     }
   },
-  "glassVolumeReported": "Volume informado",
-  "glassScale": "Escala: até {scale}",
   "@glassScale": {
     "placeholders": {
       "scale": {
@@ -3402,7 +3190,6 @@
       }
     }
   },
-  "glassAlcoholic": "Com álcool: {amount}",
   "@glassAlcoholic": {
     "placeholders": {
       "amount": {
@@ -3410,7 +3197,6 @@
       }
     }
   },
-  "glassOther": "Água e sem álcool: {amount}",
   "@glassOther": {
     "placeholders": {
       "amount": {
@@ -3418,7 +3204,6 @@
       }
     }
   },
-  "glassNoVolume": "+ {count} sem volume (não entram)",
   "@glassNoVolume": {
     "placeholders": {
       "count": {
@@ -3426,7 +3211,6 @@
       }
     }
   },
-  "glassNote": "Só uma forma de ver a soma dos volumes registrados. Não representa álcool no corpo, capacidade nem meta.",
   "tipNoSensor": "Sem sensor de movimento. Arraste para inclinar.",
   "tipHintTilt": "Incline o celular para mexer a cerveja.",
   "tipHintDrag": "Arraste para inclinar.",
@@ -3600,10 +3384,6 @@
       }
     }
   },
-  "entrySharedUseOrder": "Para dividir uma garrafa ou jarra entre pessoas da mesa, use \"Novo pedido\" na tela do rolê e escolha \"Garrafa ou jarra compartilhada\": lá você diz quanto cada um tomou.",
-  "formPortionsTitle": "Quanto cada pessoa tomou",
-  "formPortionsHint": "Deixe em branco se não souber: fica desconhecido, nunca zero. A soma não pode passar do tamanho da garrafa.",
-  "formPortionMl": "ml",
   "drinkCountYours": "{count, plural, =1{1 bebida sua} other{{count} bebidas suas}}",
   "@drinkCountYours": {
     "placeholders": {
@@ -3695,7 +3475,6 @@
   "aboutDataFallback": "Sem fonte específica para este campo; vale a fonte geral do produto.",
   "aboutDataGeneralTitle": "Fonte geral do produto",
   "aboutDataVariantsTitle": "Teores documentados (sem média)",
-  "aboutDataDivergence": "As fontes divergem sobre o teor",
   "aboutDataRegistryNote": "O cadastro mostra que a embalagem existiu no mercado; não indica que esteja à venda hoje.",
   "aboutDataOpenFailed": "Não foi possível abrir o endereço. Copie e abra no navegador.",
   "aboutDataMarket": "Mercado: {market}",
@@ -3811,19 +3590,6 @@
       }
   },
   "orderUseTextOnly": "Usar só o texto",
-  "orderNotInCatalog": "Não achou no catálogo? Sem problema: fica registrado como “{text}” só neste rolê.",
-  "@orderNotInCatalog": {
-      "placeholders": {
-          "text": {
-              "type": "String"
-          }
-      }
-  },
-  "orderKind": "Tipo",
-  "orderFor": "Para quem?",
-  "orderForHint": "Toque em quem vai beber e diga quantas.",
-  "orderEach": "Cada um o seu",
-  "orderSharedBottle": "Garrafa ou jarra compartilhada",
   "orderMore": "Mais um para {name}",
   "@orderMore": {
       "placeholders": {
@@ -3840,27 +3606,11 @@
           }
       }
   },
-  "orderSharers": "Quem divide?",
-  "orderPortionMl": "ml de {name}",
-  "@orderPortionMl": {
-      "placeholders": {
-          "name": {
-              "type": "String"
-          }
-      }
-  },
-  "orderPortionHint": "Opcional. Em branco = não sei.",
-  "orderDivideVolume": "Dividir volume igualmente",
-  "orderDivideNote": "É uma estimativa: assume que cada um bebeu a mesma quantidade. Dividir só o preço não prova isso.",
-  "orderBottles": "Garrafas",
-  "orderLeftover": "Sobra (ml)",
   "orderPrice": "Preço",
   "orderPriceEach": "Por unidade",
   "orderPriceTotal": "Total do pedido",
   "orderPriceEachLabel": "Valor de cada",
   "orderPriceTotalLabel": "Valor total do pedido",
-  "orderPriceTotalHelper": "Promoção? Informe o total: o app reparte em centavos exatos.",
-  "orderPriceBottleLabel": "Preço da garrafa (total)",
   "orderLineSummary": "{count} × {price} = {total}",
   "@orderLineSummary": {
       "placeholders": {
@@ -3875,20 +3625,6 @@
           }
       }
   },
-  "orderSplitEach": "Cada um paga {each} se dividir igual.",
-  "@orderSplitEach": {
-      "placeholders": {
-          "each": {
-              "type": "String"
-          }
-      }
-  },
-  "orderDetails": "Detalhes (opcional)",
-  "orderVolume": "Volume servido (ml)",
-  "orderVolumeNote": "Sugestões editáveis; não são o tamanho oficial da marca nem do bar.",
-  "orderAbv": "Teor alcoólico (%)",
-  "orderUseRecipe": "Usar a receita de referência",
-  "orderUseRecipeNote": "Só se foi assim que o bar preparou. Sem confirmar, o drink fica sem composição.",
   "orderSummaryFor": "Para: {who}",
   "@orderSummaryFor": {
       "placeholders": {
@@ -3899,12 +3635,7 @@
   },
   "orderSave": "Adicionar ao rolê",
   "orderErrName": "Diga o que foi pedido.",
-  "orderErrNobody": "Escolha pelo menos uma pessoa.",
-  "orderErrSharers": "Para dividir, escolha pelo menos duas pessoas.",
-  "orderErrPortions": "As porções e a sobra passam do tamanho da garrafa.",
   "orderErrPrice": "Informe o valor ou escolha outra opção.",
-  "orderErrVolume": "Volume inválido.",
-  "orderErrAbv": "O teor vai de 0 a 100%.",
   "orderAdded": "Adicionado: {summary}",
   "@orderAdded": {
       "placeholders": {
@@ -3923,7 +3654,6 @@
   "tileTableTotal": "Total da mesa",
   "tileYourShare": "Sua parte",
   "tileTheirShare": "Parte",
-  "tileVolume": "Volume",
   "billTotalKnownShort": "{total}+",
   "@billTotalKnownShort": {
       "placeholders": {
@@ -4024,17 +3754,6 @@
           }
       }
   },
-  "peopleDrankLine": "{count, plural, one{1 bebida} other{{count} bebidas}} · {ml}",
-  "@peopleDrankLine": {
-      "placeholders": {
-          "count": {
-              "type": "int"
-          },
-          "ml": {
-              "type": "String"
-          }
-      }
-  },
   "peopleDrinksCost": "Bebidas",
   "peopleFoodCost": "Comida e outros",
   "peopleDiscount": "Desconto",
@@ -4059,7 +3778,6 @@
       }
   },
   "peopleEven": "Parcela paga",
-  "peopleCovered": "Bar já quitado pela mesa",
   "peopleSeeOrders": "Ver pedidos de {name}",
   "@peopleSeeOrders": {
       "placeholders": {
@@ -4123,125 +3841,7 @@
   "billNoTransfers": "O app não faz cobrança nem Pix e não diz quem deve pagar quem.",
   "billSettings": "Serviço, desconto e itens",
   "billSplitAndPay": "Dividir e registrar pagamentos",
-  "formForWhom": "Para quem?",
-  "formForWhomPending": "Escolha para quem foi esta bebida.",
-  "formForWhomShared": "Garrafa compartilhada: as pessoas ficam nas porções do pedido.",
   "orderOpenCatalog": "Catálogo completo, rótulo ou cardápio",
-  "bottleAddPerson": "Adicionar pessoa",
-  "bottleAddTitle": "Quem entra nesta garrafa?",
-  "bottleAddNone": "Todas as pessoas do rolê já estão nesta garrafa.",
-  "bottleAddHint": "A pessoa entra com volume desconhecido e uma parte do valor. O volume das outras não muda.",
-  "bottleRemoveTooltip": "Tirar {name} da garrafa",
-  "@bottleRemoveTooltip": {
-      "placeholders": {
-          "name": {
-              "type": "String"
-          }
-      }
-  },
-  "bottleMinPeople": "Uma garrafa precisa de pelo menos uma pessoa. Para outro uso, exclua o registro.",
-  "bottleRemoveTitle": "Tirar {name}?",
-  "@bottleRemoveTitle": {
-      "placeholders": {
-          "name": {
-              "type": "String"
-          }
-      }
-  },
-  "bottleRemoveVolumeAsk": "{name} tem {volume} registrados. O que fazer com esse volume?",
-  "@bottleRemoveVolumeAsk": {
-      "placeholders": {
-          "name": {
-              "type": "String"
-          },
-          "volume": {
-              "type": "String"
-          }
-      }
-  },
-  "bottleRemoveVolumeLeftover": "Passar para a sobra da garrafa",
-  "bottleRemoveVolumeTo": "Passar para {name}",
-  "@bottleRemoveVolumeTo": {
-      "placeholders": {
-          "name": {
-              "type": "String"
-          }
-      }
-  },
-  "bottleRemoveMoneyAsk": "{name} tem parte do valor. O que fazer com ela?",
-  "@bottleRemoveMoneyAsk": {
-      "placeholders": {
-          "name": {
-              "type": "String"
-          }
-      }
-  },
-  "bottleRemoveMoneySpread": "Dividir entre quem fica pagando",
-  "bottleRemoveMoneyTo": "Passar para {name}",
-  "@bottleRemoveMoneyTo": {
-      "placeholders": {
-          "name": {
-              "type": "String"
-          }
-      }
-  },
-  "bottleRemoveConfirm": "Tirar da garrafa",
-  "bottleRemoveNoPayer": "Alguém precisa continuar pagando a garrafa: passe a parte para outra pessoa.",
-  "bottleCostTitle": "Divisão do valor",
-  "bottleCostHint": "Separada do volume: cada parte conta na divisão do valor da garrafa. Zero partes = não paga nada dela.",
-  "bottleCostParts": "{count, plural, =0{0 partes} =1{1 parte} other{{count} partes}}",
-  "@bottleCostParts": {
-      "placeholders": {
-          "count": {
-              "type": "int"
-          }
-      }
-  },
-  "bottleCostLess": "Menos uma parte de {name}",
-  "@bottleCostLess": {
-      "placeholders": {
-          "name": {
-              "type": "String"
-          }
-      }
-  },
-  "bottleCostMore": "Mais uma parte para {name}",
-  "@bottleCostMore": {
-      "placeholders": {
-          "name": {
-              "type": "String"
-          }
-      }
-  },
-  "bottleLeftoverLabel": "Sobra na garrafa",
-  "bottleImpactTitle": "O que muda ao salvar",
-  "bottleImpactBody": "Pagamentos já registrados não mudam nem trocam de pessoa; só a parte de cada um na comanda e o volume.",
-  "bottleImpactVolume": "Volume: {before} → {after}",
-  "@bottleImpactVolume": {
-      "placeholders": {
-          "before": {
-              "type": "String"
-          },
-          "after": {
-              "type": "String"
-          }
-      }
-  },
-  "bottleImpactCost": "Valor na comanda: {before} → {after}",
-  "@bottleImpactCost": {
-      "placeholders": {
-          "before": {
-              "type": "String"
-          },
-          "after": {
-              "type": "String"
-          }
-      }
-  },
-  "bottleImpactJoins": "entra na garrafa",
-  "bottleImpactLeaves": "sai da garrafa",
-  "bottleImpactNoChange": "Sem mudança para esta pessoa.",
-  "bottleImpactConfirm": "Salvar mesmo assim",
   "outingRestoreConflictTitle": "Já existe um rolê em andamento",
   "outingRestoreConflictBody": "Este rolê estava em andamento quando foi excluído. Ele pode voltar já encerrado, no horário da exclusão. O rolê atual não é alterado.",
   "outingRestoreAsEnded": "Restaurar encerrado",
