@@ -43,6 +43,7 @@ class OrderInput {
     this.catalogItemId,
     this.containerMl,
     this.template,
+    this.replaceProduct = false,
     this.existing = const [],
     this.existingExtra,
     this.fixedId,
@@ -99,6 +100,11 @@ class OrderInput {
   /// (recipe, ABV, ingredients) is carried over untouched when the name is
   /// the same, so editing never forces anybody through those fields.
   final DrinkEntry? template;
+
+  /// Another catalog product was picked: the hidden data of [template] does
+  /// not describe the new drink and is not carried over. A plain rename keeps
+  /// it (history, recipe, ABV, size and origin stay stored, never shown).
+  final bool replaceProduct;
 
   /// Editing: the records (oldest first) and the extra the order replaces.
   /// Their ids, times and origin are kept.
@@ -274,18 +280,15 @@ class OrderBuilder {
           ? DrinkCategory.nonAlcoholic
           : DrinkCategory.cocktail);
 
-  /// Same name as the record the order was opened from (so its catalog link
-  /// and hidden legacy data still describe it).
-  static bool _sameAsTemplate(OrderInput i) {
-    final t = i.template;
-    return t != null &&
-        t.name.trim().toLowerCase() == i.name.trim().toLowerCase();
-  }
+  /// The record the order was opened from still describes the drink: always,
+  /// except when another product was picked.
+  static DrinkEntry? _kept(OrderInput i) =>
+      i.replaceProduct ? null : i.template;
 
   static List<DrinkEntry> _drinks(OrderInput i, String Function() newId) {
     final prices = _unitPrices(i);
     final weights = _payerWeights(i, prices, (id) => _key(id, i.ownerId));
-    final t = _sameAsTemplate(i) ? i.template : null;
+    final t = _kept(i);
     final category = t?.category ?? _categoryOf(i);
     // A drink that was alcoholic by kind stays so; "without alcohol" must not
     // keep a category that may contain alcohol.

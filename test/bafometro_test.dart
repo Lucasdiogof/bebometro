@@ -319,6 +319,47 @@ void main() {
     expect(input.stops, greaterThan(before));
   });
 
+  testWidgets('going to the background releases the microphone and stops', (
+    tester,
+  ) async {
+    _tall(tester);
+    final input = _FakeInput(BreathStart.started);
+    await tester.pumpWidget(_app(() => input));
+    await tester.tap(find.text('Começar'));
+    await _settle(tester);
+    expect(find.text('Sopre no microfone'), findsOneWidget);
+    final before = input.stops;
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    await _settle(tester);
+    expect(input.stops, greaterThan(before));
+    expect(find.text('Sopre no microfone'), findsNothing);
+    expect(find.text('Começar'), findsOneWidget); // back to ready
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets(
+    'a person with only shared orders sits at the start of the meter',
+    (tester) async {
+      _tall(tester);
+      final input = _FakeInput(BreathStart.started);
+      const sharedOnly = BafoPerson(
+        id: 's',
+        name: 'Só dividiu',
+        alcoholicOrders: 0,
+      );
+      await tester.pumpWidget(
+        _app(() => input, roster: const BafoRoster([sharedOnly]), reduce: true),
+      );
+      await tester.tap(find.text('Começar'));
+      await _settle(tester);
+      await _blow(tester, input);
+      expect(find.text('Simulação'), findsOneWidget);
+      expect(sharedOnly.level, 0);
+      await tester.pumpWidget(const SizedBox());
+    },
+  );
+
   testWidgets('reduced motion jumps straight to the result', (tester) async {
     _tall(tester);
     final input = _FakeInput(BreathStart.started);

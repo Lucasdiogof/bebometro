@@ -953,3 +953,26 @@ sincronização, exportação); `flutter build web --release` e `flutter build a
 (o emulador tinha um rolê real de conta logada e não foi tocado), a tela bloqueada, o microfone, iOS, sincronização com a migration aplicada.
 Limitações: "Outro" cria categoria `other` (o couvert/entrada/transporte antigos mantêm a categoria e o serviço por linha na comanda);
 corrigir horário só quando o pedido é um registro; o preço sugerido pelo histórico não aparece mais no formulário.
+
+### Continuação (26/10/2026): integração, renomear registro antigo e validação
+
+- **Migration `20261023000000_order_payers.sql`: aplicada pelo responsável** (informado por ele em 26/10/2026; não reaplicar). Não lida de volta
+  daqui (sem acesso administrativo); a confirmação por operação real do app **ainda depende** de uma conta de QA logada (ver abaixo).
+- **Corrigido:** corrigir só o **nome** de um registro antigo apagava silenciosamente teor, ingredientes, composição, tamanho, apresentação e
+  `catalogItemId`. Agora a correção mantém tudo isso guardado (e a origem da tela bloqueada), sem trazer ao formulário; só **trocar por outro
+  produto do catálogo** (`OrderInput.replaceProduct`, possível ao repetir, não ao corrigir) descarta o que descrevia o produto anterior.
+- **Testes novos** (`test/qa_scenarios_test.dart`, na loja local real): A+B+C (R$ 110 / 80 / 30; serviço 10%: 121 / 88 / 33; pagamento de R$ 121 quita
+  o bar sem reatribuir), editar Heineken para R$ 24 (114 / 84 / 30; 125,40 / 92,40 / 33; ID, consumidores, pagantes e pagamentos mantidos),
+  **edição de preço de pedido compartilhado com pagantes independentes** (`copyWithPrice`/`setBillTotal` derivam o custo do dono dos pagantes),
+  mudar só consumidores / só pagantes, repetir o drink da Ana, sem preço depois com preço (pagantes sobrevivem), cortesia e valores com centavos,
+  quantidade > 1 por unidade e por total (sem multiplicação dupla), excluir/desfazer sem ressuscitar excluídos antes, linha com `payers` e comanda
+  `schema_version` 3. Bafômetro: segundo plano libera o microfone; só compartilhados = medidor no início.
+- **Sincronização (lido no código):** `payers` está em `_optionalColumns` e em `carriesAttribution` (nunca enviado degradado); a leitura da
+  nuvem (`cloud_pull.dart`) usa `select()` de todas as colunas e só remove campos de servidor, então `payers` e `extras[].consumers` voltam.
+  Linhas que ficaram retidas por "servidor não atualizado" são reenviadas no próximo `syncNow` (continuam pendentes na fila local).
+- **Web:** `deploy-web.yml` com `AUTO_DEPLOY=true`; os 6 últimos pushes na `main` publicaram com sucesso (o último `c047306`, 26/10/2026 02:11 UTC) e
+  `https://bebometro.lucksrei.com/main.dart.js` já traz o novo formulário ("Quem paga?") e não traz mais o texto antigo do Bafômetro.
+- **Não executado na interface nem na sincronização real:** a criação de conta de QA e a digitação de senha no app (produção) não foram feitas por mim
+  (regra de segurança da sessão: não crio contas nem digito senhas em serviço de produção, mesmo autorizado). O rolê real "Bar_do_Casal" do emulador
+  não foi tocado. Pendente: cenário A/B/C na interface, offline → reabrir → reconectar, segunda instalação lendo a mesma conta, edição propagada.
+  Para fazer: o responsável cria/loga a conta de QA em um perfil de navegador ou emulador separado e deixa a sessão aberta; o resto eu conduzo.

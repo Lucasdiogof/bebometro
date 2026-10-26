@@ -443,6 +443,7 @@ class _OrderPageState extends State<OrderPage> {
       catalogItemId: item?.id,
       containerMl: p?.volumeMl,
       template: _template,
+      replaceProduct: _item != null && _item!.id != _template?.catalogItemId,
       fixedId: widget.review?.entryId,
       fixedAt: widget.review?.at ?? (_at == _originalAt ? null : _at),
       origin: widget.review?.origin,

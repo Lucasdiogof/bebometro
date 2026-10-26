@@ -1,3 +1,4 @@
+import 'package:bebometro/drinks/domain/abv_source.dart';
 import 'package:bebometro/drinks/domain/drink_category.dart';
 import 'package:bebometro/drinks/domain/drink_entry.dart';
 import 'package:bebometro/tab/domain/tab_calc.dart';
@@ -372,12 +373,75 @@ void main() {
       expect(out.abvPercent, 40);
       expect(out.ingredients, ['cachaça']);
       expect(out.paidCents, 2800);
-      // another name drops the old technical data
-      final renamed = drinks(
-        input(name: 'Outra', template: legacy, existing: [legacy]),
-      ).single;
-      expect(renamed.abvPercent, isNull);
     });
+
+    test(
+      'a rename keeps every hidden historical field; a new product drops them',
+      () {
+        final origin = EntryOrigin.lockScreen(commandId: 'c', tappedAt: _t);
+        final legacy = DrinkEntry.fromJson({
+          ...DrinkEntry(
+            id: 'old',
+            outingId: 'o1',
+            consumedAt: _t,
+            name: 'Caipirinha',
+            category: DrinkCategory.cocktail,
+            createdAt: _t,
+            updatedAt: _t,
+            abvPercent: 40,
+            abvSource: AbvSource.typed,
+            ingredients: const ['cachaça'],
+            containerMl: 300,
+            personalMl: 300,
+            presentation: 'Copo 300 ml',
+            brand: 'Casa',
+            catalogItemId: 'generic-caipirinha',
+            priceKind: PriceKind.informed,
+            paidCents: 2500,
+          ).toJson(),
+          ...origin.toJson(),
+        });
+        final renamed = drinks(
+          input(name: 'Caipi da casa', template: legacy, existing: [legacy]),
+        ).single;
+        expect(renamed.name, 'Caipi da casa');
+        expect(renamed.id, 'old');
+        expect(renamed.abvPercent, 40);
+        expect(renamed.abvSource, AbvSource.typed);
+        expect(renamed.ingredients, ['cachaça']);
+        expect(renamed.containerMl, 300);
+        expect(renamed.personalMl, 300);
+        expect(renamed.presentation, 'Copo 300 ml');
+        expect(renamed.brand, 'Casa');
+        expect(renamed.catalogItemId, 'generic-caipirinha');
+        expect(renamed.entryOrigin?.commandId, 'c');
+        // save -> sync (json) -> read again
+        final back = DrinkEntry.fromJson(renamed.toJson());
+        expect(back.abvPercent, 40);
+        expect(back.ingredients, ['cachaça']);
+        expect(back.entryOrigin?.commandId, 'c');
+        expect(back.name, 'Caipi da casa');
+        // picking another product is a replacement, not a rename
+        final replaced = OrderBuilder.build(
+          OrderInput(
+            outingId: 'o1',
+            name: 'Outra',
+            kind: OrderKind.alcoholic,
+            ownerId: _lucas,
+            at: _t,
+            consumers: const [_lucas],
+            payers: const [_lucas],
+            template: legacy,
+            replaceProduct: true,
+            existing: [legacy],
+          ),
+          newId: nextId,
+        ).entries.single;
+        expect(replaced.abvPercent, isNull);
+        expect(replaced.ingredients, isNull);
+        expect(replaced.id, 'old'); // same record, other product
+      },
+    );
 
     test('payments stay and the balance follows the new payers', () {
       final before = drinks(
