@@ -27,12 +27,12 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 - **Appearance:** dark theme, amber accents, a bottle-cap **B** icon and a separate wordmark.
 - **Stage:** active development; no store release is documented in this repository.
 
-> **Validation status — October 19, 2026:** `flutter analyze` is clean, 156 tests pass and the web release build works. The main outing scenario (a couple splitting a tab) was run in the web app and its synchronization was observed in the database. Still not validated: Android and iOS devices (including the lock-screen tracking), photo reading on real labels, places and map, a second installation and conflicts between devices. Details: [development checklist](docs/development-progress.md) and [QA report](docs/qa-report.md).
+> **Validation status — October 25, 2026:** `flutter analyze` is clean, 229+ tests pass (including the Você + Ana scenario and the order form), the web release build and the Android debug build work. Not run on a device: the full outing on Android/iOS, lock-screen tracking, the microphone of the Bafômetro. The migration `20261023000000_order_payers.sql` must be applied by the project owner before orders that name payers can sync. Details: [HANDOFF](HANDOFF.md).
 
 ## The outing flow
 
 1. Start an outing with a nickname or address and a setting.
-2. Choose a product, recipe or custom drink; enter your portion and an optional price.
+2. Add an order: a free name (the catalog only suggests one), quantity, price, **who consumed it** and **who pays**.
 3. Repeat an order with **Mais uma**, or record water separately.
 4. Follow the list or illustrated table, with spending and budget information.
 5. End the outing, review the summary and revisit it in your history.
@@ -43,9 +43,9 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 **Outings and quick logging**
 
 - One active outing, restored from local storage; editable times and entries.
-- One-tap repetition with undo, preserving the recorded recipe and portion. Water does not replace the last alcoholic-drink shortcut.
-- Shared bottles with equal or custom portions and leftovers. A 600 ml bottle split equally between three people records 200 ml for the user.
-- Consumption and payment are separate: paying for a bottle does not mean drinking it all.
+- One-tap repetition with undo, keeping the name, consumers, payers, price and price condition. Water does not replace the last alcoholic-drink shortcut.
+- A drink, food or other item is one quick form: name, quantity, price (per unit or total; value, courtesy or unknown), who consumed it and who pays. No ingredients, ABV, ml or recipes are asked. Several consumers without a split of the units are one **shared order** (nobody gets a whole unit by inference).
+- Consuming and paying are independent: whoever pays one drink for two people, or a dish for three paid by two, is just two different choices. Payers split equally or with exact typed amounts (always adding up to the cent).
 
 **Catalog and recipes**
 
@@ -53,7 +53,7 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 - **About this data:** each product detail has a folded section showing, field by field, where the ABV, ingredients, sizes and style come from (manufacturer, label in a secondary source, public package registry, press, reference recipe, your own data or a suggested volume), with market, consultation date and a tappable/copyable address. A field without its own source says so. Barcode-registry sizes prove a package existed, not that it is on sale.
 - Search by product, brand, style and aliases; category, brand, style and presentation filters, favorites and recents.
 - Product details include available presentations, declared ingredients, alcohol content and source information where known.
-- Editable recipe components and units; personal drinks and recipes can currently be edited, duplicated and deleted without changing past entries.
+- Personal drinks are just a name and “with / without alcohol”; recipes made in older versions stay stored (they can be logged, duplicated and deleted, but there is no recipe editor any more).
 - Each consumption entry keeps a snapshot. Later catalog or recipe edits do not rewrite history.
 
 **Drinks from photos (outing only)**
@@ -70,7 +70,7 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 - Table/list switch and six settings: bar, nightclub, barbecue, home, beach and restaurant.
 - Illustrated cans, bottles, glasses and other vessels, grouped when the table gets crowded.
 - Optional decorative emptying animation, reduced-motion support and an empty-vessel recap.
-- Accumulated-volume glass and a separate full-screen “tip the glass” beer: the phone itself is the glass, driven by the accelerometer on Android/iOS and by dragging on the web or without a sensor. It is visual only and changes no consumption records.
+- A separate full-screen “tip the glass” beer: the phone itself is the glass, driven by the accelerometer on Android/iOS and by dragging on the web or without a sensor. It is visual only and changes no records.
 
 **Places and spending**
 
@@ -89,14 +89,14 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 - Optional service (10% shortcut, editable) and discount (R$ or %), always in the same order: subtotal → discount → service on eligible items → total. Missing prices make the bill and the split partial.
 - Nickname-only participants, split equally, by item (with weights) or with custom amounts; cents are distributed deterministically and always add up to the total.
 - Payments are recorded per person and only affect the balance. There is no Pix, bank or charge, and the app never says who should transfer to whom. A text summary can be previewed, copied or shared on request.
-- Consumption, assigned cost and payment stay separate: the tab never creates drink records or alcohol statistics for anyone.
+- Consumption, assigned cost and payment stay separate: the tab never creates drink records for anyone. By-item splitting uses each order's own payers; older records without payers keep the previous reading (the cost follows who drank it).
 
 **History and personal statistics**
 
 - Monthly history with place, period and outing-type filters.
-- Statistics for 7, 30 or 90 days or a custom period: outings, categories, known volumes, calculated alcohol, recorded spending and places.
+- Statistics for 7, 30 or 90 days or a custom period: outings, orders by category (own units and shared orders apart), the cost attributed to you and places. No volume or alcohol totals.
 - Optional post-outing feedback, morning-after notes and hangover report; an unfinished-outing reminder never ends a session automatically.
-- Missing information stays visible. A day without records does not mean an alcohol-free day.
+- Missing information stays visible. A day without records does not mean a day without drinking.
 
 **Outing on the lock screen (optional)**
 
@@ -109,7 +109,7 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 - Never Have I Ever, Most Likely To and Truth or Dare.
 - Player nicknames (or pick the people of the outing), light/adult modes, no scores: the person who reads is highlighted and the reader rotates; custom cards and resumable games.
 - Skipping has no penalty. Games do not require drinking or automatically add drinks to an outing.
-- **Pretend breathalyzer:** a made-up visual instrument. The microphone (only after you tap “Start”) just senses how hard you blow; the sound is processed on the device, never recorded or sent, and released when you leave or the app goes to the background. Without a microphone, “Hold to play”. The result is random, with no number, no verdict and no link to the recorded consumption; nothing is saved.
+- **Bafômetro:** a recreational meter. It uses the people of the running outing (or of the last one); one person is picked and blows for about a second (the microphone only senses the sound, never records or sends it, and is released when you leave). Without a microphone, “Hold to play”. The meter shows a visual simulation taken from that person's own alcoholic orders (rule in `docs/bafometro.md`); blowing never changes it and nothing is saved. No units, no verdicts, nothing about driving.
 
 **Sharing and export**
 
@@ -119,9 +119,9 @@ Bebômetro is a Brazil-focused app for recording a *rolê*: an outing at a bar, 
 
 ## Data and calculation rules
 
-Unknown volume, price or alcohol content is not zero. Alcohol totals use only components with sufficient declared data and identify incomplete records; recipe quantities in leaves, spoons or other unsupported units are not silently converted to ml.
+An unknown price is not zero, and a courtesy is not an unknown price. The app no longer asks for or computes volume, ABV or pure alcohol; older records keep those fields stored, untouched, and exports still carry them.
 
-The app records consumption; it does **not** measure blood or breath alcohol, certify sobriety or establish a safe personal drinking limit. The table animation is illustrative, not a measurement of drinking speed or alcohol elimination.
+The app records orders and costs; it does **not** measure blood or breath alcohol, certify sobriety or establish a safe personal drinking limit. The Bafômetro and the table animation are illustrative.
 
 ## Architecture and synchronization
 

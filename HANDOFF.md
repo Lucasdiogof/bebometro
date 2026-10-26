@@ -912,3 +912,44 @@ Estado: `flutter analyze` sem erros, 156 testes passam, build web release OK. Na
 **Ainda por implementar (escopo atual):** troca de e-mail; links de termos e privacidade (dependem de páginas do Bebômetro no site lucksrei.com); sincronizar favoritos, partida e cartas próprias;
 OCR na web; estatística da mesa (decisão: fora).
 **Só falta validar/configurar:** tudo em Android/iOS (microfone, câmera/OCR, tela bloqueada, sensores, teclado virtual, fonte do sistema), segunda instalação e conflito entre dois aparelhos.
+
+## Simplificação: pedidos, consumidores e pagantes, Bafômetro (25/10/2026)
+
+**Uso:** um formulário só (`lib/table/presentation/order_page.dart`) para bebida (com/sem álcool), comida e outro: nome livre,
+quantidade, preço (por unidade ou total; valor / cortesia / não sei), **Quem consumiu?** e **Quem paga?** (independentes). Serve
+para criar, corrigir (mantém ids, horários e origem; horário editável quando o pedido é um registro só) e revisar um toque da tela
+bloqueada (`OrderReview`: mesmo id derivado do comando, horário do toque e origem). O catálogo só sugere o nome (`AddDrinkPage(pickOnly)`).
+Saíram: `DrinkEntryPage`, `DrinkFormCubit`, `DrinkDraft`, editor de garrafa (`BottlePeople*`), editor de receita, composição/teor/volume/álcool puro
+de todas as telas (resumo, histórico, estatísticas, mesa, comanda, conflitos, OCR, Minhas bebidas, detalhe, copão acumulado).
+
+**Consumidores × pagantes:** `DrinkEntry.payers` (pesos por pessoa; chave `me` = dono) e `TabExtra.consumers`/`assign`. Vários consumidores
+sem distribuição de unidades = N registros **compartilhados** (`portions` com ml nulo, `bill_total_cents` = preço da unidade); com
+distribuição por pessoa = registros individuais. Pagantes: divisão igual (todos peso 1) ou valores digitados (viram pesos; por unidade
+o corte sai do que cada um ainda deve, então a soma fecha no centavo). `TabCalculator.defaultAssign`: ordem de precedência =
+divisão digitada na comanda (`TabLink.assign`) > `payers` do registro > (registros antigos) quem consumiu. `OutingSummary`/estatísticas:
+custo do dono = `DrinkEntry.ownerCostCents`; consumo pessoal = registros em que ele participa, com **unidades próprias** e **compartilhados**
+separados (`PersonConsumption`). Corrigir um pedido apaga a divisão digitada antiga dos mesmos registros e, se há pagamentos, mostra
+o saldo de antes e depois (os pagamentos nunca são apagados). Remover pessoa continua bloqueado enquanto há vínculo (consumo, pagante,
+extra); a pessoa só "saiu".
+
+**Dados antigos:** nada migrado nem apagado. Sem `payers` = leitura anterior (o custo segue quem consumiu); campos técnicos (teor, ml,
+receita) continuam guardados e saem na exportação, só não são mais pedidos nem calculados. Receitas antigas continuam no catálogo pessoal
+(registrar, duplicar, excluir; sem editor). Ao corrigir um registro antigo, os dados técnicos são mantidos se o nome não mudar.
+
+**Migration necessária (não aplicada por mim):** `supabase/migrations/20261023000000_order_payers.sql` (coluna `payers jsonb` em
+`drink_entries`, aditiva e idempotente). Sem ela, registro com pagantes **não é enviado degradado**: fica na fila com o aviso
+"servidor não atualizado" (mesma regra de `consumer_id`/`portions`, `SyncCubit.carriesAttribution`). Comanda: `schema_version` 3
+(`extras[].consumers`), sem migration; a trava de `schema_version` do servidor já impede app antigo de sobrescrever.
+
+**Bafômetro:** ver `docs/bafometro.md` (participantes do rolê ativo/último, sopro de ~1 s, medidor n/(n+4) de pedidos individuais com álcool).
+
+**Privacidade das lojas (não alterada):** com a migration aplicada e o app publicado, os campos de teor, volume, composição e álcool
+deixam de ser coletados em registros novos; só depois disso as declarações poderiam deixar de citá-los, e o áudio do Bafômetro
+continua sem gravação (o uso do microfone permanece). Dados antigos ainda têm esses campos, então a declaração só pode mudar se eles forem
+apagados/migrados, decisão do responsável.
+
+**Validação desta rodada:** analyze limpo; 229+ testes (builder, cenário Você + Ana, tela de pedido com teclado/fonte grande/3 idiomas, Bafômetro,
+sincronização, exportação); `flutter build web --release` e `flutter build apk --debug` ok. **Não** rodado em aparelho: o rolê completo
+(o emulador tinha um rolê real de conta logada e não foi tocado), a tela bloqueada, o microfone, iOS, sincronização com a migration aplicada.
+Limitações: "Outro" cria categoria `other` (o couvert/entrada/transporte antigos mantêm a categoria e o serviço por linha na comanda);
+corrigir horário só quando o pedido é um registro; o preço sugerido pelo histórico não aparece mais no formulário.

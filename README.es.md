@@ -27,12 +27,12 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 - **Apariencia:** tema oscuro, detalles ámbar, icono con una **B** en una chapa de botella y logotipo escrito independiente.
 - **Etapa:** desarrollo activo; no hay un lanzamiento en tiendas documentado en este repositorio.
 
-> **Estado de validación — 19/10/2026:** `flutter analyze` sin errores, 156 pruebas pasan y el build web de release funciona. El escenario principal de la salida (una pareja dividiendo la cuenta) se recorrió en la app web y la sincronización se observó en la base de datos. Aún no validado: dispositivos Android e iOS (incluido el seguimiento en la pantalla de bloqueo), lectura de fotos en etiquetas reales, lugares y mapa, una segunda instalación y conflictos entre dispositivos. Detalles: [checklist](docs/development-progress.md) e [informe de QA](docs/qa-report.md).
+> **Estado de validación — 25/10/2026:** `flutter analyze` limpio, 229+ pruebas pasan (incluido el escenario Você + Ana y el formulario de pedido), la compilación web release y la de Android debug funcionan. No ejecutado en dispositivo: la salida completa en Android/iOS, el seguimiento en la pantalla bloqueada, el micrófono del Bafômetro. La migración `20261023000000_order_payers.sql` debe aplicarla el responsable del proyecto antes de que los pedidos con pagadores sincronicen. Detalles: [HANDOFF](HANDOFF.md).
 
 ## Cómo funciona una salida
 
 1. Inicia una sesión con un apodo o una dirección y un ambiente.
-2. Elige un producto, receta o bebida propia; indica tu porción y, opcionalmente, el precio.
+2. Agrega un pedido: nombre libre (el catálogo solo sugiere), cantidad, precio, **quién consumió** y **quién paga**.
 3. Repite el pedido con **Mais uma** o registra agua por separado.
 4. Consulta la lista o la mesa ilustrada, con gastos y presupuesto.
 5. Finaliza, revisa el resumen y vuelve a consultarlo en el historial.
@@ -43,9 +43,9 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 **Salidas y registro rápido**
 
 - Una sesión activa, recuperada del almacenamiento local; horarios y registros editables.
-- Repetición con un toque y opción de deshacer, conservando receta y porción. El agua no sustituye el acceso a la última bebida alcohólica.
-- Botellas compartidas con reparto igual o personalizado y sobrantes. Una botella de 600 ml repartida por igual entre tres personas registra 200 ml para el usuario.
-- Consumo y pago separados: pagar la botella no significa beberla entera.
+- Repetición con un toque y opción de deshacer, conservando nombre, consumidores, pagadores, precio y condición del precio. El agua no sustituye el acceso a la última bebida alcohólica.
+- Bebida, comida u otro ítem es un único formulario rápido: nombre, cantidad, precio (por unidad o total; valor, cortesía o desconocido), quién consumió y quién paga. No pide ingredientes, graduación, ml ni recetas. Varios consumidores sin reparto de unidades forman un **pedido compartido** (nadie recibe una unidad entera por deducción).
+- Consumir y pagar son independientes: quien paga un trago para dos personas, o un plato para tres pagado por dos, son solo dos elecciones distintas. Los pagadores dividen por igual o con montos escritos, siempre al centavo.
 
 **Catálogo y recetas**
 
@@ -53,7 +53,7 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 - **Sobre estos datos:** el detalle de cada producto tiene una sección plegada que muestra, campo por campo, de dónde vienen la graduación, los ingredientes, los tamaños y el estilo (fabricante, etiqueta en fuente secundaria, registro público de envase, prensa, receta de referencia, información tuya o volumen sugerido), con mercado, fecha de consulta y dirección que se abre al tocar y se puede copiar. Un campo sin fuente propia lo indica. Un tamaño tomado de un registro de código de barras prueba que el envase existió, no que esté a la venta.
 - Búsqueda por producto, marca, estilo y alias; filtros por categoría, marca, estilo y presentación, favoritos y recientes.
 - Detalles con presentaciones, ingredientes declarados, graduación y fuentes cuando se conocen.
-- Componentes y unidades editables; actualmente las bebidas y recetas personales pueden editarse, duplicarse y eliminarse sin modificar registros anteriores.
+- Las bebidas personales son solo un nombre y “con / sin alcohol”; las recetas hechas en versiones antiguas siguen guardadas (se pueden registrar, duplicar y eliminar, pero ya no hay editor de recetas).
 - Cada consumo conserva una copia de sus datos. Las actualizaciones del catálogo o de una receta no reescriben el historial.
 
 **Bebidas por foto (solo en la salida)**
@@ -70,7 +70,7 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 - Alternancia Mesa/Lista y seis ambientes: bar, discoteca, barbacoa, casa, playa y restaurante.
 - Latas, botellas, vasos y otros recipientes ilustrados, agrupados cuando hay muchos registros.
 - Vaciado decorativo opcional, reducción de movimiento y resumen con recipientes vacíos.
-- Vaso de volumen acumulado e cerveza independiente a pantalla completa para “inclinar el vaso”: el propio móvil es el vaso, controlado por el acelerómetro en Android/iOS y por arrastre en la web o sin sensor. Es solo visual y no modifica los consumos.
+- Cerveza independiente a pantalla completa para “inclinar el vaso”: el propio teléfono es el vaso, movido por el acelerómetro en Android/iOS y por arrastre en la web o sin sensor. Es solo visual y no altera registros.
 
 **Lugares y gastos**
 
@@ -89,12 +89,12 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 - Servicio opcional (atajo del 10%, editable) y descuento (R$ o %), siempre en el mismo orden: subtotal → descuento → servicio sobre los ítems elegibles → total. Los precios ausentes dejan la cuenta y la división como parciales.
 - Participantes solo por apodo, división igual, por ítem (con pesos) o con importes personalizados; los centavos se reparten de forma determinista y siempre suman el total.
 - Los pagos se registran por persona y solo afectan al saldo. No hay Pix, banco ni cobro, y la app nunca dice quién debe transferir a quién. Un resumen en texto se puede ver, copiar o compartir a petición.
-- Consumo, coste asignado y pago permanecen separados: la cuenta nunca crea registros de bebida ni estadísticas de alcohol de nadie.
+- Consumo, costo asignado y pago permanecen separados: la cuenta nunca crea registros de bebida de nadie. El reparto por ítem usa los pagadores de cada pedido; los registros antiguos sin pagadores mantienen la lectura anterior (el costo sigue a quien bebió).
 
 **Historial y estadísticas personales**
 
 - Historial mensual con filtros por lugar, período y tipo de salida.
-- Estadísticas de 7, 30 o 90 días o período personalizado: salidas, categorías, volúmenes conocidos, alcohol calculado, gastos registrados y lugares.
+- Estadísticas de 7, 30 o 90 días o período personalizado: salidas, pedidos por categoría (unidades propias y compartidos por separado), el costo asignado a ti y lugares. Sin totales de volumen ni de alcohol.
 - Valoración opcional posterior, notas sobre la mañana siguiente y resaca; un recordatorio de sesión abierta nunca la finaliza automáticamente.
 - La información ausente se identifica. Un día sin registros no equivale a un día sin beber.
 
@@ -109,7 +109,7 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 - Yo nunca, Quién es más probable y Verdad o reto.
 - Apodos (o las personas de la salida), modos suave/adultos, sin puntos: quien lee la pregunta aparece destacado y la lectura rota; tarjetas propias y partidas reanudables.
 - Saltar no tiene castigo. Los juegos no exigen beber ni registran bebidas automáticamente.
-- **Alcoholímetro de broma:** un instrumento visual de mentira. El micrófono (solo después de tocar “Empezar”) únicamente siente la fuerza del soplido; el sonido se procesa en el dispositivo, no se graba ni se envía y se libera al salir o pasar a segundo plano. Sin micrófono, “Mantener para jugar”. El resultado es al azar, sin número, sin veredicto y sin relación con el consumo registrado; no se guarda nada.
+- **Bafômetro:** un medidor recreativo. Usa a las personas de la salida en curso (o de la última); se elige una y sopla durante cerca de 1 segundo (el micrófono solo siente el sonido, no graba ni envía, y se libera al salir). Sin micrófono, “Mantener para jugar”. El medidor muestra una simulación visual basada en los pedidos alcohólicos de esa persona (regla en `docs/bafometro.md`); el soplido no cambia el resultado y nada se guarda. Sin unidades, sin veredictos, nada sobre conducir.
 
 **Compartir y exportar**
 
@@ -119,9 +119,9 @@ Bebômetro es una app centrada en Brasil para registrar un *rolê*: una salida a
 
 ## Reglas de datos y cálculos
 
-Un volumen, precio o graduación desconocidos no son cero. El alcohol se calcula únicamente con componentes cuyos datos declarados sean suficientes, indicando los registros incompletos; hojas, cucharadas y otras unidades no compatibles no se convierten silenciosamente a ml.
+Un precio desconocido no es cero, y una cortesía no es un precio desconocido. La app ya no pide ni calcula volumen, graduación o alcohol puro; los registros antiguos conservan esos campos guardados, intactos, y la exportación aún los incluye.
 
-La app registra consumo; **no** mide alcohol en sangre o aliento, certifica sobriedad ni establece un límite personal seguro. La animación de la mesa es ilustrativa: no mide el ritmo de consumo ni la eliminación de alcohol.
+La app registra pedidos y costos; **no** mide alcohol en sangre o aliento, certifica sobriedad ni establece un límite personal seguro. El Bafômetro y la animación de la mesa son ilustrativos.
 
 ## Arquitectura y sincronización
 

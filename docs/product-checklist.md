@@ -116,3 +116,24 @@ Atualizado após a rodada de QA de 16-19/10 (`docs/qa-report.md`). "Validado em 
 | BEB-005 taxa de serviço 5/10/20% | Sim (`862e310`) | Sim | **Sim, Android:** 5/10/20% = R$ 5,25 / 10,50 / 21,00 sobre R$ 105, desligar recalcula; cálculo coberto por `test/tab_calc_test.dart` (inclui 12,34%) | iPhone |
 | BEB-006 layout do Compartilhar | Sim (`7b986bb`) | Sim | Não | Tela estreita e fonte ampliada |
 | BEB-007 falha no compartilhamento | Fragilidades corrigidas (`7b986bb`, `c932b0b`, âncora da folha em 16/10); **causa original não reproduzida** | Sim | **Parcial, Android:** o seletor do sistema abre e cancelar volta sem erro e sem cópia (resumo e exportação JSON) | Compartilhar de verdade no iPhone (e no iPad, se houver) |
+
+## Checklist funcional: pedidos, pagantes e Bafômetro (25/10/2026)
+Código = feito e coberto por teste; Execução = só onde há prova rodando (nada disto foi visto em aparelho).
+
+| Item | Código | Execução |
+|---|---|---|
+| Formulário único (bebida, comida, outro) com nome livre, quantidade, preço (valor/cortesia/não sei), consumidores e pagantes | Sim | Teste de widget |
+| Consumir e pagar independentes (nunca um altera o outro) | Sim | Teste de unidade e de widget |
+| Heineken 600 (você + Ana, paga você): 1 pedido compartilhado, R$ 20 uma vez, Ana R$ 0 | Sim | Teste de cenário |
+| Batata R$ 60, 3 consumidores, 2 pagantes: R$ 30 + R$ 30, terceiro R$ 0 | Sim | Teste |
+| Valores digitados dos pagantes somam exato em centavos (inclusive por várias unidades) | Sim | Teste |
+| Sem preço: pagantes guardados, valor pendente; cortesia = zero | Sim | Teste |
+| Compartilhado não vira unidade inteira por pessoa ("Participou de N pedidos compartilhados") | Sim | Teste |
+| Corrigir sem perder pagamentos; mostra saldo antes/depois | Sim | Teste de widget |
+| Repetir/"Mais uma" mantém consumidores, pagantes, preço; id e origem novos | Sim | Teste |
+| Tela bloqueada: só individual do dono; revisão com o mesmo id/horário do toque | Sim | Teste (builder); aparelho: Não |
+| Dados antigos sem pagantes: custo segue quem consumiu | Sim | Teste |
+| Técnicos (teor, ml, receita, álcool puro) fora de cadastro, edição, resumo, histórico, estatística, mesa, OCR, conflitos | Sim | Analyze + testes |
+| Sincronização não degrada registro com pagantes (aguarda a migration) | Sim | Teste; servidor: Não (migration não aplicada) |
+| Bafômetro: participantes do rolê, ~1 s de sopro, medidor n/(n+4), "Simulação", sem números | Sim | Teste de widget; microfone real: Não |
+| pt-BR / en / es (1.540 chaves iguais nos três) | Sim | gen-l10n + testes em 3 idiomas |

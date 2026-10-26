@@ -27,12 +27,12 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 - **Aparência:** tema escuro, destaques âmbar, ícone com **B** na tampinha e marca escrita separada.
 - **Estágio:** desenvolvimento ativo; não há lançamento em lojas documentado neste repositório.
 
-> **Estado da validação — 19/10/2026:** `flutter analyze` sem erros, 156 testes passando e build web release funcionando. O cenário principal do rolê (casal dividindo a comanda) foi percorrido no app web e a sincronização foi observada no banco. Ainda não validado: aparelhos Android e iOS (inclusive o acompanhamento na tela bloqueada), leitura de fotos em rótulos reais, locais e mapa, segunda instalação e conflito entre aparelhos. Detalhes: [checklist](docs/development-progress.md) e [relatório de QA](docs/qa-report.md).
+> **Estado de validação — 25/10/2026:** `flutter analyze` limpo, 229+ testes passam (incluindo o cenário Você + Ana e o formulário de pedido), o build web release e o build Android debug funcionam. Não executado em aparelho: o rolê completo no Android/iOS, o rastreio na tela bloqueada, o microfone do Bafômetro. A migration `20261023000000_order_payers.sql` precisa ser aplicada pelo responsável do projeto antes de pedidos com pagantes sincronizarem. Detalhes: [HANDOFF](HANDOFF.md).
 
 ## Como funciona o rolê
 
 1. Inicie com apelido ou endereço e um tipo de ambiente.
-2. Escolha um produto, receita ou bebida própria; informe sua porção e, opcionalmente, o preço.
+2. Adicione um pedido: nome livre (o catálogo só sugere), quantidade, preço, **quem consumiu** e **quem paga**.
 3. Repita o pedido com **Mais uma** ou registre água separadamente.
 4. Acompanhe a lista ou a mesa ilustrada, com gastos e orçamento.
 5. Encerre, confira o resumo e consulte depois no histórico.
@@ -43,9 +43,9 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 **Rolês e registro rápido**
 
 - Um rolê ativo por vez, recuperado do armazenamento local; horários e registros editáveis.
-- Repetição com um toque e opção de desfazer, preservando receita e porção. Água não substitui o atalho da última bebida alcoólica.
-- Garrafas compartilhadas com divisão igual ou personalizada e sobras. Uma garrafa de 600 ml dividida igualmente entre três pessoas registra 200 ml para o usuário.
-- Consumo separado de pagamento: pagar a garrafa não significa beber tudo.
+- Repetição com um toque e opção de desfazer, mantendo nome, consumidores, pagantes, preço e condição do preço. Água não substitui o atalho da última bebida alcoólica.
+- Bebida, comida ou outro item é um único formulário rápido: nome, quantidade, preço (por unidade ou total; valor, cortesia ou desconhecido), quem consumiu e quem paga. Não pede ingredientes, teor, ml nem receita. Vários consumidores sem divisão das unidades formam um **pedido compartilhado** (ninguém ganha uma unidade inteira por dedução).
+- Consumir e pagar são independentes: quem paga um drink para duas pessoas, ou uma porção para três paga por duas, são só duas escolhas diferentes. Os pagantes dividem igualmente ou com valores digitados, sempre fechando no centavo.
 
 **Catálogo e receitas**
 
@@ -53,7 +53,7 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 - **Sobre estes dados:** o detalhe de cada produto tem uma seção recolhida que mostra, campo a campo, de onde vêm teor, ingredientes, tamanhos e estilo (fabricante, rótulo em fonte secundária, cadastro público de embalagem, imprensa, receita de referência, informação sua ou volume sugerido), com mercado, data de consulta e endereço que abre ao tocar e pode ser copiado. Campo sem fonte própria avisa isso. Tamanho vindo de cadastro de código de barras prova que a embalagem existiu, não que esteja à venda.
 - Busca por produto, marca, estilo e apelidos; filtros por categoria, marca, estilo e apresentação, favoritos e recentes.
 - Detalhes com apresentações, ingredientes declarados, teor alcoólico e fontes, quando conhecidos.
-- Componentes e unidades editáveis; bebidas e receitas pessoais atualmente podem ser editadas, duplicadas e excluídas sem modificar registros passados.
+- Bebidas pessoais são só um nome e “com / sem álcool”; receitas feitas em versões antigas continuam guardadas (podem ser registradas, duplicadas e excluídas, mas não há mais editor de receitas).
 - Cada consumo guarda uma cópia dos dados. Atualizações do catálogo ou da receita não reescrevem o histórico.
 
 **Bebidas por foto (só no rolê)**
@@ -70,7 +70,7 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 - Alternância Mesa/Lista e seis cenários: bar, balada, churrasco, casa, praia e restaurante.
 - Latas, garrafas, copos e outros recipientes ilustrados, com agrupamento quando há muitos registros.
 - Esvaziamento decorativo opcional, redução de movimento e retrospectiva com recipientes vazios.
-- Copão de volume acumulado e brincadeira separada de “virar o copo” em tela cheia: o próprio celular é o copo, movido pelo acelerômetro no Android/iOS e por arrasto na web ou sem sensor. É só visual e não altera os consumos.
+- Brincadeira separada de “virar o copo” em tela cheia: o próprio celular é o copo, movido pelo acelerômetro no Android/iOS e por arrasto na web ou sem sensor. É só visual e não altera registros.
 
 **Locais e gastos**
 
@@ -89,12 +89,12 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 - Serviço opcional (atalho de 10%, editável) e desconto (R$ ou %), sempre na mesma ordem: subtotal → desconto → serviço sobre itens elegíveis → total. Preços ausentes deixam a conta e a divisão parciais.
 - Participantes só por apelido, divisão igual, por item (com pesos) ou com valores personalizados; os centavos são distribuídos de forma determinística e sempre somam o total.
 - Pagamentos são registrados por pessoa e só afetam o saldo. Não há Pix, banco nem cobrança, e o app nunca diz quem deve transferir para quem. Um resumo em texto pode ser visto, copiado ou compartilhado a pedido.
-- Consumo, custo atribuído e pagamento ficam separados: a comanda nunca cria registros de bebida nem estatísticas de álcool de ninguém.
+- Consumo, custo atribuído e pagamento ficam separados: a comanda nunca cria registros de bebida de ninguém. A divisão por item usa os pagantes de cada pedido; registros antigos sem pagantes mantêm a leitura anterior (o custo acompanha quem bebeu).
 
 **Histórico e estatísticas pessoais**
 
 - Histórico agrupado por mês, com filtros por local, período e tipo de rolê.
-- Estatísticas de 7, 30 ou 90 dias ou período personalizado: rolês, categorias, volumes conhecidos, álcool calculado, gastos informados e locais.
+- Estatísticas de 7, 30 ou 90 dias ou período personalizado: rolês, pedidos por categoria (unidades próprias e compartilhados separados), custo atribuído a você e locais. Sem totais de volume ou de álcool.
 - Relato pós-rolê opcional, informações de como acordou e ressaca; lembrete de rolê aberto sem encerramento automático.
 - Dados ausentes continuam identificados. Dia sem registro não significa dia sem beber.
 
@@ -109,7 +109,7 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 - Eu nunca, Quem é mais provável e Verdade ou desafio.
 - Apelidos (ou as pessoas do rolê), modos Leve/+18, sem pontos: quem lê a pergunta fica em destaque e a leitura gira; cartas próprias e retomada da partida.
 - Pular não gera punição. Os jogos não exigem consumo nem registram bebidas automaticamente.
-- **Bafômetro de brincadeira:** um instrumento visual de mentira. O microfone (só depois do toque em “Começar”) apenas sente a força do sopro; o som é processado no aparelho, não é gravado nem enviado e é liberado ao sair ou ir para segundo plano. Sem microfone, “Segurar para brincar”. O resultado é sorteado, sem número, sem veredito e sem ligação com o consumo registrado; nada é salvo.
+- **Bafômetro:** um medidor recreativo. Usa as pessoas do rolê em andamento (ou do último); escolhe-se uma e ela sopra por cerca de 1 segundo (o microfone só sente o som, não grava nem envia, e é liberado ao sair). Sem microfone, “Segurar para brincar”. O medidor mostra uma simulação visual baseada nos pedidos alcoólicos da própria pessoa (regra em `docs/bafometro.md`); o sopro não altera o resultado e nada é salvo. Sem unidades, sem veredito, nada sobre dirigir.
 
 **Compartilhamento e exportação**
 
@@ -119,9 +119,9 @@ O Bebômetro é um app brasileiro para registrar um **rolê**: bar, churrasco, f
 
 ## Regras dos dados e cálculos
 
-Volume, preço ou teor desconhecido não é zero. O cálculo de álcool usa somente componentes com dados declarados suficientes e indica registros incompletos; folhas, colheres e outras unidades não suportadas não são convertidas silenciosamente em ml.
+Preço desconhecido não é zero, e cortesia não é preço desconhecido. O app não pede nem calcula mais volume, teor ou álcool puro; registros antigos mantêm esses campos guardados, intactos, e a exportação ainda os traz.
 
-O app registra consumo; **não** mede álcool no sangue ou no sopro, certifica sobriedade ou estabelece um limite pessoal seguro. A animação da mesa é ilustrativa e não mede ritmo de consumo ou eliminação de álcool.
+O app registra pedidos e custos; **não** mede álcool no sangue ou no sopro, certifica sobriedade ou estabelece um limite pessoal seguro. O Bafômetro e a animação da mesa são ilustrativos.
 
 ## Arquitetura e sincronização
 

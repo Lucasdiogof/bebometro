@@ -19,6 +19,11 @@ importação futura leia sempre o mesmo formato.
   Esse formato é fixo (pensado para planilhas pt-BR) e **não muda com o idioma do app**.
 - Nomes das colunas fixos (`id`, `inicio_utc`, `tipo`, `categoria`, `preco_tipo`, ...), em português, como nas primeiras
   versões: são identificadores, não texto de tela.
+- Rodada de 25/10/2026: saíram `alcool_puro_ml_conhecido` e `alcool_completo` (o app não calcula mais álcool); os demais campos
+  técnicos (`teor_percentual`, `volume_*`, `composicao_json`) continuam, só com o que registros antigos guardaram. Entrou,
+  **no fim**, `pagantes_json` (`{"me": peso, "<id>": peso}`; vazio = registro sem pagantes: o custo acompanha quem consumiu).
+  No JSON, o registro tem `payers` (mesmo formato) quando há; as linhas da comanda (`outing_tabs.data.extras[]`) têm
+  `consumers` (lista de ids) além de `assign` (quem paga).
 - `bebometro-bebidas.csv` ganhou, **no fim**, `consumidor` (`voce` = o dono da conta; senão o id do participante; vazio quando há porções) e
   `porcoes_json` (garrafa compartilhada: `{"me": ml, "<id>": ml}`; `null` = volume desconhecido). Registros antigos saem como `voce`.
 - Valores de categorias são **códigos**, não rótulos:
