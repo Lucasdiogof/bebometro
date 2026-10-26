@@ -9,7 +9,7 @@ import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/drink_entry.dart';
-import '../../drinks/presentation/drink_entry_page.dart';
+import '../../table/presentation/order_page.dart';
 import '../../outings/data/outing_repository.dart';
 import '../data/tab_repository.dart';
 import '../domain/tab_calc.dart';
@@ -634,10 +634,12 @@ class _LineRow extends StatelessWidget {
               if (cents != null) await cubit.fillEntryPrice(entry, cents);
             case 'edit':
               if (entry != null) {
-                await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => DrinkEntryPage.edit(entry: entry),
-                  ),
+                await OrderPage.editEntry(context, entry: entry);
+              } else if (extra != null && state.doc.autoLink) {
+                await OrderPage.editExtra(
+                  context,
+                  outingId: state.doc.outingId,
+                  extra: extra,
                 );
               } else if (extra != null) {
                 final next = await showTabExtraSheet(

@@ -8,21 +8,50 @@ import '../../core/widgets/common.dart';
 import '../../core/widgets/money_field.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/catalog_item.dart';
-import '../../drinks/domain/common_sizes.dart';
 import '../../drinks/domain/drink_category.dart';
 import '../../drinks/domain/drink_entry.dart';
-import '../../drinks/domain/recipe.dart';
 import '../../drinks/presentation/add_drink_page.dart';
 import '../../l10n/l10n.dart';
 import '../../tab/data/tab_repository.dart';
+import '../../tab/domain/tab_calc.dart';
 import '../../tab/domain/tab_models.dart';
 import '../domain/order_builder.dart';
 import '../domain/table_orders.dart';
 import 'person_avatar.dart';
 
-/// "New order": what was ordered, for whom and how many, and the price. A
-/// free name is enough (no volume, ABV or recipe needed); the catalog only
-/// helps to fill things in. Pops with the saved records.
+/// What the order form saved: the drink records or the extra line, and whether
+/// it was a correction.
+class OrderOutcome {
+  const OrderOutcome({
+    this.entries = const [],
+    this.extra,
+    this.edited = false,
+  });
+
+  final List<DrinkEntry> entries;
+  final TabExtra? extra;
+  final bool edited;
+}
+
+/// A lock-screen tap that could not be saved on its own, reviewed here: the
+/// record keeps the command's id, the time of the tap and its origin.
+class OrderReview {
+  const OrderReview({
+    required this.entryId,
+    required this.at,
+    required this.origin,
+    required this.note,
+  });
+
+  final String entryId;
+  final DateTime at;
+  final EntryOrigin origin;
+  final String note;
+}
+
+/// "New order" / "Correct order": what was ordered, how many, the price, who
+/// consumed it and who pays. Name is free text (the catalog only suggests it);
+/// nothing about volume, ABV or recipes is asked. Pops an [OrderOutcome].
 class OrderPage extends StatefulWidget {
   const OrderPage({
     super.key,
@@ -30,30 +59,122 @@ class OrderPage extends StatefulWidget {
     required this.doc,
     this.preselected = const {},
     this.initialText = '',
+    this.item,
+    this.edit,
+    this.seed,
+    this.kind = OrderKind.alcoholic,
+    this.review,
   });
 
   final String outingId;
   final TabDoc doc;
 
-  /// People marked from the start (the person being viewed). Empty on the
-  /// whole-table view: nothing is assumed, the person must be chosen.
+  /// People marked as consumers from the start (the person being viewed).
   final Set<String> preselected;
   final String initialText;
 
-  static Future<List<DrinkEntry>?> open(
+  /// A catalog product chosen before opening the form (name and kind only).
+  final CatalogItem? item;
+
+  /// Correcting this order instead of making a new one.
+  final OrderRow? edit;
+
+  /// Reviewing a lock-screen tap (one record, saved with the command's id).
+  final OrderReview? review;
+
+  /// What a new order starts as (drink, food or other); a catalog product
+  /// or a copy overrides it.
+  final OrderKind kind;
+
+  /// A new order that starts as a copy of this one (consumers, payers, price):
+  /// what "Repetir" opens when somebody of the order is no longer at the table.
+  final OrderRow? seed;
+
+  /// Opens the form to correct [row] of [outingId].
+  static Future<OrderOutcome?> editRow(
     BuildContext context, {
     required String outingId,
-    required PersonFilter filter,
-    String initialText = '',
+    required OrderRow row,
   }) {
     final doc = getIt<TabRepository>().load(outingId);
-    return Navigator.of(context).push<List<DrinkEntry>>(
+    return Navigator.of(context).push<OrderOutcome>(
+      MaterialPageRoute(
+        builder: (_) => OrderPage(outingId: outingId, doc: doc, edit: row),
+      ),
+    );
+  }
+
+  /// Opens the form to correct the food/other line [extra].
+  static Future<OrderOutcome?> editExtra(
+    BuildContext context, {
+    required String outingId,
+    required TabExtra extra,
+  }) {
+    final doc = getIt<TabRepository>().load(outingId);
+    for (final r in TableOrders.rows(
+      doc,
+      const {},
+      const PersonFilter.table(),
+    )) {
+      if (r.extra?.id == extra.id) {
+        return editRow(context, outingId: outingId, row: r);
+      }
+    }
+    return Future.value();
+  }
+
+  /// Opens the form to correct the order of the record [entry].
+  static Future<OrderOutcome?> editEntry(
+    BuildContext context, {
+    required DrinkEntry entry,
+  }) {
+    final tabs = getIt<TabRepository>();
+    final doc = tabs.load(entry.outingId);
+    final row = TableOrders.rowOfEntry(doc, entry);
+    if (row == null) return Future.value();
+    return editRow(context, outingId: entry.outingId, row: row);
+  }
+
+  /// Opens the form for [outingId], making sure the tab has the owner first.
+  static Future<OrderOutcome?> open(
+    BuildContext context, {
+    required String outingId,
+    Set<String> preselected = const {},
+    String initialText = '',
+    CatalogItem? item,
+    OrderRow? seed,
+    OrderKind kind = OrderKind.alcoholic,
+  }) async {
+    final tabs = getIt<TabRepository>();
+    var doc = tabs.load(outingId);
+    if (doc.me == null) {
+      final me = Participant(
+        id: getIt<DrinkRepository>().newId(),
+        name: tr.tabMe,
+        isMe: true,
+      );
+      await tabs.update(
+        outingId,
+        (d) => d.me != null
+            ? d
+            : d.copyWith(
+                participants: [me, ...d.participants],
+                equalIds: [me.id, ...d.equalIds],
+              ),
+      );
+      doc = tabs.load(outingId);
+    }
+    if (!context.mounted) return null;
+    return Navigator.of(context).push<OrderOutcome>(
       MaterialPageRoute(
         builder: (_) => OrderPage(
           outingId: outingId,
           doc: doc,
-          preselected: TableOrders.preselect(doc, filter),
+          preselected: preselected,
           initialText: initialText,
+          item: item,
+          seed: seed,
+          kind: kind,
         ),
       ),
     );
@@ -64,55 +185,179 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
-  static const _kinds = [
-    DrinkCategory.draft,
-    DrinkCategory.beer,
-    DrinkCategory.cocktail,
-    DrinkCategory.wine,
-    DrinkCategory.spirit,
-    DrinkCategory.readyToDrink,
-    DrinkCategory.nonAlcoholic,
-    DrinkCategory.water,
-  ];
-
   late final TextEditingController _name = TextEditingController(
     text: widget.initialText,
   );
   final _price = TextEditingController();
-  final _volume = TextEditingController();
-  final _abv = TextEditingController();
-  final _leftover = TextEditingController();
-  final _portionCtl = <String, TextEditingController>{};
+  final _payerCtl = <String, TextEditingController>{};
 
-  late DrinkCategory _category = DrinkCategory.draft;
+  OrderKind _kind = OrderKind.alcoholic;
   CatalogItem? _item;
-  bool _useRecipe = false;
-  String? _presentationLabel;
+  Presentation? _presentation;
+  int _quantity = 1;
 
-  /// Individual order: person -> servings.
-  late final Map<String, int> _units = {
-    for (final id in widget.preselected)
-      if (widget.doc.participant(id) != null) id: 1,
-  };
+  final List<String> _consumers = [];
+  bool _unitsMode = false;
+  final Map<String, int> _units = {};
 
-  bool _shared = false;
-  final _sharers = <String>{};
-  int _bottles = 1;
+  final List<String> _payers = [];
+  bool _customPayers = false;
 
-  PriceKind _kind = PriceKind.informed;
+  PriceKind _priceKind = PriceKind.informed;
   PriceBasis _basis = PriceBasis.unit;
 
   bool _showErrors = false;
 
   /// The screen is closing because the order was saved (no discard question).
   bool _leaving = false;
+  bool _saving = false;
+
+  /// Hidden legacy data of the record being corrected (see [OrderInput]).
+  DrinkEntry? _template;
+
+  bool get _editing => widget.edit != null;
+
+  /// The order the form was filled from: the one corrected or the one copied.
+  OrderRow? get _row => widget.edit ?? widget.seed;
+
+  String get _ownerId => widget.doc.me?.id ?? '';
+
+  /// Who can be picked: the people at the table, plus anybody already on the
+  /// order being corrected (even if they left since).
+  late final List<Participant> _people = () {
+    final keep = {..._consumers, ..._payers};
+    return [
+      for (final p in widget.doc.participants)
+        if (!p.left || keep.contains(p.id)) p,
+    ];
+  }();
+
+  @override
+  void initState() {
+    super.initState();
+    final row = _row;
+    if (row != null) {
+      _loadRow(row);
+      if (_payers.isEmpty && _ownerId.isNotEmpty) _payers.add(_ownerId);
+    } else {
+      _kind = widget.kind;
+      final item = widget.item;
+      if (item != null) _applyItem(item);
+      final pre = [
+        for (final p in widget.doc.present)
+          if (widget.preselected.contains(p.id)) p.id,
+      ];
+      // Alone at the table: the only person is the consumer.
+      if (pre.isEmpty && widget.doc.present.length == 1) {
+        pre.add(widget.doc.present.first.id);
+      }
+      _consumers.addAll(pre);
+      if (_ownerId.isNotEmpty) _payers.add(_ownerId);
+    }
+  }
+
+  /// Fills the form from the order being corrected: nothing is guessed, what
+  /// was saved is what is shown.
+  void _loadRow(OrderRow row) {
+    final doc = widget.doc;
+    // Correcting keeps everybody; a copy only takes people still present.
+    final known = {
+      for (final p in doc.participants)
+        if (_editing || !p.left) p.id,
+    };
+    _consumers.addAll([
+      for (final id in row.consumerIds)
+        if (known.contains(id)) id,
+    ]);
+    _quantity = _editing ? row.quantity : 1;
+    final x = row.extra;
+    if (x != null) {
+      _name.text = x.description;
+      _kind = x.category == ExtraCategory.food
+          ? OrderKind.food
+          : OrderKind.other;
+      _priceKind = x.priceKind;
+      _basis = x.basis;
+      _quantity = _editing ? x.quantity : 1;
+      if (x.priceKind == PriceKind.informed && x.cents != null) {
+        _price.text = centsToInput(x.cents!);
+      }
+      final w = x.assign ?? {for (final p in doc.present) p.id: 1};
+      _payers.addAll([
+        for (final id in w.keys)
+          if (known.contains(id)) id,
+      ]);
+      _loadCustomPayers(w, x.totalCents);
+      return;
+    }
+    final first = row.entries.first;
+    _template = first;
+    _name.text = first.name;
+    _kind = first.isAlcoholic ? OrderKind.alcoholic : OrderKind.soft;
+    _priceKind = first.priceKind;
+    _basis = PriceBasis.unit;
+    final unit = first.totalCostCents;
+    if (first.priceKind == PriceKind.informed && unit != null) {
+      _price.text = centsToInput(unit);
+    }
+    final payerIds = TableOrders.payersOf(first, doc);
+    _payers.addAll([
+      for (final id in payerIds)
+        if (known.contains(id)) id,
+    ]);
+    // Typed amounts: what each payer bears of the whole order.
+    final typed = doc.linkFor(first.id)?.assign ?? first.payers;
+    if (typed != null && typed.values.toSet().length > 1) {
+      final cents = <String, int>{};
+      for (final e in _editing ? row.entries : [row.entries.last]) {
+        final w = {
+          for (final id in TableOrders.payersOf(e, doc))
+            if (known.contains(id)) id: _weightOf(e, id, doc),
+        };
+        final cost = e.totalCostCents;
+        if (cost == null || w.isEmpty) continue;
+        final ids = w.keys.toList();
+        final parts = TabCalculator.allocate(cost, [
+          for (final k in ids) w[k]!,
+        ]);
+        for (var k = 0; k < ids.length; k++) {
+          cents[ids[k]] = (cents[ids[k]] ?? 0) + parts[k];
+        }
+      }
+      if (cents.isNotEmpty) {
+        _customPayers = true;
+        for (final id in _payers) {
+          _payerCtl[id] = TextEditingController(
+            text: centsToInput(cents[id] ?? 0),
+          );
+        }
+      }
+    }
+  }
+
+  int _weightOf(DrinkEntry e, String id, TabDoc doc) {
+    final typed = doc.linkFor(e.id)?.assign;
+    if (typed != null) return typed[id] ?? 1;
+    final key = id == doc.me?.id ? ownerPortionKey : id;
+    return e.payers?[key] ?? 1;
+  }
+
+  void _loadCustomPayers(Map<String, int> w, int? total) {
+    if (w.values.toSet().length < 2 || total == null) return;
+    final ids = [for (final id in _payers) id];
+    final parts = TabCalculator.allocate(total, [for (final k in ids) w[k]!]);
+    _customPayers = true;
+    for (var k = 0; k < ids.length; k++) {
+      _payerCtl[ids[k]] = TextEditingController(text: centsToInput(parts[k]));
+    }
+  }
 
   /// Something was typed or chosen: leaving asks first.
   bool get _dirty =>
+      _editing ||
       _name.text.trim() != widget.initialText.trim() ||
       _price.text.trim().isNotEmpty ||
-      _volume.text.trim().isNotEmpty ||
-      _abv.text.trim().isNotEmpty ||
+      _consumers.isNotEmpty ||
       _item != null;
 
   Future<void> _confirmDiscard() async {
@@ -146,79 +391,63 @@ class _OrderPageState extends State<OrderPage> {
   void dispose() {
     _name.dispose();
     _price.dispose();
-    _volume.dispose();
-    _abv.dispose();
-    _leftover.dispose();
-    for (final c in _portionCtl.values) {
+    for (final c in _payerCtl.values) {
       c.dispose();
     }
     super.dispose();
   }
-
-  String get _ownerId => widget.doc.me?.id ?? '';
-
-  List<Participant> get _people => widget.doc.present;
 
   int? get _priceCents {
     final t = _price.text.trim();
     return t.isEmpty ? null : parseCents(t);
   }
 
-  int? get _volumeMl => parseInteger(_volume.text);
-
-  double? get _abvPercent {
-    final t = _abv.text.trim();
-    return t.isEmpty ? null : parseDecimal(t);
-  }
-
-  int get _leftoverMl => parseInteger(_leftover.text) ?? 0;
-
   TextEditingController _ctl(String id) =>
-      _portionCtl.putIfAbsent(id, () => TextEditingController());
+      _payerCtl.putIfAbsent(id, () => TextEditingController());
 
-  Map<String, int?> get _portions => {
-    for (final id in _sharers) id: parseInteger(_ctl(id).text),
-  };
+  Map<String, int>? get _payerCents {
+    if (!_customPayers || _payers.length < 2) return null;
+    return {for (final id in _payers) id: parseCents(_ctl(id).text) ?? 0};
+  }
 
   OrderInput _input() {
     final item = _item;
-    final recipe = item?.recipe;
+    final p = _presentation;
     return OrderInput(
       outingId: widget.outingId,
       name: _name.text,
-      category: _category,
+      kind: _kind,
       ownerId: _ownerId,
       at: DateTime.now(),
-      units: _units,
-      shared: _shared,
-      portions: _shared ? _portions : const {},
-      bottles: _bottles,
-      leftoverMl: _leftoverMl,
-      priceKind: _kind,
+      quantity: _quantity,
+      consumers: _consumers,
+      units: _unitsActive ? Map.of(_units) : null,
+      payers: _payers,
+      payerCents: _payerCents,
+      priceKind: _priceKind,
       priceCents: _priceCents,
-      basis: _shared ? PriceBasis.unit : _basis,
-      containerMl: _volumeMl,
-      abvPercent: _abvPercent,
-      abvSource: null,
+      basis: _quantity > 1 ? _basis : PriceBasis.unit,
+      category: item?.category,
       brand: item?.brand,
       style: item?.style,
-      presentation: _presentationLabel,
+      presentation: p?.label,
       catalogItemId: item?.id,
-      composition: _useRecipe && recipe != null
-          ? Composition(
-              recipeId: recipe.id,
-              recipeName: item!.name,
-              sourceLabel: recipe.source?.displayLabel,
-              sourceUrl: recipe.source?.url,
-              components: recipe.components,
-            )
-          : null,
+      containerMl: p?.volumeMl,
+      template: _template,
+      fixedId: widget.review?.entryId,
+      fixedAt: widget.review?.at,
+      origin: widget.review?.origin,
+      existing: widget.edit?.entries ?? const [],
+      existingExtra: widget.edit?.extra,
     );
   }
 
+  bool get _unitsActive =>
+      _unitsMode && _kind.isDrink && _quantity > 1 && _consumers.length > 1;
+
   List<CatalogItem> _suggestions() {
     final q = searchKey(_name.text);
-    if (_item != null || q.length < 2) return const [];
+    if (_item != null || q.length < 2 || _editing) return const [];
     final tokens = q.split(' ').where((t) => t.isNotEmpty).toList();
     final all = getIt<DrinkRepository>().catalog();
     final hits = [
@@ -241,56 +470,79 @@ class _OrderPageState extends State<OrderPage> {
     return hits.take(6).toList();
   }
 
-  void _pick(CatalogItem item) {
-    setState(() {
-      _item = item;
-      _name.text = item.displayName;
-      _category = item.category;
-      _useRecipe = false;
-      _presentationLabel = null;
-      _abv.text = item.abvPercent == null ? '' : '${item.abvPercent}';
-      final docs = item.documentedPresentations;
-      if (docs.length == 1) {
-        _volume.text = '${docs.first.volumeMl}';
-        _presentationLabel = docs.first.label;
-      }
-    });
+  /// Takes only the name and the kind from the product; the rest of its data
+  /// is never asked here.
+  void _applyItem(CatalogItem item) {
+    _item = item;
+    _name.text = item.displayName;
+    _kind = item.category.canBeAlcoholic ? OrderKind.alcoholic : OrderKind.soft;
+    final docs = item.documentedPresentations;
+    _presentation = docs.length == 1 ? docs.first : null;
   }
+
+  void _pick(CatalogItem item) => setState(() => _applyItem(item));
 
   void _clearItem() => setState(() {
     _item = null;
-    _useRecipe = false;
-    _presentationLabel = null;
+    _presentation = null;
   });
 
-  void _toggleUnits(String id) => setState(() {
-    if (_units.containsKey(id)) {
-      _units.remove(id);
-    } else {
-      _units[id] = 1;
+  void _toggleConsumer(String id) => setState(() {
+    if (!_consumers.remove(id)) _consumers.add(id);
+    _rebalanceUnits();
+  });
+
+  void _togglePayer(String id) => setState(() {
+    if (!_payers.remove(id)) _payers.add(id);
+    if (_payers.length < 2) _customPayers = false;
+  });
+
+  void _setQuantity(int q) => setState(() {
+    _quantity = q.clamp(1, OrderBuilder.maxQuantity).toInt();
+    _rebalanceUnits();
+  });
+
+  /// Units per person start as an even split of the quantity; the person
+  /// adjusts. Only touched when it no longer adds up.
+  void _rebalanceUnits() {
+    _units.removeWhere((k, _) => !_consumers.contains(k));
+    final sum = _units.values.fold(0, (a, b) => a + b);
+    if (_consumers.isEmpty ||
+        (sum == _quantity && _units.length == _consumers.length)) {
+      return;
     }
+    final each = _quantity ~/ _consumers.length;
+    var extra = _quantity % _consumers.length;
+    for (final id in _consumers) {
+      _units[id] = each + (extra-- > 0 ? 1 : 0);
+    }
+  }
+
+  void _stepUnit(String id, int delta) => setState(() {
+    _units[id] = ((_units[id] ?? 0) + delta).clamp(0, _quantity).toInt();
   });
 
-  void _step(String id, int delta) => setState(() {
-    final next = ((_units[id] ?? 1) + delta).clamp(
-      1,
-      OrderBuilder.maxPerPerson,
-    );
-    _units[id] = next.toInt();
-  });
-
-  void _toggleSharer(String id) => setState(() {
-    if (!_sharers.add(id)) _sharers.remove(id);
-  });
-
-  void _divideEqually() => setState(() {
-    final eq = OrderBuilder.equalPortions(
-      _sharers.toList(),
-      _volumeMl,
-      _leftoverMl,
-    );
-    for (final kv in eq.entries) {
-      _ctl(kv.key).text = kv.value == null ? '' : '${kv.value}';
+  void _setCustom(bool on) => setState(() {
+    _customPayers = on;
+    if (on) {
+      final amounts = OrderBuilder.payerAmounts(
+        OrderInput(
+          name: _name.text,
+          kind: _kind,
+          outingId: widget.outingId,
+          ownerId: _ownerId,
+          at: DateTime.now(),
+          quantity: _quantity,
+          consumers: _consumers,
+          payers: _payers,
+          priceKind: _priceKind,
+          priceCents: _priceCents,
+          basis: _quantity > 1 ? _basis : PriceBasis.unit,
+        ),
+      );
+      for (final id in _payers) {
+        _ctl(id).text = amounts == null ? '' : centsToInput(amounts[id] ?? 0);
+      }
     }
   });
 
@@ -298,88 +550,165 @@ class _OrderPageState extends State<OrderPage> {
       [for (final id in ids) widget.doc.participant(id)?.displayName ?? '?']
           .join(', ');
 
-  int get _servings =>
-      _shared ? _bottles : _units.values.fold(0, (a, b) => a + b);
-
-  String? _summaryLine() {
+  /// Cost of the order as typed, for the helper under the price.
+  String? _priceHelper() {
+    if (_priceKind != PriceKind.informed) return null;
     final cents = _priceCents;
-    if (_kind != PriceKind.informed || cents == null || _servings <= 0) {
-      return null;
-    }
-    if (_shared) {
-      return tr.orderSplitEach(
-        formatCents(cents ~/ (_sharers.isEmpty ? 1 : _sharers.length)),
-      );
-    }
-    if (_servings == 1) return null;
+    if (cents == null || _quantity <= 1) return null;
     return _basis == PriceBasis.unit
         ? tr.orderLineSummary(
-            _servings,
+            _quantity,
             formatCents(cents),
-            formatCents(cents * _servings),
+            formatCents(cents * _quantity),
           )
         : tr.orderLineSummary(
-            _servings,
-            formatCents((cents / _servings).round()),
+            _quantity,
+            formatCents((cents / _quantity).round()),
             formatCents(cents),
           );
   }
 
-  /// The full catalog, label or menu reading: the person already chosen is
-  /// carried along; with none or several chosen the form asks.
+  /// "Open the catalog" only to find a name: the product comes back here.
   Future<void> _openCatalog() async {
-    final ids = _units.keys.toList();
-    final single = !_shared && ids.length == 1 ? ids.first : null;
-    final saved = await Navigator.of(context).push<bool>(
+    final item = await Navigator.of(context).push<CatalogItem>(
       MaterialPageRoute(
-        builder: (_) => AddDrinkPage(
-          outingId: widget.outingId,
-          consumerId: single == null || single == _ownerId ? null : single,
-          choosePerson: single == null,
-        ),
+        builder: (_) => AddDrinkPage(outingId: widget.outingId, pickOnly: true),
       ),
     );
-    // Saved over there: the outing page only needs to know something was added.
-    if (saved == true && mounted) {
-      setState(() => _leaving = true);
-      Navigator.of(context).pop(<DrinkEntry>[]);
-    }
+    if (item != null && mounted) _pick(item);
   }
 
   Future<void> _save() async {
-    final problems = OrderBuilder.problems(_input());
-    if (problems.isNotEmpty) {
+    if (_saving) return;
+    final input = _input();
+    if (OrderBuilder.problems(input).isNotEmpty) {
       setState(() => _showErrors = true);
       return;
     }
+    setState(() => _saving = true);
     final repo = getIt<DrinkRepository>();
-    final list = OrderBuilder.build(_input(), newId: repo.newId);
-    await repo.saveAll(list);
-    if (mounted) {
-      setState(() => _leaving = true);
-      Navigator.of(context).pop(list);
+    final tabs = getIt<TabRepository>();
+    final before = _editing ? tabs.compute(widget.outingId) : null;
+    final result = OrderBuilder.build(input, newId: repo.newId);
+
+    if (result.extra != null) {
+      final x = result.extra!;
+      await tabs.update(widget.outingId, (d) {
+        final exists = d.extras.any((e) => e.id == x.id);
+        return d.copyWith(
+          extras: [
+            for (final e in d.extras) e.id == x.id ? x : e,
+            if (!exists) x,
+          ],
+        );
+      });
+    } else {
+      await repo.saveAll(result.entries);
+      final kept = {for (final e in result.entries) e.id};
+      final dropped = [
+        for (final e in input.existing)
+          if (!kept.contains(e.id)) e.id,
+      ];
+      for (final id in dropped) {
+        await repo.delete(id);
+      }
+      await tabs.update(widget.outingId, (d) {
+        var next = d;
+        // A tab made before people existed only charges linked records.
+        if (!d.autoLink) {
+          final covered = d.coveredEntryIds;
+          next = next.copyWith(
+            links: [
+              ...d.links,
+              for (final e in result.entries)
+                if (!covered.contains(e.id)) TabLink(entryId: e.id),
+            ],
+          );
+        }
+        // A correction replaces an older typed split of the same records:
+        // the payers just chosen are the ones that count.
+        if (_editing) {
+          final ids = {for (final e in result.entries) e.id};
+          next = next.copyWith(
+            links: [
+              for (final l in next.links)
+                ids.contains(l.entryId) ? l.copyWith(assign: () => null) : l,
+            ],
+          );
+        }
+        return next;
+      });
     }
+
+    if (_editing && before != null) await _explainBalances(before);
+    if (!mounted) return;
+    setState(() => _leaving = true);
+    Navigator.of(context).pop(
+      OrderOutcome(
+        entries: result.entries,
+        extra: result.extra,
+        edited: _editing,
+      ),
+    );
+  }
+
+  /// A correction never deletes payments: when it changes what somebody owes,
+  /// say so with the old and the new balance.
+  Future<void> _explainBalances(TabResult before) async {
+    final tabs = getIt<TabRepository>();
+    final doc = tabs.load(widget.outingId);
+    if (doc.payments.isEmpty) return;
+    final after = tabs.compute(widget.outingId);
+    final lines = <String>[];
+    for (final p in doc.participants) {
+      final a = before.balanceOf(p.id);
+      final b = after.balanceOf(p.id);
+      if (a != b) {
+        lines.add(
+          tr.orderBalanceLine(p.displayName, formatCents(a), formatCents(b)),
+        );
+      }
+    }
+    if (lines.isEmpty || !mounted) return;
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(tr.orderBalanceTitle),
+        content: Text('${tr.orderBalanceBody}\n\n${lines.join('\n')}'),
+        actions: [
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(tr.commonClose),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final input = _input();
     final problems = _showErrors
-        ? OrderBuilder.problems(_input())
+        ? OrderBuilder.problems(input)
         : const <OrderProblem>{};
     final suggestions = _suggestions();
     final item = _item;
     final text = _name.text.trim();
-    final sizes = item != null && item.documentedPresentations.isNotEmpty
-        ? item.documentedPresentations
-        : commonSizesFor(_category);
-    final who = _shared ? _sharers : _units.keys;
+    final kinds = _editing
+        ? (_row!.extra != null
+              ? const [OrderKind.food, OrderKind.other]
+              : const [OrderKind.alcoholic, OrderKind.soft])
+        : OrderKind.values;
+    final amounts = OrderBuilder.payerAmounts(input);
     return PopScope(
       canPop: _leaving || !_dirty,
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) _confirmDiscard();
       },
       child: Scaffold(
-        appBar: AppBar(title: Text(tr.orderTitle)),
+        appBar: AppBar(
+          title: Text(_editing ? tr.orderEditTitle : tr.orderTitle),
+        ),
         body: SafeArea(
           bottom: false,
           child: Column(
@@ -412,7 +741,7 @@ class _OrderPageState extends State<OrderPage> {
                             normalizeText(_name.text) !=
                                 normalizeText(_item!.displayName)) {
                           _item = null;
-                          _useRecipe = false;
+                          _presentation = null;
                         }
                       }),
                     ),
@@ -432,6 +761,24 @@ class _OrderPageState extends State<OrderPage> {
                           ),
                         ],
                       ),
+                      if (item.documentedPresentations.length > 1) ...[
+                        const SizedBox(height: AppSpace.sm),
+                        Wrap(
+                          spacing: AppSpace.sm,
+                          runSpacing: AppSpace.sm,
+                          children: [
+                            for (final p in item.documentedPresentations)
+                              ChoiceChip(
+                                label: Text(p.displayLabel),
+                                selected: _presentation?.label == p.label,
+                                showCheckmark: false,
+                                onSelected: (s) => setState(
+                                  () => _presentation = s ? p : null,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
                     ] else if (suggestions.isNotEmpty) ...[
                       const SizedBox(height: AppSpace.sm),
                       SizedBox(
@@ -466,160 +813,47 @@ class _OrderPageState extends State<OrderPage> {
                           },
                         ),
                       ),
-                    ] else if (text.length >= 2)
-                      Padding(
-                        padding: const EdgeInsets.only(top: AppSpace.sm),
-                        child: Text(
-                          tr.orderNotInCatalog(_name.text.trim()),
-                          style: AppText.caption,
-                        ),
-                      ),
-                    const SizedBox(height: AppSpace.md),
-                    Text(tr.orderKind, style: AppText.caption),
-                    const SizedBox(height: AppSpace.sm),
-                    Wrap(
-                      spacing: AppSpace.sm,
-                      runSpacing: AppSpace.sm,
-                      children: [
-                        for (final c in _kinds)
-                          ChoiceChip(
-                            key: ValueKey('kind-${c.code}'),
-                            avatar: Icon(c.icon, size: 18),
-                            label: Text(c.label),
-                            selected: _category == c,
-                            showCheckmark: false,
-                            onSelected: (_) => setState(() => _category = c),
-                          ),
-                      ],
-                    ),
-                    SectionTitle(tr.orderFor),
-                    SegmentedButton<bool>(
-                      showSelectedIcon: false,
-                      segments: [
-                        ButtonSegment(value: false, label: Text(tr.orderEach)),
-                        ButtonSegment(
-                          value: true,
-                          label: Text(tr.orderSharedBottle),
-                        ),
-                      ],
-                      selected: {_shared},
-                      onSelectionChanged: (s) =>
-                          setState(() => _shared = s.first),
-                    ),
-                    const SizedBox(height: AppSpace.sm),
-                    Text(
-                      _shared ? tr.orderSharers : tr.orderForHint,
-                      style: AppText.caption,
-                    ),
-                    const SizedBox(height: AppSpace.sm),
-                    Wrap(
-                      spacing: AppSpace.sm,
-                      runSpacing: AppSpace.sm,
-                      children: [
-                        for (final p in _people)
-                          FilterChip(
-                            key: ValueKey('who-${p.id}'),
-                            avatar: PersonAvatar(person: p, size: 22),
-                            label: Text(p.displayName),
-                            selected: _shared
-                                ? _sharers.contains(p.id)
-                                : _units.containsKey(p.id),
-                            onSelected: (_) => _shared
-                                ? _toggleSharer(p.id)
-                                : _toggleUnits(p.id),
-                          ),
-                      ],
-                    ),
-                    if (problems.contains(OrderProblem.nobodyPicked))
-                      _error(tr.orderErrNobody),
-                    if (problems.contains(OrderProblem.sharersNeeded))
-                      _error(tr.orderErrSharers),
-                    if (!_shared)
-                      for (final id in _units.keys.toList())
-                        _UnitsRow(
-                          person: widget.doc.participant(id)!,
-                          count: _units[id]!,
-                          onMinus: () => _step(id, -1),
-                          onPlus: () => _step(id, 1),
-                          canMinus: _units[id]! > 1,
-                        )
-                    else ...[
-                      const SizedBox(height: AppSpace.sm),
-                      for (final id in _sharers)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: AppSpace.sm),
-                          child: TextField(
-                            key: ValueKey('portion-$id'),
-                            controller: _ctl(id),
-                            keyboardType: TextInputType.number,
-                            onChanged: (_) => setState(() {}),
-                            decoration: InputDecoration(
-                              labelText: tr.orderPortionMl(
-                                widget.doc.participant(id)?.displayName ?? '?',
-                              ),
-                              helperText: tr.orderPortionHint,
-                            ),
-                          ),
-                        ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _leftover,
-                              keyboardType: TextInputType.number,
-                              onChanged: (_) => setState(() {}),
-                              decoration: InputDecoration(
-                                labelText: tr.orderLeftover,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: AppSpace.md),
-                          Column(
-                            children: [
-                              Text(tr.orderBottles, style: AppText.caption),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    tooltip: tr.orderLess(tr.orderBottles),
-                                    onPressed: _bottles > 1
-                                        ? () => setState(() => _bottles--)
-                                        : null,
-                                    icon: const Icon(
-                                      Icons.remove_circle_outline,
-                                    ),
-                                  ),
-                                  Text('$_bottles', style: AppText.subtitle),
-                                  IconButton(
-                                    tooltip: tr.orderMore(tr.orderBottles),
-                                    onPressed: () => setState(() => _bottles++),
-                                    icon: const Icon(Icons.add_circle_outline),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      OutlinedButton.icon(
-                        key: const ValueKey('divide-volume'),
-                        onPressed: _sharers.length >= 2 ? _divideEqually : null,
-                        icon: const Icon(Icons.balance_outlined),
-                        label: Text(tr.orderDivideVolume),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: AppSpace.xs),
-                        child: Text(tr.orderDivideNote, style: AppText.caption),
-                      ),
-                      if (problems.contains(OrderProblem.portionsOverBottle))
-                        _error(tr.orderErrPortions),
                     ],
                     const SizedBox(height: AppSpace.md),
-                    OutlinedButton.icon(
-                      key: const ValueKey('order-catalog'),
-                      onPressed: _openCatalog,
-                      icon: const Icon(Icons.menu_book_outlined),
-                      label: Text(tr.orderOpenCatalog),
+                    Wrap(
+                      spacing: AppSpace.sm,
+                      runSpacing: AppSpace.sm,
+                      children: [
+                        for (final k in kinds)
+                          ChoiceChip(
+                            key: ValueKey('kind-${k.name}'),
+                            avatar: Icon(_kindIcon(k), size: 18),
+                            label: Text(_kindLabel(k)),
+                            selected: _kind == k,
+                            showCheckmark: false,
+                            onSelected: (_) => setState(() {
+                              _kind = k;
+                              if (!k.isDrink) _unitsMode = false;
+                            }),
+                          ),
+                      ],
                     ),
+                    if (widget.review != null) ...[
+                      const SizedBox(height: AppSpace.sm),
+                      InfoPill(
+                        widget.review!.note,
+                        icon: Icons.info_outline_rounded,
+                      ),
+                    ],
+                    if (widget.review == null) SectionTitle(tr.orderQuantity),
+                    if (widget.review == null)
+                      _Stepper(
+                        key: const ValueKey('order-quantity'),
+                        value: _quantity,
+                        onMinus: _quantity > 1
+                            ? () => _setQuantity(_quantity - 1)
+                            : null,
+                        onPlus: _quantity < OrderBuilder.maxQuantity
+                            ? () => _setQuantity(_quantity + 1)
+                            : null,
+                        minusTip: tr.orderLess(tr.orderQuantity),
+                        plusTip: tr.orderMore(tr.orderQuantity),
+                      ),
                     SectionTitle(tr.orderPrice),
                     SegmentedButton<PriceKind>(
                       showSelectedIcon: false,
@@ -637,12 +871,12 @@ class _OrderPageState extends State<OrderPage> {
                           label: Text(tr.entryPriceDontKnow),
                         ),
                       ],
-                      selected: {_kind},
+                      selected: {_priceKind},
                       onSelectionChanged: (s) =>
-                          setState(() => _kind = s.first),
+                          setState(() => _priceKind = s.first),
                     ),
-                    if (_kind == PriceKind.informed) ...[
-                      if (!_shared && _servings > 1) ...[
+                    if (_priceKind == PriceKind.informed) ...[
+                      if (_quantity > 1) ...[
                         const SizedBox(height: AppSpace.sm),
                         SegmentedButton<PriceBasis>(
                           showSelectedIcon: false,
@@ -666,19 +900,12 @@ class _OrderPageState extends State<OrderPage> {
                         key: const ValueKey('order-price'),
                         controller: _price,
                         onChanged: (_) => setState(() {}),
-                        label: _shared
-                            ? tr.orderPriceBottleLabel
-                            : (_servings > 1 && _basis == PriceBasis.total
+                        label: _quantity > 1
+                            ? (_basis == PriceBasis.total
                                   ? tr.orderPriceTotalLabel
-                                  : (_servings > 1
-                                        ? tr.orderPriceEachLabel
-                                        : tr.entryPriceValue)),
-                        helper:
-                            !_shared &&
-                                _servings > 1 &&
-                                _basis == PriceBasis.total
-                            ? tr.orderPriceTotalHelper
-                            : _summaryLine(),
+                                  : tr.orderPriceEachLabel)
+                            : tr.entryPriceValue,
+                        helper: _priceHelper(),
                         errorText: problems.contains(OrderProblem.priceMissing)
                             ? tr.orderErrPrice
                             : null,
@@ -687,92 +914,111 @@ class _OrderPageState extends State<OrderPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: AppSpace.sm),
                         child: Text(
-                          _kind == PriceKind.complimentary
+                          _priceKind == PriceKind.complimentary
                               ? tr.entryComplimentaryNote(formatCents(0))
                               : tr.entryNoPriceNote,
                           style: AppText.caption,
                         ),
                       ),
-                    const SizedBox(height: AppSpace.md),
-                    Theme(
-                      data: Theme.of(context)
-                          .copyWith(dividerColor: Colors.transparent),
-                      child: ExpansionTile(
-                        key: const ValueKey('order-details'),
-                        tilePadding: EdgeInsets.zero,
-                        title: Text(tr.orderDetails, style: AppText.subtitle),
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Wrap(
-                              spacing: AppSpace.sm,
-                              runSpacing: AppSpace.sm,
-                              children: [
-                                for (final p in sizes)
-                                  ChoiceChip(
-                                    label: Text(p.label),
-                                    selected: _volume.text == '${p.volumeMl}',
-                                    showCheckmark: false,
-                                    onSelected: (_) => setState(() {
-                                      _volume.text = '${p.volumeMl}';
-                                      _presentationLabel = p.isSuggestion
-                                          ? null
-                                          : p.label;
-                                    }),
-                                  ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: AppSpace.xs),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              tr.orderVolumeNote,
-                              style: AppText.caption,
-                            ),
-                          ),
-                          const SizedBox(height: AppSpace.sm),
-                          TextField(
-                            key: const ValueKey('order-volume'),
-                            controller: _volume,
-                            keyboardType: TextInputType.number,
-                            onChanged: (_) =>
-                                setState(() => _presentationLabel = null),
-                            decoration: InputDecoration(
-                              labelText: tr.orderVolume,
-                              errorText:
-                                  problems.contains(OrderProblem.volumeInvalid)
-                                  ? tr.orderErrVolume
-                                  : null,
-                            ),
-                          ),
-                          const SizedBox(height: AppSpace.md),
-                          TextField(
-                            key: const ValueKey('order-abv'),
-                            controller: _abv,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                            ),
-                            decoration: InputDecoration(
-                              labelText: tr.orderAbv,
-                              errorText:
-                                  problems.contains(OrderProblem.abvInvalid)
-                                  ? tr.orderErrAbv
-                                  : null,
-                            ),
-                          ),
-                          if (item?.recipe != null)
-                            SwitchListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(tr.orderUseRecipe),
-                              subtitle: Text(tr.orderUseRecipeNote),
-                              value: _useRecipe,
-                              activeThumbColor: AppColors.amber,
-                              onChanged: (v) => setState(() => _useRecipe = v),
-                            ),
-                        ],
-                      ),
+                    SectionTitle(tr.orderWhoConsumed),
+                    Text(tr.orderConsumedHint, style: AppText.caption),
+                    const SizedBox(height: AppSpace.sm),
+                    _PeoplePicker(
+                      keyPrefix: 'consumer',
+                      people: _people,
+                      selected: _consumers,
+                      onToggle: _toggleConsumer,
                     ),
+                    if (problems.contains(OrderProblem.nobodyConsumed))
+                      _error(tr.orderErrNobodyConsumed),
+                    if (_kind.isDrink &&
+                        _quantity > 1 &&
+                        _consumers.length > 1) ...[
+                      SwitchListTile(
+                        key: const ValueKey('units-switch'),
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(tr.orderUnitsPerPerson),
+                        subtitle: Text(tr.orderUnitsHint),
+                        value: _unitsMode,
+                        activeThumbColor: AppColors.amber,
+                        onChanged: (v) => setState(() {
+                          _unitsMode = v;
+                          if (v) _rebalanceUnits();
+                        }),
+                      ),
+                      if (_unitsMode)
+                        for (final id in _consumers)
+                          _UnitsRow(
+                            person: widget.doc.participant(id)!,
+                            count: _units[id] ?? 0,
+                            onMinus: () => _stepUnit(id, -1),
+                            onPlus: () => _stepUnit(id, 1),
+                          ),
+                      if (problems.contains(OrderProblem.unitsMismatch))
+                        _error(tr.orderErrUnits(_quantity)),
+                    ],
+                    SectionTitle(tr.orderWhoPays),
+                    Text(tr.orderPayersHint, style: AppText.caption),
+                    const SizedBox(height: AppSpace.sm),
+                    _PeoplePicker(
+                      keyPrefix: 'payer',
+                      people: _people,
+                      selected: _payers,
+                      onToggle: _togglePayer,
+                    ),
+                    if (problems.contains(OrderProblem.nobodyPays))
+                      _error(tr.orderErrNobodyPays),
+                    if (_payers.length > 1) ...[
+                      const SizedBox(height: AppSpace.sm),
+                      SegmentedButton<bool>(
+                        key: const ValueKey('payer-mode'),
+                        showSelectedIcon: false,
+                        segments: [
+                          ButtonSegment(
+                            value: false,
+                            label: Text(tr.orderPayEqual),
+                          ),
+                          ButtonSegment(
+                            value: true,
+                            label: Text(tr.orderPayCustom),
+                          ),
+                        ],
+                        selected: {_customPayers},
+                        onSelectionChanged: (s) => _setCustom(s.first),
+                      ),
+                      if (_customPayers) ..._customFields(input, problems),
+                    ],
+                    if (amounts != null && _payers.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppSpace.sm),
+                        child: Text(
+                          [
+                            for (final id in _payers)
+                              tr.orderPayerBears(
+                                widget.doc.participant(id)?.displayName ?? '?',
+                                formatCents(amounts[id] ?? 0),
+                              ),
+                          ].join(' · '),
+                          key: const ValueKey('payer-summary'),
+                          style: AppText.caption,
+                        ),
+                      )
+                    else if (_priceKind == PriceKind.unknown)
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppSpace.sm),
+                        child: Text(
+                          tr.orderPayersPending,
+                          style: AppText.caption,
+                        ),
+                      ),
+                    const SizedBox(height: AppSpace.md),
+                    if (!_editing)
+                      OutlinedButton.icon(
+                        key: const ValueKey('order-catalog'),
+                        onPressed: _openCatalog,
+                        icon: const Icon(Icons.menu_book_outlined),
+                        label: Text(tr.orderOpenCatalog),
+                      ),
                   ],
                 ),
               ),
@@ -780,11 +1026,15 @@ class _OrderPageState extends State<OrderPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (who.isNotEmpty && text.isNotEmpty)
+                    if (_consumers.isNotEmpty && text.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(bottom: AppSpace.sm),
                         child: Text(
-                          '${tr.orderSummaryFor(_namesOf(who))} · $text',
+                          [
+                            '${tr.orderSummaryFor(_namesOf(_consumers))} · $text',
+                            if (_payers.isNotEmpty)
+                              tr.orderSummaryPays(_namesOf(_payers)),
+                          ].join(' · '),
                           key: const ValueKey('order-summary'),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -795,9 +1045,9 @@ class _OrderPageState extends State<OrderPage> {
                       width: double.infinity,
                       child: FilledButton.icon(
                         key: const ValueKey('order-save'),
-                        onPressed: _save,
+                        onPressed: _saving ? null : _save,
                         icon: const Icon(Icons.check_rounded),
-                        label: Text(tr.orderSave),
+                        label: Text(_editing ? tr.orderSaveEdit : tr.orderSave),
                       ),
                     ),
                   ],
@@ -810,10 +1060,148 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
+  List<Widget> _customFields(OrderInput input, Set<OrderProblem> problems) {
+    final total = input.totalCents;
+    var sum = 0;
+    for (final id in _payers) {
+      sum += parseCents(_ctl(id).text) ?? 0;
+    }
+    final known = total != null && _priceKind == PriceKind.informed;
+    final diff = known ? total - sum : 0;
+    return [
+      for (final id in _payers)
+        Padding(
+          padding: const EdgeInsets.only(top: AppSpace.sm),
+          child: MoneyField(
+            key: ValueKey('payer-amount-$id'),
+            controller: _ctl(id),
+            label: tr.orderPayerAmountLabel(
+              widget.doc.participant(id)?.displayName ?? '?',
+            ),
+            helper: '',
+            onChanged: (_) => setState(() {}),
+          ),
+        ),
+      if (known)
+        Padding(
+          padding: const EdgeInsets.only(top: AppSpace.xs),
+          child: Text(
+            diff == 0
+                ? tr.orderPayersExact
+                : (diff > 0
+                      ? tr.orderPayersMissing(formatCents(diff))
+                      : tr.orderPayersOver(formatCents(-diff))),
+            key: const ValueKey('payer-diff'),
+            style: TextStyle(
+              color: diff == 0 ? AppColors.textMuted : AppColors.danger,
+            ),
+          ),
+        ),
+      if (problems.contains(OrderProblem.payersSum))
+        _error(tr.orderErrPayersSum),
+    ];
+  }
+
+  IconData _kindIcon(OrderKind k) => switch (k) {
+    OrderKind.alcoholic => Icons.local_bar_outlined,
+    OrderKind.soft => Icons.emoji_food_beverage_rounded,
+    OrderKind.food => Icons.restaurant_rounded,
+    OrderKind.other => Icons.receipt_long_outlined,
+  };
+
+  String _kindLabel(OrderKind k) => switch (k) {
+    OrderKind.alcoholic => tr.orderKindAlcoholic,
+    OrderKind.soft => tr.orderKindSoft,
+    OrderKind.food => tr.orderKindFood,
+    OrderKind.other => tr.orderKindOther,
+  };
+
   Widget _error(String text) => Padding(
     padding: const EdgeInsets.only(top: AppSpace.xs),
     child: Text(text, style: const TextStyle(color: AppColors.danger)),
   );
+}
+
+class _PeoplePicker extends StatelessWidget {
+  const _PeoplePicker({
+    required this.keyPrefix,
+    required this.people,
+    required this.selected,
+    required this.onToggle,
+  });
+
+  final String keyPrefix;
+  final List<Participant> people;
+  final List<String> selected;
+  final ValueChanged<String> onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: AppSpace.sm,
+      runSpacing: AppSpace.sm,
+      children: [
+        for (final p in people)
+          FilterChip(
+            key: ValueKey('$keyPrefix-${p.id}'),
+            avatar: PersonAvatar(person: p, size: 22),
+            label: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 180),
+              child: Text(
+                p.displayName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            selected: selected.contains(p.id),
+            onSelected: (_) => onToggle(p.id),
+          ),
+      ],
+    );
+  }
+}
+
+class _Stepper extends StatelessWidget {
+  const _Stepper({
+    super.key,
+    required this.value,
+    required this.onMinus,
+    required this.onPlus,
+    required this.minusTip,
+    required this.plusTip,
+  });
+
+  final int value;
+  final VoidCallback? onMinus;
+  final VoidCallback? onPlus;
+  final String minusTip;
+  final String plusTip;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+          tooltip: minusTip,
+          onPressed: onMinus,
+          icon: const Icon(Icons.remove_circle_outline),
+        ),
+        SizedBox(
+          width: 48,
+          child: Text(
+            '$value',
+            textAlign: TextAlign.center,
+            style: AppText.title,
+          ),
+        ),
+        IconButton(
+          tooltip: plusTip,
+          onPressed: onPlus,
+          icon: const Icon(Icons.add_circle_outline),
+        ),
+      ],
+    );
+  }
 }
 
 class _UnitsRow extends StatelessWidget {
@@ -822,14 +1210,12 @@ class _UnitsRow extends StatelessWidget {
     required this.count,
     required this.onMinus,
     required this.onPlus,
-    required this.canMinus,
   });
 
   final Participant person;
   final int count;
   final VoidCallback onMinus;
   final VoidCallback onPlus;
-  final bool canMinus;
 
   @override
   Widget build(BuildContext context) {
@@ -840,10 +1226,17 @@ class _UnitsRow extends StatelessWidget {
         children: [
           PersonAvatar(person: person, size: 28),
           const SizedBox(width: AppSpace.sm),
-          Expanded(child: Text(person.displayName, style: AppText.subtitle)),
+          Expanded(
+            child: Text(
+              person.displayName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppText.subtitle,
+            ),
+          ),
           IconButton(
             tooltip: tr.orderLess(person.displayName),
-            onPressed: canMinus ? onMinus : null,
+            onPressed: count > 0 ? onMinus : null,
             icon: const Icon(Icons.remove_circle_outline),
           ),
           SizedBox(

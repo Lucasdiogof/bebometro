@@ -282,6 +282,11 @@ class TabCalculator {
       e.isShared,
       total ?? 'x',
       personal ?? 'x',
+      // Same drink paid by other people is another group.
+      (e.payers?.entries.toList()?..sort((a, b) => a.key.compareTo(b.key)))
+              ?.map((p) => '${p.key}:${p.value}')
+              .join(',') ??
+          '-',
     ].join('|');
     return TabLine(
       id: e.id,
@@ -324,6 +329,15 @@ class TabCalculator {
       return doc.participant(key) == null ? null : key;
     }
 
+    // Who pays was chosen apart from who drank: it wins. A payer that is not
+    // on the tab leaves its part unassigned (never moved to someone else).
+    final payers = e.payers;
+    if (payers != null) {
+      return {
+        for (final k in payers.keys)
+          if (idFor(k) != null) idFor(k)!: payers[k]!,
+      };
+    }
     final portions = e.portions;
     if (portions != null) {
       return {
@@ -354,7 +368,17 @@ class TabCalculator {
       for (final link in doc.links) {
         final e = entries[link.entryId];
         if (e == null || e.isDeleted) continue;
-        out.add(entryLine(e, link));
+        // Tabs made before people existed have no default: the link decides,
+        // unless the record names its payers.
+        out.add(
+          entryLine(
+            e,
+            link,
+            assign:
+                link.assign ??
+                (e.payers == null ? null : defaultAssign(e, doc)),
+          ),
+        );
       }
     }
     for (final x in doc.extras) {

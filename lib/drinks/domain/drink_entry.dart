@@ -100,6 +100,7 @@ class DrinkEntry {
     this.entryOrigin,
     this.consumerId,
     this.portions,
+    this.payers,
   });
 
   /// Who drank this record. **Null is the account owner ("Você")**: every
@@ -112,6 +113,34 @@ class DrinkEntry {
   /// person drank; a null ml is unknown (never zero). Null for records without
   /// per-person portions (every older shared record).
   final Map<String, int?>? portions;
+
+  /// Who bears the cost: participant id (or [ownerPortionKey]) -> weight of
+  /// the split (equal = all 1; a typed split keeps the amounts as weights).
+  /// Independent from who drank it. Null for every record made before payers
+  /// existed: those keep the old reading (the cost follows the consumers).
+  final Map<String, int>? payers;
+
+  /// The cost the owner ("Você") bears of this record, in cents; null while
+  /// the price is unknown. Older records without [payers] keep the previous
+  /// reading: the owner's cost is [paidCents] when the record is the owner's.
+  int? get ownerCostCents {
+    final w = payers;
+    if (w == null) return isMine ? effectivePaidCents : 0;
+    final total = totalCostCents;
+    if (total == null) return null;
+    final order = w.keys.toList();
+    final parts = _allocate(total, [for (final k in order) w[k]!]);
+    final i = order.indexOf(ownerPortionKey);
+    return i < 0 ? 0 : parts[i];
+  }
+
+  /// What the record costs the table (the bottle total for a shared record);
+  /// null while unknown. Free = 0.
+  int? get totalCostCents => switch (priceKind) {
+    PriceKind.complimentary => 0,
+    PriceKind.unknown => null,
+    PriceKind.informed => isShared ? billTotalCents : paidCents,
+  };
 
   /// This record is drink of the owner ("Você"): personal statistics count only
   /// these. Unknown or unassigned consumption is never the owner's.
@@ -262,6 +291,7 @@ class DrinkEntry {
     entryOrigin: origin,
     consumerId: consumerId,
     portions: portions,
+    payers: payers,
   );
 
   DrinkEntry copyWith({
@@ -294,6 +324,7 @@ class DrinkEntry {
     entryOrigin: entryOrigin,
     consumerId: consumerId,
     portions: portions,
+    payers: payers,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: clearDeleted ? null : (deletedAt ?? this.deletedAt),
   );
@@ -329,6 +360,7 @@ class DrinkEntry {
     entryOrigin: entryOrigin,
     consumerId: consumerId,
     portions: portions,
+    payers: payers,
     updatedAt: updatedAt,
     deletedAt: deletedAt,
   );
@@ -367,6 +399,7 @@ class DrinkEntry {
     entryOrigin: entryOrigin,
     consumerId: consumerId,
     portions: portions,
+    payers: payers,
     updatedAt: updatedAt,
     deletedAt: deletedAt,
   );
@@ -405,6 +438,7 @@ class DrinkEntry {
     entryOrigin: entryOrigin,
     consumerId: consumerId,
     portions: portions,
+    payers: payers,
     updatedAt: updatedAt,
     deletedAt: deletedAt,
   );
@@ -444,6 +478,9 @@ class DrinkEntry {
     // owner must clear the guest on the server, which an absent key would not.
     'consumer_id': consumerId,
     'portions': portions,
+    // Only present when set, so older databases keep working (see the sync
+    // rules: a record that has it is never sent without it).
+    if (payers != null) 'payers': payers,
   };
 
   factory DrinkEntry.fromJson(Map<String, dynamic> json) => DrinkEntry(
@@ -480,6 +517,7 @@ class DrinkEntry {
     entryOrigin: EntryOrigin.fromJson(json),
     consumerId: json['consumer_id'] as String?,
     portions: _portionsFromJson(json['portions']),
+    payers: payersFromJson(json['payers']),
   );
 }
 
@@ -488,4 +526,41 @@ Map<String, int?>? _portionsFromJson(Object? raw) {
   return {
     for (final e in raw.entries) e.key as String: (e.value as num?)?.toInt(),
   };
+}
+
+/// Payers weights from JSON; null when absent or empty (legacy reading).
+Map<String, int>? payersFromJson(Object? raw) {
+  if (raw is! Map) return null;
+  final out = <String, int>{};
+  raw.forEach((k, v) {
+    final w = (v as num?)?.toInt() ?? 0;
+    if (w > 0) out[k as String] = w;
+  });
+  return out.isEmpty ? null : out;
+}
+
+/// Splits [total] by [weights] in whole cents (largest remainders first, ties
+/// to the first position): always sums to [total].
+List<int> _allocate(int total, List<int> weights) {
+  final n = weights.length;
+  final out = List<int>.filled(n, 0);
+  final sumW = weights.fold(0, (a, b) => a + b);
+  if (n == 0 || total <= 0 || sumW <= 0) return out;
+  final rem = List<int>.filled(n, 0);
+  var given = 0;
+  for (var i = 0; i < n; i++) {
+    final p = total * weights[i];
+    out[i] = p ~/ sumW;
+    rem[i] = p % sumW;
+    given += out[i];
+  }
+  final order = List<int>.generate(n, (i) => i)
+    ..sort((a, b) {
+      final c = rem[b].compareTo(rem[a]);
+      return c != 0 ? c : a.compareTo(b);
+    });
+  for (var k = 0; k < total - given; k++) {
+    out[order[k % n]]++;
+  }
+  return out;
 }

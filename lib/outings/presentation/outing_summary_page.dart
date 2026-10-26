@@ -10,7 +10,7 @@ import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../drinks/domain/drink_entry.dart';
-import '../../drinks/presentation/drink_entry_page.dart';
+import '../../table/presentation/order_page.dart';
 import '../domain/outing_summary.dart';
 import '../../table/data/table_prefs_cubit.dart';
 import '../../table/domain/table_orders.dart';
@@ -86,16 +86,9 @@ class _SummaryViewState extends State<_SummaryView> {
   }
 
   Future<void> _edit(DrinkEntry entry) async {
-    final outcome = await Navigator.of(context).push<EntryOutcome>(
-      MaterialPageRoute(builder: (_) => DrinkEntryPage.edit(entry: entry)),
-    );
-    if (!mounted || outcome == null) return;
-    showToast(
-      context,
-      outcome == EntryOutcome.deleted
-          ? tr.noticeEntryDeleted
-          : tr.summaryUpdated,
-    );
+    final out = await OrderPage.editEntry(context, entry: entry);
+    if (!mounted || out == null) return;
+    showToast(context, tr.summaryUpdated);
   }
 
   @override

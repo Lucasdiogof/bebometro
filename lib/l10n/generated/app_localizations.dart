@@ -10952,6 +10952,186 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Usar a da nuvem (volta a existir)'**
   String get conflictUseRemoteRestore;
+
+  /// No description provided for @orderEditTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Corrigir pedido'**
+  String get orderEditTitle;
+
+  /// No description provided for @orderSaveEdit.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar correção'**
+  String get orderSaveEdit;
+
+  /// No description provided for @orderQuantity.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quantidade'**
+  String get orderQuantity;
+
+  /// No description provided for @orderKindAlcoholic.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bebida'**
+  String get orderKindAlcoholic;
+
+  /// No description provided for @orderKindSoft.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem álcool'**
+  String get orderKindSoft;
+
+  /// No description provided for @orderKindFood.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comida'**
+  String get orderKindFood;
+
+  /// No description provided for @orderKindOther.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outro'**
+  String get orderKindOther;
+
+  /// No description provided for @orderWhoConsumed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem consumiu?'**
+  String get orderWhoConsumed;
+
+  /// No description provided for @orderConsumedHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem participou do pedido. Isso não muda quem paga.'**
+  String get orderConsumedHint;
+
+  /// No description provided for @orderWhoPays.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem paga?'**
+  String get orderWhoPays;
+
+  /// No description provided for @orderPayersHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem assume o custo. Isso não muda quem consumiu.'**
+  String get orderPayersHint;
+
+  /// No description provided for @orderPayEqual.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dividir igual'**
+  String get orderPayEqual;
+
+  /// No description provided for @orderPayCustom.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valores personalizados'**
+  String get orderPayCustom;
+
+  /// No description provided for @orderPayerAmountLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor de {name}'**
+  String orderPayerAmountLabel(String name);
+
+  /// No description provided for @orderPayerBears.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} paga {amount}'**
+  String orderPayerBears(String name, String amount);
+
+  /// No description provided for @orderPayersPending.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem valor ainda: quem paga fica guardado e o valor fica pendente.'**
+  String get orderPayersPending;
+
+  /// No description provided for @orderPayersExact.
+  ///
+  /// In pt, this message translates to:
+  /// **'A soma fecha com o total.'**
+  String get orderPayersExact;
+
+  /// No description provided for @orderPayersMissing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Falta distribuir {amount}.'**
+  String orderPayersMissing(String amount);
+
+  /// No description provided for @orderPayersOver.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passou {amount} do total.'**
+  String orderPayersOver(String amount);
+
+  /// No description provided for @orderErrNobodyConsumed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha quem consumiu.'**
+  String get orderErrNobodyConsumed;
+
+  /// No description provided for @orderErrNobodyPays.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha quem paga.'**
+  String get orderErrNobodyPays;
+
+  /// No description provided for @orderErrUnits.
+  ///
+  /// In pt, this message translates to:
+  /// **'As unidades das pessoas precisam somar {count}.'**
+  String orderErrUnits(int count);
+
+  /// No description provided for @orderErrPayersSum.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os valores precisam somar o total do pedido.'**
+  String get orderErrPayersSum;
+
+  /// No description provided for @orderUnitsPerPerson.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informar unidades por pessoa'**
+  String get orderUnitsPerPerson;
+
+  /// No description provided for @orderUnitsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem isso, cada unidade é um pedido compartilhado.'**
+  String get orderUnitsHint;
+
+  /// No description provided for @orderSummaryPays.
+  ///
+  /// In pt, this message translates to:
+  /// **'Paga: {who}'**
+  String orderSummaryPays(String who);
+
+  /// No description provided for @orderBalanceTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Saldos atualizados'**
+  String get orderBalanceTitle;
+
+  /// No description provided for @orderBalanceBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os pagamentos registrados foram mantidos. Saldo de quem mudou (antes → depois):'**
+  String get orderBalanceBody;
+
+  /// No description provided for @orderBalanceLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name}: {before} → {after}'**
+  String orderBalanceLine(String name, String before, String after);
+
+  /// No description provided for @ordersPays.
+  ///
+  /// In pt, this message translates to:
+  /// **'Paga: {names}'**
+  String ordersPays(String names);
 }
 
 class _AppLocalizationsDelegate

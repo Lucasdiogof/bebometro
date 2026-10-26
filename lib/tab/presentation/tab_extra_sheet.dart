@@ -150,6 +150,7 @@ class _ExtraFormState extends State<_ExtraForm> {
         cents: cents,
         service: _service,
         assign: assign,
+        consumers: old?.consumers,
       ),
     );
   }

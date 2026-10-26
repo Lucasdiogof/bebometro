@@ -11,16 +11,13 @@ import '../../games/presentation/game_cubit.dart';
 import '../../l10n/locale_controller.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/catalog_item.dart';
-import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/presentation/catalog_cubit.dart';
-import '../../drinks/presentation/drink_form_cubit.dart';
 import '../../drinks/presentation/my_drinks_cubit.dart';
 import '../../history/presentation/history_cubit.dart';
 import '../../home/presentation/home_cubit.dart';
 import '../../outing_drinks/data/outing_drink_repository.dart';
 import '../../outings/data/outing_deletion.dart';
 import '../../outings/data/outing_repository.dart';
-import '../../outings/domain/outing.dart';
 import '../../places/data/device_location.dart';
 import '../../places/data/geo_search.dart';
 import '../../places/data/place_repository.dart';
@@ -50,20 +47,6 @@ import '../sync/sync_conflicts.dart';
 import '../sync/sync_cubit.dart';
 
 final getIt = GetIt.instance;
-
-/// Records to look the user's own prices up in: same saved place (by id), or
-/// just the same outing when it has no saved place.
-List<DrinkEntry> _priceCandidates(Outing outing) {
-  final ids = <String>{outing.id};
-  final placeId = outing.placeId;
-  if (placeId != null) {
-    ids.addAll(getIt<OutingRepository>().forPlace(placeId).map((o) => o.id));
-  }
-  return [
-    for (final e in getIt<DrinkRepository>().allEntries())
-      if (ids.contains(e.outingId)) e,
-  ];
-}
 
 late List<CatalogItem> _bundledCatalog;
 late List<GameCard> _bundledCards;
@@ -292,33 +275,6 @@ class AccountScope {
           getIt<DrinkRepository>(),
           getIt<AppPrefs>(),
         ),
-      )
-      ..registerFactoryParam<
-        DrinkFormCubit,
-        ({String outingId, CatalogItem item, String? consumerId, bool choose}),
-        void
-      >((args, _) {
-        final outing = getIt<OutingRepository>().byId(args.outingId)!;
-        final people = getIt<TabRepository>().load(outing.id).present.length;
-        return DrinkFormCubit.forItem(
-          getIt<DrinkRepository>(),
-          outing,
-          args.item,
-          _priceCandidates(outing),
-          consumerId: args.consumerId,
-          // With people at the table and no person given, it must be chosen.
-          consumerPending: args.choose && people > 1,
-        );
-      }, instanceName: 'new')
-      ..registerFactoryParam<DrinkFormCubit, DrinkEntry, void>((entry, _) {
-        final outing = getIt<OutingRepository>().byId(entry.outingId)!;
-        return DrinkFormCubit.forEntry(
-          getIt<DrinkRepository>(),
-          outing,
-          entry,
-          _priceCandidates(outing),
-          tabs: getIt<TabRepository>(),
-        );
-      }, instanceName: 'edit');
+      );
   }
 }

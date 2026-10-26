@@ -37,6 +37,7 @@ class OrderRow {
     this.complimentary = false,
     this.shared = false,
     this.detail,
+    this.payerIds = const [],
   });
 
   final String key;
@@ -56,6 +57,16 @@ class OrderRow {
   final bool complimentary;
   final bool shared;
   final String? detail;
+
+  /// Participant ids that bear the cost ("?" = a payer not on the tab).
+  /// Independent from [consumerIds].
+  final List<String> payerIds;
+
+  /// The payers are other than the consumers (worth showing on the row).
+  bool get payersDiffer {
+    final a = {...payerIds}, b = {...consumerIds};
+    return payerIds.isNotEmpty && (a.length != b.length || !a.containsAll(b));
+  }
 
   bool get isFood => extra != null;
   bool get isPending => totalCents == null;
@@ -81,12 +92,54 @@ class TableOrders {
     return [keyOf(e.consumerId)];
   }
 
-  static List<String> _takersOf(TabExtra x, TabDoc doc) => x.assign == null
+  /// Who consumed an extra: the people it names, or (lines made before
+  /// consumers existed) the people it was split among, or everybody.
+  static List<String> _takersOf(TabExtra x, TabDoc doc) {
+    final named = x.consumers;
+    if (named != null) {
+      return [
+        for (final id in named)
+          if (doc.participant(id) != null) id else TabCalculator.unassignedKey,
+      ];
+    }
+    return x.assign == null
+        ? [for (final p in doc.participants) p.id]
+        : [
+            for (final p in doc.participants)
+              if (x.assign!.containsKey(p.id)) p.id,
+          ];
+  }
+
+  /// Who bears the cost of an extra (everybody when nothing says otherwise).
+  static List<String> _extraPayersOf(TabExtra x, TabDoc doc) => x.assign == null
       ? [for (final p in doc.participants) p.id]
       : [
-          for (final p in doc.participants)
-            if (x.assign!.containsKey(p.id)) p.id,
+          for (final k in x.assign!.keys)
+            if (doc.participant(k) != null) k else TabCalculator.unassignedKey,
         ];
+
+  /// Who bears the cost of a drink record: a typed split on the tab, the
+  /// record's own payers, or (older records) the people who drank it.
+  static List<String> payersOf(DrinkEntry e, TabDoc doc) {
+    final typed = doc.linkFor(e.id)?.assign;
+    if (typed != null) {
+      return [
+        for (final k in typed.keys)
+          if (doc.participant(k) != null) k else TabCalculator.unassignedKey,
+      ];
+    }
+    final p = e.payers;
+    if (p == null) return consumersOf(e, doc);
+    return [
+      for (final k in p.keys)
+        if (k == ownerPortionKey)
+          doc.me?.id ?? ownerPortionKey
+        else if (doc.participant(k) != null)
+          k
+        else
+          TabCalculator.unassignedKey,
+    ];
+  }
 
   /// Orders of the outing for [filter], newest first.
   static List<OrderRow> rows(
@@ -97,15 +150,18 @@ class TableOrders {
     final out = <OrderRow>[];
     final groups = <String, List<DrinkEntry>>{};
     final consumers = <String, List<String>>{};
+    final payers = <String, List<String>>{};
 
     for (final e in entries.values) {
       if (e.isDeleted) continue;
       final who = consumersOf(e, doc);
       if (!filter.isTable && !who.contains(filter.personId)) continue;
       final line = TabCalculator.entryLine(e, TabLink(entryId: e.id));
-      final key = '${line.groupKey}|${[...who]..sort()}';
+      final pay = payersOf(e, doc);
+      final key = '${line.groupKey}|${[...who]..sort()}|${[...pay]..sort()}';
       groups.putIfAbsent(key, () => []).add(e);
       consumers[key] = who;
+      payers[key] = pay;
     }
     for (final kv in groups.entries) {
       final list = kv.value
@@ -130,6 +186,7 @@ class TableOrders {
           complimentary: first.complimentary,
           shared: list.first.isShared,
           detail: first.detail,
+          payerIds: payers[kv.key]!,
         ),
       );
     }
@@ -149,6 +206,7 @@ class TableOrders {
           unitCents: x.basis == PriceBasis.unit ? x.cents : null,
           complimentary: x.priceKind == PriceKind.complimentary,
           detail: x.category.label,
+          payerIds: _extraPayersOf(x, doc),
         ),
       );
     }

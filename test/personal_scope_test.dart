@@ -119,6 +119,16 @@ void main() {
       expect(SyncCubit.carriesAttribution(e().toJson()), isFalse);
     });
 
+    test(
+      'payers make the record "attributed" too (never sent without them)',
+      () {
+        final json = e().toJson()..['payers'] = {'me': 1, 'ana': 1};
+        expect(SyncCubit.carriesAttribution(json), isTrue);
+        // and a partial write of it is never taken as complete
+        expect(SyncCubit.hasOtherOptionalColumns(json), isFalse);
+      },
+    );
+
     test('an ordinary record of the owner has nothing else to lose', () {
       expect(SyncCubit.hasOtherOptionalColumns(e().toJson()), isFalse);
     });

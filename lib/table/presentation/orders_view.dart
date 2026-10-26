@@ -111,6 +111,15 @@ class OrderTile extends StatelessWidget {
     ].join(', ');
   }
 
+  String? _pays() => row.payersDiffer
+      ? tr.ordersPays(
+          [
+            for (final id in row.payerIds)
+              doc.participant(id)?.displayName ?? tr.ordersUnassigned,
+          ].join(', '),
+        )
+      : null;
+
   @override
   Widget build(BuildContext context) {
     final entry = row.latest;
@@ -120,7 +129,12 @@ class OrderTile extends StatelessWidget {
     final title = row.quantity > 1
         ? '${row.quantity}× ${row.title}'
         : row.title;
-    final subtitle = [_who(), if (row.shared) tr.tabShared, ?_each].join(' · ');
+    final subtitle = [
+      _who(),
+      if (row.shared) tr.tabShared,
+      ?_pays(),
+      ?_each,
+    ].join(' · ');
     return SurfaceCard(
       key: ValueKey('order-${row.key}'),
       onTap: onEdit,

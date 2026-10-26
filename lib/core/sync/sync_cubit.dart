@@ -645,6 +645,8 @@ class SyncCubit extends Cubit<SyncState> {
       // see [carriesAttribution] for when losing them is not acceptable.
       'consumer_id',
       'portions',
+      // Who pays (migration 20261023000000): same rule as the attribution.
+      'payers',
     ],
     'custom_drinks': ['components'],
   };
@@ -824,19 +826,22 @@ class SyncCubit extends Cubit<SyncState> {
   bool _columnGap(PostgrestException e, String collection) =>
       e.code == 'PGRST204' || e.code == '42703';
 
-  /// The drink record names a person (a guest as consumer, or per-person
-  /// portions): sending it without those columns would turn it into a drink of
-  /// the owner on every other device.
+  /// The drink record names a person (a guest as consumer, per-person
+  /// portions, or who pays): sending it without those columns would turn it
+  /// into a drink of the owner on every other device, or make the consumers
+  /// pay for it.
   @visibleForTesting
   static bool carriesAttribution(Map<String, dynamic> row) =>
-      row['consumer_id'] != null || row['portions'] != null;
+      row['consumer_id'] != null ||
+      row['portions'] != null ||
+      row['payers'] != null;
 
   /// The row has a newer optional column other than the attribution pair (a
   /// composition, an ABV source, a lock-screen origin), which a partial write
   /// would drop.
   @visibleForTesting
   static bool hasOtherOptionalColumns(Map<String, dynamic> row) {
-    const attribution = {'consumer_id', 'portions'};
+    const attribution = {'consumer_id', 'portions', 'payers'};
     for (final k in _optionalColumns['drink_entries']!) {
       if (!attribution.contains(k) && row[k] != null) return true;
     }

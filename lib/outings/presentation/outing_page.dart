@@ -11,7 +11,6 @@ import '../../core/widgets/beer_glass.dart';
 import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../../drinks/domain/drink_entry.dart';
-import '../../drinks/presentation/drink_entry_page.dart';
 import '../../places/presentation/change_outing_place.dart';
 import 'outing_actions.dart';
 import '../../scan/data/scan_draft_store.dart';
@@ -26,9 +25,9 @@ import '../../tab/domain/tab_calc.dart';
 import '../../tab/domain/tab_models.dart';
 import '../../tab/presentation/split_page.dart';
 import '../../tab/presentation/tab_cubit.dart';
-import '../../tab/presentation/tab_extra_sheet.dart';
 import '../../tab/presentation/tab_page.dart';
 import '../../tab/presentation/tab_share_page.dart';
+import '../../table/domain/order_builder.dart';
 import '../../table/domain/table_orders.dart';
 import '../../table/presentation/bill_view.dart';
 import '../../table/presentation/order_page.dart';
@@ -192,26 +191,49 @@ class _OutingViewState extends State<_OutingView> {
 
   /// "Bebida": the new order form, for the person on screen (or a choice when
   /// the whole table is shown).
-  Future<void> _addDrink({String initialText = '', Set<String>? who}) async {
+  Future<void> _addDrink({
+    String initialText = '',
+    Set<String>? who,
+    OrderRow? seed,
+    OrderKind kind = OrderKind.alcoholic,
+  }) async {
     final cubit = context.read<OutingCubit>();
     final doc = context.read<TabCubit>().state.doc;
-    final saved = await Navigator.of(context).push<List<DrinkEntry>>(
-      MaterialPageRoute(
-        builder: (_) => OrderPage(
-          outingId: cubit.outingId,
-          doc: doc,
-          preselected: who ?? TableOrders.preselect(doc, _safeFilter(doc)),
-          initialText: initialText,
-        ),
-      ),
+    final out = await OrderPage.open(
+      context,
+      outingId: cubit.outingId,
+      preselected: who ?? TableOrders.preselect(doc, _safeFilter(doc)),
+      initialText: initialText,
+      seed: seed,
+      kind: kind,
     );
-    if (saved == null || !mounted) return;
-    if (saved.isEmpty) {
-      // Saved through the catalog/label/menu flow.
-      showToast(context, tr.outingDrinkLogged);
-      return;
+    if (out == null || !mounted) return;
+    final x = out.extra;
+    if (x != null) {
+      _announceExtra(x);
+    } else if (out.entries.isNotEmpty) {
+      cubit.announceAdded(_summaryOf(out.entries), [
+        for (final e in out.entries) e.id,
+      ]);
     }
-    cubit.announceAdded(_summaryOf(saved), [for (final e in saved) e.id]);
+  }
+
+  /// The food/other line was added: say so, with an Undo that removes it.
+  void _announceExtra(TabExtra x) {
+    final tab = context.read<TabCubit>();
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(tr.orderAdded(x.description)),
+          persist: false,
+          duration: const Duration(seconds: 5),
+          action: SnackBarAction(
+            label: tr.commonUndo,
+            onPressed: () => tab.removeExtra(x.id),
+          ),
+        ),
+      );
   }
 
   String _summaryOf(List<DrinkEntry> list) {
@@ -238,28 +260,6 @@ class _OutingViewState extends State<_OutingView> {
       ? _filter
       : const PersonFilter.table();
 
-  Future<void> _addExtra({required bool food}) async {
-    final tab = context.read<TabCubit>();
-    final doc = tab.state.doc;
-    final extra = await showTabExtraSheet(
-      context,
-      newId: tab.newId(),
-      participants: doc.participants,
-      explicitWho: true,
-      defaultCategory: food ? ExtraCategory.food : ExtraCategory.cover,
-      categories: food
-          ? const [ExtraCategory.food]
-          : const [
-              ExtraCategory.cover,
-              ExtraCategory.starter,
-              ExtraCategory.transport,
-              ExtraCategory.other,
-            ],
-      title: food ? tr.actionFood : tr.actionOther,
-    );
-    if (extra != null) await tab.saveExtra(extra);
-  }
-
   Future<void> _water() async {
     final cubit = context.read<OutingCubit>();
     final tab = context.read<TabCubit>();
@@ -275,21 +275,12 @@ class _OutingViewState extends State<_OutingView> {
   }
 
   Future<void> _editRow(OrderRow row) async {
-    final tab = context.read<TabCubit>();
-    if (row.extra != null) {
-      final doc = tab.state.doc;
-      final x = await showTabExtraSheet(
-        context,
-        newId: tab.newId(),
-        participants: doc.participants,
-        existing: row.extra,
-        explicitWho: doc.autoLink,
-      );
-      if (x != null) await tab.saveExtra(x);
-      return;
-    }
-    final e = row.latest;
-    if (e != null) await _edit(e);
+    final out = await OrderPage.editRow(
+      context,
+      outingId: context.read<OutingCubit>().outingId,
+      row: row,
+    );
+    if (out != null && mounted) showToast(context, tr.outingEntryUpdated);
   }
 
   Future<void> _deleteRow(OrderRow row) async {
@@ -358,13 +349,7 @@ class _OutingViewState extends State<_OutingView> {
       ),
     );
     if (go == true && mounted) {
-      await _addDrink(
-        initialText: e.name,
-        who: {
-          for (final id in people)
-            if (doc.participant(id) != null && !doc.participant(id)!.left) id,
-        },
-      );
+      await _addDrink(initialText: e.name, seed: row);
     }
   }
 
@@ -442,16 +427,8 @@ class _OutingViewState extends State<_OutingView> {
   }
 
   Future<void> _edit(DrinkEntry entry) async {
-    final outcome = await Navigator.of(context).push<EntryOutcome>(
-      MaterialPageRoute(builder: (_) => DrinkEntryPage.edit(entry: entry)),
-    );
-    if (!mounted || outcome == null) return;
-    showToast(
-      context,
-      outcome == EntryOutcome.deleted
-          ? tr.noticeEntryDeleted
-          : tr.outingEntryUpdated,
-    );
+    final out = await OrderPage.editEntry(context, entry: entry);
+    if (out != null && mounted) showToast(context, tr.outingEntryUpdated);
   }
 
   Future<void> _finish() async {
@@ -1022,7 +999,7 @@ class _OutingViewState extends State<_OutingView> {
                       child: OutlinedButton.icon(
                         key: const ValueKey('add-food'),
                         style: _outlinedActionStyle,
-                        onPressed: () => _addExtra(food: true),
+                        onPressed: () => _addDrink(kind: OrderKind.food),
                         icon: const Icon(Icons.restaurant_rounded, size: 20),
                         label: _actionLabel(tr.actionFood),
                       ),
@@ -1032,7 +1009,7 @@ class _OutingViewState extends State<_OutingView> {
                       child: OutlinedButton.icon(
                         key: const ValueKey('add-other'),
                         style: _outlinedActionStyle,
-                        onPressed: () => _addExtra(food: false),
+                        onPressed: () => _addDrink(kind: OrderKind.other),
                         icon: const Icon(Icons.receipt_long_outlined, size: 20),
                         label: _actionLabel(tr.actionOther),
                       ),

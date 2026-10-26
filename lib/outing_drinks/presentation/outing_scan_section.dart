@@ -8,7 +8,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/common.dart';
-import '../../drinks/presentation/drink_entry_page.dart';
+import '../../table/presentation/order_page.dart';
 import '../../scan/data/scan_draft_store.dart';
 import '../../scan/presentation/photo_widgets.dart';
 import '../../scan/presentation/scan_label_page.dart';
@@ -83,13 +83,10 @@ class _OutingScanSectionState extends State<OutingScanSection> {
         MaterialPageRoute(builder: (_) => ScanLabelPage(outingId: id)),
       );
       if (result != null && result.register && mounted) {
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => DrinkEntryPage.create(
-              outingId: id,
-              item: result.drink.toCatalogItem(),
-            ),
-          ),
+        await OrderPage.open(
+          context,
+          outingId: id,
+          item: result.drink.toCatalogItem(),
         );
       }
     }

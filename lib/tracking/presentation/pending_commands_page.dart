@@ -8,8 +8,9 @@ import '../../core/widgets/common.dart';
 import '../../drinks/data/drink_repository.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../../drinks/domain/presentation_label.dart';
-import '../../drinks/presentation/drink_entry_page.dart';
-import '../../drinks/presentation/drink_form_cubit.dart';
+import '../../table/domain/table_orders.dart';
+import '../../table/presentation/order_page.dart';
+import '../../tab/data/tab_repository.dart';
 import '../../l10n/l10n.dart';
 import '../application/tracking_coordinator.dart';
 
@@ -216,23 +217,25 @@ class _PendingCommandsPageState extends State<PendingCommandsPage> {
   Future<void> _review(PendingCommand p, DrinkEntry template) async {
     _coordinator.beginReview(p);
     try {
-      final outcome = await Navigator.of(context).push<EntryOutcome>(
+      final doc = getIt<TabRepository>().load(p.outing.id);
+      final row = TableOrders.rowOfEntry(doc, template);
+      if (row == null) return;
+      final outcome = await Navigator.of(context).push<OrderOutcome>(
         MaterialPageRoute(
-          builder: (_) => DrinkEntryPage.review(
-            create: () => DrinkFormCubit.forReview(
-              getIt<DrinkRepository>(),
-              p.outing,
-              template,
-              getIt<DrinkRepository>().entriesFor(p.outing.id),
+          builder: (_) => OrderPage(
+            outingId: p.outing.id,
+            doc: doc,
+            seed: row,
+            review: OrderReview(
               entryId: _coordinator.entryIdFor(p),
               at: p.command.at,
-              note: tr.pendingReviewNote(formatDateTime(p.command.at)),
               origin: _coordinator.originOf(p),
+              note: tr.pendingReviewNote(formatDateTime(p.command.at)),
             ),
           ),
         ),
       );
-      if (outcome == EntryOutcome.saved) {
+      if (outcome != null) {
         final ok = await _coordinator.acknowledgeSaved(p);
         if (mounted) {
           showToast(context, ok ? tr.pendingSaved : tr.pendingRetryFailed);

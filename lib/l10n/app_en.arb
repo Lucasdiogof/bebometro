@@ -1892,5 +1892,100 @@
   "conflictEffectUndeleteRemote": "The version edited in the cloud exists again here. Your deletion is discarded.",
   "conflictKeepDeletion": "Keep the deletion",
   "conflictDeletionKept": "Deletion kept",
-  "conflictUseRemoteRestore": "Use the cloud one (it exists again)"
+  "conflictUseRemoteRestore": "Use the cloud one (it exists again)",
+  "orderEditTitle": "Edit order",
+  "orderSaveEdit": "Save changes",
+  "orderQuantity": "Quantity",
+  "orderKindAlcoholic": "Drink",
+  "orderKindSoft": "No alcohol",
+  "orderKindFood": "Food",
+  "orderKindOther": "Other",
+  "orderWhoConsumed": "Who had it?",
+  "orderConsumedHint": "Who took part. This does not change who pays.",
+  "orderWhoPays": "Who pays?",
+  "orderPayersHint": "Who bears the cost. This does not change who had it.",
+  "orderPayEqual": "Split equally",
+  "orderPayCustom": "Custom amounts",
+  "orderPayerAmountLabel": "{name}'s amount",
+  "@orderPayerAmountLabel": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "orderPayerBears": "{name} pays {amount}",
+  "@orderPayerBears": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          },
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "orderPayersPending": "No amount yet: who pays is kept and the amount stays pending.",
+  "orderPayersExact": "The sum matches the total.",
+  "orderPayersMissing": "{amount} left to assign.",
+  "@orderPayersMissing": {
+      "placeholders": {
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "orderPayersOver": "{amount} over the total.",
+  "@orderPayersOver": {
+      "placeholders": {
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "orderErrNobodyConsumed": "Pick who had it.",
+  "orderErrNobodyPays": "Pick who pays.",
+  "orderErrUnits": "The units per person must add up to {count}.",
+  "@orderErrUnits": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "orderErrPayersSum": "The amounts must add up to the order total.",
+  "orderUnitsPerPerson": "Set units per person",
+  "orderUnitsHint": "Without it, each unit is one shared order.",
+  "orderSummaryPays": "Pays: {who}",
+  "@orderSummaryPays": {
+      "placeholders": {
+          "who": {
+              "type": "String"
+          }
+      }
+  },
+  "orderBalanceTitle": "Balances updated",
+  "orderBalanceBody": "Recorded payments were kept. Balance of those who changed (before → after):",
+  "orderBalanceLine": "{name}: {before} → {after}",
+  "@orderBalanceLine": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          },
+          "before": {
+              "type": "String"
+          },
+          "after": {
+              "type": "String"
+          }
+      }
+  },
+  "ordersPays": "Pays: {names}",
+  "@ordersPays": {
+      "placeholders": {
+          "names": {
+              "type": "String"
+          }
+      }
+  }
 }

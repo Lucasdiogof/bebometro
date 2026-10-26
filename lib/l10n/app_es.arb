@@ -1892,5 +1892,100 @@
   "conflictEffectUndeleteRemote": "La versión editada en la nube vuelve a existir aquí. Tu eliminación se descarta.",
   "conflictKeepDeletion": "Mantener la eliminación",
   "conflictDeletionKept": "Eliminación mantenida",
-  "conflictUseRemoteRestore": "Usar la de la nube (vuelve a existir)"
+  "conflictUseRemoteRestore": "Usar la de la nube (vuelve a existir)",
+  "orderEditTitle": "Corregir pedido",
+  "orderSaveEdit": "Guardar cambios",
+  "orderQuantity": "Cantidad",
+  "orderKindAlcoholic": "Bebida",
+  "orderKindSoft": "Sin alcohol",
+  "orderKindFood": "Comida",
+  "orderKindOther": "Otro",
+  "orderWhoConsumed": "¿Quién consumió?",
+  "orderConsumedHint": "Quién participó. Esto no cambia quién paga.",
+  "orderWhoPays": "¿Quién paga?",
+  "orderPayersHint": "Quién asume el costo. Esto no cambia quién consumió.",
+  "orderPayEqual": "Dividir igual",
+  "orderPayCustom": "Valores personalizados",
+  "orderPayerAmountLabel": "Valor de {name}",
+  "@orderPayerAmountLabel": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "orderPayerBears": "{name} paga {amount}",
+  "@orderPayerBears": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          },
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "orderPayersPending": "Sin valor todavía: quién paga queda guardado y el valor queda pendiente.",
+  "orderPayersExact": "La suma coincide con el total.",
+  "orderPayersMissing": "Faltan {amount} por asignar.",
+  "@orderPayersMissing": {
+      "placeholders": {
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "orderPayersOver": "Se pasa {amount} del total.",
+  "@orderPayersOver": {
+      "placeholders": {
+          "amount": {
+              "type": "String"
+          }
+      }
+  },
+  "orderErrNobodyConsumed": "Elige quién consumió.",
+  "orderErrNobodyPays": "Elige quién paga.",
+  "orderErrUnits": "Las unidades por persona deben sumar {count}.",
+  "@orderErrUnits": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "orderErrPayersSum": "Los valores deben sumar el total del pedido.",
+  "orderUnitsPerPerson": "Indicar unidades por persona",
+  "orderUnitsHint": "Sin esto, cada unidad es un pedido compartido.",
+  "orderSummaryPays": "Paga: {who}",
+  "@orderSummaryPays": {
+      "placeholders": {
+          "who": {
+              "type": "String"
+          }
+      }
+  },
+  "orderBalanceTitle": "Saldos actualizados",
+  "orderBalanceBody": "Los pagos registrados se mantuvieron. Saldo de quienes cambiaron (antes → después):",
+  "orderBalanceLine": "{name}: {before} → {after}",
+  "@orderBalanceLine": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          },
+          "before": {
+              "type": "String"
+          },
+          "after": {
+              "type": "String"
+          }
+      }
+  },
+  "ordersPays": "Paga: {names}",
+  "@ordersPays": {
+      "placeholders": {
+          "names": {
+              "type": "String"
+          }
+      }
+  }
 }

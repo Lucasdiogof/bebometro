@@ -20,7 +20,7 @@ import 'catalog_cubit.dart';
 import 'my_drinks_page.dart';
 import 'custom_drink_page.dart';
 import 'drink_detail_sheet.dart';
-import 'drink_entry_page.dart';
+import '../../table/presentation/order_page.dart';
 import 'recipe_editor_page.dart';
 import '../../l10n/l10n.dart';
 
@@ -29,43 +29,28 @@ import '../../l10n/l10n.dart';
 /// Catálogo tab: explore, search, filter, favourite and manage own drinks with
 /// no running outing; registering from there starts (or reuses) an outing.
 class AddDrinkPage extends StatelessWidget {
-  const AddDrinkPage({
-    super.key,
-    this.outingId,
-    this.consumerId,
-    this.choosePerson = true,
-  });
+  const AddDrinkPage({super.key, this.outingId, this.pickOnly = false});
 
   final String? outingId;
 
-  /// Who the drink is for (null = the owner), already decided by the caller;
-  /// with [choosePerson] and no decision, the form asks.
-  final String? consumerId;
-  final bool choosePerson;
+  /// The catalog only finds a name: tapping a product pops it (a
+  /// [CatalogItem]) instead of registering anything.
+  final bool pickOnly;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<CatalogCubit>(),
-      child: _AddDrinkView(
-        outingId: outingId,
-        consumerId: consumerId,
-        choosePerson: choosePerson,
-      ),
+      child: _AddDrinkView(outingId: outingId, pickOnly: pickOnly),
     );
   }
 }
 
 class _AddDrinkView extends StatelessWidget {
-  const _AddDrinkView({
-    required this.outingId,
-    required this.consumerId,
-    required this.choosePerson,
-  });
+  const _AddDrinkView({required this.outingId, required this.pickOnly});
 
   final String? outingId;
-  final String? consumerId;
-  final bool choosePerson;
+  final bool pickOnly;
 
   bool get _explore => outingId == null;
 
@@ -87,6 +72,10 @@ class _AddDrinkView extends StatelessWidget {
       _once(() => _pickItem(context, item));
 
   Future<void> _pickItem(BuildContext context, CatalogItem item) async {
+    if (pickOnly) {
+      Navigator.of(context).pop(item);
+      return;
+    }
     var id = outingId ?? getIt<OutingRepository>().active?.id;
     if (id == null) {
       // Exploring with no outing: registering starts one when the person
@@ -106,20 +95,15 @@ class _AddDrinkView extends StatelessWidget {
     String id,
     CatalogItem item,
   ) async {
-    final outcome = await Navigator.of(context).push<EntryOutcome>(
-      MaterialPageRoute(
-        builder: (_) => DrinkEntryPage.create(
-          outingId: id,
-          item: item,
-          consumerId: consumerId,
-          choose: choosePerson,
-        ),
-      ),
-    );
+    if (pickOnly) {
+      Navigator.of(context).pop(item);
+      return;
+    }
+    final outcome = await OrderPage.open(context, outingId: id, item: item);
     if (!context.mounted) return;
     if (_explore) {
-      if (outcome == EntryOutcome.saved) await OutingFlow.open(context, id);
-    } else if (outcome == EntryOutcome.saved) {
+      if (outcome != null) await OutingFlow.open(context, id);
+    } else if (outcome != null) {
       Navigator.of(context).pop(true);
     }
   }

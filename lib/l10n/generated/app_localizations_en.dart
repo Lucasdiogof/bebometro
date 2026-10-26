@@ -6789,4 +6789,114 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get conflictUseRemoteRestore => 'Use the cloud one (it exists again)';
+
+  @override
+  String get orderEditTitle => 'Edit order';
+
+  @override
+  String get orderSaveEdit => 'Save changes';
+
+  @override
+  String get orderQuantity => 'Quantity';
+
+  @override
+  String get orderKindAlcoholic => 'Drink';
+
+  @override
+  String get orderKindSoft => 'No alcohol';
+
+  @override
+  String get orderKindFood => 'Food';
+
+  @override
+  String get orderKindOther => 'Other';
+
+  @override
+  String get orderWhoConsumed => 'Who had it?';
+
+  @override
+  String get orderConsumedHint =>
+      'Who took part. This does not change who pays.';
+
+  @override
+  String get orderWhoPays => 'Who pays?';
+
+  @override
+  String get orderPayersHint =>
+      'Who bears the cost. This does not change who had it.';
+
+  @override
+  String get orderPayEqual => 'Split equally';
+
+  @override
+  String get orderPayCustom => 'Custom amounts';
+
+  @override
+  String orderPayerAmountLabel(String name) {
+    return '$name\'s amount';
+  }
+
+  @override
+  String orderPayerBears(String name, String amount) {
+    return '$name pays $amount';
+  }
+
+  @override
+  String get orderPayersPending =>
+      'No amount yet: who pays is kept and the amount stays pending.';
+
+  @override
+  String get orderPayersExact => 'The sum matches the total.';
+
+  @override
+  String orderPayersMissing(String amount) {
+    return '$amount left to assign.';
+  }
+
+  @override
+  String orderPayersOver(String amount) {
+    return '$amount over the total.';
+  }
+
+  @override
+  String get orderErrNobodyConsumed => 'Pick who had it.';
+
+  @override
+  String get orderErrNobodyPays => 'Pick who pays.';
+
+  @override
+  String orderErrUnits(int count) {
+    return 'The units per person must add up to $count.';
+  }
+
+  @override
+  String get orderErrPayersSum => 'The amounts must add up to the order total.';
+
+  @override
+  String get orderUnitsPerPerson => 'Set units per person';
+
+  @override
+  String get orderUnitsHint => 'Without it, each unit is one shared order.';
+
+  @override
+  String orderSummaryPays(String who) {
+    return 'Pays: $who';
+  }
+
+  @override
+  String get orderBalanceTitle => 'Balances updated';
+
+  @override
+  String get orderBalanceBody =>
+      'Recorded payments were kept. Balance of those who changed (before → after):';
+
+  @override
+  String orderBalanceLine(String name, String before, String after) {
+    return '$name: $before → $after';
+  }
+
+  @override
+  String ordersPays(String names) {
+    return 'Pays: $names';
+  }
 }

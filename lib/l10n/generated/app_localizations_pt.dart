@@ -6805,4 +6805,116 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get conflictUseRemoteRestore => 'Usar a da nuvem (volta a existir)';
+
+  @override
+  String get orderEditTitle => 'Corrigir pedido';
+
+  @override
+  String get orderSaveEdit => 'Salvar correção';
+
+  @override
+  String get orderQuantity => 'Quantidade';
+
+  @override
+  String get orderKindAlcoholic => 'Bebida';
+
+  @override
+  String get orderKindSoft => 'Sem álcool';
+
+  @override
+  String get orderKindFood => 'Comida';
+
+  @override
+  String get orderKindOther => 'Outro';
+
+  @override
+  String get orderWhoConsumed => 'Quem consumiu?';
+
+  @override
+  String get orderConsumedHint =>
+      'Quem participou do pedido. Isso não muda quem paga.';
+
+  @override
+  String get orderWhoPays => 'Quem paga?';
+
+  @override
+  String get orderPayersHint =>
+      'Quem assume o custo. Isso não muda quem consumiu.';
+
+  @override
+  String get orderPayEqual => 'Dividir igual';
+
+  @override
+  String get orderPayCustom => 'Valores personalizados';
+
+  @override
+  String orderPayerAmountLabel(String name) {
+    return 'Valor de $name';
+  }
+
+  @override
+  String orderPayerBears(String name, String amount) {
+    return '$name paga $amount';
+  }
+
+  @override
+  String get orderPayersPending =>
+      'Sem valor ainda: quem paga fica guardado e o valor fica pendente.';
+
+  @override
+  String get orderPayersExact => 'A soma fecha com o total.';
+
+  @override
+  String orderPayersMissing(String amount) {
+    return 'Falta distribuir $amount.';
+  }
+
+  @override
+  String orderPayersOver(String amount) {
+    return 'Passou $amount do total.';
+  }
+
+  @override
+  String get orderErrNobodyConsumed => 'Escolha quem consumiu.';
+
+  @override
+  String get orderErrNobodyPays => 'Escolha quem paga.';
+
+  @override
+  String orderErrUnits(int count) {
+    return 'As unidades das pessoas precisam somar $count.';
+  }
+
+  @override
+  String get orderErrPayersSum =>
+      'Os valores precisam somar o total do pedido.';
+
+  @override
+  String get orderUnitsPerPerson => 'Informar unidades por pessoa';
+
+  @override
+  String get orderUnitsHint =>
+      'Sem isso, cada unidade é um pedido compartilhado.';
+
+  @override
+  String orderSummaryPays(String who) {
+    return 'Paga: $who';
+  }
+
+  @override
+  String get orderBalanceTitle => 'Saldos atualizados';
+
+  @override
+  String get orderBalanceBody =>
+      'Os pagamentos registrados foram mantidos. Saldo de quem mudou (antes → depois):';
+
+  @override
+  String orderBalanceLine(String name, String before, String after) {
+    return '$name: $before → $after';
+  }
+
+  @override
+  String ordersPays(String names) {
+    return 'Paga: $names';
+  }
 }

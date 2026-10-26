@@ -164,6 +164,7 @@ class TabExtra {
     this.cents,
     this.service = true,
     this.assign,
+    this.consumers,
   });
 
   final String id;
@@ -180,8 +181,13 @@ class TabExtra {
   /// Whether the service charge applies to this line.
   final bool service;
 
-  /// Who takes part, with weights; null = everybody.
+  /// Who bears the cost, with weights; null = everybody. (Before payers
+  /// existed this was also "who takes part": see [consumers].)
   final Map<String, int>? assign;
+
+  /// Who consumed it, independent from who pays. Null on lines made before
+  /// this existed: there the people of [assign] (or everybody) took part.
+  final List<String>? consumers;
 
   /// Cost of the whole line; null when the price is unknown.
   int? get totalCents {
@@ -206,6 +212,7 @@ class TabExtra {
     int? Function()? cents,
     bool? service,
     Map<String, int>? Function()? assign,
+    List<String>? Function()? consumers,
   }) => TabExtra(
     id: id,
     description: description ?? this.description,
@@ -217,6 +224,7 @@ class TabExtra {
     cents: cents != null ? cents() : this.cents,
     service: service ?? this.service,
     assign: assign != null ? assign() : this.assign,
+    consumers: consumers != null ? consumers() : this.consumers,
   );
 
   Map<String, dynamic> toJson() => {
@@ -229,6 +237,7 @@ class TabExtra {
     'cents': cents,
     'service': service,
     'assign': assign,
+    if (consumers != null) 'consumers': consumers,
     'created_at': createdAt.toUtc().toIso8601String(),
   };
 
@@ -242,6 +251,7 @@ class TabExtra {
     cents: (j['cents'] as num?)?.toInt(),
     service: j['service'] as bool? ?? true,
     assign: _weightsFromJson(j['assign']),
+    consumers: (j['consumers'] as List?)?.cast<String>(),
     createdAt:
         DateTime.tryParse(j['created_at'] as String? ?? '')?.toLocal() ??
         DateTime.now(),

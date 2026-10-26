@@ -259,7 +259,9 @@ class TabCubit extends Cubit<TabState> {
     if (doc.participant(id)?.isMe ?? true) return false;
     if (hasLinks(id)) return false;
     for (final e in state.entries.values) {
-      if (e.consumerId == id || (e.portions?.containsKey(id) ?? false)) {
+      if (e.consumerId == id ||
+          (e.portions?.containsKey(id) ?? false) ||
+          (e.payers?.containsKey(id) ?? false)) {
         return false;
       }
     }
@@ -309,7 +311,9 @@ class TabCubit extends Cubit<TabState> {
     if ((d.custom[id] ?? 0) > 0) return true;
     if (d.mode == SplitMode.equal && d.equalIds.contains(id)) return true;
     bool inAssign(Map<String, int>? a) => a != null && a.containsKey(id);
-    return d.extras.any((x) => inAssign(x.assign)) ||
+    return d.extras.any(
+          (x) => inAssign(x.assign) || (x.consumers?.contains(id) ?? false),
+        ) ||
         d.links.any((l) => inAssign(l.assign)) ||
         state.result.shareOf(id) > 0;
   }

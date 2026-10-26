@@ -9,7 +9,7 @@ import '../../core/widgets/common.dart';
 import '../../core/widgets/state_views.dart';
 import '../domain/catalog_item.dart';
 import 'custom_drink_page.dart';
-import 'drink_entry_page.dart';
+import '../../table/presentation/order_page.dart';
 import 'my_drinks_cubit.dart';
 import 'recipe_editor_page.dart';
 import '../../l10n/l10n.dart';
@@ -46,13 +46,12 @@ class _MyDrinksView extends StatelessWidget {
           showToast(context, tr.myDrinksNeedOuting);
           return;
         }
-        final outcome = await Navigator.of(context).push<EntryOutcome>(
-          MaterialPageRoute(
-            builder: (_) =>
-                DrinkEntryPage.create(outingId: outingId, item: item),
-          ),
+        final outcome = await OrderPage.open(
+          context,
+          outingId: outingId,
+          item: item,
         );
-        if (outcome == EntryOutcome.saved && context.mounted) {
+        if (outcome != null && context.mounted) {
           showToast(context, tr.myDrinksLogged);
         }
       case _Action.edit:

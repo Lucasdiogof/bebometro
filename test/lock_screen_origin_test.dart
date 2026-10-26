@@ -1,6 +1,6 @@
 import 'package:bebometro/drinks/domain/drink_category.dart';
-import 'package:bebometro/drinks/domain/drink_draft.dart';
 import 'package:bebometro/drinks/domain/drink_entry.dart';
+import 'package:bebometro/table/domain/order_builder.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 final _tap = DateTime.utc(2026, 10, 16, 22, 30);
@@ -104,11 +104,9 @@ void main() {
     });
 
     test('editing the time never changes the original tap time', () {
-      final draft = DrinkDraft.fromEntry(base);
-      final entry = draft.toEntry(id: 'x', outingId: 'o1', now: _later);
-      expect(entry.entryOrigin!.tappedAt.toUtc(), _tap);
+      expect(base.entryOrigin!.tappedAt.toUtc(), _tap);
       final moved = DrinkEntry.fromJson({
-        ...entry.toJson(),
+        ...base.toJson(),
         'consumed_at': _later.toIso8601String(),
       });
       expect(moved.entryOrigin!.tappedAt.toUtc(), _tap);
@@ -117,19 +115,31 @@ void main() {
     });
   });
 
-  group('review draft', () {
+  group('review of a tap', () {
     test('is a NEW record with only the command origin', () {
       final template = source(origin: lock('someone-else'));
-      final draft = DrinkDraft.fromEntry(
-        template,
-        asNew: true,
-        consumedAt: _tap,
-        origin: lock('mine'),
-      );
-      final saved = draft.toEntry(id: 'stable', outingId: 'o1', now: _later);
+      final saved = OrderBuilder.build(
+        OrderInput(
+          outingId: 'o1',
+          name: template.name,
+          kind: OrderKind.alcoholic,
+          ownerId: 'me',
+          at: _later,
+          consumers: const ['me'],
+          payers: const ['me'],
+          priceKind: PriceKind.informed,
+          priceCents: 1500,
+          template: template,
+          fixedId: 'stable',
+          fixedAt: _tap,
+          origin: lock('mine'),
+        ),
+        newId: () => 'unused',
+      ).entries.single;
       expect(saved.id, 'stable'); // not the template id
       expect(saved.entryOrigin!.commandId, 'mine');
       expect(saved.consumedAt, _tap);
+      expect(saved.paidCents, 1500);
     });
   });
 }

@@ -6,7 +6,7 @@ import '../../core/data/app_prefs.dart';
 import '../../core/utils/formatters.dart';
 import '../../drinks/data/catalog_source.dart';
 import '../../drinks/data/drink_repository.dart';
-import '../../drinks/domain/drink_draft.dart';
+import '../../drinks/domain/drink_category.dart';
 import '../../drinks/domain/drink_entry.dart';
 import '../data/outing_repository.dart';
 import '../domain/budget.dart';
@@ -159,10 +159,7 @@ class OutingCubit extends Cubit<OutingState> {
       await _drinks.save(entry);
       _notices.add(
         OutingNotice(
-          [
-            tr.noticeAnotherOne(entry.name),
-            if (entry.personalMl != null) formatMl(entry.personalMl!),
-          ].join(' · '),
+          tr.noticeAnotherOne(entry.name),
           undoLabel: tr.commonUndo,
           undo: () => _drinks.delete(entry.id),
         ),
@@ -178,22 +175,22 @@ class OutingCubit extends Cubit<OutingState> {
     if (state.outing?.isActive != true || !_acquire()) return;
     try {
       final now = DateTime.now();
-      final draft = DrinkDraft.fromItem(
-        CatalogSource.water,
-        now: now,
-      ).withConsumer(consumerId);
-      final entry = draft.toEntry(
+      final water = CatalogSource.water;
+      final entry = DrinkEntry(
         id: _drinks.newId(),
         outingId: outingId,
-        now: now,
+        consumedAt: now,
+        name: water.displayName,
+        category: DrinkCategory.water,
+        catalogItemId: water.id,
+        createdAt: now,
+        updatedAt: now,
+        consumerId: consumerId,
       );
       await _drinks.save(entry);
       _notices.add(
         OutingNotice(
-          [
-            tr.noticeWater,
-            if (entry.personalMl != null) formatMl(entry.personalMl!),
-          ].join(' · '),
+          tr.noticeWater,
           undoLabel: tr.commonUndo,
           undo: () => _drinks.delete(entry.id),
         ),
