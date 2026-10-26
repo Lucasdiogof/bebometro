@@ -836,7 +836,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeIdleTitle => 'Heading out?';
 
   @override
-  String get homeInformedSpent => 'Your reported spend';
+  String get homeInformedSpent => 'Cost of your drinks';
 
   @override
   String get homeLastOuting => 'Last outing';
@@ -851,7 +851,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeOutings => 'Outings';
 
   @override
-  String get homeSpent => 'Your spend';
+  String get homeSpent => 'Cost of your drinks';
 
   @override
   String get homeStartOuting => 'Start outing';
@@ -2990,7 +2990,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get placeStatDrinks => 'Your drinks';
 
   @override
-  String get placeStatSpent => 'Your reported spend';
+  String get placeStatSpent => 'Cost of your drinks';
 
   @override
   String placeLastVisit(String date) {

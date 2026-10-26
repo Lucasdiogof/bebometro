@@ -840,7 +840,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeIdleTitle => '¿Salimos?';
 
   @override
-  String get homeInformedSpent => 'Tu gasto informado';
+  String get homeInformedSpent => 'Costo de tus bebidas';
 
   @override
   String get homeLastOuting => 'Última salida';
@@ -855,7 +855,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeOutings => 'Salidas';
 
   @override
-  String get homeSpent => 'Tu gasto';
+  String get homeSpent => 'Costo de tus bebidas';
 
   @override
   String get homeStartOuting => 'Iniciar salida';

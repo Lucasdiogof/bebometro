@@ -294,3 +294,36 @@ Aba **Cuenta** com o rolê no estado do cenário (3º Spritzgerald e sobremesa r
 **Pendente em Android/iOS:** emulador Android não sobe (WHPX negado; não contornado); iOS sem ambiente. Inclui teclado virtual, fonte do sistema real, processo encerrado e reaberto, comando da tela bloqueada (um toque e fila de pendentes), Live Activity.
 
 **Pendente em segunda instalação e conflito entre aparelhos:** segunda instalação/conta (precisa de um login manual numa instalação limpa) e a mesma comanda editada em dois aparelhos. Nada disso foi executado.
+
+## Rodada de 26/10/2026: login do site publicado, limites numéricos, segunda instalação
+
+Três ambientes, mantidos separados:
+
+| Ambiente | O que foi observado |
+|---|---|
+| **localhost / emulador** (rodadas anteriores) | login e fluxos funcionavam: lá o app usa os padrões do código |
+| **Site publicado** (`bebometro.lucksrei.com`) | **Defeito:** o workflow compilava com `--dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }}`, mas esses dois *secrets* não existiam. Um `--dart-define` vazio **substitui** o padrão de `lib/core/config/env.dart`, então o site nasceu sem Supabase e o login não funcionava. **Correção aplicada:** criados os secrets `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY` (valores públicos de cliente; nunca `service_role`) e rodado `deploy-web.yml` (execução 40268359904, sucesso, inclusive o teste de fumaça e a varredura de segredos). **Conferido no site publicado:** o `main.dart.js` servido contém a URL do projeto e a chave publicável e não contém `service_role`; a tela "Entrar" abre; um login com e-mail inexistente e senha errada devolveu "E-mail ou senha incorretos" (resposta do servidor, ou seja, o Supabase está alcançável). **Não feito:** entrar com a conta real (sem a senha) |
+| **Segunda instalação** | feita pelo responsável. Daqui só foi lido o servidor (abaixo); a comparação tela a tela é dele |
+
+**Servidor, conta `lucasdiogo1234@gmail.com` (leitura, 26/10 ~04:20 UTC):** 1 rolê ativo "QA Bar Ficticio" (revisão 1), 4 pedidos vivos
+(Heineken Long Neck R$ 24 compartilhado, Drink da Ana R$ 30 compartilhado ×2, Cerveja Offline R$ 40) e 3 do mesmo "Drink da Ana"
+apagados (soft delete); ids todos distintos, sem duplicata viva. Comanda (revisão 12): Voce + Ana, divisão por item, serviço 10 %
+ligado, 1 extra "Batata" R$ 60 (consumida pelos dois), 1 pagamento de R$ 121,00 de "Você". Para comparar na segunda instalação:
+mesmos 4 pedidos, a Batata, o serviço 10 %, o pagamento de R$ 121 e o mesmo total da comanda.
+
+**Corrigido nesta rodada**
+- Limite numérico na web: `1 << 40` vale 0 em JavaScript (deslocamento de 32 bits) e zerava "a pagar ao bar" e as divisões
+  personalizadas. Já corrigido em `3a5ac1d`; agora há `test/tab_web_limits_test.dart` (valores que viravam 0, inclusive acima de 2^32 centavos) e
+  `test/no_bit_shifts_in_money_test.dart` (varre `lib/tab`, `lib/outings/domain` e `lib/drinks/domain` atrás de `<<`/`>>`). Outros
+  deslocamentos no código: `1 << 30` (contagem, cabe em 32 bits), `1 << (≤4)` (espera do sync), `<< 24` e `& 3`/`& 0x7fffffff` (cor e índice): nenhum
+  é cálculo financeiro. O teste de limites foi tentado em `flutter test --platform chrome` mas o Chrome fechou a conexão antes de carregar
+  neste ambiente: **rodou só na VM** (onde 64 bits não reproduzem o defeito); a proteção contra o retorno é o teste de varredura.
+- Não regravar a comanda sem mudança: coberto por teste (`skipUnchangedTabWrites`, `e8ddd68`).
+- Rótulo da Home: o valor é `OutingSummary.informedCents` (visão do dono): custo das **bebidas** atribuído a Você (pedidos de que participa,
+  pelo custo que ele arca). Não inclui extras da comanda (Batata), serviço nem pagamentos. O rótulo passou de "Seu gasto" para "Custo das suas
+  bebidas" (en: "Cost of your drinks", es: "Costo de tus bebidas"); a fórmula não mudou.
+- Push do workflow recusado: o token do `gh` tem escopo `repo` sem `workflow`, então o GitHub rejeita mudanças em `.github/workflows`.
+  Todos os commits do código chegaram à `origin/main` (local = origin no início desta rodada). A melhoria do workflow ficou como patch:
+  `docs/deploy-web-workflow.patch` (só passa `--dart-define` de segredos não vazios e também passa `GEOAPIFY_KEY`, que hoje **não** é passado: o
+  mapa fica desligado no site). Para aplicar: `git apply docs/deploy-web-workflow.patch` e subir com um token com escopo `workflow`
+  (`gh auth refresh -s workflow`) ou editar o arquivo no GitHub.

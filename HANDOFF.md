@@ -976,3 +976,9 @@ corrigir horário só quando o pedido é um registro; o preço sugerido pelo his
   (regra de segurança da sessão: não crio contas nem digito senhas em serviço de produção, mesmo autorizado). O rolê real "Bar_do_Casal" do emulador
   não foi tocado. Pendente: cenário A/B/C na interface, offline → reabrir → reconectar, segunda instalação lendo a mesma conta, edição propagada.
   Para fazer: o responsável cria/loga a conta de QA em um perfil de navegador ou emulador separado e deixa a sessão aberta; o resto eu conduzo.
+
+## Site publicado: login (26/10/2026)
+Causa: secrets `SUPABASE_URL`/`SUPABASE_PUBLISHABLE_KEY` ausentes no repositório; o `--dart-define` vazio sobrescreveu os padrões do código. Criados
+os dois (valores públicos) e republicado; o bundle servido agora contém a URL e a chave publicável (sem `service_role`) e o login responde pelo servidor.
+Patch do workflow (não aplicado, falta escopo `workflow` no token): `docs/deploy-web-workflow.patch`. Evidências por ambiente em `docs/qa-report.md`.
+Rótulo da Home agora "Custo das suas bebidas" (só bebidas atribuídas a Você; sem extras, serviço nem pagamentos).

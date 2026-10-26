@@ -1,0 +1,25 @@
+diff --git a/.github/workflows/deploy-web.yml b/.github/workflows/deploy-web.yml
+index 84daab3..cb43d45 100644
+--- a/.github/workflows/deploy-web.yml
++++ b/.github/workflows/deploy-web.yml
+@@ -34,9 +34,17 @@ jobs:
+           cache: true
+       - run: flutter pub get
+       - run: |
+-          flutter build web --release $FLUTTER_WEB_FLAGS \
+-            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+-            --dart-define=SUPABASE_PUBLISHABLE_KEY=${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
++          # An empty --dart-define would REPLACE the defaults in lib/core/config/env.dart
++          # (the published site was built without Supabase that way): only pass what is set.
++          ARGS=""
++          [ -n "$SUPABASE_URL" ] && ARGS="$ARGS --dart-define=SUPABASE_URL=$SUPABASE_URL"
++          [ -n "$SUPABASE_PUBLISHABLE_KEY" ] && ARGS="$ARGS --dart-define=SUPABASE_PUBLISHABLE_KEY=$SUPABASE_PUBLISHABLE_KEY"
++          [ -n "$GEOAPIFY_KEY" ] && ARGS="$ARGS --dart-define=GEOAPIFY_KEY=$GEOAPIFY_KEY"
++          flutter build web --release $FLUTTER_WEB_FLAGS $ARGS
++        env:
++          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
++          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
++          GEOAPIFY_KEY: ${{ secrets.GEOAPIFY_KEY }}
+       - run: bash scripts/check-bundle-secrets.sh build/web
+       - uses: cloudflare/wrangler-action@v3
+         with:

@@ -837,7 +837,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get homeIdleTitle => 'Bora de rolê?';
 
   @override
-  String get homeInformedSpent => 'Seu gasto informado';
+  String get homeInformedSpent => 'Custo das suas bebidas';
 
   @override
   String get homeLastOuting => 'Último rolê';
@@ -852,7 +852,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get homeOutings => 'Rolês';
 
   @override
-  String get homeSpent => 'Seu gasto';
+  String get homeSpent => 'Custo das suas bebidas';
 
   @override
   String get homeStartOuting => 'Iniciar rolê';
