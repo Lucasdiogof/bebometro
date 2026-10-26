@@ -79,6 +79,11 @@ class LineResult {
       line.totalCents == null ? null : line.totalCents! - discount + service;
 }
 
+/// Upper bound for clamping cents. Not `1 << 40`: on the web (JavaScript) shifts
+/// are 32-bit, so that expression is 0 there and every clamp returned 0 ("A pagar
+/// ao bar" always R$ 0,00, custom shares all zero).
+const _maxCents = 1000000000000;
+
 class TabResult {
   const TabResult({
     required this.results,
@@ -135,18 +140,18 @@ class TabResult {
 
   /// What is still due to the venue (never negative). Whoever paid it does not
   /// matter: one person paying for the table settles the bar.
-  int get venueDueCents => (total - paidTotal).clamp(0, 1 << 40).toInt();
+  int get venueDueCents => (total - paidTotal).clamp(0, _maxCents).toInt();
 
   /// The venue was paid in full (or more) and the total is final.
   bool get venueSettled => !isPartial && paidTotal >= total && total > 0;
 
   /// More than the venue was paid: a mistake or a tip, never silently dropped.
-  int get overpaidCents => (paidTotal - total).clamp(0, 1 << 40).toInt();
+  int get overpaidCents => (paidTotal - total).clamp(0, _maxCents).toInt();
 
   /// How much a person paid beyond their own share (for the others at the
   /// table). Informational: the app does not say who should pay whom.
   int paidForOthers(String id) =>
-      (paidBy(id) - shareOf(id)).clamp(0, 1 << 40).toInt();
+      (paidBy(id) - shareOf(id)).clamp(0, _maxCents).toInt();
 
   /// Positive = still has to pay; negative = paid more than the share.
   int balanceOf(String id) => shareOf(id) - paidBy(id);
@@ -535,7 +540,7 @@ class TabCalculator {
       case SplitMode.custom:
         var sum = 0;
         for (final id in ids) {
-          final v = (doc.custom[id] ?? 0).clamp(0, 1 << 40).toInt();
+          final v = (doc.custom[id] ?? 0).clamp(0, _maxCents).toInt();
           shares[id] = v;
           sum += v;
         }
