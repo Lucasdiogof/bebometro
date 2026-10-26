@@ -2990,7 +2990,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get placeStatDrinks => 'Your drinks';
 
   @override
-  String get placeStatSpent => 'Cost of your drinks';
+  String get placeStatSpent => 'Your reported spend';
 
   @override
   String placeLastVisit(String date) {

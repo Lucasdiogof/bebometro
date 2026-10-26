@@ -1399,7 +1399,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeInformedSpent.
   ///
   /// In pt, this message translates to:
-  /// **'Seu gasto informado'**
+  /// **'Custo das suas bebidas'**
   String get homeInformedSpent;
 
   /// No description provided for @homeLastOuting.
@@ -1429,7 +1429,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeSpent.
   ///
   /// In pt, this message translates to:
-  /// **'Seu gasto'**
+  /// **'Custo das suas bebidas'**
   String get homeSpent;
 
   /// No description provided for @homeStartOuting.
