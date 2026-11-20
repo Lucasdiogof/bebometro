@@ -9,8 +9,7 @@ import 'package:bebometro/tab/data/tab_repository.dart';
 import 'package:bebometro/tab/domain/tab_models.dart';
 import 'package:bebometro/table/domain/table_orders.dart';
 import 'package:bebometro/table/presentation/order_page.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -57,11 +56,9 @@ Widget _host(
     theme: AppTheme.dark(),
     locale: locale,
     supportedLocales: const [Locale('pt', 'BR'), Locale('en'), Locale('es')],
-    localizationsDelegates: const [
+    localizationsDelegates: [
       AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
+      ...GlobalMaterialLocalizations.delegates,
     ],
     builder: (c, child) => MediaQuery(
       data: MediaQuery.of(c).copyWith(textScaler: TextScaler.linear(scale)),

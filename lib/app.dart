@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/di/injector.dart';
 import 'core/sync/sync_cubit.dart';
@@ -90,11 +89,9 @@ class _BebometroAppState extends State<BebometroApp>
           Locale('en'),
           Locale('es'),
         ],
-        localizationsDelegates: const [
+        localizationsDelegates: [
           AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
+          ...GlobalMaterialLocalizations.delegates,
         ],
         // On wide screens (web/tablet) keep the phone layout centred instead of
         // stretching it across the window.

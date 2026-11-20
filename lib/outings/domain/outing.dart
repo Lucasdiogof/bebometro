@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../places/domain/geo_point.dart';
 import '../../places/domain/place.dart' show placeTitle;

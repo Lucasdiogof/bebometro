@@ -9,8 +9,7 @@ import 'package:bebometro/table/presentation/bill_view.dart';
 import 'package:bebometro/table/presentation/orders_view.dart';
 import 'package:bebometro/table/presentation/people_bar.dart';
 import 'package:bebometro/table/presentation/people_view.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Automated layout tests: the table screens at a 360 px phone width with the
@@ -82,11 +81,9 @@ Widget _app(Widget child, Locale locale, double scale) {
     theme: AppTheme.dark(),
     locale: locale,
     supportedLocales: const [Locale('pt', 'BR'), Locale('en'), Locale('es')],
-    localizationsDelegates: const [
+    localizationsDelegates: [
       AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
+      ...GlobalMaterialLocalizations.delegates,
     ],
     builder: (context, c) => MediaQuery(
       data: MediaQuery.of(context)
